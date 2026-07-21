@@ -214,18 +214,7 @@ body::before{
 .btn-fullscreen--emphasis{color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:2px;padding:6px 16px;background:rgba(201,168,76,.06);}
 .btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
 
-/* ── SHUFFLE + LIMIT ── */
-.meta-lower{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 2px;}
-.rand-outer /* hidden — we cycle via arrows, showing only active */
-.shuffle-display{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 4px;transition:opacity .2s;}
-.shuffle-display:hover{opacity:.85;}
-.s-arrow{font-size:1.1rem;color:var(--muted);opacity:.55;user-select:none;transition:opacity .2s;padding:0 4px;}
-.shuffle-display:hover .s-arrow{opacity:.95;}
-.s-name{font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);opacity:.75;transition:color .2s;}
-.s-reshuffle{background:none;border:none;color:var(--muted);font-size:1rem;line-height:1;padding:6px 8px;margin-left:6px;cursor:pointer;opacity:.6;transition:all .2s;}
-.s-reshuffle:hover{color:var(--gold);opacity:1;}
-.s-reshuffle:active{transform:rotate(180deg);}
-.shuffle-display:hover .s-name{color:var(--gold);opacity:1;}
+/* ── LIMIT ── */
 /* draw-mode: btn-next transforms at end of deck */
 .btn-draw.draw-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
 .btn-draw.draw-mode::after{content:' — hold';opacity:.55;font-size:.5rem;}
@@ -429,33 +418,20 @@ body::before{
 @media(min-width:768px){
   .app{max-width:640px;}.title{font-size:2.3rem;}.card-question{font-size:1.8rem;}.card-level{font-size:.65rem;}.card-number{font-size:.6rem;}
   .btn-sq{width:48px;height:48px;font-size:1.1rem;}.btn-draw{font-size:.68rem;letter-spacing:.26em;padding:13px 0;}
-  .btn-fullscreen{font-size:.62rem;padding:8px 8px;}.s-name{font-size:.82rem;letter-spacing:.22em;}.s-arrow{font-size:1rem;}
+  .btn-fullscreen{font-size:.62rem;padding:8px 8px;}
   .limit-btn{font-size:.72rem;padding:3px 9px;}.mode-btn{font-size:.64rem;padding:10px 18px;}
   .cat-toggle-lbl{font-size:.62rem;}.toggle-btn{font-size:.62rem;padding:8px 15px;}
   .progress-dot{width:5px;height:5px;}.progress-dot.current{width:18px;}
 }
 @media(min-width:1024px){
-  .app{max-width:720px;}.title{font-size:2.6rem;}.card-question{font-size:2rem;}.s-name{font-size:.9rem;}
+  .app{max-width:720px;}.title{font-size:2.6rem;}.card-question{font-size:2rem;}
   .limit-btn{font-size:.78rem;}.mode-btn{font-size:.7rem;padding:11px 20px;}.btn-sq{width:52px;height:52px;}.btn-draw{font-size:.72rem;padding:14px 0;}
 }
 /* ── LANG TOGGLE INLINE (screen-row) ── */
 .lang-toggle--inline{display:flex;border:none;flex-shrink:0;gap:2px;}
 .lang-toggle--inline .lang-opt{padding:8px 8px;}
 
-/* ── SHUFFLE MODE DESCRIPTION ── */
-.shuffle-desc{
-  font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.12em;
-  color:var(--muted);text-align:center;
-  max-height:0;overflow:hidden;padding:0;opacity:0;
-  transition:max-height .25s ease, opacity .25s ease, padding .25s ease;
-}
-.shuffle-desc.visible{opacity:.7;max-height:2em;padding:2px 0;}
-.shuffle-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:398;opacity:0;pointer-events:none;transition:opacity .2s;}
-.shuffle-picker-overlay.open{opacity:1;pointer-events:all;}
-.shuffle-picker{position:fixed;left:50%;bottom:0;transform:translateX(-50%) translateY(100%);width:min(420px,92vw);
-  max-height:70vh;overflow-y:auto;background:#171410;border:1px solid rgba(201,168,76,.3);border-bottom:none;
-  border-radius:10px 10px 0 0;z-index:399;transition:transform .28s cubic-bezier(.4,0,.2,1);padding:8px 0;}
-.shuffle-picker.open{transform:translateX(-50%) translateY(0);}
+/* ── SHUFFLE MODE LIST ROWS (used by the Shuffle token tray) ── */
 .smp-row{display:flex;flex-direction:column;gap:2px;width:100%;background:none;border:none;text-align:left;
   padding:12px 20px;cursor:pointer;border-bottom:1px solid rgba(201,168,76,.08);}
 .smp-row:last-child{border-bottom:none;}
@@ -539,7 +515,6 @@ body::before{
 .tray .preset-outer{display:block;width:100%;opacity:1;}
 .tray .preset-wrap{overflow:visible;}
 .tray .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
-.tray .shuffle-display{padding:4px;}
 .tray .limit-row{justify-content:center;}
 .tray .limit-btn{font-size:.64rem;padding:4px 12px;letter-spacing:.16em;}
 
@@ -640,7 +615,6 @@ body::before{
   text-shadow:0 0 9px color-mix(in srgb, currentColor 45%, transparent);}
 
 /* ── MAIN COLUMN ── */
-.meta-lower{display:none;}
 .card-wrap{margin-top:12px;}
 
 /* bottom cluster — matched to the approved mock */
@@ -713,10 +687,6 @@ body::before{
   .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
   .cat-sheet-handle{display:none;}
   .cat-sheet-title{padding-top:16px;}
-  .shuffle-picker{left:50%;bottom:auto;top:50%;border:1px solid var(--border);border-radius:12px;
-    transform:translate(-50%,-46%);opacity:0;pointer-events:none;
-    transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease;}
-  .shuffle-picker.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
 }
 @media(min-width:768px){
   /* centre the whole composition in the viewport instead of hanging from the top */
@@ -936,26 +906,19 @@ body::before{
       <button class="btn-sq" id="btn-menu">&#8801;</button>
     </div>
     <div class="screen-row">
-      <button class="pick-toggle" id="pickToggle">Deal three</button>
+      <button class="pick-toggle" id="pickToggle">Draw three</button>
       <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty">&#8862; Full Screen</button>
       <button class="btn-fullscreen" id="btn-lang-inline">EN</button>
     </div>
-    <div class="meta-lower">
-      <div class="shuffle-display" id="shuffle-display">
-        <span class="s-arrow" id="shuffleLeft">&#8249;</span>
-        <span class="s-name" id="shuffleModeName"></span>
-        <span class="s-arrow" id="shuffleRight">&#8250;</span>
-      </div>
-      <div class="shuffle-desc" id="shuffleDesc"></div>
-      <div class="limit-row" id="limitBtns">
-        <button class="limit-btn active" data-limit="5">5</button>
-        <span class="limit-sep">&#183;</span>
-        <button class="limit-btn" data-limit="10">10</button>
-        <span class="limit-sep">&#183;</span>
-        <button class="limit-btn" data-limit="20">20</button>
-        <span class="limit-sep">&#183;</span>
-        <button class="limit-btn" data-limit="all">All</button>
-      </div>
+    <!-- Cards-per-round buttons — re-homed into the Cards token tray by the shell wiring -->
+    <div class="limit-row" id="limitBtns">
+      <button class="limit-btn active" data-limit="5">5</button>
+      <span class="limit-sep">&#183;</span>
+      <button class="limit-btn" data-limit="10">10</button>
+      <span class="limit-sep">&#183;</span>
+      <button class="limit-btn" data-limit="20">20</button>
+      <span class="limit-sep">&#183;</span>
+      <button class="limit-btn" data-limit="all">All</button>
     </div>
     <button class="draw-more-btn" id="drawMoreBtn">+ Draw 10 more</button>
     <div class="deck-info" id="deckInfo" style="display:none;"></div>
@@ -1011,8 +974,6 @@ body::before{
 </div>
 
 <!-- Truly fixed to the viewport — must live outside any transformed ancestor (the drawers all use transform) -->
-<div class="shuffle-picker-overlay" id="shuffleModeOverlay"></div>
-<div class="shuffle-picker" id="shuffleModePanel"></div>
 
 <!-- LOG DRAWER -->
 <div class="sub-drawer" id="logDrawer">
@@ -1107,7 +1068,7 @@ body::before{
 <!-- FULLSCREEN OVERLAY -->
 <div class="party-overlay" id="partyOverlay">
   <button class="party-exit" id="partyExit">&#8249;&nbsp;&nbsp;Close</button>
-    <button class="party-pick" id="partyPick">Deal three</button>
+    <button class="party-pick" id="partyPick">Draw three</button>
   <button class="party-prev-btn" id="partyPrevBtn" style="display:none;"></button>
   <button class="party-more-btn" id="partyMoreBtn" style="display:none;"></button>
   <div class="party-card">
@@ -2697,11 +2658,11 @@ const SHUFFLE_MODES = ['wild','deep','breadth','arc'];
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(randomMode);
 
 function updateShuffleDisplay() {
-  const n = shuffleModeIdx;
-  const name = SHUFFLE_MODES[n];
-  const el = document.getElementById('shuffleModeName');
-  if (el) el.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  const name = SHUFFLE_MODES[shuffleModeIdx] || randomMode;
   randomMode = name;
+  // Reflect the active mode straight onto the Shuffle token value.
+  const vo = document.getElementById('valOrder');
+  if (vo) vo.textContent = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
 // ── Override setCardDisplay to add accent bar + animations ──
@@ -2891,61 +2852,8 @@ const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLang
 // ── Category label toggle ──
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
 
-// ── Shuffle mode cycler ──
-document.getElementById('shuffleLeft').addEventListener('click',()=>{
-  shuffleModeIdx=(shuffleModeIdx-1+SHUFFLE_MODES.length)%SHUFFLE_MODES.length;
-  updateShuffleDisplay(); initDeck();
-});
-document.getElementById('shuffleRight').addEventListener('click',()=>{
-  shuffleModeIdx=(shuffleModeIdx+1)%SHUFFLE_MODES.length;
-  updateShuffleDisplay(); initDeck();
-});
-// Long-press the mode name: a picker listing every mode, all visible, tap to jump straight to one
-(function(){
-  const nameEl = document.getElementById('shuffleModeName');
-  if (!nameEl) return;
-  let holdTimer = null, held = false;
-  const start = () => { held = false; holdTimer = setTimeout(() => { held = true; openShuffleModePicker(); }, 450); };
-  const cancel = () => clearTimeout(holdTimer);
-  nameEl.addEventListener('touchstart', start, {passive:true});
-  nameEl.addEventListener('touchend', cancel, {passive:true});
-  nameEl.addEventListener('touchmove', cancel, {passive:true});
-  nameEl.addEventListener('mousedown', start);
-  nameEl.addEventListener('mouseup', cancel);
-  nameEl.addEventListener('mouseleave', cancel);
-  // A quick tap (no hold) just cycles forward — same convenience as the right arrow
-  nameEl.addEventListener('click', () => {
-    if (held) { held = false; return; }   // the hold already opened the picker; this click is its aftermath
-    shuffleModeIdx = (shuffleModeIdx + 1) % SHUFFLE_MODES.length;
-    updateShuffleDisplay(); initDeck();
-  });
-})();
-function openShuffleModePicker(){
-  const panel = document.getElementById('shuffleModePanel');
-  if (!panel) return;
-  panel.innerHTML = SHUFFLE_MODES.map(m =>
-    `<button class="smp-row ${m===randomMode?'active':''}" data-mode="${m}">
-       <span class="smp-name">${m}</span>
-       <span class="smp-desc">${SHUFFLE_DESCRIPTIONS[m]||''}</span>
-     </button>`
-  ).join('');
-  panel.classList.add('open');
-  document.getElementById('shuffleModeOverlay').classList.add('open');
-}
-function closeShuffleModePicker(){
-  document.getElementById('shuffleModePanel').classList.remove('open');
-  document.getElementById('shuffleModeOverlay').classList.remove('open');
-}
-document.getElementById('shuffleModeOverlay').addEventListener('click', closeShuffleModePicker);
-document.getElementById('shuffleModePanel').addEventListener('click', e => {
-  const row = e.target.closest('.smp-row');
-  if (!row) return;
-  randomMode = row.dataset.mode;
-  shuffleModeIdx = SHUFFLE_MODES.indexOf(randomMode);
-  updateShuffleDisplay();
-  initDeck(); updateDeckInfo(); updateDrawMore();
-  closeShuffleModePicker();
-});
+// Shuffle mode is chosen from the Shuffle token tray (see the order list in the
+// v6.1 shell wiring below); the mode is applied via updateShuffleDisplay().
 // ── Reshuffle button: re-deal in the current shuffle mode ──
 document.getElementById('d-reshuffle').addEventListener('click',()=>{
   initDeck();
@@ -3694,24 +3602,6 @@ const SHUFFLE_DESCRIPTIONS = {
   arc:     'Warm start, depth, cool-down — repeating pattern'
 };
 
-(function() {
-  const descEl = document.getElementById('shuffleDesc');
-  if (!descEl) return;
-  let hideTimer = null;
-  // Patch the shuffle cycler to show description on change
-  const origUpdateShuffleDisplay = updateShuffleDisplay;
-  updateShuffleDisplay = function() {
-    origUpdateShuffleDisplay();
-    const mode = SHUFFLE_MODES[shuffleModeIdx];
-    const desc = SHUFFLE_DESCRIPTIONS[mode] || '';
-    descEl.textContent = desc;
-    descEl.classList.remove('visible');
-    void descEl.offsetWidth;
-    descEl.classList.add('visible');
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => descEl.classList.remove('visible'), 3000);
-  };
-})();
 
 // ═══════════════════════════════════════════════════════════
 // CATEGORY TOOLTIPS
@@ -4089,7 +3979,7 @@ applyToggleUI();
 
   /* ── token labels mirror existing state (no logic edits) ── */
   /* tokens are fixed nouns; the active value lives inside each tray */
-  function syncOrder(){ const n=$('shuffleModeName').textContent.trim(); if(n) $('valOrder').textContent=n; }
+  function syncOrder(){ if(randomMode) $('valOrder').textContent=randomMode.charAt(0).toUpperCase()+randomMode.slice(1); }
   function syncHand(){ const a=document.querySelector('.limit-btn.active'); if(a) $('valHand').textContent=a.textContent.trim(); }
   function syncSpark(){
     /* mirror After Dark state + labels onto the quick-row proxies */
@@ -4098,7 +3988,6 @@ applyToggleUI();
   const mo=new MutationObserver(()=>{syncOrder();syncHand();syncSpark();});
   mo.observe($('modeBar'),{attributes:true,subtree:true,attributeFilter:['class']});
   mo.observe($('toggles-wrap'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('shuffleModeName'),{childList:true,characterData:true,subtree:true});
   mo.observe($('limitBtns'),{attributes:true,subtree:true,attributeFilter:['class']});
   mo.observe($('afterDarkToggle'),{attributes:true,attributeFilter:['class']});
   mo.observe($('spiceGlyphBtn'),{attributes:true,attributeFilter:['class']});
