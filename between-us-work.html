@@ -2924,39 +2924,6 @@ function translateQ(card) {
 }
 
 // ── CARD DISPLAY ──────────────────────────────────────────────────────────────
-function setCardDisplay(card) {
-  const levelEl    = document.getElementById('card-level');
-  const questionEl = document.getElementById('card-question');
-  const numberEl   = document.getElementById('card-number');
-  const nextBtn    = document.getElementById('btn-next');
-  if (!card) {
-    levelEl.className    = 'card-level';
-    levelEl.textContent  = '';
-    questionEl.textContent = visibleDeck.length === 0
-      ? (lang === 'nl' ? 'Selecteer minstens één categorie.' : 'Select at least one category.')
-      : (lang === 'nl' ? 'Trek een kaart om te beginnen.'   : 'Draw a card to begin.');
-    numberEl.textContent   = '— — —';
-    nextBtn.textContent    = lang === 'nl' ? 'Trek kaart' : 'Draw Card';
-    return;
-  }
-  levelEl.className    = `card-level ${LEVEL_STYLES[card.level] || ''}`;
-  levelEl.textContent  = LEVEL_LABELS[card.level] || '';
-  levelEl.style.color  = levelColor(card.level);
-  questionEl.textContent = translateQ(card);
-  numberEl.textContent   = `${currentIndex + 1} / ${visibleDeck.length}`;
-  nextBtn.textContent    = lang === 'nl' ? 'Volgende kaart' : 'Next Card';
-}
-
-function flipToCard(card) {
-  const el = document.getElementById('card');
-  el.classList.add('flipping');
-  setTimeout(() => {
-    setCardDisplay(card);
-    el.classList.remove('flipping');
-    renderProgress();
-  }, 175);
-}
-
 function _nextCardBase() {
   if (!visibleDeck.length) return;
   if (currentIndex < visibleDeck.length - 1) {
@@ -3026,46 +2993,7 @@ function renderProgress() {
   }
 }
 
-function updateDeckInfo() {
-  const shown = visibleDeck.length, total = fullDeck.length;
-  document.getElementById('deckCount').textContent =
-    shown === 0     ? 'No categories selected' :
-    shown === total ? `${total} cards` :
-                     `${shown} of ${total} cards`;
-}
-
-function updateDrawMore() {
-  const btn       = document.getElementById('drawMoreBtn');
-  const partyBtn  = document.getElementById('partyMoreBtn');
-  const remaining = fullDeck.length - visibleDeck.length;
-  const atEnd     = currentIndex >= visibleDeck.length - 2; // last 2 cards or fewer remaining
-  const showMore  = remaining > 0 && cardLimit !== null && atEnd;
-  // Normal draw more button
-  if (showMore) {
-    btn.classList.add('visible');
-    btn.textContent = `+ Draw ${Math.min(10, remaining)} more`;
-  } else {
-    btn.classList.remove('visible');
-  }
-  // Party draw more: only at end of visible deck
-  if (partyBtn) partyBtn.classList.toggle('visible', showMore && currentIndex >= visibleDeck.length - 1);
-}
-
 // ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────
-function updateAfterDarkBtn() {
-  const btn = document.getElementById('afterDarkToggle');
-  if (!btn) return;
-  // After Dark is ON when safeMode is OFF (adult content available)
-  btn.classList.toggle('on', !safeMode);
-  SAFE_BLOCKED_LEVELS.forEach(lvl => {
-    const b = document.querySelector(`.toggle-btn[data-level="${lvl}"]`);
-    if (!b) return;
-    const p = activePreset && PRESETS[activePreset];
-    const allowedByPreset = !p || p.on.includes(lvl) || p.available.includes(lvl);
-    b.classList.toggle('hard-locked', safeMode || !allowedByPreset);
-  });
-}
-
 function syncBandLabels(){
   document.querySelectorAll('.band-lbl,.cat-band').forEach(band=>{
     let any=false;
@@ -3151,14 +3079,6 @@ function applyPreset(mode) {
   applyToggleUI();
 }
 
-function toggleCategories() {
-  categoriesCollapsed = !categoriesCollapsed;
-  document.getElementById('toggles')?.classList.toggle('collapsed', categoriesCollapsed);
-  document.querySelector('.meta-row')?.classList.toggle('collapsed', categoriesCollapsed);
-  const arrow = document.getElementById('catArrow');
-  if (arrow) arrow.textContent = categoriesCollapsed ? '▶' : '▼';
-}
-
 // ── LOG & FAVOURITES ──────────────────────────────────────────────────────────
 function addToLog(card) {
   if (!card) return;
@@ -3216,80 +3136,7 @@ function renderFavourites() {
 }
 
 // ── SESSION SAVE ──────────────────────────────────────────────────────────────
-function saveSession() {
-  if (!visibleDeck.length) return;
-  const data = {
-    deckQuestions: visibleDeck.map(c => c.question),
-    position: currentIndex,
-    toggles: [...activeToggles],
-    safeMode, spiceMode, randomMode, cardLimit, lang,
-    savedAt: new Date().toISOString(),
-  };
-  try {
-    localStorage.setItem('bu-session', JSON.stringify(data));
-    const btn = document.getElementById('btnSave');
-    if (btn) { btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent = 'Save'; }, 2000); }
-  } catch(e) {}
-}
-
-function checkSavedSession() {
-  try {
-    const v = localStorage.getItem('bu-session');
-    if (!v) return;
-    const btn = document.getElementById('btnSave');
-    if (btn) { btn.textContent = 'Continue →'; btn.dataset.mode = 'continue'; btn.classList.add('highlight'); }
-  } catch(e) {}
-}
-
-function continueSession() {
-  try {
-    const v = localStorage.getItem('bu-session');
-    if (!v) return;
-    const data = JSON.parse(v);
-    lang       = data.lang || 'en';
-    safeMode   = data.safeMode || false;
-    spiceMode  = data.spiceMode || false;
-    randomMode = data.randomMode || 'wild';
-    cardLimit  = data.cardLimit;
-    activeToggles = new Set(data.toggles || []);
-        applyToggleUI();
-    updateAfterDarkBtn();
-    const qMap = {};
-    ALL_CARDS.forEach(c => { qMap[c.question] = c; });
-    visibleDeck    = (data.deckQuestions || []).map(q => qMap[q]).filter(Boolean);
-    fullDeck       = visibleDeck;
-    currentIndex   = data.position ?? -1;
-    document.querySelectorAll('.limit-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.limit === (cardLimit === null ? 'all' : String(cardLimit)))
-    );
-    updateDeckInfo();
-    updateDrawMore();
-    renderProgress();
-    setCardDisplay(currentIndex >= 0 ? visibleDeck[currentIndex] : null);
-    const btn = document.getElementById('btnSave');
-    btn.textContent  = 'Save';
-    btn.dataset.mode = '';
-    btn.classList.remove('highlight');
-  } catch(e) { console.error('continueSession:', e); }
-}
-
 // ── PARTY MODE ────────────────────────────────────────────────────────────────
-function enterParty() {
-  partyMode = true;
-  document.body.classList.add('party-mode');
-  if (currentIndex < 0 && visibleDeck.length > 0) {
-    currentIndex = 0;
-    setCardDisplay(visibleDeck[0]);
-    renderProgress();
-    updateStarUI();
-  }
-}
-
-function exitParty() {
-  partyMode = false;
-  document.body.classList.remove('party-mode');
-}
-
 // ── CUSTOM CARDS ──────────────────────────────────────────────────────────────
 function loadCustomCards() {
   try {
@@ -3533,9 +3380,8 @@ function updateShuffleDisplay() {
   if (vo) vo.textContent = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-// ── Override setCardDisplay to add accent bar + animations ──
-const _origSetCard = setCardDisplay;
-setCardDisplay = function(card) {
+// setCardDisplay — single definition (accent bar + fullscreen sync)
+function setCardDisplay(card) {
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const numEl  = document.getElementById('card-number');
@@ -3571,8 +3417,8 @@ setCardDisplay = function(card) {
   updatePartyDisplay(card);
 };
 
-// ── flipToCard: consolidated (accent bloom + arc indicator + party sync) ──
-flipToCard = function(card) {
+// flipToCard — consolidated (accent bloom + arc indicator + fullscreen sync)
+function flipToCard(card) {
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const accent = document.getElementById('c-accent');
@@ -3630,7 +3476,7 @@ function updatePartyDisplay(card) {
 }
 
 // ── Override toggleCategories for new DOM ──
-toggleCategories = function() {
+function toggleCategories() {
   categoriesCollapsed = !categoriesCollapsed;
   const wrap  = document.getElementById('toggles-wrap');
   const arrow = document.getElementById('catArrow');
@@ -3641,14 +3487,14 @@ toggleCategories = function() {
 };
 
 // ── Override updateDeckInfo ──
-updateDeckInfo = function() {
+function updateDeckInfo() {
   const shown = visibleDeck.length, total = fullDeck.length;
   const el = document.getElementById('deckCount');
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
 
 // ── Override enterParty / exitParty for new overlay ──
-enterParty = function() {
+function enterParty() {
   partyMode = true;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.add('open');
@@ -3662,7 +3508,7 @@ enterParty = function() {
   }
 };
 
-exitParty = function() {
+function exitParty() {
   partyMode = false;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.remove('open');
@@ -3769,9 +3615,8 @@ document.getElementById('d-save').addEventListener('click',()=>{
   if (saveMode==='continue') { continueSession(); }
   else { saveSession(); }
 });
-// Override saveSession to update label
-const _origSave = saveSession;
-saveSession = function() {
+// saveSession — single definition (updates the save-button label)
+function saveSession() {
   if (!visibleDeck.length) return;
   const data = {
     deckQuestions: visibleDeck.map(c=>c.question),
@@ -3789,7 +3634,7 @@ saveSession = function() {
   } catch(e){}
 };
 // Override checkSavedSession
-checkSavedSession = function() {
+function checkSavedSession() {
   try {
     const v = localStorage.getItem('bu-session');
     if (!v) return;
@@ -3798,8 +3643,7 @@ checkSavedSession = function() {
     if (lbl) lbl.textContent = 'Continue session →';
   } catch(e){}
 };
-// Override continueSession
-continueSession = function() {
+function continueSession() {
   try {
     const v = localStorage.getItem('bu-session'); if(!v) return;
     const data = JSON.parse(v);
@@ -3845,8 +3689,8 @@ document.getElementById('customText').addEventListener('keydown',e=>{if(e.key===
 document.getElementById('d-help').addEventListener('click',()=>{ closeAllDrawers(); openDrawer('helpDrawer'); });
 document.getElementById('closeHelp').addEventListener('click',()=>closeAllDrawers());
 
-// ── Override updateAfterDarkBtn for new button ──
-updateAfterDarkBtn = function() {
+// updateAfterDarkBtn — single definition (new After Dark button)
+function updateAfterDarkBtn() {
   const btn=document.getElementById('afterDarkToggle'); if(!btn) return;
   if (MASTER_SAFE || WORKPLACE_MODE) {
     // Hard lock: button gone AND every adult toggle stays hidden, in every mode
@@ -4021,9 +3865,8 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
   if(qEl) setTimeout(()=>qEl.classList.add('in'),400);
 })();
 
-// ── D: Override updateDrawMore — transform btn-next, hide standalone button ──
-const _origUpdateDrawMore = updateDrawMore;
-updateDrawMore = function() {
+// updateDrawMore — single definition (transforms btn-next, hides standalone button)
+function updateDrawMore() {
   // Always hide the standalone draw-more button — it floats awkwardly
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
