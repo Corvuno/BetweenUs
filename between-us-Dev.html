@@ -2218,7 +2218,9 @@ function applyPreset(mode) {
   }
   const sub = document.getElementById('subtitle'); if (sub) sub.textContent = preset.subtitle;
   activeToggles = new Set(preset.on.filter(l => DECK_LEVELS.has(l)));
-  if (safeMode) SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
+  // After Dark is opt-in: adult categories stay reachable but are never
+  // pre-activated by a preset unless this build ships with spice on (editor).
+  if (safeMode || !window.SPICE_MODE) SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
 
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
