@@ -2,37 +2,82 @@
 <html lang="en">
 <head>
 <script>
-  // ╔════════════════════════════════════════════════════════════════════╗
-  // ║  SETTINGS — edit the values on the right. true/false or "text".     ║
-  // ╚════════════════════════════════════════════════════════════════════╝
+(function () {
+  // ╔══════════════════════════════════════════════════════════════════════╗
+  // ║  BUILD PROFILE                                                         ║
+  // ║  Set the ONE line below to choose which version this file is. The      ║
+  // ║  URL you hand out then always opens exactly this version — nobody      ║
+  // ║  has to pick anything. Everything else is derived from the profile.    ║
+  // ╚══════════════════════════════════════════════════════════════════════╝
 
-  // ── DECK ── which question set the app plays ────────────────────────────
-  window.CLASSIC_DECK    = false;  // true  → the original question deck (pre-rewrite, incl. Failure/Backup)
+  const BUILD_PROFILE = "public";   // "public" · "work" · "editor"
 
-  // ── CONTENT SAFETY ── how much adult content is reachable ──────────────
-  window.MASTER_SAFE     = false;  // true  → no adult content, anywhere, ever (hard lock)
-  window.WORKPLACE_MODE  = false;  // true  → same hard lock, and starts in Work mode
+  // ── PROFILE DEFINITIONS ──────────────────────────────────────────────────
+  // Shared, identical in every build. Fine-tune a version by editing its block
+  // (these are the settings you already had — just organised per version).
+  const PROFILES = {
 
-  // ── STARTING STATE — what the app looks like when it opens ─────────────
-  window.DEFAULT_LANGUAGE = "en";     // "en" or "nl"
-  window.DEFAULT_SHUFFLE  = "arc";   // wild · flow · deep · spiced · heat · gentle · breadth · arc
-  window.DEFAULT_LIMIT    = 5;        // cards per hand: 5 · 10 · 20 · 0 (= All)
-  window.START_COLLAPSED  = true;     // true  → category list starts folded away
+    // PUBLIC — the copy you hand someone by default.
+    public: {
+      CLASSIC_DECK:     false,   // true → original pre-rewrite deck (incl. Failure/Backup)
+      MASTER_SAFE:      false,   // true → no adult content anywhere, ever (hard lock)
+      WORKPLACE_MODE:   false,   // true → hard lock + starts in Work mode
+      DEFAULT_LANGUAGE: "en",    // "en" or "nl"
+      DEFAULT_SHUFFLE:  "arc",   // wild · deep · breadth · arc
+      DEFAULT_LIMIT:    5,       // cards per hand: 5 · 10 · 20 · 0 (= All)
+      START_COLLAPSED:  true,    // true → category list starts folded away
+      SPICE_MODE:       false,   // true → adult categories pre-activated
+      SPICE_AVAILABLE:  true,    // false → hides the ✦ spice-bias toggle entirely
+      SHOW_BACKUP:      true,    // true → shows the hidden Backup overflow category
+      LOG_PERSIST:      true,    // true → the session log survives a page reload
+      COLBERT_STRICT:   true,    // true → Colbert plays its canonical 15, in order
+    },
 
-  // ── DEVELOPER / EXTRAS — leave off for a normal shared copy ────────────
-  window.SPICE_MODE      = false;   // true  → adult categories pre-activated (dev convenience)
-  window.SPICE_AVAILABLE = true;   // false → hides the ✦ spice-bias toggle entirely
-  window.SHOW_BACKUP     = true;   // true  → shows the hidden Backup overflow category
-  window.LOG_PERSIST     = true;   // true  → the session log survives a page reload
-  window.COLBERT_STRICT  = true;   // true  → Colbert plays its canonical 15, in order
+    // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.
+    work: {
+      CLASSIC_DECK:     false,
+      MASTER_SAFE:      false,
+      WORKPLACE_MODE:   true,
+      DEFAULT_LANGUAGE: "nl",
+      DEFAULT_SHUFFLE:  "arc",
+      DEFAULT_LIMIT:    5,
+      START_COLLAPSED:  true,
+      SPICE_MODE:       false,
+      SPICE_AVAILABLE:  false,
+      SHOW_BACKUP:      false,
+      LOG_PERSIST:      true,
+      COLBERT_STRICT:   true,
+    },
 
-  // ── back-compat aliases (do not edit) ──
+    // EDITOR — development build: spice pre-activated, dev conveniences on.
+    editor: {
+      CLASSIC_DECK:     false,
+      MASTER_SAFE:      false,
+      WORKPLACE_MODE:   false,
+      DEFAULT_LANGUAGE: "en",
+      DEFAULT_SHUFFLE:  "wild",
+      DEFAULT_LIMIT:    5,
+      START_COLLAPSED:  true,
+      SPICE_MODE:       true,
+      SPICE_AVAILABLE:  true,
+      SHOW_BACKUP:      true,
+      LOG_PERSIST:      true,
+      COLBERT_STRICT:   true,
+    },
+
+  };
+
+  // ── APPLY (do not edit) ──────────────────────────────────────────────────
+  const _p = PROFILES[BUILD_PROFILE] || PROFILES.public;
+  for (const _k in _p) window[_k] = _p[_k];
+  window.BUILD_PROFILE     = BUILD_PROFILE;
   window.DEFAULT_COLLAPSED = window.START_COLLAPSED;
   window.NL_DEFAULT        = (window.DEFAULT_LANGUAGE === "nl");
 
-  // ── NO INTRO — this is intentional ───────────────────────────────────
-  // Between Us has no onboarding screen. Users hand it to each other and
-  // they get it immediately. The simplicity is the point. Do not add one.
+  // ── NO INTRO — this is intentional ───────────────────────────────────────
+  // Between Us has no onboarding screen. Users hand it to each other and they
+  // get it immediately. The simplicity is the point. Do not add one.
+})();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
