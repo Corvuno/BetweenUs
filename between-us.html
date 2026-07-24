@@ -2899,6 +2899,7 @@ function applyLimit(reshuffle = true) {
   setCardDisplay(null);
   updateDeckInfo();
   updateDrawMore();
+  renderShell();
 }
 
 function drawMore() {
@@ -3240,15 +3241,11 @@ if (SPICE_MODE && !MASTER_SAFE && !WORKPLACE_MODE) {
 document.querySelectorAll('.mode-btn').forEach(b =>
   b.classList.toggle('active', b.dataset.mode === activePreset)
 );
-document.querySelectorAll('.rand-btn').forEach(b =>
-  b.classList.toggle('active', b.dataset.rand === randomMode)
-);
 initDeck();
 
 if (DEFAULT_COLLAPSED) {
   categoriesCollapsed = true;
   document.getElementById('toggles')?.classList.add('collapsed');
-  document.querySelector('.meta-row')?.classList.add('collapsed');
   const ca = document.getElementById('catArrow');
   if (ca) ca.textContent = '▶';
 }
@@ -3676,6 +3673,7 @@ function continueSession() {
     setCardDisplay(currentIndex>=0 ? visibleDeck[currentIndex] : null);
     const lbl=document.getElementById('saveBtnLabel'); if(lbl) lbl.textContent='Save session';
     saveMode='';
+    renderShell();
   } catch(e){ console.error('continueSession:',e); }
 };
 
@@ -3825,7 +3823,29 @@ initDeck = function() {
   const qEl=document.getElementById('card-question');
   if(qEl){ qEl.classList.remove('in'); }
   setTimeout(()=>{ if(qEl) qEl.classList.add('in'); },20);
+  renderShell();
 };
+
+// ── SHELL RENDER ──────────────────────────────────────────────────────────────
+// Single source of truth for the token-line labels. Every value is derived from
+// state and written here; callers invoke renderShell() after a state change
+// instead of the shell observing its own DOM for updates.
+function renderShell() {
+  // Categories token: active / total available (excludes Backup + hidden ones)
+  const total = [...document.querySelectorAll('.toggle-btn')]
+    .filter(b => b.dataset.level && b.dataset.level !== 'backup' && b.style.display !== 'none').length;
+  const vCats = document.getElementById('valCats');
+  if (vCats) vCats.textContent = activeToggles.size + '/' + total;
+  // Shuffle token: active mode
+  const vOrder = document.getElementById('valOrder');
+  if (vOrder && randomMode) vOrder.textContent = randomMode.charAt(0).toUpperCase() + randomMode.slice(1);
+  // Cards token: active per-round limit
+  const vHand = document.getElementById('valHand');
+  if (vHand) vHand.textContent = (cardLimit == null) ? 'All' : String(cardLimit);
+  // Fullscreen mirror of the Draw-three toggle
+  const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
+  if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); pp.textContent = pt.textContent; }
+}
 
 // ── INIT ──
 // Apply initial shuffle display
@@ -4546,6 +4566,7 @@ function choosePick(chosen, allOptions) {
   btn.addEventListener('click', () => {
     pickMode = !pickMode;
     btn.classList.toggle('on', pickMode);
+    renderShell();  // mirror the toggle onto the fullscreen Draw-three button
 
     if (pickMode) {
       // Remember current limit and switch to All so there are always enough cards to pick from
@@ -4645,13 +4666,6 @@ applyToggleUI();
   presetHost.after(topbar);             /* … then After Dark · All · None */
   const openRow=$('tokCats');
   const dc=$('deckCount'); dc.style.display='none'; openRow.appendChild(dc);
-  function syncCatCount(){
-    const total=[...document.querySelectorAll('.toggle-btn')]
-      .filter(b=>b.dataset.level && b.dataset.level!=='backup' && b.style.display!=='none').length;
-    $('valCats').textContent = activeToggles.size + '/' + total;
-  }
-  new MutationObserver(syncCatCount).observe(dc,{childList:true,characterData:true,subtree:true});
-  setTimeout(syncCatCount,0);
   $('trayHandInner').append($('limitBtns'));  /* caption stays first */
 
   /* ── category sheet ── */
@@ -4721,32 +4735,14 @@ applyToggleUI();
     });
   });
 
-  /* ── token labels mirror existing state (no logic edits) ── */
-  /* tokens are fixed nouns; the active value lives inside each tray */
-  function syncOrder(){ if(randomMode) $('valOrder').textContent=randomMode.charAt(0).toUpperCase()+randomMode.slice(1); }
-  function syncHand(){ const a=document.querySelector('.limit-btn.active'); if(a) $('valHand').textContent=a.textContent.trim(); }
-  function syncSpark(){
-    /* mirror After Dark state + labels onto the quick-row proxies */
-    /* After Dark lives in the categories drawer only — nothing to mirror here. */
-  }
-  const mo=new MutationObserver(()=>{syncOrder();syncHand();syncSpark();});
-  mo.observe($('modeBar'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('toggles-wrap'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('limitBtns'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('afterDarkToggle'),{attributes:true,attributeFilter:['class']});
-  mo.observe($('spiceGlyphBtn'),{attributes:true,attributeFilter:['class']});
-  syncOrder();syncHand();syncSpark();
+  /* token labels are rendered from state by renderShell() — no self-observation */
+  renderShell();
   $('tokLine').classList.add('in');
 
   /* fullscreen mirror of the pick-3 toggle */
+  /* fullscreen Draw-three button forwards taps; its label + state come from renderShell() */
   const pp=$('partyPick');
-  if(pp){
-    pp.addEventListener('click',e=>{ e.stopPropagation(); $('pickToggle').click(); });
-    new MutationObserver(()=>{
-      pp.classList.toggle('on', $('pickToggle').classList.contains('on'));
-      pp.textContent = $('pickToggle').textContent;
-    }).observe($('pickToggle'),{attributes:true,childList:true,characterData:true,subtree:true,attributeFilter:['class']});
-  }
+  if(pp) pp.addEventListener('click',e=>{ e.stopPropagation(); $('pickToggle').click(); });
 
   /* ── fullscreen idle fade (concept B: resting state is only the card) ── */
   const party=$('partyOverlay'); let idleT=null, partyWasOpen=false;
