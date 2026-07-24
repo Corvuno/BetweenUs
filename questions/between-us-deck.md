@@ -6,7 +6,7 @@ Move 5 was the walk-on-autopilot card — a twin of Life 10 (day-on-autopilot). 
 Roots 8/10 were both childhood-self-protection cards ("to be safe you had to be..." / "learned to hide..."). Roots 10 → *"What did you spend hours doing as a kid that nobody made you do?"* — a different door into the same childhood, not survival.
 Playful 1 (irrational food rule) cut — didn't land → *"What's the most childish thing that still delights you?"*
 Text refresh folded in from the working draft: Warm 11 wording, Culture 1 base, Move 2 (heart pound), Past 10 (best story), World 2 (part of the world's state feels partly yours), Us: Friends 12 (what could this friendship use more of), Wish 6 (message you hope to receive).
-Open flag: the working draft had Warm 8 as "Point to something you're wearing that has a story," which duplicates Quick 12 — left Warm 8 as the texture card pending a decision.
+Duplicate resolved: the wearing-a-story card moves to Warm 8 (as the working draft intended) and Quick 12 — the old home of that card — becomes *"Which word do you always spell wrong?"*
 
 ## Patch v6.7 — Abyss jargon RESTORED (v6.6 de-jargoning reverted)
 Scene and vanilla restored to 3, 6, 7, 12. The de-jargoning diluted exactly what the category was built to reach. Since the deck is digital, the gatekeeping moves to a category tagline instead of being smuggled into every card.
@@ -76,7 +76,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 9. Walk me through your first minute home.
 10. What did you last save to watch or read later?
 11. Name the most useless thing you own.
-12. Point to something you're wearing that has a story.
+12. Which word do you always spell wrong?
 
 ## Colbert
 *[Fixed set — insert verbatim yourself. Slot reserved.]*
@@ -89,7 +89,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 5. Name something you enjoy far more than most people seem to.
 6. Which gift, out of all of them, hit the mark completely?
 7. Whose cooking do you miss?
-8. Which food do you eat for the texture alone?
+8. Point to something you're wearing that has a story.
 9. Which sound instantly settles you?
 10. Which piece of clothing do you reach for when nobody needs impressing?
 11. Ten minutes, no preparation — on what subject could you fill this time?
