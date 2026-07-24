@@ -1,5 +1,13 @@
 # Between Us — Full Deck v6
 
+## Patch v6.8 — feel-feedback pass
+Culture de-consumed: it was heavy on media and light on feeling. Culture 1 (book given away → *"Stand in front of one work of art again — which, and what does it do to you?"*) and Culture 10 (page/episode/track → *"When did a live performance — theatre, dance, a gig — get under your skin?"*) bring in visual art, theatre, dance, live performance — and put the felt encounter first.
+Move 5 was the walk-on-autopilot card — a twin of Life 10 (day-on-autopilot). Cut the second autopilot; Move gets real movement instead → *"When did you last move purely for the joy of it — no goal, no fitness?"*
+Roots 8/10 were both childhood-self-protection cards ("to be safe you had to be..." / "learned to hide..."). Roots 10 → *"What did you spend hours doing as a kid that nobody made you do?"* — a different door into the same childhood, not survival.
+Playful 1 (irrational food rule) cut — didn't land → *"What's the most childish thing that still delights you?"*
+Text refresh folded in from the working draft: Warm 11 wording, Culture 1 base, Move 2 (heart pound), Past 10 (best story), World 2 (part of the world's state feels partly yours), Us: Friends 12 (what could this friendship use more of), Wish 6 (message you hope to receive).
+Duplicate resolved: the wearing-a-story card moves to Warm 8 (as the working draft intended) and Quick 12 — the old home of that card — becomes *"Which word do you always spell wrong?"*
+
 ## Patch v6.7 — Abyss jargon RESTORED (v6.6 de-jargoning reverted)
 Scene and vanilla restored to 3, 6, 7, 12. The de-jargoning diluted exactly what the category was built to reach. Since the deck is digital, the gatekeeping moves to a category tagline instead of being smuggled into every card.
 
@@ -68,7 +76,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 9. Walk me through your first minute home.
 10. What did you last save to watch or read later?
 11. Name the most useless thing you own.
-12. Point to something you're wearing that has a story.
+12. Which word do you always spell wrong?
 
 ## Colbert
 *[Fixed set — insert verbatim yourself. Slot reserved.]*
@@ -81,14 +89,14 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 5. Name something you enjoy far more than most people seem to.
 6. Which gift, out of all of them, hit the mark completely?
 7. Whose cooking do you miss?
-8. Which food do you eat for the texture alone?
+8. Point to something you're wearing that has a story.
 9. Which sound instantly settles you?
 10. Which piece of clothing do you reach for when nobody needs impressing?
-11. Ten minutes, no preparation — on what?
+11. Ten minutes, no preparation — on what subject could you fill this time?
 12. Which stranger do you still remember fondly?
 
 ## Playful
-1. What's your most irrational food rule — and why is it correct?
+1. What's the most childish thing that still delights you?
 2. Name the pettiest grudge you're still maintaining.
 3. Die on a hill nobody else would even climb — which?
 4. You're suspiciously good at one completely ordinary thing...
@@ -102,7 +110,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. Quote the sentence people around you are most tired of hearing from you.
 
 ## Culture
-1. Which book have you given away more than once?
+1. Stand in front of one work of art again — which, and what does it do to you?
 2. Name something universally loved that leaves you completely cold.
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
@@ -111,16 +119,16 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 7. Is taste something you have or something you build?
 8. Name the thing you love that everyone else seems to have missed.
 9. Does great art excuse a terrible artist?
-10. Something kept you up past your bedtime. Page, episode, or track?
+10. When did a live performance — theatre, dance, a gig — get under your skin?
 11. Take us to the moment a story last made you cry.
 12. Name something you enjoy that doesn't fit your image.
 
 ## Move
 1. Your body can still do something that surprises people...
-2. Name the last thing that left you gasping.
+2. What's the last thing that made your heart pound?
 3. Do you take up space in a room, or fold into it?
 4. Which physical skill do you quietly miss from an earlier version of yourself?
-5. Which route do you walk on autopilot — and where does your mind go?
+5. When did you last move purely for the joy of it — no goal, no fitness?
 6. What happens to you when the music takes over?
 7. Describe the sport or training that has taught you the most about yourself.
 8. Tell about a moment in sport or dance when your body knew before your head did.
@@ -167,7 +175,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 7. Which feelings were allowed in your house — and which weren't?
 8. At home, to be safe, you had to be...
 9. What were you praised for as a child — and what did that train you to become?
-10. Before you were ten, you'd already learned to hide...
+10. What did you spend hours doing as a kid that nobody made you do?
 11. The moment you realised your normal wasn't — take us back.
 12. Who in your childhood should not have been given a child?
 
@@ -181,7 +189,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 7. What were you wrong about for years?
 8. Describe a failure you're only now able to talk about.
 9. Do people actually change, or just get better at managing themselves?
-10. Which scar — and the story that made it?
+10. Which scar still carries the best story?
 11. Which year of your life simply vanished?
 12. Would the twenty-year-old you approve of the current one — and does that matter?
 
@@ -341,7 +349,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## World
 1. This era will be judged for...
-2. Do you feel responsible for the state of the world?
+2. Which part of the world's state feels partly yours?
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
 5. Who has power over your life that you rarely think about?
@@ -449,7 +457,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 9. When were you proudest of me?
 10. When have I made you laugh hardest?
 11. If this friendship had a title, what would it be?
-12. Ask me, right now, for more of something.
+12. What could this friendship use more of?
 
 ## Us: Love
 1. Name the thing I give you that you'd miss most.
@@ -513,7 +521,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 3. If I were braver, I would already have...
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
-6. Compose, out loud, the message you secretly hope to receive one day. ✦
+6. The message you secretly hope to receive one day... ✦
 7. Which wish keeps returning, in new costumes?
 8. Is wanting more a flaw or an engine?
 9. A free year, no obligations — what finally gets done?
