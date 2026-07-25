@@ -1,5 +1,10 @@
 # Between Us — Full Deck v6
 
+## Patch v6.9 — Quick/Roots cleanup
+Quick 7 (last thing you said out loud to yourself) cut — no real answer, it stalls the table → *"What smell makes you instantly hungry?"* Quick 9 (first minute home) cut as a twin of Life 1 (first thirty minutes after waking, which is kept) → *"What nickname do you go by — and who gave it?"*
+Roots twin resolved: "what's strange about your family you only see now" and "the moment you realised your normal wasn't" said the same thing. Kept the scene-based one (Roots 11 — stylistically distinct from the rest of Roots); Roots 2 → *"Which of your parents' fears did you inherit?"* Roots 5 (did anyone let you win — a competition-thread card whose Roots fit was thin) → *"What did love look like in the house you grew up in?"* — both new cards are formative, and the second warms a dark category.
+Roots 12 softened: "who should not have been given a child" condemned the adult in absolutes → *"Which adult from your childhood were you never quite safe with?"* — keeps the door open to hard upbringings, centres the child's safety instead of a verdict.
+
 ## Patch v6.8 — feel-feedback pass
 Culture de-consumed: it was heavy on media and light on feeling. Culture 1 (book given away → *"Stand in front of one work of art again — which, and what does it do to you?"*) and Culture 10 (page/episode/track → *"When did a live performance — theatre, dance, a gig — get under your skin?"*) bring in visual art, theatre, dance, live performance — and put the felt encounter first.
 Move 5 was the walk-on-autopilot card — a twin of Life 10 (day-on-autopilot). Cut the second autopilot; Move gets real movement instead → *"When did you last move purely for the joy of it — no goal, no fitness?"*
@@ -71,9 +76,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 4. Your last completely unnecessary purchase?
 5. Which drawer in your house is the disgrace?
 6. You're always late for...
-7. What's the last thing you said out loud to yourself?
+7. What smell makes you instantly hungry?
 8. What's the strangest thing someone might find in your bag?
-9. Walk me through your first minute home.
+9. What nickname do you go by — and who gave it?
 10. What did you last save to watch or read later?
 11. Name the most useless thing you own.
 12. Which word do you always spell wrong?
@@ -167,17 +172,17 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Roots
 1. The emotional weather in the house you grew up in...
-2. What's strange about your family that you only see now?
+2. Which of your parents' fears did you inherit?
 3. Which object from childhood do you wish you still had?
 4. One smell puts you straight back into childhood...
-5. Did anyone ever let you win — and did you know?
+5. What did love look like in the house you grew up in?
 6. Look at a photo of young you — what looks back?
 7. Which feelings were allowed in your house — and which weren't?
 8. At home, to be safe, you had to be...
 9. What were you praised for as a child — and what did that train you to become?
 10. What did you spend hours doing as a kid that nobody made you do?
 11. The moment you realised your normal wasn't — take us back.
-12. Who in your childhood should not have been given a child?
+12. Which adult from your childhood were you never quite safe with?
 
 ## Past
 1. Which decision looked small at the time but turned out to be a hinge?
