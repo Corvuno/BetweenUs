@@ -354,7 +354,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## World
 1. This era will be judged for...
-2. Which part of the world's state feels partly yours?
+2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
 5. Who has power over your life that you rarely think about?
