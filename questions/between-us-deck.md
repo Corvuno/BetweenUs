@@ -1,5 +1,18 @@
 # Between Us — Full Deck v6
 
+## Patch v6.11 — category sweep, batch 1
+Owner sweep across Quick, Warm, Playful, Culture, Move, Life, Home, Roots, Past, Unwind — stronger, more felt cards replacing weaker ones.
+Quick: 2 back to "what song's stuck this week", 4 → greatest extravagance, 10 → state of mind in three words, 12 → "wish people asked instead of 'how are you'".
+Warm: 9 → last thing done purely for pleasure, 11 → "suspiciously specific amount about".
+Playful: 3 rephrased (die-on-a-hill), 4 → useless-in-a-crisis-great-at-a-party skill.
+Culture: 1 → art that stayed with you longer than it should, 10 → work of art that stopped you in your tracks, 12 → last thing that changed how you think.
+Move: 1 → body surprising you, 3 → when your body feels like it belongs to you (the take-up-space card is parked for Self), 6 → music reaching your body before your head, 8 → how your body feels doing something it's good at.
+Life: 2 → what would make your life feel more your own, 4 → ideal ordinary day (a Tuesday that felt right), 6 → something costly you'd do exactly the same again, 12 → if you stopped explaining why you can't.
+Home: 3 → object that survived the most versions of you, 5 → what home actually feels like.
+Roots: 3 → catching a parent's trait in yourself, 4 → "the day you finally understood something your parent did" (moved from Past 2), 10 → what you learned about love from your parents.
+Past: 2 → the choice that haunts because you'll never know, 6 → what you'd do differently and whether it'd matter, 7 → the version of yourself hardest to let go of.
+Unwind: 2 → what rest actually feels like.
+
 ## Patch v6.10 — dead-ends, command density, World sharpen
 Dead-ends fixed: Mind 4 (understand-but-can't-explain, self-defeating) → *"When has a gut feeling known more than you did?"*; Ground 4 (principle you never think about — premise blocks recall) → *"What rule do you live by that you've never said out loud?"*; Home 8 kept the kitchen window but dropped the "Describe" command → *"The view from your kitchen window — what could you look at every day and never tire of?"*
 Command-card density reduced: 16 flat "Name…/Describe…" cards softened into statement nudges (Warm 5, Playful 7, Culture 2/8/12, Life 5, Unwind 1/3/4/11, Mind 2, Spirit 11, Values 1, Friendship 6, Self 6, Shadow 3), varying the openers so they don't all become "You…". Strong physical/theatrical imperatives (Sing, Point to, Quote, Show me, Strip away, Take us to, Walk me through, Tell about a moment) deliberately kept.
@@ -76,17 +89,17 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Quick
 1. Coffee or tea order — exactly, no simplifying.
-2. Sing the song that's been stuck in your head.
+2. What song's been stuck in your head this week?
 3. Last thing you photographed?
-4. Your last completely unnecessary purchase?
+4. What's your greatest extravagance?
 5. Which drawer in your house is the disgrace?
 6. You're always late for...
 7. What smell makes you instantly hungry?
 8. What's the strangest thing someone might find in your bag?
 9. What nickname do you go by — and who gave it?
-10. What did you last save to watch or read later?
+10. What's your current state of mind — in three words?
 11. Name the most useless thing you own.
-12. Which word do you always spell wrong?
+12. Is there something you wish people asked you instead of 'how are you'?
 
 ## Colbert
 *[Fixed set — insert verbatim yourself. Slot reserved.]*
@@ -100,16 +113,16 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 6. Which gift, out of all of them, hit the mark completely?
 7. Whose cooking do you miss?
 8. Point to something you're wearing that has a story.
-9. Which sound instantly settles you?
+9. When did you last do something purely for pleasure, with no other reason?
 10. Which piece of clothing do you reach for when nobody needs impressing?
-11. Ten minutes, no preparation — on what subject could you fill this time?
+11. What do you know a suspiciously specific amount about?
 12. Which stranger do you still remember fondly?
 
 ## Playful
 1. What's the most childish thing that still delights you?
 2. Name the pettiest grudge you're still maintaining.
-3. Die on a hill nobody else would even climb — which?
-4. You're suspiciously good at one completely ordinary thing...
+3. What's a hill you'd die on that nobody else would even climb?
+4. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
 5. What makes you laugh when you're alone?
 6. What are you smug about?
 7. The thing you knowingly blow out of proportion...
@@ -120,7 +133,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. Quote the sentence people around you are most tired of hearing from you.
 
 ## Culture
-1. Stand in front of one work of art again — which, and what does it do to you?
+1. Is there a piece of art that has stayed with you longer than it should have?
 2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
@@ -129,19 +142,19 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 7. Is taste something you have or something you build?
 8. The one you love that everyone else seems to have missed...
 9. Does great art excuse a terrible artist?
-10. When did a live performance — theatre, dance, a gig — get under your skin?
+10. What's a work of art — painting, installation, performance — that stopped you in your tracks?
 11. Take us to the moment a story last made you cry.
-12. A love of yours that doesn't fit your image...
+12. What was the last thing you read, watched, or listened to that genuinely changed how you think?
 
 ## Move
-1. Your body can still do something that surprises people...
+1. When did your body surprise you with what it could do?
 2. What's the last thing that made your heart pound?
-3. Do you take up space in a room, or fold into it?
+3. When does your body feel like it belongs to you?
 4. Which physical skill do you quietly miss from an earlier version of yourself?
 5. When did you last move purely for the joy of it — no goal, no fitness?
-6. What happens to you when the music takes over?
+6. What music reaches your body before it reaches your head — and what happens?
 7. Describe the sport or training that has taught you the most about yourself.
-8. Tell about a moment in sport or dance when your body knew before your head did.
+8. What does your body feel like when it's doing something it's good at?
 9. Is pushing your body to its limit a form of pleasure or of discipline?
 10. Rhythm: do you have it, fake it, or refuse it?
 11. My body feels most alive when...
@@ -149,24 +162,24 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
-2. Every single day you do something you've never mentioned to anyone...
+2. What would have to change for your life to feel more like your own?
 3. Which chore do you secretly not mind?
-4. What does your actual Tuesday evening look like?
+4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
 5. One part of your life is exactly as you wanted it...
-6. If your week had one extra day, what would it honestly get spent on?
+6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. Is an ordinary life something to fear or to aim for?
 8. What are you putting off that you know you'll regret?
 9. Walk us through the last thing you did purely for the fun of it.
 10. How much of your day runs on autopilot, honestly?
 11. What can't you afford that you pretend not to want?
-12. Too much of one thing, too little of another — name them.
+12. If you stopped explaining why you can't, what would change about how you live?
 
 ## Home
 1. Who is allowed in your home unannounced?
 2. When did a place last stop feeling like home?
-3. You move somewhere new. First thing you set up?
+3. What object in your house has survived the most versions of you?
 4. Where in your home do you actually live — which chair, which corner?
-5. What makes a house start to feel like yours?
+5. What does home actually feel like when you have it — and how do you know?
 6. What has to be true of a space before you can relax in it?
 7. Which object in your home is irreplaceable — not in money, in meaning?
 8. The view from your kitchen window — what could you look at every day and never tire of?
@@ -178,25 +191,25 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ## Roots
 1. The emotional weather in the house you grew up in...
 2. Which of your parents' fears did you inherit?
-3. Which object from childhood do you wish you still had?
-4. One smell puts you straight back into childhood...
+3. Do you catch yourself repeating a trait of your parents — and how do you feel about it?
+4. The day you finally understood something your parent did...
 5. What did love look like in the house you grew up in?
 6. Look at a photo of young you — what looks back?
 7. Which feelings were allowed in your house — and which weren't?
 8. At home, to be safe, you had to be...
 9. What were you praised for as a child — and what did that train you to become?
-10. What did you spend hours doing as a kid that nobody made you do?
+10. What did you learn about love from watching your parents?
 11. The moment you realised your normal wasn't — take us back.
 12. Which adult from your childhood were you never quite safe with?
 
 ## Past
 1. Which decision looked small at the time but turned out to be a hinge?
-2. The day you finally understood something your parent did...
+2. What choice haunts you — not because it was wrong, but because you'll never know?
 3. Tell about a time you surprised yourself with what you could survive.
 4. You quit something. Was it the right call?
 5. Trace the moment money started meaning something different to you.
-6. Which conflict would you rerun with different choices?
-7. What were you wrong about for years?
+6. What would you do differently if you could go back — and do you actually think it would have changed anything?
+7. Which version of yourself was hardest to let go of?
 8. Describe a failure you're only now able to talk about.
 9. Do people actually change, or just get better at managing themselves?
 10. Which scar still carries the best story?
@@ -205,7 +218,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Unwind
 1. Your perfect day off — the real one, not the pretty one...
-2. How do you switch off — what's the ritual?
+2. What does rest actually feel like for you — do you know how to do it?
 3. Rest that actually works — not the kind that kills time...
 4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
