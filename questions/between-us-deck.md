@@ -146,7 +146,7 @@ The questions come first, category by category. The full change log is at the bo
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
-11. What survived every version of you?
+11. What do you need that money can't buy?
 12. Who is your ground — and do they know?
 
 ## Body
