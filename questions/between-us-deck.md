@@ -1,5 +1,11 @@
 # Between Us — Full Deck v6
 
+## Patch v6.12 — category sweep, batch 2
+Roots 5 → *"When did you first realise your parents were just people?"* — resolves the love-from-parents twin with Roots 10.
+Life 9 → *"What does getting older take from you that you didn't expect, and what does it give?"* — aging moves here from old Self 8.
+Unwind 3 → *"What would a truly wasted afternoon look like for you — and how often do you allow it?"*; Unwind 7 → *"What's something you do purely for pleasure that has absolutely no productive value?"* (flagged: overlaps Warm 9's pleasure card — differentiate on a later pass).
+Self 6 → *"When are you most lonely — and is anyone around when it happens?"*; Self 8 → *"Do you take up space in a room, or fold into it?"* (the parked Move card); Self 12 → *"Is there a noise in your head that you've learned to live with?"*
+
 ## Patch v6.11 — category sweep, batch 1
 Owner sweep across Quick, Warm, Playful, Culture, Move, Life, Home, Roots, Past, Unwind — stronger, more felt cards replacing weaker ones.
 Quick: 2 back to "what song's stuck this week", 4 → greatest extravagance, 10 → state of mind in three words, 12 → "wish people asked instead of 'how are you'".
@@ -169,7 +175,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. Is an ordinary life something to fear or to aim for?
 8. What are you putting off that you know you'll regret?
-9. Walk us through the last thing you did purely for the fun of it.
+9. What does getting older take from you that you didn't expect, and what does it give?
 10. How much of your day runs on autopilot, honestly?
 11. What can't you afford that you pretend not to want?
 12. If you stopped explaining why you can't, what would change about how you live?
@@ -193,7 +199,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 2. Which of your parents' fears did you inherit?
 3. Do you catch yourself repeating a trait of your parents — and how do you feel about it?
 4. The day you finally understood something your parent did...
-5. What did love look like in the house you grew up in?
+5. When did you first realise your parents were just people?
 6. Look at a photo of young you — what looks back?
 7. Which feelings were allowed in your house — and which weren't?
 8. At home, to be safe, you had to be...
@@ -219,11 +225,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ## Unwind
 1. Your perfect day off — the real one, not the pretty one...
 2. What does rest actually feel like for you — do you know how to do it?
-3. Rest that actually works — not the kind that kills time...
+3. What would a truly wasted afternoon look like for you — and how often do you allow it?
 4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
 6. There was a moment you felt completely free. Where were you?
-7. You rarely allow yourself something, though you could...
+7. What's something you do purely for pleasure that has absolutely no productive value?
 8. The most unexpected beauty a trip ever handed you...
 9. What does travel give you that home can't?
 10. A place you keep going back to — not because it's the best, but because it's yours...
@@ -236,13 +242,13 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 3. What do you pretend to be more relaxed about than you are?
 4. People routinely get one thing wrong about you...
 5. Which pattern of yours do you only notice once it's already running?
-6. The version of you that only exists in an empty house...
+6. When are you most lonely — and is anyone around when it happens?
 7. How much explaining do you find yourself doing — of your choices, your tone, yourself?
-8. Growing older is teaching me...
+8. Do you take up space in a room, or fold into it?
 9. Is there a core "you," or just a repertoire of situations?
 10. What did someone once point out about you that you now see everywhere?
 11. Which younger belief about yourself turned out flat wrong?
-12. What do you like about yourself that you'd never post?
+12. Is there a noise in your head that you've learned to live with?
 
 ## Body
 1. Point to where you carry your tension right now.
