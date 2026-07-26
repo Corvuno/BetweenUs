@@ -1,5 +1,10 @@
 # Between Us — Full Deck v6
 
+## Patch v6.10 — dead-ends, command density, World sharpen
+Dead-ends fixed: Mind 4 (understand-but-can't-explain, self-defeating) → *"When has a gut feeling known more than you did?"*; Ground 4 (principle you never think about — premise blocks recall) → *"What rule do you live by that you've never said out loud?"*; Home 8 kept the kitchen window but dropped the "Describe" command → *"The view from your kitchen window — what could you look at every day and never tire of?"*
+Command-card density reduced: 16 flat "Name…/Describe…" cards softened into statement nudges (Warm 5, Playful 7, Culture 2/8/12, Life 5, Unwind 1/3/4/11, Mind 2, Spirit 11, Values 1, Friendship 6, Self 6, Shadow 3), varying the openers so they don't all become "You…". Strong physical/theatrical imperatives (Sing, Point to, Quote, Show me, Strip away, Take us to, Walk me through, Tell about a moment) deliberately kept.
+World 1 sharpened, pulled from the classic deck: "This era will be judged for..." → *"What's something the next generation will judge this one harshly for?"*
+
 ## Patch v6.9 — Quick/Roots cleanup
 Quick 7 (last thing you said out loud to yourself) cut — no real answer, it stalls the table → *"What smell makes you instantly hungry?"* Quick 9 (first minute home) cut as a twin of Life 1 (first thirty minutes after waking, which is kept) → *"What nickname do you go by — and who gave it?"*
 Roots twin resolved: "what's strange about your family you only see now" and "the moment you realised your normal wasn't" said the same thing. Kept the scene-based one (Roots 11 — stylistically distinct from the rest of Roots); Roots 2 → *"Which of your parents' fears did you inherit?"* Roots 5 (did anyone let you win — a competition-thread card whose Roots fit was thin) → *"What did love look like in the house you grew up in?"* — both new cards are formative, and the second warms a dark category.
@@ -91,7 +96,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 2. One small thing can ruin your entire morning. Which?
 3. What do you quietly fix or straighten in other people's houses?
 4. Which season fits you best — and how does it show?
-5. Name something you enjoy far more than most people seem to.
+5. Something you enjoy far more than most people seem to...
 6. Which gift, out of all of them, hit the mark completely?
 7. Whose cooking do you miss?
 8. Point to something you're wearing that has a story.
@@ -107,7 +112,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 4. You're suspiciously good at one completely ordinary thing...
 5. What makes you laugh when you're alone?
 6. What are you smug about?
-7. Name something you blow out of proportion — knowingly.
+7. The thing you knowingly blow out of proportion...
 8. Which texture can you not stop touching?
 9. When did you last go gloriously too far — and was it worth it?
 10. What do you do to excess, unapologetically?
@@ -116,17 +121,17 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Culture
 1. Stand in front of one work of art again — which, and what does it do to you?
-2. Name something universally loved that leaves you completely cold.
+2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
 5. Which artist changed what you pay attention to?
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
-8. Name the thing you love that everyone else seems to have missed.
+8. The one you love that everyone else seems to have missed...
 9. Does great art excuse a terrible artist?
 10. When did a live performance — theatre, dance, a gig — get under your skin?
 11. Take us to the moment a story last made you cry.
-12. Name something you enjoy that doesn't fit your image.
+12. A love of yours that doesn't fit your image...
 
 ## Move
 1. Your body can still do something that surprises people...
@@ -147,7 +152,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 2. Every single day you do something you've never mentioned to anyone...
 3. Which chore do you secretly not mind?
 4. What does your actual Tuesday evening look like?
-5. Name the part of your life that is exactly as you wanted it.
+5. One part of your life is exactly as you wanted it...
 6. If your week had one extra day, what would it honestly get spent on?
 7. Is an ordinary life something to fear or to aim for?
 8. What are you putting off that you know you'll regret?
@@ -164,7 +169,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 5. What makes a house start to feel like yours?
 6. What has to be true of a space before you can relax in it?
 7. Which object in your home is irreplaceable — not in money, in meaning?
-8. Describe the view you'd most want from your kitchen window.
+8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
 10. Can you feel at home somewhere you don't belong?
 11. Which house from your life do you still walk through in dreams?
@@ -199,17 +204,17 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. Would the twenty-year-old you approve of the current one — and does that matter?
 
 ## Unwind
-1. Describe your perfect day off — the real one, not the pretty one.
+1. Your perfect day off — the real one, not the pretty one...
 2. How do you switch off — what's the ritual?
-3. Describe rest that actually works — not rest that kills time.
-4. Name the hour of the week that's entirely yours.
+3. Rest that actually works — not the kind that kills time...
+4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
 6. There was a moment you felt completely free. Where were you?
 7. You rarely allow yourself something, though you could...
 8. The most unexpected beauty a trip ever handed you...
 9. What does travel give you that home can't?
 10. A place you keep going back to — not because it's the best, but because it's yours...
-11. Name what you refuse to optimise.
+11. The one thing you refuse to optimise...
 12. What does the first warm day of the year do to you?
 
 ## Self
@@ -218,7 +223,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 3. What do you pretend to be more relaxed about than you are?
 4. People routinely get one thing wrong about you...
 5. Which pattern of yours do you only notice once it's already running?
-6. Describe the version of you that only exists in an empty house.
+6. The version of you that only exists in an empty house...
 7. How much explaining do you find yourself doing — of your choices, your tone, yourself?
 8. Growing older is teaching me...
 9. Is there a core "you," or just a repertoire of situations?
@@ -242,9 +247,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Mind
 1. What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?
-2. Name an idea you abandoned this year.
+2. An idea you abandoned this year...
 3. Which thought loop do you know is a loop and still can't exit?
-4. What do you understand intuitively but can't explain?
+4. When has a gut feeling known more than you did?
 5. When your mind wanders, where does it go by default?
 6. Which fear of yours can't survive logic — and survives anyway?
 7. What can't you unsee once you've spotted it?
@@ -265,7 +270,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 8. What do you believe that you cannot defend?
 9. Is meaning found or made?
 10. Which coincidence refuses to feel like coincidence?
-11. Name a place that is sacred to you.
+11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
 ## Make
@@ -302,7 +307,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 3. Which friendship ended without ever officially ending?
 4. Which friend gets the honest version of you — and which gets the polite one?
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
-6. Name the friend who deserves a better version of you.
+6. One friend deserves a better version of you...
 7. What do we actually owe our friends?
 8. What do your friends come to you for — and is it what you'd choose?
 9. What do you say about your friends when they're not there?
@@ -339,7 +344,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. Being desired does what to you?
 
 ## Values
-1. Name what you'd refuse to do, whatever it cost.
+1. There's something you'd refuse to do, whatever it cost...
 2. Which of your values survives worst under pressure?
 3. In arguments you defend something you find hard to justify...
 4. What line have you watched someone cross that told you everything?
@@ -353,7 +358,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. When did competition make you ugly — and did you ever cheat to win?
 
 ## World
-1. This era will be judged for...
+1. What's something the next generation will judge this one harshly for?
 2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
@@ -509,7 +514,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ## Shadow
 1. You lie most consistently about...
 2. Quote the cruelest thing you've ever actually said.
-3. Describe the version of you that comes out at your worst — honestly.
+3. The you that comes out at your worst — honestly...
 4. People believe your presentation. What do you get away with?
 5. You're unwilling to see something about yourself. Best guess.
 6. Tell about hurting someone without meaning to.
