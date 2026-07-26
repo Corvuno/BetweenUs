@@ -1,5 +1,9 @@
 # Between Us — Full Deck v6
 
+## Patch v6.13 — twin fix + Self sharpen
+Warm 9 → *"What's one thing you're better at than you thought you would be?"* — resolves the pleasure-for-its-own-sake twin with Unwind 7 (Unwind keeps that card).
+Self 12 → *"Can you actually receive care — or do you find a way to turn it into something you have to manage?"* (adjacent to Connect 2's asking-vs-accepting-help, but distinct: the deflection pattern, not the comparison).
+
 ## Patch v6.12 — category sweep, batch 2
 Roots 5 → *"When did you first realise your parents were just people?"* — resolves the love-from-parents twin with Roots 10.
 Life 9 → *"What does getting older take from you that you didn't expect, and what does it give?"* — aging moves here from old Self 8.
@@ -119,7 +123,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 6. Which gift, out of all of them, hit the mark completely?
 7. Whose cooking do you miss?
 8. Point to something you're wearing that has a story.
-9. When did you last do something purely for pleasure, with no other reason?
+9. What's one thing you're better at than you thought you would be?
 10. Which piece of clothing do you reach for when nobody needs impressing?
 11. What do you know a suspiciously specific amount about?
 12. Which stranger do you still remember fondly?
@@ -248,7 +252,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 9. Is there a core "you," or just a repertoire of situations?
 10. What did someone once point out about you that you now see everywhere?
 11. Which younger belief about yourself turned out flat wrong?
-12. Is there a noise in your head that you've learned to live with?
+12. Can you actually receive care — or do you find a way to turn it into something you have to manage?
 
 ## Body
 1. Point to where you carry your tension right now.
