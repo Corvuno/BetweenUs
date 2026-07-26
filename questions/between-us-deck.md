@@ -496,7 +496,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 1. Everything else is in motion. You return to...
 2. Lose everything tomorrow. What do you rebuild first?
 3. Which belief, if you lost it, would take you down with it?
-4. Which principle do you apply without ever thinking about it?
+4. What rule do you live by that you've never said out loud?
 5. There was a time you completely lost your footing. What held?
 6. What have you had to accept that you never chose?
 7. What do you need that money can't buy?
