@@ -1,104 +1,10 @@
 # Between Us — Full Deck v6
 
-## Patch v6.14 — fold: Move → Body
-Move and Body merged into one **Body** category (the body in motion, and as you live in it). Best 12 of the combined 24, balancing motion (surprise, ownership, joy-of-movement, music-before-head, pushing-to-limit) with the body as a site (tension, pain, skin-comfort, aging, food, denial). Card 7 made two-part for depth: *"Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful."* The `move` level is retired from the current deck (button, dropdown, presets, level-groups, description); classic-pool move cards are untouched (archived). Deck now 456 cards / 38 categories.
-
-## Patch v6.13 — twin fix + Self sharpen
-Warm 9 → *"What's one thing you're better at than you thought you would be?"* — resolves the pleasure-for-its-own-sake twin with Unwind 7 (Unwind keeps that card).
-Self 12 → *"Can you actually receive care — or do you find a way to turn it into something you have to manage?"* (adjacent to Connect 2's asking-vs-accepting-help, but distinct: the deflection pattern, not the comparison).
-
-## Patch v6.12 — category sweep, batch 2
-Roots 5 → *"When did you first realise your parents were just people?"* — resolves the love-from-parents twin with Roots 10.
-Life 9 → *"What does getting older take from you that you didn't expect, and what does it give?"* — aging moves here from old Self 8.
-Unwind 3 → *"What would a truly wasted afternoon look like for you — and how often do you allow it?"*; Unwind 7 → *"What's something you do purely for pleasure that has absolutely no productive value?"* (flagged: overlaps Warm 9's pleasure card — differentiate on a later pass).
-Self 6 → *"When are you most lonely — and is anyone around when it happens?"*; Self 8 → *"Do you take up space in a room, or fold into it?"* (the parked Move card); Self 12 → *"Is there a noise in your head that you've learned to live with?"*
-
-## Patch v6.11 — category sweep, batch 1
-Owner sweep across Quick, Warm, Playful, Culture, Move, Life, Home, Roots, Past, Unwind — stronger, more felt cards replacing weaker ones.
-Quick: 2 back to "what song's stuck this week", 4 → greatest extravagance, 10 → state of mind in three words, 12 → "wish people asked instead of 'how are you'".
-Warm: 9 → last thing done purely for pleasure, 11 → "suspiciously specific amount about".
-Playful: 3 rephrased (die-on-a-hill), 4 → useless-in-a-crisis-great-at-a-party skill.
-Culture: 1 → art that stayed with you longer than it should, 10 → work of art that stopped you in your tracks, 12 → last thing that changed how you think.
-Move: 1 → body surprising you, 3 → when your body feels like it belongs to you (the take-up-space card is parked for Self), 6 → music reaching your body before your head, 8 → how your body feels doing something it's good at.
-Life: 2 → what would make your life feel more your own, 4 → ideal ordinary day (a Tuesday that felt right), 6 → something costly you'd do exactly the same again, 12 → if you stopped explaining why you can't.
-Home: 3 → object that survived the most versions of you, 5 → what home actually feels like.
-Roots: 3 → catching a parent's trait in yourself, 4 → "the day you finally understood something your parent did" (moved from Past 2), 10 → what you learned about love from your parents.
-Past: 2 → the choice that haunts because you'll never know, 6 → what you'd do differently and whether it'd matter, 7 → the version of yourself hardest to let go of.
-Unwind: 2 → what rest actually feels like.
-
-## Patch v6.10 — dead-ends, command density, World sharpen
-Dead-ends fixed: Mind 4 (understand-but-can't-explain, self-defeating) → *"When has a gut feeling known more than you did?"*; Ground 4 (principle you never think about — premise blocks recall) → *"What rule do you live by that you've never said out loud?"*; Home 8 kept the kitchen window but dropped the "Describe" command → *"The view from your kitchen window — what could you look at every day and never tire of?"*
-Command-card density reduced: 16 flat "Name…/Describe…" cards softened into statement nudges (Warm 5, Playful 7, Culture 2/8/12, Life 5, Unwind 1/3/4/11, Mind 2, Spirit 11, Values 1, Friendship 6, Self 6, Shadow 3), varying the openers so they don't all become "You…". Strong physical/theatrical imperatives (Sing, Point to, Quote, Show me, Strip away, Take us to, Walk me through, Tell about a moment) deliberately kept.
-World 1 sharpened, pulled from the classic deck: "This era will be judged for..." → *"What's something the next generation will judge this one harshly for?"*
-
-## Patch v6.9 — Quick/Roots cleanup
-Quick 7 (last thing you said out loud to yourself) cut — no real answer, it stalls the table → *"What smell makes you instantly hungry?"* Quick 9 (first minute home) cut as a twin of Life 1 (first thirty minutes after waking, which is kept) → *"What nickname do you go by — and who gave it?"*
-Roots twin resolved: "what's strange about your family you only see now" and "the moment you realised your normal wasn't" said the same thing. Kept the scene-based one (Roots 11 — stylistically distinct from the rest of Roots); Roots 2 → *"Which of your parents' fears did you inherit?"* Roots 5 (did anyone let you win — a competition-thread card whose Roots fit was thin) → *"What did love look like in the house you grew up in?"* — both new cards are formative, and the second warms a dark category.
-Roots 12 softened: "who should not have been given a child" condemned the adult in absolutes → *"Which adult from your childhood were you never quite safe with?"* — keeps the door open to hard upbringings, centres the child's safety instead of a verdict.
-
-## Patch v6.8 — feel-feedback pass
-Culture de-consumed: it was heavy on media and light on feeling. Culture 1 (book given away → *"Stand in front of one work of art again — which, and what does it do to you?"*) and Culture 10 (page/episode/track → *"When did a live performance — theatre, dance, a gig — get under your skin?"*) bring in visual art, theatre, dance, live performance — and put the felt encounter first.
-Move 5 was the walk-on-autopilot card — a twin of Life 10 (day-on-autopilot). Cut the second autopilot; Move gets real movement instead → *"When did you last move purely for the joy of it — no goal, no fitness?"*
-Roots 8/10 were both childhood-self-protection cards ("to be safe you had to be..." / "learned to hide..."). Roots 10 → *"What did you spend hours doing as a kid that nobody made you do?"* — a different door into the same childhood, not survival.
-Playful 1 (irrational food rule) cut — didn't land → *"What's the most childish thing that still delights you?"*
-Text refresh folded in from the working draft: Warm 11 wording, Culture 1 base, Move 2 (heart pound), Past 10 (best story), World 2 (part of the world's state feels partly yours), Us: Friends 12 (what could this friendship use more of), Wish 6 (message you hope to receive).
-Duplicate resolved: the wearing-a-story card moves to Warm 8 (as the working draft intended) and Quick 12 — the old home of that card — becomes *"Which word do you always spell wrong?"*
-
-## Patch v6.7 — Abyss jargon RESTORED (v6.6 de-jargoning reverted)
-Scene and vanilla restored to 3, 6, 7, 12. The de-jargoning diluted exactly what the category was built to reach. Since the deck is digital, the gatekeeping moves to a category tagline instead of being smuggled into every card.
-
-## Patch v6.6
-Quick 8: emptying a bag is slow and physical → "What's the strangest thing someone might find in your bag?" (answerable from memory, hypothetically, in seconds).
-Spirit 8: prayer card cut — it locates the answer outside the person, in a deity they may not have → "What do you believe that you cannot defend?"
-Playful 6: guilty-pleasure card cut — obvious or contrived answers, no second layer → "What are you smug about?"
-Abyss self-declaring: cards 1, 5, 6, 9, 12 rewritten to carry their own context — scene, darkest rooms, extreme-vs-gentle, the drop after intensity. A player who doesn't know what "Abyss" means now learns it from the card, not from an intro.
-
-## Patch v6.5
-Quick 7: "which chair in this room" cut — assumed a seated indoor setting. The deck gets played in cars, on the street, in elevators; no card may assume furniture. → "What's the last thing you said out loud to yourself?"
-Think-vs-talk card: already removed in v6.2 (Mind 9 is now the competition card).
-
-## Patch v6.4
-Roots 7 broadened to all emotions: "Which feelings were allowed in your house — and which weren't?" This twinned with Roots 1 (emotional weather), so Roots 1 was cut and "Given the power, rewrite one thing in your upbringing" restored there — it was the stronger of the two and shouldn't have been the victim.
-Deep 4 → "Who do you miss who is still alive?" The never-told-anyone card is cut: it collided with Deep 1, which is the better card.
-
-## Patch v6.4
-Roots 7 → "Which feelings were allowed in your house — and which weren't?" — anger card broadened to all emotions. Its victim is the adults-argued card, which the emotions question absorbs. Rewrite-your-upbringing restored (Roots 3) — too good to sacrifice.
-Deep 4 → "Who do you miss who is still alive?" — the never-told-anyone card cut as a twin of Deep 1.
-
-## Patch v6.3 — gap-filling
-Money: Life 11 (can't afford / pretend not to want), Values 8 (would you tell this table what you earn — replaces marriage verdict).
-Alone: Ground 12 (good at being alone, or just used to it — replaces non-negotiable fragment). Connect 2 kept; empty-evening card dropped.
-Anger: Roots 7 (were you allowed to be angry — replaces rewrite-your-upbringing), Shadow 8 (has your anger ever frightened someone — replaces standing-battle).
-Roots 2 rewritten, not cut: "What's strange about your family that you only see now?" — present tense, not limited to rules.
-Food: Body 9 (actual relationship with food — replaces "is your body you, or yours").
-Being wrong: Values 11 (changed position mid-argument). Connect 9 rewritten to "Who did you forgive, without ever telling them?" — the apology-received card dropped in its favour.
-Aging: Family 7 (your parents are getting old — replaces the children-assuming legacy card), Past 11 (which year simply vanished — replaces "is regret useful").
-Small: Playful 5 (what makes you laugh when you're alone — removes the last tech reference in the deck), Deep 4 (never told anyone, not from shame).
-
-## Patch v6.2 — play/competition thread
-Eight cards added as a thread, not a block: Playful 11 (game you refuse to lose), Self 10 (are you a good loser), Roots 5 (did anyone let you win), Shadow 9 (do you cheat at games), Work 8 (competitor who made you better), Connect 10 (win alone or lose together), Values 12 (when competition made you ugly), Mind 9 (someone is simply better than you). Victims: fictional-character, know-yourself-meta, praised-as-a-child, cruelest-thought, first-week/after-a-year, closeness-abstract, rule-broken-cleanly, think-vs-talk. Skin 9: "half-covered" → "barely covered" (half sets a thought pattern; barely stays open).
-
-## Patch v6.1 — twin audit
-Fifteen cards replaced. Cut clusters: unspoken-desire (7 cards → 3: Edge 1, Kinks 7, Us: Intimate 1); Ground certainty (3 → 1, kept 11); Ground collapse (3 → 1, kept 6); Grief unresolved-loss (3 → 1, kept 1). True twins resolved: Culture 2/8, Life 8/9, Flesh 8/9, Kinks 2/6. Skin 9 → lingerie variant.
-New ground opened by the replacements: shame in sex, watching/being watched, half-covered bodies, tempo as bodily default, inherited grief, who you became after a death, unbroken promises, rebuilding from zero, underrated love, doing something purely for fun.
-
-Changes from v4: Abyss safeword card · Desire category added (✦) · Ground rebuilt to Shadow-caliber · Us-categories de-Wh'd · Unwind de-depleted · all point fixes. Change log at bottom.
-
 ✦ = spicy, non-gated · 🔞 = After Dark
 
+The questions come first, category by category. The full change log is at the bottom.
+
 ---
-
-
-## ARCHIVE — retired category names
-*Not in play. Kept for the app in case a name is ever needed again.*
-- **Pillow** — "Sex, thought about out loud" (reflective/analytical sex cards)
-- **Flesh** — "The body in desire"
-- **Blunt** — "Direct to a fault — the questions your friends ask three drinks in" (renamed to Bare)
-- **Desire** — "Wanting, and being wanted"
-- **Lens** — "How you perceive — what you notice, what you miss"
-
-## NOTE — decks living in the app, not in this file
-Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
 ## Quick
 1. Coffee or tea order — exactly, no simplifying.
@@ -232,16 +138,16 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ## Self
 1. Two traits of yours that seem to work against each other...
 2. Which compliment do you deflect because part of you suspects it's true?
-3. What do you pretend to be more relaxed about than you are?
-4. People routinely get one thing wrong about you...
-5. Which pattern of yours do you only notice once it's already running?
-6. When are you most lonely — and is anyone around when it happens?
-7. How much explaining do you find yourself doing — of your choices, your tone, yourself?
-8. Do you take up space in a room, or fold into it?
-9. Is there a core "you," or just a repertoire of situations?
-10. What did someone once point out about you that you now see everywhere?
-11. Which younger belief about yourself turned out flat wrong?
-12. Can you actually receive care — or do you find a way to turn it into something you have to manage?
+3. When are you most lonely — and is anyone around when it happens?
+4. What did someone once point out about you that you now see everywhere?
+5. How much explaining do you find yourself doing — of your choices, your tone, yourself?
+6. Do you take up space in a room, or fold into it?
+7. Which younger belief about yourself turned out flat wrong?
+8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
+9. What have you had to accept that you never chose?
+10. Strip away the job, the roles, the routines — what's left standing?
+11. What survived every version of you?
+12. Who is your ground — and do they know?
 
 ## Body
 1. When did your body surprise you with what it could do?
@@ -509,20 +415,6 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 11. Who would you sleep with outside this relationship — if you were allowed?
 12. Ask me the intimate question you've been saving.
 
-## Ground *(rebuilt to Shadow-caliber)*
-1. Everything else is in motion. You return to...
-2. Lose everything tomorrow. What do you rebuild first?
-3. Which belief, if you lost it, would take you down with it?
-4. What rule do you live by that you've never said out loud?
-5. There was a time you completely lost your footing. What held?
-6. What have you had to accept that you never chose?
-7. What do you need that money can't buy?
-8. Strip away the job, the roles, the routines — what's left standing?
-9. A promise to yourself you've never broken — quote it.
-10. Who is your ground — and do they know?
-11. What survived every version of you?
-12. Are you good at being alone — or just used to it?
-
 ## Shadow
 1. You lie most consistently about...
 2. Quote the cruelest thing you've ever actually said.
@@ -638,8 +530,110 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ---
 
-## Patch v5.1
-Desire 4 → "Would you rather be desired or understood?" Giving/receiving pleasure moved to Carnal 5. Carnal 9: orgasm-as-job (Leuterspel K10) cut for crude framing — "discovered embarrassingly late" restored in its place; its performance-pressure territory partly covered by Carnal 3 anyway. Friendship 8 restored to friends-version. Abyss 10: "spoken" → "used".
+---
+
+## ARCHIVE — retired category names
+*Not in play. Kept for the app in case a name is ever needed again.*
+- **Pillow** — "Sex, thought about out loud" (reflective/analytical sex cards)
+- **Flesh** — "The body in desire"
+- **Blunt** — "Direct to a fault — the questions your friends ask three drinks in" (renamed to Bare)
+- **Desire** — "Wanting, and being wanted"
+- **Lens** — "How you perceive — what you notice, what you miss"
+
+## NOTE — decks living in the app, not in this file
+Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
+
+---
+
+# Change log
+
+## Patch v6.15 — fold: Ground → Self · classic deck removed
+Ground folded into **Self** (who you are, and what holds you up); best 12 of the combined 24. Card 8 made two-part: *"There was a time you completely lost your footing. What held — and what did you rebuild first after?"* (absorbs Ground's rebuild-first card). Kept Self's self-perception spine plus Ground's bedrock/crisis cards; the `ground` level is retired from the UI.
+Classic deck removed from the app: `CLASSIC_CARDS` deleted from all three builds (archived to `between-us-classic-archive.md`), the 18 Colbert cards preserved in their own `COLBERT_CARDS`, and the `CLASSIC_DECK` toggle removed. Deck now 444 cards / 37 categories.
+
+## Patch v6.14 — fold: Move → Body
+Move and Body merged into one **Body** category (the body in motion, and as you live in it). Best 12 of the combined 24, balancing motion (surprise, ownership, joy-of-movement, music-before-head, pushing-to-limit) with the body as a site (tension, pain, skin-comfort, aging, food, denial). Card 7 made two-part for depth: *"Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful."* The `move` level is retired from the current deck (button, dropdown, presets, level-groups, description); classic-pool move cards are untouched (archived). Deck now 456 cards / 38 categories.
+
+## Patch v6.13 — twin fix + Self sharpen
+Warm 9 → *"What's one thing you're better at than you thought you would be?"* — resolves the pleasure-for-its-own-sake twin with Unwind 7 (Unwind keeps that card).
+Self 12 → *"Can you actually receive care — or do you find a way to turn it into something you have to manage?"* (adjacent to Connect 2's asking-vs-accepting-help, but distinct: the deflection pattern, not the comparison).
+
+## Patch v6.12 — category sweep, batch 2
+Roots 5 → *"When did you first realise your parents were just people?"* — resolves the love-from-parents twin with Roots 10.
+Life 9 → *"What does getting older take from you that you didn't expect, and what does it give?"* — aging moves here from old Self 8.
+Unwind 3 → *"What would a truly wasted afternoon look like for you — and how often do you allow it?"*; Unwind 7 → *"What's something you do purely for pleasure that has absolutely no productive value?"* (flagged: overlaps Warm 9's pleasure card — differentiate on a later pass).
+Self 6 → *"When are you most lonely — and is anyone around when it happens?"*; Self 8 → *"Do you take up space in a room, or fold into it?"* (the parked Move card); Self 12 → *"Is there a noise in your head that you've learned to live with?"*
+
+## Patch v6.11 — category sweep, batch 1
+Owner sweep across Quick, Warm, Playful, Culture, Move, Life, Home, Roots, Past, Unwind — stronger, more felt cards replacing weaker ones.
+Quick: 2 back to "what song's stuck this week", 4 → greatest extravagance, 10 → state of mind in three words, 12 → "wish people asked instead of 'how are you'".
+Warm: 9 → last thing done purely for pleasure, 11 → "suspiciously specific amount about".
+Playful: 3 rephrased (die-on-a-hill), 4 → useless-in-a-crisis-great-at-a-party skill.
+Culture: 1 → art that stayed with you longer than it should, 10 → work of art that stopped you in your tracks, 12 → last thing that changed how you think.
+Move: 1 → body surprising you, 3 → when your body feels like it belongs to you (the take-up-space card is parked for Self), 6 → music reaching your body before your head, 8 → how your body feels doing something it's good at.
+Life: 2 → what would make your life feel more your own, 4 → ideal ordinary day (a Tuesday that felt right), 6 → something costly you'd do exactly the same again, 12 → if you stopped explaining why you can't.
+Home: 3 → object that survived the most versions of you, 5 → what home actually feels like.
+Roots: 3 → catching a parent's trait in yourself, 4 → "the day you finally understood something your parent did" (moved from Past 2), 10 → what you learned about love from your parents.
+Past: 2 → the choice that haunts because you'll never know, 6 → what you'd do differently and whether it'd matter, 7 → the version of yourself hardest to let go of.
+Unwind: 2 → what rest actually feels like.
+
+## Patch v6.10 — dead-ends, command density, World sharpen
+Dead-ends fixed: Mind 4 (understand-but-can't-explain, self-defeating) → *"When has a gut feeling known more than you did?"*; Ground 4 (principle you never think about — premise blocks recall) → *"What rule do you live by that you've never said out loud?"*; Home 8 kept the kitchen window but dropped the "Describe" command → *"The view from your kitchen window — what could you look at every day and never tire of?"*
+Command-card density reduced: 16 flat "Name…/Describe…" cards softened into statement nudges (Warm 5, Playful 7, Culture 2/8/12, Life 5, Unwind 1/3/4/11, Mind 2, Spirit 11, Values 1, Friendship 6, Self 6, Shadow 3), varying the openers so they don't all become "You…". Strong physical/theatrical imperatives (Sing, Point to, Quote, Show me, Strip away, Take us to, Walk me through, Tell about a moment) deliberately kept.
+World 1 sharpened, pulled from the classic deck: "This era will be judged for..." → *"What's something the next generation will judge this one harshly for?"*
+
+## Patch v6.9 — Quick/Roots cleanup
+Quick 7 (last thing you said out loud to yourself) cut — no real answer, it stalls the table → *"What smell makes you instantly hungry?"* Quick 9 (first minute home) cut as a twin of Life 1 (first thirty minutes after waking, which is kept) → *"What nickname do you go by — and who gave it?"*
+Roots twin resolved: "what's strange about your family you only see now" and "the moment you realised your normal wasn't" said the same thing. Kept the scene-based one (Roots 11 — stylistically distinct from the rest of Roots); Roots 2 → *"Which of your parents' fears did you inherit?"* Roots 5 (did anyone let you win — a competition-thread card whose Roots fit was thin) → *"What did love look like in the house you grew up in?"* — both new cards are formative, and the second warms a dark category.
+Roots 12 softened: "who should not have been given a child" condemned the adult in absolutes → *"Which adult from your childhood were you never quite safe with?"* — keeps the door open to hard upbringings, centres the child's safety instead of a verdict.
+
+## Patch v6.8 — feel-feedback pass
+Culture de-consumed: it was heavy on media and light on feeling. Culture 1 (book given away → *"Stand in front of one work of art again — which, and what does it do to you?"*) and Culture 10 (page/episode/track → *"When did a live performance — theatre, dance, a gig — get under your skin?"*) bring in visual art, theatre, dance, live performance — and put the felt encounter first.
+Move 5 was the walk-on-autopilot card — a twin of Life 10 (day-on-autopilot). Cut the second autopilot; Move gets real movement instead → *"When did you last move purely for the joy of it — no goal, no fitness?"*
+Roots 8/10 were both childhood-self-protection cards ("to be safe you had to be..." / "learned to hide..."). Roots 10 → *"What did you spend hours doing as a kid that nobody made you do?"* — a different door into the same childhood, not survival.
+Playful 1 (irrational food rule) cut — didn't land → *"What's the most childish thing that still delights you?"*
+Text refresh folded in from the working draft: Warm 11 wording, Culture 1 base, Move 2 (heart pound), Past 10 (best story), World 2 (part of the world's state feels partly yours), Us: Friends 12 (what could this friendship use more of), Wish 6 (message you hope to receive).
+Duplicate resolved: the wearing-a-story card moves to Warm 8 (as the working draft intended) and Quick 12 — the old home of that card — becomes *"Which word do you always spell wrong?"*
+
+## Patch v6.7 — Abyss jargon RESTORED (v6.6 de-jargoning reverted)
+Scene and vanilla restored to 3, 6, 7, 12. The de-jargoning diluted exactly what the category was built to reach. Since the deck is digital, the gatekeeping moves to a category tagline instead of being smuggled into every card.
+
+## Patch v6.6
+Quick 8: emptying a bag is slow and physical → "What's the strangest thing someone might find in your bag?" (answerable from memory, hypothetically, in seconds).
+Spirit 8: prayer card cut — it locates the answer outside the person, in a deity they may not have → "What do you believe that you cannot defend?"
+Playful 6: guilty-pleasure card cut — obvious or contrived answers, no second layer → "What are you smug about?"
+Abyss self-declaring: cards 1, 5, 6, 9, 12 rewritten to carry their own context — scene, darkest rooms, extreme-vs-gentle, the drop after intensity. A player who doesn't know what "Abyss" means now learns it from the card, not from an intro.
+
+## Patch v6.5
+Quick 7: "which chair in this room" cut — assumed a seated indoor setting. The deck gets played in cars, on the street, in elevators; no card may assume furniture. → "What's the last thing you said out loud to yourself?"
+Think-vs-talk card: already removed in v6.2 (Mind 9 is now the competition card).
+
+## Patch v6.4
+Roots 7 broadened to all emotions: "Which feelings were allowed in your house — and which weren't?" This twinned with Roots 1 (emotional weather), so Roots 1 was cut and "Given the power, rewrite one thing in your upbringing" restored there — it was the stronger of the two and shouldn't have been the victim.
+Deep 4 → "Who do you miss who is still alive?" The never-told-anyone card is cut: it collided with Deep 1, which is the better card.
+
+## Patch v6.3 — gap-filling
+Money: Life 11 (can't afford / pretend not to want), Values 8 (would you tell this table what you earn — replaces marriage verdict).
+Alone: Ground 12 (good at being alone, or just used to it — replaces non-negotiable fragment). Connect 2 kept; empty-evening card dropped.
+Anger: Roots 7 (were you allowed to be angry — replaces rewrite-your-upbringing), Shadow 8 (has your anger ever frightened someone — replaces standing-battle).
+Roots 2 rewritten, not cut: "What's strange about your family that you only see now?" — present tense, not limited to rules.
+Food: Body 9 (actual relationship with food — replaces "is your body you, or yours").
+Being wrong: Values 11 (changed position mid-argument). Connect 9 rewritten to "Who did you forgive, without ever telling them?" — the apology-received card dropped in its favour.
+Aging: Family 7 (your parents are getting old — replaces the children-assuming legacy card), Past 11 (which year simply vanished — replaces "is regret useful").
+Small: Playful 5 (what makes you laugh when you're alone — removes the last tech reference in the deck), Deep 4 (never told anyone, not from shame).
+
+## Patch v6.2 — play/competition thread
+Eight cards added as a thread, not a block: Playful 11 (game you refuse to lose), Self 10 (are you a good loser), Roots 5 (did anyone let you win), Shadow 9 (do you cheat at games), Work 8 (competitor who made you better), Connect 10 (win alone or lose together), Values 12 (when competition made you ugly), Mind 9 (someone is simply better than you). Victims: fictional-character, know-yourself-meta, praised-as-a-child, cruelest-thought, first-week/after-a-year, closeness-abstract, rule-broken-cleanly, think-vs-talk. Skin 9: "half-covered" → "barely covered" (half sets a thought pattern; barely stays open).
+
+## Patch v6.1 — twin audit
+Fifteen cards replaced. Cut clusters: unspoken-desire (7 cards → 3: Edge 1, Kinks 7, Us: Intimate 1); Ground certainty (3 → 1, kept 11); Ground collapse (3 → 1, kept 6); Grief unresolved-loss (3 → 1, kept 1). True twins resolved: Culture 2/8, Life 8/9, Flesh 8/9, Kinks 2/6. Skin 9 → lingerie variant.
+New ground opened by the replacements: shame in sex, watching/being watched, half-covered bodies, tempo as bodily default, inherited grief, who you became after a death, unbroken promises, rebuilding from zero, underrated love, doing something purely for fun.
+
+Changes from v4: Abyss safeword card · Desire category added (✦) · Ground rebuilt to Shadow-caliber · Us-categories de-Wh'd · Unwind de-depleted · all point fixes. Change log at bottom.
+
+✦ = spicy, non-gated · 🔞 = After Dark
+
+---
 
 ## Patch v6.0 — opening-variation pass (US-086 compliance)
 Before: What/What's = 196 cards (40%), Which = 72 (15%) → 55% of the deck on two constructions, over the US-086 ceiling.
@@ -680,6 +674,9 @@ New category **Blunt 🔞** — the direct-to-a-fault Leuterspel register isolat
 
 ## Patch v5.2
 Edge 8 broadened: sent/received first, then travelled-further-than-intended. Edge 9 (Leuterspel H5, consent-uncertainty) cut — overlapped H6 at Edge 11; beautiful-place moved into its slot from Carnal. Carnal 4 → responsibility-for-partner's-pleasure (reframed K10, back in). Skin 9 → "What's the most intimate part of sharing a bed that isn't sex?"
+
+## Patch v5.1
+Desire 4 → "Would you rather be desired or understood?" Giving/receiving pleasure moved to Carnal 5. Carnal 9: orgasm-as-job (Leuterspel K10) cut for crude framing — "discovered embarrassingly late" restored in its place; its performance-pressure territory partly covered by Carnal 3 anyway. Friendship 8 restored to friends-version. Abyss 10: "spoken" → "used".
 
 ## Change log v4 → v5
 Abyss: 10 → safeword story (spoken, or should-have-been; covers you and others). Home: 9 simplified to "Your home tells people something about you. What?" Skin: 5 restored to best-non-sexual-touch (your call — agreed it's Skin). Edge: 3 specified "sexually"; 4 trimmed. Desire ✦: new category — includes lust↔wellbeing (5) and giving/receiving (4). Culture: 12 → what you enjoy that doesn't fit your image. Unwind: 1, 2 rebuilt away from depletion (kept 3, 5). World: 12 → ask-the-world-one-question (Magical register). Work: 9 → talent-never-profession (replaced compliment-replay). Grief: 12 → "loss I saw coming..." (12 and 3 both led to a dead loved one — 3 keeps that story). Death-closeness lives in Spirit 6, not Grief — deliberate: Grief is about loss of others, Spirit about your own mortality. Us: Friends: 4 → what-friendship-survived (overdue-conversation stays exclusive to Between Us); 12 → "Ask me, right now, for more of something." Us: Love + Us: Intimate: de-Wh'd (~half now imperatives/statements). Us: Intimate 9 → "Teach me something about your body I should already know." Lens: 7 → online-vs-room behaviour counterpart. Ground: rebuilt — 2, 3, 5, 8, 9 replaced with Shadow-caliber depth. Wish: 9 → free-year question. Friendship: 8 broadened to "people" (your sought-out question — it already existed in friend-form; now generalized).
