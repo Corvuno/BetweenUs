@@ -1,5 +1,8 @@
 # Between Us — Full Deck v6
 
+## Patch v6.14 — fold: Move → Body
+Move and Body merged into one **Body** category (the body in motion, and as you live in it). Best 12 of the combined 24, balancing motion (surprise, ownership, joy-of-movement, music-before-head, pushing-to-limit) with the body as a site (tension, pain, skin-comfort, aging, food, denial). Card 7 made two-part for depth: *"Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful."* The `move` level is retired from the current deck (button, dropdown, presets, level-groups, description); classic-pool move cards are untouched (archived). Deck now 456 cards / 38 categories.
+
 ## Patch v6.13 — twin fix + Self sharpen
 Warm 9 → *"What's one thing you're better at than you thought you would be?"* — resolves the pleasure-for-its-own-sake twin with Unwind 7 (Unwind keeps that card).
 Self 12 → *"Can you actually receive care — or do you find a way to turn it into something you have to manage?"* (adjacent to Connect 2's asking-vs-accepting-help, but distinct: the deflection pattern, not the comparison).
@@ -156,20 +159,6 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 11. Take us to the moment a story last made you cry.
 12. What was the last thing you read, watched, or listened to that genuinely changed how you think?
 
-## Move
-1. When did your body surprise you with what it could do?
-2. What's the last thing that made your heart pound?
-3. When does your body feel like it belongs to you?
-4. Which physical skill do you quietly miss from an earlier version of yourself?
-5. When did you last move purely for the joy of it — no goal, no fitness?
-6. What music reaches your body before it reaches your head — and what happens?
-7. Describe the sport or training that has taught you the most about yourself.
-8. What does your body feel like when it's doing something it's good at?
-9. Is pushing your body to its limit a form of pleasure or of discipline?
-10. Rhythm: do you have it, fake it, or refuse it?
-11. My body feels most alive when...
-12. What do you love feeling under your bare feet?
-
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
 2. What would have to change for your life to feel more like your own?
@@ -255,18 +244,18 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. Can you actually receive care — or do you find a way to turn it into something you have to manage?
 
 ## Body
-1. Point to where you carry your tension right now.
-2. When do you trust your body more than your mind?
-3. Pain taught you something comfort never could...
-4. What does your body know how to do that you never taught it?
-5. When did you last feel completely at home in your own skin?
-6. Which part of your body draws your own critical eye first?
-7. Point to the part of your body you would defend as beautiful.
-8. How does aging announce itself to you — and what do you do with it?
-9. What's your actual relationship with food?
-10. Your body asks for something you routinely deny it...
-11. Which injury or illness does your body still remember?
-12. My body and I are currently...
+1. When did your body surprise you with what it could do?
+2. When does your body feel like it belongs to you?
+3. When did you last move purely for the joy of it — no goal, no fitness?
+4. What music reaches your body before it reaches your head — and what happens?
+5. Point to where you carry your tension right now.
+6. Pain taught you something comfort never could...
+7. Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.
+8. When did you last feel completely at home in your own skin?
+9. How does aging announce itself to you — and what do you do with it?
+10. What's your actual relationship with food?
+11. Your body asks for something you routinely deny it...
+12. Is pushing your body to its limit a form of pleasure or of discipline?
 
 ## Mind
 1. What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?

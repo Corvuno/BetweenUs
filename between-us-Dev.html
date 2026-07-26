@@ -871,7 +871,6 @@ body::before{
         <button class="toggle-btn" data-level="play">Playful</button>
         <div class="band-lbl">Days &amp; world</div>
         <button class="toggle-btn" data-level="culture">Culture</button>
-        <button class="toggle-btn" data-level="move">Move</button>
         <button class="toggle-btn" data-level="life">Life</button>
         <button class="toggle-btn" data-level="home">Home</button>
         <button class="toggle-btn" data-level="work">Work</button>
@@ -1063,7 +1062,6 @@ body::before{
       <option value="warm">Warm</option>
       <option value="play">Playful</option>
       <option value="culture">Culture</option>
-      <option value="move">Move</option>
       <option value="unwind">Unwind</option>
       <option value="life">Life</option>
       <option value="home">Home</option>
@@ -2066,18 +2064,6 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "What was the last thing you read, watched, or listened to that genuinely changed how you think?", nl: "Wat was het laatste dat je las, zag of hoorde dat je echt anders liet denken?" },
 
   // ─── MOVE ───
-  { level: "move", question: "When did your body surprise you with what it could do?", nl: "Wanneer verraste je lichaam je met wat het kon?" },
-  { level: "move", question: "What's the last thing that made your heart pound?", nl: "Wat is het laatste dat je hart liet bonzen?" },
-  { level: "move", question: "When does your body feel like it belongs to you?", nl: "Wanneer voelt je lichaam echt van jou?" },
-  { level: "move", question: "Which physical skill do you quietly miss from an earlier version of yourself?", nl: "Welke beweging mis je van een eerdere versie van jezelf?" },
-  { level: "move", question: "When did you last move purely for the joy of it — no goal, no fitness?", nl: "Wanneer bewoog je voor het laatst puur voor het plezier — geen doel, geen work-out?" },
-  { level: "move", question: "What music reaches your body before it reaches your head — and what happens?", nl: "Welke muziek bereikt je lichaam eerder dan je hoofd — en wat gebeurt er dan?" },
-  { level: "move", question: "Describe the sport or training that has taught you the most about yourself.", nl: "Welke sport heeft je het meest over jezelf geleerd?" },
-  { level: "move", question: "What does your body feel like when it's doing something it's good at?", nl: "Hoe voelt je lichaam als het iets doet waar het goed in is?" },
-  { level: "move", question: "Is pushing your body to its limit a form of pleasure or of discipline?", nl: "Hoe ver ga jij graag als je jezelf lichamelijk uitdaagt?" },
-  { level: "move", question: "Rhythm: do you have it, fake it, or refuse it?", nl: "Zodra er gedanst wordt, ben jij degene die..." },
-  { level: "move", question: "My body feels most alive when...", nl: "Mijn lichaam voelt zich het meest levend wanneer..." },
-  { level: "move", question: "What do you love feeling under your bare feet?" },
 
   // ─── LIFE ───
   { level: "life", question: "Walk me through your first thirty minutes after waking — the real version.", nl: "Je ochtend begint meestal met..." },
@@ -2164,18 +2150,18 @@ const NEWDECK_CARDS = [
   { level: "self", question: "Can you actually receive care — or do you find a way to turn it into something you have to manage?", nl: "Kun je zorg echt ontvangen — of maak je er altijd iets van dat je moet managen?" },
 
   // ─── BODY ───
+  { level: "body", question: "When did your body surprise you with what it could do?", nl: "Wanneer verraste je lichaam je met wat het kon?" },
+  { level: "body", question: "When does your body feel like it belongs to you?", nl: "Wanneer voelt je lichaam alsof het van jou is?" },
+  { level: "body", question: "When did you last move purely for the joy of it — no goal, no fitness?", nl: "Wanneer bewoog je voor het laatst puur voor het plezier — geen doel, geen work-out?" },
+  { level: "body", question: "What music reaches your body before it reaches your head — and what happens?", nl: "Welke muziek bereikt je lichaam eerder dan je hoofd — en wat gebeurt er dan?" },
   { level: "body", question: "Point to where you carry your tension right now." },
-  { level: "body", question: "When do you trust your body more than your mind?", nl: "Wanneer luister je eerder naar je lichaam dan naar je hoofd?" },
   { level: "body", question: "Pain taught you something comfort never could...", nl: "Pijn heeft jou iets geleerd wat comfort nooit kon." },
-  { level: "body", question: "What does your body know how to do that you never taught it?", nl: "Iets wat jouw lichaam kan zonder dat je ooit hebt geoefend..." },
+  { level: "body", question: "Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.", nl: "Wijs de plek op je lichaam aan waar je de moeizaamste relatie mee hebt — en dan de plek die je als mooi zou verdedigen." },
   { level: "body", question: "When did you last feel completely at home in your own skin?", nl: "Wanneer zat je voor het laatst echt lekker in je vel?" },
-  { level: "body", question: "Which part of your body draws your own critical eye first?", nl: "Waar ben je het strengst op als je in de spiegel kijkt?" },
-  { level: "body", question: "Point to the part of your body you would defend as beautiful.", nl: "Een deel van je lichaam waar je milder over bent dan vroeger..." },
   { level: "body", question: "How does aging announce itself to you — and what do you do with it?", nl: "Ouder worden merk je het eerst aan..." },
   { level: "body", question: "What's your actual relationship with food?", nl: "Eten en jij..." },
   { level: "body", question: "Your body asks for something you routinely deny it...", nl: "Je lichaam vraagt regelmatig om iets waar je niet naar luistert." },
-  { level: "body", question: "Which injury or illness does your body still remember?", nl: "Iets waar je lichaam je nog steeds aan herinnert..." },
-  { level: "body", question: "My body and I are currently...", nl: "De relatie tussen jou en je lichaam is momenteel..." },
+  { level: "body", question: "Is pushing your body to its limit a form of pleasure or of discipline?", nl: "Hoe ver ga jij graag als je jezelf lichamelijk uitdaagt?" },
 
   // ─── MIND ───
   { level: "mind", question: "What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?", nl: "Drie uur 's nachts. Je hoofd begint weer over..." },
@@ -2638,12 +2624,12 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","play","connect","deep","self","culture","life","values","wish","move","home","roots","past","unwind","body","mind","spirit","make","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","ground","shadow","blunt"],
+    on:        ["warm","quick","play","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","make","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","ground","shadow","blunt"],
     available: ["colbert","aron","magic","edge","skin","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","play","culture","move","unwind","world"],
+    on:        ["warm","quick","play","culture","unwind","world"],
     available: ["connect","self","life","mind","wish","attract","spirit","make","body","edge","skin","aron","magic"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
@@ -2674,7 +2660,7 @@ const PRESETS = {
   },
   work: {
     on:        ["quick","play","work","make","culture","mind"],
-    available: ["warm","life","values","world","connect","friends","move","unwind","wish","magic"],
+    available: ["warm","life","values","world","connect","friends","unwind","wish","magic"],
     subtitle:  "Safe for the office"
   },
   family_p: {
@@ -2716,7 +2702,7 @@ let categoriesCollapsed = DEFAULT_COLLAPSED;
 // Shuffle mode category pools
 const SPICY_LEVELS  = ['edge','skin','carnal','kinks','attract','blunt','abyss'];
 const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
-const LIGHT_LEVELS  = ['warm','play','culture','move','unwind','home','work'];
+const LIGHT_LEVELS  = ['warm','play','culture','unwind','home','work'];
 const BORDER_LEVELS = ['attract','edge','raw'];
 // COLBERT_OPTIONAL: questions present in the deck but not in the canonical 15.
 // When COLBERT_STRICT = true (HTML setting), these are filtered out during Colbert-solo play.
@@ -2825,7 +2811,7 @@ function applyRandomMode(arr) {
       // After 70% of deck: Warm slot becomes Deep (full depth phase).
       // No recovery breaths — unnecessary at short session lengths.
       const wt = c => {
-        if (['quick','colbert','warm','play','culture','move','unwind'].includes(c.level)) return 'L'; // light/warm
+        if (['quick','colbert','warm','play','culture','unwind'].includes(c.level)) return 'L'; // light/warm
         if (['deep','raw','grief','shadow','wish','ground'].includes(c.level)) return 'H'; // heavy/deep
         if (['edge','skin','carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
         return 'M'; // medium/cool
@@ -4618,14 +4604,13 @@ const CATEGORY_DESCRIPTIONS = {
   warm:      "Gentle questions that open people up",
   play:      "Light, fun — the game before the game",
   culture:   "Books, film, music, taste",
-  move:      "What the body does and has done",
   unwind:    "Rest, stillness, what you need to recover",
   life:      "How you actually live, day to day",
   home:      "Where you feel at home — or where you have not",
   roots:     "Where you come from and what it made you",
   past:      "Things that happened and stayed",
   self:      "How you see yourself",
-  body:      "Your relationship with your own body",
+  body:      "The body — in motion, and as you live in it",
   mind:      "How you think, what you notice",
   spirit:    "What you believe, or wonder about",
   make:      "What you create, build, or make",
