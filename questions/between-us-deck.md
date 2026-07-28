@@ -252,14 +252,14 @@ The questions come first, category by category. The full change log is at the bo
 2. What do you find attractive that you'd never admit on a first date?
 3. The moment you realise you want someone — where do you feel it first?
 4. The type you claim, and the type you actually end up with — how far apart?
-5. When has attraction ambushed you from a direction you never expected?
+5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
 8. Your celebrity crush — and what does it share with the people you actually fall for?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
-11. Who wanted you in a way you still think about?
-12. Being desired does what to you?
+11. Someone is close. The first physical detail you notice?
+12. Whose scent could you identify blindfolded?
 
 ## Values
 1. There's something you'd refuse to do, whatever it cost...
@@ -405,15 +405,15 @@ The questions come first, category by category. The full change log is at the bo
 1. What do you think I want from you that I haven't asked for?
 2. Replay a moment between us — out loud.
 3. What do you wish I understood about your desire?
-4. What have you held back from telling me in bed?
-5. Point to where you want to be kissed, right now.
-6. When do you feel most sexually connected to me?
-7. What do I do that works better than I know?
-8. Show me, with my hand, how you want to be touched.
-9. What do you think turns me on that I've never told you?
-10. Pick a first between us to relive.
-11. Who would you sleep with outside this relationship — if you were allowed?
-12. Ask me the intimate question you've been saving.
+4. Point to where you want to be kissed, right now.
+5. When do you feel most sexually connected to me?
+6. What do I do that works better than I know?
+7. Show me, with my hand, how you want to be touched.
+8. What do you think turns me on that I've never told you?
+9. Pick a first between us to relive.
+10. What have you been wanting to try with me but haven't said?
+11. When do you catch me wanting you — and what does it make you do?
+12. How do you want to be held?
 
 ## Shadow
 1. You lie most consistently about...
@@ -443,75 +443,47 @@ The questions come first, category by category. The full change log is at the bo
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
-## Edge 🔞
-1. One desire has never been said out loud...
-2. What does sex mean to you, beyond pleasure?
-3. Reconstruct your smoothest pickup ever.
-4. Name the turn-on you'd least like read aloud.
-5. Where does shame still live in your sex life?
-6. Tell the story of the most outrageous sexual situation you've found yourself in.
-7. Nudes: ever sent or received one — and has one ever travelled further than intended?
-8. Where's the most beautiful place sex has ever happened for you?
-9. Where's the strangest place sex has ever happened for you?
-10. Do you need to feel emotionally safe to be physically free — or the other way round?
-11. Who or what do you want that you know you shouldn't?
-12. What's the closest you've come to acting on a fantasy?
-
-## Skin 🔞
-1. Some touch undoes you. Describe it.
-2. Someone is close. The first physical detail you notice?
-3. What kind of kiss do you like best?
-4. How do you like to be woken?
-5. Clean sheets, bare skin...
-6. What's the last thing you noticed on someone that stayed with you all day?
-7. Morning breath, mess, noise: what does real intimacy smell and sound like for you?
-8. How does your skin remember people?
-9. What does a barely covered body do that a naked one doesn't?
-10. How do you want to be held?
-11. Being undressed slowly — what does that do to you?
-12. Whose scent could you identify blindfolded?
-
 ## Carnal 🔞
-1. What does really good sex feel like from the inside — your words, not the movies'?
-2. Point to the spot partners always skip.
-3. During sex, are you in your body or watching it?
-4. What do you want more of in bed that you rarely get?
-5. What's the sexiest thing anyone has ever said to you in bed?
-6. What does your body actually do at climax — the ungraceful version?
-7. What does arousal actually feel like in your body — trace it.
-8. What makes you loud — and what makes you go silent?
-9. What has porn let you discover about your own taste?
-10. How do you know, afterwards, that it was really good?
-11. Your body vetoes something, whatever your head says...
-12. Name your sexual superpower — the thing you know you do well.
+1. Trace an orgasm — what happens?
+2. During sex, are you in your body or watching it?
+3. What do you want more of in bed that you rarely get?
+4. What's the sexiest thing anyone has ever said to you in bed?
+5. Name your sexual superpower — the thing you know you do well.
+6. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
+7. What sound — yours or theirs — tips you over the edge?
+8. Afterwards, still tangled up — how do you like to come down?
+9. Sex outdoors — where have you, and where do you still want to?
+10. Sweat, mess, noise — what does real intimacy smell and feel like for you?
+11. A kiss you can still feel when you think of it — take me there.
+12. Whose hands do you still remember — and what were they doing?
 
-## Bare 🔞
-1. Unsafe sex under persuasion: persuader or persuaded — and how does it sit now?
-2. Sex — how important is it, honestly, in the whole of your life?
-3. Is solo sex, for you, self-care or an escape hatch?
-4. What's the least glamorous thing you genuinely enjoy in bed?
-5. Ever faked an orgasm — and did it work?
-6. Walked in on, or done the walking in — what happened?
-7. Ever slept with someone you really shouldn't have — what made them off-limits?
-8. What's the shortest time between meeting someone and sleeping with them?
-9. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
-10. When was your last STI test — honestly?
-11. Tell about the moment sex went most embarrassingly wrong.
-12. Ever paid for it, been paid, or seriously considered either?
+## Frank 🔞
+1. Sex — how important is it, honestly, in the whole of your life?
+2. Is solo sex, for you, self-care or an escape hatch?
+3. What's the least glamorous thing you genuinely enjoy in bed?
+4. How has your understanding of sexuality changed over time?
+5. What's the shortest time between meeting someone and sleeping with them?
+6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
+7. Tell about the moment sex went most embarrassingly wrong.
+8. What does sexual fulfilment feel like — and do you have it now?
+9. Reconstruct your smoothest pickup ever.
+10. Tell the story of the most outrageous sexual situation you've found yourself in.
+11. Where's the most beautiful place sex has ever happened for you?
+12. Where's the strangest place sex has ever happened for you?
 
 ## Kinks 🔞
-1. What specific thing turns you on that you've never seen represented anywhere?
-2. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
-3. Which fantasy keeps returning, or fetish that keeps pulling you in — and have you ever explored it?
-4. You tried it once and quietly wanted it again...
-5. What's the smallest thing that flips a switch in you?
-6. Watching, or being watched — which does more for you?
-7. What does not being able to move do to you?
-8. Can pain — given or taken — carry pleasure for you, and what's the pull?
-9. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
-10. Which object, fabric, or material carries a charge for you?
-11. What turns you on that has nothing to do with sex?
-12. What would be written in the rules for a night with you?
+1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
+2. Watching, or being watched — which does more for you?
+3. Can pain — given or taken — carry pleasure for you, and what's the pull?
+4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
+5. Where does shame still live in your sex life?
+6. Is there a kink or fantasy you have that you've never fully acted on?
+7. What do you like to hear — or to say — in the thick of it?
+8. Who do you turn into in bed — and what does someone do to bring them out?
+9. Undressed and having to wait — what does anticipation do to you?
+10. Some touch undoes you. Describe it.
+11. Undressing someone — where do you slow down?
+12. Where does someone linger that makes your breath change?
 
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
@@ -546,6 +518,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.16 — After Dark rebuilt
+Edge and Skin dissolved. The gated wing is now six categories: Attract ✦, Carnal, Kink, Frank (was Bare), Abyss, Us: Intimate.
+Skin's cards redistributed: touch/undressing/breath → Kink; sweat, kiss-you-can-still-feel, whose-hands → Carnal; first-detail, scent, barely-covered → Attract; how-you-want-to-be-held → Us: Intimate. Edge dissolved earlier into Kink (shame) and Frank (pickup, outrageous, most-beautiful/strangest place).
+Carnal reframed to the act, from the inside (trace an orgasm, the good-sex flow card, sound, aftercare, outdoors, superpower) — the two duplicate "trace" cards merged. Kink gained a reworked never-acted-on card, dirty talk, the roles card, and the anticipation/wait card. Frank holds the blunt/history/reflective set (importance, solo, count, embarrassing, understanding-changed, sexual-fulfilment, plus the Edge stories). Design rule throughout: cards you can feel, not think. Deck now 420 cards / 35 categories.
 
 ## Patch v6.15 — fold: Ground → Self · classic deck removed
 Ground folded into **Self** (who you are, and what holds you up); best 12 of the combined 24. Card 8 made two-part: *"There was a time you completely lost your footing. What held — and what did you rebuild first after?"* (absorbs Ground's rebuild-first card). Kept Self's self-perception spine plus Ground's bedrock/crisis cards; the `ground` level is retired from the UI.
