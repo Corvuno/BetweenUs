@@ -457,7 +457,7 @@ The questions come first, category by category. The full change log is at the bo
 11. A kiss you can still feel when you think of it — take me there.
 12. Whose hands do you still remember — and what were they doing?
 
-## Frank 🔞
+## Bare 🔞
 1. Sex — how important is it, honestly, in the whole of your life?
 2. Is solo sex, for you, self-care or an escape hatch?
 3. What's the least glamorous thing you genuinely enjoy in bed?
@@ -520,9 +520,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 # Change log
 
 ## Patch v6.16 — After Dark rebuilt
-Edge and Skin dissolved. The gated wing is now six categories: Attract ✦, Carnal, Kink, Frank (was Bare), Abyss, Us: Intimate.
-Skin's cards redistributed: touch/undressing/breath → Kink; sweat, kiss-you-can-still-feel, whose-hands → Carnal; first-detail, scent, barely-covered → Attract; how-you-want-to-be-held → Us: Intimate. Edge dissolved earlier into Kink (shame) and Frank (pickup, outrageous, most-beautiful/strangest place).
-Carnal reframed to the act, from the inside (trace an orgasm, the good-sex flow card, sound, aftercare, outdoors, superpower) — the two duplicate "trace" cards merged. Kink gained a reworked never-acted-on card, dirty talk, the roles card, and the anticipation/wait card. Frank holds the blunt/history/reflective set (importance, solo, count, embarrassing, understanding-changed, sexual-fulfilment, plus the Edge stories). Design rule throughout: cards you can feel, not think. Deck now 420 cards / 35 categories.
+Edge and Skin dissolved. The gated wing is now six categories: Attract ✦, Carnal, Kink, Bare, Abyss, Us: Intimate.
+Skin's cards redistributed: touch/undressing/breath → Kink; sweat, kiss-you-can-still-feel, whose-hands → Carnal; first-detail, scent, barely-covered → Attract; how-you-want-to-be-held → Us: Intimate. Edge dissolved earlier into Kink (shame) and Bare (pickup, outrageous, most-beautiful/strangest place).
+Carnal reframed to the act, from the inside (trace an orgasm, the good-sex flow card, sound, aftercare, outdoors, superpower) — the two duplicate "trace" cards merged. Kink gained a reworked never-acted-on card, dirty talk, the roles card, and the anticipation/wait card. Bare holds the blunt/history/reflective set (importance, solo, count, embarrassing, understanding-changed, sexual-fulfilment, plus the Edge stories). Design rule throughout: cards you can feel, not think. Deck now 420 cards / 35 categories.
 
 ## Patch v6.15 — fold: Ground → Self · classic deck removed
 Ground folded into **Self** (who you are, and what holds you up); best 12 of the combined 24. Card 8 made two-part: *"There was a time you completely lost your footing. What held — and what did you rebuild first after?"* (absorbs Ground's rebuild-first card). Kept Self's self-perception spine plus Ground's bedrock/crisis cards; the `ground` level is retired from the UI.
