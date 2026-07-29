@@ -867,7 +867,6 @@ body::before{
         <button class="toggle-btn" data-level="aron">The 36</button>
         <button class="toggle-btn" data-level="magic">Magical</button>
         <button class="toggle-btn" data-level="warm">Warm</button>
-        <button class="toggle-btn" data-level="play">Playful</button>
         <div class="band-lbl">Days &amp; world</div>
         <button class="toggle-btn" data-level="culture">Culture</button>
         <button class="toggle-btn" data-level="life">Life</button>
@@ -1056,7 +1055,6 @@ body::before{
     <select class="custom-select" id="customLevel">
       <option value="quick">Quick</option>
       <option value="warm">Warm</option>
-      <option value="play">Playful</option>
       <option value="culture">Culture</option>
       <option value="unwind">Unwind</option>
       <option value="life">Life</option>
@@ -1155,7 +1153,7 @@ const LEVEL_COLORS = {
   warm:"#d58b34",deep:"#f3c33c",self:"#669bbb",raw:"#eb6d6d",shadow:"#75609c",
   mind:"#5082cd",attract:"#e8997a",grief:"#7d7da0",lens:"#96b87b",ground:"#86a666",
   connect:"#65c9b0",spirit:"#ad7ac6",past:"#b79c66",wish:"#937ac6",home:"#97c965",
-  culture:"#c99765",play:"#f79824",date:"#df7a91",work:"#4dbebe",values:"#caae3d",
+  culture:"#c99765",date:"#df7a91",work:"#4dbebe",values:"#caae3d",
   body:"#7bb397",move:"#65c77f",life:"#80bb66",roots:"#ad8d4c",friends:"#d2a158",
   world:"#3aabdd",family:"#ba8e58",make:"#d68c43",unwind:"#4ec1a0",
   colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
@@ -1172,7 +1170,7 @@ const LEVEL_STYLES = {
   connect:"level-connect", friends:"level-friends", values:"level-values",
   world:"level-world", spirit:"level-spirit", mind:"level-mind",
   culture:"level-culture", unwind:"level-unwind", raw:"level-raw",
-  date:"level-date", attract:"level-attract", play:"level-play", skin:"level-skin", carnal:"level-carnal",
+  date:"level-date", attract:"level-attract", skin:"level-skin", carnal:"level-carnal",
   flesh:"level-flesh", kinks:"level-kinks", work:"level-work",
   backup:"level-deep", family:"level-family", grief:"level-grief",
   us:"level-us", usfriend:"level-usfriend", uslove:"level-uslove",
@@ -1188,7 +1186,7 @@ const LEVEL_LABELS = {
   connect:"Connect", friends:"Friendship", values:"Values",
   world:"World", spirit:"Spirit", mind:"Mind",
   culture:"Culture", unwind:"Unwind", raw:"Raw",
-  date:"Romance", attract:"Attract", play:"Playful", skin:"Skin ✦", carnal:"Carnal ✦",
+  date:"Romance", attract:"Attract", skin:"Skin ✦", carnal:"Carnal ✦",
   flesh:"Flesh ✦", kinks:"Kinks ✦", work:"Work",
   backup:"Backup", family:"Family", grief:"Grief",
   us:"Between Us", usfriend:"Us: Friends", uslove:"Us: Love",
@@ -1224,44 +1222,30 @@ const NEWDECK_CARDS = [
   // ─── QUICK ───
   { level: "quick", question: "Coffee or tea order — exactly, no simplifying.", nl: "Hoe drink jij je koffie?" },
   { level: "quick", question: "What song's been stuck in your head this week?", nl: "Welk liedje krijg je deze week je hoofd niet uit?" },
-  { level: "quick", question: "Last thing you photographed?" },
   { level: "quick", question: "What's your greatest extravagance?", nl: "Wat is je grootste extravagantie?" },
   { level: "quick", question: "Which drawer in your house is the disgrace?", nl: "Welke kast of lade thuis mag dicht blijven?" },
   { level: "quick", question: "You're always late for...", nl: "Waar kom jij structureel te laat?" },
   { level: "quick", question: "What smell makes you instantly hungry?", nl: "Van welke geur krijg je meteen honger?" },
   { level: "quick", question: "What's the strangest thing someone might find in your bag?", nl: "Wat is het vreemdste dat iemand in jouw tas zou kunnen vinden?" },
   { level: "quick", question: "What nickname do you go by — and who gave it?", nl: "Welke bijnaam heb je — en van wie kreeg je die?" },
-  { level: "quick", question: "What's your current state of mind — in three words?", nl: "Wat is je huidige gemoedstoestand — in drie woorden?" },
-  { level: "quick", question: "Name the most useless thing you own.", nl: "Wat is het nutteloosste dat je ooit hebt gekocht?" },
-  { level: "quick", question: "Is there something you wish people asked you instead of 'how are you'?", nl: "Is er iets dat je zou willen dat mensen vroegen in plaats van 'hoe gaat het'?" },
+  { level: "quick", question: "Which texture can you not stop touching?" },
+  { level: "quick", question: "What's the most childish thing that still delights you?", nl: "Wat is het meest kinderlijke dat je nog steeds blij maakt?" },
+  { level: "quick", question: "Which season fits you best — and how does it show?", nl: "Welk seizoen lijkt het meest op jou?" },
+  { level: "quick", question: "What do you quietly fix or straighten in other people's houses?" },
 
   // ─── WARM ───
   { level: "warm", question: "Some small thing you do properly, though nobody would ever check...", nl: "Iets waar jij meer zorg aan besteedt dan nodig is..." },
   { level: "warm", question: "One small thing can ruin your entire morning. Which?", nl: "Wat kan je stemming in tien seconden verpesten?" },
-  { level: "warm", question: "What do you quietly fix or straighten in other people's houses?" },
-  { level: "warm", question: "Which season fits you best — and how does it show?", nl: "Welk seizoen lijkt het meest op jou?" },
-  { level: "warm", question: "Something you enjoy far more than most people seem to...", nl: "Waar kun jij eindeloos van genieten terwijl anderen het niet begrijpen?" },
-  { level: "warm", question: "Which gift, out of all of them, hit the mark completely?", nl: "Welk cadeau voelde alsof iemand je echt kende?" },
   { level: "warm", question: "Whose cooking do you miss?", nl: "Naar welk gerecht verlang je soms terug?" },
   { level: "warm", question: "Point to something you're wearing that has a story.", nl: "Iets dat je vandaag draagt en waar een verhaal aan vastzit..." },
-  { level: "warm", question: "What's one thing you're better at than you thought you would be?", nl: "Waar ben je beter in dan je had verwacht?" },
-  { level: "warm", question: "Which piece of clothing do you reach for when nobody needs impressing?", nl: "Wat trek je aan zodra comfort belangrijker wordt dan uitstraling?" },
   { level: "warm", question: "What do you know a suspiciously specific amount about?", nl: "Waar weet jij verdacht veel specifieks over?" },
   { level: "warm", question: "Which stranger do you still remember fondly?", nl: "Een ontmoeting die maar kort duurde, maar je is bijgebleven..." },
-
-  // ─── PLAY ───
-  { level: "play", question: "What's the most childish thing that still delights you?", nl: "Wat is het meest kinderlijke dat je nog steeds blij maakt?" },
-  { level: "play", question: "Name the pettiest grudge you're still maintaining.", nl: "Welke mini-ergernis laat jij maar niet los?" },
-  { level: "play", question: "What's a hill you'd die on that nobody else would even climb?", nl: "Voor welke discussie trek jij graag ten strijde, hoe onzinnig ook?" },
-  { level: "play", question: "What's a skill you have that would be completely useless in a crisis — but excellent at a party?", nl: "Welke vaardigheid heb je die volstrekt nutteloos is in een crisis — maar geweldig op een feest?" },
-  { level: "play", question: "What makes you laugh when you're alone?", nl: "Waar moet je om lachen als niemand erbij is?" },
-  { level: "play", question: "What are you smug about?", nl: "Waar ben je stiekem trots op zonder dat het terecht is?" },
-  { level: "play", question: "The thing you knowingly blow out of proportion...", nl: "Waar maak jij bewust meer drama van dan nodig?" },
-  { level: "play", question: "Which texture can you not stop touching?" },
-  { level: "play", question: "When did you last go gloriously too far — and was it worth it?", nl: "Wanneer sloeg jouw enthousiasme volledig op hol?" },
-  { level: "play", question: "What do you do to excess, unapologetically?", nl: "Waar ken jij geen maat in?" },
-  { level: "play", question: "Which game do you refuse to lose — and what happens when you do?", nl: "Welk spel wil jij niet verliezen — en wat gebeurt er als het toch gebeurt?" },
-  { level: "play", question: "Quote the sentence people around you are most tired of hearing from you.", nl: "Welke uitspraak zouden mensen graag een tijdje niet meer uit jouw mond horen?" },
+  { level: "warm", question: "Name the pettiest grudge you're still maintaining.", nl: "Welke mini-ergernis laat jij maar niet los?" },
+  { level: "warm", question: "What's a hill you'd die on that nobody else would even climb?", nl: "Voor welke discussie trek jij graag ten strijde, hoe onzinnig ook?" },
+  { level: "warm", question: "What's a skill you have that would be completely useless in a crisis — but excellent at a party?", nl: "Welke vaardigheid heb je die volstrekt nutteloos is in een crisis — maar geweldig op een feest?" },
+  { level: "warm", question: "What do you knowingly blow out of proportion?", nl: "Waar maak jij bewust meer drama van dan nodig?" },
+  { level: "warm", question: "When did you last go gloriously too far — and was it worth it?", nl: "Wanneer sloeg jouw enthousiasme volledig op hol?" },
+  { level: "warm", question: "Quote the sentence people around you are most tired of hearing from you.", nl: "Welke uitspraak zouden mensen graag een tijdje niet meer uit jouw mond horen?" },
 
   // ─── CULTURE ───
   { level: "culture", question: "Is there a piece of art that has stayed with you longer than it should have?", nl: "Is er een kunstwerk dat je langer is bijgebleven dan zou moeten?" },
@@ -1799,22 +1783,22 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","play","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","make","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","make","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
     available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","play","culture","unwind","world"],
+    on:        ["warm","quick","culture","unwind","world"],
     available: ["connect","self","life","mind","wish","attract","spirit","make","body","aron","magic"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","play","friends","connect","culture","life","past","unwind","blunt"],
+    on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
     available: ["deep","values","mind","us","usfriend","grief","body","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","play","attract","date","connect","culture","blunt"],
+    on:        ["warm","attract","date","connect","culture","blunt"],
     available: ["self","past","wish","values","us","usintimate","body","carnal","kinks","abyss","aron"],
     subtitle:  "For two, finding out"
   },
@@ -1834,12 +1818,12 @@ const PRESETS = {
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","play","work","make","culture","mind"],
-    available: ["warm","life","values","world","connect","friends","unwind","wish","magic"],
+    on:        ["quick","warm","work","make","culture","mind"],
+    available: ["life","values","world","connect","friends","unwind","wish","magic"],
     subtitle:  "Safe for the office"
   },
   family_p: {
-    on:        ["warm","quick","play","roots","family","culture","past"],
+    on:        ["warm","quick","roots","family","culture","past"],
     available: ["home","life","grief","us","usfriend","unwind","make","magic"],
     subtitle:  "Across generations"
   },
@@ -1877,7 +1861,7 @@ let categoriesCollapsed = DEFAULT_COLLAPSED;
 // Shuffle mode category pools
 const SPICY_LEVELS  = ['carnal','kinks','attract','blunt','abyss'];
 const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
-const LIGHT_LEVELS  = ['warm','play','culture','unwind','home','work'];
+const LIGHT_LEVELS  = ['warm','culture','unwind','home','work'];
 const BORDER_LEVELS = ['attract','raw'];
 // COLBERT_OPTIONAL: questions present in the deck but not in the canonical 15.
 // When COLBERT_STRICT = true (HTML setting), these are filtered out during Colbert-solo play.
@@ -1986,7 +1970,7 @@ function applyRandomMode(arr) {
       // After 70% of deck: Warm slot becomes Deep (full depth phase).
       // No recovery breaths — unnecessary at short session lengths.
       const wt = c => {
-        if (['quick','colbert','warm','play','culture','unwind'].includes(c.level)) return 'L'; // light/warm
+        if (['quick','colbert','warm','culture','unwind'].includes(c.level)) return 'L'; // light/warm
         if (['deep','raw','grief','shadow','wish'].includes(c.level)) return 'H'; // heavy/deep
         if (['carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
         return 'M'; // medium/cool
@@ -3776,8 +3760,7 @@ const SHUFFLE_DESCRIPTIONS = {
 const CATEGORY_DESCRIPTIONS = {
   quick:     "Fast, easy openers — no wrong answers",
   colbert:   "The Colbert Questionert — same 15 questions, asked in order",
-  warm:      "Gentle questions that open people up",
-  play:      "Light, fun — the game before the game",
+  warm:      "Light and personal — the fond, the funny, the telling",
   culture:   "Books, film, music, taste",
   unwind:    "Rest, stillness, what you need to recover",
   life:      "How you actually live, day to day",
