@@ -9,46 +9,33 @@ The questions come first, category by category. The full change log is at the bo
 ## Quick
 1. Coffee or tea order — exactly, no simplifying.
 2. What song's been stuck in your head this week?
-3. Last thing you photographed?
-4. What's your greatest extravagance?
-5. Which drawer in your house is the disgrace?
-6. You're always late for...
-7. What smell makes you instantly hungry?
-8. What's the strangest thing someone might find in your bag?
-9. What nickname do you go by — and who gave it?
-10. What's your current state of mind — in three words?
-11. Name the most useless thing you own.
-12. Is there something you wish people asked you instead of 'how are you'?
+3. What's your greatest extravagance?
+4. Which drawer in your house is the disgrace?
+5. You're always late for...
+6. What smell makes you instantly hungry?
+7. What's the strangest thing someone might find in your bag?
+8. What nickname do you go by — and who gave it?
+9. Which texture can you not stop touching?
+10. What's the most childish thing that still delights you?
+11. Which season fits you best — and how does it show?
+12. What do you quietly fix or straighten in other people's houses?
 
 ## Colbert
 *[Fixed set — insert verbatim yourself. Slot reserved.]*
 
 ## Warm
+*Light and personal — the fond, the funny, the telling. (Absorbed Playful in v6.17.)*
 1. Some small thing you do properly, though nobody would ever check...
 2. One small thing can ruin your entire morning. Which?
-3. What do you quietly fix or straighten in other people's houses?
-4. Which season fits you best — and how does it show?
-5. Something you enjoy far more than most people seem to...
-6. Which gift, out of all of them, hit the mark completely?
-7. Whose cooking do you miss?
-8. Point to something you're wearing that has a story.
-9. What's one thing you're better at than you thought you would be?
-10. Which piece of clothing do you reach for when nobody needs impressing?
-11. What do you know a suspiciously specific amount about?
-12. Which stranger do you still remember fondly?
-
-## Playful
-1. What's the most childish thing that still delights you?
-2. Name the pettiest grudge you're still maintaining.
-3. What's a hill you'd die on that nobody else would even climb?
-4. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
-5. What makes you laugh when you're alone?
-6. What are you smug about?
-7. The thing you knowingly blow out of proportion...
-8. Which texture can you not stop touching?
-9. When did you last go gloriously too far — and was it worth it?
-10. What do you do to excess, unapologetically?
-11. Which game do you refuse to lose — and what happens when you do?
+3. Whose cooking do you miss?
+4. Point to something you're wearing that has a story.
+5. What do you know a suspiciously specific amount about?
+6. Which stranger do you still remember fondly?
+7. Name the pettiest grudge you're still maintaining.
+8. What's a hill you'd die on that nobody else would even climb?
+9. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
+10. What do you knowingly blow out of proportion?
+11. When did you last go gloriously too far — and was it worth it?
 12. Quote the sentence people around you are most tired of hearing from you.
 
 ## Culture
@@ -512,12 +499,21 @@ The questions come first, category by category. The full change log is at the bo
 - **Desire** — "Wanting, and being wanted"
 - **Lens** — "How you perceive — what you notice, what you miss"
 
+## BENCH — cards parked for later
+*Cut but worth keeping — available if a slot ever opens.*
+- **Quick / Deep** — "Is there something you wish people asked you instead of 'how are you'?" (too reflective for a fast opener; candidate for a Deep pass)
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
 ---
 
 # Change log
+
+## Patch v6.17 — light tier consolidated: Playful → Warm
+The three opener categories (Quick · Warm · Playful) collapsed to two. Their functions: Quick = fast surface momentum; Warm + Playful both = light personality reveal — so Playful folded into **Warm**, now spanning fond → funny. Quick stays as the standalone fast opener.
+Best 24 of the combined 36 kept; 12 cut, and 4 cards moved to rebalance. **Quick** takes on *texture you can't stop touching* and *most childish thing that delights you* (from Playful) and *season that fits you* and *what you straighten in others' houses* (from Warm). **Warm** keeps its six fond cards and gains six from Playful (grudge, hill, party-skill, blow-out-of-proportion, gone-too-far, the tired-sentence). Playful 7 reworded to a question: *"What do you knowingly blow out of proportion?"*
+Cut (12): Quick — last-photographed, state-of-mind-three-words, most-useless-thing (twin of extravagance), wish-people-asked (benched for a Deep pass). Warm — enjoy-more-than-most (twin of excess), gift-that-hit-the-mark, better-than-you-thought, clothing-when-nobody-impressing (twin of wearing-a-story). Playful — laugh-when-alone (twin of childish-delight), what-you're-smug-about, excess-unapologetically (twin of enjoy-more-than-most), game-you-refuse-to-lose (competition thread lives in Self/Work/Values). The `play` level is retired from all three builds (button, dropdown, color/class/label maps, presets, light-level groups). Deck now 408 cards / 34 categories.
 
 ## Patch v6.16 — After Dark rebuilt
 Edge and Skin dissolved. The gated wing is now six categories: Attract ✦, Carnal, Kink, Bare, Abyss, Us: Intimate.
