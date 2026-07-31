@@ -8,7 +8,7 @@ A deck-of-questions card game, played as a single self-contained HTML file.
 |---|---|---|
 | [`between-us.html`](between-us.html) | `public` | **Main version.** What you hand someone by default. |
 | [`between-us-work.html`](between-us-work.html) | `work` | Workplace-safe version — Dutch, no adult content reachable. |
-| [`between-us-Dev.html`](between-us-Dev.html) | `editor` | Development build — spice pre-activated, dev conveniences on. |
+| [`between-us-Dev.html`](between-us-Dev.html) | `editor` | Development build — everything on by default. dev conveniences on. |
 
 `index.html` redirects to `between-us.html`, so the root of the site opens the main version.
 
