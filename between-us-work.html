@@ -900,6 +900,7 @@ body::before{
         <button class="toggle-btn" data-level="shadow">Shadow</button>
         <div class="band-lbl">After dark</div>
         <button class="toggle-btn" data-level="usintimate">Us: Intimate &#10022;</button>
+        <button class="toggle-btn" data-level="skin">Skin &#10022;</button>
         <button class="toggle-btn" data-level="carnal">Carnal &#10022;</button>
         <button class="toggle-btn" data-level="blunt">Bare &#10022;</button>
         <button class="toggle-btn" data-level="kinks">Kinks &#10022;</button>
@@ -1082,6 +1083,7 @@ body::before{
       <option value="us">Between Us</option>
       <option value="usfriend">Us: Friends</option>
       <option value="uslove">Us: Love</option>
+      <option value="skin">Skin &#10022;</option>
       <option value="carnal">Carnal &#10022;</option>
       <option value="kinks">Kinks &#10022;</option>
       <option value="usintimate">Us: Intimate &#10022;</option>
@@ -1146,7 +1148,7 @@ const MASTER_SAFE       = window.MASTER_SAFE;
 const SPICE_MODE        = window.SPICE_MODE || false;
 const NL_DEFAULT        = window.NL_DEFAULT || false;
 
-const SAFE_BLOCKED_LEVELS = ["carnal","kinks","usintimate","blunt","abyss"];
+const SAFE_BLOCKED_LEVELS = ["skin","carnal","kinks","usintimate","blunt","abyss"];
 
 // ── LEVEL COLORS for accent bar ──
 const LEVEL_COLORS = {
@@ -1446,7 +1448,7 @@ const NEWDECK_CARDS = [
   { level: "date", question: "What's the most romantic thing you've attempted that failed completely?", nl: "Een romantisch gebaar dat volledig mislukte..." },
 
   // ─── ATTRACT ───
-  { level: "attract", question: "What do you notice about someone's mouth?" },
+  { level: "attract", question: "Someone is close. The first physical detail you notice?" },
   { level: "attract", question: "What do you find attractive that you'd never admit on a first date?" },
   { level: "attract", question: "The moment you realise you want someone — where do you feel it first?" },
   { level: "attract", question: "The type you claim, and the type you actually end up with — how far apart?" },
@@ -1456,8 +1458,8 @@ const NEWDECK_CARDS = [
   { level: "attract", question: "Your celebrity crush — and what does it share with the people you actually fall for?" },
   { level: "attract", question: "How much does a voice do for you?" },
   { level: "attract", question: "Are you a different person when you're attracted to someone — and who shows up?" },
-  { level: "attract", question: "Someone is close. The first physical detail you notice?" },
-  { level: "attract", question: "Whose scent could you identify blindfolded?" },
+  { level: "attract", question: "What's a look someone gave you that you can still feel?" },
+  { level: "attract", question: "Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?" },
 
   // ─── VALUES ───
   { level: "values", question: "There's something you'd refuse to do, whatever it cost...", nl: "Waarvoor zou je altijd een prijs willen betalen?" },
@@ -1607,11 +1609,11 @@ const NEWDECK_CARDS = [
   { level: "usintimate", question: "When do you feel most sexually connected to me?" },
   { level: "usintimate", question: "What do I do that works better than I know?" },
   { level: "usintimate", question: "Show me, with my hand, how you want to be touched." },
-  { level: "usintimate", question: "What do you think turns me on that I've never told you?" },
   { level: "usintimate", question: "Pick a first between us to relive." },
+  { level: "usintimate", question: "Who would you sleep with outside this relationship — if you were allowed?" },
   { level: "usintimate", question: "What have you been wanting to try with me but haven't said?" },
   { level: "usintimate", question: "When do you catch me wanting you — and what does it make you do?" },
-  { level: "usintimate", question: "How do you want to be held?" },
+  { level: "usintimate", question: "What do you hold back with me — and what would it take to stop?" },
 
   // ─── GROUND ───
 
@@ -1648,22 +1650,34 @@ const NEWDECK_CARDS = [
   // ─── SKIN ───
 
   // ─── CARNAL ───
-  { level: "carnal", question: "Trace an orgasm — what happens?" },
-  { level: "carnal", question: "During sex, are you in your body or watching it?" },
+  { level: "skin", question: "Some touch undoes you. Describe it." },
+  { level: "skin", question: "Sweat, mess, noise — what does real intimacy smell and feel like for you?" },
+  { level: "skin", question: "Which scent takes you straight back to sex with someone?" },
+  { level: "skin", question: "Undressing someone — where do you slow down?" },
+  { level: "skin", question: "Whose hands do you still remember — and what were they doing?" },
+  { level: "skin", question: "A kiss you can still feel when you think of it — take me there." },
+  { level: "skin", question: "What does a hand on your throat — front or back of the neck — do to you?" },
+  { level: "skin", question: "In public, fully clothed — which touch still gets to you, and how far will you go?" },
+  { level: "skin", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
+  { level: "skin", question: "Ice, heat, cold hands, warm breath — what does temperature do to you?" },
+  { level: "skin", question: "In the moment, how do you make what you want known — words, hands, or just taking it?" },
+  { level: "skin", question: "Silk, leather, bare skin, rough hands — which texture does something to you?" },
+  { level: "carnal", question: "During sex, are you in your body, watching it, or in your head — and what causes this?" },
   { level: "carnal", question: "What do you want more of in bed that you rarely get?" },
   { level: "carnal", question: "What's the sexiest thing anyone has ever said to you in bed?" },
   { level: "carnal", question: "Name your sexual superpower — the thing you know you do well." },
   { level: "carnal", question: "When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?" },
   { level: "carnal", question: "What sound — yours or theirs — tips you over the edge?" },
+  { level: "carnal", question: "Is coming something you chase, something you let happen, or something you hold off on — and how does that feel?" },
   { level: "carnal", question: "Afterwards, still tangled up — how do you like to come down?" },
   { level: "carnal", question: "Sex outdoors — where have you, and where do you still want to?" },
-  { level: "carnal", question: "Sweat, mess, noise — what does real intimacy smell and feel like for you?" },
-  { level: "carnal", question: "A kiss you can still feel when you think of it — take me there." },
-  { level: "carnal", question: "Whose hands do you still remember — and what were they doing?" },
+  { level: "carnal", question: "What have you never asked for because it's better getting it without asking?" },
+  { level: "carnal", question: "How did porn influence your sex life?" },
+  { level: "carnal", question: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?" },
 
   // ─── BLUNT ───
   { level: "blunt", question: "Sex — how important is it, honestly, in the whole of your life?" },
-  { level: "blunt", question: "Is solo sex, for you, self-care or an escape hatch?" },
+  { level: "blunt", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
   { level: "blunt", question: "What's the least glamorous thing you genuinely enjoy in bed?" },
   { level: "blunt", question: "How has your understanding of sexuality changed over time?" },
   { level: "blunt", question: "What's the shortest time between meeting someone and sleeping with them?" },
@@ -1685,23 +1699,23 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "What do you like to hear — or to say — in the thick of it?" },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },
   { level: "kinks", question: "Undressed and having to wait — what does anticipation do to you?" },
-  { level: "kinks", question: "Some touch undoes you. Describe it." },
-  { level: "kinks", question: "Undressing someone — where do you slow down?" },
-  { level: "kinks", question: "Where does someone linger that makes your breath change?" },
+  { level: "kinks", question: "What's the difference between what you fantasise about and what you actually want?" },
+  { level: "kinks", question: "Who introduced you to something you'd never have found or tried alone?" },
+  { level: "kinks", question: "More than two — does it appeal, and what's the pull?" },
 
   // ─── ABYSS ───
-  { level: "abyss", question: "You've seen most of it by now. What's still taboo?" },
+  { level: "abyss", question: "You've seen most of it by now. What still gives you pause?" },
   { level: "abyss", question: "What did you once consider extreme that's now a Tuesday?" },
-  { level: "abyss", question: "Where's the line between play and truth for you — and has it ever blurred mid-scene?" },
-  { level: "abyss", question: "What's the most vulnerable you've ever been while appearing to be in control?" },
   { level: "abyss", question: "What does going to the extreme give you that gentle never could?" },
   { level: "abyss", question: "Tell about a scene that changed you." },
-  { level: "abyss", question: "What have you done that you don't explain to vanilla people — not from shame, but because it doesn't translate?" },
   { level: "abyss", question: "Has your body ever said yes while something deeper said no — and how did you find out?" },
   { level: "abyss", question: "In the darkest rooms, what's the gentlest thing that happens?" },
   { level: "abyss", question: "Tell about the safeword that got used — or the one that should have been." },
   { level: "abyss", question: "Where did you find out you had a limit?" },
-  { level: "abyss", question: "After the intensity — what do you need that you don't ask for?" },
+  { level: "abyss", question: "What kind of trust does going that far actually take?" },
+  { level: "abyss", question: "What did you consent to that you didn't want — and why did you?" },
+  { level: "abyss", question: "Who in your normal life knows about this side of you — do they understand, and who will never find out?" },
+  { level: "abyss", question: "What is something considered 'taboo' by society that you actually find quite appealing?" },
 ];
 
 // ── REFERENCE SETS — canonical sequences, deck-independent (like Colbert) ──
@@ -1784,7 +1798,7 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 const PRESETS = {
   open: {
     on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","make","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
-    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
+    available: ["colbert","aron","magic","skin","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
@@ -1794,17 +1808,17 @@ const PRESETS = {
   },
   friends: {
     on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
-    available: ["deep","values","mind","us","usfriend","grief","body","carnal","kinks","abyss","aron","magic"],
+    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The people you chose"
   },
   dating: {
     on:        ["warm","attract","date","connect","culture","blunt"],
-    available: ["self","past","wish","values","us","usintimate","body","carnal","kinks","abyss","aron"],
+    available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "For two, finding out"
   },
   partner: {
     on:        ["us","uslove","connect","date","deep","wish","blunt"],
-    available: ["usintimate","family","roots","grief","raw","home","body","carnal","kinks","abyss","aron"],
+    available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The two of you"
   },
   latenight: {
@@ -1859,7 +1873,7 @@ let customCards   = [];
 let categoriesCollapsed = DEFAULT_COLLAPSED;
 
 // Shuffle mode category pools
-const SPICY_LEVELS  = ['carnal','kinks','attract','blunt','abyss'];
+const SPICY_LEVELS  = ['skin','carnal','kinks','attract','blunt','abyss'];
 const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
 const LIGHT_LEVELS  = ['warm','culture','unwind','home','work'];
 const BORDER_LEVELS = ['attract','raw'];
@@ -1972,7 +1986,7 @@ function applyRandomMode(arr) {
       const wt = c => {
         if (['quick','colbert','warm','culture','unwind'].includes(c.level)) return 'L'; // light/warm
         if (['deep','raw','grief','shadow','wish'].includes(c.level)) return 'H'; // heavy/deep
-        if (['carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
+        if (['skin','carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
         return 'M'; // medium/cool
       };
       const pools = { L:[], M:[], H:[], S:[] };
@@ -3795,6 +3809,7 @@ const CATEGORY_DESCRIPTIONS = {
   usfriend:  "About this friendship, directly",
   uslove:    "About this relationship, directly",
   usintimate:"Physical and intimate — for the two of you only ✦",
+  skin:      "Skin, scent, touch — the erotic senses ✦",
   carnal:    "Explicit sexual territory ✦",
   flesh:     "The body in desire ✦",
   kinks:     "Intimate and deep — what your kinks mean and what you want from them. For people who practice ✦",
