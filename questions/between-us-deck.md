@@ -199,8 +199,8 @@ The questions come first, category by category. The full change log is at the bo
 3. Who taught you the most about how to be close to someone?
 4. You need something from people, and rarely say it out loud...
 5. How can someone tell you're withdrawing before you've said a word?
-6. With whom does your yes come slowest?
-7. Whose requests defeat your no every single time?
+6. What do you do when you feel misunderstood — and does it work?
+7. Are you listening, or waiting for your turn?
 8. Describe what trust feels like, physically.
 9. Who did you forgive, without ever telling them?
 10. Name the last hug that lasted longer than three seconds.
@@ -238,8 +238,8 @@ The questions come first, category by category. The full change log is at the bo
 ## Attract ✦
 1. What do you notice about someone's mouth?
 2. What do you find attractive that you'd never admit on a first date?
-3. The moment you realise you want someone — where do you feel it first?
-4. The type you claim, and the type you actually end up with — how far apart?
+3. Someone wanted you and you didn't want them back — did part of you enjoy being wanted anyway?
+4. You tell yourself you have a type. Who do you actually keep ending up with?
 5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
@@ -252,7 +252,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Values
 1. There's something you'd refuse to do, whatever it cost...
 2. Which of your values survives worst under pressure?
-3. In arguments you defend something you find hard to justify...
+3. How much of where you are now is luck?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
 6. When did raising your voice turn out to be exactly right?
@@ -268,11 +268,11 @@ The questions come first, category by category. The full change log is at the bo
 2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
-5. Who has power over your life that you rarely think about?
+5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Outsiders keep missing something your background carries...
 7. Broadly: are people improvable?
 8. What has travel actually taught you — beyond the stories?
-9. Which news photo has never left you?
+9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
 11. What would you defend about your country to a foreigner — and what not?
 12. Which common belief about how the world works do you think is simply wrong?
@@ -285,7 +285,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Has your idea of success survived contact with reality?
 6. Tell about your most instructive professional failure.
 7. Is ambition something you have or something that has you?
-8. Name the person who taught you how to work.
+8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
 11. What does the word "retirement" do to you?
@@ -514,6 +514,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ## Patch v6.18 — Mind rebuilt · Warm 7 (in progress)
 **Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
 **Warm 7** → *"Is there something you're genuinely bad at that you still refuse to stop doing?"* — replaces the pettiest-grudge card, which was the third of a disproportion cluster with 8 and 10.
+**Owner sweep, batch 1.** Connect 6 → the misunderstood card and Connect 7 → the listening card; the two yes/no cards they replace were kept against review in v5.8, now deliberately reversed. Attract 3 → the being-wanted card (restores the *"Being desired does what to you?"* orphan benched when Desire was deleted in v5.5); Attract 4 rephrased to the claimed-type/actual-pattern construction. Values 3 → the luck card, which also clears the defend-what-you-can't-justify twin with the reworked Spirit 8. World 5 → the hard-to-defend political position; World 9 → the worry card, with the action clause dropped so it does not repeat World 2. Work 8 → why you chose this field.
 
 ## Patch v6.17 — light tier consolidated: Playful → Warm
 The three opener categories (Quick · Warm · Playful) collapsed to two. Their functions: Quick = fast surface momentum; Warm + Playful both = light personality reveal — so Playful folded into **Warm**, now spanning fond → funny. Quick stays as the standalone fast opener.
