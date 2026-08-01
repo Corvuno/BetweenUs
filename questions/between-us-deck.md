@@ -188,7 +188,7 @@ The questions come first, category by category. The full change log is at the bo
 5. How can someone tell you're withdrawing before you've said a word?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
-8. Describe what trust feels like, physically.
+8. Is there something you wish people asked you instead of 'how are you'?
 9. Who did you forgive, without ever telling them?
 10. Name the last hug that lasted longer than three seconds.
 11. When someone cries in front of you, what happens in you?
@@ -310,9 +310,9 @@ The questions come first, category by category. The full change log is at the bo
 1. One loss you're still not finished with...
 2. Nobody thinks to ask about this loss...
 3. Who do you still talk to that can no longer answer?
-4. Which ending made you who you are more than any beginning did?
+4. What surprised you about how you grieved?
 5. Who showed up when you lost something — and who didn't?
-6. What did grief teach you about yourself that nothing else could?
+6. What did grief change about what you find important?
 7. What do you do with grief — do you move through it, around it, or does it move through you?
 8. Which object holds a loss for you?
 9. Because of them, you still do something nobody knows about...
@@ -345,7 +345,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Which of my habits have you quietly adapted to?
 9. What would you warn someone about me — kindly?
 10. What do you hope I never change?
-11. What do you think I'm most insecure about?
+11. What's the most me thing I've ever done?
 12. Which conversation are we overdue?
 
 ## Us: Friends
@@ -489,7 +489,6 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
-- **Quick / Deep** — "Is there something you wish people asked you instead of 'how are you'?" (too reflective for a fast opener; candidate for a Deep pass)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Deep** — "When were you last truly seen?"
 - **Deep** — "When did you last let someone see you struggling?"
@@ -503,6 +502,12 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.20 — owner sweep batch 3
+**Connect 8** → the instead-of-how-are-you card, brought back from the bench where it landed when Quick was trimmed in v6.17. Connect is its right home: it is about how people approach you, which is what the category does. It replaces the physical-trust card, the weakest in the set.
+**Grief 4** → what surprised you about how you grieved, replacing the ending-that-made-you card. The earlier proposal for this slot carried a verdict inside the question; this one invites the answer instead.
+**Grief 6** → what grief changed about what you find important. The category needed this idea — that loss reorders what matters — but the old wording asked for a lesson rather than a specific thing.
+**Between Us 11** → the most-me-thing card, replacing the insecurity card. Between Us was uniformly earnest; this gives it one affectionate, funny card that still produces a story.
 
 ## Patch v6.19 — Make dissolved · owner sweep batch 2
 **Make retired.** The category was gated on an activity rather than an experience, half its cards asked for a stance instead of a scene, and two of them were the same card. Triage kept three: the last-thing-made card to Quick (displacing the coffee order), the repaired-instead-of-replaced card to Warm (displacing the party-skill card), and the creative-jealousy card benched pending a home — note that "work" in that card means output, not employment, so Work is the wrong destination. The `make` level is retired from all three builds. Deck now 396 cards / 33 categories.
