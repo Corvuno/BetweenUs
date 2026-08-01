@@ -7,7 +7,7 @@ The questions come first, category by category. The full change log is at the bo
 ---
 
 ## Quick
-1. Coffee or tea order — exactly, no simplifying.
+1. Name the last thing you made with your hands.
 2. What song's been stuck in your head this week?
 3. What's your greatest extravagance?
 4. Which drawer in your house is the disgrace?
@@ -31,9 +31,9 @@ The questions come first, category by category. The full change log is at the bo
 4. Point to something you're wearing that has a story.
 5. What do you know a suspiciously specific amount about?
 6. Which stranger do you still remember fondly?
-7. Name the pettiest grudge you're still maintaining.
+7. Is there something you're genuinely bad at that you still refuse to stop doing?
 8. What's a hill you'd die on that nobody else would even climb?
-9. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
+9. What have you repaired instead of replaced — and why?
 10. What do you knowingly blow out of proportion?
 11. When did you last go gloriously too far — and was it worth it?
 12. Quote the sentence people around you are most tired of hearing from you.
@@ -98,7 +98,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Which decision looked small at the time but turned out to be a hinge?
 2. What choice haunts you — not because it was wrong, but because you'll never know?
 3. Tell about a time you surprised yourself with what you could survive.
-4. You quit something. Was it the right call?
+4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
 5. Trace the moment money started meaning something different to you.
 6. What would you do differently if you could go back — and do you actually think it would have changed anything?
 7. Which version of yourself was hardest to let go of?
@@ -151,17 +151,18 @@ The questions come first, category by category. The full change log is at the bo
 12. Is pushing your body to its limit a form of pleasure or of discipline?
 
 ## Mind
-1. What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?
-2. An idea you abandoned this year...
+*Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
+1. How easily does a new habit stick for you — and which one actually did?
+2. What are you good at not doing — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
 4. When has a gut feeling known more than you did?
 5. When your mind wanders, where does it go by default?
-6. Which fear of yours can't survive logic — and survives anyway?
-7. What can't you unsee once you've spotted it?
-8. Which thought would you erase from your head if you could?
-9. Someone is simply better than you. Then what?
+6. What does your inner voice sound like — and whose is it?
+7. Which of your opinions is just something you heard once?
+8. Do you decide fast and adjust, or slow and stick?
+9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
-11. What do you think about far more than you let on?
+11. Do you analyse people — and what do you get wrong?
 12. Which idea has changed you, and how did it get in?
 
 ## Spirit
@@ -178,19 +179,6 @@ The questions come first, category by category. The full change log is at the bo
 11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
-## Make
-1. Name the last thing you made with your hands.
-2. You make something nobody asked for...
-3. What have you built that you're prouder of than you admit?
-4. Something stops you from making the thing you keep thinking about...
-5. What does finishing something do to you?
-6. Is creating a need for you, or a choice?
-7. Would you rather make something perfect or something finished?
-8. Whose work makes you jealous?
-9. What have you left unfinished that still bothers you?
-10. What do you keep starting and never finishing?
-11. Is making things for yourself enough, or does it need to be seen?
-12. What have you repaired instead of replaced — and why?
 
 ## Connect
 1. How do you show someone they matter to you — the actual method?
@@ -198,8 +186,8 @@ The questions come first, category by category. The full change log is at the bo
 3. Who taught you the most about how to be close to someone?
 4. You need something from people, and rarely say it out loud...
 5. How can someone tell you're withdrawing before you've said a word?
-6. With whom does your yes come slowest?
-7. Whose requests defeat your no every single time?
+6. What do you do when you feel misunderstood — and does it work?
+7. Are you listening, or waiting for your turn?
 8. Describe what trust feels like, physically.
 9. Who did you forgive, without ever telling them?
 10. Name the last hug that lasted longer than three seconds.
@@ -237,12 +225,12 @@ The questions come first, category by category. The full change log is at the bo
 ## Attract ✦
 1. Someone is close. The first physical detail you notice?
 2. What do you find attractive that you'd never admit on a first date?
-3. The moment you realise you want someone — where do you feel it first?
-4. The type you claim, and the type you actually end up with — how far apart?
+3. Someone wanted you and you didn't want them back — did part of you enjoy being wanted anyway?
+4. You tell yourself you have a type. Who do you actually keep ending up with?
 5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
-8. Your celebrity crush — and what does it share with the people you actually fall for?
+8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
 11. What's a look someone gave you that you can still feel?
@@ -251,7 +239,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Values
 1. There's something you'd refuse to do, whatever it cost...
 2. Which of your values survives worst under pressure?
-3. In arguments you defend something you find hard to justify...
+3. How much of where you are now is luck?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
 6. When did raising your voice turn out to be exactly right?
@@ -267,11 +255,11 @@ The questions come first, category by category. The full change log is at the bo
 2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
-5. Who has power over your life that you rarely think about?
+5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Outsiders keep missing something your background carries...
 7. Broadly: are people improvable?
 8. What has travel actually taught you — beyond the stories?
-9. Which news photo has never left you?
+9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
 11. What would you defend about your country to a foreigner — and what not?
 12. Which common belief about how the world works do you think is simply wrong?
@@ -284,7 +272,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Has your idea of success survived contact with reality?
 6. Tell about your most instructive professional failure.
 7. Is ambition something you have or something that has you?
-8. Name the person who taught you how to work.
+8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
 11. What does the word "retirement" do to you?
@@ -295,14 +283,14 @@ The questions come first, category by category. The full change log is at the bo
 2. You're still waiting for someone to notice...
 3. When did you last cry, and what was underneath it?
 4. Who do you miss who is still alive?
-5. Quote the sentence that has kept you company for years.
+5. What do you need to hear more often than you admit?
 6. If you could rerun one conversation from your life, which one?
 7. What would people be surprised to learn you struggle with?
 8. Are you easy to love?
 9. There was a moment you let someone all the way in. What happened next?
 10. Slowly, you're making peace with...
 11. Which conversation do you keep having — in different rooms, with different people?
-12. When were you last truly seen?
+12. What would you want said about you tonight, if you weren't here to hear it?
 
 ## Raw
 1. Say the thing you censored earlier tonight.
@@ -323,13 +311,13 @@ The questions come first, category by category. The full change log is at the bo
 2. Nobody thinks to ask about this loss...
 3. Who do you still talk to that can no longer answer?
 4. Which ending made you who you are more than any beginning did?
-5. Which grief do you carry that isn't yours?
+5. Who showed up when you lost something — and who didn't?
 6. What did grief teach you about yourself that nothing else could?
-7. Where do you go, in yourself, when grief arrives?
+7. What do you do with grief — do you move through it, around it, or does it move through you?
 8. Which object holds a loss for you?
 9. Because of them, you still do something nobody knows about...
 10. What haven't you allowed yourself to mourn yet?
-11. Which photo can you still not look at?
+11. What did you lose that wasn't a person?
 12. After they were gone, you had to become...
 
 ## Family
@@ -341,7 +329,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Which inherited trait do you watch for in the mirror, with dread?
 7. Your parents are getting old. What is that doing to you?
 8. Who became family without being family?
-9. Which object will the family fight over when the inheritance is divided?
+9. Who in your family knows you best — and do they know that?
 10. What role were you assigned in your family — and do you still play it?
 11. Your family doesn't know...
 12. You brought someone new to meet the family. What did they notice first?
@@ -379,7 +367,7 @@ The questions come first, category by category. The full change log is at the bo
 2. You've stopped asking me for something — what is it?
 3. What are we both avoiding right now?
 4. When did you last fall for me again, even briefly?
-5. Tell me one thing about us you'd protect at any cost.
+5. How do you know I love you — what actually tells you?
 6. What did you decide about us before I had any say in it?
 7. Is there a version of me you miss?
 8. Tell me what you'd change about us if I couldn't take it personally.
@@ -516,6 +504,12 @@ The questions come first, category by category. The full change log is at the bo
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
 - **Quick / Deep** — "Is there something you wish people asked you instead of 'how are you'?" (too reflective for a fast opener; candidate for a Deep pass)
+- **Deep** — "Quote the sentence that has kept you company for years."
+- **Deep** — "When were you last truly seen?"
+- **Deep** — "When did you last let someone see you struggling?"
+- **Deep** — "What's the one thing you most want someone to understand about you?"
+- **Make (dissolved)** — "Whose work makes you jealous?" (worth keeping; home not yet decided)
+- **Grief** — "Which grief do you carry that isn't yours?"
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -524,6 +518,17 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 # Change log
 
+## Patch v6.19 — Make dissolved · owner sweep batch 2
+**Make retired.** The category was gated on an activity rather than an experience, half its cards asked for a stance instead of a scene, and two of them were the same card. Triage kept three: the last-thing-made card to Quick (displacing the coffee order), the repaired-instead-of-replaced card to Warm (displacing the party-skill card), and the creative-jealousy card benched pending a home — note that "work" in that card means output, not employment, so Work is the wrong destination. The `make` level is retired from all three builds. Deck now 396 cards / 33 categories.
+**Mind** 2 → the restraint card, built on a sliding scale so it captures both having it and losing it; 9 → the earliest-memory card, whose doubt clause makes it a thinking card rather than a nostalgia one.
+**Deep** 5 and 12 replaced. Both retained cards are benched rather than discarded.
+**Grief broadened past bereavement.** 5 → who showed up and who didn't; 7 → the how-you-grieve card (placed at 7 rather than 4, since it twinned the card that was there); 11 → what you lost that wasn't a person. Card 6 kept at the owner's call.
+**Also:** Attract 8 to the owner's wording; Family 9 → who knows you best, replacing the inheritance-object card, which assumed a family with something to divide; Past 4 → the stayed-too-long card, trimmed of its "version of yourself" clause to avoid Past 7; Us: Love 5 → the how-do-you-know card, replacing the protect-at-any-cost card as the weaker twin of Us: Love 1.
+
+## Patch v6.18 — Mind rebuilt · Warm 7 (in progress)
+**Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
+**Warm 7** → *"Is there something you're genuinely bad at that you still refuse to stop doing?"* — replaces the pettiest-grudge card, which was the third of a disproportion cluster with 8 and 10.
+**Owner sweep, batch 1.** Connect 6 → the misunderstood card and Connect 7 → the listening card; the two yes/no cards they replace were kept against review in v5.8, now deliberately reversed. Attract 3 → the being-wanted card (restores the *"Being desired does what to you?"* orphan benched when Desire was deleted in v5.5); Attract 4 rephrased to the claimed-type/actual-pattern construction. Values 3 → the luck card, which also clears the defend-what-you-can't-justify twin with the reworked Spirit 8. World 5 → the hard-to-defend political position; World 9 → the worry card, with the action clause dropped so it does not repeat World 2. Work 8 → why you chose this field.
 ## Patch v6.17 — After Dark rebuilt from the ground up
 Skin restored as its own category and redefined: **erotic-sensory, the gateway** — touch, scent, temperature, texture, hands, wordless signalling, public charge. Seven gated categories, each with one clear job:
 Attract ✦ (the pull, before anything happens) · Skin (the erotic senses) · Carnal (the act, from the inside) · Bare (the honest truths and history) · Kinks (fantasy, power, turn-ons) · Abyss (the far end) · Us: Intimate (the person across from you).

@@ -872,7 +872,6 @@ body::before{
         <button class="toggle-btn" data-level="life">Life</button>
         <button class="toggle-btn" data-level="home">Home</button>
         <button class="toggle-btn" data-level="work">Work</button>
-        <button class="toggle-btn" data-level="make">Make</button>
         <button class="toggle-btn" data-level="unwind">Unwind</button>
         <button class="toggle-btn" data-level="world">World</button>
         <div class="band-lbl">Inner</div>
@@ -1066,7 +1065,6 @@ body::before{
       <option value="body">Body</option>
       <option value="mind">Mind</option>
       <option value="spirit">Spirit</option>
-      <option value="make">Make</option>
       <option value="connect">Connect</option>
       <option value="friends">Friends</option>
       <option value="date">Romance</option>
@@ -1157,7 +1155,7 @@ const LEVEL_COLORS = {
   connect:"#65c9b0",spirit:"#ad7ac6",past:"#b79c66",wish:"#937ac6",home:"#97c965",
   culture:"#c99765",date:"#df7a91",work:"#4dbebe",values:"#caae3d",
   body:"#7bb397",move:"#65c77f",life:"#80bb66",roots:"#ad8d4c",friends:"#d2a158",
-  world:"#3aabdd",family:"#ba8e58",make:"#d68c43",unwind:"#4ec1a0",
+  world:"#3aabdd",family:"#ba8e58",unwind:"#4ec1a0",
   colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
   usintimate:"#e84a4a",edge:"#c44ba8",skin:"#e08055",carnal:"#c81f1f",
   flesh:"#8a305a",kinks:"#a1247a",backup:"#5a5a6a",
@@ -1176,7 +1174,7 @@ const LEVEL_STYLES = {
   flesh:"level-flesh", kinks:"level-kinks", work:"level-work",
   backup:"level-deep", family:"level-family", grief:"level-grief",
   us:"level-us", usfriend:"level-usfriend", uslove:"level-uslove",
-  usintimate:"level-usintimate", make:"level-make", shadow:"level-shadow",
+  usintimate:"level-usintimate", shadow:"level-shadow",
   wish:"level-wish", quick:"level-quick", colbert:"level-colbert",
   lens:"level-lens", ground:"level-ground",
   desire:"level-desire", threshold:"level-threshold", failure:"level-failure", blunt:"level-blunt", abyss:"level-abyss", aron:"level-aron", magic:"level-magic"
@@ -1192,7 +1190,7 @@ const LEVEL_LABELS = {
   flesh:"Flesh ✦", kinks:"Kinks ✦", work:"Work",
   backup:"Backup", family:"Family", grief:"Grief",
   us:"Between Us", usfriend:"Us: Friends", uslove:"Us: Love",
-  usintimate:"Us: Intimate ✦", make:"Make", shadow:"Shadow",
+  usintimate:"Us: Intimate ✦", shadow:"Shadow",
   wish:"Wish", quick:"Quick", colbert:"Colbert",
   lens:"Lens", ground:"Ground",
   desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", blunt:"Bare ✦", abyss:"Abyss ✦", aron:"The 36", magic:"Magical"
@@ -1222,7 +1220,7 @@ const COLBERT_CARDS = [
 const NEWDECK_CARDS = [
 
   // ─── QUICK ───
-  { level: "quick", question: "Coffee or tea order — exactly, no simplifying.", nl: "Hoe drink jij je koffie?" },
+  { level: "quick", question: "Name the last thing you made with your hands.", nl: "Het laatste dat je maakte met je eigen handen..." },
   { level: "quick", question: "What song's been stuck in your head this week?", nl: "Welk liedje krijg je deze week je hoofd niet uit?" },
   { level: "quick", question: "What's your greatest extravagance?", nl: "Wat is je grootste extravagantie?" },
   { level: "quick", question: "Which drawer in your house is the disgrace?", nl: "Welke kast of lade thuis mag dicht blijven?" },
@@ -1242,9 +1240,9 @@ const NEWDECK_CARDS = [
   { level: "warm", question: "Point to something you're wearing that has a story.", nl: "Iets dat je vandaag draagt en waar een verhaal aan vastzit..." },
   { level: "warm", question: "What do you know a suspiciously specific amount about?", nl: "Waar weet jij verdacht veel specifieks over?" },
   { level: "warm", question: "Which stranger do you still remember fondly?", nl: "Een ontmoeting die maar kort duurde, maar je is bijgebleven..." },
-  { level: "warm", question: "Name the pettiest grudge you're still maintaining.", nl: "Welke mini-ergernis laat jij maar niet los?" },
+  { level: "warm", question: "Is there something you're genuinely bad at that you still refuse to stop doing?", nl: "Is er iets waar je echt slecht in bent en toch niet mee stopt?" },
   { level: "warm", question: "What's a hill you'd die on that nobody else would even climb?", nl: "Voor welke discussie trek jij graag ten strijde, hoe onzinnig ook?" },
-  { level: "warm", question: "What's a skill you have that would be completely useless in a crisis — but excellent at a party?", nl: "Welke vaardigheid heb je die volstrekt nutteloos is in een crisis — maar geweldig op een feest?" },
+  { level: "warm", question: "What have you repaired instead of replaced — and why?", nl: "Wat heb je gerepareerd terwijl vervangen makkelijker was?" },
   { level: "warm", question: "What do you knowingly blow out of proportion?", nl: "Waar maak jij bewust meer drama van dan nodig?" },
   { level: "warm", question: "When did you last go gloriously too far — and was it worth it?", nl: "Wanneer sloeg jouw enthousiasme volledig op hol?" },
   { level: "warm", question: "Quote the sentence people around you are most tired of hearing from you.", nl: "Welke uitspraak zouden mensen graag een tijdje niet meer uit jouw mond horen?" },
@@ -1311,7 +1309,7 @@ const NEWDECK_CARDS = [
   { level: "past", question: "Which decision looked small at the time but turned out to be a hinge?", nl: "Achteraf gezien begon hier iets groots..." },
   { level: "past", question: "What choice haunts you — not because it was wrong, but because you'll never know?", nl: "Welke keuze achtervolgt je — niet omdat hij fout was, maar omdat je het nooit zult weten?" },
   { level: "past", question: "Tell about a time you surprised yourself with what you could survive.", nl: "Een moment waarop je sterker bleek dan verwacht..." },
-  { level: "past", question: "You quit something. Was it the right call?", nl: "Waar ben je op tijd mee gestopt?" },
+  { level: "past", question: "Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?", nl: "Ben je ooit ergens langer gebleven dan goed voor je was — een relatie, een stad, een baan? Wat hield je vast?" },
   { level: "past", question: "Trace the moment money started meaning something different to you.", nl: "Wanneer kreeg geld een andere betekenis?" },
   { level: "past", question: "What would you do differently if you could go back — and do you actually think it would have changed anything?", nl: "Wat zou je anders doen als je terug kon — en denk je echt dat het iets veranderd had?" },
   { level: "past", question: "Which version of yourself was hardest to let go of?", nl: "Welke versie van jezelf was het moeilijkst om los te laten?" },
@@ -1364,17 +1362,17 @@ const NEWDECK_CARDS = [
   { level: "body", question: "Is pushing your body to its limit a form of pleasure or of discipline?", nl: "Hoe ver ga jij graag als je jezelf lichamelijk uitdaagt?" },
 
   // ─── MIND ───
-  { level: "mind", question: "What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?", nl: "Drie uur 's nachts. Je hoofd begint weer over..." },
-  { level: "mind", question: "An idea you abandoned this year..." },
+  { level: "mind", question: "How easily does a new habit stick for you — and which one actually did?", nl: "Hoe makkelijk beklijft een nieuwe gewoonte bij jou — en welke is echt blijven hangen?" },
+  { level: "mind", question: "What are you good at not doing — and when does that break down?", nl: "Waar ben je goed in om níét te doen — en wanneer gaat dat alsnog mis?" },
   { level: "mind", question: "Which thought loop do you know is a loop and still can't exit?", nl: "Een gedachte waar je telkens opnieuw in vastloopt..." },
   { level: "mind", question: "When has a gut feeling known more than you did?", nl: "Wanneer wist een onderbuikgevoel meer dan jij?" },
   { level: "mind", question: "When your mind wanders, where does it go by default?", nl: "Waar dwaalt je hoofd naartoe als het ruimte krijgt?" },
-  { level: "mind", question: "Which fear of yours can't survive logic — and survives anyway?", nl: "Welke angst trekt zich niets aan van logica?" },
-  { level: "mind", question: "What can't you unsee once you've spotted it?" },
-  { level: "mind", question: "Which thought would you erase from your head if you could?" },
-  { level: "mind", question: "Someone is simply better than you. Then what?", nl: "Er is iemand beter dan jij. En nu?" },
+  { level: "mind", question: "What does your inner voice sound like — and whose is it?", nl: "Hoe klinkt je innerlijke stem — en van wie is die?" },
+  { level: "mind", question: "Which of your opinions is just something you heard once?", nl: "Welke van jouw meningen heb je eigenlijk ooit ergens opgepikt?" },
+  { level: "mind", question: "Do you decide fast and adjust, or slow and stick?", nl: "Beslis je snel en stuur je bij, of langzaam en hou je vast?" },
+  { level: "mind", question: "What's the earliest thing you remember — and is it actually yours?", nl: "Wat is je vroegste herinnering — en is die eigenlijk wel van jou?" },
   { level: "mind", question: "Which question do you keep returning to across the years?", nl: "Welke vraag blijft met je meelopen?" },
-  { level: "mind", question: "What do you think about far more than you let on?" },
+  { level: "mind", question: "Do you analyse people — and what do you get wrong?", nl: "Analyseer jij mensen — en waar zit je dan naast?" },
   { level: "mind", question: "Which idea has changed you, and how did it get in?", nl: "Welk idee heeft jou blijvend veranderd?" },
 
   // ─── SPIRIT ───
@@ -1391,19 +1389,6 @@ const NEWDECK_CARDS = [
   { level: "spirit", question: "A place that's sacred to you..." },
   { level: "spirit", question: "The closest thing I have to a ritual is...", nl: "Een ritueel dat ongemerkt belangrijk voor je werd..." },
 
-  // ─── MAKE ───
-  { level: "make", question: "Name the last thing you made with your hands.", nl: "Het laatste dat je maakte met je eigen handen..." },
-  { level: "make", question: "You make something nobody asked for...", nl: "Wat maak je terwijl niemand erom vraagt?" },
-  { level: "make", question: "What have you built that you're prouder of than you admit?", nl: "Waar ben je trotser op dan je laat merken?" },
-  { level: "make", question: "Something stops you from making the thing you keep thinking about...", nl: "Welk idee blijft terugkomen maar wordt nooit afgemaakt?" },
-  { level: "make", question: "What does finishing something do to you?" },
-  { level: "make", question: "Is creating a need for you, or a choice?", nl: "Heb je iets nodig om te maken?" },
-  { level: "make", question: "Would you rather make something perfect or something finished?", nl: "Kies je liever voor af of voor perfect?" },
-  { level: "make", question: "Whose work makes you jealous?" },
-  { level: "make", question: "What have you left unfinished that still bothers you?" },
-  { level: "make", question: "What do you keep starting and never finishing?" },
-  { level: "make", question: "Is making things for yourself enough, or does it need to be seen?", nl: "Is het genoeg als alleen jij het ooit ziet?" },
-  { level: "make", question: "What have you repaired instead of replaced — and why?", nl: "Wat heb je gerepareerd terwijl vervangen makkelijker was?" },
 
   // ─── CONNECT ───
   { level: "connect", question: "How do you show someone they matter to you — the actual method?", nl: "Zo laat jij merken dat iemand belangrijk voor je is..." },
@@ -1411,8 +1396,8 @@ const NEWDECK_CARDS = [
   { level: "connect", question: "Who taught you the most about how to be close to someone?" },
   { level: "connect", question: "You need something from people, and rarely say it out loud...", nl: "Iets dat je nodig hebt van andere mensen maar zelden vraagt..." },
   { level: "connect", question: "How can someone tell you're withdrawing before you've said a word?", nl: "Hoe merken mensen dat jij afstand neemt?" },
-  { level: "connect", question: "With whom does your yes come slowest?", nl: "Tegen wie duurt jouw ja het langst?" },
-  { level: "connect", question: "Whose requests defeat your no every single time?", nl: "Bij wie werkt jouw nee opvallend slecht?" },
+  { level: "connect", question: "What do you do when you feel misunderstood — and does it work?", nl: "Wat doe je als je je onbegrepen voelt — en werkt dat?" },
+  { level: "connect", question: "Are you listening, or waiting for your turn?", nl: "Luister je echt, of wacht je op je beurt?" },
   { level: "connect", question: "Describe what trust feels like, physically.", nl: "Waaraan merk je dat je iemand vertrouwt?" },
   { level: "connect", question: "Who did you forgive, without ever telling them?", nl: "Iemand die je hebt vergeven zonder het ooit te zeggen..." },
   { level: "connect", question: "Name the last hug that lasted longer than three seconds." },
@@ -1450,12 +1435,12 @@ const NEWDECK_CARDS = [
   // ─── ATTRACT ───
   { level: "attract", question: "Someone is close. The first physical detail you notice?" },
   { level: "attract", question: "What do you find attractive that you'd never admit on a first date?" },
-  { level: "attract", question: "The moment you realise you want someone — where do you feel it first?" },
-  { level: "attract", question: "The type you claim, and the type you actually end up with — how far apart?" },
+  { level: "attract", question: "Someone wanted you and you didn't want them back — did part of you enjoy being wanted anyway?", nl: "Iemand wilde jou en jij die ander niet — genoot een deel van jou toch van dat verlangen?" },
+  { level: "attract", question: "You tell yourself you have a type. Who do you actually keep ending up with?", nl: "Je zegt dat je een type hebt. Bij wie kom je in werkelijkheid steeds uit?" },
   { level: "attract", question: "What does a barely covered body do that a naked one doesn't?" },
   { level: "attract", question: "Which outfit on someone else has never failed on you?" },
   { level: "attract", question: "Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?" },
-  { level: "attract", question: "Your celebrity crush — and what does it share with the people you actually fall for?" },
+  { level: "attract", question: "Who is your celebrity crush — and does that line up with your actual type?", nl: "Wie is je celebrity crush — en klopt dat met je echte type?" },
   { level: "attract", question: "How much does a voice do for you?" },
   { level: "attract", question: "Are you a different person when you're attracted to someone — and who shows up?" },
   { level: "attract", question: "What's a look someone gave you that you can still feel?" },
@@ -1464,7 +1449,7 @@ const NEWDECK_CARDS = [
   // ─── VALUES ───
   { level: "values", question: "There's something you'd refuse to do, whatever it cost...", nl: "Waarvoor zou je altijd een prijs willen betalen?" },
   { level: "values", question: "Which of your values survives worst under pressure?", nl: "Welke waarde van jou verdwijnt als de druk hoog genoeg wordt?" },
-  { level: "values", question: "In arguments you defend something you find hard to justify...", nl: "Waar verdedig jij iets waar je zelf niet helemaal uitkomt?" },
+  { level: "values", question: "How much of where you are now is luck?", nl: "Hoeveel van waar je nu staat is geluk geweest?" },
   { level: "values", question: "What line have you watched someone cross that told you everything?", nl: "Wanneer vertelde iemands gedrag je alles wat je moest weten?" },
   { level: "values", question: "Quote the sentence your parents repeated — that you now live by, or against." },
   { level: "values", question: "When did raising your voice turn out to be exactly right?", nl: "Wanneer was boos worden precies de juiste keuze?" },
@@ -1480,11 +1465,11 @@ const NEWDECK_CARDS = [
   { level: "world", question: "When did you last actually do something about a problem bigger than you — and did it matter?", nl: "Wanneer deed je voor het laatst echt iets aan een probleem groter dan jezelf — en maakte het uit?" },
   { level: "world", question: "Name one law you'd pass tomorrow." },
   { level: "world", question: "What change in your lifetime still amazes you?", nl: "Welke verandering uit jouw levenstijd blijft bijzonder?" },
-  { level: "world", question: "Who has power over your life that you rarely think about?", nl: "Over wie heb je zelden, maar die heeft wel invloed op je leven?" },
+  { level: "world", question: "Is there a political position you hold that you find genuinely hard to defend to people who disagree?", nl: "Heb je een politiek standpunt dat je echt moeilijk kunt verdedigen tegenover mensen die het oneens zijn?" },
   { level: "world", question: "Outsiders keep missing something your background carries...", nl: "Iets uit jouw achtergrond dat anderen vaak missen..." },
   { level: "world", question: "Broadly: are people improvable?", nl: "Kunnen mensen beter worden dan ze zijn?" },
   { level: "world", question: "What has travel actually taught you — beyond the stories?", nl: "Reizen heeft jou iets geleerd dat je thuis niet had geleerd." },
-  { level: "world", question: "Which news photo has never left you?" },
+  { level: "world", question: "Is there something happening in the world that genuinely worries you?", nl: "Is er iets in de wereld dat je oprecht zorgen baart?" },
   { level: "world", question: "Is progress real?", nl: "Geloof jij in vooruitgang?" },
   { level: "world", question: "What would you defend about your country to a foreigner — and what not?", nl: "Wat verdedig je als iemand kritiek heeft op jouw land?" },
   { level: "world", question: "Which common belief about how the world works do you think is simply wrong?" },
@@ -1497,7 +1482,7 @@ const NEWDECK_CARDS = [
   { level: "work", question: "Has your idea of success survived contact with reality?", nl: "Wat is er over van jouw idee van succes?" },
   { level: "work", question: "Tell about your most instructive professional failure.", nl: "Je leerzaamste professionele mislukking..." },
   { level: "work", question: "Is ambition something you have or something that has you?", nl: "Wanneer wordt ambitie een last?" },
-  { level: "work", question: "Name the person who taught you how to work." },
+  { level: "work", question: "What made you choose this field — and is it still the reason you stay?", nl: "Waarom koos je voor dit vak — en is dat nog steeds de reden dat je blijft?" },
   { level: "work", question: "You're genuinely talented at something you'd never turn into a profession...", nl: "Waar ben je opvallend goed in, maar zou je nooit je beroep van maken?" },
   { level: "work", question: "Something would make you walk out tomorrow. What?", nl: "Waar zou jij morgen voor opstappen?" },
   { level: "work", question: "What does the word \"retirement\" do to you?", nl: "Het woord pensioen voelt voor jou als..." },
@@ -1508,14 +1493,14 @@ const NEWDECK_CARDS = [
   { level: "deep", question: "You're still waiting for someone to notice...", nl: "Waar hoop je nog steeds op gezien te worden?" },
   { level: "deep", question: "When did you last cry, and what was underneath it?", nl: "Je laatste tranen gingen eigenlijk over..." },
   { level: "deep", question: "Who do you miss who is still alive?", nl: "Wie mis je terwijl die nog leeft?" },
-  { level: "deep", question: "Quote the sentence that has kept you company for years." },
+  { level: "deep", question: "What do you need to hear more often than you admit?", nl: "Wat zou je vaker willen horen dan je toegeeft?" },
   { level: "deep", question: "If you could rerun one conversation from your life, which one?", nl: "Als één gesprek terug mocht komen..." },
   { level: "deep", question: "What would people be surprised to learn you struggle with?" },
   { level: "deep", question: "Are you easy to love?", nl: "Ben jij makkelijk lief te hebben?" },
   { level: "deep", question: "There was a moment you let someone all the way in. What happened next?" },
   { level: "deep", question: "Slowly, you're making peace with...", nl: "Waar sluit je langzaam vrede mee?" },
   { level: "deep", question: "Which conversation do you keep having — in different rooms, with different people?" },
-  { level: "deep", question: "When were you last truly seen?", nl: "Wanneer voelde jij je echt gezien?" },
+  { level: "deep", question: "What would you want said about you tonight, if you weren't here to hear it?", nl: "Wat zou je willen dat er vanavond over je gezegd werd, als je het zelf niet kon horen?" },
 
   // ─── RAW ───
   { level: "raw", question: "Say the thing you censored earlier tonight.", nl: "Iets dat je vandaag hebt ingeslikt..." },
@@ -1536,13 +1521,13 @@ const NEWDECK_CARDS = [
   { level: "grief", question: "Nobody thinks to ask about this loss...", nl: "Verdriet waar bijna niemand ooit naar vraagt..." },
   { level: "grief", question: "Who do you still talk to that can no longer answer?", nl: "Met wie praat je soms nog, ondanks alles?" },
   { level: "grief", question: "Which ending made you who you are more than any beginning did?", nl: "Welk afscheid heeft je meer gevormd dan enig begin?" },
-  { level: "grief", question: "Which grief do you carry that isn't yours?", nl: "Welk verdriet draag je voor iemand anders mee?" },
+  { level: "grief", question: "Who showed up when you lost something — and who didn't?", nl: "Wie stond er voor je toen je iets verloor — en wie niet?" },
   { level: "grief", question: "What did grief teach you about yourself that nothing else could?", nl: "Wat heeft rouw je over jezelf geleerd?" },
-  { level: "grief", question: "Where do you go, in yourself, when grief arrives?" },
+  { level: "grief", question: "What do you do with grief — do you move through it, around it, or does it move through you?", nl: "Wat doe je met verdriet — ga je erdoorheen, eromheen, of gaat het door jou heen?" },
   { level: "grief", question: "Which object holds a loss for you?", nl: "Een voorwerp dat meer bewaart dan zichzelf..." },
   { level: "grief", question: "Because of them, you still do something nobody knows about...", nl: "Iemand leeft voort in iets wat jij nog steeds doet." },
   { level: "grief", question: "What haven't you allowed yourself to mourn yet?" },
-  { level: "grief", question: "Which photo can you still not look at?" },
+  { level: "grief", question: "What did you lose that wasn't a person?", nl: "Wat ben je kwijtgeraakt dat geen mens was?" },
   { level: "grief", question: "After they were gone, you had to become...", nl: "Na dat verlies moest jij..." },
 
   // ─── FAMILY ───
@@ -1554,7 +1539,7 @@ const NEWDECK_CARDS = [
   { level: "family", question: "Which inherited trait do you watch for in the mirror, with dread?", nl: "Op welke eigenschap hoop je níét te gaan lijken?" },
   { level: "family", question: "Your parents are getting old. What is that doing to you?", nl: "Je ouders worden ouder. Wat doet dat met je?" },
   { level: "family", question: "Who became family without being family?" },
-  { level: "family", question: "Which object will the family fight over when the inheritance is divided?" },
+  { level: "family", question: "Who in your family knows you best — and do they know that?", nl: "Wie in je familie kent jou het best — en weet diegene dat?" },
   { level: "family", question: "What role were you assigned in your family — and do you still play it?", nl: "Welke rol kreeg jij vroeger toebedeeld?" },
   { level: "family", question: "Your family doesn't know...", nl: "Iets wat jouw familie niet van je weet..." },
   { level: "family", question: "You brought someone new to meet the family. What did they notice first?" },
@@ -1592,7 +1577,7 @@ const NEWDECK_CARDS = [
   { level: "uslove", question: "You've stopped asking me for something — what is it?", nl: "Waar ben je gestopt met naar te vragen?" },
   { level: "uslove", question: "What are we both avoiding right now?", nl: "Waar lopen we allebei omheen?" },
   { level: "uslove", question: "When did you last fall for me again, even briefly?", nl: "Wanneer werd je opnieuw een beetje verliefd op mij?" },
-  { level: "uslove", question: "Tell me one thing about us you'd protect at any cost.", nl: "Wat van ons zou je koste wat kost beschermen?" },
+  { level: "uslove", question: "How do you know I love you — what actually tells you?", nl: "Waaraan merk je dat ik van je hou — wat verraadt het?" },
   { level: "uslove", question: "What did you decide about us before I had any say in it?", nl: "Waarover had je al besloten voordat ik iets mocht vinden?" },
   { level: "uslove", question: "Is there a version of me you miss?", nl: "Naar welke versie van mij verlang je soms terug?" },
   { level: "uslove", question: "Tell me what you'd change about us if I couldn't take it personally.", nl: "Stel dat ik me niet verdedigde. Wat zou je aan ons veranderen?" },
@@ -1797,13 +1782,13 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","make","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
-    available: ["colbert","aron","magic","skin","carnal","kinks","backup","abyss"],
+    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
     on:        ["warm","quick","culture","unwind","world"],
-    available: ["connect","self","life","mind","wish","attract","spirit","make","body","aron","magic"],
+    available: ["connect","self","life","mind","wish","attract","spirit","body","aron","magic"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
@@ -1828,17 +1813,17 @@ const PRESETS = {
   },
   solo: {
     on:        ["self","wish"],
-    available: ["deep","raw","shadow","mind","spirit","past","grief","make","body"],
+    available: ["deep","raw","shadow","mind","spirit","past","grief","body"],
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","warm","work","make","culture","mind"],
+    on:        ["quick","warm","work","culture","mind"],
     available: ["life","values","world","connect","friends","unwind","wish","magic"],
     subtitle:  "Safe for the office"
   },
   family_p: {
     on:        ["warm","quick","roots","family","culture","past"],
-    available: ["home","life","grief","us","usfriend","unwind","make","magic"],
+    available: ["home","life","grief","us","usfriend","unwind","magic"],
     subtitle:  "Across generations"
   },
   colbertmode: {
@@ -3785,7 +3770,6 @@ const CATEGORY_DESCRIPTIONS = {
   body:      "The body — in motion, and as you live in it",
   mind:      "How you think, what you notice",
   spirit:    "What you believe, or wonder about",
-  make:      "What you create, build, or make",
   connect:   "How you relate to other people",
   friends:   "About friendship — yours, and this one",
   date:      "Questions for early romance",
