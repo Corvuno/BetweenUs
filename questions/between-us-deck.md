@@ -223,7 +223,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What's the most romantic thing you've attempted that failed completely?
 
 ## Attract ✦
-1. What do you notice about someone's mouth?
+1. Someone is close. The first physical detail you notice?
 2. What do you find attractive that you'd never admit on a first date?
 3. Someone wanted you and you didn't want them back — did part of you enjoy being wanted anyway?
 4. You tell yourself you have a type. Who do you actually keep ending up with?
@@ -233,8 +233,8 @@ The questions come first, category by category. The full change log is at the bo
 8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
-11. Someone is close. The first physical detail you notice?
-12. Whose scent could you identify blindfolded?
+11. What's a look someone gave you that you can still feel?
+12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
 
 ## Values
 1. There's something you'd refuse to do, whatever it cost...
@@ -384,11 +384,11 @@ The questions come first, category by category. The full change log is at the bo
 5. When do you feel most sexually connected to me?
 6. What do I do that works better than I know?
 7. Show me, with my hand, how you want to be touched.
-8. What do you think turns me on that I've never told you?
-9. Pick a first between us to relive.
+8. Pick a first between us to relive.
+9. Who would you sleep with outside this relationship — if you were allowed?
 10. What have you been wanting to try with me but haven't said?
 11. When do you catch me wanting you — and what does it make you do?
-12. How do you want to be held?
+12. What do you hold back with me — and what would it take to stop?
 
 ## Shadow
 1. You lie most consistently about...
@@ -418,23 +418,37 @@ The questions come first, category by category. The full change log is at the bo
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
+## Skin 🔞
+1. Some touch undoes you. Describe it.
+2. Sweat, mess, noise — what does real intimacy smell and feel like for you?
+3. Which scent takes you straight back to sex with someone?
+4. Undressing someone — where do you slow down?
+5. Whose hands do you still remember — and what were they doing?
+6. A kiss you can still feel when you think of it — take me there.
+7. What does a hand on your throat — front or back of the neck — do to you?
+8. In public, fully clothed — which touch still gets to you, and how far will you go?
+9. Your hands on someone's body — where do they go first, and where do they linger?
+10. Ice, heat, cold hands, warm breath — what does temperature do to you?
+11. In the moment, how do you make what you want known — words, hands, or just taking it?
+12. Silk, leather, bare skin, rough hands — which texture does something to you?
+
 ## Carnal 🔞
-1. Trace an orgasm — what happens?
-2. During sex, are you in your body or watching it?
-3. What do you want more of in bed that you rarely get?
-4. What's the sexiest thing anyone has ever said to you in bed?
-5. Name your sexual superpower — the thing you know you do well.
-6. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
-7. What sound — yours or theirs — tips you over the edge?
+1. During sex, are you in your body, watching it, or in your head — and what causes this?
+2. What do you want more of in bed that you rarely get?
+3. What's the sexiest thing anyone has ever said to you in bed?
+4. Name your sexual superpower — the thing you know you do well.
+5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
+6. What sound — yours or theirs — tips you over the edge?
+7. Is coming something you chase, something you let happen, or something you hold off on — and how does that feel?
 8. Afterwards, still tangled up — how do you like to come down?
 9. Sex outdoors — where have you, and where do you still want to?
-10. Sweat, mess, noise — what does real intimacy smell and feel like for you?
-11. A kiss you can still feel when you think of it — take me there.
-12. Whose hands do you still remember — and what were they doing?
+10. What have you never asked for because it's better getting it without asking?
+11. How did porn influence your sex life?
+12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
 ## Bare 🔞
 1. Sex — how important is it, honestly, in the whole of your life?
-2. Is solo sex, for you, self-care or an escape hatch?
+2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. What's the least glamorous thing you genuinely enjoy in bed?
 4. How has your understanding of sexuality changed over time?
 5. What's the shortest time between meeting someone and sleeping with them?
@@ -456,24 +470,24 @@ The questions come first, category by category. The full change log is at the bo
 7. What do you like to hear — or to say — in the thick of it?
 8. Who do you turn into in bed — and what does someone do to bring them out?
 9. Undressed and having to wait — what does anticipation do to you?
-10. Some touch undoes you. Describe it.
-11. Undressing someone — where do you slow down?
-12. Where does someone linger that makes your breath change?
+10. What's the difference between what you fantasise about and what you actually want?
+11. Who introduced you to something you'd never have found or tried alone?
+12. More than two — does it appeal, and what's the pull?
 
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
-1. You've seen most of it by now. What's still taboo?
+1. You've seen most of it by now. What still gives you pause?
 2. What did you once consider extreme that's now a Tuesday?
-3. Where's the line between play and truth for you — and has it ever blurred mid-scene?
-4. What's the most vulnerable you've ever been while appearing to be in control?
-5. What does going to the extreme give you that gentle never could?
-6. Tell about a scene that changed you.
-7. What have you done that you don't explain to vanilla people — not from shame, but because it doesn't translate?
-8. Has your body ever said yes while something deeper said no — and how did you find out?
-9. In the darkest rooms, what's the gentlest thing that happens?
-10. Tell about the safeword that got used — or the one that should have been.
-11. Where did you find out you had a limit?
-12. After the intensity — what do you need that you don't ask for?
+3. What does going to the extreme give you that gentle never could?
+4. Tell about a scene that changed you.
+5. Has your body ever said yes while something deeper said no — and how did you find out?
+6. In the darkest rooms, what's the gentlest thing that happens?
+7. Tell about the safeword that got used — or the one that should have been.
+8. Where did you find out you had a limit?
+9. What kind of trust does going that far actually take?
+10. What did you consent to that you didn't want — and why did you?
+11. Who in your normal life knows about this side of you — do they understand, and who will never find out?
+12. What is something considered 'taboo' by society that you actually find quite appealing?
 
 ---
 
@@ -520,6 +534,12 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 **Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
 **Warm 7** → *"Is there something you're genuinely bad at that you still refuse to stop doing?"* — replaces the pettiest-grudge card, which was the third of a disproportion cluster with 8 and 10.
 **Owner sweep, batch 1.** Connect 6 → the misunderstood card and Connect 7 → the listening card; the two yes/no cards they replace were kept against review in v5.8, now deliberately reversed. Attract 3 → the being-wanted card (restores the *"Being desired does what to you?"* orphan benched when Desire was deleted in v5.5); Attract 4 rephrased to the claimed-type/actual-pattern construction. Values 3 → the luck card, which also clears the defend-what-you-can't-justify twin with the reworked Spirit 8. World 5 → the hard-to-defend political position; World 9 → the worry card, with the action clause dropped so it does not repeat World 2. Work 8 → why you chose this field.
+## Patch v6.17 — After Dark rebuilt from the ground up
+Skin restored as its own category and redefined: **erotic-sensory, the gateway** — touch, scent, temperature, texture, hands, wordless signalling, public charge. Seven gated categories, each with one clear job:
+Attract ✦ (the pull, before anything happens) · Skin (the erotic senses) · Carnal (the act, from the inside) · Bare (the honest truths and history) · Kinks (fantasy, power, turn-ons) · Abyss (the far end) · Us: Intimate (the person across from you).
+Roughly thirty cards rewritten or newly written to one rule: **cards you can feel, not think** — a card should pull a specific memory or sensation, not invite a definition. Cards that produced an abstraction ("what does really good sex feel like") were replaced by ones that pull a scene ("when did sex last turn you into pure body — no thoughts, just flow").
+New ground opened: temperature, texture, wordless communication mid-act, erotica taste, porn's actual influence, aftercare, sex outdoors, waiting/anticipation, the roles you fall into, who introduced you, more than two, consent you gave without wanting it, who in your normal life knows, society's taboo vs your own appetite, confidence and how it's worn.
+Cut throughout: duplicate "trace" cards, the three-kiss cluster, weak preference questions, and cards whose premise blocked the answer. Deck holds at 420 cards / 35 categories.
 
 ## Patch v6.17 — light tier consolidated: Playful → Warm
 The three opener categories (Quick · Warm · Playful) collapsed to two. Their functions: Quick = fast surface momentum; Warm + Playful both = light personality reveal — so Playful folded into **Warm**, now spanning fond → funny. Quick stays as the standalone fast opener.
