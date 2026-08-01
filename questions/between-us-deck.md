@@ -1,157 +1,80 @@
 # Between Us — Full Deck v6
 
-## Patch v6.7 — Abyss jargon RESTORED (v6.6 de-jargoning reverted)
-Scene and vanilla restored to 3, 6, 7, 12. The de-jargoning diluted exactly what the category was built to reach. Since the deck is digital, the gatekeeping moves to a category tagline instead of being smuggled into every card.
-
-## Patch v6.6
-Quick 8: emptying a bag is slow and physical → "What's the strangest thing someone might find in your bag?" (answerable from memory, hypothetically, in seconds).
-Spirit 8: prayer card cut — it locates the answer outside the person, in a deity they may not have → "What do you believe that you cannot defend?"
-Playful 6: guilty-pleasure card cut — obvious or contrived answers, no second layer → "What are you smug about?"
-Abyss self-declaring: cards 1, 5, 6, 9, 12 rewritten to carry their own context — scene, darkest rooms, extreme-vs-gentle, the drop after intensity. A player who doesn't know what "Abyss" means now learns it from the card, not from an intro.
-
-## Patch v6.5
-Quick 7: "which chair in this room" cut — assumed a seated indoor setting. The deck gets played in cars, on the street, in elevators; no card may assume furniture. → "What's the last thing you said out loud to yourself?"
-Think-vs-talk card: already removed in v6.2 (Mind 9 is now the competition card).
-
-## Patch v6.4
-Roots 7 broadened to all emotions: "Which feelings were allowed in your house — and which weren't?" This twinned with Roots 1 (emotional weather), so Roots 1 was cut and "Given the power, rewrite one thing in your upbringing" restored there — it was the stronger of the two and shouldn't have been the victim.
-Deep 4 → "Who do you miss who is still alive?" The never-told-anyone card is cut: it collided with Deep 1, which is the better card.
-
-## Patch v6.4
-Roots 7 → "Which feelings were allowed in your house — and which weren't?" — anger card broadened to all emotions. Its victim is the adults-argued card, which the emotions question absorbs. Rewrite-your-upbringing restored (Roots 3) — too good to sacrifice.
-Deep 4 → "Who do you miss who is still alive?" — the never-told-anyone card cut as a twin of Deep 1.
-
-## Patch v6.3 — gap-filling
-Money: Life 11 (can't afford / pretend not to want), Values 8 (would you tell this table what you earn — replaces marriage verdict).
-Alone: Ground 12 (good at being alone, or just used to it — replaces non-negotiable fragment). Connect 2 kept; empty-evening card dropped.
-Anger: Roots 7 (were you allowed to be angry — replaces rewrite-your-upbringing), Shadow 8 (has your anger ever frightened someone — replaces standing-battle).
-Roots 2 rewritten, not cut: "What's strange about your family that you only see now?" — present tense, not limited to rules.
-Food: Body 9 (actual relationship with food — replaces "is your body you, or yours").
-Being wrong: Values 11 (changed position mid-argument). Connect 9 rewritten to "Who did you forgive, without ever telling them?" — the apology-received card dropped in its favour.
-Aging: Family 7 (your parents are getting old — replaces the children-assuming legacy card), Past 11 (which year simply vanished — replaces "is regret useful").
-Small: Playful 5 (what makes you laugh when you're alone — removes the last tech reference in the deck), Deep 4 (never told anyone, not from shame).
-
-## Patch v6.2 — play/competition thread
-Eight cards added as a thread, not a block: Playful 11 (game you refuse to lose), Self 10 (are you a good loser), Roots 5 (did anyone let you win), Shadow 9 (do you cheat at games), Work 8 (competitor who made you better), Connect 10 (win alone or lose together), Values 12 (when competition made you ugly), Mind 9 (someone is simply better than you). Victims: fictional-character, know-yourself-meta, praised-as-a-child, cruelest-thought, first-week/after-a-year, closeness-abstract, rule-broken-cleanly, think-vs-talk. Skin 9: "half-covered" → "barely covered" (half sets a thought pattern; barely stays open).
-
-## Patch v6.1 — twin audit
-Fifteen cards replaced. Cut clusters: unspoken-desire (7 cards → 3: Edge 1, Kinks 7, Us: Intimate 1); Ground certainty (3 → 1, kept 11); Ground collapse (3 → 1, kept 6); Grief unresolved-loss (3 → 1, kept 1). True twins resolved: Culture 2/8, Life 8/9, Flesh 8/9, Kinks 2/6. Skin 9 → lingerie variant.
-New ground opened by the replacements: shame in sex, watching/being watched, half-covered bodies, tempo as bodily default, inherited grief, who you became after a death, unbroken promises, rebuilding from zero, underrated love, doing something purely for fun.
-
-Changes from v4: Abyss safeword card · Desire category added (✦) · Ground rebuilt to Shadow-caliber · Us-categories de-Wh'd · Unwind de-depleted · all point fixes. Change log at bottom.
-
 ✦ = spicy, non-gated · 🔞 = After Dark
+
+The questions come first, category by category. The full change log is at the bottom.
 
 ---
 
-
-## ARCHIVE — retired category names
-*Not in play. Kept for the app in case a name is ever needed again.*
-- **Pillow** — "Sex, thought about out loud" (reflective/analytical sex cards)
-- **Flesh** — "The body in desire"
-- **Blunt** — "Direct to a fault — the questions your friends ask three drinks in" (renamed to Bare)
-- **Desire** — "Wanting, and being wanted"
-- **Lens** — "How you perceive — what you notice, what you miss"
-
-## NOTE — decks living in the app, not in this file
-Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
-
 ## Quick
 1. Coffee or tea order — exactly, no simplifying.
-2. Sing the song that's been stuck in your head.
-3. Last thing you photographed?
-4. Your last completely unnecessary purchase?
-5. Which drawer in your house is the disgrace?
-6. You're always late for...
-7. What's the last thing you said out loud to yourself?
-8. What's the strangest thing someone might find in your bag?
-9. Walk me through your first minute home.
-10. What did you last save to watch or read later?
-11. Name the most useless thing you own.
-12. Point to something you're wearing that has a story.
+2. What song's been stuck in your head this week?
+3. What's your greatest extravagance?
+4. Which drawer in your house is the disgrace?
+5. You're always late for...
+6. What smell makes you instantly hungry?
+7. What's the strangest thing someone might find in your bag?
+8. What nickname do you go by — and who gave it?
+9. Which texture can you not stop touching?
+10. What's the most childish thing that still delights you?
+11. Which season fits you best — and how does it show?
+12. What do you quietly fix or straighten in other people's houses?
 
 ## Colbert
 *[Fixed set — insert verbatim yourself. Slot reserved.]*
 
 ## Warm
+*Light and personal — the fond, the funny, the telling. (Absorbed Playful in v6.17.)*
 1. Some small thing you do properly, though nobody would ever check...
 2. One small thing can ruin your entire morning. Which?
-3. What do you quietly fix or straighten in other people's houses?
-4. Which season fits you best — and how does it show?
-5. Name something you enjoy far more than most people seem to.
-6. Which gift, out of all of them, hit the mark completely?
-7. Whose cooking do you miss?
-8. Which food do you eat for the texture alone?
-9. Which sound instantly settles you?
-10. Which piece of clothing do you reach for when nobody needs impressing?
-11. Ten minutes, no preparation — on what?
-12. Which stranger do you still remember fondly?
-
-## Playful
-1. What's your most irrational food rule — and why is it correct?
-2. Name the pettiest grudge you're still maintaining.
-3. Die on a hill nobody else would even climb — which?
-4. You're suspiciously good at one completely ordinary thing...
-5. What makes you laugh when you're alone?
-6. What are you smug about?
-7. Name something you blow out of proportion — knowingly.
-8. Which texture can you not stop touching?
-9. When did you last go gloriously too far — and was it worth it?
-10. What do you do to excess, unapologetically?
-11. Which game do you refuse to lose — and what happens when you do?
+3. Whose cooking do you miss?
+4. Point to something you're wearing that has a story.
+5. What do you know a suspiciously specific amount about?
+6. Which stranger do you still remember fondly?
+7. Name the pettiest grudge you're still maintaining.
+8. What's a hill you'd die on that nobody else would even climb?
+9. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
+10. What do you knowingly blow out of proportion?
+11. When did you last go gloriously too far — and was it worth it?
 12. Quote the sentence people around you are most tired of hearing from you.
 
 ## Culture
-1. Which book have you given away more than once?
-2. Name something universally loved that leaves you completely cold.
+1. Is there a piece of art that has stayed with you longer than it should have?
+2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
 5. Which artist changed what you pay attention to?
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
-8. Name the thing you love that everyone else seems to have missed.
+8. The one you love that everyone else seems to have missed...
 9. Does great art excuse a terrible artist?
-10. Something kept you up past your bedtime. Page, episode, or track?
+10. What's a work of art — painting, installation, performance — that stopped you in your tracks?
 11. Take us to the moment a story last made you cry.
-12. Name something you enjoy that doesn't fit your image.
-
-## Move
-1. Your body can still do something that surprises people...
-2. Name the last thing that left you gasping.
-3. Do you take up space in a room, or fold into it?
-4. Which physical skill do you quietly miss from an earlier version of yourself?
-5. Which route do you walk on autopilot — and where does your mind go?
-6. What happens to you when the music takes over?
-7. Describe the sport or training that has taught you the most about yourself.
-8. Tell about a moment in sport or dance when your body knew before your head did.
-9. Is pushing your body to its limit a form of pleasure or of discipline?
-10. Rhythm: do you have it, fake it, or refuse it?
-11. My body feels most alive when...
-12. What do you love feeling under your bare feet?
+12. What was the last thing you read, watched, or listened to that genuinely changed how you think?
 
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
-2. Every single day you do something you've never mentioned to anyone...
+2. What would have to change for your life to feel more like your own?
 3. Which chore do you secretly not mind?
-4. What does your actual Tuesday evening look like?
-5. Name the part of your life that is exactly as you wanted it.
-6. If your week had one extra day, what would it honestly get spent on?
+4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
+5. One part of your life is exactly as you wanted it...
+6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. Is an ordinary life something to fear or to aim for?
 8. What are you putting off that you know you'll regret?
-9. Walk us through the last thing you did purely for the fun of it.
+9. What does getting older take from you that you didn't expect, and what does it give?
 10. How much of your day runs on autopilot, honestly?
 11. What can't you afford that you pretend not to want?
-12. Too much of one thing, too little of another — name them.
+12. If you stopped explaining why you can't, what would change about how you live?
 
 ## Home
 1. Who is allowed in your home unannounced?
 2. When did a place last stop feeling like home?
-3. You move somewhere new. First thing you set up?
+3. What object in your house has survived the most versions of you?
 4. Where in your home do you actually live — which chair, which corner?
-5. What makes a house start to feel like yours?
+5. What does home actually feel like when you have it — and how do you know?
 6. What has to be true of a space before you can relax in it?
 7. Which object in your home is irreplaceable — not in money, in meaning?
-8. Describe the view you'd most want from your kitchen window.
+8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
 10. Can you feel at home somewhere you don't belong?
 11. Which house from your life do you still walk through in dreams?
@@ -159,79 +82,79 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Roots
 1. The emotional weather in the house you grew up in...
-2. What's strange about your family that you only see now?
-3. Which object from childhood do you wish you still had?
-4. One smell puts you straight back into childhood...
-5. Did anyone ever let you win — and did you know?
+2. Which of your parents' fears did you inherit?
+3. Do you catch yourself repeating a trait of your parents — and how do you feel about it?
+4. The day you finally understood something your parent did...
+5. When did you first realise your parents were just people?
 6. Look at a photo of young you — what looks back?
 7. Which feelings were allowed in your house — and which weren't?
 8. At home, to be safe, you had to be...
 9. What were you praised for as a child — and what did that train you to become?
-10. Before you were ten, you'd already learned to hide...
+10. What did you learn about love from watching your parents?
 11. The moment you realised your normal wasn't — take us back.
-12. Who in your childhood should not have been given a child?
+12. Which adult from your childhood were you never quite safe with?
 
 ## Past
 1. Which decision looked small at the time but turned out to be a hinge?
-2. The day you finally understood something your parent did...
+2. What choice haunts you — not because it was wrong, but because you'll never know?
 3. Tell about a time you surprised yourself with what you could survive.
 4. You quit something. Was it the right call?
 5. Trace the moment money started meaning something different to you.
-6. Which conflict would you rerun with different choices?
-7. What were you wrong about for years?
+6. What would you do differently if you could go back — and do you actually think it would have changed anything?
+7. Which version of yourself was hardest to let go of?
 8. Describe a failure you're only now able to talk about.
 9. Do people actually change, or just get better at managing themselves?
-10. Which scar — and the story that made it?
+10. Which scar still carries the best story?
 11. Which year of your life simply vanished?
 12. Would the twenty-year-old you approve of the current one — and does that matter?
 
 ## Unwind
-1. Describe your perfect day off — the real one, not the pretty one.
-2. How do you switch off — what's the ritual?
-3. Describe rest that actually works — not rest that kills time.
-4. Name the hour of the week that's entirely yours.
+1. Your perfect day off — the real one, not the pretty one...
+2. What does rest actually feel like for you — do you know how to do it?
+3. What would a truly wasted afternoon look like for you — and how often do you allow it?
+4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
 6. There was a moment you felt completely free. Where were you?
-7. You rarely allow yourself something, though you could...
+7. What's something you do purely for pleasure that has absolutely no productive value?
 8. The most unexpected beauty a trip ever handed you...
 9. What does travel give you that home can't?
 10. A place you keep going back to — not because it's the best, but because it's yours...
-11. Name what you refuse to optimise.
+11. The one thing you refuse to optimise...
 12. What does the first warm day of the year do to you?
 
 ## Self
 1. Two traits of yours that seem to work against each other...
 2. Which compliment do you deflect because part of you suspects it's true?
-3. What do you pretend to be more relaxed about than you are?
-4. People routinely get one thing wrong about you...
-5. Which pattern of yours do you only notice once it's already running?
-6. Describe the version of you that only exists in an empty house.
-7. How much explaining do you find yourself doing — of your choices, your tone, yourself?
-8. Growing older is teaching me...
-9. Is there a core "you," or just a repertoire of situations?
-10. What did someone once point out about you that you now see everywhere?
-11. Which younger belief about yourself turned out flat wrong?
-12. What do you like about yourself that you'd never post?
+3. When are you most lonely — and is anyone around when it happens?
+4. What did someone once point out about you that you now see everywhere?
+5. How much explaining do you find yourself doing — of your choices, your tone, yourself?
+6. Do you take up space in a room, or fold into it?
+7. Which younger belief about yourself turned out flat wrong?
+8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
+9. What have you had to accept that you never chose?
+10. Strip away the job, the roles, the routines — what's left standing?
+11. What do you need that money can't buy?
+12. Who is your ground — and do they know?
 
 ## Body
-1. Point to where you carry your tension right now.
-2. When do you trust your body more than your mind?
-3. Pain taught you something comfort never could...
-4. What does your body know how to do that you never taught it?
-5. When did you last feel completely at home in your own skin?
-6. Which part of your body draws your own critical eye first?
-7. Point to the part of your body you would defend as beautiful.
-8. How does aging announce itself to you — and what do you do with it?
-9. What's your actual relationship with food?
-10. Your body asks for something you routinely deny it...
-11. Which injury or illness does your body still remember?
-12. My body and I are currently...
+1. When did your body surprise you with what it could do?
+2. When does your body feel like it belongs to you?
+3. When did you last move purely for the joy of it — no goal, no fitness?
+4. What music reaches your body before it reaches your head — and what happens?
+5. Point to where you carry your tension right now.
+6. Pain taught you something comfort never could...
+7. Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.
+8. When did you last feel completely at home in your own skin?
+9. How does aging announce itself to you — and what do you do with it?
+10. What's your actual relationship with food?
+11. Your body asks for something you routinely deny it...
+12. Is pushing your body to its limit a form of pleasure or of discipline?
 
 ## Mind
 1. What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?
-2. Name an idea you abandoned this year.
+2. An idea you abandoned this year...
 3. Which thought loop do you know is a loop and still can't exit?
-4. What do you understand intuitively but can't explain?
+4. When has a gut feeling known more than you did?
 5. When your mind wanders, where does it go by default?
 6. Which fear of yours can't survive logic — and survives anyway?
 7. What can't you unsee once you've spotted it?
@@ -252,7 +175,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 8. What do you believe that you cannot defend?
 9. Is meaning found or made?
 10. Which coincidence refuses to feel like coincidence?
-11. Name a place that is sacred to you.
+11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
 ## Make
@@ -289,7 +212,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 3. Which friendship ended without ever officially ending?
 4. Which friend gets the honest version of you — and which gets the polite one?
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
-6. Name the friend who deserves a better version of you.
+6. One friend deserves a better version of you...
 7. What do we actually owe our friends?
 8. What do your friends come to you for — and is it what you'd choose?
 9. What do you say about your friends when they're not there?
@@ -312,21 +235,21 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. What's the most romantic thing you've attempted that failed completely?
 
 ## Attract ✦
-1. What do you notice about someone's mouth?
+1. Someone is close. The first physical detail you notice?
 2. What do you find attractive that you'd never admit on a first date?
 3. The moment you realise you want someone — where do you feel it first?
 4. The type you claim, and the type you actually end up with — how far apart?
-5. When has attraction ambushed you from a direction you never expected?
+5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
 8. Your celebrity crush — and what does it share with the people you actually fall for?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
-11. Who wanted you in a way you still think about?
-12. Being desired does what to you?
+11. What's a look someone gave you that you can still feel?
+12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
 
 ## Values
-1. Name what you'd refuse to do, whatever it cost.
+1. There's something you'd refuse to do, whatever it cost...
 2. Which of your values survives worst under pressure?
 3. In arguments you defend something you find hard to justify...
 4. What line have you watched someone cross that told you everything?
@@ -340,8 +263,8 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 12. When did competition make you ugly — and did you ever cheat to win?
 
 ## World
-1. This era will be judged for...
-2. Do you feel responsible for the state of the world?
+1. What's something the next generation will judge this one harshly for?
+2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
 5. Who has power over your life that you rarely think about?
@@ -449,7 +372,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 9. When were you proudest of me?
 10. When have I made you laugh hardest?
 11. If this friendship had a title, what would it be?
-12. Ask me, right now, for more of something.
+12. What could this friendship use more of?
 
 ## Us: Love
 1. Name the thing I give you that you'd miss most.
@@ -469,34 +392,20 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 1. What do you think I want from you that I haven't asked for?
 2. Replay a moment between us — out loud.
 3. What do you wish I understood about your desire?
-4. What have you held back from telling me in bed?
-5. Point to where you want to be kissed, right now.
-6. When do you feel most sexually connected to me?
-7. What do I do that works better than I know?
-8. Show me, with my hand, how you want to be touched.
-9. What do you think turns me on that I've never told you?
-10. Pick a first between us to relive.
-11. Who would you sleep with outside this relationship — if you were allowed?
-12. Ask me the intimate question you've been saving.
-
-## Ground *(rebuilt to Shadow-caliber)*
-1. Everything else is in motion. You return to...
-2. Lose everything tomorrow. What do you rebuild first?
-3. Which belief, if you lost it, would take you down with it?
-4. Which principle do you apply without ever thinking about it?
-5. There was a time you completely lost your footing. What held?
-6. What have you had to accept that you never chose?
-7. What do you need that money can't buy?
-8. Strip away the job, the roles, the routines — what's left standing?
-9. A promise to yourself you've never broken — quote it.
-10. Who is your ground — and do they know?
-11. What survived every version of you?
-12. Are you good at being alone — or just used to it?
+4. Point to where you want to be kissed, right now.
+5. When do you feel most sexually connected to me?
+6. What do I do that works better than I know?
+7. Show me, with my hand, how you want to be touched.
+8. Pick a first between us to relive.
+9. Who would you sleep with outside this relationship — if you were allowed?
+10. What have you been wanting to try with me but haven't said?
+11. When do you catch me wanting you — and what does it make you do?
+12. What do you hold back with me — and what would it take to stop?
 
 ## Shadow
 1. You lie most consistently about...
 2. Quote the cruelest thing you've ever actually said.
-3. Describe the version of you that comes out at your worst — honestly.
+3. The you that comes out at your worst — honestly...
 4. People believe your presentation. What do you get away with?
 5. You're unwilling to see something about yourself. Best guess.
 6. Tell about hurting someone without meaning to.
@@ -513,7 +422,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 3. If I were braver, I would already have...
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
-6. Compose, out loud, the message you secretly hope to receive one day. ✦
+6. The message you secretly hope to receive one day... ✦
 7. Which wish keeps returning, in new costumes?
 8. Is wanting more a flaw or an engine?
 9. A free year, no obligations — what finally gets done?
@@ -521,95 +430,204 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
-## Edge 🔞
-1. One desire has never been said out loud...
-2. What does sex mean to you, beyond pleasure?
-3. Reconstruct your smoothest pickup ever.
-4. Name the turn-on you'd least like read aloud.
-5. Where does shame still live in your sex life?
-6. Tell the story of the most outrageous sexual situation you've found yourself in.
-7. Nudes: ever sent or received one — and has one ever travelled further than intended?
-8. Where's the most beautiful place sex has ever happened for you?
-9. Where's the strangest place sex has ever happened for you?
-10. Do you need to feel emotionally safe to be physically free — or the other way round?
-11. Who or what do you want that you know you shouldn't?
-12. What's the closest you've come to acting on a fantasy?
-
 ## Skin 🔞
 1. Some touch undoes you. Describe it.
-2. Someone is close. The first physical detail you notice?
-3. What kind of kiss do you like best?
-4. How do you like to be woken?
-5. Clean sheets, bare skin...
-6. What's the last thing you noticed on someone that stayed with you all day?
-7. Morning breath, mess, noise: what does real intimacy smell and sound like for you?
-8. How does your skin remember people?
-9. What does a barely covered body do that a naked one doesn't?
-10. How do you want to be held?
-11. Being undressed slowly — what does that do to you?
-12. Whose scent could you identify blindfolded?
+2. Sweat, mess, noise — what does real intimacy smell and feel like for you?
+3. Which scent takes you straight back to sex with someone?
+4. Undressing someone — where do you slow down?
+5. Whose hands do you still remember — and what were they doing?
+6. A kiss you can still feel when you think of it — take me there.
+7. What does a hand on your throat — front or back of the neck — do to you?
+8. In public, fully clothed — which touch still gets to you, and how far will you go?
+9. Your hands on someone's body — where do they go first, and where do they linger?
+10. Ice, heat, cold hands, warm breath — what does temperature do to you?
+11. In the moment, how do you make what you want known — words, hands, or just taking it?
+12. Silk, leather, bare skin, rough hands — which texture does something to you?
 
 ## Carnal 🔞
-1. What does really good sex feel like from the inside — your words, not the movies'?
-2. Point to the spot partners always skip.
-3. During sex, are you in your body or watching it?
-4. What do you want more of in bed that you rarely get?
-5. What's the sexiest thing anyone has ever said to you in bed?
-6. What does your body actually do at climax — the ungraceful version?
-7. What does arousal actually feel like in your body — trace it.
-8. What makes you loud — and what makes you go silent?
-9. What has porn let you discover about your own taste?
-10. How do you know, afterwards, that it was really good?
-11. Your body vetoes something, whatever your head says...
-12. Name your sexual superpower — the thing you know you do well.
+1. During sex, are you in your body, watching it, or in your head — and what causes this?
+2. What do you want more of in bed that you rarely get?
+3. What's the sexiest thing anyone has ever said to you in bed?
+4. Name your sexual superpower — the thing you know you do well.
+5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
+6. What sound — yours or theirs — tips you over the edge?
+7. Is coming something you chase, something you let happen, or something you hold off on — and how does that feel?
+8. Afterwards, still tangled up — how do you like to come down?
+9. Sex outdoors — where have you, and where do you still want to?
+10. What have you never asked for because it's better getting it without asking?
+11. How did porn influence your sex life?
+12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
 ## Bare 🔞
-1. Unsafe sex under persuasion: persuader or persuaded — and how does it sit now?
-2. Sex — how important is it, honestly, in the whole of your life?
-3. Is solo sex, for you, self-care or an escape hatch?
-4. What's the least glamorous thing you genuinely enjoy in bed?
-5. Ever faked an orgasm — and did it work?
-6. Walked in on, or done the walking in — what happened?
-7. Ever slept with someone you really shouldn't have — what made them off-limits?
-8. What's the shortest time between meeting someone and sleeping with them?
-9. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
-10. When was your last STI test — honestly?
-11. Tell about the moment sex went most embarrassingly wrong.
-12. Ever paid for it, been paid, or seriously considered either?
+1. Sex — how important is it, honestly, in the whole of your life?
+2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
+3. What's the least glamorous thing you genuinely enjoy in bed?
+4. How has your understanding of sexuality changed over time?
+5. What's the shortest time between meeting someone and sleeping with them?
+6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
+7. Tell about the moment sex went most embarrassingly wrong.
+8. What does sexual fulfilment feel like — and do you have it now?
+9. Reconstruct your smoothest pickup ever.
+10. Tell the story of the most outrageous sexual situation you've found yourself in.
+11. Where's the most beautiful place sex has ever happened for you?
+12. Where's the strangest place sex has ever happened for you?
 
 ## Kinks 🔞
-1. What specific thing turns you on that you've never seen represented anywhere?
-2. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
-3. Which fantasy keeps returning, or fetish that keeps pulling you in — and have you ever explored it?
-4. You tried it once and quietly wanted it again...
-5. What's the smallest thing that flips a switch in you?
-6. Watching, or being watched — which does more for you?
-7. What does not being able to move do to you?
-8. Can pain — given or taken — carry pleasure for you, and what's the pull?
-9. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
-10. Which object, fabric, or material carries a charge for you?
-11. What turns you on that has nothing to do with sex?
-12. What would be written in the rules for a night with you?
+1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
+2. Watching, or being watched — which does more for you?
+3. Can pain — given or taken — carry pleasure for you, and what's the pull?
+4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
+5. Where does shame still live in your sex life?
+6. Is there a kink or fantasy you have that you've never fully acted on?
+7. What do you like to hear — or to say — in the thick of it?
+8. Who do you turn into in bed — and what does someone do to bring them out?
+9. Undressed and having to wait — what does anticipation do to you?
+10. What's the difference between what you fantasise about and what you actually want?
+11. Who introduced you to something you'd never have found or tried alone?
+12. More than two — does it appeal, and what's the pull?
 
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
-1. You've seen most of it by now. What's still taboo?
+1. You've seen most of it by now. What still gives you pause?
 2. What did you once consider extreme that's now a Tuesday?
-3. Where's the line between play and truth for you — and has it ever blurred mid-scene?
-4. What's the most vulnerable you've ever been while appearing to be in control?
-5. What does going to the extreme give you that gentle never could?
-6. Tell about a scene that changed you.
-7. What have you done that you don't explain to vanilla people — not from shame, but because it doesn't translate?
-8. Has your body ever said yes while something deeper said no — and how did you find out?
-9. In the darkest rooms, what's the gentlest thing that happens?
-10. Tell about the safeword that got used — or the one that should have been.
-11. Where did you find out you had a limit?
-12. After the intensity — what do you need that you don't ask for?
+3. What does going to the extreme give you that gentle never could?
+4. Tell about a scene that changed you.
+5. Has your body ever said yes while something deeper said no — and how did you find out?
+6. In the darkest rooms, what's the gentlest thing that happens?
+7. Tell about the safeword that got used — or the one that should have been.
+8. Where did you find out you had a limit?
+9. What kind of trust does going that far actually take?
+10. What did you consent to that you didn't want — and why did you?
+11. Who in your normal life knows about this side of you — do they understand, and who will never find out?
+12. What is something considered 'taboo' by society that you actually find quite appealing?
 
 ---
 
-## Patch v5.1
-Desire 4 → "Would you rather be desired or understood?" Giving/receiving pleasure moved to Carnal 5. Carnal 9: orgasm-as-job (Leuterspel K10) cut for crude framing — "discovered embarrassingly late" restored in its place; its performance-pressure territory partly covered by Carnal 3 anyway. Friendship 8 restored to friends-version. Abyss 10: "spoken" → "used".
+---
+
+## ARCHIVE — retired category names
+*Not in play. Kept for the app in case a name is ever needed again.*
+- **Pillow** — "Sex, thought about out loud" (reflective/analytical sex cards)
+- **Flesh** — "The body in desire"
+- **Blunt** — "Direct to a fault — the questions your friends ask three drinks in" (renamed to Bare)
+- **Desire** — "Wanting, and being wanted"
+- **Lens** — "How you perceive — what you notice, what you miss"
+
+## BENCH — cards parked for later
+*Cut but worth keeping — available if a slot ever opens.*
+- **Quick / Deep** — "Is there something you wish people asked you instead of 'how are you'?" (too reflective for a fast opener; candidate for a Deep pass)
+
+## NOTE — decks living in the app, not in this file
+Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
+
+---
+
+# Change log
+
+## Patch v6.17 — After Dark rebuilt from the ground up
+Skin restored as its own category and redefined: **erotic-sensory, the gateway** — touch, scent, temperature, texture, hands, wordless signalling, public charge. Seven gated categories, each with one clear job:
+Attract ✦ (the pull, before anything happens) · Skin (the erotic senses) · Carnal (the act, from the inside) · Bare (the honest truths and history) · Kinks (fantasy, power, turn-ons) · Abyss (the far end) · Us: Intimate (the person across from you).
+Roughly thirty cards rewritten or newly written to one rule: **cards you can feel, not think** — a card should pull a specific memory or sensation, not invite a definition. Cards that produced an abstraction ("what does really good sex feel like") were replaced by ones that pull a scene ("when did sex last turn you into pure body — no thoughts, just flow").
+New ground opened: temperature, texture, wordless communication mid-act, erotica taste, porn's actual influence, aftercare, sex outdoors, waiting/anticipation, the roles you fall into, who introduced you, more than two, consent you gave without wanting it, who in your normal life knows, society's taboo vs your own appetite, confidence and how it's worn.
+Cut throughout: duplicate "trace" cards, the three-kiss cluster, weak preference questions, and cards whose premise blocked the answer. Deck holds at 420 cards / 35 categories.
+
+## Patch v6.17 — light tier consolidated: Playful → Warm
+The three opener categories (Quick · Warm · Playful) collapsed to two. Their functions: Quick = fast surface momentum; Warm + Playful both = light personality reveal — so Playful folded into **Warm**, now spanning fond → funny. Quick stays as the standalone fast opener.
+Best 24 of the combined 36 kept; 12 cut, and 4 cards moved to rebalance. **Quick** takes on *texture you can't stop touching* and *most childish thing that delights you* (from Playful) and *season that fits you* and *what you straighten in others' houses* (from Warm). **Warm** keeps its six fond cards and gains six from Playful (grudge, hill, party-skill, blow-out-of-proportion, gone-too-far, the tired-sentence). Playful 7 reworded to a question: *"What do you knowingly blow out of proportion?"*
+Cut (12): Quick — last-photographed, state-of-mind-three-words, most-useless-thing (twin of extravagance), wish-people-asked (benched for a Deep pass). Warm — enjoy-more-than-most (twin of excess), gift-that-hit-the-mark, better-than-you-thought, clothing-when-nobody-impressing (twin of wearing-a-story). Playful — laugh-when-alone (twin of childish-delight), what-you're-smug-about, excess-unapologetically (twin of enjoy-more-than-most), game-you-refuse-to-lose (competition thread lives in Self/Work/Values). The `play` level is retired from all three builds (button, dropdown, color/class/label maps, presets, light-level groups). Deck now 408 cards / 34 categories.
+
+## Patch v6.16 — After Dark rebuilt
+Edge and Skin dissolved. The gated wing is now six categories: Attract ✦, Carnal, Kink, Bare, Abyss, Us: Intimate.
+Skin's cards redistributed: touch/undressing/breath → Kink; sweat, kiss-you-can-still-feel, whose-hands → Carnal; first-detail, scent, barely-covered → Attract; how-you-want-to-be-held → Us: Intimate. Edge dissolved earlier into Kink (shame) and Bare (pickup, outrageous, most-beautiful/strangest place).
+Carnal reframed to the act, from the inside (trace an orgasm, the good-sex flow card, sound, aftercare, outdoors, superpower) — the two duplicate "trace" cards merged. Kink gained a reworked never-acted-on card, dirty talk, the roles card, and the anticipation/wait card. Bare holds the blunt/history/reflective set (importance, solo, count, embarrassing, understanding-changed, sexual-fulfilment, plus the Edge stories). Design rule throughout: cards you can feel, not think. Deck now 420 cards / 35 categories.
+
+## Patch v6.15 — fold: Ground → Self · classic deck removed
+Ground folded into **Self** (who you are, and what holds you up); best 12 of the combined 24. Card 8 made two-part: *"There was a time you completely lost your footing. What held — and what did you rebuild first after?"* (absorbs Ground's rebuild-first card). Kept Self's self-perception spine plus Ground's bedrock/crisis cards; the `ground` level is retired from the UI.
+Classic deck removed from the app: `CLASSIC_CARDS` deleted from all three builds (archived to `between-us-classic-archive.md`), the 18 Colbert cards preserved in their own `COLBERT_CARDS`, and the `CLASSIC_DECK` toggle removed. Deck now 444 cards / 37 categories.
+
+## Patch v6.14 — fold: Move → Body
+Move and Body merged into one **Body** category (the body in motion, and as you live in it). Best 12 of the combined 24, balancing motion (surprise, ownership, joy-of-movement, music-before-head, pushing-to-limit) with the body as a site (tension, pain, skin-comfort, aging, food, denial). Card 7 made two-part for depth: *"Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful."* The `move` level is retired from the current deck (button, dropdown, presets, level-groups, description); classic-pool move cards are untouched (archived). Deck now 456 cards / 38 categories.
+
+## Patch v6.13 — twin fix + Self sharpen
+Warm 9 → *"What's one thing you're better at than you thought you would be?"* — resolves the pleasure-for-its-own-sake twin with Unwind 7 (Unwind keeps that card).
+Self 12 → *"Can you actually receive care — or do you find a way to turn it into something you have to manage?"* (adjacent to Connect 2's asking-vs-accepting-help, but distinct: the deflection pattern, not the comparison).
+
+## Patch v6.12 — category sweep, batch 2
+Roots 5 → *"When did you first realise your parents were just people?"* — resolves the love-from-parents twin with Roots 10.
+Life 9 → *"What does getting older take from you that you didn't expect, and what does it give?"* — aging moves here from old Self 8.
+Unwind 3 → *"What would a truly wasted afternoon look like for you — and how often do you allow it?"*; Unwind 7 → *"What's something you do purely for pleasure that has absolutely no productive value?"* (flagged: overlaps Warm 9's pleasure card — differentiate on a later pass).
+Self 6 → *"When are you most lonely — and is anyone around when it happens?"*; Self 8 → *"Do you take up space in a room, or fold into it?"* (the parked Move card); Self 12 → *"Is there a noise in your head that you've learned to live with?"*
+
+## Patch v6.11 — category sweep, batch 1
+Owner sweep across Quick, Warm, Playful, Culture, Move, Life, Home, Roots, Past, Unwind — stronger, more felt cards replacing weaker ones.
+Quick: 2 back to "what song's stuck this week", 4 → greatest extravagance, 10 → state of mind in three words, 12 → "wish people asked instead of 'how are you'".
+Warm: 9 → last thing done purely for pleasure, 11 → "suspiciously specific amount about".
+Playful: 3 rephrased (die-on-a-hill), 4 → useless-in-a-crisis-great-at-a-party skill.
+Culture: 1 → art that stayed with you longer than it should, 10 → work of art that stopped you in your tracks, 12 → last thing that changed how you think.
+Move: 1 → body surprising you, 3 → when your body feels like it belongs to you (the take-up-space card is parked for Self), 6 → music reaching your body before your head, 8 → how your body feels doing something it's good at.
+Life: 2 → what would make your life feel more your own, 4 → ideal ordinary day (a Tuesday that felt right), 6 → something costly you'd do exactly the same again, 12 → if you stopped explaining why you can't.
+Home: 3 → object that survived the most versions of you, 5 → what home actually feels like.
+Roots: 3 → catching a parent's trait in yourself, 4 → "the day you finally understood something your parent did" (moved from Past 2), 10 → what you learned about love from your parents.
+Past: 2 → the choice that haunts because you'll never know, 6 → what you'd do differently and whether it'd matter, 7 → the version of yourself hardest to let go of.
+Unwind: 2 → what rest actually feels like.
+
+## Patch v6.10 — dead-ends, command density, World sharpen
+Dead-ends fixed: Mind 4 (understand-but-can't-explain, self-defeating) → *"When has a gut feeling known more than you did?"*; Ground 4 (principle you never think about — premise blocks recall) → *"What rule do you live by that you've never said out loud?"*; Home 8 kept the kitchen window but dropped the "Describe" command → *"The view from your kitchen window — what could you look at every day and never tire of?"*
+Command-card density reduced: 16 flat "Name…/Describe…" cards softened into statement nudges (Warm 5, Playful 7, Culture 2/8/12, Life 5, Unwind 1/3/4/11, Mind 2, Spirit 11, Values 1, Friendship 6, Self 6, Shadow 3), varying the openers so they don't all become "You…". Strong physical/theatrical imperatives (Sing, Point to, Quote, Show me, Strip away, Take us to, Walk me through, Tell about a moment) deliberately kept.
+World 1 sharpened, pulled from the classic deck: "This era will be judged for..." → *"What's something the next generation will judge this one harshly for?"*
+
+## Patch v6.9 — Quick/Roots cleanup
+Quick 7 (last thing you said out loud to yourself) cut — no real answer, it stalls the table → *"What smell makes you instantly hungry?"* Quick 9 (first minute home) cut as a twin of Life 1 (first thirty minutes after waking, which is kept) → *"What nickname do you go by — and who gave it?"*
+Roots twin resolved: "what's strange about your family you only see now" and "the moment you realised your normal wasn't" said the same thing. Kept the scene-based one (Roots 11 — stylistically distinct from the rest of Roots); Roots 2 → *"Which of your parents' fears did you inherit?"* Roots 5 (did anyone let you win — a competition-thread card whose Roots fit was thin) → *"What did love look like in the house you grew up in?"* — both new cards are formative, and the second warms a dark category.
+Roots 12 softened: "who should not have been given a child" condemned the adult in absolutes → *"Which adult from your childhood were you never quite safe with?"* — keeps the door open to hard upbringings, centres the child's safety instead of a verdict.
+
+## Patch v6.8 — feel-feedback pass
+Culture de-consumed: it was heavy on media and light on feeling. Culture 1 (book given away → *"Stand in front of one work of art again — which, and what does it do to you?"*) and Culture 10 (page/episode/track → *"When did a live performance — theatre, dance, a gig — get under your skin?"*) bring in visual art, theatre, dance, live performance — and put the felt encounter first.
+Move 5 was the walk-on-autopilot card — a twin of Life 10 (day-on-autopilot). Cut the second autopilot; Move gets real movement instead → *"When did you last move purely for the joy of it — no goal, no fitness?"*
+Roots 8/10 were both childhood-self-protection cards ("to be safe you had to be..." / "learned to hide..."). Roots 10 → *"What did you spend hours doing as a kid that nobody made you do?"* — a different door into the same childhood, not survival.
+Playful 1 (irrational food rule) cut — didn't land → *"What's the most childish thing that still delights you?"*
+Text refresh folded in from the working draft: Warm 11 wording, Culture 1 base, Move 2 (heart pound), Past 10 (best story), World 2 (part of the world's state feels partly yours), Us: Friends 12 (what could this friendship use more of), Wish 6 (message you hope to receive).
+Duplicate resolved: the wearing-a-story card moves to Warm 8 (as the working draft intended) and Quick 12 — the old home of that card — becomes *"Which word do you always spell wrong?"*
+
+## Patch v6.7 — Abyss jargon RESTORED (v6.6 de-jargoning reverted)
+Scene and vanilla restored to 3, 6, 7, 12. The de-jargoning diluted exactly what the category was built to reach. Since the deck is digital, the gatekeeping moves to a category tagline instead of being smuggled into every card.
+
+## Patch v6.6
+Quick 8: emptying a bag is slow and physical → "What's the strangest thing someone might find in your bag?" (answerable from memory, hypothetically, in seconds).
+Spirit 8: prayer card cut — it locates the answer outside the person, in a deity they may not have → "What do you believe that you cannot defend?"
+Playful 6: guilty-pleasure card cut — obvious or contrived answers, no second layer → "What are you smug about?"
+Abyss self-declaring: cards 1, 5, 6, 9, 12 rewritten to carry their own context — scene, darkest rooms, extreme-vs-gentle, the drop after intensity. A player who doesn't know what "Abyss" means now learns it from the card, not from an intro.
+
+## Patch v6.5
+Quick 7: "which chair in this room" cut — assumed a seated indoor setting. The deck gets played in cars, on the street, in elevators; no card may assume furniture. → "What's the last thing you said out loud to yourself?"
+Think-vs-talk card: already removed in v6.2 (Mind 9 is now the competition card).
+
+## Patch v6.4
+Roots 7 broadened to all emotions: "Which feelings were allowed in your house — and which weren't?" This twinned with Roots 1 (emotional weather), so Roots 1 was cut and "Given the power, rewrite one thing in your upbringing" restored there — it was the stronger of the two and shouldn't have been the victim.
+Deep 4 → "Who do you miss who is still alive?" The never-told-anyone card is cut: it collided with Deep 1, which is the better card.
+
+## Patch v6.3 — gap-filling
+Money: Life 11 (can't afford / pretend not to want), Values 8 (would you tell this table what you earn — replaces marriage verdict).
+Alone: Ground 12 (good at being alone, or just used to it — replaces non-negotiable fragment). Connect 2 kept; empty-evening card dropped.
+Anger: Roots 7 (were you allowed to be angry — replaces rewrite-your-upbringing), Shadow 8 (has your anger ever frightened someone — replaces standing-battle).
+Roots 2 rewritten, not cut: "What's strange about your family that you only see now?" — present tense, not limited to rules.
+Food: Body 9 (actual relationship with food — replaces "is your body you, or yours").
+Being wrong: Values 11 (changed position mid-argument). Connect 9 rewritten to "Who did you forgive, without ever telling them?" — the apology-received card dropped in its favour.
+Aging: Family 7 (your parents are getting old — replaces the children-assuming legacy card), Past 11 (which year simply vanished — replaces "is regret useful").
+Small: Playful 5 (what makes you laugh when you're alone — removes the last tech reference in the deck), Deep 4 (never told anyone, not from shame).
+
+## Patch v6.2 — play/competition thread
+Eight cards added as a thread, not a block: Playful 11 (game you refuse to lose), Self 10 (are you a good loser), Roots 5 (did anyone let you win), Shadow 9 (do you cheat at games), Work 8 (competitor who made you better), Connect 10 (win alone or lose together), Values 12 (when competition made you ugly), Mind 9 (someone is simply better than you). Victims: fictional-character, know-yourself-meta, praised-as-a-child, cruelest-thought, first-week/after-a-year, closeness-abstract, rule-broken-cleanly, think-vs-talk. Skin 9: "half-covered" → "barely covered" (half sets a thought pattern; barely stays open).
+
+## Patch v6.1 — twin audit
+Fifteen cards replaced. Cut clusters: unspoken-desire (7 cards → 3: Edge 1, Kinks 7, Us: Intimate 1); Ground certainty (3 → 1, kept 11); Ground collapse (3 → 1, kept 6); Grief unresolved-loss (3 → 1, kept 1). True twins resolved: Culture 2/8, Life 8/9, Flesh 8/9, Kinks 2/6. Skin 9 → lingerie variant.
+New ground opened by the replacements: shame in sex, watching/being watched, half-covered bodies, tempo as bodily default, inherited grief, who you became after a death, unbroken promises, rebuilding from zero, underrated love, doing something purely for fun.
+
+Changes from v4: Abyss safeword card · Desire category added (✦) · Ground rebuilt to Shadow-caliber · Us-categories de-Wh'd · Unwind de-depleted · all point fixes. Change log at bottom.
+
+✦ = spicy, non-gated · 🔞 = After Dark
+
+---
 
 ## Patch v6.0 — opening-variation pass (US-086 compliance)
 Before: What/What's = 196 cards (40%), Which = 72 (15%) → 55% of the deck on two constructions, over the US-086 ceiling.
@@ -650,6 +668,9 @@ New category **Blunt 🔞** — the direct-to-a-fault Leuterspel register isolat
 
 ## Patch v5.2
 Edge 8 broadened: sent/received first, then travelled-further-than-intended. Edge 9 (Leuterspel H5, consent-uncertainty) cut — overlapped H6 at Edge 11; beautiful-place moved into its slot from Carnal. Carnal 4 → responsibility-for-partner's-pleasure (reframed K10, back in). Skin 9 → "What's the most intimate part of sharing a bed that isn't sex?"
+
+## Patch v5.1
+Desire 4 → "Would you rather be desired or understood?" Giving/receiving pleasure moved to Carnal 5. Carnal 9: orgasm-as-job (Leuterspel K10) cut for crude framing — "discovered embarrassingly late" restored in its place; its performance-pressure territory partly covered by Carnal 3 anyway. Friendship 8 restored to friends-version. Abyss 10: "spoken" → "used".
 
 ## Change log v4 → v5
 Abyss: 10 → safeword story (spoken, or should-have-been; covers you and others). Home: 9 simplified to "Your home tells people something about you. What?" Skin: 5 restored to best-non-sexual-touch (your call — agreed it's Skin). Edge: 3 specified "sexually"; 4 trimmed. Desire ✦: new category — includes lust↔wellbeing (5) and giving/receiving (4). Culture: 12 → what you enjoy that doesn't fit your image. Unwind: 1, 2 rebuilt away from depletion (kept 3, 5). World: 12 → ask-the-world-one-question (Magical register). Work: 9 → talent-never-profession (replaced compliment-replay). Grief: 12 → "loss I saw coming..." (12 and 3 both led to a dead loved one — 3 keeps that story). Death-closeness lives in Spirit 6, not Grief — deliberate: Grief is about loss of others, Spirit about your own mortality. Us: Friends: 4 → what-friendship-survived (overdue-conversation stays exclusive to Between Us); 12 → "Ask me, right now, for more of something." Us: Love + Us: Intimate: de-Wh'd (~half now imperatives/statements). Us: Intimate 9 → "Teach me something about your body I should already know." Lens: 7 → online-vs-room behaviour counterpart. Ground: rebuilt — 2, 3, 5, 8, 9 replaced with Shadow-caliber depth. Wish: 9 → free-year question. Friendship: 8 broadened to "people" (your sought-out question — it already existed in friend-form; now generalized).
