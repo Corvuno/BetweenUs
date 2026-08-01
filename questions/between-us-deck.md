@@ -7,7 +7,7 @@ The questions come first, category by category. The full change log is at the bo
 ---
 
 ## Quick
-1. Coffee or tea order — exactly, no simplifying.
+1. Name the last thing you made with your hands.
 2. What song's been stuck in your head this week?
 3. What's your greatest extravagance?
 4. Which drawer in your house is the disgrace?
@@ -33,7 +33,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Which stranger do you still remember fondly?
 7. Is there something you're genuinely bad at that you still refuse to stop doing?
 8. What's a hill you'd die on that nobody else would even climb?
-9. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
+9. What have you repaired instead of replaced — and why?
 10. What do you knowingly blow out of proportion?
 11. When did you last go gloriously too far — and was it worth it?
 12. Quote the sentence people around you are most tired of hearing from you.
@@ -98,7 +98,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Which decision looked small at the time but turned out to be a hinge?
 2. What choice haunts you — not because it was wrong, but because you'll never know?
 3. Tell about a time you surprised yourself with what you could survive.
-4. You quit something. Was it the right call?
+4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
 5. Trace the moment money started meaning something different to you.
 6. What would you do differently if you could go back — and do you actually think it would have changed anything?
 7. Which version of yourself was hardest to let go of?
@@ -153,14 +153,14 @@ The questions come first, category by category. The full change log is at the bo
 ## Mind
 *Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
 1. How easily does a new habit stick for you — and which one actually did?
-2. An idea you abandoned this year...
+2. What are you good at not doing — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
 4. When has a gut feeling known more than you did?
 5. When your mind wanders, where does it go by default?
 6. What does your inner voice sound like — and whose is it?
 7. Which of your opinions is just something you heard once?
 8. Do you decide fast and adjust, or slow and stick?
-9. Someone is simply better than you. Then what?
+9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
 11. Do you analyse people — and what do you get wrong?
 12. Which idea has changed you, and how did it get in?
@@ -179,19 +179,6 @@ The questions come first, category by category. The full change log is at the bo
 11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
-## Make
-1. Name the last thing you made with your hands.
-2. You make something nobody asked for...
-3. What have you built that you're prouder of than you admit?
-4. Something stops you from making the thing you keep thinking about...
-5. What does finishing something do to you?
-6. Is creating a need for you, or a choice?
-7. Would you rather make something perfect or something finished?
-8. Whose work makes you jealous?
-9. What have you left unfinished that still bothers you?
-10. What do you keep starting and never finishing?
-11. Is making things for yourself enough, or does it need to be seen?
-12. What have you repaired instead of replaced — and why?
 
 ## Connect
 1. How do you show someone they matter to you — the actual method?
@@ -243,7 +230,7 @@ The questions come first, category by category. The full change log is at the bo
 5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
-8. Your celebrity crush — and what does it share with the people you actually fall for?
+8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
 11. Someone is close. The first physical detail you notice?
@@ -296,14 +283,14 @@ The questions come first, category by category. The full change log is at the bo
 2. You're still waiting for someone to notice...
 3. When did you last cry, and what was underneath it?
 4. Who do you miss who is still alive?
-5. Quote the sentence that has kept you company for years.
+5. What do you need to hear more often than you admit?
 6. If you could rerun one conversation from your life, which one?
 7. What would people be surprised to learn you struggle with?
 8. Are you easy to love?
 9. There was a moment you let someone all the way in. What happened next?
 10. Slowly, you're making peace with...
 11. Which conversation do you keep having — in different rooms, with different people?
-12. When were you last truly seen?
+12. What would you want said about you tonight, if you weren't here to hear it?
 
 ## Raw
 1. Say the thing you censored earlier tonight.
@@ -324,13 +311,13 @@ The questions come first, category by category. The full change log is at the bo
 2. Nobody thinks to ask about this loss...
 3. Who do you still talk to that can no longer answer?
 4. Which ending made you who you are more than any beginning did?
-5. Which grief do you carry that isn't yours?
+5. Who showed up when you lost something — and who didn't?
 6. What did grief teach you about yourself that nothing else could?
-7. Where do you go, in yourself, when grief arrives?
+7. What do you do with grief — do you move through it, around it, or does it move through you?
 8. Which object holds a loss for you?
 9. Because of them, you still do something nobody knows about...
 10. What haven't you allowed yourself to mourn yet?
-11. Which photo can you still not look at?
+11. What did you lose that wasn't a person?
 12. After they were gone, you had to become...
 
 ## Family
@@ -342,7 +329,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Which inherited trait do you watch for in the mirror, with dread?
 7. Your parents are getting old. What is that doing to you?
 8. Who became family without being family?
-9. Which object will the family fight over when the inheritance is divided?
+9. Who in your family knows you best — and do they know that?
 10. What role were you assigned in your family — and do you still play it?
 11. Your family doesn't know...
 12. You brought someone new to meet the family. What did they notice first?
@@ -380,7 +367,7 @@ The questions come first, category by category. The full change log is at the bo
 2. You've stopped asking me for something — what is it?
 3. What are we both avoiding right now?
 4. When did you last fall for me again, even briefly?
-5. Tell me one thing about us you'd protect at any cost.
+5. How do you know I love you — what actually tells you?
 6. What did you decide about us before I had any say in it?
 7. Is there a version of me you miss?
 8. Tell me what you'd change about us if I couldn't take it personally.
@@ -503,6 +490,12 @@ The questions come first, category by category. The full change log is at the bo
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
 - **Quick / Deep** — "Is there something you wish people asked you instead of 'how are you'?" (too reflective for a fast opener; candidate for a Deep pass)
+- **Deep** — "Quote the sentence that has kept you company for years."
+- **Deep** — "When were you last truly seen?"
+- **Deep** — "When did you last let someone see you struggling?"
+- **Deep** — "What's the one thing you most want someone to understand about you?"
+- **Make (dissolved)** — "Whose work makes you jealous?" (worth keeping; home not yet decided)
+- **Grief** — "Which grief do you carry that isn't yours?"
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -510,6 +503,13 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.19 — Make dissolved · owner sweep batch 2
+**Make retired.** The category was gated on an activity rather than an experience, half its cards asked for a stance instead of a scene, and two of them were the same card. Triage kept three: the last-thing-made card to Quick (displacing the coffee order), the repaired-instead-of-replaced card to Warm (displacing the party-skill card), and the creative-jealousy card benched pending a home — note that "work" in that card means output, not employment, so Work is the wrong destination. The `make` level is retired from all three builds. Deck now 396 cards / 33 categories.
+**Mind** 2 → the restraint card, built on a sliding scale so it captures both having it and losing it; 9 → the earliest-memory card, whose doubt clause makes it a thinking card rather than a nostalgia one.
+**Deep** 5 and 12 replaced. Both retained cards are benched rather than discarded.
+**Grief broadened past bereavement.** 5 → who showed up and who didn't; 7 → the how-you-grieve card (placed at 7 rather than 4, since it twinned the card that was there); 11 → what you lost that wasn't a person. Card 6 kept at the owner's call.
+**Also:** Attract 8 to the owner's wording; Family 9 → who knows you best, replacing the inheritance-object card, which assumed a family with something to divide; Past 4 → the stayed-too-long card, trimmed of its "version of yourself" clause to avoid Past 7; Us: Love 5 → the how-do-you-know card, replacing the protect-at-any-cost card as the weaker twin of Us: Love 1.
 
 ## Patch v6.18 — Mind rebuilt · Warm 7 (in progress)
 **Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
