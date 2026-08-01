@@ -31,7 +31,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Point to something you're wearing that has a story.
 5. What do you know a suspiciously specific amount about?
 6. Which stranger do you still remember fondly?
-7. Name the pettiest grudge you're still maintaining.
+7. Is there something you're genuinely bad at that you still refuse to stop doing?
 8. What's a hill you'd die on that nobody else would even climb?
 9. What's a skill you have that would be completely useless in a crisis — but excellent at a party?
 10. What do you knowingly blow out of proportion?
@@ -151,17 +151,18 @@ The questions come first, category by category. The full change log is at the bo
 12. Is pushing your body to its limit a form of pleasure or of discipline?
 
 ## Mind
-1. What do you ruminate on at 3 a.m. that seems absurd at 10 a.m.?
+*Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
+1. How easily does a new habit stick for you — and which one actually did?
 2. An idea you abandoned this year...
 3. Which thought loop do you know is a loop and still can't exit?
 4. When has a gut feeling known more than you did?
 5. When your mind wanders, where does it go by default?
-6. Which fear of yours can't survive logic — and survives anyway?
-7. What can't you unsee once you've spotted it?
-8. Which thought would you erase from your head if you could?
+6. What does your inner voice sound like — and whose is it?
+7. Which of your opinions is just something you heard once?
+8. Do you decide fast and adjust, or slow and stick?
 9. Someone is simply better than you. Then what?
 10. Which question do you keep returning to across the years?
-11. What do you think about far more than you let on?
+11. Do you analyse people — and what do you get wrong?
 12. Which idea has changed you, and how did it get in?
 
 ## Spirit
@@ -509,6 +510,10 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.18 — Mind rebuilt · Warm 7 (in progress)
+**Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
+**Warm 7** → *"Is there something you're genuinely bad at that you still refuse to stop doing?"* — replaces the pettiest-grudge card, which was the third of a disproportion cluster with 8 and 10.
 
 ## Patch v6.17 — light tier consolidated: Playful → Warm
 The three opener categories (Quick · Warm · Playful) collapsed to two. Their functions: Quick = fast surface momentum; Warm + Playful both = light personality reveal — so Playful folded into **Warm**, now spanning fond → funny. Quick stays as the standalone fast opener.
