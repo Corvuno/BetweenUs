@@ -516,6 +516,10 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 # Change log
 
+## Patch v6.34 — Culture 9 translation
+The Dutch on the great-art card was not a translation of the English but a different question. The English asks whether the work absolves the person, a moral question; the Dutch asked whether you can still enjoy something beautiful made by a "rotmens", which is a taste question anyone can wave away, in a register far below the card's weight. Now *"Pleit grote kunst een slecht mens vrij?"* — vrijpleiten carries the same judicial and moral sense as "excuse".
+**Known issue:** Dutch coverage is 283 of 408 cards and the quality is uneven across the deck; a full translation pass is outstanding.
+
 ## Patch v6.33 — Roots 7
 Roots held a three-way overlap: the general emotional climate at 1, permitted feelings at 7, and the self you had to be to stay safe at 8. Card 7 sat in the middle and was squeezed from both sides, so it becomes a scene instead. The card carries no adjective and no implied verdict — a house that was fine produces a real answer, and so does one that was not — and the climate emerges through detail rather than summary. Worded as "when you were young" rather than fixing an age, since not everyone can picture a specific year.
 
