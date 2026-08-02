@@ -926,7 +926,7 @@ body::before{
         </div>
         <div class="card-number" id="card-number">&#8212; &#8212; &#8212;</div>
       </div>
-      <div class="end-hint" id="endHint">Hold to continue</div>
+      <div class="end-hint" id="endHint">Tap to continue</div>
       <button class="skip-undo" id="skipUndo">&#8617; Undo skip</button>
       <!-- Pick-3 overlay — sibling of #card, covers it without z-index conflict -->
       <div class="card-picker" id="cardPicker">
@@ -2116,7 +2116,7 @@ function _nextCardBase() {
     const el = document.getElementById('card');
     el.classList.add('flipping');
     currentIndex = visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    window._endGateUntil = Date.now() + 1100;
+    window._endGateUntil = Date.now() + 600;
     setTimeout(() => {
       document.getElementById('card-level').className   = 'card-level';
       document.getElementById('card-level').textContent = '';
@@ -3138,7 +3138,7 @@ function skipCard() {
   // Show next card (or skipped-all state)
   if (visibleDeck.length === 0) {
     currentIndex = visibleDeck.length; // sentinel: past end
-    window._endGateUntil = Date.now() + 1100;
+    window._endGateUntil = Date.now() + 600;
     const el = document.getElementById('card');
     el.classList.add('flipping');
     setTimeout(() => {
@@ -3269,7 +3269,7 @@ function showSessionSummary() {
 (function(){
   /* a hold ends in a pointerup, which browsers follow with a click —
      swallow that one click so the hold advances exactly one card */
-  ['card','partyOverlay','btn-next'].forEach(id=>{
+  ['card','btn-next'].forEach(id=>{
     const el=document.getElementById(id); if(!el) return;
     el.addEventListener('click', e=>{
       if (window._swallowClickUntil && Date.now() < window._swallowClickUntil){
@@ -3302,7 +3302,7 @@ function showSessionSummary() {
     }, HOLD);
   }
   function cancel(){ clearTimeout(timer); timer = null; }
-  ['card','partyOverlay','btn-next'].forEach(id=>{
+  ['card','btn-next'].forEach(id=>{
     const el = document.getElementById(id); if (!el) return;
     el.addEventListener('pointerdown', start);
     ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
@@ -3346,33 +3346,9 @@ showSessionSummary = function() {
 
 // Party end integrated into consolidated nextCard below.
 
-// ── C: Hold in fullscreen to draw more when at end of deck ──
-(function(){
-  const ov = document.getElementById('partyOverlay');
-  if (!ov) return;
-  let holdTimer = null;
-  const atEndWithMore = () =>
-    visibleDeck.length > 0 &&
-    currentIndex >= visibleDeck.length - 1 &&
-    fullDeck.length - visibleDeck.length > 0;
-
-  const startHold = () => {
-    if (!atEndWithMore()) return;
-    holdTimer = setTimeout(() => {
-      drawMore(); updateDeckInfo();
-      // Show first new card in party
-      if (currentIndex < visibleDeck.length - 1) { nextCard(); updateDeckInfo(); }
-    }, 650);
-  };
-  const cancelHold = () => clearTimeout(holdTimer);
-
-  ov.addEventListener('touchstart', startHold, {passive:true});
-  ov.addEventListener('touchend',   cancelHold, {passive:true});
-  ov.addEventListener('touchcancel',cancelHold, {passive:true});
-  ov.addEventListener('mousedown',  startHold);
-  ov.addEventListener('mouseup',    cancelHold);
-  ov.addEventListener('mouseleave', cancelHold);
-})();
+// Fullscreen end-of-draw continue is handled by the shared end-gate below
+// (bound to #partyOverlay too) — a separate hold handler here used to stack
+// with it and advance several cards at once, so it was removed.
 
 
 // ═══════════════════════════════════════════════════════════
@@ -3389,7 +3365,10 @@ function nextCard() {
        rhythm of tapping through cards can't blow past it unseen */
     /* the end of a draw is a stop: it takes a deliberate hold to move on,
        so a burst of taps can never blow past it */
-    if (!window._endHoldOK) { _nudgeEndHold(); return; }
+    /* Continue on a deliberate hold, or on a tap once the brief settle window
+       has passed. The window stops a burst of taps from blowing past the
+       summary unseen, but a normal tap-after-reading always advances. */
+    if (!window._endHoldOK && Date.now() < (window._endGateUntil || 0)) { _nudgeEndHold(); return; }
     window._endHoldOK = false;
     initDeck();
     _nextCardBase();   /* deal straight into the next hand — no blank card */
