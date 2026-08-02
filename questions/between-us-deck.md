@@ -395,7 +395,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Quote the cruelest thing you've ever actually said.
 3. The you that comes out at your worst — honestly...
 4. People believe your presentation. What do you get away with?
-5. You're unwilling to see something about yourself. Best guess.
+5. Which emotion do you fake best?
 6. Tell about hurting someone without meaning to.
 7. Which vice has survived every attempt to quit it?
 8. Has your anger ever frightened someone?
@@ -503,7 +503,6 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
-- **Raw (awaiting a new home)** — "Which emotion do you fake best?" (owner wants it kept; Shadow is the likely destination)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Deep** — "When were you last truly seen?"
 - **Deep** — "When did you last let someone see you struggling?"
@@ -516,6 +515,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.26 — Shadow 5
+**Shadow 5** → the faked-emotion card, rehomed from Raw. It asks about a skill built over time rather than a present state, which is why it no longer fitted Raw after the rebuild, and competence at deception is Shadow's register exactly. It replaces the blind-spot card, which was self-defeating in the same way as the dead-ends cut in v6.10 — a blind spot you can name is not one, so players either stall or invent.
 
 ## Patch v6.25 — Raw rebuilt
 Raw was described by manner rather than subject — "unfiltered, no softening" says how to answer, not what about — so the cards reached for the same device twelve times over. Seven of twelve asked you to name something you were withholding.
