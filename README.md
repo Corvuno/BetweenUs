@@ -4,13 +4,15 @@ A deck-of-questions card game, played as a single self-contained HTML file.
 
 ## Play online
 
-| File | Build profile | Purpose |
-|---|---|---|
-| [`between-us.html`](between-us.html) | `public` | **Main version.** What you hand someone by default. |
-| [`between-us-work.html`](between-us-work.html) | `work` | Workplace-safe version — Dutch, no adult content reachable. |
-| [`between-us-Dev.html`](between-us-Dev.html) | `editor` | Development build — everything on by default. dev conveniences on. |
+| Play | File | Build profile | Purpose |
+|---|---|---|---|
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html) | `between-us.html` | `public` | **Main version.** What you hand someone by default. |
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us-work.html) | `between-us-work.html` | `work` | Workplace-safe version — Dutch, no adult content reachable. |
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us-dev.html) | `between-us-dev.html` | `editor` | Development build — everything on by default. dev conveniences on. |
 
-`index.html` redirects to `between-us.html`, so the root of the site opens the main version.
+The **Play** links open the live game on GitHub Pages. (Clicking the filename on GitHub shows the source instead — that's why plain filename links don't launch it.)
+
+[**▶ Open Between Us**](https://corvuno.github.io/BetweenUs/) — the site root redirects to the main version.
 
 Hand out whichever URL you want — each file's version is baked in, so (for example) the
 work URL always opens the work version. Nobody has to pick anything.
