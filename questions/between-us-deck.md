@@ -516,6 +516,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 # Change log
 
+## Patch v6.28 — Raw description
+Category description updated to match the rebuild: "Right now, in this room — no softening". The old wording described manner without subject, which is what let the cards drift into seven versions of the same withholding question.
+
 ## Patch v6.27 — Shadow 4
 **Shadow 4** reworded off "get away with", which Raw 9 owns in a concrete, time-bound form. The change does more than clear the collision: "what does that let you do" moves the card from deception-for-gain to presentation-as-capability, so fake-it-till-you-make-it becomes a valid answer. That keeps it distinct from the faked-emotion card now at 5 — one is a performance of feeling, the other is how you carry yourself into a room.
 
