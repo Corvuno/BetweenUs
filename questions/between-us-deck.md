@@ -87,7 +87,7 @@ The questions come first, category by category. The full change log is at the bo
 4. The day you finally understood something your parent did...
 5. What did your upbringing give you that you're glad of?
 6. Look at a photo of young you — what looks back?
-7. Which feelings were allowed in your house — and which weren't?
+7. What did a normal evening look like when you were young?
 8. At home, to be safe, you had to be...
 9. What were you praised for as a child — and what did that train you to become?
 10. What did you learn about love from watching your parents?
@@ -515,6 +515,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.33 — Roots 7
+Roots held a three-way overlap: the general emotional climate at 1, permitted feelings at 7, and the self you had to be to stay safe at 8. Card 7 sat in the middle and was squeezed from both sides, so it becomes a scene instead. The card carries no adjective and no implied verdict — a house that was fine produces a real answer, and so does one that was not — and the climate emerges through detail rather than summary. Worded as "when you were young" rather than fixing an age, since not everyone can picture a specific year.
 
 ## Patch v6.32 — Home, Us: Intimate, Us: Friends
 **Home 7** → the walk-in-right-now card, resolving the object twin with 3. Mess, mid-renovation and pristine are three different self-portraits, and the concrete framing keeps that range while making the player picture it rather than classify it.
