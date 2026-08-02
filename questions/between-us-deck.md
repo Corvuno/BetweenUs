@@ -175,7 +175,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Who are you overdue to thank — and what for?
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
-10. Which coincidence refuses to feel like coincidence?
+10. Have you ever tried to reach something through your body — breath, fasting, dance, stillness?
 11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
@@ -515,6 +515,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.24 — Spirit 10
+**Spirit 10** → the practice card. Spirit 4 covers borrowed teachings, but nothing covered what people actually *do* — meditation, breathwork, fasting, dance, tantra. Naming the practices rather than a tradition keeps it open to people who belong to none, and the body framing keeps it clear of the presence card at 9. Replaces the coincidence card, which was a belief-without-evidence card in disguise and twinned the belief territory the category already holds.
 
 ## Patch v6.23 — Attract 11
 **Attract 11** → the self-in-attraction card. Attract had twelve cards about what you find attractive and none about being the object of it. The second clause turns a guess into a live exchange, which is what the category was missing. Replaces the look-you-can-still-feel card, which arrived from the After Dark dedup branch rather than the owner sweep.
