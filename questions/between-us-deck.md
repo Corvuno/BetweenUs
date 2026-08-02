@@ -39,7 +39,7 @@ The questions come first, category by category. The full change log is at the bo
 12. Quote the sentence people around you are most tired of hearing from you.
 
 ## Culture
-1. Is there a piece of art that has stayed with you longer than it should have?
+1. Which piece of art still does something to you, every time?
 2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
@@ -95,7 +95,7 @@ The questions come first, category by category. The full change log is at the bo
 12. Which adult from your childhood were you never quite safe with?
 
 ## Past
-1. Which decision looked small at the time but turned out to be a hinge?
+1. What's the decision you almost didn't make that changed everything?
 2. What choice haunts you — not because it was wrong, but because you'll never know?
 3. Tell about a time you surprised yourself with what you could survive.
 4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
@@ -106,7 +106,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Do people actually change, or just get better at managing themselves?
 10. Which scar still carries the best story?
 11. Which year of your life simply vanished?
-12. Would the twenty-year-old you approve of the current one — and does that matter?
+12. If your younger self could see your life right now, what would surprise them most?
 
 ## Unwind
 1. Your perfect day off — the real one, not the pretty one...
@@ -322,7 +322,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Family
 1. Which family relationship costs you the most — and what does it give back?
-2. Your family agrees never to discuss...
+2. What's the unspoken rule in your family that everyone follows and no one names?
 3. What did a parent give you that you only learned to value late?
 4. Where does your family still see an old version of you?
 5. What does your family argue about that doesn't matter at all?
@@ -330,7 +330,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Your parents are getting old. What is that doing to you?
 8. Who became family without being family?
 9. Who in your family knows you best — and do they know that?
-10. What role were you assigned in your family — and do you still play it?
+10. What role do you play in your family — and is it one you chose?
 11. Your family doesn't know...
 12. You brought someone new to meet the family. What did they notice first?
 
@@ -515,6 +515,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.22 — Culture 1 · Family 2 and 10 · Past 1 and 12
+**Culture 1** → the still-does-something card. The old wording judged how long the work lasted rather than asking what it does to you, which is the feeling the card was after. Kept as a lasting relationship with a work rather than a single encounter, so it does not twin Culture 10.
+**Family 2 and 10** to the owner's wording, held over from an earlier round.
+**Past 1** → the almost-didn't-make-it card, which adds the tension the hinge card lacked. **Past 12** → the younger-self card, warmer than the approval card it replaces, which asked the table to pass judgement on itself. Both were originally proposed for Deep; they are biographical, so Past is where they belong.
 
 ## Patch v6.21 — Spirit rebuilt · Warm and Family
 **Spirit widened past the Abrahamic frame.** The category had two cards asking the same thing — a conviction held without evidence, and a belief you cannot defend — so one went and the other was replaced. The religion card was not a question and assumed a religious upbringing most players do not have; it becomes what you were taught to believe and what survived, which works whether the answer is a church or nothing at all. Card 4 is now the borrowed-philosophy card, which is where meditation, buddhism, stoicism, hedonism and the rest actually live for most people. The funeral-song card was cut as a straight duplicate of a card in the Magical set. The found-or-made card went as the abstract twin of the new meaningfulness card at 2. Added: gratitude at 7, and presence at 9, worded toward stillness rather than rest so it does not repeat Unwind 2. Death stays in Spirit per the standing rule — Grief is loss of others, Spirit is your own mortality.
