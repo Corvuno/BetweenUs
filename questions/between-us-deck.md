@@ -32,7 +32,7 @@ The questions come first, category by category. The full change log is at the bo
 5. What do you know a suspiciously specific amount about?
 6. Which stranger do you still remember fondly?
 7. Is there something you're genuinely bad at that you still refuse to stop doing?
-8. What's a hill you'd die on that nobody else would even climb?
+8. Whose skill do you quietly envy?
 9. What have you repaired instead of replaced — and why?
 10. What do you knowingly blow out of proportion?
 11. When did you last go gloriously too far — and was it worth it?
@@ -166,15 +166,15 @@ The questions come first, category by category. The full change log is at the bo
 12. Which idea has changed you, and how did it get in?
 
 ## Spirit
-1. Which conviction do you hold with no evidence at all?
-2. Where do you go when you need to feel small in a good way?
+1. What were you taught to believe — and what's left of it?
+2. Is your life meaningful right now — and how do you know?
 3. What's your working relationship with death, right now?
-4. Religion might have had a place in your life. Something else took it.
+4. Is there a philosophy or teaching you've borrowed from, without signing up to all of it?
 5. When did you last feel part of something larger — and what triggered it?
 6. How near has death actually come to you?
-7. Name the song that plays at your funeral.
-8. What do you believe that you cannot defend?
-9. Is meaning found or made?
+7. Who are you overdue to thank — and what for?
+8. What do you hope is true, even if you doubt it?
+9. When were you last completely present — nothing to fix, nothing to plan?
 10. Which coincidence refuses to feel like coincidence?
 11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
@@ -325,7 +325,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Your family agrees never to discuss...
 3. What did a parent give you that you only learned to value late?
 4. Where does your family still see an old version of you?
-5. You will deliberately not pass on...
+5. What does your family argue about that doesn't matter at all?
 6. Which inherited trait do you watch for in the mirror, with dread?
 7. Your parents are getting old. What is that doing to you?
 8. Who became family without being family?
@@ -507,7 +507,6 @@ The questions come first, category by category. The full change log is at the bo
 - **Deep** — "When were you last truly seen?"
 - **Deep** — "When did you last let someone see you struggling?"
 - **Deep** — "What's the one thing you most want someone to understand about you?"
-- **Make (dissolved)** — "Whose work makes you jealous?" (worth keeping; home not yet decided)
 - **Grief** — "Which grief do you carry that isn't yours?"
 
 ## NOTE — decks living in the app, not in this file
@@ -516,6 +515,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.21 — Spirit rebuilt · Warm and Family
+**Spirit widened past the Abrahamic frame.** The category had two cards asking the same thing — a conviction held without evidence, and a belief you cannot defend — so one went and the other was replaced. The religion card was not a question and assumed a religious upbringing most players do not have; it becomes what you were taught to believe and what survived, which works whether the answer is a church or nothing at all. Card 4 is now the borrowed-philosophy card, which is where meditation, buddhism, stoicism, hedonism and the rest actually live for most people. The funeral-song card was cut as a straight duplicate of a card in the Magical set. The found-or-made card went as the abstract twin of the new meaningfulness card at 2. Added: gratitude at 7, and presence at 9, worded toward stillness rather than rest so it does not repeat Unwind 2. Death stays in Spirit per the standing rule — Grief is loss of others, Spirit is your own mortality.
+**Warm 8** → the quiet-envy card, rehomed from dissolved Make. "Skill" rather than "work" carries the broader sense intended: anything a person makes or does well, not artwork and not employment. It replaces the hill-you'd-die-on card, the last of the stubbornness cluster, keeping Warm pointed at fond and funny answers.
+**Family 5** → the pointless-argument card, giving a uniformly heavy category one card that costs nothing to answer. It replaces the won't-pass-on card, which twinned the inherited-trait card at 6 — both asked what you fear repeating.
 
 ## Patch v6.20 — owner sweep batch 3
 **Connect 8** → the instead-of-how-are-you card, brought back from the bench where it landed when Quick was trimmed in v6.17. Connect is its right home: it is about how people approach you, which is what the category does. It replaces the physical-trust card, the weakest in the set.
