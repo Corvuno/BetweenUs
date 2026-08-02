@@ -73,7 +73,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Where in your home do you actually live — which chair, which corner?
 5. What does home actually feel like when you have it — and how do you know?
 6. What has to be true of a space before you can relax in it?
-7. Which object in your home is irreplaceable — not in money, in meaning?
+7. If I walked into your home right now, what would I find?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
 10. Can you feel at home somewhere you don't belong?
@@ -360,7 +360,7 @@ The questions come first, category by category. The full change log is at the bo
 9. When were you proudest of me?
 10. When have I made you laugh hardest?
 11. If this friendship had a title, what would it be?
-12. What could this friendship use more of?
+12. Who would you introduce me to — and why?
 
 ## Us: Love
 1. Name the thing I give you that you'd miss most.
@@ -385,7 +385,7 @@ The questions come first, category by category. The full change log is at the bo
 6. What do I do that works better than I know?
 7. Show me, with my hand, how you want to be touched.
 8. When our wanting doesn't line up, what do you do?
-9. Who would you sleep with outside this relationship — if you were allowed?
+9. Would you want to know if I were drawn to someone else? Ask me the same.
 10. What have you been wanting to try with me but haven't said?
 11. When do you catch me wanting you — and what does it make you do?
 12. What do you hold back with me — and what would it take to stop?
@@ -515,6 +515,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.32 — Home, Us: Intimate, Us: Friends
+**Home 7** → the walk-in-right-now card, resolving the object twin with 3. Mess, mid-renovation and pristine are three different self-portraits, and the concrete framing keeps that range while making the player picture it rather than classify it.
+**Us: Intimate 9** → the drawn-to-someone-else card, reversed and ending in a call to ask. The old card was not too shocking, it was asymmetric: it made one partner name a third person out loud, with the cost landing on the listener rather than the speaker. Reversed, it asks what the other would want to know and hands the question straight back, so it becomes an agreement between the two rather than a disclosure aimed at one.
+**Us: Friends 12** → who you would introduce me to, resolving the what-is-missing twin with 2. The earlier proposal assumed a table young enough to have "before we're old" ahead of it.
 
 ## Patch v6.31 — seven-category sweep
 **Roots.** 5 → what your upbringing gave you that you are glad of, resolving the parent-as-human twin with 4 and opening ground the category had none of: Roots read as though nobody had a decent childhood, and a good thing you were given is still deep. 3 → the childhood-money card, resolving the inheritance twin with 2. The emotional-weather and allowed-feelings cards are kept: one asks the general climate, the other the specifics, and a house can be peaceful by suppressing whatever does not fit.
