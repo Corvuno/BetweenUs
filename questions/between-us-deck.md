@@ -63,7 +63,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What are you putting off that you know you'll regret?
 9. What does getting older take from you that you didn't expect, and what does it give?
 10. How much of your day runs on autopilot, honestly?
-11. What can't you afford that you pretend not to want?
+11. What's different about your life this year?
 12. If you stopped explaining why you can't, what would change about how you live?
 
 ## Home
@@ -96,7 +96,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Past
 1. What's the decision you almost didn't make that changed everything?
-2. What choice haunts you — not because it was wrong, but because you'll never know?
+2. What phase are you in that you can already tell you'll look back on?
 3. Tell about a time you surprised yourself with what you could survive.
 4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
 5. Trace the moment money started meaning something different to you.
@@ -111,7 +111,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Unwind
 1. Your perfect day off — the real one, not the pretty one...
 2. What does rest actually feel like for you — do you know how to do it?
-3. What would a truly wasted afternoon look like for you — and how often do you allow it?
+3. What are you looking forward to?
 4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
 6. There was a moment you felt completely free. Where were you?
@@ -133,7 +133,7 @@ The questions come first, category by category. The full change log is at the bo
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
-11. What do you need that money can't buy?
+11. What's the most predictable thing about you?
 12. Who is your ground — and do they know?
 
 ## Body
@@ -162,7 +162,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Do you decide fast and adjust, or slow and stick?
 9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
-11. Do you analyse people — and what do you get wrong?
+11. What's taking up most of your head at the moment?
 12. Which idea has changed you, and how did it get in?
 
 ## Spirit
@@ -265,7 +265,7 @@ The questions come first, category by category. The full change log is at the bo
 12. Which common belief about how the world works do you think is simply wrong?
 
 ## Work
-1. What does work mean to you beyond money?
+1. What's the strangest job you've ever had?
 2. What would you do professionally if status played no role at all?
 3. What's the piece of work you're most proud of that nobody applauded?
 4. Which colleague changed how you work?
@@ -515,6 +515,13 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.29 — air and the present tense
+The deck asked about your life, your history and your patterns, and since the Raw rebuild about this evening — but almost nothing about the period you are actually in. Six cards open that ground and give two uniformly earnest categories somewhere lighter to land.
+**Unwind 3** → the looking-forward-to card. Nothing in 408 cards asked about anticipation: Wish covers longing and the unrealised, Unwind covered rest, and nothing covered something good that is simply coming. It also resolves the wasted-afternoon twin with Unwind 7, flagged and unresolved since v6.12.
+**Self 11** → the most-predictable card. Self had twelve introspective cards and no relief anywhere, in a category that sits in both the open and solo presets. Replaces the money-can't-buy card, the most greeting-card line in the set.
+**Work 1** → the strangest-job card, giving the office preset's backbone one card that produces a story instead of a reckoning. Replaces the vaguest of Work's three why-this-work cards.
+**Life 11** → what is different this year. **Mind 11** → what is taking up your head at the moment, replacing the analyse-people card (everybody does it, so it does not discriminate). **Past 2** → the phase-you-will-look-back-on card, replacing the haunting-choice card as the twin of Past 6 — both unresolvable counterfactuals.
 
 ## Patch v6.28 — Raw description
 Category description updated to match the rebuild: "Right now, in this room — no softening". The old wording described manner without subject, which is what let the cards drift into seven versions of the same withholding question.
