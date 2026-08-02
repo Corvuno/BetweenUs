@@ -1777,27 +1777,27 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
-    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
+    on:        ["warm","quick","magic","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    available: ["colbert","aron","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","culture","unwind","world"],
-    available: ["connect","self","life","mind","wish","attract","spirit","body","aron","magic"],
+    on:        ["warm","quick","magic","culture","unwind","world"],
+    available: ["connect","self","life","mind","wish","attract","spirit","body","aron"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
-    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron","magic"],
+    on:        ["warm","magic","friends","connect","culture","life","past","unwind","blunt"],
+    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","attract","date","connect","culture","blunt"],
+    on:        ["warm","magic","attract","date","connect","culture","blunt"],
     available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "For two, finding out"
   },
   partner: {
-    on:        ["us","uslove","connect","date","deep","wish","blunt"],
+    on:        ["us","uslove","connect","date","deep","wish","magic","blunt"],
     available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The two of you"
   },
@@ -1807,18 +1807,18 @@ const PRESETS = {
     subtitle:  "When it gets late and honest"
   },
   solo: {
-    on:        ["self","wish"],
+    on:        ["self","wish","magic"],
     available: ["deep","raw","shadow","mind","spirit","past","grief","body"],
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","warm","work","culture","mind"],
-    available: ["life","values","world","connect","friends","unwind","wish","magic"],
+    on:        ["quick","warm","magic","work","culture","mind"],
+    available: ["life","values","world","connect","friends","unwind","wish"],
     subtitle:  "Safe for the office"
   },
   family_p: {
-    on:        ["warm","quick","roots","family","culture","past"],
-    available: ["home","life","grief","us","usfriend","unwind","magic"],
+    on:        ["warm","quick","magic","roots","family","culture","past"],
+    available: ["home","life","grief","us","usfriend","unwind"],
     subtitle:  "Across generations"
   },
   colbertmode: {
@@ -3072,18 +3072,23 @@ function updateDrawMore() {
   if (standalone) standalone.classList.remove('visible');
 
   const remaining = fullDeck.length - visibleDeck.length;
-  const atEnd = visibleDeck.length > 0 && currentIndex >= visibleDeck.length - 1;
+  const atSummary  = visibleDeck.length > 0 && currentIndex >= visibleDeck.length;      // end-of-draw screen
+  const atLastCard = visibleDeck.length > 0 && currentIndex === visibleDeck.length - 1; // last card of the hand
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
-  if (atEnd && remaining > 0) {
+  if (atSummary) {
+    // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
+    // pile 10 extra cards onto the finished hand instead of dealing a new one).
+    nextBtn.classList.remove('draw-mode');
+    nextBtn.textContent = lang === 'nl' ? 'Volgende ronde' : 'Continue';
+  } else if (atLastCard && remaining > 0) {
+    // On the last card you can still extend the current hand by holding.
     nextBtn.classList.add('draw-mode');
     nextBtn.textContent = lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
   } else {
-    if (nextBtn.classList.contains('draw-mode')) {
-      nextBtn.classList.remove('draw-mode');
-      nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
-    }
+    nextBtn.classList.remove('draw-mode');
+    nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
 };
 
