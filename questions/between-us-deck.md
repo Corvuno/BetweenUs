@@ -162,7 +162,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Do you decide fast and adjust, or slow and stick?
 9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
-11. What's taking up most of your head at the moment?
+11. What are you bad at learning?
 12. Which idea has changed you, and how did it get in?
 
 ## Spirit
@@ -515,6 +515,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.30 — Mind 11 corrected
+The head-space card introduced in v6.29 recreated the problem v6.18 removed: it asks what you are going through rather than how you think, so the honest answer is usually a worry, which is the rumination cluster coming back through the side door. Replaced with the bad-at-learning card, which sits on the learning territory Mind was rebuilt for and cannot collapse into a worry. The present-tense thread does not need Mind — it already lives in Life 11, Unwind 3 and Past 2.
 
 ## Patch v6.29 — air and the present tense
 The deck asked about your life, your history and your patterns, and since the Raw rebuild about this evening — but almost nothing about the period you are actually in. Six cards open that ground and give two uniformly earnest categories somewhere lighter to land.
