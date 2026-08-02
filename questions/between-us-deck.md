@@ -78,14 +78,14 @@ The questions come first, category by category. The full change log is at the bo
 9. Your home tells people something about you. What?
 10. Can you feel at home somewhere you don't belong?
 11. Which house from your life do you still walk through in dreams?
-12. Some spaces are instantly not yours. Why?
+12. Who have you shared a home with — and what did it teach you?
 
 ## Roots
 1. The emotional weather in the house you grew up in...
 2. Which of your parents' fears did you inherit?
-3. Do you catch yourself repeating a trait of your parents — and how do you feel about it?
+3. What did you learn about money in the house you grew up in?
 4. The day you finally understood something your parent did...
-5. When did you first realise your parents were just people?
+5. What did your upbringing give you that you're glad of?
 6. Look at a photo of young you — what looks back?
 7. Which feelings were allowed in your house — and which weren't?
 8. At home, to be safe, you had to be...
@@ -201,7 +201,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Which friend gets the honest version of you — and which gets the polite one?
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
 6. One friend deserves a better version of you...
-7. What do we actually owe our friends?
+7. How do you make friends now — and is it harder than it used to be?
 8. What do your friends come to you for — and is it what you'd choose?
 9. What do you say about your friends when they're not there?
 10. The friend I'd call when I'm in real trouble is...
@@ -211,7 +211,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Romance
 1. How do you behave in the first weeks of falling for someone — what's the telltale sign?
 2. Which pattern do you keep bringing into relationships, invited or not?
-3. What have you learned about yourself only through someone who loved you?
+3. How do you end things — and how do you want to be left?
 4. Previous partners undervalued something you offer in love...
 5. A flirt of yours gets shot down — describe the next sixty seconds inside you.
 6. A fling flips into something serious. When?
@@ -219,7 +219,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
 9. Make the case for a large age gap in love — then name your own limit.
 10. Which love story — your own or borrowed — do you retell most gladly?
-11. Is love mostly luck or mostly work?
+11. What are you like single — and do you like that version?
 12. What's the most romantic thing you've attempted that failed completely?
 
 ## Attract ✦
@@ -384,7 +384,7 @@ The questions come first, category by category. The full change log is at the bo
 5. When do you feel most sexually connected to me?
 6. What do I do that works better than I know?
 7. Show me, with my hand, how you want to be touched.
-8. Pick a first between us to relive.
+8. When our wanting doesn't line up, what do you do?
 9. Who would you sleep with outside this relationship — if you were allowed?
 10. What have you been wanting to try with me but haven't said?
 11. When do you catch me wanting you — and what does it make you do?
@@ -406,7 +406,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Wish
 1. The life you almost lived — how close did it come?
-2. You've decided something is unrealistic. Decided, not proven.
+2. What did you once wish for that you now have?
 3. If I were braver, I would already have...
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
@@ -414,7 +414,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Which wish keeps returning, in new costumes?
 8. Is wanting more a flaw or an engine?
 9. A free year, no obligations — what finally gets done?
-10. Guaranteed anonymity. Then you'd attempt...
+10. What do you want for someone else that you can't give them?
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
@@ -515,6 +515,14 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.31 — seven-category sweep
+**Roots.** 5 → what your upbringing gave you that you are glad of, resolving the parent-as-human twin with 4 and opening ground the category had none of: Roots read as though nobody had a decent childhood, and a good thing you were given is still deep. 3 → the childhood-money card, resolving the inheritance twin with 2. The emotional-weather and allowed-feelings cards are kept: one asks the general climate, the other the specifics, and a house can be peaceful by suppressing whatever does not fit.
+**Wish de-conditioned.** Four cards were the same device — remove the obstacle, now what. 2 → the wish already granted, which nothing in the deck asked. 10 → what you want for someone else and cannot give. The braver card and the free-year card stay as the two strongest of the four.
+**Home 12** → who you have shared a home with, resolving the what-makes-a-space-yours twin with 6 and putting people into a category that was otherwise objects and feelings.
+**Us: Intimate 8** → the mismatched-wanting card, resolving the relive-a-moment twin with 2. Desire that does not line up is the most common thing long couples navigate and the deck did not touch it.
+**Friendship 7** → making friends as an adult, replacing the category's one abstract card.
+**Romance.** 3 → how you end things, filling the category's largest hole: twelve cards on falling in love and none on leaving or being left. 11 → what you are like single. Both replace the weaker half of a three-card cluster on self-knowledge-through-partners. The age-gap card stays at the owner's call.
 
 ## Patch v6.30 — Mind 11 corrected
 The head-space card introduced in v6.29 recreated the problem v6.18 removed: it asks what you are going through rather than how you think, so the honest answer is usually a worry, which is the rumination cluster coming back through the side door. Replaced with the bad-at-learning card, which sits on the learning territory Mind was rebuilt for and cannot collapse into a worry. The present-tense thread does not need Mind — it already lives in Life 11, Unwind 3 and Past 2.
