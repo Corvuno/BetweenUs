@@ -233,7 +233,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
-11. What's a look someone gave you that you can still feel?
+11. What do you think the person across from you finds attractive about you — then ask if you're right.
 12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
 
 ## Values
@@ -515,6 +515,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.23 — Attract 11
+**Attract 11** → the self-in-attraction card. Attract had twelve cards about what you find attractive and none about being the object of it. The second clause turns a guess into a live exchange, which is what the category was missing. Replaces the look-you-can-still-feel card, which arrived from the After Dark dedup branch rather than the owner sweep.
 
 ## Patch v6.22 — Culture 1 · Family 2 and 10 · Past 1 and 12
 **Culture 1** → the still-does-something card. The old wording judged how long the work lasted rather than asking what it does to you, which is the feeling the card was after. Kept as a lasting relationship with a work rather than a single encounter, so it does not twin Culture 10.
