@@ -350,18 +350,6 @@ body::before{
 .arc-dot.lit-3{background:#5a7aaa;opacity:.75;} /* deep blue */
 .arc-dot.lit-4{background:#c9a04a;opacity:.45;} /* gold return, softer */
 
-/* ── SKIP GESTURE ── */
-.card.will-skip{opacity:.7;transition:opacity .15s ease;}
-.card.will-skip::after{
-  content:'↓  skip';
-  position:absolute;bottom:28px;left:0;right:0;
-  text-align:center;font-family:'Jost',sans-serif;
-  font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--muted);opacity:.6;pointer-events:none;
-  animation:fadeSlideUp .2s ease forwards;
-}
-@keyframes fadeSlideUp{from{opacity:0;transform:translateY(4px);}to{opacity:.6;transform:none;}}
-
 /* ── IN-CARD SESSION SUMMARY ── */
 .sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
 .sic-label{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
@@ -1104,7 +1092,7 @@ body::before{
     <p>Most conversations stay on the surface because nothing ever quite gives them permission to go deeper. Between Us is built to do that &mdash; a deck of questions for the kind of talk that doesn't usually happen on its own, whether it's two people or a full table.</p>
     <p>Draw a card and read it out loud. Answer it yourself, or hand it to someone else. There's nothing to win and nothing to get right. Pass if a question doesn't land &mdash; no explanation needed.</p>
     <h4>Gestures</h4>
-    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card (or press and hold it) to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, hold the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
+    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, hold the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
     <h4>Modes</h4>
     <p>Each mode sets the table for a situation &mdash; who's in the room decides what's on and what's within reach. Dimmed categories aren't part of that room. Work and Family lock After Dark entirely; everywhere else it's yours to switch.</p>
     <h4>Categories</h4>
@@ -3316,7 +3304,7 @@ updateDrawMore = function() {
 })();
 
 // ═══════════════════════════════════════════════════════════
-// FEATURE 3: SKIP CARD — long-press or swipe down
+// FEATURE 3: SKIP CARD — swipe down
 // ═══════════════════════════════════════════════════════════
 window._skipNextCard = false; // flag to block nextCard after skip
 // skippedCards declared at top with state variables
@@ -3325,8 +3313,6 @@ function skipCard() {
   if (currentIndex < 0 || currentIndex >= visibleDeck.length || visibleDeck.length === 0) return;
   window._skipNextCard = true;
   setTimeout(() => { window._skipNextCard = false; }, 600);
-  const cardEl = document.getElementById('card');
-  cardEl.classList.remove('will-skip');
   // Remove from visibleDeck only — fullDeck stays intact for new rounds
   const removed = visibleDeck.splice(currentIndex, 1)[0];
   skippedCards.add(removed.question);
@@ -3354,48 +3340,22 @@ function skipCard() {
 
 // Skip block integrated into consolidated nextCard below.
 
+// Skip is a downward swipe only. Press-and-hold-to-skip was removed: it
+// collided with press-and-hold-to-continue on the end-of-draw screen, and skip
+// sees little use. A hold now only ever means "continue".
 (function(){
   const cardEl = document.getElementById('card');
   if (!cardEl) return;
-  let skipTimer = null, skipStartX = 0, skipStartY = 0;
-
-  const startHold = () => {
-    if (currentIndex < 0) return;
-    skipTimer = setTimeout(() => {
-      cardEl.classList.add('will-skip');
-      skipTimer = setTimeout(skipCard, 320);
-    }, 380);
-  };
-  const cancelHold = () => {
-    clearTimeout(skipTimer); skipTimer = null;
-    cardEl.classList.remove('will-skip');
-  };
-
-  // Desktop long-press
-  cardEl.addEventListener('mousedown', startHold);
-  cardEl.addEventListener('mouseup',   cancelHold);
-  cardEl.addEventListener('mouseleave',cancelHold);
-
-  // Mobile: track start position, long-press, swipe-down
+  let startX = 0, startY = 0;
   cardEl.addEventListener('touchstart', e => {
-    skipStartX = e.touches[0].clientX;
-    skipStartY = e.touches[0].clientY;
-    startHold();
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
   }, {passive:true});
-
   cardEl.addEventListener('touchend', e => {
-    cancelHold();
-    const dy = e.changedTouches[0].clientY - skipStartY;
-    const dx = e.changedTouches[0].clientX - skipStartX;
+    if (currentIndex < 0 || currentIndex >= visibleDeck.length) return;  // never on the end/summary card
+    const dy = e.changedTouches[0].clientY - startY;
+    const dx = e.changedTouches[0].clientX - startX;
     if (dy > 65 && Math.abs(dy) > Math.abs(dx) * 1.5) skipCard();
-  }, {passive:true});
-
-  cardEl.addEventListener('touchcancel', cancelHold, {passive:true});
-  cardEl.addEventListener('touchmove', e => {
-    // Cancel long-press if significant movement detected
-    const dy = e.touches[0].clientY - skipStartY;
-    const dx = e.touches[0].clientX - skipStartX;
-    if (Math.abs(dx) > 15 || dy < -15) cancelHold();
   }, {passive:true});
 })();
 
