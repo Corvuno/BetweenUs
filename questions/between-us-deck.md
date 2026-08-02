@@ -394,7 +394,7 @@ The questions come first, category by category. The full change log is at the bo
 1. You lie most consistently about...
 2. Quote the cruelest thing you've ever actually said.
 3. The you that comes out at your worst — honestly...
-4. People believe your presentation. What do you get away with?
+4. People believe your presentation. What does that let you do?
 5. Which emotion do you fake best?
 6. Tell about hurting someone without meaning to.
 7. Which vice has survived every attempt to quit it?
@@ -515,6 +515,9 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.27 — Shadow 4
+**Shadow 4** reworded off "get away with", which Raw 9 owns in a concrete, time-bound form. The change does more than clear the collision: "what does that let you do" moves the card from deception-for-gain to presentation-as-capability, so fake-it-till-you-make-it becomes a valid answer. That keeps it distinct from the faked-emotion card now at 5 — one is a performance of feeling, the other is how you carry yourself into a room.
 
 ## Patch v6.26 — Shadow 5
 **Shadow 5** → the faked-emotion card, rehomed from Raw. It asks about a skill built over time rather than a present state, which is why it no longer fitted Raw after the rebuild, and competence at deception is Shadow's register exactly. It replaces the blind-spot card, which was self-defeating in the same way as the dead-ends cut in v6.10 — a blind spot you can name is not one, so players either stall or invent.
