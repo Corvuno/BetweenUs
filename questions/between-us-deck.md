@@ -296,14 +296,14 @@ The questions come first, category by category. The full change log is at the bo
 1. Say the thing you censored earlier tonight.
 2. Right now you want — first answer, no editing.
 3. Who are you jealous of, currently?
-4. There's a story you only ever tell in edited form — give the unedited version.
-5. Which emotion do you fake best?
-6. Is there something you're carrying tonight that you'd rather nobody asked about?
-7. What's the real reason you came tonight?
-8. What did you get away with this week?
-9. What are you afraid this game will ask you?
-10. What's the truest thing you could say about yourself right now?
-11. What would you say if you knew there'd be no consequence?
+4. What are you angry about that you've been calling something else?
+5. What are you pretending to be fine with?
+6. What are you performing right now — and for whom?
+7. What have you already decided about someone here?
+8. What's the pettiest thing you've felt this evening?
+9. What did you get away with this week?
+10. Who have you been unfair to lately?
+11. What are you afraid this game will ask you?
 12. What are you not saying?
 
 ## Grief
@@ -503,6 +503,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Raw (awaiting a new home)** — "Which emotion do you fake best?" (owner wants it kept; Shadow is the likely destination)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Deep** — "When were you last truly seen?"
 - **Deep** — "When did you last let someone see you struggling?"
@@ -515,6 +516,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.25 — Raw rebuilt
+Raw was described by manner rather than subject — "unfiltered, no softening" says how to answer, not what about — so the cards reached for the same device twelve times over. Seven of twelve asked you to name something you were withholding.
+The subject Raw actually owns, and the only thing separating it from Deep and Shadow, is **time and place**: it is the one category anchored to this room, tonight. Rebuilt across four territories — state (3, 4, 5), the room (6, 7, 8), the live recent (9, 10), and impulse (2) — with the withholding move kept as a signature at 1 and 12 rather than as the whole category.
+Cut: the edited-story card (about your life, not now — a Past card in Raw clothing), the carrying-tonight and real-reason cards (third and fourth versions of the censored card at 1), the truest-thing card (no handle on it), and the no-consequence card, whose conditional removes the cost that makes Raw work. The faked-emotion card is kept at the owner's request and benched pending a home.
 
 ## Patch v6.24 — Spirit 10
 **Spirit 10** → the practice card. Spirit 4 covers borrowed teachings, but nothing covered what people actually *do* — meditation, breathwork, fasting, dance, tantra. Naming the practices rather than a tradition keeps it open to people who belong to none, and the body framing keeps it clear of the presence card at 9. Replaces the coincidence card, which was a belief-without-evidence card in disguise and twinned the belief territory the category already holds.
