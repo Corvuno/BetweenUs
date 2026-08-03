@@ -43,7 +43,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
-5. Which artist changed what you pay attention to?
+5. Which public space taught you something about beauty?
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
 8. The one you love that everyone else seems to have missed...
@@ -515,6 +515,10 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.35 — Culture 5
+Culture was nine parts consumption — art, music, story, media — with no civic or built environment anywhere. **Culture 5** → the public-space card, which opens architecture, streets, stations, churches, libraries and parks. It replaces the artist-changed-your-attention card, the weaker half of a soft pair with the last-thing-that-changed-how-you-think card at 12, so the swap also thins that overlap. The reflective framing was chosen over a preference version deliberately: what a place taught you is harder to reach without the card than what you enjoy.
+No Dutch on this card — translations are the owner's from here on, and a missing one is safer than a wrong one.
 
 ## Patch v6.34 — Culture 9 translation
 The Dutch on the great-art card was not a translation of the English but a different question. The English asks whether the work absolves the person, a moral question; the Dutch asked whether you can still enjoy something beautiful made by a "rotmens", which is a taste question anyone can wave away, in a register far below the card's weight. Now *"Pleit grote kunst een slecht mens vrij?"* — vrijpleiten carries the same judicial and moral sense as "excuse".
