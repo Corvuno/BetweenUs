@@ -2082,19 +2082,12 @@ function applyLimit(reshuffle = true) {
 }
 
 function drawMore() {
-  const prevLength = visibleDeck.length;
-  // Don't re-add skipped cards when drawing more
-  const available = fullDeck.filter(c => c && !skippedCards.has(c.question));
-  /* draw one more hand's worth — the chosen limit (5/10/20), not a fixed 10 */
-  const handSize = (cardLimit === null || cardLimit === undefined) ? 10 : cardLimit;
-  visibleDeck = available.slice(0, Math.min(visibleDeck.length + handSize, available.length));
-  if (visibleDeck.length > prevLength) {
-    // Advance straight to first new card
-    currentIndex = prevLength;
-    flipToCard(visibleDeck[currentIndex]);
-    addToLog(visibleDeck[currentIndex]);
-    updateStarUI();
-  }
+  /* Deal a FRESH hand at the chosen limit rather than growing the current one.
+     The hand is always the size you picked (5) — it never becomes 10 or 15.
+     initDeck() deals unseen cards first, so a new hand doesn't repeat what this
+     session already showed. Same behaviour as Continue on the end screen. */
+  initDeck();
+  _nextCardBase();
   updateDeckInfo();
   updateDrawMore();
   renderProgress();
