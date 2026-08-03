@@ -318,6 +318,20 @@ body::before{
 .help-content p{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:rgba(240,232,216,.8);margin-bottom:12px;}
 .help-content h4{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:20px 0 8px;}
 .help-content strong{color:var(--cream);}
+.help-content em{font-style:italic;color:rgba(240,232,216,.9);}
+.help-content .hp-lead{font-size:1.3rem;font-style:italic;line-height:1.45;color:var(--gold-l);margin-bottom:16px;}
+.help-content h4{position:relative;padding-top:15px;margin:28px 0 10px;}
+.help-content h4::before{content:'';position:absolute;top:0;left:0;width:24px;height:1px;background:var(--border);}
+.help-content .hp-way{margin:0 0 14px;padding-left:13px;border-left:1px solid var(--dim);}
+.help-content .hp-name{display:block;font-family:'Jost',sans-serif;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-l);margin-bottom:5px;}
+.help-content .hp-way p{margin-bottom:0;}
+.help-content .hp-step{display:flex;gap:12px;margin-bottom:14px;}
+.help-content .hp-num{flex:0 0 14px;font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.1em;color:var(--gold);opacity:.7;padding-top:7px;}
+.help-content .hp-step p{margin-bottom:0;}
+.help-content .hp-colbert{color:#f3c33c;}
+.help-content .hp-aron{color:#e75783;}
+.help-content .hp-note{font-style:italic;color:rgba(240,232,216,.55);}
+.help-content .hp-close{margin-top:26px;padding-top:20px;border-top:1px solid var(--dim);text-align:center;font-style:italic;color:var(--gold-l);opacity:.85;}
 .lang-toggle{display:flex;border:1px solid var(--dim);flex-shrink:0;margin-left:auto;}
 .lang-opt{background:none;border:none;border-bottom:1px solid transparent;font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:6px 8px;cursor:pointer;transition:all .2s;}
 .lang-opt.active{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
@@ -663,6 +677,16 @@ body::before{
 .toggle-btn.on{background:none;border:none;border-bottom:1px solid currentColor;opacity:1;
   text-shadow:0 0 9px color-mix(in srgb, currentColor 45%, transparent);}
 
+/* question lists — Colbert and The 36 are sequences, not filters: marked, and in their own colour */
+.toggle-btn--list::before{content:'\25B8';margin-right:5px;font-size:.85em;opacity:.45;}
+.toggle-btn--list.on::before{opacity:.9;}
+.mode-btn--list{color:rgba(240,232,216,.5);}
+.mode-btn--list::before{content:'\25B8';margin-right:5px;font-size:.85em;opacity:.5;}
+.mode-btn--list:hover{color:var(--list-col);}
+.mode-btn--list.active{color:var(--list-col);}
+.mode-btn--list.active::before{opacity:1;}
+.mode-btn--list.active::after{background:var(--list-col);}
+
 /* ── MAIN COLUMN ── */
 .card-wrap{margin-top:12px;}
 
@@ -839,7 +863,8 @@ body::before{
         <button class="mode-btn" data-mode="solo">Solo</button>
         <button class="mode-btn" data-mode="work">Work</button>
         <button class="mode-btn" data-mode="family_p">Family</button>
-        <button class="mode-btn" data-mode="colbertmode">Colbert</button>
+        <button class="mode-btn mode-btn--list" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert</button>
+        <button class="mode-btn mode-btn--list" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
       </div>
     </div>
   </div>
@@ -870,10 +895,11 @@ body::before{
         <!-- Light / fun -->
         <div class="band-lbl">Openers</div>
         <button class="toggle-btn" data-level="quick">Quick</button>
-        <button class="toggle-btn" data-level="colbert">Colbert</button>
-        <button class="toggle-btn" data-level="aron">The 36</button>
-        <button class="toggle-btn" data-level="magic">Magical</button>
         <button class="toggle-btn" data-level="warm">Warm</button>
+        <div class="band-lbl">Question lists</div>
+        <button class="toggle-btn toggle-btn--list" data-level="colbert">Colbert</button>
+        <button class="toggle-btn toggle-btn--list" data-level="aron">The 36</button>
+        <button class="toggle-btn toggle-btn--list" data-level="magic">Magical</button>
         <div class="band-lbl">Days &amp; world</div>
         <button class="toggle-btn" data-level="culture">Culture</button>
         <button class="toggle-btn" data-level="life">Life</button>
@@ -991,7 +1017,7 @@ body::before{
     <div class="d-divider"></div>
     <button class="d-item" id="d-help">
       <div class="d-icon">&#9432;</div>
-      <div class="d-text"><span class="d-label">How to play</span><span class="d-sub">Rules, modes, and tips</span></div>
+      <div class="d-text"><span class="d-label">How to play</span><span class="d-sub">Ways to play, and how it works</span></div>
     </button>
     <div class="d-divider"></div>
     <button class="d-item" id="d-log">
@@ -1017,7 +1043,7 @@ body::before{
     </button>
     <button class="d-item" id="d-reshuffle">
       <div class="d-icon">&#10227;</div>
-      <div class="d-text"><span class="d-label">Reshuffle</span><span class="d-sub">Re-deal without changing the mode</span></div>
+      <div class="d-text"><span class="d-label">Reshuffle</span><span class="d-sub">Shuffle again without changing the mode</span></div>
     </button>
   </div>
 </div>
@@ -1098,19 +1124,69 @@ body::before{
   <button class="drawer-close" id="closeHelp">&#10005;</button>
   <div class="drawer-title">How to play</div>
   <div class="help-content">
-    <p>This isn't a quiz. It's a door, left slightly open.</p>
+    <p class="hp-lead">This isn't a quiz. It's a door, left slightly open.</p>
     <p>Most conversations stay on the surface because nothing ever quite gives them permission to go deeper. Between Us is built to do that &mdash; a deck of questions for the kind of talk that doesn't usually happen on its own, whether it's two people or a full table.</p>
-    <p>Draw a card and read it out loud. Answer it yourself, or hand it to someone else. There's nothing to win and nothing to get right. Pass if a question doesn't land &mdash; no explanation needed.</p>
-    <h4>Gestures</h4>
-    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, tap the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
-    <h4>Modes</h4>
-    <p>Each mode sets the table for a situation &mdash; who's in the room decides what's on and what's within reach. Dimmed categories aren't part of that room. Work and Family lock After Dark entirely; everywhere else it's yours to switch.</p>
-    <h4>Categories</h4>
-    <p>The full list of categories sits under the presets. Tap one to add it to the mix, tap again to remove it. Anything marked &#10022; is adult territory and only appears once After Dark is on.</p>
-    <h4>Shuffle modes</h4>
-    <p><strong>Wild</strong>: fully random. <strong>Flow</strong>: eases in light and gradually deepens. <strong>Deep</strong>: leans toward harder, more vulnerable cards. <strong>Spiced</strong>: normal mix with &#10022; cards woven in. <strong>Heat</strong>: leans into intensity. <strong>Gentle</strong>: keeps things light. <strong>Breadth</strong>: cycles one card from every active category. <strong>Arc</strong>: builds a shape — warm start, deep questions, a cool-down, then the pattern repeats. Works well even for a single 5-card hand.</p>
-    <h4>After Dark</h4>
-    <p>Makes the adult and intimate categories (marked &#10022;) selectable. They are never part of a deck until you switch them on yourself.</p>
+    <p>Draw a card and read it out loud. Answer it, or hand it to someone else. There's nothing to win and nothing to get right. Pass if a question doesn't land &mdash; no explanation needed, and nobody asks why.</p>
+    <p>That's the whole game. Sit down, take your time, and have fun with it.</p>
+
+    <h4>Ways to play</h4>
+    <p>Agree on one before the first card, so everyone knows what they're in. All of them work for two people or for a table of eight.</p>
+    <div class="hp-way">
+      <span class="hp-name">Round the table</span>
+      <p>Draw one card and everyone answers it, one after another. When the last person has spoken, the next person draws. Even, unhurried, and the easiest one to start with.</p>
+    </div>
+    <div class="hp-way">
+      <span class="hp-name">Ask someone</span>
+      <p>Draw a card and put the question to one person at the table. They answer, then they draw the next card and choose who answers that one. The question keeps travelling and nobody knows who's next.</p>
+    </div>
+    <div class="hp-way">
+      <span class="hp-name">Pass the deck</span>
+      <p>Draw, answer it yourself, then hand the deck on. Everyone gets their own question. The quickest one &mdash; it keeps moving on a walk, in a car, around a dinner table.</p>
+    </div>
+    <div class="hp-way">
+      <span class="hp-name">Both of you</span>
+      <p>For two: take turns drawing, and you both answer every card. The second answer is usually the honest one.</p>
+    </div>
+    <div class="hp-way">
+      <span class="hp-name">Choose your card</span>
+      <p>Switch on <strong>Draw three</strong> and every draw offers three questions &mdash; take one and the other two are gone for good. Useful when a table keeps stalling on the same kind of card.</p>
+    </div>
+    <div class="hp-way">
+      <span class="hp-name">One follow-up</span>
+      <p>A house rule you can add to any of the above: after an answer, anyone may ask exactly one follow-up. One. That's usually where the real conversation starts.</p>
+    </div>
+    <div class="hp-way">
+      <span class="hp-name">On your own</span>
+      <p>Solo, five cards, no audience. Answer out loud or write them down, and star the ones that don't leave you alone.</p>
+    </div>
+    <p class="hp-note">There are more ways than these &mdash; invent your own. The deck doesn't mind, as long as everyone is playing the same one.</p>
+
+    <h4>Going through the app</h4>
+    <div class="hp-step"><span class="hp-num">1</span><p><strong>Set the room.</strong> The three words at the top &mdash; Categories, Shuffle, Cards &mdash; are the whole setup. Open <strong>Categories</strong> and pick something to <em>start from</em>: Everything, New people, Friends, Date, Partner, Late night, Solo, Work, Family, or one of the two lists. Each one switches on what fits that room and marks what's within reach. Below that sits every category: choose one to add or drop it, hold it to read what it holds without changing anything.</p></div>
+    <div class="hp-step"><span class="hp-num">2</span><p><strong>Choose how you draw.</strong> <strong>Shuffle</strong> sets the order, <strong>Cards</strong> sets how many you draw per round &mdash; 5, 10, 20, or the whole selection. Five is a conversation; twenty is an evening.</p></div>
+    <div class="hp-step"><span class="hp-num">3</span><p><strong>Play.</strong> <strong>Draw card</strong> starts it. From there: tap or click the card &mdash; or swipe left &mdash; for the next question, swipe right to go back, and swipe down to skip one that isn't for tonight (you get a moment to undo). &#9733; keeps a card. With a keyboard, the arrow keys do the same, and &#8595; skips.</p></div>
+    <div class="hp-step"><span class="hp-num">4</span><p><strong>Let the round end.</strong> When the hand runs out, the card turns gold and shows you where you went: the categories you covered and anything you starred. Stop there. Stand up, stretch, get some air, let the last answer settle &mdash; a round has an end for a reason, and the deck will wait. Rolling straight into the next one is how a table stops listening.</p></div>
+    <div class="hp-step"><span class="hp-num">5</span><p><strong>Keep what's worth keeping.</strong> The menu (&#8801;) holds the log of everything drawn this session, the cards you starred, a save so you can pick the deck up later, your own written cards, the language switch, and Reshuffle &mdash; a fresh shuffle without changing anything else.</p></div>
+
+    <h4>Filters, and lists</h4>
+    <p>Nearly every category is a filter. Switch a few on and the deck draws from all of them at once, in whatever order you picked. Two of them are not.</p>
+    <p><strong class="hp-colbert">Colbert</strong> and <strong class="hp-aron">The 36</strong> are question <em>lists</em> &mdash; fixed sets, written to be played from the first card to the last, each with its own pace. They're marked with a &#9656; wherever they appear.</p>
+    <p>Choose either one under <em>Start from</em> and it takes the deck over: fifteen questions in their original order for Colbert, thirty-six rising ones for The 36 &mdash; the closeness study, meant to be done in one sitting, with one other person. Mixed in among other categories they're simply more cards; on their own, they're the evening. (Magical behaves the same way if you pick it alone.)</p>
+
+    <h4>Categories and After Dark</h4>
+    <p>The grid runs from light to deep &mdash; Openers, Question lists, Days &amp; world, Inner, People, Deep water. Anything marked &#10022; is adult territory and stays out of every deck until you turn <strong>After Dark</strong> on yourself. The small &#10022; beside that button is a bias rather than a switch: with it on, spicy cards get woven through a round instead of filling it. Work and Family lock the whole of it away; everywhere else it's yours to decide.</p>
+
+    <h4>Shuffle</h4>
+    <p><strong>Wild</strong>: fully random, anything goes. <strong>Deep</strong>: leans toward the harder, more vulnerable cards. <strong>Breadth</strong>: one card from every active category, cycling. <strong>Arc</strong>: builds a shape &mdash; a warm start, deeper water, a cool-down, then round again; the four dots under the card show where in that shape you are.</p>
+    <p>Cards you've already drawn move to the back, so each new round gives you unseen questions until the selection runs dry. The lists ignore all of this: they play in their own order, always.</p>
+
+    <h4>Full screen</h4>
+    <p>The <strong>Full screen</strong> button leaves you the card and nothing else &mdash; for the middle of a table, or any screen the room can see. The right side of the card takes you to the next question, the left edge back, and swiping works too. Everything else fades away after a few seconds, and the screen won't sleep. Close, or Esc, brings the app back.</p>
+
+    <h4>Your own cards</h4>
+    <p><strong>Custom card</strong> in the menu adds a question of your own &mdash; English, Dutch, or both &mdash; to whichever category you file it under, and it gets drawn like any other. Cards you write, and the session log, can be exported to a file and handed to someone else's copy.</p>
+
+    <p class="hp-close">No winners, no right answers &mdash; the deck only holds the door open.<br>Whoever walks through first sets the depth for everyone.<br>Go on. Go first.</p>
   </div>
 </div>
 
@@ -1828,6 +1904,11 @@ const PRESETS = {
     on:        ["colbert"],
     available: [],
     subtitle:  "The questionnaire — fifteen, in order"
+  },
+  aronmode: {
+    on:        ["aron"],
+    available: [],
+    subtitle:  "The closeness study — thirty-six, in order"
   }
 };
 
