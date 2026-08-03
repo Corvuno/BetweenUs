@@ -89,7 +89,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Look at a photo of young you — what looks back?
 7. What did a normal evening look like when you were young?
 8. At home, to be safe, you had to be...
-9. What were you praised for as a child — and what did that train you to become?
+9. What did you play with until it fell apart?
 10. What did you learn about love from watching your parents?
 11. The moment you realised your normal wasn't — take us back.
 12. Which adult from your childhood were you never quite safe with?
@@ -100,10 +100,10 @@ The questions come first, category by category. The full change log is at the bo
 3. Tell about a time you surprised yourself with what you could survive.
 4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
 5. Trace the moment money started meaning something different to you.
-6. What would you do differently if you could go back — and do you actually think it would have changed anything?
+6. What did you go through that you'd rather not discuss?
 7. Which version of yourself was hardest to let go of?
 8. Describe a failure you're only now able to talk about.
-9. Do people actually change, or just get better at managing themselves?
+9. What's the best trouble you ever got into?
 10. Which scar still carries the best story?
 11. Which year of your life simply vanished?
 12. If your younger self could see your life right now, what would surprise them most?
@@ -182,7 +182,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Connect
 1. How do you show someone they matter to you — the actual method?
-2. What's harder: asking for help, or accepting it unasked?
+2. When did being needed stop feeling good?
 3. Who taught you the most about how to be close to someone?
 4. You need something from people, and rarely say it out loud...
 5. How can someone tell you're withdrawing before you've said a word?
@@ -190,7 +190,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Are you listening, or waiting for your turn?
 8. Is there something you wish people asked you instead of 'how are you'?
 9. Who did you forgive, without ever telling them?
-10. Name the last hug that lasted longer than three seconds.
+10. Where are you a regular — and do they know your name?
 11. When someone cries in front of you, what happens in you?
 12. In which company do you stop performing?
 
@@ -242,7 +242,7 @@ The questions come first, category by category. The full change log is at the bo
 3. How much of where you are now is luck?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
-6. When did raising your voice turn out to be exactly right?
+6. Who gets authority over you faster than you'd like?
 7. When did you stay silent and shouldn't have?
 8. Would you tell this table what you earn?
 9. What are the outer limits of your compassion?
@@ -256,7 +256,7 @@ The questions come first, category by category. The full change log is at the bo
 3. Name one law you'd pass tomorrow.
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
-6. Outsiders keep missing something your background carries...
+6. Which room first taught you that class exists?
 7. Broadly: are people improvable?
 8. What has travel actually taught you — beyond the stories?
 9. Is there something happening in the world that genuinely worries you?
@@ -331,7 +331,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Who became family without being family?
 9. Who in your family knows you best — and do they know that?
 10. What role do you play in your family — and is it one you chose?
-11. Your family doesn't know...
+11. What would you be worst at as a parent — or what are you worst at?
 12. Did you want children — and has that changed?
 
 ## Between Us
@@ -515,6 +515,16 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.42 — four new domains, play, and parenting
+A theme probe found three subjects near zero and one thin. Each new card displaces the weakest or most redundant card in its category.
+**Care.** One card in 408 touched care, and it was the abstract asking-versus-accepting question. **Connect 2** → *"When did being needed stop feeling good?"* — the thing carers are not supposed to say out loud.
+**Weak ties.** The half-near social world — the regulars, the familiar faces, the people who carry your week without being friends — had one card. **Connect 10** → the regular card, replacing the last-hug card, a yes/no with a soft answer.
+**Authority.** Zero cards on your personal relationship with power. **Values 6** → *"Who gets authority over you faster than you'd like?"*, personal rather than political so it plays at a family table and a work table alike. Replaces the raising-your-voice card, adjacent to the staying-silent card at 7.
+**Class.** Four cards circled belonging, background and status; none named the codes. **World 6** → the room-that-taught-you card, a scene rather than a position, replacing its own abstract cousin.
+**Past gets air.** Eleven of twelve cards were weight, loss or regret, with the scar card carrying the register alone. **Past 9** → the best-trouble card, replacing the category's one abstract binary. **Past 6** → *"What did you go through that you'd rather not discuss?"*, worded without "phase" to avoid echoing card 2, replacing the regret card that overlapped card 1.
+**Roots 9** → the played-with-until-it-fell-apart card, giving a deliberately heavy category one card that costs nothing. Replaces the praised-as-a-child card, which paired with the to-be-safe card at 8.
+**Family 11** → *"What would you be worst at as a parent — or what are you worst at?"* The deck now asks whether you wanted children at 12 and what you would be like at 11, and both work for people without them. Replaces the family-doesn't-know fragment, whose ground the unspoken-rule card at 2 already holds.
 
 ## Patch v6.41 — Attract, Self, Unwind
 **Attract 3** gains the handling clause. Asking only whether you enjoyed being wanted made it a feeling card; asking what you did with it makes it a behaviour card, and how people manage unwanted interest says more than whether they liked it.
