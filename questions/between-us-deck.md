@@ -82,7 +82,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Roots
 1. The emotional weather in the house you grew up in...
-2. Which of your parents' fears did you inherit?
+2. What did being the oldest, youngest, middle or only make you?
 3. What did you learn about money in the house you grew up in?
 4. The day you finally understood something your parent did...
 5. What did your upbringing give you that you're glad of?
@@ -148,7 +148,7 @@ The questions come first, category by category. The full change log is at the bo
 9. How does aging announce itself to you — and what do you do with it?
 10. What's your actual relationship with food?
 11. Your body asks for something you routinely deny it...
-12. Is pushing your body to its limit a form of pleasure or of discipline?
+12. What has your body been through that it still remembers?
 
 ## Mind
 *Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
@@ -332,7 +332,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Who in your family knows you best — and do they know that?
 10. What role do you play in your family — and is it one you chose?
 11. Your family doesn't know...
-12. You brought someone new to meet the family. What did they notice first?
+12. Did you want children — and has that changed?
 
 ## Between Us
 1. What did you think of me the first time we met — unedited?
@@ -515,6 +515,12 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.39 — three blanks closed
+A theme sweep of all 408 cards found three subjects at exactly zero coverage.
+**Siblings.** Twelve Roots cards about childhood and every person named in them was a parent or another adult — the people you actually spent that childhood with were absent. **Roots 2** → the birth-order card, worded so an only child answers rather than passes. It replaces the inherited-fears card, leaving the parent thread at the understood-them and love-from-watching cards.
+**Parenthood.** The deck asked twelve Roots cards about being parented and nothing about parenting, having children, or deciding not to. **Family 12** → *"Did you want children — and has that changed?"*, which works for parents, non-parents, the undecided and those who could not. It replaces the meet-the-family card, the most situational in Family.
+**Illness.** Body covered pain, ageing, food, tension and limits but never the body failing. This one was an accident: git shows an injury-and-illness card existed and died as collateral in the v6.14 Move→Body fold, when 24 cards were cut to 12. **Body 12** → *"What has your body been through that it still remembers?"*, restoring the territory and replacing an abstract binary.
 
 ## Patch v6.38 — Magical kept as opt-in · Unwind 11
 v6.37 is reverted. Removing the Magical set was the wrong trade: the questions have their own charm, and a duplicate only fires when a player switches the set on. The fix is the toggle, not the axe. Magical now sits in `available` in all eight presets and in none of the `on` lists, so it never appears unless someone asks for it — which makes every cross-deck overlap a non-issue rather than a defect. The four replacement cards written for v6.37 are reverted with it; the ambition, do-people-change and autopilot cards are back.
