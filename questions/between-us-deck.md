@@ -127,7 +127,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Which compliment do you deflect because part of you suspects it's true?
 3. When are you most lonely — and is anyone around when it happens?
 4. What did someone once point out about you that you now see everywhere?
-5. Do you explain too much or too little — and how does that go over?
+5. How much explaining do you find yourself doing — of your choices, your tone, yourself — and how does that go over?
 6. Do you take up space in a room, or fold into it?
 7. What have you had to manage that most people never saw?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
@@ -518,7 +518,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Patch v6.41 — Attract, Self, Unwind
 **Attract 3** gains the handling clause. Asking only whether you enjoyed being wanted made it a feeling card; asking what you did with it makes it a behaviour card, and how people manage unwanted interest says more than whether they liked it.
-**Self 5** reframed from quantity to awareness. The old card asked *how much* explaining you do, which everyone answers with a number they have never examined. Too much or too little forces the choice, and "how does that go over" adds the consequence the card was missing.
+**Self 5** keeps its original wording and gains the consequence clause: *"— and how does that go over?"* The card was never broken, it was unfinished. Asking how much explaining you do produces a number; asking how it lands makes you check whether the explaining works, which is the part nobody examines.
 **Self 7** → what you have had to manage that most people never saw. The deck had no card anywhere on mental health, therapy or coming apart; Deep's you-struggle-with card was the nearest thing in 408. Deliberately clinical-free wording, so it works for a diagnosis and for a bad year alike. Replaces the younger-belief card.
 **Unwind 1** → the stayed-outside card. Nothing in the deck touched weather, landscape or being outdoors — the only keyword hit in 408 cards was sex outdoors. Replaces the perfect-day-off card, which duplicated a card in the still-active 36 Questions set, so nothing unique was lost.
 
