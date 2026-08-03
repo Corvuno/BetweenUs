@@ -109,7 +109,7 @@ The questions come first, category by category. The full change log is at the bo
 12. If your younger self could see your life right now, what would surprise them most?
 
 ## Unwind
-1. Your perfect day off — the real one, not the pretty one...
+1. When did you last stay outside longer than you meant to — and where were you?
 2. What does rest actually feel like for you — do you know how to do it?
 3. What are you looking forward to?
 4. The hour of the week that's entirely yours...
@@ -127,9 +127,9 @@ The questions come first, category by category. The full change log is at the bo
 2. Which compliment do you deflect because part of you suspects it's true?
 3. When are you most lonely — and is anyone around when it happens?
 4. What did someone once point out about you that you now see everywhere?
-5. How much explaining do you find yourself doing — of your choices, your tone, yourself?
+5. Do you explain too much or too little — and how does that go over?
 6. Do you take up space in a room, or fold into it?
-7. Which younger belief about yourself turned out flat wrong?
+7. What have you had to manage that most people never saw?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
@@ -225,7 +225,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Attract ✦
 1. Someone is close. The first physical detail you notice?
 2. What do you find attractive that you'd never admit on a first date?
-3. Someone wanted you and you didn't want them back — did part of you enjoy being wanted anyway?
+3. Someone wanted you and you didn't want them back — how did you handle it, and did you enjoy being wanted anyway?
 4. You tell yourself you have a type. Who do you actually keep ending up with?
 5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you?
@@ -515,6 +515,12 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.41 — Attract, Self, Unwind
+**Attract 3** gains the handling clause. Asking only whether you enjoyed being wanted made it a feeling card; asking what you did with it makes it a behaviour card, and how people manage unwanted interest says more than whether they liked it.
+**Self 5** reframed from quantity to awareness. The old card asked *how much* explaining you do, which everyone answers with a number they have never examined. Too much or too little forces the choice, and "how does that go over" adds the consequence the card was missing.
+**Self 7** → what you have had to manage that most people never saw. The deck had no card anywhere on mental health, therapy or coming apart; Deep's you-struggle-with card was the nearest thing in 408. Deliberately clinical-free wording, so it works for a diagnosis and for a bad year alike. Replaces the younger-belief card.
+**Unwind 1** → the stayed-outside card. Nothing in the deck touched weather, landscape or being outdoors — the only keyword hit in 408 cards was sex outdoors. Replaces the perfect-day-off card, which duplicated a card in the still-active 36 Questions set, so nothing unique was lost.
 
 ## Patch v6.39 — three blanks closed
 A theme sweep of all 408 cards found three subjects at exactly zero coverage.
