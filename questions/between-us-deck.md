@@ -62,7 +62,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Is an ordinary life something to fear or to aim for?
 8. What are you putting off that you know you'll regret?
 9. What does getting older take from you that you didn't expect, and what does it give?
-10. What part of your life is more serious than it needs to be?
+10. How much of your day runs on autopilot, honestly?
 11. What's different about your life this year?
 12. If you stopped explaining why you can't, what would change about how you live?
 
@@ -103,7 +103,7 @@ The questions come first, category by category. The full change log is at the bo
 6. What would you do differently if you could go back — and do you actually think it would have changed anything?
 7. Which version of yourself was hardest to let go of?
 8. Describe a failure you're only now able to talk about.
-9. What were you good at as a child that you let go of?
+9. Do people actually change, or just get better at managing themselves?
 10. Which scar still carries the best story?
 11. Which year of your life simply vanished?
 12. If your younger self could see your life right now, what would surprise them most?
@@ -119,7 +119,7 @@ The questions come first, category by category. The full change log is at the bo
 8. The most unexpected beauty a trip ever handed you...
 9. What's the first thing you go and find when you get somewhere new?
 10. A place you keep going back to — not because it's the best, but because it's yours...
-11. What's the smallest thing that makes a day better — and where do you do it?
+11. The one thing you refuse to optimise...
 12. What does the first warm day of the year do to you?
 
 ## Self
@@ -271,7 +271,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Which colleague changed how you work?
 5. Has your idea of success survived contact with reality?
 6. Tell about your most instructive professional failure.
-7. Whose success do you tell people about as if it were yours?
+7. Is ambition something you have or something that has you?
 8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
@@ -510,20 +510,11 @@ The questions come first, category by category. The full change log is at the bo
 - **Grief** — "Which grief do you carry that isn't yours?"
 
 ## NOTE — decks living in the app, not in this file
-Colbert Questionnaire · the 36 Questions to Fall in Love. These are separate third-party sets held in the app and are not edited here.
-The Magical Questions set was removed in v6.37 — see the change log.
+Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
 ---
 
 # Change log
-
-## Patch v6.37 — Magical removed, four cards taken as our own
-The Magical set was a third-party deck sitting alongside a deck built to its own rules, and it did not meet them. It carried a phone card, in a deck deliberately stripped of every tech reference in v5.7 so it would not date, and a walk-in-song card that v5.7 had already cut from Playful for being weak. It was also the source of every cross-deck duplicate: the talent-never-a-profession card against Work, the scar card against Past, the looking-forward card against Unwind, the almost-took-path card against Wish, the childhood-dish card against Warm and the favourite-building card against Culture. Removing it clears all six at once. The set is deleted rather than archived, since the questions are someone else's work and are not ours to keep a copy of.
-Four ideas worth having were rewritten from scratch rather than reworded, and placed against the deck's weakest remaining card class — the abstract binary:
-**Unwind 11** → the smallest-thing card, joining the small pleasure to the place it happens. Replaces the refuse-to-optimise card.
-**Work 7** → whose success you tell people about as if it were yours, replacing the ambition binary. Borrowed pride is a sharper admission than ambition-as-burden, and it indicts rather than flatters.
-**Past 9** → what you were good at as a child and let go of, replacing the do-people-change binary. The loss angle is untouched ground; the deck asks plenty about what you became and nothing about what you dropped.
-**Life 10** → what part of your life is more serious than it needs to be, replacing the autopilot card.
 
 ## Patch v6.36 — Unwind 9 · Self 12
 **Unwind 9** → the first-thing-you-find card. Unwind already held three travel cards, so this swaps the abstract one for a concrete one rather than adding a fourth: water, a market, a bookshop and the highest point are four different people.

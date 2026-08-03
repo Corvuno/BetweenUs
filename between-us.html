@@ -872,6 +872,7 @@ body::before{
         <button class="toggle-btn" data-level="quick">Quick</button>
         <button class="toggle-btn" data-level="colbert">Colbert</button>
         <button class="toggle-btn" data-level="aron">The 36</button>
+        <button class="toggle-btn" data-level="magic">Magical</button>
         <button class="toggle-btn" data-level="warm">Warm</button>
         <div class="band-lbl">Days &amp; world</div>
         <button class="toggle-btn" data-level="culture">Culture</button>
@@ -1156,7 +1157,7 @@ const LEVEL_COLORS = {
   colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
   usintimate:"#e84a4a",edge:"#c44ba8",skin:"#e08055",carnal:"#c81f1f",
   flesh:"#8a305a",kinks:"#a1247a",backup:"#5a5a6a",
-  desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",blunt:"#e2603c",abyss:"#b00000",aron:"#e75783",
+  desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",blunt:"#e2603c",abyss:"#b00000",aron:"#e75783",magic:"#8066e1",
 };
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 
@@ -1174,7 +1175,7 @@ const LEVEL_STYLES = {
   usintimate:"level-usintimate", shadow:"level-shadow",
   wish:"level-wish", quick:"level-quick", colbert:"level-colbert",
   lens:"level-lens", ground:"level-ground",
-  desire:"level-desire", threshold:"level-threshold", failure:"level-failure", blunt:"level-blunt", abyss:"level-abyss", aron:"level-aron"
+  desire:"level-desire", threshold:"level-threshold", failure:"level-failure", blunt:"level-blunt", abyss:"level-abyss", aron:"level-aron", magic:"level-magic"
 };
 
 const LEVEL_LABELS = {
@@ -1190,7 +1191,7 @@ const LEVEL_LABELS = {
   usintimate:"Us: Intimate ✦", shadow:"Shadow",
   wish:"Wish", quick:"Quick", colbert:"Colbert",
   lens:"Lens", ground:"Ground",
-  desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", blunt:"Bare ✦", abyss:"Abyss ✦", aron:"The 36"
+  desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", blunt:"Bare ✦", abyss:"Abyss ✦", aron:"The 36", magic:"Magical"
 };
 
 const COLBERT_CARDS = [
@@ -1270,7 +1271,7 @@ const NEWDECK_CARDS = [
   { level: "life", question: "Is an ordinary life something to fear or to aim for?", nl: "Zou jij gelukkig worden van een heel gewoon leven?" },
   { level: "life", question: "What are you putting off that you know you'll regret?", nl: "Wat blijft maar op je lijstje staan?" },
   { level: "life", question: "What does getting older take from you that you didn't expect, and what does it give?", nl: "Wat neemt ouder worden je af dat je niet had verwacht — en wat geeft het?" },
-  { level: "life", question: "What part of your life is more serious than it needs to be?" },
+  { level: "life", question: "How much of your day runs on autopilot, honestly?" },
   { level: "life", question: "What's different about your life this year?", nl: "Wat is er dit jaar anders aan je leven?" },
   { level: "life", question: "If you stopped explaining why you can't, what would change about how you live?", nl: "Als je stopte met uitleggen waarom iets niet kan, wat zou er dan veranderen aan hoe je leeft?" },
 
@@ -1311,7 +1312,7 @@ const NEWDECK_CARDS = [
   { level: "past", question: "What would you do differently if you could go back — and do you actually think it would have changed anything?", nl: "Wat zou je anders doen als je terug kon — en denk je echt dat het iets veranderd had?" },
   { level: "past", question: "Which version of yourself was hardest to let go of?", nl: "Welke versie van jezelf was het moeilijkst om los te laten?" },
   { level: "past", question: "Describe a failure you're only now able to talk about.", nl: "Mislukken werd later pas een verhaal. Welke mislukking?" },
-  { level: "past", question: "What were you good at as a child that you let go of?" },
+  { level: "past", question: "Do people actually change, or just get better at managing themselves?", nl: "Kun je echt een ander mens worden?" },
   { level: "past", question: "Which scar still carries the best story?", nl: "Dat litteken heeft een verhaal." },
   { level: "past", question: "Which year of your life simply vanished?", nl: "Welk jaar lijkt verdwenen zonder dat je het doorhad?" },
   { level: "past", question: "If your younger self could see your life right now, what would surprise them most?", nl: "Als je jongere zelf je leven nu kon zien, wat zou hen het meest verbazen?" },
@@ -1327,7 +1328,7 @@ const NEWDECK_CARDS = [
   { level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },
   { level: "unwind", question: "What's the first thing you go and find when you get somewhere new?" },
   { level: "unwind", question: "A place you keep going back to — not because it's the best, but because it's yours...", nl: "Naar welke plek blijf je teruggaan omdat die van jou voelt?" },
-  { level: "unwind", question: "What's the smallest thing that makes a day better — and where do you do it?" },
+  { level: "unwind", question: "The one thing you refuse to optimise...", nl: "Wat weiger jij efficiënter te maken?" },
   { level: "unwind", question: "What does the first warm day of the year do to you?" },
 
   // ─── SELF ───
@@ -1478,7 +1479,7 @@ const NEWDECK_CARDS = [
   { level: "work", question: "Which colleague changed how you work?" },
   { level: "work", question: "Has your idea of success survived contact with reality?", nl: "Wat is er over van jouw idee van succes?" },
   { level: "work", question: "Tell about your most instructive professional failure.", nl: "Je leerzaamste professionele mislukking..." },
-  { level: "work", question: "Whose success do you tell people about as if it were yours?" },
+  { level: "work", question: "Is ambition something you have or something that has you?", nl: "Wanneer wordt ambitie een last?" },
   { level: "work", question: "What made you choose this field — and is it still the reason you stay?", nl: "Waarom koos je voor dit vak — en is dat nog steeds de reden dat je blijft?" },
   { level: "work", question: "You're genuinely talented at something you'd never turn into a profession...", nl: "Waar ben je opvallend goed in, maar zou je nooit je beroep van maken?" },
   { level: "work", question: "Something would make you walk out tomorrow. What?", nl: "Waar zou jij morgen voor opstappen?" },
@@ -1740,33 +1741,66 @@ const ARON_CARDS = [
   { level: "aron", question: "Of all the people in your family, whose death would you find most disturbing? Why?" },
   { level: "aron", question: "Share a personal problem and ask your partner’s advice on how he or she might handle it. Also, ask your partner to reflect back to you how you seem to be feeling about the problem you have chosen." },
 ];
+// Priya Parker's magical questions — group framing removed from three of them.
+const MAGIC_CARDS = [
+  { level: "magic", question: "What’s a path you almost took but didn’t?" },
+  { level: "magic", question: "What song would they play at your funeral?" },
+  { level: "magic", question: "What’s a dish you loved as a child and maybe forgot about? Who made it?" },
+  { level: "magic", question: "What gift would you give to aliens on behalf of humanity?" },
+  { level: "magic", question: "If you were a fly on the wall, what would you love to hear people saying about you?" },
+  { level: "magic", question: "If you could bring one food to share right now, what would it be?" },
+  { level: "magic", question: "What’s your anti–pet peeve — a small thing that gives you disproportionate joy?" },
+  { level: "magic", question: "What are you an evangelist for?" },
+  { level: "magic", question: "Has someone else accomplished something you’re more proud of than anything you’ve done yourself?" },
+  { level: "magic", question: "What talent do you have that you would never turn into a profession?" },
+  { level: "magic", question: "What does the way you dress say about you?" },
+  { level: "magic", question: "What would you want your grandchildren to know about this period of history?" },
+  { level: "magic", question: "If you went back to school, what would you study?" },
+  { level: "magic", question: "What were you bad at as a kid that you’re actually good at now?" },
+  { level: "magic", question: "Where in your life do you need more glitter?" },
+  { level: "magic", question: "If a burger were named after you, what would be on it?" },
+  { level: "magic", question: "What is your favorite building where you live — and why?" },
+  { level: "magic", question: "If you had a lifetime supply of anything, what would you choose?" },
+  { level: "magic", question: "What pilgrimage would you like to make?" },
+  { level: "magic", question: "Which artist’s work would you never hang on your wall, even if it were free?" },
+  { level: "magic", question: "If you were a Jeopardy category, what would it be?" },
+  { level: "magic", question: "What would your childhood friends be most surprised to learn about your career?" },
+  { level: "magic", question: "If you could have a song play every time you walk into a room, what would it be?" },
+  { level: "magic", question: "What was a sliding-door moment in your life — a small choice that changed everything?" },
+  { level: "magic", question: "Which of your scars has the best story?" },
+  { level: "magic", question: "What are the three apps you use most — and what do they say about you?" },
+  { level: "magic", question: "What’s the nicest compliment you’ve ever received?" },
+  { level: "magic", question: "What’s something you’ve made that you’re proud of?" },
+  { level: "magic", question: "What tradition did you grow up with that you’ve kept?" },
+  { level: "magic", question: "What’s one thing you’re looking forward to?" },
+];
 
-const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS);
+const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);
 const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    on:        ["warm","quick","magic","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
     available: ["colbert","aron","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","culture","unwind","world"],
+    on:        ["warm","quick","magic","culture","unwind","world"],
     available: ["connect","self","life","mind","wish","attract","spirit","body","aron"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
+    on:        ["warm","magic","friends","connect","culture","life","past","unwind","blunt"],
     available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","attract","date","connect","culture","blunt"],
+    on:        ["warm","magic","attract","date","connect","culture","blunt"],
     available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "For two, finding out"
   },
   partner: {
-    on:        ["us","uslove","connect","date","deep","wish","blunt"],
+    on:        ["us","uslove","connect","date","deep","wish","magic","blunt"],
     available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The two of you"
   },
@@ -1776,17 +1810,17 @@ const PRESETS = {
     subtitle:  "When it gets late and honest"
   },
   solo: {
-    on:        ["self","wish"],
+    on:        ["self","wish","magic"],
     available: ["deep","raw","shadow","mind","spirit","past","grief","body"],
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","warm","work","culture","mind"],
+    on:        ["quick","warm","magic","work","culture","mind"],
     available: ["life","values","world","connect","friends","unwind","wish"],
     subtitle:  "Safe for the office"
   },
   family_p: {
-    on:        ["warm","quick","roots","family","culture","past"],
+    on:        ["warm","quick","magic","roots","family","culture","past"],
     available: ["home","life","grief","us","usfriend","unwind"],
     subtitle:  "Across generations"
   },
@@ -1848,9 +1882,9 @@ function isColbertSolo() {
 }
 
 // Sets that play in their canonical order when selected alone
-const ORDERED_SOLO_LEVELS = ['colbert', 'aron'];
+const ORDERED_SOLO_LEVELS = ['colbert', 'aron', 'magic'];
 // Opt-in-only: never swept up by Select All or auto-spice — a deliberate tap required.
-const OPT_IN_ONLY = ['colbert', 'aron', 'abyss'];
+const OPT_IN_ONLY = ['colbert', 'aron', 'magic', 'abyss'];
 function orderedSoloLevel() {
   if (activeToggles.size !== 1) return null;
   const l = [...activeToggles][0];
@@ -3475,6 +3509,7 @@ const CATEGORY_DESCRIPTIONS = {
   blunt:     "Direct to a fault — the questions your friends ask three drinks in ✦",
   abyss:     "The far room. For the ones who go further than most. Aftercare included. ✦",
   aron:      "Arthur Aron's 36 questions — the closeness study. Alone, they play in their original order",
+  magic:     "Priya Parker's magical questions — light, surprising, proven",
   shadow:    "The parts of yourself you do not advertise",
   lens:      "How you see yourself — honestly",
   wish:      "Wants, dreams, what you would choose differently",
