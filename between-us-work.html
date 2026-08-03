@@ -2,36 +2,82 @@
 <html lang="en">
 <head>
 <script>
-  // ╔════════════════════════════════════════════════════════════════════╗
-  // ║  SETTINGS — edit the values on the right. true/false or "text".     ║
-  // ╚════════════════════════════════════════════════════════════════════╝
+(function () {
+  // ╔══════════════════════════════════════════════════════════════════════╗
+  // ║  BUILD PROFILE                                                         ║
+  // ║  Set the ONE line below to choose which version this file is. The      ║
+  // ║  URL you hand out then always opens exactly this version — nobody      ║
+  // ║  has to pick anything. Everything else is derived from the profile.    ║
+  // ╚══════════════════════════════════════════════════════════════════════╝
 
-  // ── DECK ── which question set the app plays ────────────────────────────
+  const BUILD_PROFILE = "work";   // "public" · "work" · "editor"
 
-  // ── CONTENT SAFETY ── how much adult content is reachable ──────────────
-  window.MASTER_SAFE     = false;  // true  → no adult content, anywhere, ever (hard lock)
-  window.WORKPLACE_MODE  = true;  // true  → same hard lock, and starts in Work mode
+  // ── PROFILE DEFINITIONS ──────────────────────────────────────────────────
+  // Shared, identical in every build. Fine-tune a version by editing its block
+  // (these are the settings you already had — just organised per version).
+  const PROFILES = {
 
-  // ── STARTING STATE — what the app looks like when it opens ─────────────
-  window.DEFAULT_LANGUAGE = "nl";     // "en" or "nl"
-  window.DEFAULT_SHUFFLE  = "arc";   // wild · flow · deep · spiced · heat · gentle · breadth · arc
-  window.DEFAULT_LIMIT    = 5;        // cards per hand: 5 · 10 · 20 · 0 (= All)
-  window.START_COLLAPSED  = true;     // true  → category list starts folded away
+    // PUBLIC — the copy you hand someone by default.
+    public: {
+      CLASSIC_DECK:     false,   // true → original pre-rewrite deck (incl. Failure/Backup)
+      MASTER_SAFE:      false,   // true → no adult content anywhere, ever (hard lock)
+      WORKPLACE_MODE:   false,   // true → hard lock + starts in Work mode
+      DEFAULT_LANGUAGE: "en",    // "en" or "nl"
+      DEFAULT_SHUFFLE:  "arc",   // wild · deep · breadth · arc
+      DEFAULT_LIMIT:    5,       // cards per hand: 5 · 10 · 20 · 0 (= All)
+      START_COLLAPSED:  true,    // true → category list starts folded away
+      SPICE_MODE:       false,   // true → adult categories pre-activated
+      SPICE_AVAILABLE:  true,    // false → hides the ✦ spice-bias toggle entirely
+      SHOW_BACKUP:      true,    // true → shows the hidden Backup overflow category
+      LOG_PERSIST:      true,    // true → the session log survives a page reload
+      COLBERT_STRICT:   true,    // true → Colbert plays its canonical 15, in order
+    },
 
-  // ── DEVELOPER / EXTRAS — leave off for a normal shared copy ────────────
-  window.SPICE_MODE      = false;   // true  → adult categories pre-activated (dev convenience)
-  window.SPICE_AVAILABLE = false;   // false → hides the ✦ spice-bias toggle entirely
-  window.SHOW_BACKUP     = false;   // true  → shows the hidden Backup overflow category
-  window.LOG_PERSIST     = true;   // true  → the session log survives a page reload
-  window.COLBERT_STRICT  = true;   // true  → Colbert plays its canonical 15, in order
+    // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.
+    work: {
+      CLASSIC_DECK:     false,
+      MASTER_SAFE:      false,
+      WORKPLACE_MODE:   true,
+      DEFAULT_LANGUAGE: "nl",
+      DEFAULT_SHUFFLE:  "arc",
+      DEFAULT_LIMIT:    5,
+      START_COLLAPSED:  true,
+      SPICE_MODE:       false,
+      SPICE_AVAILABLE:  false,
+      SHOW_BACKUP:      false,
+      LOG_PERSIST:      true,
+      COLBERT_STRICT:   true,
+    },
 
-  // ── back-compat aliases (do not edit) ──
+    // EDITOR — development build: spice pre-activated, dev conveniences on.
+    editor: {
+      CLASSIC_DECK:     false,
+      MASTER_SAFE:      false,
+      WORKPLACE_MODE:   false,
+      DEFAULT_LANGUAGE: "en",
+      DEFAULT_SHUFFLE:  "wild",
+      DEFAULT_LIMIT:    5,
+      START_COLLAPSED:  true,
+      SPICE_MODE:       true,
+      SPICE_AVAILABLE:  true,
+      SHOW_BACKUP:      true,
+      LOG_PERSIST:      true,
+      COLBERT_STRICT:   true,
+    },
+
+  };
+
+  // ── APPLY (do not edit) ──────────────────────────────────────────────────
+  const _p = PROFILES[BUILD_PROFILE] || PROFILES.public;
+  for (const _k in _p) window[_k] = _p[_k];
+  window.BUILD_PROFILE     = BUILD_PROFILE;
   window.DEFAULT_COLLAPSED = window.START_COLLAPSED;
   window.NL_DEFAULT        = (window.DEFAULT_LANGUAGE === "nl");
 
-  // ── NO INTRO — this is intentional ───────────────────────────────────
-  // Between Us has no onboarding screen. Users hand it to each other and
-  // they get it immediately. The simplicity is the point. Do not add one.
+  // ── NO INTRO — this is intentional ───────────────────────────────────────
+  // Between Us has no onboarding screen. Users hand it to each other and they
+  // get it immediately. The simplicity is the point. Do not add one.
+})();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -214,21 +260,11 @@ body::before{
 .btn-fullscreen--emphasis{color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:2px;padding:6px 16px;background:rgba(201,168,76,.06);}
 .btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
 
-/* ── SHUFFLE + LIMIT ── */
-.meta-lower{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 2px;}
-.rand-outer /* hidden — we cycle via arrows, showing only active */
-.shuffle-display{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 4px;transition:opacity .2s;}
-.shuffle-display:hover{opacity:.85;}
-.s-arrow{font-size:1.1rem;color:var(--muted);opacity:.55;user-select:none;transition:opacity .2s;padding:0 4px;}
-.shuffle-display:hover .s-arrow{opacity:.95;}
-.s-name{font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);opacity:.75;transition:color .2s;}
-.s-reshuffle{background:none;border:none;color:var(--muted);font-size:1rem;line-height:1;padding:6px 8px;margin-left:6px;cursor:pointer;opacity:.6;transition:all .2s;}
-.s-reshuffle:hover{color:var(--gold);opacity:1;}
-.s-reshuffle:active{transform:rotate(180deg);}
-.shuffle-display:hover .s-name{color:var(--gold);opacity:1;}
+/* ── LIMIT ── */
 /* draw-mode: btn-next transforms at end of deck */
-.btn-draw.draw-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
-.btn-draw.draw-mode::after{content:' — hold';opacity:.55;font-size:.5rem;}
+.btn-draw.draw-mode,.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
+/* pressed-and-holding feedback on the end-of-draw button */
+.btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
 .limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.13em;color:var(--muted);cursor:pointer;padding:2px 7px;transition:all .2s;opacity:.55;}
 .limit-btn.active{color:var(--gold);opacity:1;}
@@ -351,9 +387,11 @@ body::before{
 
 /* ── ARC PHASE INDICATOR ── */
 .arc-indicator{
-  display:none; align-items:center; justify-content:center; gap:10px;
+  /* always in flow — toggling display here shifted the whole page on desktop */
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  visibility:hidden;
 }
-.arc-indicator.visible{display:flex;}
+.arc-indicator.visible{visibility:visible;}
 .arc-dot{
   width:6px;height:6px;border-radius:50%;
   background:var(--muted);opacity:.18;
@@ -443,33 +481,20 @@ body::before{
 @media(min-width:768px){
   .app{max-width:640px;}.title{font-size:2.3rem;}.card-question{font-size:1.8rem;}.card-level{font-size:.65rem;}.card-number{font-size:.6rem;}
   .btn-sq{width:48px;height:48px;font-size:1.1rem;}.btn-draw{font-size:.68rem;letter-spacing:.26em;padding:13px 0;}
-  .btn-fullscreen{font-size:.62rem;padding:8px 8px;}.s-name{font-size:.82rem;letter-spacing:.22em;}.s-arrow{font-size:1rem;}
+  .btn-fullscreen{font-size:.62rem;padding:8px 8px;}
   .limit-btn{font-size:.72rem;padding:3px 9px;}.mode-btn{font-size:.64rem;padding:10px 18px;}
   .cat-toggle-lbl{font-size:.62rem;}.toggle-btn{font-size:.62rem;padding:8px 15px;}
   .progress-dot{width:5px;height:5px;}.progress-dot.current{width:18px;}
 }
 @media(min-width:1024px){
-  .app{max-width:720px;}.title{font-size:2.6rem;}.card-question{font-size:2rem;}.s-name{font-size:.9rem;}
+  .app{max-width:720px;}.title{font-size:2.6rem;}.card-question{font-size:2rem;}
   .limit-btn{font-size:.78rem;}.mode-btn{font-size:.7rem;padding:11px 20px;}.btn-sq{width:52px;height:52px;}.btn-draw{font-size:.72rem;padding:14px 0;}
 }
 /* ── LANG TOGGLE INLINE (screen-row) ── */
 .lang-toggle--inline{display:flex;border:none;flex-shrink:0;gap:2px;}
 .lang-toggle--inline .lang-opt{padding:8px 8px;}
 
-/* ── SHUFFLE MODE DESCRIPTION ── */
-.shuffle-desc{
-  font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.12em;
-  color:var(--muted);text-align:center;
-  max-height:0;overflow:hidden;padding:0;opacity:0;
-  transition:max-height .25s ease, opacity .25s ease, padding .25s ease;
-}
-.shuffle-desc.visible{opacity:.7;max-height:2em;padding:2px 0;}
-.shuffle-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:398;opacity:0;pointer-events:none;transition:opacity .2s;}
-.shuffle-picker-overlay.open{opacity:1;pointer-events:all;}
-.shuffle-picker{position:fixed;left:50%;bottom:0;transform:translateX(-50%) translateY(100%);width:min(420px,92vw);
-  max-height:70vh;overflow-y:auto;background:#171410;border:1px solid rgba(201,168,76,.3);border-bottom:none;
-  border-radius:10px 10px 0 0;z-index:399;transition:transform .28s cubic-bezier(.4,0,.2,1);padding:8px 0;}
-.shuffle-picker.open{transform:translateX(-50%) translateY(0);}
+/* ── SHUFFLE MODE LIST ROWS (used by the Shuffle token tray) ── */
 .smp-row{display:flex;flex-direction:column;gap:2px;width:100%;background:none;border:none;text-align:left;
   padding:12px 20px;cursor:pointer;border-bottom:1px solid rgba(201,168,76,.08);}
 .smp-row:last-child{border-bottom:none;}
@@ -553,7 +578,6 @@ body::before{
 .tray .preset-outer{display:block;width:100%;opacity:1;}
 .tray .preset-wrap{overflow:visible;}
 .tray .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
-.tray .shuffle-display{padding:4px;}
 .tray .limit-row{justify-content:center;}
 .tray .limit-btn{font-size:.64rem;padding:4px 12px;letter-spacing:.16em;}
 
@@ -664,7 +688,6 @@ body::before{
 .mode-btn--list.active::after{background:var(--list-col);}
 
 /* ── MAIN COLUMN ── */
-.meta-lower{display:none;}
 .card-wrap{margin-top:12px;}
 
 /* bottom cluster — matched to the approved mock */
@@ -737,10 +760,6 @@ body::before{
   .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
   .cat-sheet-handle{display:none;}
   .cat-sheet-title{padding-top:16px;}
-  .shuffle-picker{left:50%;bottom:auto;top:50%;border:1px solid var(--border);border-radius:12px;
-    transform:translate(-50%,-46%);opacity:0;pointer-events:none;
-    transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease;}
-  .shuffle-picker.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
 }
 @media(min-width:768px){
   /* centre the whole composition in the viewport instead of hanging from the top */
@@ -962,26 +981,19 @@ body::before{
       <button class="btn-sq" id="btn-menu">&#8801;</button>
     </div>
     <div class="screen-row">
-      <button class="pick-toggle" id="pickToggle">Deal three</button>
+      <button class="pick-toggle" id="pickToggle">Draw three</button>
       <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty">&#8862; Full Screen</button>
       <button class="btn-fullscreen" id="btn-lang-inline">EN</button>
     </div>
-    <div class="meta-lower">
-      <div class="shuffle-display" id="shuffle-display">
-        <span class="s-arrow" id="shuffleLeft">&#8249;</span>
-        <span class="s-name" id="shuffleModeName"></span>
-        <span class="s-arrow" id="shuffleRight">&#8250;</span>
-      </div>
-      <div class="shuffle-desc" id="shuffleDesc"></div>
-      <div class="limit-row" id="limitBtns">
-        <button class="limit-btn active" data-limit="5">5</button>
-        <span class="limit-sep">&#183;</span>
-        <button class="limit-btn" data-limit="10">10</button>
-        <span class="limit-sep">&#183;</span>
-        <button class="limit-btn" data-limit="20">20</button>
-        <span class="limit-sep">&#183;</span>
-        <button class="limit-btn" data-limit="all">All</button>
-      </div>
+    <!-- Cards-per-round buttons — re-homed into the Cards token tray by the shell wiring -->
+    <div class="limit-row" id="limitBtns">
+      <button class="limit-btn active" data-limit="5">5</button>
+      <span class="limit-sep">&#183;</span>
+      <button class="limit-btn" data-limit="10">10</button>
+      <span class="limit-sep">&#183;</span>
+      <button class="limit-btn" data-limit="20">20</button>
+      <span class="limit-sep">&#183;</span>
+      <button class="limit-btn" data-limit="all">All</button>
     </div>
     <button class="draw-more-btn" id="drawMoreBtn">+ Draw 10 more</button>
     <div class="deck-info" id="deckInfo" style="display:none;"></div>
@@ -1037,8 +1049,6 @@ body::before{
 </div>
 
 <!-- Truly fixed to the viewport — must live outside any transformed ancestor (the drawers all use transform) -->
-<div class="shuffle-picker-overlay" id="shuffleModeOverlay"></div>
-<div class="shuffle-picker" id="shuffleModePanel"></div>
 
 <!-- LOG DRAWER -->
 <div class="sub-drawer" id="logDrawer">
@@ -1139,7 +1149,7 @@ body::before{
     </div>
     <div class="hp-way">
       <span class="hp-name">Choose your card</span>
-      <p>Switch on <strong>Deal three</strong> and every draw offers three questions &mdash; take one and the other two are gone for good. Useful when a table keeps stalling on the same kind of card.</p>
+      <p>Switch on <strong>Draw three</strong> and every draw offers three questions &mdash; take one and the other two are gone for good. Useful when a table keeps stalling on the same kind of card.</p>
     </div>
     <div class="hp-way">
       <span class="hp-name">One follow-up</span>
@@ -1183,7 +1193,7 @@ body::before{
 <!-- FULLSCREEN OVERLAY -->
 <div class="party-overlay" id="partyOverlay">
   <button class="party-exit" id="partyExit">&#8249;&nbsp;&nbsp;Close</button>
-    <button class="party-pick" id="partyPick">Deal three</button>
+    <button class="party-pick" id="partyPick">Draw three</button>
   <button class="party-prev-btn" id="partyPrevBtn" style="display:none;"></button>
   <button class="party-more-btn" id="partyMoreBtn" style="display:none;"></button>
   <div class="party-card">
@@ -1316,11 +1326,11 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "Something universally loved leaves you completely cold...", nl: "Waar begrijpt bijna iedereen de hype van, behalve jij?" },
   { level: "culture", question: "Which piece of music do you protect — the one you won't play for just anyone?", nl: "Muziek waar je zuinig op bent..." },
   { level: "culture", question: "You collect something, officially or accidentally...", nl: "Voor je het wist had je er een verzameling van." },
-  { level: "culture", question: "Which artist changed what you pay attention to?", nl: "Welke kunstenaar heeft jouw blik veranderd?" },
+  { level: "culture", question: "Which public space taught you something about beauty?" },
   { level: "culture", question: "Do you use music to feel more, or to feel less?", nl: "Zet jij muziek aan om ergens in te verdwijnen, of juist om iets te voelen?" },
   { level: "culture", question: "Is taste something you have or something you build?", nl: "Welke smaak moest bij jou groeien?" },
   { level: "culture", question: "The one you love that everyone else seems to have missed...", nl: "Iets moois dat vrijwel iedereen lijkt te hebben gemist..." },
-  { level: "culture", question: "Does great art excuse a terrible artist?", nl: "Kun je genieten van iets moois dat door een rotmens is gemaakt?" },
+  { level: "culture", question: "Does great art excuse a terrible artist?", nl: "Pleit grote kunst een slecht mens vrij?" },
   { level: "culture", question: "What's a work of art — painting, installation, performance — that stopped you in your tracks?", nl: "Welk kunstwerk — schilderij, installatie, performance — deed je stilstaan?" },
   { level: "culture", question: "Take us to the moment a story last made you cry." },
   { level: "culture", question: "What was the last thing you read, watched, or listened to that genuinely changed how you think?", nl: "Wat was het laatste dat je las, zag of hoorde dat je echt anders liet denken?" },
@@ -1348,21 +1358,21 @@ const NEWDECK_CARDS = [
   { level: "home", question: "Where in your home do you actually live — which chair, which corner?", nl: "Waar in huis speelt jouw leven zich echt af?" },
   { level: "home", question: "What does home actually feel like when you have it — and how do you know?", nl: "Hoe voelt thuis echt als je het hebt — en hoe weet je dat?" },
   { level: "home", question: "What has to be true of a space before you can relax in it?" },
-  { level: "home", question: "Which object in your home is irreplaceable — not in money, in meaning?", nl: "Wat zou je als laatste uit je huis meenemen?" },
+  { level: "home", question: "If I walked into your home right now, what would I find?", nl: "Als ik nu je huis binnenliep, wat zou ik aantreffen?" },
   { level: "home", question: "The view from your kitchen window — what could you look at every day and never tire of?", nl: "Het uitzicht uit je keukenraam waar je nooit op uitgekeken raakt — wat is het?" },
   { level: "home", question: "Your home tells people something about you. What?", nl: "Wat vertelt jouw huis over jou voordat jij iets hebt gezegd?" },
   { level: "home", question: "Can you feel at home somewhere you don't belong?", nl: "Kun je je thuis voelen op een plek die niet van jou is?" },
   { level: "home", question: "Which house from your life do you still walk through in dreams?", nl: "In welk huis uit je verleden kom je nog steeds terug?" },
-  { level: "home", question: "Some spaces are instantly not yours. Why?", nl: "Sommige ruimtes voelen direct vreemd. Waaraan ligt dat?" },
+  { level: "home", question: "Who have you shared a home with — and what did it teach you?", nl: "Met wie heb je een huis gedeeld — en wat leerde je daarvan?" },
 
   // ─── ROOTS ───
   { level: "roots", question: "The emotional weather in the house you grew up in...", nl: "Hoe was de sfeer bij jullie thuis als je terugkijkt?" },
   { level: "roots", question: "Which of your parents' fears did you inherit?", nl: "Welke angst van je ouders heb je overgenomen?" },
-  { level: "roots", question: "Do you catch yourself repeating a trait of your parents — and how do you feel about it?", nl: "Betrap je jezelf op een eigenschap van je ouders — en hoe voelt dat?" },
+  { level: "roots", question: "What did you learn about money in the house you grew up in?", nl: "Wat heb je over geld geleerd in het huis waar je opgroeide?" },
   { level: "roots", question: "The day you finally understood something your parent did...", nl: "De dag dat je eindelijk iets begreep wat je ouder deed..." },
-  { level: "roots", question: "When did you first realise your parents were just people?", nl: "Wanneer besefte je voor het eerst dat je ouders ook maar gewoon mensen zijn?" },
+  { level: "roots", question: "What did your upbringing give you that you're glad of?", nl: "Wat heeft je opvoeding je gegeven waar je blij mee bent?" },
   { level: "roots", question: "Look at a photo of young you — what looks back?", nl: "Als je een foto van jezelf als kind ziet, wat valt je dan op?" },
-  { level: "roots", question: "Which feelings were allowed in your house — and which weren't?", nl: "Welke gevoelens mochten er zijn bij jullie thuis, en welke liever niet?" },
+  { level: "roots", question: "What did a normal evening look like when you were young?", nl: "Hoe zag een gewone avond eruit toen je jong was?" },
   { level: "roots", question: "At home, to be safe, you had to be...", nl: "Wat moest je thuis zijn om problemen te voorkomen?" },
   { level: "roots", question: "What were you praised for as a child — and what did that train you to become?" },
   { level: "roots", question: "What did you learn about love from watching your parents?", nl: "Wat leerde je over liefde door naar je ouders te kijken?" },
@@ -1392,7 +1402,7 @@ const NEWDECK_CARDS = [
   { level: "unwind", question: "There was a moment you felt completely free. Where were you?" },
   { level: "unwind", question: "What's something you do purely for pleasure that has absolutely no productive value?", nl: "Wat doe je puur voor je plezier dat volstrekt niets nuttigs oplevert?" },
   { level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },
-  { level: "unwind", question: "What does travel give you that home can't?", nl: "Wat brengt reizen je dat thuis niet kan?" },
+  { level: "unwind", question: "What's the first thing you go and find when you get somewhere new?" },
   { level: "unwind", question: "A place you keep going back to — not because it's the best, but because it's yours...", nl: "Naar welke plek blijf je teruggaan omdat die van jou voelt?" },
   { level: "unwind", question: "The one thing you refuse to optimise...", nl: "Wat weiger jij efficiënter te maken?" },
   { level: "unwind", question: "What does the first warm day of the year do to you?" },
@@ -1409,7 +1419,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "What have you had to accept that you never chose?", nl: "Wat heb je moeten accepteren wat je nooit gekozen hebt?" },
   { level: "self", question: "Strip away the job, the roles, the routines — what's left standing?", nl: "Zonder functie, status of prestaties. Wie blijft er over?" },
   { level: "self", question: "What's the most predictable thing about you?", nl: "Wat is het meest voorspelbare aan jou?" },
-  { level: "self", question: "Who is your ground — and do they know?", nl: "Wie houdt jou met beide benen op de grond?" },
+  { level: "self", question: "What holds you up that isn't a person?" },
 
   // ─── BODY ───
   { level: "body", question: "When did your body surprise you with what it could do?", nl: "Wanneer verraste je lichaam je met wat het kon?" },
@@ -1436,7 +1446,7 @@ const NEWDECK_CARDS = [
   { level: "mind", question: "Do you decide fast and adjust, or slow and stick?", nl: "Beslis je snel en stuur je bij, of langzaam en hou je vast?" },
   { level: "mind", question: "What's the earliest thing you remember — and is it actually yours?", nl: "Wat is je vroegste herinnering — en is die eigenlijk wel van jou?" },
   { level: "mind", question: "Which question do you keep returning to across the years?", nl: "Welke vraag blijft met je meelopen?" },
-  { level: "mind", question: "What's taking up most of your head at the moment?", nl: "Wat neemt op dit moment de meeste ruimte in je hoofd in?" },
+  { level: "mind", question: "What are you bad at learning?", nl: "Waar ben je slecht in om te leren?" },
   { level: "mind", question: "Which idea has changed you, and how did it get in?", nl: "Welk idee heeft jou blijvend veranderd?" },
 
   // ─── SPIRIT ───
@@ -1475,7 +1485,7 @@ const NEWDECK_CARDS = [
   { level: "friends", question: "Which friend gets the honest version of you — and which gets the polite one?", nl: "Wie krijgt de ongefilterde versie van jou?" },
   { level: "friends", question: "Tell about a moment a friend showed up for you in a way you didn't expect.", nl: "Een vriend verraste je precies toen je hem nodig had." },
   { level: "friends", question: "One friend deserves a better version of you...", nl: "Welke vriend verdient meer van jou dan hij krijgt?" },
-  { level: "friends", question: "What do we actually owe our friends?" },
+  { level: "friends", question: "How do you make friends now — and is it harder than it used to be?", nl: "Hoe maak je nu vrienden — en is dat moeilijker dan vroeger?" },
   { level: "friends", question: "What do your friends come to you for — and is it what you'd choose?", nl: "Waarvoor weten vrienden jou te vinden?" },
   { level: "friends", question: "What do you say about your friends when they're not there?" },
   { level: "friends", question: "The friend I'd call when I'm in real trouble is...", nl: "Wie bel je als het echt misgaat?" },
@@ -1485,7 +1495,7 @@ const NEWDECK_CARDS = [
   // ─── DATE ───
   { level: "date", question: "How do you behave in the first weeks of falling for someone — what's the telltale sign?", nl: "Verliefd worden heeft bij jou altijd dezelfde bijwerkingen. Welke?" },
   { level: "date", question: "Which pattern do you keep bringing into relationships, invited or not?", nl: "Iets dat je telkens weer meeneemt een relatie in..." },
-  { level: "date", question: "What have you learned about yourself only through someone who loved you?", nl: "Liefde heeft je iets over jezelf geleerd wat je anders nooit had ontdekt." },
+  { level: "date", question: "How do you end things — and how do you want to be left?", nl: "Hoe maak jij een eind aan een relatie — en hoe wil je zelf verlaten worden?" },
   { level: "date", question: "Previous partners undervalued something you offer in love...", nl: "Iets dat jij in een relatie geeft en lang niet altijd terugkrijgt..." },
   { level: "date", question: "A flirt of yours gets shot down — describe the next sixty seconds inside you.", nl: "Je laat merken dat je iemand leuk vindt door..." },
   { level: "date", question: "A fling flips into something serious. When?", nl: "Wanneer wordt iets vrijblijvends voor jou serieus?" },
@@ -1493,7 +1503,7 @@ const NEWDECK_CARDS = [
   { level: "date", question: "Two people at once — has your heart ever done that, and could a relationship hold it?", nl: "Kun je van twee mensen tegelijk houden?" },
   { level: "date", question: "Make the case for a large age gap in love — then name your own limit.", nl: "Een groot leeftijdsverschil in de liefde. Waar ligt voor jou de grens?" },
   { level: "date", question: "Which love story — your own or borrowed — do you retell most gladly?", nl: "Een liefdesverhaal dat je blijft koesteren..." },
-  { level: "date", question: "Is love mostly luck or mostly work?", nl: "Heeft liefde vooral geluk nodig of vooral inzet?" },
+  { level: "date", question: "What are you like single — and do you like that version?", nl: "Hoe ben jij als je single bent — en bevalt die versie je?" },
   { level: "date", question: "What's the most romantic thing you've attempted that failed completely?", nl: "Een romantisch gebaar dat volledig mislukte..." },
 
   // ─── ATTRACT ───
@@ -1634,7 +1644,7 @@ const NEWDECK_CARDS = [
   { level: "usfriend", question: "When were you proudest of me?" },
   { level: "usfriend", question: "When have I made you laugh hardest?" },
   { level: "usfriend", question: "If this friendship had a title, what would it be?", nl: "Als deze vriendschap een titel had..." },
-  { level: "usfriend", question: "What could this friendship use more of?", nl: "Wat kan deze vriendschap meer gebruiken?" },
+  { level: "usfriend", question: "Who would you introduce me to — and why?", nl: "Aan wie zou je mij voorstellen — en waarom?" },
 
   // ─── USLOVE ───
   { level: "uslove", question: "Name the thing I give you that you'd miss most.", nl: "Wat zou je van mij het meest missen?" },
@@ -1658,8 +1668,8 @@ const NEWDECK_CARDS = [
   { level: "usintimate", question: "When do you feel most sexually connected to me?" },
   { level: "usintimate", question: "What do I do that works better than I know?" },
   { level: "usintimate", question: "Show me, with my hand, how you want to be touched." },
-  { level: "usintimate", question: "Pick a first between us to relive." },
-  { level: "usintimate", question: "Who would you sleep with outside this relationship — if you were allowed?" },
+  { level: "usintimate", question: "When our wanting doesn't line up, what do you do?", nl: "Als ons verlangen niet gelijk loopt, wat doe jij dan?" },
+  { level: "usintimate", question: "Would you want to know if I were drawn to someone else? Ask me the same.", nl: "Zou je willen weten als ik me tot iemand anders aangetrokken voelde? Vraag mij hetzelfde." },
   { level: "usintimate", question: "What have you been wanting to try with me but haven't said?" },
   { level: "usintimate", question: "When do you catch me wanting you — and what does it make you do?" },
   { level: "usintimate", question: "What do you hold back with me — and what would it take to stop?" },
@@ -1682,7 +1692,7 @@ const NEWDECK_CARDS = [
 
   // ─── WISH ───
   { level: "wish", question: "The life you almost lived — how close did it come?" },
-  { level: "wish", question: "You've decided something is unrealistic. Decided, not proven.", nl: "Wanneer heb je besloten dat iets niet voor jou was?" },
+  { level: "wish", question: "What did you once wish for that you now have?", nl: "Wat wenste je ooit en heb je nu?" },
   { level: "wish", question: "If I were braver, I would already have...", nl: "Als lef geen rol speelde..." },
   { level: "wish", question: "Which longing have you domesticated into a hobby?", nl: "Welke droom heb je klein gemaakt zodat hij beter paste?" },
   { level: "wish", question: "What's the gap between your current life and the one part of you expects?", nl: "Waar botst je huidige leven met wat je ooit verwachtte?" },
@@ -1690,7 +1700,7 @@ const NEWDECK_CARDS = [
   { level: "wish", question: "Which wish keeps returning, in new costumes?" },
   { level: "wish", question: "Is wanting more a flaw or an engine?", nl: "Is meer willen een probleem of een stuwende kracht?" },
   { level: "wish", question: "A free year, no obligations — what finally gets done?", nl: "Een jaar zonder verplichtingen. Wat gebeurt er?" },
-  { level: "wish", question: "Guaranteed anonymity. Then you'd attempt...", nl: "Niemand komt erachter. Wat probeer je?" },
+  { level: "wish", question: "What do you want for someone else that you can't give them?", nl: "Wat gun je iemand anders dat je hem of haar niet kunt geven?" },
   { level: "wish", question: "What do you want that would surprise the people who know you?" },
   { level: "wish", question: "What did you want last year that you've already stopped wanting?", nl: "Waar verlangde je vorig jaar nog naar?" },
 
@@ -1846,27 +1856,27 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
-    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
+    on:        ["warm","quick","magic","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    available: ["colbert","aron","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","culture","unwind","world"],
-    available: ["connect","self","life","mind","wish","attract","spirit","body","aron","magic"],
+    on:        ["warm","quick","magic","culture","unwind","world"],
+    available: ["connect","self","life","mind","wish","attract","spirit","body","aron"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
-    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron","magic"],
+    on:        ["warm","magic","friends","connect","culture","life","past","unwind","blunt"],
+    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","attract","date","connect","culture","blunt"],
+    on:        ["warm","magic","attract","date","connect","culture","blunt"],
     available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "For two, finding out"
   },
   partner: {
-    on:        ["us","uslove","connect","date","deep","wish","blunt"],
+    on:        ["us","uslove","connect","date","deep","wish","magic","blunt"],
     available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The two of you"
   },
@@ -1876,18 +1886,18 @@ const PRESETS = {
     subtitle:  "When it gets late and honest"
   },
   solo: {
-    on:        ["self","wish"],
+    on:        ["self","wish","magic"],
     available: ["deep","raw","shadow","mind","spirit","past","grief","body"],
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","warm","work","culture","mind"],
-    available: ["life","values","world","connect","friends","unwind","wish","magic"],
+    on:        ["quick","warm","magic","work","culture","mind"],
+    available: ["life","values","world","connect","friends","unwind","wish"],
     subtitle:  "Safe for the office"
   },
   family_p: {
-    on:        ["warm","quick","roots","family","culture","past"],
-    available: ["home","life","grief","us","usfriend","unwind","magic"],
+    on:        ["warm","quick","magic","roots","family","culture","past"],
+    available: ["home","life","grief","us","usfriend","unwind"],
     subtitle:  "Across generations"
   },
   colbertmode: {
@@ -2151,20 +2161,16 @@ function applyLimit(reshuffle = true) {
   setCardDisplay(null);
   updateDeckInfo();
   updateDrawMore();
+  renderShell();
 }
 
 function drawMore() {
-  const prevLength = visibleDeck.length;
-  // Don't re-add skipped cards when drawing more
-  const available = fullDeck.filter(c => c && !skippedCards.has(c.question));
-  visibleDeck = available.slice(0, Math.min(visibleDeck.length + 10, available.length));
-  if (visibleDeck.length > prevLength) {
-    // Advance straight to first new card
-    currentIndex = prevLength;
-    flipToCard(visibleDeck[currentIndex]);
-    addToLog(visibleDeck[currentIndex]);
-    updateStarUI();
-  }
+  /* Deal a FRESH hand at the chosen limit rather than growing the current one.
+     The hand is always the size you picked (5) — it never becomes 10 or 15.
+     initDeck() deals unseen cards first, so a new hand doesn't repeat what this
+     session already showed. Same behaviour as Continue on the end screen. */
+  initDeck();
+  _nextCardBase();
   updateDeckInfo();
   updateDrawMore();
   renderProgress();
@@ -2176,39 +2182,6 @@ function translateQ(card) {
 }
 
 // ── CARD DISPLAY ──────────────────────────────────────────────────────────────
-function setCardDisplay(card) {
-  const levelEl    = document.getElementById('card-level');
-  const questionEl = document.getElementById('card-question');
-  const numberEl   = document.getElementById('card-number');
-  const nextBtn    = document.getElementById('btn-next');
-  if (!card) {
-    levelEl.className    = 'card-level';
-    levelEl.textContent  = '';
-    questionEl.textContent = visibleDeck.length === 0
-      ? (lang === 'nl' ? 'Selecteer minstens één categorie.' : 'Select at least one category.')
-      : (lang === 'nl' ? 'Trek een kaart om te beginnen.'   : 'Draw a card to begin.');
-    numberEl.textContent   = '— — —';
-    nextBtn.textContent    = lang === 'nl' ? 'Trek kaart' : 'Draw Card';
-    return;
-  }
-  levelEl.className    = `card-level ${LEVEL_STYLES[card.level] || ''}`;
-  levelEl.textContent  = LEVEL_LABELS[card.level] || '';
-  levelEl.style.color  = levelColor(card.level);
-  questionEl.textContent = translateQ(card);
-  numberEl.textContent   = `${currentIndex + 1} / ${visibleDeck.length}`;
-  nextBtn.textContent    = lang === 'nl' ? 'Volgende kaart' : 'Next Card';
-}
-
-function flipToCard(card) {
-  const el = document.getElementById('card');
-  el.classList.add('flipping');
-  setTimeout(() => {
-    setCardDisplay(card);
-    el.classList.remove('flipping');
-    renderProgress();
-  }, 175);
-}
-
 function _nextCardBase() {
   if (!visibleDeck.length) return;
   if (currentIndex < visibleDeck.length - 1) {
@@ -2222,16 +2195,15 @@ function _nextCardBase() {
     const el = document.getElementById('card');
     el.classList.add('flipping');
     currentIndex = visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    window._endGateUntil = Date.now() + 1100;
     setTimeout(() => {
       document.getElementById('card-level').className   = 'card-level';
       document.getElementById('card-level').textContent = '';
       const _fresh = (()=>{const sn=new Set(sessionLog.map(c=>c.question));return fullDeck.filter(c=>!sn.has(c.question)).length;})();
       document.getElementById('card-question').innerHTML = _fresh > 0
-        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${visibleDeck.length}.<br><br>${_fresh} ${lang==='nl'?'nieuwe kaarten over — tik voor de volgende ronde.':(_fresh===1?'new card left — tap for the next round.':'new cards left — tap for the next round.')}</span>`
+        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${visibleDeck.length}.<br><br>${_fresh} ${lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(_fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
         : `<span style="font-size:1rem;color:var(--muted)">${lang==='nl'
-            ? `Dat was dit hele deck — alle ${visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of tik om dit deck opnieuw te spelen.`
-            : `That's the whole deck — all ${visibleDeck.length} cards.<br><br>Add categories to keep going, or tap to replay this deck.`}</span>`;
+            ? `Dat was dit hele deck — alle ${visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
+            : `That's the whole deck — all ${visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
       document.getElementById('card-number').textContent = '— end —';
       el.classList.remove('flipping');
       updateDrawMore();
@@ -2278,46 +2250,7 @@ function renderProgress() {
   }
 }
 
-function updateDeckInfo() {
-  const shown = visibleDeck.length, total = fullDeck.length;
-  document.getElementById('deckCount').textContent =
-    shown === 0     ? 'No categories selected' :
-    shown === total ? `${total} cards` :
-                     `${shown} of ${total} cards`;
-}
-
-function updateDrawMore() {
-  const btn       = document.getElementById('drawMoreBtn');
-  const partyBtn  = document.getElementById('partyMoreBtn');
-  const remaining = fullDeck.length - visibleDeck.length;
-  const atEnd     = currentIndex >= visibleDeck.length - 2; // last 2 cards or fewer remaining
-  const showMore  = remaining > 0 && cardLimit !== null && atEnd;
-  // Normal draw more button
-  if (showMore) {
-    btn.classList.add('visible');
-    btn.textContent = `+ Draw ${Math.min(10, remaining)} more`;
-  } else {
-    btn.classList.remove('visible');
-  }
-  // Party draw more: only at end of visible deck
-  if (partyBtn) partyBtn.classList.toggle('visible', showMore && currentIndex >= visibleDeck.length - 1);
-}
-
 // ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────
-function updateAfterDarkBtn() {
-  const btn = document.getElementById('afterDarkToggle');
-  if (!btn) return;
-  // After Dark is ON when safeMode is OFF (adult content available)
-  btn.classList.toggle('on', !safeMode);
-  SAFE_BLOCKED_LEVELS.forEach(lvl => {
-    const b = document.querySelector(`.toggle-btn[data-level="${lvl}"]`);
-    if (!b) return;
-    const p = activePreset && PRESETS[activePreset];
-    const allowedByPreset = !p || p.on.includes(lvl) || p.available.includes(lvl);
-    b.classList.toggle('hard-locked', safeMode || !allowedByPreset);
-  });
-}
-
 function syncBandLabels(){
   document.querySelectorAll('.band-lbl,.cat-band').forEach(band=>{
     let any=false;
@@ -2363,7 +2296,9 @@ function applyPreset(mode) {
   }
   const sub = document.getElementById('subtitle'); if (sub) sub.textContent = preset.subtitle;
   activeToggles = new Set(preset.on.filter(l => DECK_LEVELS.has(l)));
-  if (safeMode) SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
+  // After Dark is opt-in: adult categories stay reachable but are never
+  // pre-activated by a preset unless this build ships with spice on (editor).
+  if (safeMode || !window.SPICE_MODE) SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
 
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
@@ -2384,31 +2319,20 @@ function applyPreset(mode) {
   }
   if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
 
-  const spiceBtn = document.getElementById('spiceToggle');
   const glyphBtn = document.getElementById('spiceGlyphBtn');
   const reachable = !HARD_SAFE.includes(mode) && !safeMode && !MASTER_SAFE && !WORKPLACE_MODE
                     && SAFE_BLOCKED_LEVELS.some(l => DECK_LEVELS.has(l) &&
                        (preset.on.includes(l) || preset.available.includes(l)));
   if (HARD_SAFE.includes(mode)) {
     const adBtn = document.getElementById('afterDarkToggle'); if(adBtn) adBtn.classList.add('hidden');
-    if(spiceBtn) spiceBtn.classList.add('hidden');
   } else {
     const adBtn2 = document.getElementById('afterDarkToggle'); if(adBtn2) adBtn2.classList.remove('hidden');
-    if(spiceBtn) spiceBtn.classList.toggle('hidden', safeMode);
   }
   /* the spice glyph is meaningless where no adult category exists */
   if (glyphBtn) glyphBtn.classList.toggle('spice-hidden', !reachable);
 
   updateAfterDarkBtn();
   applyToggleUI();
-}
-
-function toggleCategories() {
-  categoriesCollapsed = !categoriesCollapsed;
-  document.getElementById('toggles')?.classList.toggle('collapsed', categoriesCollapsed);
-  document.querySelector('.meta-row')?.classList.toggle('collapsed', categoriesCollapsed);
-  const arrow = document.getElementById('catArrow');
-  if (arrow) arrow.textContent = categoriesCollapsed ? '▶' : '▼';
 }
 
 // ── LOG & FAVOURITES ──────────────────────────────────────────────────────────
@@ -2468,80 +2392,7 @@ function renderFavourites() {
 }
 
 // ── SESSION SAVE ──────────────────────────────────────────────────────────────
-function saveSession() {
-  if (!visibleDeck.length) return;
-  const data = {
-    deckQuestions: visibleDeck.map(c => c.question),
-    position: currentIndex,
-    toggles: [...activeToggles],
-    safeMode, spiceMode, randomMode, cardLimit, lang,
-    savedAt: new Date().toISOString(),
-  };
-  try {
-    localStorage.setItem('bu-session', JSON.stringify(data));
-    const btn = document.getElementById('btnSave');
-    if (btn) { btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent = 'Save'; }, 2000); }
-  } catch(e) {}
-}
-
-function checkSavedSession() {
-  try {
-    const v = localStorage.getItem('bu-session');
-    if (!v) return;
-    const btn = document.getElementById('btnSave');
-    if (btn) { btn.textContent = 'Continue →'; btn.dataset.mode = 'continue'; btn.classList.add('highlight'); }
-  } catch(e) {}
-}
-
-function continueSession() {
-  try {
-    const v = localStorage.getItem('bu-session');
-    if (!v) return;
-    const data = JSON.parse(v);
-    lang       = data.lang || 'en';
-    safeMode   = data.safeMode || false;
-    spiceMode  = data.spiceMode || false;
-    randomMode = data.randomMode || 'wild';
-    cardLimit  = data.cardLimit;
-    activeToggles = new Set(data.toggles || []);
-        applyToggleUI();
-    updateAfterDarkBtn();
-    const qMap = {};
-    ALL_CARDS.forEach(c => { qMap[c.question] = c; });
-    visibleDeck    = (data.deckQuestions || []).map(q => qMap[q]).filter(Boolean);
-    fullDeck       = visibleDeck;
-    currentIndex   = data.position ?? -1;
-    document.querySelectorAll('.limit-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.limit === (cardLimit === null ? 'all' : String(cardLimit)))
-    );
-    updateDeckInfo();
-    updateDrawMore();
-    renderProgress();
-    setCardDisplay(currentIndex >= 0 ? visibleDeck[currentIndex] : null);
-    const btn = document.getElementById('btnSave');
-    btn.textContent  = 'Save';
-    btn.dataset.mode = '';
-    btn.classList.remove('highlight');
-  } catch(e) { console.error('continueSession:', e); }
-}
-
 // ── PARTY MODE ────────────────────────────────────────────────────────────────
-function enterParty() {
-  partyMode = true;
-  document.body.classList.add('party-mode');
-  if (currentIndex < 0 && visibleDeck.length > 0) {
-    currentIndex = 0;
-    setCardDisplay(visibleDeck[0]);
-    renderProgress();
-    updateStarUI();
-  }
-}
-
-function exitParty() {
-  partyMode = false;
-  document.body.classList.remove('party-mode');
-}
-
 // ── CUSTOM CARDS ──────────────────────────────────────────────────────────────
 function loadCustomCards() {
   try {
@@ -2637,23 +2488,17 @@ if (WORKPLACE_MODE) {
 if (SPICE_MODE && !MASTER_SAFE && !WORKPLACE_MODE) {
   safeMode = false;
   applyToggleUI();
-  // Also activate the Spice toggle
+  /* the ✦ glyph button reflects spiceMode when its own setup runs, just below */
   spiceMode = true;
-  const spBtn = document.getElementById('spiceToggle');
-  if (spBtn) spBtn.classList.add('on');
 }
 document.querySelectorAll('.mode-btn').forEach(b =>
   b.classList.toggle('active', b.dataset.mode === activePreset)
-);
-document.querySelectorAll('.rand-btn').forEach(b =>
-  b.classList.toggle('active', b.dataset.rand === randomMode)
 );
 initDeck();
 
 if (DEFAULT_COLLAPSED) {
   categoriesCollapsed = true;
   document.getElementById('toggles')?.classList.add('collapsed');
-  document.querySelector('.meta-row')?.classList.add('collapsed');
   const ca = document.getElementById('catArrow');
   if (ca) ca.textContent = '▶';
 }
@@ -2778,16 +2623,15 @@ const SHUFFLE_MODES = ['wild','deep','breadth','arc'];
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(randomMode);
 
 function updateShuffleDisplay() {
-  const n = shuffleModeIdx;
-  const name = SHUFFLE_MODES[n];
-  const el = document.getElementById('shuffleModeName');
-  if (el) el.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  const name = SHUFFLE_MODES[shuffleModeIdx] || randomMode;
   randomMode = name;
+  // Reflect the active mode straight onto the Shuffle token value.
+  const vo = document.getElementById('valOrder');
+  if (vo) vo.textContent = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-// ── Override setCardDisplay to add accent bar + animations ──
-const _origSetCard = setCardDisplay;
-setCardDisplay = function(card) {
+// setCardDisplay — single definition (accent bar + fullscreen sync)
+function setCardDisplay(card) {
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const numEl  = document.getElementById('card-number');
@@ -2823,8 +2667,8 @@ setCardDisplay = function(card) {
   updatePartyDisplay(card);
 };
 
-// ── flipToCard: consolidated (accent bloom + arc indicator + party sync) ──
-flipToCard = function(card) {
+// flipToCard — consolidated (accent bloom + arc indicator + fullscreen sync)
+function flipToCard(card) {
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const accent = document.getElementById('c-accent');
@@ -2845,8 +2689,9 @@ flipToCard = function(card) {
     if (qEl2) qEl2.textContent = translateQ(card);
     const numEl = document.getElementById('card-number');
     if (numEl) numEl.textContent = `${currentIndex+1} / ${visibleDeck.length}`;
-    const nb = document.getElementById('btn-next');
-    if (nb) nb.textContent = lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    /* let updateDrawMore own the button label — hard-coding "Next Card" here
+       ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
+    updateDrawMore();
     requestAnimationFrame(() => {
       if (lvlEl) lvlEl.classList.add('in');
       if (qEl2)  qEl2.classList.add('in');
@@ -2882,7 +2727,7 @@ function updatePartyDisplay(card) {
 }
 
 // ── Override toggleCategories for new DOM ──
-toggleCategories = function() {
+function toggleCategories() {
   categoriesCollapsed = !categoriesCollapsed;
   const wrap  = document.getElementById('toggles-wrap');
   const arrow = document.getElementById('catArrow');
@@ -2893,14 +2738,14 @@ toggleCategories = function() {
 };
 
 // ── Override updateDeckInfo ──
-updateDeckInfo = function() {
+function updateDeckInfo() {
   const shown = visibleDeck.length, total = fullDeck.length;
   const el = document.getElementById('deckCount');
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
 
 // ── Override enterParty / exitParty for new overlay ──
-enterParty = function() {
+function enterParty() {
   partyMode = true;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.add('open');
@@ -2914,7 +2759,7 @@ enterParty = function() {
   }
 };
 
-exitParty = function() {
+function exitParty() {
   partyMode = false;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.remove('open');
@@ -2958,8 +2803,6 @@ function closeAllDrawers() {
 function setLang(l, skipRefresh) {
   lang = l;
   document.documentElement.lang = l;
-  const loEn = document.getElementById('lo-en'); if (loEn) loEn.classList.toggle('active', l === 'en');
-  const loNl = document.getElementById('lo-nl'); if (loNl) loNl.classList.toggle('active', l === 'nl');
   const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
   const inlineBtn = document.getElementById('btn-lang-inline'); if (inlineBtn) inlineBtn.textContent = l.toUpperCase();
   const sub = document.getElementById('dLangSub');
@@ -2972,61 +2815,8 @@ const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLang
 // ── Category label toggle ──
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
 
-// ── Shuffle mode cycler ──
-document.getElementById('shuffleLeft').addEventListener('click',()=>{
-  shuffleModeIdx=(shuffleModeIdx-1+SHUFFLE_MODES.length)%SHUFFLE_MODES.length;
-  updateShuffleDisplay(); initDeck();
-});
-document.getElementById('shuffleRight').addEventListener('click',()=>{
-  shuffleModeIdx=(shuffleModeIdx+1)%SHUFFLE_MODES.length;
-  updateShuffleDisplay(); initDeck();
-});
-// Long-press the mode name: a picker listing every mode, all visible, tap to jump straight to one
-(function(){
-  const nameEl = document.getElementById('shuffleModeName');
-  if (!nameEl) return;
-  let holdTimer = null, held = false;
-  const start = () => { held = false; holdTimer = setTimeout(() => { held = true; openShuffleModePicker(); }, 450); };
-  const cancel = () => clearTimeout(holdTimer);
-  nameEl.addEventListener('touchstart', start, {passive:true});
-  nameEl.addEventListener('touchend', cancel, {passive:true});
-  nameEl.addEventListener('touchmove', cancel, {passive:true});
-  nameEl.addEventListener('mousedown', start);
-  nameEl.addEventListener('mouseup', cancel);
-  nameEl.addEventListener('mouseleave', cancel);
-  // A quick tap (no hold) just cycles forward — same convenience as the right arrow
-  nameEl.addEventListener('click', () => {
-    if (held) { held = false; return; }   // the hold already opened the picker; this click is its aftermath
-    shuffleModeIdx = (shuffleModeIdx + 1) % SHUFFLE_MODES.length;
-    updateShuffleDisplay(); initDeck();
-  });
-})();
-function openShuffleModePicker(){
-  const panel = document.getElementById('shuffleModePanel');
-  if (!panel) return;
-  panel.innerHTML = SHUFFLE_MODES.map(m =>
-    `<button class="smp-row ${m===randomMode?'active':''}" data-mode="${m}">
-       <span class="smp-name">${m}</span>
-       <span class="smp-desc">${SHUFFLE_DESCRIPTIONS[m]||''}</span>
-     </button>`
-  ).join('');
-  panel.classList.add('open');
-  document.getElementById('shuffleModeOverlay').classList.add('open');
-}
-function closeShuffleModePicker(){
-  document.getElementById('shuffleModePanel').classList.remove('open');
-  document.getElementById('shuffleModeOverlay').classList.remove('open');
-}
-document.getElementById('shuffleModeOverlay').addEventListener('click', closeShuffleModePicker);
-document.getElementById('shuffleModePanel').addEventListener('click', e => {
-  const row = e.target.closest('.smp-row');
-  if (!row) return;
-  randomMode = row.dataset.mode;
-  shuffleModeIdx = SHUFFLE_MODES.indexOf(randomMode);
-  updateShuffleDisplay();
-  initDeck(); updateDeckInfo(); updateDrawMore();
-  closeShuffleModePicker();
-});
+// Shuffle mode is chosen from the Shuffle token tray (see the order list in the
+// v6.1 shell wiring below); the mode is applied via updateShuffleDisplay().
 // ── Reshuffle button: re-deal in the current shuffle mode ──
 document.getElementById('d-reshuffle').addEventListener('click',()=>{
   initDeck();
@@ -3074,9 +2864,8 @@ document.getElementById('d-save').addEventListener('click',()=>{
   if (saveMode==='continue') { continueSession(); }
   else { saveSession(); }
 });
-// Override saveSession to update label
-const _origSave = saveSession;
-saveSession = function() {
+// saveSession — single definition (updates the save-button label)
+function saveSession() {
   if (!visibleDeck.length) return;
   const data = {
     deckQuestions: visibleDeck.map(c=>c.question),
@@ -3094,7 +2883,7 @@ saveSession = function() {
   } catch(e){}
 };
 // Override checkSavedSession
-checkSavedSession = function() {
+function checkSavedSession() {
   try {
     const v = localStorage.getItem('bu-session');
     if (!v) return;
@@ -3103,8 +2892,7 @@ checkSavedSession = function() {
     if (lbl) lbl.textContent = 'Continue session →';
   } catch(e){}
 };
-// Override continueSession
-continueSession = function() {
+function continueSession() {
   try {
     const v = localStorage.getItem('bu-session'); if(!v) return;
     const data = JSON.parse(v);
@@ -3137,6 +2925,7 @@ continueSession = function() {
     setCardDisplay(currentIndex>=0 ? visibleDeck[currentIndex] : null);
     const lbl=document.getElementById('saveBtnLabel'); if(lbl) lbl.textContent='Save session';
     saveMode='';
+    renderShell();
   } catch(e){ console.error('continueSession:',e); }
 };
 
@@ -3150,8 +2939,8 @@ document.getElementById('customText').addEventListener('keydown',e=>{if(e.key===
 document.getElementById('d-help').addEventListener('click',()=>{ closeAllDrawers(); openDrawer('helpDrawer'); });
 document.getElementById('closeHelp').addEventListener('click',()=>closeAllDrawers());
 
-// ── Override updateAfterDarkBtn for new button ──
-updateAfterDarkBtn = function() {
+// updateAfterDarkBtn — single definition (new After Dark button)
+function updateAfterDarkBtn() {
   const btn=document.getElementById('afterDarkToggle'); if(!btn) return;
   if (MASTER_SAFE || WORKPLACE_MODE) {
     // Hard lock: button gone AND every adult toggle stays hidden, in every mode
@@ -3230,6 +3019,8 @@ applyToggleUI = function() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
+    /* a hold just continued the draw — its release must not advance again */
+    if (window._endHoldFired) { window._endHoldFired = false; e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
     const dx = e.changedTouches[0].clientX - ptsx;
     const dy = e.changedTouches[0].clientY - ptsy;
@@ -3249,6 +3040,7 @@ applyToggleUI = function() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
+    if (window._endHoldFired) { window._endHoldFired = false; return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
@@ -3286,7 +3078,29 @@ initDeck = function() {
   const qEl=document.getElementById('card-question');
   if(qEl){ qEl.classList.remove('in'); }
   setTimeout(()=>{ if(qEl) qEl.classList.add('in'); },20);
+  renderShell();
 };
+
+// ── SHELL RENDER ──────────────────────────────────────────────────────────────
+// Single source of truth for the token-line labels. Every value is derived from
+// state and written here; callers invoke renderShell() after a state change
+// instead of the shell observing its own DOM for updates.
+function renderShell() {
+  // Categories token: active / total available (excludes Backup + hidden ones)
+  const total = [...document.querySelectorAll('.toggle-btn')]
+    .filter(b => b.dataset.level && b.dataset.level !== 'backup' && b.style.display !== 'none').length;
+  const vCats = document.getElementById('valCats');
+  if (vCats) vCats.textContent = activeToggles.size + '/' + total;
+  // Shuffle token: active mode
+  const vOrder = document.getElementById('valOrder');
+  if (vOrder && randomMode) vOrder.textContent = randomMode.charAt(0).toUpperCase() + randomMode.slice(1);
+  // Cards token: active per-round limit
+  const vHand = document.getElementById('valHand');
+  if (vHand) vHand.textContent = (cardLimit == null) ? 'All' : String(cardLimit);
+  // Fullscreen mirror of the Draw-three toggle
+  const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
+  if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); pp.textContent = pt.textContent; }
+}
 
 // ── INIT ──
 // Apply initial shuffle display
@@ -3326,62 +3140,47 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
   if(qEl) setTimeout(()=>qEl.classList.add('in'),400);
 })();
 
-// ── D: Override updateDrawMore — transform btn-next, hide standalone button ──
-const _origUpdateDrawMore = updateDrawMore;
-updateDrawMore = function() {
+// updateDrawMore — single definition (transforms btn-next, hides standalone button)
+function updateDrawMore() {
   // Always hide the standalone draw-more button — it floats awkwardly
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
 
   const remaining = fullDeck.length - visibleDeck.length;
-  const atEnd = visibleDeck.length > 0 && currentIndex >= visibleDeck.length - 1;
+  const atSummary  = visibleDeck.length > 0 && currentIndex >= visibleDeck.length;      // end-of-draw screen
+  const atLastCard = visibleDeck.length > 0 && currentIndex === visibleDeck.length - 1; // last card of the hand
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
-  if (atEnd && remaining > 0) {
+  if (atSummary) {
+    // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
+    // pile 10 extra cards onto the finished hand instead of dealing a new one).
+    nextBtn.classList.remove('draw-mode');
+    nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
+    nextBtn.textContent = lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
+  } else if (atLastCard && remaining > 0) {
+    // On the last card you can still extend the current hand by holding.
+    nextBtn.classList.remove('hold-mode');
     nextBtn.classList.add('draw-mode');
     nextBtn.textContent = lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
   } else {
-    if (nextBtn.classList.contains('draw-mode')) {
-      nextBtn.classList.remove('draw-mode');
-      nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
-    }
+    nextBtn.classList.remove('draw-mode');
+    nextBtn.classList.remove('hold-mode');
+    nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
 };
 
-// Hold 600ms on btn-next when in draw-mode → drawMore()
+// Tap btn-next while it shows "Draw more cards" → drawMore(). Capture phase, so
+// it runs instead of the normal nextCard click. No hold required.
 (function(){
   const btn = document.getElementById('btn-next');
   if (!btn) return;
-  let timer = null;
-  let held = false;               // did a hold actually complete?
-  const start = () => {
-    if (!btn.classList.contains('draw-mode')) return;
-    held = false;
-    btn.style.opacity = '.6';
-    timer = setTimeout(() => {
-      held = true;                // mark: the click that follows release is not a real tap
-      btn.style.opacity = '';
-      btn.classList.remove('draw-mode');
-      drawMore(); updateDeckInfo();
-    }, 650);
-  };
-  const cancel = () => { clearTimeout(timer); btn.style.opacity = ''; };
-  // Capture-phase click guard: if the press became a hold, cancel the click before nextCard sees it
   btn.addEventListener('click', e => {
-    if (held) { e.stopImmediatePropagation(); e.preventDefault(); held = false; return; }
-    if (btn.classList.contains('draw-mode')) {
-      /* a tap is not a hold — block it and nudge the label so the gate is felt */
-      e.stopImmediatePropagation(); e.preventDefault();
-      btn.classList.remove('nudge'); void btn.offsetWidth; btn.classList.add('nudge');
-    }
+    if (!btn.classList.contains('draw-mode')) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    btn.classList.remove('draw-mode');
+    drawMore(); updateDeckInfo();
   }, true);
-  btn.addEventListener('mousedown', start);
-  btn.addEventListener('mouseup',   cancel);
-  btn.addEventListener('mouseleave',cancel);
-  btn.addEventListener('touchstart', start, {passive:true});
-  btn.addEventListener('touchend',   cancel, {passive:true});
-  btn.addEventListener('touchcancel',cancel, {passive:true});
 })();
 
 // ═══════════════════════════════════════════════════════════
@@ -3400,14 +3199,13 @@ function skipCard() {
   // Show next card (or skipped-all state)
   if (visibleDeck.length === 0) {
     currentIndex = visibleDeck.length; // sentinel: past end
-    window._endGateUntil = Date.now() + 1100;
     const el = document.getElementById('card');
     el.classList.add('flipping');
     setTimeout(() => {
       document.getElementById('card-level').className = 'card-level';
       document.getElementById('card-level').textContent = '';
       document.getElementById('card-question').innerHTML =
-        `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Tap for a new round.</span>`;
+        `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`;
       document.getElementById('card-number').textContent = '— end —';
       el.classList.remove('flipping');
       updateDrawMore();
@@ -3512,8 +3310,8 @@ function showSessionSummary() {
     }
     if (fullDeck.length - visibleDeck.length <= 0) {
       html += `<div class="sic-note">${lang==='nl'
-        ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of tik om opnieuw te schudden.'
-        : 'That was the whole deck for this selection. Add categories to keep going — or tap to reshuffle it.'}</div>`;
+        ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of houd vast om opnieuw te schudden.'
+        : 'That was the whole deck for this selection. Add categories to keep going — or hold to reshuffle it.'}</div>`;
     }
     html += `</div>`;
     qEl.innerHTML = html;
@@ -3528,20 +3326,14 @@ function showSessionSummary() {
 // Session summary integrated into consolidated nextCard below.
 
 // ── End-of-draw hold gate ──
+// The end screen is a stop, not something you tap through: continuing takes a
+// deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
+// touchend/click, so the gate opens a short swallow window that those handlers
+// (here and on the fullscreen overlay) check, keeping one hold to one advance.
+const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
-  /* a hold ends in a pointerup, which browsers follow with a click —
-     swallow that one click so the hold advances exactly one card */
-  ['card','partyOverlay','btn-next'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
-    el.addEventListener('click', e=>{
-      if (window._swallowClickUntil && Date.now() < window._swallowClickUntil){
-        e.stopImmediatePropagation(); e.preventDefault();
-        window._swallowClickUntil = 0;
-      }
-    }, true);
-  });
   const HOLD = 550;
-  let timer = null, held = false;
+  let timer = null;
   function atEnd(){ return currentIndex >= visibleDeck.length && visibleDeck.length > 0; }
   function hint(on){
     const el = document.getElementById('endHint');
@@ -3552,24 +3344,40 @@ function showSessionSummary() {
     if (!el) return;
     el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
   };
+  function holdBtn(){ return document.getElementById('btn-next'); }
   function start(e){
+    /* a new press starts a new gesture — never inherit a stale swallow flag */
+    window._endHoldFired = false;
     if (!atEnd()) return;
-    held = false;
+    clearTimeout(timer);
+    const b = holdBtn();
+    if (b && e && e.currentTarget === b) b.classList.add('holding');
     timer = setTimeout(() => {
-      held = true;
-      window._endHoldOK = true;
-      window._swallowClickUntil = Date.now() + 800;  /* the release must not advance again */
+      if (b) b.classList.remove('holding');
+      window._endHoldOK    = true;
+      /* Swallow the release, however long the press lasted. A time window here
+         expired mid-hold, letting the release advance a second card. */
+      window._endHoldFired = true;
       hint(false);
-      (typeof nextCard === 'function') && nextCard();
+      if (typeof nextCard === 'function') nextCard();
     }, HOLD);
   }
-  function cancel(){ clearTimeout(timer); timer = null; }
-  ['card','partyOverlay','btn-next'].forEach(id=>{
+  function cancel(){
+    clearTimeout(timer); timer = null;
+    const b = holdBtn(); if (b) b.classList.remove('holding');
+  }
+  END_HOLD_TARGETS.forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     el.addEventListener('pointerdown', start);
     ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
+    /* swallow the click that a completed hold leaves behind */
+    el.addEventListener('click', e => {
+      if (window._endHoldFired) {
+        e.stopImmediatePropagation(); e.preventDefault();
+        window._endHoldFired = false;
+      }
+    }, true);
   });
-  /* show the instruction whenever we're sitting on an end card */
   const obs = new MutationObserver(() => hint(atEnd()));
   const q = document.getElementById('card-question');
   if (q) obs.observe(q, {childList:true, characterData:true, subtree:true});
@@ -3608,33 +3416,9 @@ showSessionSummary = function() {
 
 // Party end integrated into consolidated nextCard below.
 
-// ── C: Hold in fullscreen to draw more when at end of deck ──
-(function(){
-  const ov = document.getElementById('partyOverlay');
-  if (!ov) return;
-  let holdTimer = null;
-  const atEndWithMore = () =>
-    visibleDeck.length > 0 &&
-    currentIndex >= visibleDeck.length - 1 &&
-    fullDeck.length - visibleDeck.length > 0;
-
-  const startHold = () => {
-    if (!atEndWithMore()) return;
-    holdTimer = setTimeout(() => {
-      drawMore(); updateDeckInfo();
-      // Show first new card in party
-      if (currentIndex < visibleDeck.length - 1) { nextCard(); updateDeckInfo(); }
-    }, 650);
-  };
-  const cancelHold = () => clearTimeout(holdTimer);
-
-  ov.addEventListener('touchstart', startHold, {passive:true});
-  ov.addEventListener('touchend',   cancelHold, {passive:true});
-  ov.addEventListener('touchcancel',cancelHold, {passive:true});
-  ov.addEventListener('mousedown',  startHold);
-  ov.addEventListener('mouseup',    cancelHold);
-  ov.addEventListener('mouseleave', cancelHold);
-})();
+// Fullscreen end-of-draw continue is handled by the shared end-gate below
+// (bound to #partyOverlay too) — a separate hold handler here used to stack
+// with it and advance several cards at once, so it was removed.
 
 
 // ═══════════════════════════════════════════════════════════
@@ -3647,10 +3431,8 @@ function nextCard() {
   if (visibleDeck.length === 0) { _nextCardBase(); return; }
   // Guard: already past end (sentinel) — tap offers new round
   if (currentIndex >= visibleDeck.length) {
-    /* a summary/end card just appeared — ignore taps for a beat so the
-       rhythm of tapping through cards can't blow past it unseen */
-    /* the end of a draw is a stop: it takes a deliberate hold to move on,
-       so a burst of taps can never blow past it */
+    /* The end of a draw is a deliberate stop: only a completed hold moves on,
+       so tapping through a session can never rush past the summary unseen. */
     if (!window._endHoldOK) { _nudgeEndHold(); return; }
     window._endHoldOK = false;
     initDeck();
@@ -3775,24 +3557,6 @@ const SHUFFLE_DESCRIPTIONS = {
   arc:     'Warm start, depth, cool-down — repeating pattern'
 };
 
-(function() {
-  const descEl = document.getElementById('shuffleDesc');
-  if (!descEl) return;
-  let hideTimer = null;
-  // Patch the shuffle cycler to show description on change
-  const origUpdateShuffleDisplay = updateShuffleDisplay;
-  updateShuffleDisplay = function() {
-    origUpdateShuffleDisplay();
-    const mode = SHUFFLE_MODES[shuffleModeIdx];
-    const desc = SHUFFLE_DESCRIPTIONS[mode] || '';
-    descEl.textContent = desc;
-    descEl.classList.remove('visible');
-    void descEl.offsetWidth;
-    descEl.classList.add('visible');
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => descEl.classList.remove('visible'), 3000);
-  };
-})();
 
 // ═══════════════════════════════════════════════════════════
 // CATEGORY TOOLTIPS
@@ -3993,6 +3757,7 @@ function choosePick(chosen, allOptions) {
   btn.addEventListener('click', () => {
     pickMode = !pickMode;
     btn.classList.toggle('on', pickMode);
+    renderShell();  // mirror the toggle onto the fullscreen Draw-three button
 
     if (pickMode) {
       // Remember current limit and switch to All so there are always enough cards to pick from
@@ -4043,7 +3808,10 @@ checkSavedSession();
 (function(){
   const wrap = document.getElementById('toggles-wrap');
   if (!wrap) return;
-  wrap.insertAdjacentHTML('beforeend', '<div class="grid-fade" id="gridFade"></div>');
+  /* class-only and inserted once: an id here could never be unique if this ever
+     ran twice, and nothing looks the element up by id anyway */
+  if (!wrap.querySelector(':scope > .grid-fade'))
+    wrap.insertAdjacentHTML('beforeend', '<div class="grid-fade"></div>');
   function upd(){
     const scrollable = wrap.scrollHeight > wrap.clientHeight + 4;
     const atBottom   = wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 6;
@@ -4092,13 +3860,6 @@ applyToggleUI();
   presetHost.after(topbar);             /* … then After Dark · All · None */
   const openRow=$('tokCats');
   const dc=$('deckCount'); dc.style.display='none'; openRow.appendChild(dc);
-  function syncCatCount(){
-    const total=[...document.querySelectorAll('.toggle-btn')]
-      .filter(b=>b.dataset.level && b.dataset.level!=='backup' && b.style.display!=='none').length;
-    $('valCats').textContent = activeToggles.size + '/' + total;
-  }
-  new MutationObserver(syncCatCount).observe(dc,{childList:true,characterData:true,subtree:true});
-  setTimeout(syncCatCount,0);
   $('trayHandInner').append($('limitBtns'));  /* caption stays first */
 
   /* ── category sheet ── */
@@ -4168,33 +3929,14 @@ applyToggleUI();
     });
   });
 
-  /* ── token labels mirror existing state (no logic edits) ── */
-  /* tokens are fixed nouns; the active value lives inside each tray */
-  function syncOrder(){ const n=$('shuffleModeName').textContent.trim(); if(n) $('valOrder').textContent=n; }
-  function syncHand(){ const a=document.querySelector('.limit-btn.active'); if(a) $('valHand').textContent=a.textContent.trim(); }
-  function syncSpark(){
-    /* mirror After Dark state + labels onto the quick-row proxies */
-    /* After Dark lives in the categories drawer only — nothing to mirror here. */
-  }
-  const mo=new MutationObserver(()=>{syncOrder();syncHand();syncSpark();});
-  mo.observe($('modeBar'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('toggles-wrap'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('shuffleModeName'),{childList:true,characterData:true,subtree:true});
-  mo.observe($('limitBtns'),{attributes:true,subtree:true,attributeFilter:['class']});
-  mo.observe($('afterDarkToggle'),{attributes:true,attributeFilter:['class']});
-  mo.observe($('spiceGlyphBtn'),{attributes:true,attributeFilter:['class']});
-  syncOrder();syncHand();syncSpark();
+  /* token labels are rendered from state by renderShell() — no self-observation */
+  renderShell();
   $('tokLine').classList.add('in');
 
   /* fullscreen mirror of the pick-3 toggle */
+  /* fullscreen Draw-three button forwards taps; its label + state come from renderShell() */
   const pp=$('partyPick');
-  if(pp){
-    pp.addEventListener('click',e=>{ e.stopPropagation(); $('pickToggle').click(); });
-    new MutationObserver(()=>{
-      pp.classList.toggle('on', $('pickToggle').classList.contains('on'));
-      pp.textContent = $('pickToggle').textContent;
-    }).observe($('pickToggle'),{attributes:true,childList:true,characterData:true,subtree:true,attributeFilter:['class']});
-  }
+  if(pp) pp.addEventListener('click',e=>{ e.stopPropagation(); $('pickToggle').click(); });
 
   /* ── fullscreen idle fade (concept B: resting state is only the card) ── */
   const party=$('partyOverlay'); let idleT=null, partyWasOpen=false;

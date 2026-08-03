@@ -43,7 +43,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
 4. You collect something, officially or accidentally...
-5. Which artist changed what you pay attention to?
+5. Which public space taught you something about beauty?
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
 8. The one you love that everyone else seems to have missed...
@@ -73,21 +73,21 @@ The questions come first, category by category. The full change log is at the bo
 4. Where in your home do you actually live — which chair, which corner?
 5. What does home actually feel like when you have it — and how do you know?
 6. What has to be true of a space before you can relax in it?
-7. Which object in your home is irreplaceable — not in money, in meaning?
+7. If I walked into your home right now, what would I find?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
 10. Can you feel at home somewhere you don't belong?
 11. Which house from your life do you still walk through in dreams?
-12. Some spaces are instantly not yours. Why?
+12. Who have you shared a home with — and what did it teach you?
 
 ## Roots
 1. The emotional weather in the house you grew up in...
 2. Which of your parents' fears did you inherit?
-3. Do you catch yourself repeating a trait of your parents — and how do you feel about it?
+3. What did you learn about money in the house you grew up in?
 4. The day you finally understood something your parent did...
-5. When did you first realise your parents were just people?
+5. What did your upbringing give you that you're glad of?
 6. Look at a photo of young you — what looks back?
-7. Which feelings were allowed in your house — and which weren't?
+7. What did a normal evening look like when you were young?
 8. At home, to be safe, you had to be...
 9. What were you praised for as a child — and what did that train you to become?
 10. What did you learn about love from watching your parents?
@@ -117,7 +117,7 @@ The questions come first, category by category. The full change log is at the bo
 6. There was a moment you felt completely free. Where were you?
 7. What's something you do purely for pleasure that has absolutely no productive value?
 8. The most unexpected beauty a trip ever handed you...
-9. What does travel give you that home can't?
+9. What's the first thing you go and find when you get somewhere new?
 10. A place you keep going back to — not because it's the best, but because it's yours...
 11. The one thing you refuse to optimise...
 12. What does the first warm day of the year do to you?
@@ -134,7 +134,7 @@ The questions come first, category by category. The full change log is at the bo
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
 11. What's the most predictable thing about you?
-12. Who is your ground — and do they know?
+12. What holds you up that isn't a person?
 
 ## Body
 1. When did your body surprise you with what it could do?
@@ -162,7 +162,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Do you decide fast and adjust, or slow and stick?
 9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
-11. What's taking up most of your head at the moment?
+11. What are you bad at learning?
 12. Which idea has changed you, and how did it get in?
 
 ## Spirit
@@ -201,7 +201,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Which friend gets the honest version of you — and which gets the polite one?
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
 6. One friend deserves a better version of you...
-7. What do we actually owe our friends?
+7. How do you make friends now — and is it harder than it used to be?
 8. What do your friends come to you for — and is it what you'd choose?
 9. What do you say about your friends when they're not there?
 10. The friend I'd call when I'm in real trouble is...
@@ -211,7 +211,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Romance
 1. How do you behave in the first weeks of falling for someone — what's the telltale sign?
 2. Which pattern do you keep bringing into relationships, invited or not?
-3. What have you learned about yourself only through someone who loved you?
+3. How do you end things — and how do you want to be left?
 4. Previous partners undervalued something you offer in love...
 5. A flirt of yours gets shot down — describe the next sixty seconds inside you.
 6. A fling flips into something serious. When?
@@ -219,7 +219,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
 9. Make the case for a large age gap in love — then name your own limit.
 10. Which love story — your own or borrowed — do you retell most gladly?
-11. Is love mostly luck or mostly work?
+11. What are you like single — and do you like that version?
 12. What's the most romantic thing you've attempted that failed completely?
 
 ## Attract ✦
@@ -360,7 +360,7 @@ The questions come first, category by category. The full change log is at the bo
 9. When were you proudest of me?
 10. When have I made you laugh hardest?
 11. If this friendship had a title, what would it be?
-12. What could this friendship use more of?
+12. Who would you introduce me to — and why?
 
 ## Us: Love
 1. Name the thing I give you that you'd miss most.
@@ -384,8 +384,8 @@ The questions come first, category by category. The full change log is at the bo
 5. When do you feel most sexually connected to me?
 6. What do I do that works better than I know?
 7. Show me, with my hand, how you want to be touched.
-8. Pick a first between us to relive.
-9. Who would you sleep with outside this relationship — if you were allowed?
+8. When our wanting doesn't line up, what do you do?
+9. Would you want to know if I were drawn to someone else? Ask me the same.
 10. What have you been wanting to try with me but haven't said?
 11. When do you catch me wanting you — and what does it make you do?
 12. What do you hold back with me — and what would it take to stop?
@@ -406,7 +406,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Wish
 1. The life you almost lived — how close did it come?
-2. You've decided something is unrealistic. Decided, not proven.
+2. What did you once wish for that you now have?
 3. If I were braver, I would already have...
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
@@ -414,7 +414,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Which wish keeps returning, in new costumes?
 8. Is wanting more a flaw or an engine?
 9. A free year, no obligations — what finally gets done?
-10. Guaranteed anonymity. Then you'd attempt...
+10. What do you want for someone else that you can't give them?
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
@@ -515,6 +515,38 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.36 — Unwind 9 · Self 12
+**Unwind 9** → the first-thing-you-find card. Unwind already held three travel cards, so this swaps the abstract one for a concrete one rather than adding a fourth: water, a market, a bookshop and the highest point are four different people.
+**Self 12** → what holds you up that isn't a person. The ground card was structurally predictable — it named a role most people can fill with exactly one obvious occupant, and the follow-up clause almost always drew a soft yes. Ruling out people entirely opens routine, work, an animal, water and faith, and keeps the Ground function Self absorbed in v6.15.
+Neither card carries Dutch; translations are the owner's.
+
+## Patch v6.35 — Culture 5
+Culture was nine parts consumption — art, music, story, media — with no civic or built environment anywhere. **Culture 5** → the public-space card, which opens architecture, streets, stations, churches, libraries and parks. It replaces the artist-changed-your-attention card, the weaker half of a soft pair with the last-thing-that-changed-how-you-think card at 12, so the swap also thins that overlap. The reflective framing was chosen over a preference version deliberately: what a place taught you is harder to reach without the card than what you enjoy.
+No Dutch on this card — translations are the owner's from here on, and a missing one is safer than a wrong one.
+
+## Patch v6.34 — Culture 9 translation
+The Dutch on the great-art card was not a translation of the English but a different question. The English asks whether the work absolves the person, a moral question; the Dutch asked whether you can still enjoy something beautiful made by a "rotmens", which is a taste question anyone can wave away, in a register far below the card's weight. Now *"Pleit grote kunst een slecht mens vrij?"* — vrijpleiten carries the same judicial and moral sense as "excuse".
+**Known issue:** Dutch coverage is 283 of 408 cards and the quality is uneven across the deck; a full translation pass is outstanding.
+
+## Patch v6.33 — Roots 7
+Roots held a three-way overlap: the general emotional climate at 1, permitted feelings at 7, and the self you had to be to stay safe at 8. Card 7 sat in the middle and was squeezed from both sides, so it becomes a scene instead. The card carries no adjective and no implied verdict — a house that was fine produces a real answer, and so does one that was not — and the climate emerges through detail rather than summary. Worded as "when you were young" rather than fixing an age, since not everyone can picture a specific year.
+
+## Patch v6.32 — Home, Us: Intimate, Us: Friends
+**Home 7** → the walk-in-right-now card, resolving the object twin with 3. Mess, mid-renovation and pristine are three different self-portraits, and the concrete framing keeps that range while making the player picture it rather than classify it.
+**Us: Intimate 9** → the drawn-to-someone-else card, reversed and ending in a call to ask. The old card was not too shocking, it was asymmetric: it made one partner name a third person out loud, with the cost landing on the listener rather than the speaker. Reversed, it asks what the other would want to know and hands the question straight back, so it becomes an agreement between the two rather than a disclosure aimed at one.
+**Us: Friends 12** → who you would introduce me to, resolving the what-is-missing twin with 2. The earlier proposal assumed a table young enough to have "before we're old" ahead of it.
+
+## Patch v6.31 — seven-category sweep
+**Roots.** 5 → what your upbringing gave you that you are glad of, resolving the parent-as-human twin with 4 and opening ground the category had none of: Roots read as though nobody had a decent childhood, and a good thing you were given is still deep. 3 → the childhood-money card, resolving the inheritance twin with 2. The emotional-weather and allowed-feelings cards are kept: one asks the general climate, the other the specifics, and a house can be peaceful by suppressing whatever does not fit.
+**Wish de-conditioned.** Four cards were the same device — remove the obstacle, now what. 2 → the wish already granted, which nothing in the deck asked. 10 → what you want for someone else and cannot give. The braver card and the free-year card stay as the two strongest of the four.
+**Home 12** → who you have shared a home with, resolving the what-makes-a-space-yours twin with 6 and putting people into a category that was otherwise objects and feelings.
+**Us: Intimate 8** → the mismatched-wanting card, resolving the relive-a-moment twin with 2. Desire that does not line up is the most common thing long couples navigate and the deck did not touch it.
+**Friendship 7** → making friends as an adult, replacing the category's one abstract card.
+**Romance.** 3 → how you end things, filling the category's largest hole: twelve cards on falling in love and none on leaving or being left. 11 → what you are like single. Both replace the weaker half of a three-card cluster on self-knowledge-through-partners. The age-gap card stays at the owner's call.
+
+## Patch v6.30 — Mind 11 corrected
+The head-space card introduced in v6.29 recreated the problem v6.18 removed: it asks what you are going through rather than how you think, so the honest answer is usually a worry, which is the rumination cluster coming back through the side door. Replaced with the bad-at-learning card, which sits on the learning territory Mind was rebuilt for and cannot collapse into a worry. The present-tense thread does not need Mind — it already lives in Life 11, Unwind 3 and Past 2.
 
 ## Patch v6.29 — air and the present tense
 The deck asked about your life, your history and your patterns, and since the Raw rebuild about this evening — but almost nothing about the period you are actually in. Six cards open that ground and give two uniformly earnest categories somewhere lighter to land.
