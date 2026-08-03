@@ -1404,7 +1404,7 @@ const NEWDECK_CARDS = [
   { level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },
   { level: "unwind", question: "What's the first thing you go and find when you get somewhere new?" },
   { level: "unwind", question: "A place you keep going back to — not because it's the best, but because it's yours...", nl: "Naar welke plek blijf je teruggaan omdat die van jou voelt?" },
-  { level: "unwind", question: "The one thing you refuse to optimise...", nl: "Wat weiger jij efficiënter te maken?" },
+  { level: "unwind", question: "What's the smallest thing that makes a day better — and where do you find it?" },
   { level: "unwind", question: "What does the first warm day of the year do to you?" },
 
   // ─── SELF ───
@@ -1856,28 +1856,28 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","magic","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
-    available: ["colbert","aron","carnal","kinks","backup","abyss"],
+    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","magic","culture","unwind","world"],
-    available: ["connect","self","life","mind","wish","attract","spirit","body","aron"],
+    on:        ["warm","quick","culture","unwind","world"],
+    available: ["connect","self","life","mind","wish","attract","spirit","body","aron","magic"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","magic","friends","connect","culture","life","past","unwind","blunt"],
-    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron"],
+    on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
+    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","magic","attract","date","connect","culture","blunt"],
-    available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron"],
+    on:        ["warm","attract","date","connect","culture","blunt"],
+    available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron","magic"],
     subtitle:  "For two, finding out"
   },
   partner: {
-    on:        ["us","uslove","connect","date","deep","wish","magic","blunt"],
-    available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron"],
+    on:        ["us","uslove","connect","date","deep","wish","blunt"],
+    available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The two of you"
   },
   latenight: {
@@ -1886,18 +1886,18 @@ const PRESETS = {
     subtitle:  "When it gets late and honest"
   },
   solo: {
-    on:        ["self","wish","magic"],
-    available: ["deep","raw","shadow","mind","spirit","past","grief","body"],
+    on:        ["self","wish"],
+    available: ["deep","raw","shadow","mind","spirit","past","grief","body","magic"],
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","warm","magic","work","culture","mind"],
-    available: ["life","values","world","connect","friends","unwind","wish"],
+    on:        ["quick","warm","work","culture","mind"],
+    available: ["life","values","world","connect","friends","unwind","wish","magic"],
     subtitle:  "Safe for the office"
   },
   family_p: {
-    on:        ["warm","quick","magic","roots","family","culture","past"],
-    available: ["home","life","grief","us","usfriend","unwind"],
+    on:        ["warm","quick","roots","family","culture","past"],
+    available: ["home","life","grief","us","usfriend","unwind","magic"],
     subtitle:  "Across generations"
   },
   colbertmode: {

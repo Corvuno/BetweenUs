@@ -119,7 +119,7 @@ The questions come first, category by category. The full change log is at the bo
 8. The most unexpected beauty a trip ever handed you...
 9. What's the first thing you go and find when you get somewhere new?
 10. A place you keep going back to — not because it's the best, but because it's yours...
-11. The one thing you refuse to optimise...
+11. What's the smallest thing that makes a day better — and where do you find it?
 12. What does the first warm day of the year do to you?
 
 ## Self
@@ -515,6 +515,10 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.38 — Magical kept as opt-in · Unwind 11
+v6.37 is reverted. Removing the Magical set was the wrong trade: the questions have their own charm, and a duplicate only fires when a player switches the set on. The fix is the toggle, not the axe. Magical now sits in `available` in all eight presets and in none of the `on` lists, so it never appears unless someone asks for it — which makes every cross-deck overlap a non-issue rather than a defect. The four replacement cards written for v6.37 are reverted with it; the ambition, do-people-change and autopilot cards are back.
+**Unwind 11** → *"What's the smallest thing that makes a day better — and where do you find it?"* — the one card from that batch worth keeping, joining the small pleasure to the place it turns up. *Find* rather than *do*: the pleasure is something you come across, not something you perform.
 
 ## Patch v6.36 — Unwind 9 · Self 12
 **Unwind 9** → the first-thing-you-find card. Unwind already held three travel cards, so this swaps the abstract one for a concrete one rather than adding a fourth: water, a market, a bookshop and the highest point are four different people.
