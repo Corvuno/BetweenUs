@@ -117,7 +117,7 @@ The questions come first, category by category. The full change log is at the bo
 6. There was a moment you felt completely free. Where were you?
 7. What's something you do purely for pleasure that has absolutely no productive value?
 8. The most unexpected beauty a trip ever handed you...
-9. What does travel give you that home can't?
+9. What's the first thing you go and find when you get somewhere new?
 10. A place you keep going back to — not because it's the best, but because it's yours...
 11. The one thing you refuse to optimise...
 12. What does the first warm day of the year do to you?
@@ -134,7 +134,7 @@ The questions come first, category by category. The full change log is at the bo
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
 11. What's the most predictable thing about you?
-12. Who is your ground — and do they know?
+12. What holds you up that isn't a person?
 
 ## Body
 1. When did your body surprise you with what it could do?
@@ -515,6 +515,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.36 — Unwind 9 · Self 12
+**Unwind 9** → the first-thing-you-find card. Unwind already held three travel cards, so this swaps the abstract one for a concrete one rather than adding a fourth: water, a market, a bookshop and the highest point are four different people.
+**Self 12** → what holds you up that isn't a person. The ground card was structurally predictable — it named a role most people can fill with exactly one obvious occupant, and the follow-up clause almost always drew a soft yes. Ruling out people entirely opens routine, work, an animal, water and faith, and keeps the Ground function Self absorbed in v6.15.
+Neither card carries Dutch; translations are the owner's.
 
 ## Patch v6.35 — Culture 5
 Culture was nine parts consumption — art, music, story, media — with no civic or built environment anywhere. **Culture 5** → the public-space card, which opens architecture, streets, stations, churches, libraries and parks. It replaces the artist-changed-your-attention card, the weaker half of a soft pair with the last-thing-that-changed-how-you-think card at 12, so the swap also thins that overlap. The reflective framing was chosen over a preference version deliberately: what a place taught you is harder to reach without the card than what you enjoy.
