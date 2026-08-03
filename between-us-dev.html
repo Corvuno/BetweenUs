@@ -262,7 +262,9 @@ body::before{
 
 /* ── LIMIT ── */
 /* draw-mode: btn-next transforms at end of deck */
-.btn-draw.draw-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
+.btn-draw.draw-mode,.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
+/* pressed-and-holding feedback on the end-of-draw button */
+.btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
 .limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.13em;color:var(--muted);cursor:pointer;padding:2px 7px;transition:all .2s;opacity:.55;}
 .limit-btn.active{color:var(--gold);opacity:1;}
@@ -2117,10 +2119,10 @@ function _nextCardBase() {
       document.getElementById('card-level').textContent = '';
       const _fresh = (()=>{const sn=new Set(sessionLog.map(c=>c.question));return fullDeck.filter(c=>!sn.has(c.question)).length;})();
       document.getElementById('card-question').innerHTML = _fresh > 0
-        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${visibleDeck.length}.<br><br>${_fresh} ${lang==='nl'?'nieuwe kaarten over — tik voor de volgende ronde.':(_fresh===1?'new card left — tap for the next round.':'new cards left — tap for the next round.')}</span>`
+        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${visibleDeck.length}.<br><br>${_fresh} ${lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(_fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
         : `<span style="font-size:1rem;color:var(--muted)">${lang==='nl'
-            ? `Dat was dit hele deck — alle ${visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of tik om dit deck opnieuw te spelen.`
-            : `That's the whole deck — all ${visibleDeck.length} cards.<br><br>Add categories to keep going, or tap to replay this deck.`}</span>`;
+            ? `Dat was dit hele deck — alle ${visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
+            : `That's the whole deck — all ${visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
       document.getElementById('card-number').textContent = '— end —';
       el.classList.remove('flipping');
       updateDrawMore();
@@ -2236,17 +2238,14 @@ function applyPreset(mode) {
   }
   if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
 
-  const spiceBtn = document.getElementById('spiceToggle');
   const glyphBtn = document.getElementById('spiceGlyphBtn');
   const reachable = !HARD_SAFE.includes(mode) && !safeMode && !MASTER_SAFE && !WORKPLACE_MODE
                     && SAFE_BLOCKED_LEVELS.some(l => DECK_LEVELS.has(l) &&
                        (preset.on.includes(l) || preset.available.includes(l)));
   if (HARD_SAFE.includes(mode)) {
     const adBtn = document.getElementById('afterDarkToggle'); if(adBtn) adBtn.classList.add('hidden');
-    if(spiceBtn) spiceBtn.classList.add('hidden');
   } else {
     const adBtn2 = document.getElementById('afterDarkToggle'); if(adBtn2) adBtn2.classList.remove('hidden');
-    if(spiceBtn) spiceBtn.classList.toggle('hidden', safeMode);
   }
   /* the spice glyph is meaningless where no adult category exists */
   if (glyphBtn) glyphBtn.classList.toggle('spice-hidden', !reachable);
@@ -2408,10 +2407,8 @@ if (WORKPLACE_MODE) {
 if (SPICE_MODE && !MASTER_SAFE && !WORKPLACE_MODE) {
   safeMode = false;
   applyToggleUI();
-  // Also activate the Spice toggle
+  /* the ✦ glyph button reflects spiceMode when its own setup runs, just below */
   spiceMode = true;
-  const spBtn = document.getElementById('spiceToggle');
-  if (spBtn) spBtn.classList.add('on');
 }
 document.querySelectorAll('.mode-btn').forEach(b =>
   b.classList.toggle('active', b.dataset.mode === activePreset)
@@ -2725,8 +2722,6 @@ function closeAllDrawers() {
 function setLang(l, skipRefresh) {
   lang = l;
   document.documentElement.lang = l;
-  const loEn = document.getElementById('lo-en'); if (loEn) loEn.classList.toggle('active', l === 'en');
-  const loNl = document.getElementById('lo-nl'); if (loNl) loNl.classList.toggle('active', l === 'nl');
   const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
   const inlineBtn = document.getElementById('btn-lang-inline'); if (inlineBtn) inlineBtn.textContent = l.toUpperCase();
   const sub = document.getElementById('dLangSub');
@@ -3080,13 +3075,16 @@ function updateDrawMore() {
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
     // pile 10 extra cards onto the finished hand instead of dealing a new one).
     nextBtn.classList.remove('draw-mode');
+    nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
     nextBtn.textContent = lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
   } else if (atLastCard && remaining > 0) {
     // On the last card you can still extend the current hand by holding.
+    nextBtn.classList.remove('hold-mode');
     nextBtn.classList.add('draw-mode');
     nextBtn.textContent = lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
   } else {
     nextBtn.classList.remove('draw-mode');
+    nextBtn.classList.remove('hold-mode');
     nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
 };
@@ -3126,7 +3124,7 @@ function skipCard() {
       document.getElementById('card-level').className = 'card-level';
       document.getElementById('card-level').textContent = '';
       document.getElementById('card-question').innerHTML =
-        `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Tap for a new round.</span>`;
+        `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`;
       document.getElementById('card-number').textContent = '— end —';
       el.classList.remove('flipping');
       updateDrawMore();
@@ -3231,8 +3229,8 @@ function showSessionSummary() {
     }
     if (fullDeck.length - visibleDeck.length <= 0) {
       html += `<div class="sic-note">${lang==='nl'
-        ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of tik om opnieuw te schudden.'
-        : 'That was the whole deck for this selection. Add categories to keep going — or tap to reshuffle it.'}</div>`;
+        ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of houd vast om opnieuw te schudden.'
+        : 'That was the whole deck for this selection. Add categories to keep going — or hold to reshuffle it.'}</div>`;
     }
     html += `</div>`;
     qEl.innerHTML = html;
@@ -3265,12 +3263,16 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     if (!el) return;
     el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
   };
-  function start(){
+  function holdBtn(){ return document.getElementById('btn-next'); }
+  function start(e){
     /* a new press starts a new gesture — never inherit a stale swallow flag */
     window._endHoldFired = false;
     if (!atEnd()) return;
     clearTimeout(timer);
+    const b = holdBtn();
+    if (b && e && e.currentTarget === b) b.classList.add('holding');
     timer = setTimeout(() => {
+      if (b) b.classList.remove('holding');
       window._endHoldOK    = true;
       /* Swallow the release, however long the press lasted. A time window here
          expired mid-hold, letting the release advance a second card. */
@@ -3279,7 +3281,10 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
       if (typeof nextCard === 'function') nextCard();
     }, HOLD);
   }
-  function cancel(){ clearTimeout(timer); timer = null; }
+  function cancel(){
+    clearTimeout(timer); timer = null;
+    const b = holdBtn(); if (b) b.classList.remove('holding');
+  }
   END_HOLD_TARGETS.forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     el.addEventListener('pointerdown', start);
