@@ -263,7 +263,6 @@ body::before{
 /* ── LIMIT ── */
 /* draw-mode: btn-next transforms at end of deck */
 .btn-draw.draw-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
-.btn-draw.draw-mode::after{content:' — hold';opacity:.55;font-size:.5rem;}
 .limit-row{display:flex;align-items:center;}
 .limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.13em;color:var(--muted);cursor:pointer;padding:2px 7px;transition:all .2s;opacity:.55;}
 .limit-btn.active{color:var(--gold);opacity:1;}
@@ -372,9 +371,11 @@ body::before{
 
 /* ── ARC PHASE INDICATOR ── */
 .arc-indicator{
-  display:none; align-items:center; justify-content:center; gap:10px;
+  /* always in flow — toggling display here shifted the whole page on desktop */
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  visibility:hidden;
 }
-.arc-indicator.visible{display:flex;}
+.arc-indicator.visible{visibility:visible;}
 .arc-dot{
   width:6px;height:6px;border-radius:50%;
   background:var(--muted);opacity:.18;
@@ -1099,7 +1100,7 @@ body::before{
     <p>Most conversations stay on the surface because nothing ever quite gives them permission to go deeper. Between Us is built to do that &mdash; a deck of questions for the kind of talk that doesn't usually happen on its own, whether it's two people or a full table.</p>
     <p>Draw a card and read it out loud. Answer it yourself, or hand it to someone else. There's nothing to win and nothing to get right. Pass if a question doesn't land &mdash; no explanation needed.</p>
     <h4>Gestures</h4>
-    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, hold the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
+    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, tap the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
     <h4>Modes</h4>
     <p>Each mode sets the table for a situation &mdash; who's in the room decides what's on and what's within reach. Dimmed categories aren't part of that room. Work and Family lock After Dark entirely; everywhere else it's yours to switch.</p>
     <h4>Categories</h4>
@@ -2084,7 +2085,9 @@ function drawMore() {
   const prevLength = visibleDeck.length;
   // Don't re-add skipped cards when drawing more
   const available = fullDeck.filter(c => c && !skippedCards.has(c.question));
-  visibleDeck = available.slice(0, Math.min(visibleDeck.length + 10, available.length));
+  /* draw one more hand's worth — the chosen limit (5/10/20), not a fixed 10 */
+  const handSize = (cardLimit === null || cardLimit === undefined) ? 10 : cardLimit;
+  visibleDeck = available.slice(0, Math.min(visibleDeck.length + handSize, available.length));
   if (visibleDeck.length > prevLength) {
     // Advance straight to first new card
     currentIndex = prevLength;
@@ -2616,8 +2619,9 @@ function flipToCard(card) {
     if (qEl2) qEl2.textContent = translateQ(card);
     const numEl = document.getElementById('card-number');
     if (numEl) numEl.textContent = `${currentIndex+1} / ${visibleDeck.length}`;
-    const nb = document.getElementById('btn-next');
-    if (nb) nb.textContent = lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    /* let updateDrawMore own the button label — hard-coding "Next Card" here
+       ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
+    updateDrawMore();
     requestAnimationFrame(() => {
       if (lvlEl) lvlEl.classList.add('in');
       if (qEl2)  qEl2.classList.add('in');
@@ -3092,39 +3096,17 @@ function updateDrawMore() {
   }
 };
 
-// Hold 600ms on btn-next when in draw-mode → drawMore()
+// Tap btn-next while it shows "Draw more cards" → drawMore(). Capture phase, so
+// it runs instead of the normal nextCard click. No hold required.
 (function(){
   const btn = document.getElementById('btn-next');
   if (!btn) return;
-  let timer = null;
-  let held = false;               // did a hold actually complete?
-  const start = () => {
-    if (!btn.classList.contains('draw-mode')) return;
-    held = false;
-    btn.style.opacity = '.6';
-    timer = setTimeout(() => {
-      held = true;                // mark: the click that follows release is not a real tap
-      btn.style.opacity = '';
-      btn.classList.remove('draw-mode');
-      drawMore(); updateDeckInfo();
-    }, 650);
-  };
-  const cancel = () => { clearTimeout(timer); btn.style.opacity = ''; };
-  // Capture-phase click guard: if the press became a hold, cancel the click before nextCard sees it
   btn.addEventListener('click', e => {
-    if (held) { e.stopImmediatePropagation(); e.preventDefault(); held = false; return; }
-    if (btn.classList.contains('draw-mode')) {
-      /* a tap is not a hold — block it and nudge the label so the gate is felt */
-      e.stopImmediatePropagation(); e.preventDefault();
-      btn.classList.remove('nudge'); void btn.offsetWidth; btn.classList.add('nudge');
-    }
+    if (!btn.classList.contains('draw-mode')) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    btn.classList.remove('draw-mode');
+    drawMore(); updateDeckInfo();
   }, true);
-  btn.addEventListener('mousedown', start);
-  btn.addEventListener('mouseup',   cancel);
-  btn.addEventListener('mouseleave',cancel);
-  btn.addEventListener('touchstart', start, {passive:true});
-  btn.addEventListener('touchend',   cancel, {passive:true});
-  btn.addEventListener('touchcancel',cancel, {passive:true});
 })();
 
 // ═══════════════════════════════════════════════════════════
@@ -3270,21 +3252,12 @@ function showSessionSummary() {
 
 // Session summary integrated into consolidated nextCard below.
 
-// ── End-of-draw hold gate ──
+// ── End-of-draw hint ──
+// Continuing is a plain tap everywhere — normal and fullscreen alike. No hold
+// gesture is involved; nextCard's short settle window is the only guard, so a
+// burst of taps can't blow past the summary unseen. This block just manages the
+// hint under the card.
 (function(){
-  /* a hold ends in a pointerup, which browsers follow with a click —
-     swallow that one click so the hold advances exactly one card */
-  ['card','btn-next'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
-    el.addEventListener('click', e=>{
-      if (window._swallowClickUntil && Date.now() < window._swallowClickUntil){
-        e.stopImmediatePropagation(); e.preventDefault();
-        window._swallowClickUntil = 0;
-      }
-    }, true);
-  });
-  const HOLD = 550;
-  let timer = null, held = false;
   function atEnd(){ return currentIndex >= visibleDeck.length && visibleDeck.length > 0; }
   function hint(on){
     const el = document.getElementById('endHint');
@@ -3295,24 +3268,6 @@ function showSessionSummary() {
     if (!el) return;
     el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
   };
-  function start(e){
-    if (!atEnd()) return;
-    held = false;
-    timer = setTimeout(() => {
-      held = true;
-      window._endHoldOK = true;
-      window._swallowClickUntil = Date.now() + 800;  /* the release must not advance again */
-      hint(false);
-      (typeof nextCard === 'function') && nextCard();
-    }, HOLD);
-  }
-  function cancel(){ clearTimeout(timer); timer = null; }
-  ['card','btn-next'].forEach(id=>{
-    const el = document.getElementById(id); if (!el) return;
-    el.addEventListener('pointerdown', start);
-    ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
-  });
-  /* show the instruction whenever we're sitting on an end card */
   const obs = new MutationObserver(() => hint(atEnd()));
   const q = document.getElementById('card-question');
   if (q) obs.observe(q, {childList:true, characterData:true, subtree:true});
