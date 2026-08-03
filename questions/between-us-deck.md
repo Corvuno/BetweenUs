@@ -82,7 +82,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Roots
 1. The emotional weather in the house you grew up in...
-2. What did being the oldest, youngest, middle or only make you?
+2. Who did you grow up alongside — and what did they teach you about yourself?
 3. What did you learn about money in the house you grew up in?
 4. The day you finally understood something your parent did...
 5. What did your upbringing give you that you're glad of?
@@ -518,7 +518,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ## Patch v6.39 — three blanks closed
 A theme sweep of all 408 cards found three subjects at exactly zero coverage.
-**Siblings.** Twelve Roots cards about childhood and every person named in them was a parent or another adult — the people you actually spent that childhood with were absent. **Roots 2** → the birth-order card, worded so an only child answers rather than passes. It replaces the inherited-fears card, leaving the parent thread at the understood-them and love-from-watching cards.
+**Siblings.** (Wording changed to option B in v6.40.) Twelve Roots cards about childhood and every person named in them was a parent or another adult — the people you actually spent that childhood with were absent. **Roots 2** → the birth-order card, worded so an only child answers rather than passes. It replaces the inherited-fears card, leaving the parent thread at the understood-them and love-from-watching cards.
 **Parenthood.** The deck asked twelve Roots cards about being parented and nothing about parenting, having children, or deciding not to. **Family 12** → *"Did you want children — and has that changed?"*, which works for parents, non-parents, the undecided and those who could not. It replaces the meet-the-family card, the most situational in Family.
 **Illness.** Body covered pain, ageing, food, tension and limits but never the body failing. This one was an accident: git shows an injury-and-illness card existed and died as collateral in the v6.14 Move→Body fold, when 24 cards were cut to 12. **Body 12** → *"What has your body been through that it still remembers?"*, restoring the territory and replacing an abstract binary.
 
