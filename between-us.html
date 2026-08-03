@@ -927,7 +927,7 @@ body::before{
         </div>
         <div class="card-number" id="card-number">&#8212; &#8212; &#8212;</div>
       </div>
-      <div class="end-hint" id="endHint">Tap to continue</div>
+      <div class="end-hint" id="endHint">Hold to continue</div>
       <button class="skip-undo" id="skipUndo">&#8617; Undo skip</button>
       <!-- Pick-3 overlay — sibling of #card, covers it without z-index conflict -->
       <div class="card-picker" id="cardPicker">
@@ -2112,7 +2112,6 @@ function _nextCardBase() {
     const el = document.getElementById('card');
     el.classList.add('flipping');
     currentIndex = visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    window._endGateUntil = Date.now() + 600;
     setTimeout(() => {
       document.getElementById('card-level').className   = 'card-level';
       document.getElementById('card-level').textContent = '';
@@ -2944,6 +2943,8 @@ applyToggleUI = function() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
+    /* a hold just continued the draw — its release must not advance again */
+    if (window._swallowUntil && Date.now() < window._swallowUntil) { window._swallowUntil = 0; e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
     const dx = e.changedTouches[0].clientX - ptsx;
     const dy = e.changedTouches[0].clientY - ptsy;
@@ -2963,6 +2964,7 @@ applyToggleUI = function() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
+    if (window._swallowUntil && Date.now() < window._swallowUntil) { window._swallowUntil = 0; return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
@@ -3078,7 +3080,7 @@ function updateDrawMore() {
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
     // pile 10 extra cards onto the finished hand instead of dealing a new one).
     nextBtn.classList.remove('draw-mode');
-    nextBtn.textContent = lang === 'nl' ? 'Volgende ronde' : 'Continue';
+    nextBtn.textContent = lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
   } else if (atLastCard && remaining > 0) {
     // On the last card you can still extend the current hand by holding.
     nextBtn.classList.add('draw-mode');
@@ -3118,7 +3120,6 @@ function skipCard() {
   // Show next card (or skipped-all state)
   if (visibleDeck.length === 0) {
     currentIndex = visibleDeck.length; // sentinel: past end
-    window._endGateUntil = Date.now() + 600;
     const el = document.getElementById('card');
     el.classList.add('flipping');
     setTimeout(() => {
@@ -3245,12 +3246,15 @@ function showSessionSummary() {
 
 // Session summary integrated into consolidated nextCard below.
 
-// ── End-of-draw hint ──
-// Continuing is a plain tap everywhere — normal and fullscreen alike. No hold
-// gesture is involved; nextCard's short settle window is the only guard, so a
-// burst of taps can't blow past the summary unseen. This block just manages the
-// hint under the card.
+// ── End-of-draw hold gate ──
+// The end screen is a stop, not something you tap through: continuing takes a
+// deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
+// touchend/click, so the gate opens a short swallow window that those handlers
+// (here and on the fullscreen overlay) check, keeping one hold to one advance.
+const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
+  const HOLD = 550;
+  let timer = null;
   function atEnd(){ return currentIndex >= visibleDeck.length && visibleDeck.length > 0; }
   function hint(on){
     const el = document.getElementById('endHint');
@@ -3261,6 +3265,29 @@ function showSessionSummary() {
     if (!el) return;
     el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
   };
+  function start(){
+    if (!atEnd()) return;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      window._endHoldOK   = true;
+      window._swallowUntil = Date.now() + 900;   /* the release must not advance again */
+      hint(false);
+      if (typeof nextCard === 'function') nextCard();
+    }, HOLD);
+  }
+  function cancel(){ clearTimeout(timer); timer = null; }
+  END_HOLD_TARGETS.forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    el.addEventListener('pointerdown', start);
+    ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
+    /* swallow the click that a completed hold leaves behind */
+    el.addEventListener('click', e => {
+      if (window._swallowUntil && Date.now() < window._swallowUntil) {
+        e.stopImmediatePropagation(); e.preventDefault();
+        window._swallowUntil = 0;
+      }
+    }, true);
+  });
   const obs = new MutationObserver(() => hint(atEnd()));
   const q = document.getElementById('card-question');
   if (q) obs.observe(q, {childList:true, characterData:true, subtree:true});
@@ -3314,14 +3341,9 @@ function nextCard() {
   if (visibleDeck.length === 0) { _nextCardBase(); return; }
   // Guard: already past end (sentinel) — tap offers new round
   if (currentIndex >= visibleDeck.length) {
-    /* a summary/end card just appeared — ignore taps for a beat so the
-       rhythm of tapping through cards can't blow past it unseen */
-    /* the end of a draw is a stop: it takes a deliberate hold to move on,
-       so a burst of taps can never blow past it */
-    /* Continue on a deliberate hold, or on a tap once the brief settle window
-       has passed. The window stops a burst of taps from blowing past the
-       summary unseen, but a normal tap-after-reading always advances. */
-    if (!window._endHoldOK && Date.now() < (window._endGateUntil || 0)) { _nudgeEndHold(); return; }
+    /* The end of a draw is a deliberate stop: only a completed hold moves on,
+       so tapping through a session can never rush past the summary unseen. */
+    if (!window._endHoldOK) { _nudgeEndHold(); return; }
     window._endHoldOK = false;
     initDeck();
     _nextCardBase();   /* deal straight into the next hand — no blank card */
@@ -3696,7 +3718,10 @@ checkSavedSession();
 (function(){
   const wrap = document.getElementById('toggles-wrap');
   if (!wrap) return;
-  wrap.insertAdjacentHTML('beforeend', '<div class="grid-fade" id="gridFade"></div>');
+  /* class-only and inserted once: an id here could never be unique if this ever
+     ran twice, and nothing looks the element up by id anyway */
+  if (!wrap.querySelector(':scope > .grid-fade'))
+    wrap.insertAdjacentHTML('beforeend', '<div class="grid-fade"></div>');
   function upd(){
     const scrollable = wrap.scrollHeight > wrap.clientHeight + 4;
     const atBottom   = wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 6;
