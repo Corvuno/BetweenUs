@@ -263,7 +263,6 @@ body::before{
 /* ── LIMIT ── */
 /* draw-mode: btn-next transforms at end of deck */
 .btn-draw.draw-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
-.btn-draw.draw-mode::after{content:' — hold';opacity:.55;font-size:.5rem;}
 .limit-row{display:flex;align-items:center;}
 .limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.13em;color:var(--muted);cursor:pointer;padding:2px 7px;transition:all .2s;opacity:.55;}
 .limit-btn.active{color:var(--gold);opacity:1;}
@@ -372,9 +371,11 @@ body::before{
 
 /* ── ARC PHASE INDICATOR ── */
 .arc-indicator{
-  display:none; align-items:center; justify-content:center; gap:10px;
+  /* always in flow — toggling display here shifted the whole page on desktop */
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  visibility:hidden;
 }
-.arc-indicator.visible{display:flex;}
+.arc-indicator.visible{visibility:visible;}
 .arc-dot{
   width:6px;height:6px;border-radius:50%;
   background:var(--muted);opacity:.18;
@@ -926,7 +927,7 @@ body::before{
         </div>
         <div class="card-number" id="card-number">&#8212; &#8212; &#8212;</div>
       </div>
-      <div class="end-hint" id="endHint">Tap to continue</div>
+      <div class="end-hint" id="endHint">Hold to continue</div>
       <button class="skip-undo" id="skipUndo">&#8617; Undo skip</button>
       <!-- Pick-3 overlay — sibling of #card, covers it without z-index conflict -->
       <div class="card-picker" id="cardPicker">
@@ -1099,7 +1100,7 @@ body::before{
     <p>Most conversations stay on the surface because nothing ever quite gives them permission to go deeper. Between Us is built to do that &mdash; a deck of questions for the kind of talk that doesn't usually happen on its own, whether it's two people or a full table.</p>
     <p>Draw a card and read it out loud. Answer it yourself, or hand it to someone else. There's nothing to win and nothing to get right. Pass if a question doesn't land &mdash; no explanation needed.</p>
     <h4>Gestures</h4>
-    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, hold the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
+    <p>Tap the card or swipe left for the next question; swipe right to go back. Swipe down on a card to skip it &mdash; you get a moment to undo. Tap &#9733; to keep a favourite. When a hand runs out, tap the button to draw more. Reshuffle re-deals the deck in the same order-mode; the arrows beside the mode name change how it is ordered.</p>
     <h4>Modes</h4>
     <p>Each mode sets the table for a situation &mdash; who's in the room decides what's on and what's within reach. Dimmed categories aren't part of that room. Work and Family lock After Dark entirely; everywhere else it's yours to switch.</p>
     <h4>Categories</h4>
@@ -1777,27 +1778,27 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
-    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
+    on:        ["warm","quick","magic","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    available: ["colbert","aron","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
-    on:        ["warm","quick","culture","unwind","world"],
-    available: ["connect","self","life","mind","wish","attract","spirit","body","aron","magic"],
+    on:        ["warm","quick","magic","culture","unwind","world"],
+    available: ["connect","self","life","mind","wish","attract","spirit","body","aron"],
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
-    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron","magic"],
+    on:        ["warm","magic","friends","connect","culture","life","past","unwind","blunt"],
+    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","attract","date","connect","culture","blunt"],
+    on:        ["warm","magic","attract","date","connect","culture","blunt"],
     available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "For two, finding out"
   },
   partner: {
-    on:        ["us","uslove","connect","date","deep","wish","blunt"],
+    on:        ["us","uslove","connect","date","deep","wish","magic","blunt"],
     available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron"],
     subtitle:  "The two of you"
   },
@@ -1807,18 +1808,18 @@ const PRESETS = {
     subtitle:  "When it gets late and honest"
   },
   solo: {
-    on:        ["self","wish"],
+    on:        ["self","wish","magic"],
     available: ["deep","raw","shadow","mind","spirit","past","grief","body"],
     subtitle:  "Just you"
   },
   work: {
-    on:        ["quick","warm","work","culture","mind"],
-    available: ["life","values","world","connect","friends","unwind","wish","magic"],
+    on:        ["quick","warm","magic","work","culture","mind"],
+    available: ["life","values","world","connect","friends","unwind","wish"],
     subtitle:  "Safe for the office"
   },
   family_p: {
-    on:        ["warm","quick","roots","family","culture","past"],
-    available: ["home","life","grief","us","usfriend","unwind","magic"],
+    on:        ["warm","quick","magic","roots","family","culture","past"],
+    available: ["home","life","grief","us","usfriend","unwind"],
     subtitle:  "Across generations"
   },
   colbertmode: {
@@ -2081,17 +2082,12 @@ function applyLimit(reshuffle = true) {
 }
 
 function drawMore() {
-  const prevLength = visibleDeck.length;
-  // Don't re-add skipped cards when drawing more
-  const available = fullDeck.filter(c => c && !skippedCards.has(c.question));
-  visibleDeck = available.slice(0, Math.min(visibleDeck.length + 10, available.length));
-  if (visibleDeck.length > prevLength) {
-    // Advance straight to first new card
-    currentIndex = prevLength;
-    flipToCard(visibleDeck[currentIndex]);
-    addToLog(visibleDeck[currentIndex]);
-    updateStarUI();
-  }
+  /* Deal a FRESH hand at the chosen limit rather than growing the current one.
+     The hand is always the size you picked (5) — it never becomes 10 or 15.
+     initDeck() deals unseen cards first, so a new hand doesn't repeat what this
+     session already showed. Same behaviour as Continue on the end screen. */
+  initDeck();
+  _nextCardBase();
   updateDeckInfo();
   updateDrawMore();
   renderProgress();
@@ -2116,7 +2112,6 @@ function _nextCardBase() {
     const el = document.getElementById('card');
     el.classList.add('flipping');
     currentIndex = visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    window._endGateUntil = Date.now() + 600;
     setTimeout(() => {
       document.getElementById('card-level').className   = 'card-level';
       document.getElementById('card-level').textContent = '';
@@ -2616,8 +2611,9 @@ function flipToCard(card) {
     if (qEl2) qEl2.textContent = translateQ(card);
     const numEl = document.getElementById('card-number');
     if (numEl) numEl.textContent = `${currentIndex+1} / ${visibleDeck.length}`;
-    const nb = document.getElementById('btn-next');
-    if (nb) nb.textContent = lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    /* let updateDrawMore own the button label — hard-coding "Next Card" here
+       ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
+    updateDrawMore();
     requestAnimationFrame(() => {
       if (lvlEl) lvlEl.classList.add('in');
       if (qEl2)  qEl2.classList.add('in');
@@ -2947,6 +2943,8 @@ applyToggleUI = function() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
+    /* a hold just continued the draw — its release must not advance again */
+    if (window._endHoldFired) { window._endHoldFired = false; e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
     const dx = e.changedTouches[0].clientX - ptsx;
     const dy = e.changedTouches[0].clientY - ptsy;
@@ -2966,6 +2964,7 @@ applyToggleUI = function() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
+    if (window._endHoldFired) { window._endHoldFired = false; return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
@@ -3072,54 +3071,37 @@ function updateDrawMore() {
   if (standalone) standalone.classList.remove('visible');
 
   const remaining = fullDeck.length - visibleDeck.length;
-  const atEnd = visibleDeck.length > 0 && currentIndex >= visibleDeck.length - 1;
+  const atSummary  = visibleDeck.length > 0 && currentIndex >= visibleDeck.length;      // end-of-draw screen
+  const atLastCard = visibleDeck.length > 0 && currentIndex === visibleDeck.length - 1; // last card of the hand
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
-  if (atEnd && remaining > 0) {
+  if (atSummary) {
+    // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
+    // pile 10 extra cards onto the finished hand instead of dealing a new one).
+    nextBtn.classList.remove('draw-mode');
+    nextBtn.textContent = lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
+  } else if (atLastCard && remaining > 0) {
+    // On the last card you can still extend the current hand by holding.
     nextBtn.classList.add('draw-mode');
     nextBtn.textContent = lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
   } else {
-    if (nextBtn.classList.contains('draw-mode')) {
-      nextBtn.classList.remove('draw-mode');
-      nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
-    }
+    nextBtn.classList.remove('draw-mode');
+    nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
 };
 
-// Hold 600ms on btn-next when in draw-mode → drawMore()
+// Tap btn-next while it shows "Draw more cards" → drawMore(). Capture phase, so
+// it runs instead of the normal nextCard click. No hold required.
 (function(){
   const btn = document.getElementById('btn-next');
   if (!btn) return;
-  let timer = null;
-  let held = false;               // did a hold actually complete?
-  const start = () => {
-    if (!btn.classList.contains('draw-mode')) return;
-    held = false;
-    btn.style.opacity = '.6';
-    timer = setTimeout(() => {
-      held = true;                // mark: the click that follows release is not a real tap
-      btn.style.opacity = '';
-      btn.classList.remove('draw-mode');
-      drawMore(); updateDeckInfo();
-    }, 650);
-  };
-  const cancel = () => { clearTimeout(timer); btn.style.opacity = ''; };
-  // Capture-phase click guard: if the press became a hold, cancel the click before nextCard sees it
   btn.addEventListener('click', e => {
-    if (held) { e.stopImmediatePropagation(); e.preventDefault(); held = false; return; }
-    if (btn.classList.contains('draw-mode')) {
-      /* a tap is not a hold — block it and nudge the label so the gate is felt */
-      e.stopImmediatePropagation(); e.preventDefault();
-      btn.classList.remove('nudge'); void btn.offsetWidth; btn.classList.add('nudge');
-    }
+    if (!btn.classList.contains('draw-mode')) return;
+    e.stopImmediatePropagation(); e.preventDefault();
+    btn.classList.remove('draw-mode');
+    drawMore(); updateDeckInfo();
   }, true);
-  btn.addEventListener('mousedown', start);
-  btn.addEventListener('mouseup',   cancel);
-  btn.addEventListener('mouseleave',cancel);
-  btn.addEventListener('touchstart', start, {passive:true});
-  btn.addEventListener('touchend',   cancel, {passive:true});
-  btn.addEventListener('touchcancel',cancel, {passive:true});
 })();
 
 // ═══════════════════════════════════════════════════════════
@@ -3138,7 +3120,6 @@ function skipCard() {
   // Show next card (or skipped-all state)
   if (visibleDeck.length === 0) {
     currentIndex = visibleDeck.length; // sentinel: past end
-    window._endGateUntil = Date.now() + 600;
     const el = document.getElementById('card');
     el.classList.add('flipping');
     setTimeout(() => {
@@ -3266,20 +3247,14 @@ function showSessionSummary() {
 // Session summary integrated into consolidated nextCard below.
 
 // ── End-of-draw hold gate ──
+// The end screen is a stop, not something you tap through: continuing takes a
+// deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
+// touchend/click, so the gate opens a short swallow window that those handlers
+// (here and on the fullscreen overlay) check, keeping one hold to one advance.
+const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
-  /* a hold ends in a pointerup, which browsers follow with a click —
-     swallow that one click so the hold advances exactly one card */
-  ['card','btn-next'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
-    el.addEventListener('click', e=>{
-      if (window._swallowClickUntil && Date.now() < window._swallowClickUntil){
-        e.stopImmediatePropagation(); e.preventDefault();
-        window._swallowClickUntil = 0;
-      }
-    }, true);
-  });
   const HOLD = 550;
-  let timer = null, held = false;
+  let timer = null;
   function atEnd(){ return currentIndex >= visibleDeck.length && visibleDeck.length > 0; }
   function hint(on){
     const el = document.getElementById('endHint');
@@ -3290,24 +3265,33 @@ function showSessionSummary() {
     if (!el) return;
     el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
   };
-  function start(e){
+  function start(){
+    /* a new press starts a new gesture — never inherit a stale swallow flag */
+    window._endHoldFired = false;
     if (!atEnd()) return;
-    held = false;
+    clearTimeout(timer);
     timer = setTimeout(() => {
-      held = true;
-      window._endHoldOK = true;
-      window._swallowClickUntil = Date.now() + 800;  /* the release must not advance again */
+      window._endHoldOK    = true;
+      /* Swallow the release, however long the press lasted. A time window here
+         expired mid-hold, letting the release advance a second card. */
+      window._endHoldFired = true;
       hint(false);
-      (typeof nextCard === 'function') && nextCard();
+      if (typeof nextCard === 'function') nextCard();
     }, HOLD);
   }
   function cancel(){ clearTimeout(timer); timer = null; }
-  ['card','btn-next'].forEach(id=>{
+  END_HOLD_TARGETS.forEach(id => {
     const el = document.getElementById(id); if (!el) return;
     el.addEventListener('pointerdown', start);
     ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
+    /* swallow the click that a completed hold leaves behind */
+    el.addEventListener('click', e => {
+      if (window._endHoldFired) {
+        e.stopImmediatePropagation(); e.preventDefault();
+        window._endHoldFired = false;
+      }
+    }, true);
   });
-  /* show the instruction whenever we're sitting on an end card */
   const obs = new MutationObserver(() => hint(atEnd()));
   const q = document.getElementById('card-question');
   if (q) obs.observe(q, {childList:true, characterData:true, subtree:true});
@@ -3361,14 +3345,9 @@ function nextCard() {
   if (visibleDeck.length === 0) { _nextCardBase(); return; }
   // Guard: already past end (sentinel) — tap offers new round
   if (currentIndex >= visibleDeck.length) {
-    /* a summary/end card just appeared — ignore taps for a beat so the
-       rhythm of tapping through cards can't blow past it unseen */
-    /* the end of a draw is a stop: it takes a deliberate hold to move on,
-       so a burst of taps can never blow past it */
-    /* Continue on a deliberate hold, or on a tap once the brief settle window
-       has passed. The window stops a burst of taps from blowing past the
-       summary unseen, but a normal tap-after-reading always advances. */
-    if (!window._endHoldOK && Date.now() < (window._endGateUntil || 0)) { _nudgeEndHold(); return; }
+    /* The end of a draw is a deliberate stop: only a completed hold moves on,
+       so tapping through a session can never rush past the summary unseen. */
+    if (!window._endHoldOK) { _nudgeEndHold(); return; }
     window._endHoldOK = false;
     initDeck();
     _nextCardBase();   /* deal straight into the next hand — no blank card */
@@ -3743,7 +3722,10 @@ checkSavedSession();
 (function(){
   const wrap = document.getElementById('toggles-wrap');
   if (!wrap) return;
-  wrap.insertAdjacentHTML('beforeend', '<div class="grid-fade" id="gridFade"></div>');
+  /* class-only and inserted once: an id here could never be unique if this ever
+     ran twice, and nothing looks the element up by id anyway */
+  if (!wrap.querySelector(':scope > .grid-fade'))
+    wrap.insertAdjacentHTML('beforeend', '<div class="grid-fade"></div>');
   function upd(){
     const scrollable = wrap.scrollHeight > wrap.clientHeight + 4;
     const atBottom   = wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 6;
