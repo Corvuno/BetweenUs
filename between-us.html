@@ -2944,7 +2944,7 @@ applyToggleUI = function() {
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
     /* a hold just continued the draw — its release must not advance again */
-    if (window._swallowUntil && Date.now() < window._swallowUntil) { window._swallowUntil = 0; e.preventDefault(); return; }
+    if (window._endHoldFired) { window._endHoldFired = false; e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
     const dx = e.changedTouches[0].clientX - ptsx;
     const dy = e.changedTouches[0].clientY - ptsy;
@@ -2964,7 +2964,7 @@ applyToggleUI = function() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
-    if (window._swallowUntil && Date.now() < window._swallowUntil) { window._swallowUntil = 0; return; }
+    if (window._endHoldFired) { window._endHoldFired = false; return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
@@ -3266,11 +3266,15 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
   };
   function start(){
+    /* a new press starts a new gesture — never inherit a stale swallow flag */
+    window._endHoldFired = false;
     if (!atEnd()) return;
     clearTimeout(timer);
     timer = setTimeout(() => {
-      window._endHoldOK   = true;
-      window._swallowUntil = Date.now() + 900;   /* the release must not advance again */
+      window._endHoldOK    = true;
+      /* Swallow the release, however long the press lasted. A time window here
+         expired mid-hold, letting the release advance a second card. */
+      window._endHoldFired = true;
       hint(false);
       if (typeof nextCard === 'function') nextCard();
     }, HOLD);
@@ -3282,9 +3286,9 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
     /* swallow the click that a completed hold leaves behind */
     el.addEventListener('click', e => {
-      if (window._swallowUntil && Date.now() < window._swallowUntil) {
+      if (window._endHoldFired) {
         e.stopImmediatePropagation(); e.preventDefault();
-        window._swallowUntil = 0;
+        window._endHoldFired = false;
       }
     }, true);
   });
