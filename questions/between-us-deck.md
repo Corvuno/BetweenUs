@@ -57,7 +57,7 @@ The questions come first, category by category. The full change log is at the bo
 2. What would have to change for your life to feel more like your own?
 3. Which chore do you secretly not mind?
 4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
-5. One part of your life is exactly as you wanted it...
+5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. Is an ordinary life something to fear or to aim for?
 8. What are you putting off that you know you'll regret?
@@ -76,7 +76,7 @@ The questions come first, category by category. The full change log is at the bo
 7. If I walked into your home right now, what would I find?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
-10. Where would you live if nothing was stopping you — and what would it look like?
+10. Where would you live if nothing was stopping you — and what would you live in?
 11. Which house from your life do you still walk through in dreams?
 12. Who have you shared a home with — and what did it teach you?
 
@@ -100,7 +100,7 @@ The questions come first, category by category. The full change log is at the bo
 3. Tell about a time you surprised yourself with what you could survive.
 4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
 5. Trace the moment money started meaning something different to you.
-6. What did you go through that you'd rather not discuss?
+6. Which teacher saw something in you — or missed it entirely?
 7. Which version of yourself was hardest to let go of?
 8. Describe a failure you're only now able to talk about.
 9. What's the best trouble you ever got into?
@@ -457,8 +457,8 @@ The questions come first, category by category. The full change log is at the bo
 8. What does sexual fulfilment feel like — and do you have it now?
 9. Reconstruct your smoothest pickup ever.
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
-11. Where's the most memorable place sex has ever happened — beautiful, strange, or both?
-12. Where's the strangest place sex has ever happened for you?
+11. The most memorable places sex has happened — the most beautiful, and the strangest?
+12. What's the longest you've gone without — and how was that?
 
 ## Kinks 🔞
 1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
@@ -515,6 +515,12 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.44 — Bare, Home, Life, Past
+**Bare 11** asks for both places rather than one. The merge in v6.43 collapsed beautiful and strange into an either-or and left card 12 unchanged, which made 12 a subset of 11 — a live duplicate, introduced and now corrected. **Bare 12** → the longest-without card, ground the category never touched.
+**Home 10** anchors the second clause on form. "What would it look like" had no handle — architecture, view, era were all valid readings. "What would you live in" names the kind of dwelling without listing options and steering the answer.
+**Life 5** → what takes up more of your life than anyone would guess. The old card asked you to audit a whole life for a match and most players stalled; it also carried contentment for the third time, alongside Life 2 and Wish 5.
+**Past 6** → the teacher card. School was absent from the deck and this is the version that matters: being seen or being missed by someone with authority over your self-image. It replaces the rather-not-discuss card, added earlier in this session directly on top of the failure card at 8.
 
 ## Patch v6.43 — clusters closed
 **Bare 11** absorbs 12. The beautiful-place and strangest-place cards were one card an adjective apart and drew the same story; merged, the player picks which they have. Bare 12 is open pending a replacement.
