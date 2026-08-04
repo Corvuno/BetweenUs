@@ -458,7 +458,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Reconstruct your smoothest pickup ever.
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
-12. What's the longest you've gone without — and how was that?
+12. What's the longest you've gone without sex — and how was that?
 
 ## Kinks 🔞
 1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
@@ -503,6 +503,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Deep** — "When were you last truly seen?"
 - **Deep** — "When did you last let someone see you struggling?"
