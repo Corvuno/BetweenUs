@@ -68,7 +68,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Home
 1. Who is allowed in your home unannounced?
-2. When did a place last stop feeling like home?
+2. When did a place last stop feeling like home — like you didn't belong?
 3. What object in your house has survived the most versions of you?
 4. Where in your home do you actually live — which chair, which corner?
 5. What does home actually feel like when you have it — and how do you know?
@@ -76,7 +76,7 @@ The questions come first, category by category. The full change log is at the bo
 7. If I walked into your home right now, what would I find?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
-10. Can you feel at home somewhere you don't belong?
+10. Where would you live if nothing was stopping you — and what would it look like?
 11. Which house from your life do you still walk through in dreams?
 12. Who have you shared a home with — and what did it teach you?
 
@@ -127,7 +127,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Which compliment do you deflect because part of you suspects it's true?
 3. When are you most lonely — and is anyone around when it happens?
 4. What did someone once point out about you that you now see everywhere?
-5. How much explaining do you find yourself doing — of your choices, your tone, yourself — and how does that go over?
+5. Who decided they didn't like you — and did you let it go?
 6. Do you take up space in a room, or fold into it?
 7. What have you had to manage that most people never saw?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
@@ -156,14 +156,14 @@ The questions come first, category by category. The full change log is at the bo
 2. What are you good at not doing — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
 4. When has a gut feeling known more than you did?
-5. When your mind wanders, where does it go by default?
+5. What can you still do for three hours without noticing?
 6. What does your inner voice sound like — and whose is it?
 7. Which of your opinions is just something you heard once?
 8. Do you decide fast and adjust, or slow and stick?
 9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
 11. What are you bad at learning?
-12. Which idea has changed you, and how did it get in?
+12. What are you like at three in the morning?
 
 ## Spirit
 1. What were you taught to believe — and what's left of it?
@@ -457,7 +457,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What does sexual fulfilment feel like — and do you have it now?
 9. Reconstruct your smoothest pickup ever.
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
-11. Where's the most beautiful place sex has ever happened for you?
+11. Where's the most memorable place sex has ever happened — beautiful, strange, or both?
 12. Where's the strangest place sex has ever happened for you?
 
 ## Kinks 🔞
@@ -515,6 +515,13 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.43 — clusters closed
+**Bare 11** absorbs 12. The beautiful-place and strangest-place cards were one card an adjective apart and drew the same story; merged, the player picks which they have. Bare 12 is open pending a replacement.
+**Mind 5** → the three-hours card, replacing the mind-wanders card. Attention as something that holds you, not where you drift.
+**Mind 12** → *"What are you like at three in the morning?"* — sleep placed in Mind rather than Body at the owner's call, since what happens at three is mental. Replaces the idea-that-changed-you card, which duplicated Culture 12; Culture keeps it as the easier of the two to answer.
+**Home 2** absorbs 10. Both asked about belonging; the merged card names the feeling the old one only implied. **Home 10** → the where-would-you-live card, opening the future of home in a category that only looked backward and inward.
+**Self 5** → *"Who decided they didn't like you — and did you let it go?"* The explaining card asked for a quantity and produced a number; being disliked produces a person and a decision. First card in the deck on being on the wrong end of someone's judgement.
 
 ## Patch v6.42 — four new domains, play, and parenting
 A theme probe found three subjects near zero and one thin. Each new card displaces the weakest or most redundant card in its category.
