@@ -145,10 +145,10 @@ The questions come first, category by category. The full change log is at the bo
 6. Pain taught you something comfort never could...
 7. Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.
 8. When did you last feel completely at home in your own skin?
-9. How does aging announce itself to you — and what do you do with it?
+9. What is your body better at now than it has ever been?
 10. What's your actual relationship with food?
 11. Your body asks for something you routinely deny it...
-12. What has your body been through that it still remembers?
+12. When did your body last let you down — and how did you take it?
 
 ## Mind
 *Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
