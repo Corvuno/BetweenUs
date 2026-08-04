@@ -48,7 +48,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Is taste something you have or something you build?
 8. The one you love that everyone else seems to have missed...
 9. Does great art excuse a terrible artist?
-10. What's a work of art — painting, installation, performance — that stopped you in your tracks?
+10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
 12. What was the last thing you read, watched, or listened to that genuinely changed how you think?
 
@@ -214,7 +214,7 @@ The questions come first, category by category. The full change log is at the bo
 3. How do you end things — and how do you want to be left?
 4. Previous partners undervalued something you offer in love...
 5. A flirt of yours gets shot down — describe the next sixty seconds inside you.
-6. A fling flips into something serious. When?
+6. Monogamy: a decision you made, or one you inherited?
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
 9. Make the case for a large age gap in love — then name your own limit.
@@ -401,7 +401,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Has your anger ever frightened someone?
 9. What would make you safeword out of life, if life had one?
 10. When did you last choose comfort over integrity?
-11. Everyone is somebody's villain — whose are you?
+11. What are you doing right up until someone walks in?
 12. Which apology do you still owe?
 
 ## Wish
@@ -451,7 +451,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. What's the least glamorous thing you genuinely enjoy in bed?
 4. How has your understanding of sexuality changed over time?
-5. What's the shortest time between meeting someone and sleeping with them?
+5. What did you believe about sex that turned out to be nonsense?
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
@@ -470,7 +470,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What do you like to hear — or to say — in the thick of it?
 8. Who do you turn into in bed — and what does someone do to bring them out?
 9. Undressed and having to wait — what does anticipation do to you?
-10. What's the difference between what you fantasise about and what you actually want?
+10. When did you change your mind halfway — and how did that go?
 11. Who introduced you to something you'd never have found or tried alone?
 12. More than two — does it appeal, and what's the pull?
 
