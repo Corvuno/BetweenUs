@@ -205,7 +205,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What do your friends come to you for — and is it what you'd choose?
 9. What do you say about your friends when they're not there?
 10. The friend I'd call when I'm in real trouble is...
-11. Quote the bravest thing a friend ever said to you.
+11. Who can make you laugh when you really don't want to?
 12. Are you a better friend now than ten years ago — by whose measure?
 
 ## Romance
