@@ -425,6 +425,13 @@ body::before{
 .sic-label{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
 .sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
 .sic-stars{display:flex;flex-direction:column;gap:6px;width:100%;padding-top:10px;border-top:1px solid var(--dim);}
+.sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
+.drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
+.drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
+#orderList.order-list .smp-row{flex-direction:row;align-items:center;gap:13px;text-align:left;justify-content:flex-start;}
+.smp-shape{flex:0 0 54px;width:54px;height:auto;color:rgba(240,232,216,.45);}
+.smp-row.active .smp-shape{color:var(--gold-l);}
+.smp-txt{display:flex;flex-direction:column;gap:2px;min-width:0;}
 .sic-star{font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.07em;color:var(--muted);line-height:1.45;text-align:center;}
 
 
@@ -1422,6 +1429,56 @@ const LEVEL_COLORS = {
   desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",blunt:"#e2603c",abyss:"#b00000",aron:"#e75783",magic:"#8066e1",
 };
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
+
+// ── Depth scale: the bands of the category grid, light (1) to deep (6).
+//    Only used for drawing — where a round travelled, not what it's worth. ──
+const LEVEL_DEPTH = {
+  quick:1, warm:1, colbert:1, aron:1, magic:1,
+  culture:2, life:2, home:2, work:2, unwind:2, world:2,
+  self:3, body:3, mind:3, spirit:3, values:3, wish:3, past:3, roots:3, family:3,
+  connect:4, friends:4, date:4, attract:4, us:4, usfriend:4, uslove:4,
+  deep:5, raw:5, grief:5, shadow:5,
+  usintimate:6, skin:6, carnal:6, blunt:6, kinks:6, abyss:6,
+};
+function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
+
+// The round as a line: one dot per card, in its category colour, placed by depth.
+// Above ~48 cards the dots stop being readable, so the summary keeps to words.
+function drawRoundTrace(cards) {
+  if (!cards || cards.length < 2 || cards.length > 48) return '';
+  const W = 240, H = 62, PAD = 10;
+  const step = (W - PAD * 2) / (cards.length - 1);
+  const pts = cards.map((c, i) => [
+    +(PAD + i * step).toFixed(1),
+    +(52 - (levelDepth(c.level) - 1) * 8).toFixed(1)
+  ]);
+  const line = pts.map(p => p.join(',')).join(' ');
+  const dots = pts.map((p, i) =>
+    `<circle cx="${p[0]}" cy="${p[1]}" r="${cards.length > 24 ? 2.2 : 3}" fill="${levelColor(cards[i].level)}"/>`
+  ).join('');
+  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The round you drew: ${cards.length} cards, from light to deep.">`
+       + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
+       + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
+       + dots + `</svg>`;
+}
+
+// The four shuffle modes, drawn as the shape of a round.
+function shuffleShapeSVG(mode) {
+  const d = 'r="2.4" fill="currentColor"';
+  const shapes = {
+    wild: `<circle cx="6" cy="20" ${d}/><circle cx="18" cy="7" ${d}/><circle cx="30" cy="23" ${d}/><circle cx="42" cy="11" ${d}/>`
+        + `<circle cx="54" cy="25" ${d}/><circle cx="66" cy="9" ${d}/><circle cx="78" cy="19" ${d}/><circle cx="90" cy="13" ${d}/>`,
+    deep: `<polyline points="6,23 18,20 30,17 42,14 54,11 66,9 78,7 90,5" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".3"/>`
+        + `<circle cx="6" cy="23" ${d}/><circle cx="18" cy="20" ${d}/><circle cx="30" cy="17" ${d}/><circle cx="42" cy="14" ${d}/>`
+        + `<circle cx="54" cy="11" ${d}/><circle cx="66" cy="9" ${d}/><circle cx="78" cy="7" ${d}/><circle cx="90" cy="5" ${d}/>`,
+    breadth: ['#d58b34','#f3c33c','#669bbb','#65c9b0','#96b87b','#df7a91','#8066e1','#4dbebe']
+        .map((c, i) => `<circle cx="${6 + i * 12}" cy="15" r="2.6" fill="${c}"/>`).join(''),
+    arc: `<path d="M5 24 C 20 24 22 6 48 6 S 76 24 91 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".35"/>`
+       + `<circle cx="5" cy="24" ${d}/><circle cx="26" cy="9" ${d}/><circle cx="48" cy="6" ${d}/><circle cx="70" cy="9" ${d}/><circle cx="91" cy="24" ${d}/>`,
+  };
+  if (!shapes[mode]) return '';
+  return `<svg class="smp-shape" viewBox="0 0 96 30" aria-hidden="true">${shapes[mode]}</svg>`;
+}
 
 
 const LEVEL_STYLES = {
@@ -2535,7 +2592,7 @@ function renderLog() {
   el.innerHTML = sessionLog.length === 0
     ? '<div class="drawer-empty">No cards drawn yet.</div>'
     : [...sessionLog].reverse().map(c =>
-        `<div class="drawer-item">
+        `<div class="drawer-item drawer-item--lvl" style="--lvl:${levelColor(c.level)}">
           <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
           ${esc(c.question)}
         </div>`
@@ -2570,7 +2627,7 @@ function renderFavourites() {
   el.innerHTML = favourites.length === 0
     ? '<div class="drawer-empty">No favourites yet. Tap ★ on a card.</div>'
     : favourites.map(c =>
-        `<div class="drawer-item">
+        `<div class="drawer-item drawer-item--lvl" style="--lvl:${levelColor(c.level)}">
           <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
           ${esc(c.question)}
         </div>`
@@ -3487,6 +3544,7 @@ function showSessionSummary() {
     let html = `<div class="sic-wrap">`;
     if (arcLine) {
       html += `<div class="sic-label">${isArc ? 'You went' : 'You covered'} — ${drawCount} ${lang==='nl' ? 'kaarten' : 'cards'}</div>`;
+      html += drawRoundTrace(visibleDeck);
       html += `<div class="sic-arc">${arcLine}</div>`;
     }
     if (starred.length > 0) {
@@ -3664,7 +3722,7 @@ function nextCard() {
           const arcHtml = cats2.map(l =>
             `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
           ).join('<span style="opacity:.35"> · </span>');
-          pq.innerHTML = `<div class="sic-wrap"><div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
+          pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
         }
       }, 250);
     } else {
@@ -4083,8 +4141,11 @@ applyToggleUI();
     const c=$('orderList');
     c.innerHTML=SHUFFLE_MODES.map(m=>
       `<button class="smp-row ${m===randomMode?'active':''}" data-mode="${m}">
-         <span class="smp-name">${m}</span>
-         <span class="smp-desc">${(typeof SHUFFLE_DESCRIPTIONS!=='undefined'&&SHUFFLE_DESCRIPTIONS[m])||''}</span>
+         ${typeof shuffleShapeSVG==='function'?shuffleShapeSVG(m):''}
+         <span class="smp-txt">
+           <span class="smp-name">${m}</span>
+           <span class="smp-desc">${(typeof SHUFFLE_DESCRIPTIONS!=='undefined'&&SHUFFLE_DESCRIPTIONS[m])||''}</span>
+         </span>
        </button>`).join('');
   }
   $('orderList').addEventListener('click',e=>{
