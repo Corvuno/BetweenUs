@@ -441,7 +441,7 @@ The questions come first, category by category. The full change log is at the bo
 6. What sound — yours or theirs — tips you over the edge?
 7. Is coming something you chase, something you let happen, or something you hold off on — and how does that feel?
 8. Afterwards, still tangled up — how do you like to come down?
-9. Sex outdoors — where have you, and where do you still want to?
+9. How do you know it's going well, and when does it stop being about you?
 10. What have you never asked for because it's better getting it without asking?
 11. How did porn influence your sex life?
 12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
@@ -449,7 +449,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Bare 🔞
 1. Sex — how important is it, honestly, in the whole of your life?
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
-3. What's the least glamorous thing you genuinely enjoy in bed?
+3. When has your body not done what you wanted in bed — and what did you do?
 4. How has your understanding of sexuality changed over time?
 5. What did you believe about sex that turned out to be nonsense?
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
@@ -460,12 +460,12 @@ The questions come first, category by category. The full change log is at the bo
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
 12. What's the longest you've gone without sex — and how was that?
 
-## Kinks 🔞
+## Kink 🔞
 1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
 2. Watching, or being watched — which does more for you?
 3. Can pain — given or taken — carry pleasure for you, and what's the pull?
 4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
-5. Where does shame still live in your sex life?
+5. What do you still keep quiet about in bed, and what makes you keep it that way?
 6. Is there a kink or fantasy you have that you've never fully acted on?
 7. What do you like to hear — or to say — in the thick of it?
 8. Who do you turn into in bed — and what does someone do to bring them out?
@@ -476,8 +476,8 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
-1. You've seen most of it by now. What still gives you pause?
-2. What did you once consider extreme that's now a Tuesday?
+1. What did you once think was extreme that's now a Tuesday, and what still gives you pause on a Saturday night?
+2. What does a room full of people doing this know that nobody outside it does?
 3. What does going to the extreme give you that gentle never could?
 4. Tell about a scene that changed you.
 5. Has your body ever said yes while something deeper said no — and how did you find out?
