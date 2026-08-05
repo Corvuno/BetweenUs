@@ -957,7 +957,7 @@ body::before{
         <button class="toggle-btn" data-level="shadow">Shadow</button>
         <div class="band-lbl">After dark</div>
         <button class="toggle-btn" data-level="usintimate">Us: Intimate &#10022;</button>
-        <button class="toggle-btn" data-level="skin">Flesh &#10022;</button>
+        <button class="toggle-btn" data-level="flesh">Flesh &#10022;</button>
         <button class="toggle-btn" data-level="carnal">Carnal &#10022;</button>
         <button class="toggle-btn" data-level="blunt">Bare &#10022;</button>
         <button class="toggle-btn" data-level="kinks">Kinks &#10022;</button>
@@ -1130,7 +1130,7 @@ body::before{
       <option value="us">Between Us</option>
       <option value="usfriend">Us: Friends</option>
       <option value="uslove">Us: Love</option>
-      <option value="skin">Flesh &#10022;</option>
+      <option value="flesh">Flesh &#10022;</option>
       <option value="carnal">Carnal &#10022;</option>
       <option value="kinks">Kinks &#10022;</option>
       <option value="usintimate">Us: Intimate &#10022;</option>
@@ -1413,7 +1413,7 @@ const MASTER_SAFE       = window.MASTER_SAFE;
 const SPICE_MODE        = window.SPICE_MODE || false;
 const NL_DEFAULT        = window.NL_DEFAULT || false;
 
-const SAFE_BLOCKED_LEVELS = ["skin","carnal","kinks","usintimate","blunt","abyss"];
+const SAFE_BLOCKED_LEVELS = ["flesh","carnal","kinks","usintimate","blunt","abyss"];
 
 // ── LEVEL COLORS for accent bar ──
 const LEVEL_COLORS = {
@@ -1424,7 +1424,7 @@ const LEVEL_COLORS = {
   body:"#7bb397",move:"#65c77f",life:"#80bb66",roots:"#ad8d4c",friends:"#d2a158",
   world:"#3aabdd",family:"#ba8e58",unwind:"#4ec1a0",
   colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
-  usintimate:"#e84a4a",edge:"#c44ba8",skin:"#e08055",carnal:"#c81f1f",
+  usintimate:"#e84a4a",edge:"#c44ba8",flesh:"#e08055",carnal:"#c81f1f",
   flesh:"#8a305a",kinks:"#a1247a",backup:"#5a5a6a",
   desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",blunt:"#e2603c",abyss:"#b00000",aron:"#e75783",magic:"#8066e1",
 };
@@ -1438,7 +1438,7 @@ const LEVEL_DEPTH = {
   self:3, body:3, mind:3, spirit:3, values:3, wish:3, past:3, roots:3, family:3,
   connect:4, friends:4, date:4, attract:4, us:4, usfriend:4, uslove:4,
   deep:5, raw:5, grief:5, shadow:5,
-  usintimate:6, skin:6, carnal:6, blunt:6, kinks:6, abyss:6,
+  usintimate:6, flesh:6, carnal:6, blunt:6, kinks:6, abyss:6,
 };
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
 
@@ -1487,7 +1487,7 @@ const LEVEL_STYLES = {
   connect:"level-connect", friends:"level-friends", values:"level-values",
   world:"level-world", spirit:"level-spirit", mind:"level-mind",
   culture:"level-culture", unwind:"level-unwind", raw:"level-raw",
-  date:"level-date", attract:"level-attract", skin:"level-skin", carnal:"level-carnal",
+  date:"level-date", attract:"level-attract", flesh:"level-flesh", carnal:"level-carnal",
   flesh:"level-flesh", kinks:"level-kinks", work:"level-work",
   backup:"level-deep", family:"level-family", grief:"level-grief",
   us:"level-us", usfriend:"level-usfriend", uslove:"level-uslove",
@@ -1503,7 +1503,7 @@ const LEVEL_LABELS = {
   connect:"Connect", friends:"Friendship", values:"Values",
   world:"World", spirit:"Spirit", mind:"Mind",
   culture:"Culture", unwind:"Unwind", raw:"Raw",
-  date:"Romance", attract:"Attract", skin:"Flesh ✦", carnal:"Carnal ✦",
+  date:"Romance", attract:"Attract", flesh:"Flesh ✦", carnal:"Carnal ✦",
   flesh:"Flesh ✦", kinks:"Kink ✦", work:"Work",
   backup:"Backup", family:"Family", grief:"Grief",
   us:"Between Us", usfriend:"Us: Friends", uslove:"Us: Love",
@@ -1944,24 +1944,24 @@ const NEWDECK_CARDS = [
   { level: "wish", question: "What did you want last year that you've already stopped wanting?", nl: "Waar verlangde je vorig jaar nog naar?" },
 
   // ─── SKIN ───
-  { level: "skin", question: "Some touch undoes you. Describe it." },
-  { level: "skin", question: "What's something you thought you'd never enjoy until you actually experienced it?" },
-  { level: "skin", question: "Afterwards, still tangled up — how do you like to come down?" },
-  { level: "skin", question: "Undressing someone — where do you slow down?" },
-  { level: "skin", question: "What makes you feel completely safe with someone sexually?" },
-  { level: "skin", question: "A kiss you can still feel when you think of it — take me there." },
-  { level: "skin", question: "What does a hand around your throat — or on the back of your neck — do to you?" },
-  { level: "skin", question: "How far do you go in public — what are you okay with people seeing?" },
-  { level: "skin", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
-  { level: "skin", question: "Ice, heat, cold hands, warm breath — what does temperature do to you?" },
-  { level: "skin", question: "In the moment, how do you make what you want known — words, hands, or just taking it?" },
-  { level: "skin", question: "Silk, leather, bare skin, rough hands — which texture does something to you?" },
+  { level: "flesh", question: "Some touch undoes you. Describe it." },
+  { level: "flesh", question: "What's something you thought you'd never enjoy until you actually experienced it?" },
+  { level: "flesh", question: "Afterwards, still tangled up — how do you like to come down?" },
+  { level: "flesh", question: "Undressing someone — where do you slow down?" },
+  { level: "flesh", question: "Ice, heat, cold hands, warm breath — what does temperature do to you?" },
+  { level: "flesh", question: "A kiss you can still feel when you think of it — take me there." },
+  { level: "flesh", question: "What does a hand around your throat — or on the back of your neck — do to you?" },
+  { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
+  { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
+  { level: "flesh", question: "What makes you feel completely safe with someone sexually?" },
+  { level: "flesh", question: "In the moment, how do you make what you want known — words, hands, or just taking it?" },
+  { level: "flesh", question: "Silk, leather, bare skin, rough hands — which texture does something to you?" },
 
   // ─── CARNAL ───
   { level: "carnal", question: "During sex, are you in your body, watching it, or in your head — and what causes this?" },
   { level: "carnal", question: "What do you want more of in bed that you rarely get?" },
   { level: "carnal", question: "What makes you laugh in bed?" },
-  { level: "carnal", question: "Name your sexual superpower — the thing you know you do well." },
+  { level: "carnal", question: "What's your sexual superpower — and the night it proved you right?" },
   { level: "carnal", question: "When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?" },
   { level: "carnal", question: "What sound — yours or theirs — tips you over the edge?" },
   { level: "carnal", question: "Do you chase coming, let it happen, or hold it off?" },
@@ -2104,17 +2104,17 @@ const PRESETS = {
   },
   friends: {
     on:        ["warm","friends","connect","culture","life","past","unwind","blunt"],
-    available: ["deep","values","mind","us","usfriend","grief","body","skin","carnal","kinks","abyss","aron","magic"],
+    available: ["deep","values","mind","us","usfriend","grief","body","flesh","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The people you chose"
   },
   dating: {
     on:        ["warm","attract","date","connect","culture","blunt"],
-    available: ["self","past","wish","values","us","usintimate","body","skin","carnal","kinks","abyss","aron","magic"],
+    available: ["self","past","wish","values","us","usintimate","body","flesh","carnal","kinks","abyss","aron","magic"],
     subtitle:  "For two, finding out"
   },
   partner: {
     on:        ["us","uslove","connect","date","deep","wish","blunt"],
-    available: ["usintimate","family","roots","grief","raw","home","body","skin","carnal","kinks","abyss","aron","magic"],
+    available: ["usintimate","family","roots","grief","raw","home","body","flesh","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The two of you"
   },
   latenight: {
@@ -2174,7 +2174,7 @@ let customCards   = [];
 let categoriesCollapsed = DEFAULT_COLLAPSED;
 
 // Shuffle mode category pools
-const SPICY_LEVELS  = ['skin','carnal','kinks','attract','blunt','abyss'];
+const SPICY_LEVELS  = ['flesh','carnal','kinks','attract','blunt','abyss'];
 const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
 const LIGHT_LEVELS  = ['warm','culture','unwind','home','work'];
 const BORDER_LEVELS = ['attract','raw'];
@@ -2287,7 +2287,7 @@ function applyRandomMode(arr) {
       const wt = c => {
         if (['quick','colbert','warm','culture','unwind'].includes(c.level)) return 'L'; // light/warm
         if (['deep','raw','grief','shadow','wish'].includes(c.level)) return 'H'; // heavy/deep
-        if (['skin','carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
+        if (['flesh','carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
         return 'M'; // medium/cool
       };
       const pools = { L:[], M:[], H:[], S:[] };
@@ -3876,7 +3876,7 @@ const CATEGORY_DESCRIPTIONS = {
   usfriend:  "About this friendship, directly",
   uslove:    "About this relationship, directly",
   usintimate:"Physical and intimate — for the two of you only ✦",
-  skin:      "The body in desire — before and around the act ✦",
+  flesh:     "The body in desire — before and around the act ✦",
   carnal:    "The act itself, from the inside ✦",
   kinks:     "Power, edge, and what you'd rather not explain ✦",
   desire:    "The feeling of wanting and being wanted ✦",
