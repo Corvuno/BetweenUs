@@ -2394,6 +2394,19 @@ function _sliceDraw(deck, unseen){
    The summary trace plots the same levelDepth, so the line reads as an arc too. */
 function _arcHand(source, cap){
   if (source.length <= cap) return source.slice(0, cap);
+  /* Later arcs start from a warmer baseline. A conversation already a hand or
+     two in shouldn't drop back to small talk, so the floor rises one step per
+     completed hand and stops at 3 — deep enough not to feel like starting over,
+     shallow enough that the arc still has somewhere to climb and ease back to.
+     Cards at or above the floor are simply offered first, so a narrow category
+     selection quietly falls back to whatever is left. */
+  const round = Math.floor(sessionLog.length / Math.max(cap, 1));
+  const floor = Math.min(1 + round, 3);
+  if (floor > 1) {
+    const atFloor = source.filter(c => levelDepth(c.level) >= floor);
+    const below   = source.filter(c => levelDepth(c.level) <  floor);
+    source = atFloor.concat(below);
+  }
   const picked = [], usedLevels = new Set(), spares = [];
   for (const c of source) {
     if (picked.length >= cap) break;
