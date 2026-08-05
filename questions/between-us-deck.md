@@ -443,7 +443,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Afterwards, still tangled up — how do you like to come down?
 9. When does sex stop being about you — and is that a good thing?
 10. What have you never asked for because it's better getting it without asking?
-11. Which of your turn-ons did porn find before you did — and what did it get wrong?
+11. Which of your turn-ons did you find through porn instead of real life?
 12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
 ## Bare 🔞
@@ -522,7 +522,7 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 **Skin 8** drops "and how far will you go." The card asked which touch gets to you and then asked a second, louder question on top of it; players answered the second and the first went unanswered.
 **Attract 1** → *"Someone walks into the room. What makes you look twice?"* The old card handed you the category (a physical detail) before you'd thought about it. Naming the moment instead lets the answer be a walk, a laugh, or a coat.
 **Carnal 9** keeps the half worth keeping. The card was two questions stapled together and the first — how do you know it's going well — is Bare 8's ground. *"When does sex stop being about you — and is that a good thing?"* is the part nothing else in the deck asks.
-**Carnal 11** → *"Which of your turn-ons did porn find before you did — and what did it get wrong?"* The motor of the card was never porn in general; it was the sorting job — going over your own preferences and finding which ones arrived on a screen rather than in a room. The old wording asked for influence and got a verdict on the industry.
+**Carnal 11** → *"Which of your turn-ons did you find through porn instead of real life?"* The motor of the card was never porn in general; it was the sorting job — going over your own preferences and finding which ones arrived on a screen rather than in a room. The old wording asked for influence and got a verdict on the industry. Two clauses were tried and dropped along the way: *and what did it get wrong* turns the card back into that verdict, and *before you did* is true of everything, since the screen is always there first. What the card wants is the route, not the order.
 
 ## Patch v6.45 — Carnal 3, Kink 7, stray markers
 **Carnal 3** → *"What makes you laugh in bed?"* The sexiest-thing-said card asked you to quote someone else; laughter asks for your own register and gives the category its one card that costs nothing. The file already carried the new wording — this patch brings the three builds in line.
