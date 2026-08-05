@@ -423,12 +423,12 @@ The questions come first, category by category. The full change log is at the bo
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Afterwards, still tangled up — how do you like to come down?
 4. Undressing someone — where do you slow down?
-5. What makes you feel completely safe with someone sexually?
+5. Ice, heat, cold hands, warm breath — what does temperature do to you?
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
-10. Ice, heat, cold hands, warm breath — what does temperature do to you?
+10. What makes you feel completely safe with someone sexually?
 11. In the moment, how do you make what you want known — words, hands, or just taking it?
 12. Silk, leather, bare skin, rough hands — which texture does something to you?
 
@@ -436,7 +436,7 @@ The questions come first, category by category. The full change log is at the bo
 1. During sex, are you in your body, watching it, or in your head — and what causes this?
 2. What do you want more of in bed that you rarely get?
 3. What makes you laugh in bed?
-4. Name your sexual superpower — the thing you know you do well.
+4. What's your sexual superpower — and the night it proved you right?
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
 6. What sound — yours or theirs — tips you over the edge?
 7. Do you chase coming, let it happen, or hold it off?
@@ -550,6 +550,11 @@ Useful for auditing a category rather than generating cards. In rough order of h
 
 ## Patch v6.52 — Romance 10 reverted
 **Romance 10** back to the retell-love-story card. The surprise card from v6.50 is withdrawn; it never had the owner's sign-off for that slot specifically. Bench for now.
+
+## Patch v6.54 — the internal key follows, and the safety card moves to 10
+**Internal key renamed too.** v6.53 kept the key as `skin` to avoid touching custom cards saved in a player's browser. The owner asked for the full rename anyway — every place in the app that keys off level, class, colour and safe-mode gating now reads `flesh`. No live saved sessions existed to protect against; the caution was correct to raise but not needed here.
+**Flesh 5 and Flesh 10 swap back.** The safety card belongs at 10, not 5 — the temperature card is the one that's too easy to answer, not the hands card's replacement. Flesh 5 is temperature; Flesh 10 is *"What makes you feel completely safe with someone sexually?"*
+**Carnal 4** → *"What's your sexual superpower — and the night it proved you right?"* Combines the two directions on the table: the superpower card draws a story, the *"what kind of lover are you"* alternative draws a reflection. This keeps the story-generating opener and adds the receipt.
 
 ## Patch v6.53 — Skin renamed to Flesh, and two cards that only made sense literally
 **Renamed to Flesh.** "Skin" kept pulling every new card back into a touch taxonomy, because the name is a body part and a sensation, not a subject — three separate attempts at new cards for it all landed in the same place. Flesh is the older, correct name: archived earlier in this file as *"the body in desire,"* and it's what the category was already doing before the label said otherwise. Label, category description and this doc heading changed; the internal key stays `skin` — eleven other places in the app code key off it (colours, safe-mode gating, presets, custom-card storage), and renaming the key buys nothing visible while risking a player's saved session.
