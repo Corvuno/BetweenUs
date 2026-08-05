@@ -2386,7 +2386,34 @@ function _sliceDraw(deck, unseen){
   /* deal only fresh cards; if none are left, the deck replays in full */
   const cap = unseen > 0 ? Math.min(unseen, cardLimit === null ? unseen : cardLimit)
                          : (cardLimit === null ? deck.length : Math.min(cardLimit, deck.length));
+  if (randomMode === 'arc') return _arcHand(unseen > 0 ? deck.slice(0, unseen) : deck, cap);
   return deck.slice(0, cap);
+}
+
+/* One hand, one arc. Two things a hand needs that deck-wide ordering can't
+   guarantee once seen cards are filtered out of it:
+     - variety: prefer a category the hand hasn't used yet, so five cards mean
+       five different categories whenever the selection allows, instead of three
+       cards out of the same pool;
+     - shape: order by depth so the hand opens warm, reaches its deepest card
+       around the middle and eases down after it, rather than zig-zagging.
+   The summary trace plots the same levelDepth, so the line reads as an arc too. */
+function _arcHand(source, cap){
+  if (source.length <= cap) return source.slice(0, cap);
+  const picked = [], usedLevels = new Set(), spares = [];
+  for (const c of source) {
+    if (picked.length >= cap) break;
+    if (usedLevels.has(c.level)) { spares.push(c); continue; }   // keep as a fallback
+    usedLevels.add(c.level); picked.push(c);
+  }
+  for (let i = 0; picked.length < cap && i < spares.length; i++) picked.push(spares[i]);
+  /* deepest card to the middle: walk the cards from shallow to deep, placing
+     them alternately at the front and the back, so depth rises then falls */
+  const byDepth = picked.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
+  const out = new Array(byDepth.length);
+  let lo = 0, hi = byDepth.length - 1;
+  byDepth.forEach((c, i) => { if (i % 2 === 0) out[lo++] = c; else out[hi--] = c; });
+  return out;
 }
 
 function applyLimit(reshuffle = true) {
