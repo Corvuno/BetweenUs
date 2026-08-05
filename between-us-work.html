@@ -303,9 +303,9 @@ body::before{
 .sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
 .sub-drawer.open{transform:translateY(0);}
 .drawer-empty{font-size:.58rem;letter-spacing:.1em;color:var(--muted);text-align:center;padding:24px 0;opacity:.6;}
-.drawer-item{padding:12px 0;border-bottom:1px solid var(--dim);font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--cream);line-height:1.5;}
+.drawer-item{padding:14px 0;border-bottom:1px solid var(--dim);font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--cream);line-height:1.55;}
 .drawer-item:last-child{border-bottom:none;}
-.drawer-item-meta{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-style:normal;}
+.drawer-item-meta{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-style:normal;}
 .drawer-item--custom{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
 .drawer-remove-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;flex-shrink:0;padding:0;transition:color .2s;}
 .drawer-remove-btn:hover{color:var(--cream);}
@@ -426,7 +426,7 @@ body::before{
 .sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
 .sic-stars{display:flex;flex-direction:column;gap:6px;width:100%;padding-top:10px;border-top:1px solid var(--dim);}
 .sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
-.drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
+.drawer-item--lvl{padding-left:13px;border-left:2px solid var(--lvl);}
 .drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
 #orderList.order-list .smp-row{flex-direction:row;align-items:center;gap:13px;text-align:left;justify-content:flex-start;}
 .smp-shape{flex:0 0 54px;width:54px;height:auto;color:rgba(240,232,216,.45);}
@@ -806,7 +806,11 @@ body::before{
   .pick-opt-q{font-size:1.35rem;line-height:1.45;}
   .drawer-title,.cat-sheet-title{font-size:.72rem;}
   .d-label{font-size:.72rem;} .d-sub{font-size:.6rem;} .d-icon{font-size:.95rem;}
-  .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.6rem;}
+  .drawer-item{font-size:1.12rem;padding:19px 0;line-height:1.6;}
+  .drawer-item-meta{font-size:.6rem;letter-spacing:.18em;margin-bottom:8px;}
+  .drawer-item--lvl{padding-left:17px;}
+  .sub-drawer{padding:26px 30px 34px;}
+  #logList,#favsList{display:flex;flex-direction:column;}
   .session-btn{font-size:.66rem;padding:9px 18px;}
   .smp-name{font-size:.76rem;} .smp-desc{font-size:1rem;}
   .order-list .smp-row{padding:12px 16px;}
@@ -823,8 +827,9 @@ body::before{
   .pick-opt-level{font-size:.66rem;letter-spacing:.22em;}
   .picker-hint{font-size:.66rem;letter-spacing:.22em;padding:14px 16px 10px;}
   .pick-opt{padding:14px 26px;gap:8px;}
-  .drawer-item{font-size:1.2rem;padding:16px 0;}
-  .drawer-item-meta{font-size:.6rem;}
+  .drawer-item{font-size:1.2rem;padding:23px 0;line-height:1.6;}
+  .drawer-item-meta{font-size:.6rem;margin-bottom:9px;}
+  .drawer-item--lvl{padding-left:19px;}
   .drawer-title,.cat-sheet-title{font-size:.72rem;}
   .d-label{font-size:.7rem;} .d-sub{font-size:.58rem;}
   .smp-name{font-size:.78rem;} .smp-desc{font-size:1.05rem;}
@@ -3717,12 +3722,16 @@ function nextCard() {
         if (pl) { pl.textContent = isArc ? (lang==='nl'?'Arc voltooid':'Arc complete') : (lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
         if (pn) pn.textContent = '— end —';
         if (pq) {
+          /* the round that just ended — the same one the trace draws, and the
+             same one the card outside fullscreen reports. The whole session
+             lives in the Log. */
           const seen2 = new Set(), cats2 = [];
-          sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
+          visibleDeck.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
           const arcHtml = cats2.map(l =>
             `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
           ).join('<span style="opacity:.35"> · </span>');
-          pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
+          const countLine = `${isArc ? 'You went' : 'You covered'} — ${visibleDeck.length} ${lang==='nl' ? 'kaarten' : 'cards'}`;
+          pq.innerHTML = `<div class="sic-wrap"><div class="sic-label">${countLine}</div>${drawRoundTrace(visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
         }
       }, 250);
     } else {
