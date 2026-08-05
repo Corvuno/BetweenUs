@@ -37,6 +37,29 @@ The question deck is developed separately from the app, in [`questions/`](questi
 make editing and translating the card text easier without touching app code. See
 [`questions/between-us-deck.md`](questions/between-us-deck.md).
 
+### What makes a card a Between Us card
+
+Plenty of decks ask about sex, family and regret — the subject matter isn't what makes one
+recognisable. What this deck does, at its best, is **reveal a pattern or expose a
+contradiction**: the gap between who someone thinks they are and what they actually do.
+*"You tell yourself you have a type. Who do you actually keep ending up with?"* is the
+house voice. You answer it and find something out about yourself on the way.
+
+The rules that follow from that:
+
+- **Story cards anchor on the pivot, not the topic** — name the moment something turned,
+  and you get the anecdote *and* the reason it stuck.
+- **One question per card.** A second question doesn't deepen the first, it replaces it.
+- **A second clause earns its place only if it changes the answer.**
+- **Don't hand the player the category** — listing the kind of answer you expect narrows
+  the answer to that list.
+- **Every card is answerable by someone who has no story to tell.**
+- **Twelve cards per category, always** — 34 categories, 408 cards. Nothing is ever added,
+  only swapped, and what comes out goes to the bench rather than the bin.
+
+The full version, with the lens list used to audit a category, is in
+[`questions/between-us-deck.md`](questions/between-us-deck.md#house-style--how-a-card-is-built).
+
 ## Updating
 
 All three HTML files are kept in sync with each app update. They now differ by exactly one

@@ -214,7 +214,7 @@ The questions come first, category by category. The full change log is at the bo
 3. How do you end things — and how do you want to be left?
 4. Previous partners undervalued something you offer in love...
 5. A flirt of yours gets shot down — describe the next sixty seconds inside you.
-6. Monogamy: a decision you made, or one you inherited?
+6. What relationship rule do you question more than you admit?
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
 9. Make the case for a large age gap in love — then name your own limit.
@@ -439,7 +439,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Name your sexual superpower — the thing you know you do well.
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
 6. What sound — yours or theirs — tips you over the edge?
-7. Is coming something you chase, something you let happen, or something you hold off on — and how does that feel?
+7. Do you chase coming, let it happen, or hold it off?
 8. Afterwards, still tangled up — how do you like to come down?
 9. When does sex stop being about you — and is that a good thing?
 10. What have you never asked for because it's better getting it without asking?
@@ -450,7 +450,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Sex — how important is it, honestly, in the whole of your life?
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. When has your body not done what you wanted in bed — and what did you do?
-4. How has your understanding of sexuality changed over time?
+4. What do people consistently get wrong about your sexuality?
 5. What did you believe about sex that turned out to be nonsense?
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
@@ -515,7 +515,43 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 
 ---
 
+# HOUSE STYLE — how a card is built
+
+*What the strongest cards in this deck already do. Written down so the next pass is deliberate rather than instinctive.*
+
+## The voice
+
+The subject matter is not what makes a card recognisable — every deck asks about sex, family and regret. What this one does, at its best, is **reveal a pattern or expose a contradiction**: the gap between who someone thinks they are and what they actually do. *"You tell yourself you have a type. Who do you actually keep ending up with?"* and *"Which pattern do you keep bringing into relationships, invited or not?"* could not come from another deck. That's the register to write toward when a slot opens.
+
+## Rules
+
+1. **Anchor story cards on the pivot, not the topic.** A memorable story turns on one moment — the realisation, the surprise, the thing that changed. A card that names the topic gets an anecdote; a card that names the pivot gets the anecdote *and* the reason it stuck.
+2. **One question per card.** A second question doesn't deepen the first, it replaces it — players answer the louder one and the first goes unanswered.
+3. **A second clause earns its place only if it changes the answer.** *"— and did you let it go?"* changes it. *"— and how does that feel?"* does not.
+4. **Don't hand the player the category.** Listing the kind of answer you expect narrows the answer to your list. Name the moment and let them bring the category.
+5. **Every card must be answerable by someone who has no story.** A card that only works if you've lived the specific thing is a dead card for half the table.
+6. **Twelve per category, always.** There is no adding a card, only swapping one. A new card names the card it displaces, and the displaced card goes to the BENCH rather than being deleted.
+7. **Spaced em dash — like this.** House punctuation throughout.
+
+## Lenses
+
+Useful for auditing a category rather than generating cards. In rough order of how much they're worth to this deck:
+
+**Contradiction · Pattern · Projection** — the signature. *Projection* ("what do you think the person across from you thinks?") is the most underused of the three: people reveal themselves while pretending to describe someone else.
+
+**Permission · Trade-off · Meta · Future** — underused and productive. *Permission* asks what someone finally let themselves have; *meta* asks about the question itself ("what does nobody ever ask about love?").
+
+**Memory · Story · Preference · Embodiment** — already saturated. A new card in one of these registers has to beat an existing card, not merely fill a hole.
+
+---
+
 # Change log
+
+## Patch v6.47 — identity, the rule card, Carnal 7, house style
+**Bare 4** → *"What do people consistently get wrong about your sexuality?"* The old card asked how your understanding of sexuality had changed, which is Bare 5's ground done vaguely — 5 asks the same thing and asks for a specific belief. Identity was the one lens After Dark never used: the deck asked what you've done, liked, remembered and believed, and never who you are to other people.
+**Romance 6** → *"What relationship rule do you question more than you admit?"* The monogamy card asked whether the rule was chosen or inherited and most players answered the frame rather than themselves. Naming your own rule and admitting the doubt is the same subject with the contradiction turned on.
+**Carnal 7** loses the tail. *"Do you chase coming, let it happen, or hold it off?"* — the three options were the card, and "how does that feel" was a clause the answer already contained.
+**House style** written into the file for the first time, and a short version added to the README. Not new rules — a record of what the strongest cards already do, so the next pass is deliberate.
 
 ## Patch v6.46 — Skin, Carnal, Attract polish
 **Skin 7** loses the front-or-back parenthetical mid-sentence: *"a hand around your throat — or on the back of your neck."* Same two options, read as one line instead of an aside.
