@@ -217,7 +217,7 @@ The questions come first, category by category. The full change log is at the bo
 6. What relationship rule do you question more than you admit?
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
-9. Make the case for a large age gap in love — then name your own limit.
+9. Do you make the first move, or make sure you get chosen?
 10. Which love story — your own or borrowed — do you retell most gladly?
 11. What are you like single — and do you like that version?
 12. What's the most romantic thing you've attempted that failed completely?
@@ -231,7 +231,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
 8. Who is your celebrity crush — and does that line up with your actual type?
-9. Who were you drawn to that made no sense to anyone else — and what happened?
+9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
 11. What do you think the person across from you finds attractive about you — then ask if you're right.
 12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
@@ -422,7 +422,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Some touch undoes you. Describe it.
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Teeth, nails, grip, hair — what do you want left behind?
-4. What did you finally give yourself permission to enjoy?
+4. Undressing someone — where do you slow down?
 5. Whose hands do you still remember — and what were they doing?
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
@@ -546,6 +546,12 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.49 — reverts, and Romance 9
+**Attract 9** back to the voice card. Swapped in v6.48 without the owner's sign-off; the chemistry card is unhomed again and stays out until it has an approved slot.
+**Skin 4** back to the undressing card. The permission card is withdrawn at the owner's call and the slot is open again — the undressing card holds it rather than leaving the category at eleven.
+**Romance 9** → *"Do you make the first move, or make sure you get chosen?"* Initiation was missing from the whole deck, and the second half is the card: being chosen is also a strategy. Replaces the age-gap card, which asked players to argue a position rather than say something about themselves. Dutch carried over.
+**Standing rule from here:** no card changes without the owner's explicit approval, one card at a time. Proposals go in a message, not in a commit.
 
 ## Patch v6.48 — Skin opened up, chemistry, the public/private card
 **Skin 2, 3, 4** replaced. The category was twelve cards of *which touch does something to you* plus two memory cards, and every one of them was polite. **2** → *"What's something you thought you'd never enjoy until you actually experienced it?"* — discovery rather than preference. **3** → *"Teeth, nails, grip, hair — what do you want left behind?"* — force and the mark it leaves, which Kink 3 does not cover: that card is pain, this one is the trace. **4** → *"What did you finally give yourself permission to enjoy?"* — the permission lens, unused anywhere in the deck until now.
