@@ -218,7 +218,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
 9. Do you make the first move, or make sure you get chosen?
-10. Which love story — your own or borrowed — do you retell most gladly?
+10. What is something love made you do that surprised even you?
 11. What are you like single — and do you like that version?
 12. What's the most romantic thing you've attempted that failed completely?
 
@@ -421,7 +421,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Skin 🔞
 1. Some touch undoes you. Describe it.
 2. What's something you thought you'd never enjoy until you actually experienced it?
-3. Teeth, nails, grip, hair — what do you want left behind?
+3. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 4. Undressing someone — where do you slow down?
 5. Whose hands do you still remember — and what were they doing?
 6. A kiss you can still feel when you think of it — take me there.
@@ -546,6 +546,10 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.50 — the evidence card, Romance 10
+**Skin 3** gains the morning. *"Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?"* — *evidence* is the word the card was missing, and finding it the next day is the pivot rather than the act itself. It also turns the card to the receiving side, which the category was short of.
+**Romance 10** → *"What is something love made you do that surprised even you?"* Behaviour with the surprise as the pivot, replacing the retold-love-story card, which asked for a performance the player had already rehearsed. Dutch written for it.
 
 ## Patch v6.49 — reverts, and Romance 9
 **Attract 9** back to the voice card. Swapped in v6.48 without the owner's sign-off; the chemistry card is unhomed again and stays out until it has an approved slot.
