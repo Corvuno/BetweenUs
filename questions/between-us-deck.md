@@ -418,15 +418,15 @@ The questions come first, category by category. The full change log is at the bo
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
-## Skin 🔞
+## Flesh 🔞
 1. Some touch undoes you. Describe it.
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Afterwards, still tangled up — how do you like to come down?
 4. Undressing someone — where do you slow down?
-5. Whose hands do you still remember — and what were they doing?
+5. What makes you feel completely safe with someone sexually?
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
-8. In public, fully clothed — what kind of touch still gets to you?
+8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. Ice, heat, cold hands, warm breath — what does temperature do to you?
 11. In the moment, how do you make what you want known — words, hands, or just taking it?
@@ -550,6 +550,11 @@ Useful for auditing a category rather than generating cards. In rough order of h
 
 ## Patch v6.52 — Romance 10 reverted
 **Romance 10** back to the retell-love-story card. The surprise card from v6.50 is withdrawn; it never had the owner's sign-off for that slot specifically. Bench for now.
+
+## Patch v6.53 — Skin renamed to Flesh, and two cards that only made sense literally
+**Renamed to Flesh.** "Skin" kept pulling every new card back into a touch taxonomy, because the name is a body part and a sensation, not a subject — three separate attempts at new cards for it all landed in the same place. Flesh is the older, correct name: archived earlier in this file as *"the body in desire,"* and it's what the category was already doing before the label said otherwise. Label, category description and this doc heading changed; the internal key stays `skin` — eleven other places in the app code key off it (colours, safe-mode gating, presets, custom-card storage), and renaming the key buys nothing visible while risking a player's saved session.
+**Flesh 5** → *"What makes you feel completely safe with someone sexually?"* The hands card was cut for being both too soft for the new name and one of three cards in the category keying on the word "hands." Safety has no card anywhere in After Dark, and the category is allowed a gentler entry — that was always its job.
+**Flesh 8** → *"How far do you go in public — what are you okay with people seeing?"* The old card asked which touch still gets to you in public, which is Flesh 1 with a location bolted on. This asks about the boundary itself instead.
 
 ## Patch v6.51 — Skin and Carnal trade cards
 **Skin 3** and **Carnal 8** swap places. The evidence card (teeth, nails, grip, hair) is the raw end and belongs with the act; the come-down card is tenderness after, which belongs with the soft-before category once that category stops being named after a body part. Straight trade, both categories stay at twelve.
