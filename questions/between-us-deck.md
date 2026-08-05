@@ -467,7 +467,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
 5. What do you still keep quiet about in bed, and what makes you keep it that way?
 6. Is there a kink or fantasy you have that you've never fully acted on?
-7. What do you like to hear — or to say — in the thick of it?
+7. What kind of words instantly turn you on?
 8. Who do you turn into in bed — and what does someone do to bring them out?
 9. Undressed and having to wait — what does anticipation do to you?
 10. When did you change your mind halfway — and how did that go?
@@ -516,6 +516,11 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.45 — Carnal 3, Kink 7, stray markers
+**Carnal 3** → *"What makes you laugh in bed?"* The sexiest-thing-said card asked you to quote someone else; laughter asks for your own register and gives the category its one card that costs nothing. The file already carried the new wording — this patch brings the three builds in line.
+**Kink 7** → *"What kind of words instantly turn you on?"* The old card offered hearing or saying and split the answer before it started; naming the words is the part players actually want to tell.
+**Cleanup.** The card array in all three builds carried four stray section markers: `MOVE`, `GROUND` and `EDGE` headed no cards at all, and `SKIN`/`CARNAL` had drifted so both blocks sat under one header. Empty markers removed, the two headers put back above their own blocks. No card text touched beyond the two above.
 
 ## Patch v6.44 — Bare, Home, Life, Past
 **Bare 11** asks for both places rather than one. The merge in v6.43 collapsed beautiful and strange into an either-or and left card 12 unchanged, which made 12 a subset of 11 — a live duplicate, introduced and now corrected. **Bare 12** → the longest-without card, ground the category never touched.
