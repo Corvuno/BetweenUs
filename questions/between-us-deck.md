@@ -218,7 +218,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
 8. Two people at once — has your heart ever done that, and could a relationship hold it?
 9. Do you make the first move, or make sure you get chosen?
-10. What is something love made you do that surprised even you?
+10. Which love story — your own or borrowed — do you retell most gladly?
 11. What are you like single — and do you like that version?
 12. What's the most romantic thing you've attempted that failed completely?
 
@@ -503,6 +503,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Deep** — "When were you last truly seen?"
@@ -546,6 +547,9 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.52 — Romance 10 reverted
+**Romance 10** back to the retell-love-story card. The surprise card from v6.50 is withdrawn; it never had the owner's sign-off for that slot specifically. Bench for now.
 
 ## Patch v6.51 — Skin and Carnal trade cards
 **Skin 3** and **Carnal 8** swap places. The evidence card (teeth, nails, grip, hair) is the raw end and belongs with the act; the come-down card is tenderness after, which belongs with the soft-before category once that category stops being named after a body part. Straight trade, both categories stay at twelve.
