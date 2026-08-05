@@ -421,7 +421,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Skin 🔞
 1. Some touch undoes you. Describe it.
 2. What's something you thought you'd never enjoy until you actually experienced it?
-3. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
+3. Afterwards, still tangled up — how do you like to come down?
 4. Undressing someone — where do you slow down?
 5. Whose hands do you still remember — and what were they doing?
 6. A kiss you can still feel when you think of it — take me there.
@@ -440,7 +440,7 @@ The questions come first, category by category. The full change log is at the bo
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
 6. What sound — yours or theirs — tips you over the edge?
 7. Do you chase coming, let it happen, or hold it off?
-8. Afterwards, still tangled up — how do you like to come down?
+8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 9. When does sex stop being about you — and is that a good thing?
 10. What have you never asked for because it's better getting it without asking?
 11. Which of your turn-ons did you find through porn instead of real life?
@@ -546,6 +546,9 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.51 — Skin and Carnal trade cards
+**Skin 3** and **Carnal 8** swap places. The evidence card (teeth, nails, grip, hair) is the raw end and belongs with the act; the come-down card is tenderness after, which belongs with the soft-before category once that category stops being named after a body part. Straight trade, both categories stay at twelve.
 
 ## Patch v6.50 — the evidence card, Romance 10
 **Skin 3** gains the morning. *"Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?"* — *evidence* is the word the card was missing, and finding it the next day is the pivot rather than the act itself. It also turns the card to the receiving side, which the category was short of.
