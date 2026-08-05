@@ -231,7 +231,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Which outfit on someone else has never failed on you?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
 8. Who is your celebrity crush — and does that line up with your actual type?
-9. How much does a voice do for you?
+9. Who were you drawn to that made no sense to anyone else — and what happened?
 10. Are you a different person when you're attracted to someone — and who shows up?
 11. What do you think the person across from you finds attractive about you — then ask if you're right.
 12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
@@ -247,7 +247,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Would you tell this table what you earn?
 9. What are the outer limits of your compassion?
 10. Money has cost you something...
-11. When did you last change your position mid-argument?
+11. What do you defend in public and doubt in private?
 12. When did competition make you ugly — and did you ever cheat to win?
 
 ## World
@@ -420,9 +420,9 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Skin 🔞
 1. Some touch undoes you. Describe it.
-2. Sweat, mess, noise — what does real intimacy smell and feel like for you?
-3. Which scent takes you straight back to sex with someone?
-4. Undressing someone — where do you slow down?
+2. What's something you thought you'd never enjoy until you actually experienced it?
+3. Teeth, nails, grip, hair — what do you want left behind?
+4. What did you finally give yourself permission to enjoy?
 5. Whose hands do you still remember — and what were they doing?
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
@@ -546,6 +546,12 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.48 — Skin opened up, chemistry, the public/private card
+**Skin 2, 3, 4** replaced. The category was twelve cards of *which touch does something to you* plus two memory cards, and every one of them was polite. **2** → *"What's something you thought you'd never enjoy until you actually experienced it?"* — discovery rather than preference. **3** → *"Teeth, nails, grip, hair — what do you want left behind?"* — force and the mark it leaves, which Kink 3 does not cover: that card is pain, this one is the trace. **4** → *"What did you finally give yourself permission to enjoy?"* — the permission lens, unused anywhere in the deck until now.
+**Attract 9** → *"Who were you drawn to that made no sense to anyone else — and what happened?"* Chemistry, which the deck asked about nowhere. Attract catalogued what attracts you — a detail, an outfit, a voice — four cards deep, and never once asked about the pull that ignores your own taxonomy. The voice card was the most replaceable of the four.
+**Values 11** → *"What do you defend in public and doubt in private?"* The old card asked when you last changed position mid-argument and got a date. This asks for the position you are still holding, which is the harder half.
+**Skin 10** still open — the temperature card stands until it has a replacement worth the slot.
 
 ## Patch v6.47 — identity, the rule card, Carnal 7, house style
 **Bare 4** → *"What do people consistently get wrong about your sexuality?"* The old card asked how your understanding of sexuality had changed, which is Bare 5's ground done vaguely — 5 asks the same thing and asks for a specific belief. Identity was the one lens After Dark never used: the deck asked what you've done, liked, remembered and believed, and never who you are to other people.
