@@ -223,7 +223,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What's the most romantic thing you've attempted that failed completely?
 
 ## Attract ✦
-1. Someone is close. The first physical detail you notice?
+1. Someone walks into the room. What makes you look twice?
 2. What do you find attractive that you'd never admit on a first date?
 3. Someone wanted you and you didn't want them back — how did you handle it, and did you enjoy being wanted anyway?
 4. You tell yourself you have a type. Who do you actually keep ending up with?
@@ -425,8 +425,8 @@ The questions come first, category by category. The full change log is at the bo
 4. Undressing someone — where do you slow down?
 5. Whose hands do you still remember — and what were they doing?
 6. A kiss you can still feel when you think of it — take me there.
-7. What does a hand on your throat — front or back of the neck — do to you?
-8. In public, fully clothed — which touch still gets to you, and how far will you go?
+7. What does a hand around your throat — or on the back of your neck — do to you?
+8. In public, fully clothed — what kind of touch still gets to you?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. Ice, heat, cold hands, warm breath — what does temperature do to you?
 11. In the moment, how do you make what you want known — words, hands, or just taking it?
@@ -441,9 +441,9 @@ The questions come first, category by category. The full change log is at the bo
 6. What sound — yours or theirs — tips you over the edge?
 7. Is coming something you chase, something you let happen, or something you hold off on — and how does that feel?
 8. Afterwards, still tangled up — how do you like to come down?
-9. How do you know it's going well, and when does it stop being about you?
+9. When does sex stop being about you — and is that a good thing?
 10. What have you never asked for because it's better getting it without asking?
-11. How did porn influence your sex life?
+11. Which of your turn-ons did porn find before you did — and what did it get wrong?
 12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
 ## Bare 🔞
@@ -516,6 +516,13 @@ Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in
 ---
 
 # Change log
+
+## Patch v6.46 — Skin, Carnal, Attract polish
+**Skin 7** loses the front-or-back parenthetical mid-sentence: *"a hand around your throat — or on the back of your neck."* Same two options, read as one line instead of an aside.
+**Skin 8** drops "and how far will you go." The card asked which touch gets to you and then asked a second, louder question on top of it; players answered the second and the first went unanswered.
+**Attract 1** → *"Someone walks into the room. What makes you look twice?"* The old card handed you the category (a physical detail) before you'd thought about it. Naming the moment instead lets the answer be a walk, a laugh, or a coat.
+**Carnal 9** keeps the half worth keeping. The card was two questions stapled together and the first — how do you know it's going well — is Bare 8's ground. *"When does sex stop being about you — and is that a good thing?"* is the part nothing else in the deck asks.
+**Carnal 11** → *"Which of your turn-ons did porn find before you did — and what did it get wrong?"* The motor of the card was never porn in general; it was the sorting job — going over your own preferences and finding which ones arrived on a screen rather than in a room. The old wording asked for influence and got a verdict on the industry.
 
 ## Patch v6.45 — Carnal 3, Kink 7, stray markers
 **Carnal 3** → *"What makes you laugh in bed?"* The sexiest-thing-said card asked you to quote someone else; laughter asks for your own register and gives the category its one card that costs nothing. The file already carried the new wording — this patch brings the three builds in line.
