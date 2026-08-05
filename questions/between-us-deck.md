@@ -435,7 +435,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Carnal 🔞
 1. During sex, are you in your body, watching it, or in your head — and what causes this?
 2. What do you want more of in bed that you rarely get?
-3. What's the sexiest thing anyone has ever said to you in bed?
+3. What makes you laugh in bed?
 4. Name your sexual superpower — the thing you know you do well.
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
 6. What sound — yours or theirs — tips you over the edge?
