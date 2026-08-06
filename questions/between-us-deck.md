@@ -439,7 +439,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What's your sexual superpower — and the night it proved you right?
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
 6. What sound — yours or theirs — tips you over the edge?
-7. Do you chase coming, let it happen, or hold it off?
+7. Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?
 8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 9. When does sex stop being about you — and is that a good thing?
 10. What have you never asked for because it's better getting it without asking?
@@ -550,6 +550,10 @@ Useful for auditing a category rather than generating cards. In rough order of h
 
 ## Patch v6.52 — Romance 10 reverted
 **Romance 10** back to the retell-love-story card. The surprise card from v6.50 is withdrawn; it never had the owner's sign-off for that slot specifically. Bench for now.
+
+## Patch v6.55 — Carnal 7, and Flesh 5 flagged wrong
+**Carnal 7** → *"Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?"* The chase/let-happen/hold-off framing was dropped entirely rather than trimmed again — it was never the interesting question, and the orgasm's importance is already Carnal 9's ground. Giving versus receiving isn't asked anywhere else in the deck. The rough/slow pace alternative was rejected on the grounds that most people experience both within a single encounter, so it isn't a trait a card can usefully ask for.
+**Flesh 5 is wrong and known to be wrong.** v6.54 moved the safety card to 10 and refilled 5 with the displaced temperature card, on the assumption it was a straight two-way swap — it wasn't; 5 needed a genuinely new card, not the card 10 no longer wanted. Left as temperature for now, flagged, pending the owner's pick.
 
 ## Patch v6.54 — the internal key follows, and the safety card moves to 10
 **Internal key renamed too.** v6.53 kept the key as `skin` to avoid touching custom cards saved in a player's browser. The owner asked for the full rename anyway — every place in the app that keys off level, class, colour and safe-mode gating now reads `flesh`. No live saved sessions existed to protect against; the caution was correct to raise but not needed here.
