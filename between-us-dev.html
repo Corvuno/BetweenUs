@@ -2154,24 +2154,27 @@ const PRESETS = {
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let activeToggles = new Set();
-let activePreset  = '';       // tracks current preset so we avoid DOM queries
-let safeMode      = false;
-let spiceMode     = false;
-let randomMode    = window.DEFAULT_SHUFFLE  || 'wild';
-let lang          = NL_DEFAULT ? 'nl' : (window.DEFAULT_LANGUAGE || 'en');
-let cardLimit     = (window.DEFAULT_LIMIT === 0 ? null : (window.DEFAULT_LIMIT || 5));
-let fullDeck      = [];
-let visibleDeck   = [];
-let currentIndex  = -1;
-let skippedCards  = new Set();
-let partyMode     = false;
-let sessionLog    = [];
-let loggedQuestions = new Set();   // per-round guard against duplicate log entries
-let colbertPrevLimit = null;       // limit to restore after Colbert-solo play
-let favourites    = [];
-let customCards   = [];
-let categoriesCollapsed = DEFAULT_COLLAPSED;
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const state = {
+  activeToggles: new Set(),
+  activePreset: '',       // tracks current preset so we avoid DOM queries
+  safeMode: false,
+  spiceMode: false,
+  randomMode: window.DEFAULT_SHUFFLE || 'wild',
+  lang: NL_DEFAULT ? 'nl' : (window.DEFAULT_LANGUAGE || 'en'),
+  cardLimit: (window.DEFAULT_LIMIT === 0 ? null : (window.DEFAULT_LIMIT || 5)),
+  fullDeck: [],
+  visibleDeck: [],
+  currentIndex: -1,
+  skippedCards: new Set(),
+  partyMode: false,
+  sessionLog: [],
+  loggedQuestions: new Set(),   // per-round guard against duplicate log entries
+  colbertPrevLimit: null,       // limit to restore after Colbert-solo play
+  favourites: [],
+  customCards: [],
+  categoriesCollapsed: DEFAULT_COLLAPSED,
+};
 
 // Shuffle mode category pools
 const SPICY_LEVELS  = ['flesh','carnal','kinks','attract','blunt','abyss'];
@@ -2185,8 +2188,8 @@ const COLBERT_STRICT = window.COLBERT_STRICT || false;
 
 // ── DECK LOGIC ────────────────────────────────────────────────────────────────
 function getFilteredCards() {
-  const effectiveSafe = safeMode || MASTER_SAFE || WORKPLACE_MODE;
-  let levels = [...activeToggles];
+  const effectiveSafe = state.safeMode || MASTER_SAFE || WORKPLACE_MODE;
+  let levels = [...state.activeToggles];
   if (effectiveSafe) levels = levels.filter(l => !SAFE_BLOCKED_LEVELS.includes(l));
   return ALL_CARDS.filter(c => {
     if (!levels.includes(c.level)) return false;
@@ -2196,7 +2199,7 @@ function getFilteredCards() {
 }
 
 function isColbertSolo() {
-  return activeToggles.size === 1 && activeToggles.has('colbert');
+  return state.activeToggles.size === 1 && state.activeToggles.has('colbert');
 }
 
 // Sets that play in their canonical order when selected alone
@@ -2204,8 +2207,8 @@ const ORDERED_SOLO_LEVELS = ['colbert', 'aron', 'magic'];
 // Opt-in-only: never swept up by Select All or auto-spice — a deliberate tap required.
 const OPT_IN_ONLY = ['colbert', 'aron', 'magic', 'abyss'];
 function orderedSoloLevel() {
-  if (activeToggles.size !== 1) return null;
-  const l = [...activeToggles][0];
+  if (state.activeToggles.size !== 1) return null;
+  const l = [...state.activeToggles][0];
   return ORDERED_SOLO_LEVELS.includes(l) ? l : null;
 }
 function getOrderedSolo(lvl) {
@@ -2228,10 +2231,10 @@ function shuffle(arr) {
 }
 
 function applyRandomMode(arr) {
-  switch (randomMode) {
+  switch (state.randomMode) {
 
     case 'wild':
-      if (spiceMode && !safeMode) {
+      if (state.spiceMode && !state.safeMode) {
         // spiceMode on: bias toward spicy (roughly 1-in-3 spicy cards)
         const sp = shuffle(arr.filter(c => SPICY_LEVELS.includes(c.level)));
         const ns = shuffle(arr.filter(c => !SPICY_LEVELS.includes(c.level)));
@@ -2247,9 +2250,9 @@ function applyRandomMode(arr) {
 
     case 'deep': {
       const deepPool = shuffle(arr.filter(c => DEEP_LEVELS.includes(c.level)));
-      const border   = shuffle(arr.filter(c => !safeMode && BORDER_LEVELS.includes(c.level) && !DEEP_LEVELS.includes(c.level)));
+      const border   = shuffle(arr.filter(c => !state.safeMode && BORDER_LEVELS.includes(c.level) && !DEEP_LEVELS.includes(c.level)));
       const light    = shuffle(arr.filter(c => LIGHT_LEVELS.includes(c.level) && !DEEP_LEVELS.includes(c.level)));
-      const spicy    = shuffle(arr.filter(c => !safeMode && SPICY_LEVELS.includes(c.level) && !BORDER_LEVELS.includes(c.level)));
+      const spicy    = shuffle(arr.filter(c => !state.safeMode && SPICY_LEVELS.includes(c.level) && !BORDER_LEVELS.includes(c.level)));
       const result = [];
       let di=0, bi=0, li=0, si=0;
       while (di<deepPool.length || bi<border.length || si<spicy.length) {
@@ -2312,7 +2315,7 @@ function applyRandomMode(arr) {
           if (li < pools.L.length) return pools.L[li++];
         } else { // M / cool
           // Spice mode: weave S cards into cool slots
-          if (spiceMode && si < pools.S.length && pos % 4 === 3) return pools.S[si++];
+          if (state.spiceMode && si < pools.S.length && pos % 4 === 3) return pools.S[si++];
           if (mi < pools.M.length) return pools.M[mi++];
           if (li < pools.L.length) return pools.L[li++];
           if (hi < pools.H.length) return pools.H[hi++];
@@ -2336,31 +2339,31 @@ function applyRandomMode(arr) {
 }
 
 function initDeck() {
-  skippedCards.clear();
-  loggedQuestions.clear();
+  state.skippedCards.clear();
+  state.loggedQuestions.clear();
   const _solo = orderedSoloLevel();
   if (_solo) {
-    if (colbertPrevLimit === null) colbertPrevLimit = cardLimit;   // remember to restore later
-    cardLimit = null;
+    if (state.colbertPrevLimit === null) state.colbertPrevLimit = state.cardLimit;   // remember to restore later
+    state.cardLimit = null;
     document.querySelectorAll('.limit-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.limit === 'all')
     );
-    fullDeck = getOrderedSolo(_solo);
+    state.fullDeck = getOrderedSolo(_solo);
   } else {
-    if (colbertPrevLimit !== null) {                               // leaving Colbert-solo: restore
-      if (cardLimit === null) cardLimit = colbertPrevLimit;
-      colbertPrevLimit = null;
+    if (state.colbertPrevLimit !== null) {                               // leaving Colbert-solo: restore
+      if (state.cardLimit === null) state.cardLimit = state.colbertPrevLimit;
+      state.colbertPrevLimit = null;
       document.querySelectorAll('.limit-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.limit === (cardLimit === null ? 'all' : String(cardLimit)))
+        b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)))
       );
     }
-    fullDeck = applyRandomMode(getFilteredCards());
-    { const r=_unseenFirst(fullDeck); fullDeck=r.deck; window._drawUnseen=r.unseen; }
+    state.fullDeck = applyRandomMode(getFilteredCards());
+    { const r=_unseenFirst(state.fullDeck); state.fullDeck=r.deck; window._drawUnseen=r.unseen; }
   }
-  currentIndex = -1;
-  visibleDeck  = orderedSoloLevel()
-    ? (cardLimit === null ? [...fullDeck] : fullDeck.slice(0, cardLimit))
-    : _sliceDraw(fullDeck, window._drawUnseen === undefined ? fullDeck.length : window._drawUnseen);
+  state.currentIndex = -1;
+  state.visibleDeck  = orderedSoloLevel()
+    ? (state.cardLimit === null ? [...state.fullDeck] : state.fullDeck.slice(0, state.cardLimit))
+    : _sliceDraw(state.fullDeck, window._drawUnseen === undefined ? state.fullDeck.length : window._drawUnseen);
   renderProgress();
   setCardDisplay(null);
   updateDeckInfo();
@@ -2370,7 +2373,7 @@ function initDeck() {
 
 /* Draw vs session: a draw is dealt from what this session hasn't seen. */
 function _unseenFirst(deck){
-  const seen = new Set(sessionLog.map(c => c.question));
+  const seen = new Set(state.sessionLog.map(c => c.question));
   if (!seen.size) return {deck, unseen: deck.length};
   const fresh = deck.filter(c=>!seen.has(c.question));
   const used  = deck.filter(c=> seen.has(c.question));
@@ -2378,9 +2381,9 @@ function _unseenFirst(deck){
 }
 function _sliceDraw(deck, unseen){
   /* deal only fresh cards; if none are left, the deck replays in full */
-  const cap = unseen > 0 ? Math.min(unseen, cardLimit === null ? unseen : cardLimit)
-                         : (cardLimit === null ? deck.length : Math.min(cardLimit, deck.length));
-  if (randomMode === 'arc') return _arcHand(unseen > 0 ? deck.slice(0, unseen) : deck, cap);
+  const cap = unseen > 0 ? Math.min(unseen, state.cardLimit === null ? unseen : state.cardLimit)
+                         : (state.cardLimit === null ? deck.length : Math.min(state.cardLimit, deck.length));
+  if (state.randomMode === 'arc') return _arcHand(unseen > 0 ? deck.slice(0, unseen) : deck, cap);
   return deck.slice(0, cap);
 }
 
@@ -2400,7 +2403,7 @@ function _arcHand(source, cap){
      shallow enough that the arc still has somewhere to climb and ease back to.
      Cards at or above the floor are simply offered first, so a narrow category
      selection quietly falls back to whatever is left. */
-  const round = Math.floor(sessionLog.length / Math.max(cap, 1));
+  const round = Math.floor(state.sessionLog.length / Math.max(cap, 1));
   const floor = Math.min(1 + round, 3);
   if (floor > 1) {
     const atFloor = source.filter(c => levelDepth(c.level) >= floor);
@@ -2424,16 +2427,16 @@ function _arcHand(source, cap){
 }
 
 function applyLimit(reshuffle = true) {
-  loggedQuestions.clear();
+  state.loggedQuestions.clear();
   if (reshuffle) {
-    fullDeck = orderedSoloLevel() ? getOrderedSolo(orderedSoloLevel()) : applyRandomMode(getFilteredCards());
-    if (!orderedSoloLevel()) { const r=_unseenFirst(fullDeck); fullDeck=r.deck; window._drawUnseen=r.unseen; }
-    else window._drawUnseen = fullDeck.length;
+    state.fullDeck = orderedSoloLevel() ? getOrderedSolo(orderedSoloLevel()) : applyRandomMode(getFilteredCards());
+    if (!orderedSoloLevel()) { const r=_unseenFirst(state.fullDeck); state.fullDeck=r.deck; window._drawUnseen=r.unseen; }
+    else window._drawUnseen = state.fullDeck.length;
   }
-  visibleDeck  = orderedSoloLevel()
-    ? (cardLimit === null ? [...fullDeck] : fullDeck.slice(0, cardLimit))
-    : _sliceDraw(fullDeck, window._drawUnseen === undefined ? fullDeck.length : window._drawUnseen);
-  currentIndex = -1;
+  state.visibleDeck  = orderedSoloLevel()
+    ? (state.cardLimit === null ? [...state.fullDeck] : state.fullDeck.slice(0, state.cardLimit))
+    : _sliceDraw(state.fullDeck, window._drawUnseen === undefined ? state.fullDeck.length : window._drawUnseen);
+  state.currentIndex = -1;
   renderProgress();
   setCardDisplay(null);
   updateDeckInfo();
@@ -2455,32 +2458,32 @@ function drawMore() {
 
 // ── TRANSLATION ───────────────────────────────────────────────────────────────
 function translateQ(card) {
-  return lang === 'nl' && card.nl ? card.nl : card.question;
+  return state.lang === 'nl' && card.nl ? card.nl : card.question;
 }
 
 // ── CARD DISPLAY ──────────────────────────────────────────────────────────────
 function _nextCardBase() {
-  if (!visibleDeck.length) return;
-  if (currentIndex < visibleDeck.length - 1) {
-    currentIndex++;
-    flipToCard(visibleDeck[currentIndex]);
-    addToLog(visibleDeck[currentIndex]);
+  if (!state.visibleDeck.length) return;
+  if (state.currentIndex < state.visibleDeck.length - 1) {
+    state.currentIndex++;
+    flipToCard(state.visibleDeck[state.currentIndex]);
+    addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();
-    if (currentIndex === visibleDeck.length - 1) updateDrawMore();
+    if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();
   } else {
-    const remaining = fullDeck.filter(c => c && !skippedCards.has(c.question)).length - visibleDeck.length;
+    const remaining = state.fullDeck.filter(c => c && !state.skippedCards.has(c.question)).length - state.visibleDeck.length;
     const el = document.getElementById('card');
     el.classList.add('flipping');
-    currentIndex = visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
+    state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
     setTimeout(() => {
       document.getElementById('card-level').className   = 'card-level';
       document.getElementById('card-level').textContent = '';
-      const _fresh = (()=>{const sn=new Set(sessionLog.map(c=>c.question));return fullDeck.filter(c=>!sn.has(c.question)).length;})();
+      const _fresh = (()=>{const sn=new Set(state.sessionLog.map(c=>c.question));return state.fullDeck.filter(c=>!sn.has(c.question)).length;})();
       document.getElementById('card-question').innerHTML = _fresh > 0
-        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${visibleDeck.length}.<br><br>${_fresh} ${lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(_fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
-        : `<span style="font-size:1rem;color:var(--muted)">${lang==='nl'
-            ? `Dat was dit hele deck — alle ${visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
-            : `That's the whole deck — all ${visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
+        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${_fresh} ${state.lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(_fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
+        : `<span style="font-size:1rem;color:var(--muted)">${state.lang==='nl'
+            ? `Dat was dit hele deck — alle ${state.visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
+            : `That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
       document.getElementById('card-number').textContent = '— end —';
       el.classList.remove('flipping');
       updateDrawMore();
@@ -2490,9 +2493,9 @@ function _nextCardBase() {
 // nextCard is defined below in the adaptation layer (consolidated)
 
 function prevCard() {
-  if (currentIndex > 0) {
-    currentIndex--;
-    flipToCard(visibleDeck[currentIndex]);
+  if (state.currentIndex > 0) {
+    state.currentIndex--;
+    flipToCard(state.visibleDeck[state.currentIndex]);
     updateStarUI();
   }
 }
@@ -2500,15 +2503,15 @@ function prevCard() {
 // ── PROGRESS & INFO ───────────────────────────────────────────────────────────
 function renderProgress() {
   const container = document.getElementById('progress');
-  const deckLen = visibleDeck.length;
+  const deckLen = state.visibleDeck.length;
   container.innerHTML = '';
   const MAX_DOTS = 60;
   if (deckLen <= MAX_DOTS) {
     // One dot per card — accurate for any normal-sized session
     for (let i = 0; i < deckLen; i++) {
       const dot = document.createElement('div');
-      const isSeen    = i < currentIndex;
-      const isCurrent = i === currentIndex;
+      const isSeen    = i < state.currentIndex;
+      const isCurrent = i === state.currentIndex;
       dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
       container.appendChild(dot);
     }
@@ -2516,7 +2519,7 @@ function renderProgress() {
     // Large decks (e.g. 'All' in Everything): bucket into MAX_DOTS proportional dots
     // so the trail always spans the whole deck instead of running out partway.
     const perBucket = deckLen / MAX_DOTS;
-    const currentBucket = currentIndex < 0 ? -1 : Math.floor(currentIndex / perBucket);
+    const currentBucket = state.currentIndex < 0 ? -1 : Math.floor(state.currentIndex / perBucket);
     for (let i = 0; i < MAX_DOTS; i++) {
       const dot = document.createElement('div');
       const isSeen    = i < currentBucket;
@@ -2538,10 +2541,10 @@ function syncBandLabels(){
   });
 }
 function applyToggleUI() {
-  const preset = PRESETS[activePreset];
+  const preset = PRESETS[state.activePreset];
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
-    const on  = activeToggles.has(lvl);
+    const on  = state.activeToggles.has(lvl);
     btn.classList.toggle('on', on);
     /* "you could also go here" — in this room, not yet chosen */
     const suggested = !!preset && !on && !btn.classList.contains('hard-locked')
@@ -2555,7 +2558,7 @@ let _prevSafeModeHS = null;   // remembers your After Dark state across hard-saf
 function applyPreset(mode) {
   const preset = PRESETS[mode];
   if (!preset) return;
-  activePreset = mode;
+  state.activePreset = mode;
   // bring the active mode button into the centre of its scroll strip
   requestAnimationFrame(() => {
     const activeBtn = document.querySelector(`.mode-btn[data-mode="${mode}"]`);
@@ -2565,17 +2568,17 @@ function applyPreset(mode) {
   });
   const HARD_SAFE = ['work', 'family_p'];
   if (HARD_SAFE.includes(mode)) {
-    if (_prevSafeModeHS === null) _prevSafeModeHS = safeMode;
-    safeMode = true;
+    if (_prevSafeModeHS === null) _prevSafeModeHS = state.safeMode;
+    state.safeMode = true;
   } else if (_prevSafeModeHS !== null) {
-    safeMode = _prevSafeModeHS;
+    state.safeMode = _prevSafeModeHS;
     _prevSafeModeHS = null;
   }
   const sub = document.getElementById('subtitle'); if (sub) sub.textContent = preset.subtitle;
-  activeToggles = new Set(preset.on.filter(l => DECK_LEVELS.has(l)));
+  state.activeToggles = new Set(preset.on.filter(l => DECK_LEVELS.has(l)));
   // After Dark is opt-in: adult categories stay reachable but are never
   // pre-activated by a preset unless this build ships with spice on (editor).
-  if (safeMode || !window.SPICE_MODE) SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
+  if (state.safeMode || !window.SPICE_MODE) SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
 
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
@@ -2583,21 +2586,21 @@ function applyPreset(mode) {
     const lockedOut = (MASTER_SAFE || WORKPLACE_MODE) && SAFE_BLOCKED_LEVELS.includes(lvl);
     const hidden = !inMode || lockedOut || !DECK_LEVELS.has(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
     btn.style.display = hidden ? 'none' : '';
-    const locked = !hidden && safeMode && SAFE_BLOCKED_LEVELS.includes(lvl);
+    const locked = !hidden && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl);
     btn.classList.toggle('hard-locked', locked);
   });
   // Dev default: SPICE_MODE keeps adult categories switched on in every mode that reaches them,
   // not just at page load — otherwise leaving and returning to a mode silently drops them.
-  if (window.SPICE_MODE && !safeMode && !MASTER_SAFE && !WORKPLACE_MODE) {
+  if (window.SPICE_MODE && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE) {
     SAFE_BLOCKED_LEVELS.forEach(lvl => {
       if (OPT_IN_ONLY.includes(lvl)) return;
-      if (DECK_LEVELS.has(lvl) && (preset.on.includes(lvl) || preset.available.includes(lvl))) activeToggles.add(lvl);
+      if (DECK_LEVELS.has(lvl) && (preset.on.includes(lvl) || preset.available.includes(lvl))) state.activeToggles.add(lvl);
     });
   }
   if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
 
   const glyphBtn = document.getElementById('spiceGlyphBtn');
-  const reachable = !HARD_SAFE.includes(mode) && !safeMode && !MASTER_SAFE && !WORKPLACE_MODE
+  const reachable = !HARD_SAFE.includes(mode) && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE
                     && SAFE_BLOCKED_LEVELS.some(l => DECK_LEVELS.has(l) &&
                        (preset.on.includes(l) || preset.available.includes(l)));
   if (HARD_SAFE.includes(mode)) {
@@ -2615,17 +2618,17 @@ function applyPreset(mode) {
 // ── LOG & FAVOURITES ──────────────────────────────────────────────────────────
 function addToLog(card) {
   if (!card) return;
-  if (loggedQuestions.has(card.question)) return;   // re-visiting via prev/next must not re-log
-  loggedQuestions.add(card.question);
-  sessionLog.push({ question: card.question, level: card.level });
+  if (state.loggedQuestions.has(card.question)) return;   // re-visiting via prev/next must not re-log
+  state.loggedQuestions.add(card.question);
+  state.sessionLog.push({ question: card.question, level: card.level });
   renderLog();
 }
 
 function renderLog() {
   const el = document.getElementById('logList');
-  el.innerHTML = sessionLog.length === 0
+  el.innerHTML = state.sessionLog.length === 0
     ? '<div class="drawer-empty">No cards drawn yet.</div>'
-    : [...sessionLog].reverse().map(c =>
+    : [...state.sessionLog].reverse().map(c =>
         `<div class="drawer-item drawer-item--lvl" style="--lvl:${levelColor(c.level)}">
           <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
           ${esc(c.question)}
@@ -2634,33 +2637,33 @@ function renderLog() {
 }
 
 function loadFavourites() {
-  try { const v = localStorage.getItem('bu-favourites'); if (v) favourites = JSON.parse(v); }
-  catch(e) { favourites = []; }
+  try { const v = localStorage.getItem('bu-favourites'); if (v) state.favourites = JSON.parse(v); }
+  catch(e) { state.favourites = []; }
   updateStarUI();
 }
 
 async function toggleFavourite() {
-  const card = currentIndex >= 0 ? visibleDeck[currentIndex] : null;
+  const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
   if (!card) return;
-  const idx = favourites.findIndex(f => f.question === card.question);
-  if (idx >= 0) favourites.splice(idx, 1);
-  else favourites.push({ question: card.question, level: card.level });
-  try { localStorage.setItem('bu-favourites', JSON.stringify(favourites)); } catch(e) {}
+  const idx = state.favourites.findIndex(f => f.question === card.question);
+  if (idx >= 0) state.favourites.splice(idx, 1);
+  else state.favourites.push({ question: card.question, level: card.level });
+  try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); } catch(e) {}
   updateStarUI();
   renderFavourites();
 }
 
 function updateStarUI() {
-  const card = currentIndex >= 0 ? visibleDeck[currentIndex] : null;
+  const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
   const star = document.getElementById('cardStar');
-  if (star) star.classList.toggle('active', !!card && favourites.some(f => f.question === card.question));
+  if (star) star.classList.toggle('active', !!card && state.favourites.some(f => f.question === card.question));
 }
 
 function renderFavourites() {
   const el = document.getElementById('favsList');
-  el.innerHTML = favourites.length === 0
+  el.innerHTML = state.favourites.length === 0
     ? '<div class="drawer-empty">No favourites yet. Tap ★ on a card.</div>'
-    : favourites.map(c =>
+    : state.favourites.map(c =>
         `<div class="drawer-item drawer-item--lvl" style="--lvl:${levelColor(c.level)}">
           <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
           ${esc(c.question)}
@@ -2675,13 +2678,13 @@ function loadCustomCards() {
   try {
     const v = localStorage.getItem('bu-custom-cards');
     if (v) {
-      customCards = JSON.parse(v);
-      customCards.forEach(c => {
+      state.customCards = JSON.parse(v);
+      state.customCards.forEach(c => {
         if (!ALL_CARDS.find(a => a.question === c.question))
           ALL_CARDS.push({ level: c.level, question: c.question, nl: c.nl||undefined, custom: true });
       });
     }
-  } catch(e) { customCards = []; }
+  } catch(e) { state.customCards = []; }
   renderCustomList();
 }
 
@@ -2692,9 +2695,9 @@ function addCustomCard() {
   if (!text) return;
   const card = { level, question: text, custom: true };
   if (textNl) card.nl = textNl;
-  customCards.push(card);
+  state.customCards.push(card);
   ALL_CARDS.push(card);
-  try { localStorage.setItem('bu-custom-cards', JSON.stringify(customCards)); } catch(e) {}
+  try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
   document.getElementById('customText').value = '';
   if (document.getElementById('customTextNl')) document.getElementById('customTextNl').value = '';
   renderCustomList();
@@ -2703,10 +2706,10 @@ function addCustomCard() {
 }
 
 function removeCustomCard(question) {
-  customCards = customCards.filter(c => c.question !== question);
+  state.customCards = state.customCards.filter(c => c.question !== question);
   const idx   = ALL_CARDS.findIndex(c => c.question === question && c.custom);
   if (idx >= 0) ALL_CARDS.splice(idx, 1);
-  try { localStorage.setItem('bu-custom-cards', JSON.stringify(customCards)); } catch(e) {}
+  try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
   renderCustomList();
   if (typeof updateCatCounts === 'function') updateCatCounts();
   initDeck();
@@ -2715,9 +2718,9 @@ function removeCustomCard(question) {
 function renderCustomList() {
   const el = document.getElementById('customList');
   if (!el) return;
-  el.innerHTML = customCards.length === 0
+  el.innerHTML = state.customCards.length === 0
     ? '<div class="drawer-empty">No custom cards yet.</div>'
-    : customCards.map((c, i) =>
+    : state.customCards.map((c, i) =>
         `<div class="drawer-item drawer-item--custom">
           <div>
             <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
@@ -2731,13 +2734,13 @@ function renderCustomList() {
 document.getElementById('customList').addEventListener('click', e => {
   const btn = e.target.closest('.drawer-remove-btn');
   if (!btn) return;
-  const card = customCards[parseInt(btn.dataset.idx, 10)];
+  const card = state.customCards[parseInt(btn.dataset.idx, 10)];
   if (card) removeCustomCard(card.question);
 });
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 if (MASTER_SAFE || WORKPLACE_MODE) {
-  safeMode = true;
+  state.safeMode = true;
   document.getElementById('afterDarkToggle').style.display  = 'none';
   document.querySelector('.spice-toggle') && (document.querySelector('.spice-toggle').style.display = 'none');
   SAFE_BLOCKED_LEVELS.forEach(l => {
@@ -2755,26 +2758,26 @@ if (!window.SHOW_BACKUP) {
 }
 
 if (WORKPLACE_MODE) {
-  safeMode = true;
+  state.safeMode = true;
   applyPreset('work');
 } else {
-  safeMode = false;
+  state.safeMode = false;
   applyPreset('open');
 }
 // SPICE_MODE: add adult categories to the active set by default
 if (SPICE_MODE && !MASTER_SAFE && !WORKPLACE_MODE) {
-  safeMode = false;
+  state.safeMode = false;
   applyToggleUI();
   /* the ✦ glyph button reflects spiceMode when its own setup runs, just below */
-  spiceMode = true;
+  state.spiceMode = true;
 }
 document.querySelectorAll('.mode-btn').forEach(b =>
-  b.classList.toggle('active', b.dataset.mode === activePreset)
+  b.classList.toggle('active', b.dataset.mode === state.activePreset)
 );
 initDeck();
 
 if (DEFAULT_COLLAPSED) {
-  categoriesCollapsed = true;
+  state.categoriesCollapsed = true;
   document.getElementById('toggles')?.classList.add('collapsed');
   const ca = document.getElementById('catArrow');
   if (ca) ca.textContent = '▶';
@@ -2802,8 +2805,8 @@ document.getElementById('toggles').addEventListener('click', e => {
   if (!btn || btn.classList.contains('hard-locked')) return;
   if (btn._longPressed) { btn._longPressed = false; return; }   // long-press reads, never toggles
   const lvl = btn.dataset.level;
-  activeToggles[activeToggles.has(lvl) ? 'delete' : 'add'](lvl);
-  activePreset = '';
+  state.activeToggles[state.activeToggles.has(lvl) ? 'delete' : 'add'](lvl);
+  state.activePreset = '';
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
   applyToggleUI();
   initDeck();
@@ -2819,17 +2822,17 @@ document.getElementById('toggles').addEventListener('click', e => {
 document.getElementById('selectAll').addEventListener('click', () => {
   document.querySelectorAll('.toggle-btn:not(.hard-locked)').forEach(btn => {
     if (OPT_IN_ONLY.includes(btn.dataset.level)) return;
-    if (btn.dataset.level && btn.style.display !== 'none') activeToggles.add(btn.dataset.level);
+    if (btn.dataset.level && btn.style.display !== 'none') state.activeToggles.add(btn.dataset.level);
   });
-  activePreset = '';
+  state.activePreset = '';
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
   applyToggleUI();
   initDeck();
 });
 
 document.getElementById('deselectAll').addEventListener('click', () => {
-  activeToggles.clear();
-  activePreset = '';
+  state.activeToggles.clear();
+  state.activePreset = '';
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
   applyToggleUI();
   initDeck();
@@ -2841,7 +2844,7 @@ document.getElementById('limitBtns').addEventListener('click', e => {
   if (!btn) return;
   document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  cardLimit = btn.dataset.limit === 'all' ? null : parseInt(btn.dataset.limit);
+  state.cardLimit = btn.dataset.limit === 'all' ? null : parseInt(btn.dataset.limit);
   applyLimit(true);
 });
 
@@ -2858,7 +2861,7 @@ document.getElementById('cardStar').addEventListener('click', e => {
 
 // Normal mode: tap the card to advance
 document.getElementById('card').addEventListener('click', e => {
-  if (partyMode) return;
+  if (state.partyMode) return;
   if (e.target.closest('#cardStar')) return;
   if (window._swipeJustFired) { window._swipeJustFired = false; return; } // block synthetic click after swipe
   nextCard();
@@ -2897,11 +2900,11 @@ document.getElementById('card').addEventListener('click', e => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SHUFFLE_MODES = ['wild','deep','breadth','arc'];
-let shuffleModeIdx = SHUFFLE_MODES.indexOf(randomMode);
+let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
 
 function updateShuffleDisplay() {
-  const name = SHUFFLE_MODES[shuffleModeIdx] || randomMode;
-  randomMode = name;
+  const name = SHUFFLE_MODES[shuffleModeIdx] || state.randomMode;
+  state.randomMode = name;
   // Reflect the active mode straight onto the Shuffle token value.
   const vo = document.getElementById('valOrder');
   if (vo) vo.textContent = name.charAt(0).toUpperCase() + name.slice(1);
@@ -2918,13 +2921,13 @@ function setCardDisplay(card) {
   if (!card) {
     if (lvlEl)    { lvlEl.textContent=''; lvlEl.classList.remove('in'); }
     if (accent)   { accent.style.background=''; }
-    if (qEl)      { qEl.textContent = visibleDeck.length===0
-      ? (lang==='nl' ? 'Selecteer minstens één categorie.' : 'Select at least one category.')
-      : (lang==='nl' ? 'Trek een kaart om te beginnen.'   : 'Draw a card to begin.');
+    if (qEl)      { qEl.textContent = state.visibleDeck.length===0
+      ? (state.lang==='nl' ? 'Selecteer minstens één categorie.' : 'Select at least one category.')
+      : (state.lang==='nl' ? 'Trek een kaart om te beginnen.'   : 'Draw a card to begin.');
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
     if (numEl)    numEl.textContent = '— — —';
-    if (nextBtn)  nextBtn.textContent = lang==='nl' ? 'Trek kaart' : 'Draw Card';
+    if (nextBtn)  nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
     // Update party display too
     updatePartyDisplay(null);
     return;
@@ -2938,8 +2941,8 @@ function setCardDisplay(card) {
     lvlEl.style.color = color;
   }
   if (qEl)   qEl.textContent = translateQ(card);
-  if (numEl) numEl.textContent = `${currentIndex + 1} / ${visibleDeck.length}`;
-  if (nextBtn) nextBtn.textContent = lang==='nl' ? 'Volgende kaart' : 'Next Card';
+  if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
+  if (nextBtn) nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
   // Update party display
   updatePartyDisplay(card);
 };
@@ -2965,7 +2968,7 @@ function flipToCard(card) {
     const qEl2 = document.getElementById('card-question');
     if (qEl2) qEl2.textContent = translateQ(card);
     const numEl = document.getElementById('card-number');
-    if (numEl) numEl.textContent = `${currentIndex+1} / ${visibleDeck.length}`;
+    if (numEl) numEl.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
     /* let updateDrawMore own the button label — hard-coding "Next Card" here
        ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
     updateDrawMore();
@@ -3000,44 +3003,44 @@ function updatePartyDisplay(card) {
   if (pa) { pa.style.background=color; pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
   if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=color; }
   if (pq) { pq.style.opacity='0'; setTimeout(()=>{ pq.textContent=translateQ(card); pq.style.opacity='1'; },120); }
-  if (pn) pn.textContent = `${currentIndex+1} / ${visibleDeck.length}`;
+  if (pn) pn.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
 }
 
 // ── Override toggleCategories for new DOM ──
 function toggleCategories() {
-  categoriesCollapsed = !categoriesCollapsed;
+  state.categoriesCollapsed = !state.categoriesCollapsed;
   const wrap  = document.getElementById('toggles-wrap');
   const arrow = document.getElementById('catArrow');
   const lbl   = document.getElementById('catLabel');
-  if (wrap)  wrap.classList.toggle('open', !categoriesCollapsed);
-  if (arrow) arrow.textContent = categoriesCollapsed ? '▶' : '▼';
-  if (lbl)   { lbl.classList.toggle('open', !categoriesCollapsed); lbl.blur(); }
+  if (wrap)  wrap.classList.toggle('open', !state.categoriesCollapsed);
+  if (arrow) arrow.textContent = state.categoriesCollapsed ? '▶' : '▼';
+  if (lbl)   { lbl.classList.toggle('open', !state.categoriesCollapsed); lbl.blur(); }
 };
 
 // ── Override updateDeckInfo ──
 function updateDeckInfo() {
-  const shown = visibleDeck.length, total = fullDeck.length;
+  const shown = state.visibleDeck.length, total = state.fullDeck.length;
   const el = document.getElementById('deckCount');
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
 
 // ── Override enterParty / exitParty for new overlay ──
 function enterParty() {
-  partyMode = true;
+  state.partyMode = true;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.add('open');
-  if (currentIndex < 0 && visibleDeck.length > 0) {
-    currentIndex = 0;
-    setCardDisplay(visibleDeck[0]);
+  if (state.currentIndex < 0 && state.visibleDeck.length > 0) {
+    state.currentIndex = 0;
+    setCardDisplay(state.visibleDeck[0]);
     renderProgress();
     updateStarUI();
-  } else if (currentIndex >= 0) {
-    updatePartyDisplay(visibleDeck[currentIndex]);
+  } else if (state.currentIndex >= 0) {
+    updatePartyDisplay(state.visibleDeck[state.currentIndex]);
   }
 };
 
 function exitParty() {
-  partyMode = false;
+  state.partyMode = false;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.remove('open');
 };
@@ -3063,12 +3066,12 @@ function closeAllDrawers() {
   const newBtn = btn.cloneNode(true);
   btn.parentNode.replaceChild(newBtn, btn);
   newBtn.addEventListener('click', () => {
-    safeMode = !safeMode;
-    if (safeMode) {
-      SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
-      spiceMode = false;
+    state.safeMode = !state.safeMode;
+    if (state.safeMode) {
+      SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
+      state.spiceMode = false;
     } else {
-      spiceMode = true;
+      state.spiceMode = true;
     }
     updateAfterDarkBtn();
     applyToggleUI();
@@ -3078,16 +3081,16 @@ function closeAllDrawers() {
 
 // ── Language: single switch for toggle row, menu row, and session restore ──
 function setLang(l, skipRefresh) {
-  lang = l;
+  state.lang = l;
   document.documentElement.lang = l;
   const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
   const inlineBtn = document.getElementById('btn-lang-inline'); if (inlineBtn) inlineBtn.textContent = l.toUpperCase();
   const sub = document.getElementById('dLangSub');
   if (sub) sub.textContent = l === 'en' ? 'Switch to Nederlands' : 'Schakel naar English';
-  if (!skipRefresh) setCardDisplay(currentIndex >= 0 && currentIndex < visibleDeck.length ? visibleDeck[currentIndex] : null);
+  if (!skipRefresh) setCardDisplay(state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length ? state.visibleDeck[state.currentIndex] : null);
 }
-document.getElementById('d-lang').addEventListener('click', () => setLang(lang === 'en' ? 'nl' : 'en'));
-const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLangBtn) inlineLangBtn.addEventListener('click', () => setLang(lang === 'en' ? 'nl' : 'en'));
+document.getElementById('d-lang').addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
+const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLangBtn) inlineLangBtn.addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
 
 // ── Category label toggle ──
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
@@ -3109,8 +3112,8 @@ document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 document.getElementById('d-log').addEventListener('click',()=>{ closeAllDrawers(); renderLog(); openDrawer('logDrawer'); });
 document.getElementById('closeLog').addEventListener('click',()=>closeAllDrawers());
 document.getElementById('btnExport').addEventListener('click', () => {
-  if (!sessionLog.length) return;
-  const lines = sessionLog.map((c,i)=>`${i+1}. [${LEVEL_LABELS[c.level]||c.level}]\n   ${c.question}`).join('\n\n');
+  if (!state.sessionLog.length) return;
+  const lines = state.sessionLog.map((c,i)=>`${i+1}. [${LEVEL_LABELS[c.level]||c.level}]\n   ${c.question}`).join('\n\n');
   const blob = new Blob([`Between Us — ${new Date().toLocaleDateString()}\n${'─'.repeat(40)}\n\n${lines}`],{type:'text/plain'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
 });
@@ -3122,12 +3125,12 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
     const imported=[]; text.split('\n').forEach((line,i,arr)=>{
       if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(qMap[q.toLowerCase()]||{question:q,level:'deep'});}
     });
-    if(imported.length){sessionLog=imported;loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('logDrawer');}
+    if(imported.length){state.sessionLog=imported;state.loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('logDrawer');}
   }; inp.click();
 });
 
 document.getElementById('btnClearLog').addEventListener('click', () => {
-  sessionLog = []; loggedQuestions.clear(); renderLog();
+  state.sessionLog = []; state.loggedQuestions.clear(); renderLog();
 });
 
 // ── Favourites ──
@@ -3143,14 +3146,14 @@ document.getElementById('d-save').addEventListener('click',()=>{
 });
 // saveSession — single definition (updates the save-button label)
 function saveSession() {
-  if (!visibleDeck.length) return;
+  if (!state.visibleDeck.length) return;
   const data = {
-    deckQuestions: visibleDeck.map(c=>c.question),
-    fullDeckQuestions: fullDeck.map(c=>c.question),
-    position: currentIndex, toggles:[...activeToggles],
-    safeMode, spiceMode, randomMode, cardLimit, lang,
-    activePreset,
-    sessionLog: window.LOG_PERSIST ? sessionLog : undefined,
+    deckQuestions: state.visibleDeck.map(c=>c.question),
+    fullDeckQuestions: state.fullDeck.map(c=>c.question),
+    position: state.currentIndex, toggles:[...state.activeToggles],
+    safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit, lang: state.lang,
+    activePreset: state.activePreset,
+    sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
     savedAt: new Date().toISOString(),
   };
   try {
@@ -3173,33 +3176,33 @@ function continueSession() {
   try {
     const v = localStorage.getItem('bu-session'); if(!v) return;
     const data = JSON.parse(v);
-    safeMode=data.safeMode||false; spiceMode=data.spiceMode||false;
-    randomMode=data.randomMode||'wild'; cardLimit=data.cardLimit;
-    shuffleModeIdx=SHUFFLE_MODES.indexOf(randomMode); if(shuffleModeIdx<0) shuffleModeIdx=7;
+    state.safeMode=data.safeMode||false; state.spiceMode=data.spiceMode||false;
+    state.randomMode=data.randomMode||'wild'; state.cardLimit=data.cardLimit;
+    shuffleModeIdx=SHUFFLE_MODES.indexOf(state.randomMode); if(shuffleModeIdx<0) shuffleModeIdx=7;
     updateShuffleDisplay();
-    activeToggles=new Set(data.toggles||[]);
-    if (MASTER_SAFE) SAFE_BLOCKED_LEVELS.forEach(l => activeToggles.delete(l));
+    state.activeToggles=new Set(data.toggles||[]);
+    if (MASTER_SAFE) SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
     // restore preset highlight
-    activePreset = data.activePreset || '';
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === activePreset));
+    state.activePreset = data.activePreset || '';
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.activePreset));
     // restore language (also updates lang UI + html lang attribute)
     setLang(data.lang || 'en', true);
     // restore session log
     if (window.LOG_PERSIST && Array.isArray(data.sessionLog)) {
-      sessionLog = data.sessionLog;
-      loggedQuestions = new Set(sessionLog.map(c => c.question));
+      state.sessionLog = data.sessionLog;
+      state.loggedQuestions = new Set(state.sessionLog.map(c => c.question));
       renderLog();
     }
     // sync spice glyph
     if (window.syncSpiceGlyph) window.syncSpiceGlyph();
     updateAfterDarkBtn(); applyToggleUI();
     const qMap={}; ALL_CARDS.forEach(c=>{qMap[c.question]=c;});
-    visibleDeck=(data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
-    fullDeck=(data.fullDeckQuestions||data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
-    currentIndex=data.position??-1;
-    document.querySelectorAll('.limit-btn').forEach(b=>b.classList.toggle('active',b.dataset.limit===(cardLimit===null?'all':String(cardLimit))));
+    state.visibleDeck=(data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
+    state.fullDeck=(data.fullDeckQuestions||data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
+    state.currentIndex=data.position??-1;
+    document.querySelectorAll('.limit-btn').forEach(b=>b.classList.toggle('active',b.dataset.limit===(state.cardLimit===null?'all':String(state.cardLimit))));
     updateDeckInfo(); updateDrawMore(); renderProgress();
-    setCardDisplay(currentIndex>=0 ? visibleDeck[currentIndex] : null);
+    setCardDisplay(state.currentIndex>=0 ? state.visibleDeck[state.currentIndex] : null);
     const lbl=document.getElementById('saveBtnLabel'); if(lbl) lbl.textContent='Save session';
     saveMode='';
     renderShell();
@@ -3228,12 +3231,12 @@ function updateAfterDarkBtn() {
     });
     return;
   }
-  btn.classList.toggle('on',!safeMode);
+  btn.classList.toggle('on',!state.safeMode);
   SAFE_BLOCKED_LEVELS.forEach(lvl=>{
     const b=document.querySelector(`.toggle-btn[data-level="${lvl}"]`);
     if(!b) return;
     if (b.style.display === 'none') return;   // not part of this mode — stays hidden, not just dimmed
-    b.classList.toggle('hard-locked', safeMode);
+    b.classList.toggle('hard-locked', state.safeMode);
   });
 };
 
@@ -3257,15 +3260,15 @@ applyToggleUI = function() {
   if (btn) {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      partyMode = true;
+      state.partyMode = true;
       document.getElementById('partyOverlay').classList.add('open');
-      if (currentIndex < 0 && visibleDeck.length > 0) {
-        currentIndex = 0;
-        setCardDisplay(visibleDeck[0]);
+      if (state.currentIndex < 0 && state.visibleDeck.length > 0) {
+        state.currentIndex = 0;
+        setCardDisplay(state.visibleDeck[0]);
         renderProgress();
         updateStarUI();
-      } else if (currentIndex >= 0 && visibleDeck[currentIndex]) {
-        updatePartyDisplay(visibleDeck[currentIndex]);
+      } else if (state.currentIndex >= 0 && state.visibleDeck[state.currentIndex]) {
+        updatePartyDisplay(state.visibleDeck[state.currentIndex]);
       }
     });
   }
@@ -3276,7 +3279,7 @@ applyToggleUI = function() {
   const exitBtn = newOv.querySelector('#partyExit');
   if (exitBtn) exitBtn.addEventListener('click', function(e) {
     e.stopPropagation();
-    partyMode = false;
+    state.partyMode = false;
     newOv.classList.remove('open');
   });
 
@@ -3329,7 +3332,7 @@ document.addEventListener('keydown',e=>{
   if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;   // don't hijack typing
   if(document.querySelector('[id$="Drawer"].open')) return;               // drawers own the keys
   if(typeof pickMode!=='undefined' && pickMode) return;
-  if(partyMode){
+  if(state.partyMode){
     if(e.key==='Escape')     exitParty();
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); updateDrawMore(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
@@ -3367,13 +3370,13 @@ function renderShell() {
   const total = [...document.querySelectorAll('.toggle-btn')]
     .filter(b => b.dataset.level && b.dataset.level !== 'backup' && b.style.display !== 'none').length;
   const vCats = document.getElementById('valCats');
-  if (vCats) vCats.textContent = activeToggles.size + '/' + total;
+  if (vCats) vCats.textContent = state.activeToggles.size + '/' + total;
   // Shuffle token: active mode
   const vOrder = document.getElementById('valOrder');
-  if (vOrder && randomMode) vOrder.textContent = randomMode.charAt(0).toUpperCase() + randomMode.slice(1);
+  if (vOrder && state.randomMode) vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
   // Cards token: active per-round limit
   const vHand = document.getElementById('valHand');
-  if (vHand) vHand.textContent = (cardLimit == null) ? 'All' : String(cardLimit);
+  if (vHand) vHand.textContent = (state.cardLimit == null) ? 'All' : String(state.cardLimit);
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); pp.textContent = pt.textContent; }
@@ -3384,7 +3387,7 @@ function renderShell() {
 updateShuffleDisplay();
 
 // Apply After Dark state
-document.getElementById('afterDarkToggle').classList.toggle('on',!safeMode);
+document.getElementById('afterDarkToggle').classList.toggle('on',!state.safeMode);
 
 // Animate UI in
 setTimeout(()=>document.getElementById('card-wrap').classList.add('in'),60);
@@ -3423,9 +3426,9 @@ function updateDrawMore() {
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
 
-  const remaining = fullDeck.length - visibleDeck.length;
-  const atSummary  = visibleDeck.length > 0 && currentIndex >= visibleDeck.length;      // end-of-draw screen
-  const atLastCard = visibleDeck.length > 0 && currentIndex === visibleDeck.length - 1; // last card of the hand
+  const remaining = state.fullDeck.length - state.visibleDeck.length;
+  const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
+  const atLastCard = state.visibleDeck.length > 0 && state.currentIndex === state.visibleDeck.length - 1; // last card of the hand
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
@@ -3434,16 +3437,16 @@ function updateDrawMore() {
     // pile 10 extra cards onto the finished hand instead of dealing a new one).
     nextBtn.classList.remove('draw-mode');
     nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
-    nextBtn.textContent = lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
+    nextBtn.textContent = state.lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
   } else if (atLastCard && remaining > 0) {
     // On the last card you can still extend the current hand by holding.
     nextBtn.classList.remove('hold-mode');
     nextBtn.classList.add('draw-mode');
-    nextBtn.textContent = lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
+    nextBtn.textContent = state.lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
   } else {
     nextBtn.classList.remove('draw-mode');
     nextBtn.classList.remove('hold-mode');
-    nextBtn.textContent = currentIndex >= 0 ? (lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (lang === 'nl' ? 'Trek kaart' : 'Draw Card');
+    nextBtn.textContent = state.currentIndex >= 0 ? (state.lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (state.lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
 };
 
@@ -3467,15 +3470,15 @@ window._skipNextCard = false; // flag to block nextCard after skip
 // skippedCards declared at top with state variables
 
 function skipCard() {
-  if (currentIndex < 0 || currentIndex >= visibleDeck.length || visibleDeck.length === 0) return;
+  if (state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0) return;
   window._skipNextCard = true;
   setTimeout(() => { window._skipNextCard = false; }, 600);
   // Remove from visibleDeck only — fullDeck stays intact for new rounds
-  const removed = visibleDeck.splice(currentIndex, 1)[0];
-  skippedCards.add(removed.question);
+  const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
+  state.skippedCards.add(removed.question);
   // Show next card (or skipped-all state)
-  if (visibleDeck.length === 0) {
-    currentIndex = visibleDeck.length; // sentinel: past end
+  if (state.visibleDeck.length === 0) {
+    state.currentIndex = state.visibleDeck.length; // sentinel: past end
     const el = document.getElementById('card');
     el.classList.add('flipping');
     setTimeout(() => {
@@ -3488,8 +3491,8 @@ function skipCard() {
       updateDrawMore();
     }, 175);
   } else {
-    if (currentIndex >= visibleDeck.length) currentIndex = visibleDeck.length - 1;
-    flipToCard(visibleDeck[currentIndex]);
+    if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
+    flipToCard(state.visibleDeck[state.currentIndex]);
   }
   updateDeckInfo(); renderProgress(); updateDrawMore();
 }
@@ -3508,7 +3511,7 @@ function skipCard() {
     startY = e.touches[0].clientY;
   }, {passive:true});
   cardEl.addEventListener('touchend', e => {
-    if (currentIndex < 0 || currentIndex >= visibleDeck.length) return;  // never on the end/summary card
+    if (state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length) return;  // never on the end/summary card
     const dy = e.changedTouches[0].clientY - startY;
     const dx = e.changedTouches[0].clientX - startX;
     if (dy > 65 && Math.abs(dy) > Math.abs(dx) * 1.5) skipCard();
@@ -3521,11 +3524,11 @@ function skipCard() {
 function updateArcIndicator() {
   const ind = document.getElementById('arcIndicator');
   if (!ind) return;
-  const isArc = randomMode === 'arc';
-  ind.classList.toggle('visible', isArc && visibleDeck.length > 0 && currentIndex >= 0);
-  if (!isArc || visibleDeck.length === 0 || currentIndex < 0) return;
+  const isArc = state.randomMode === 'arc';
+  ind.classList.toggle('visible', isArc && state.visibleDeck.length > 0 && state.currentIndex >= 0);
+  if (!isArc || state.visibleDeck.length === 0 || state.currentIndex < 0) return;
   // 4 phases: 0–25%, 25–50%, 50–75%, 75–100%
-  const pct = (currentIndex + 1) / visibleDeck.length;
+  const pct = (state.currentIndex + 1) / state.visibleDeck.length;
   const phase = pct <= .25 ? 1 : pct <= .5 ? 2 : pct <= .75 ? 3 : 4;
   for (let i = 1; i <= 4; i++) {
     const d = document.getElementById('arc-d' + i);
@@ -3540,17 +3543,17 @@ function updateArcIndicator() {
 // FEATURE 5: SESSION SUMMARY
 // ═══════════════════════════════════════════════════════════
 function showSessionSummary() {
-  const isArc = randomMode === 'arc';
+  const isArc = state.randomMode === 'arc';
 
   // Build arc progression — unique categories of THIS DRAW, in order
   const seen = new Set(), cats = [];
-  visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
+  state.visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
   const arcLine = cats.map(l => LEVEL_LABELS[l] || l).join(' · ');
-  const drawCount = visibleDeck.length;
+  const drawCount = state.visibleDeck.length;
 
   // Starred cards from this session
-  const logQ = new Set(sessionLog.map(c => c.question));
-  const starred = (favourites || []).filter(c => logQ.has(c.question)).slice(0, 3);
+  const logQ = new Set(state.sessionLog.map(c => c.question));
+  const starred = (state.favourites || []).filter(c => logQ.has(c.question)).slice(0, 3);
 
   // ── Update the card face ──
   const accent = document.getElementById('c-accent');
@@ -3565,8 +3568,8 @@ function showSessionSummary() {
   if (lvlEl) {
     lvlEl.classList.remove('in');
     lvlEl.textContent = isArc
-      ? (lang === 'nl' ? 'Arc voltooid' : 'Arc complete')
-      : (lang === 'nl' ? 'Ronde afgerond' : 'Draw complete');
+      ? (state.lang === 'nl' ? 'Arc voltooid' : 'Arc complete')
+      : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete');
     lvlEl.style.color = 'var(--gold-l)';
     void lvlEl.offsetWidth;
     lvlEl.classList.add('in');
@@ -3577,8 +3580,8 @@ function showSessionSummary() {
     qEl.classList.remove('in');
     let html = `<div class="sic-wrap">`;
     if (arcLine) {
-      html += `<div class="sic-label">${isArc ? 'You went' : 'You covered'} — ${drawCount} ${lang==='nl' ? 'kaarten' : 'cards'}</div>`;
-      html += drawRoundTrace(visibleDeck);
+      html += `<div class="sic-label">${isArc ? 'You went' : 'You covered'} — ${drawCount} ${state.lang==='nl' ? 'kaarten' : 'cards'}</div>`;
+      html += drawRoundTrace(state.visibleDeck);
       html += `<div class="sic-arc">${arcLine}</div>`;
     }
     if (starred.length > 0) {
@@ -3586,8 +3589,8 @@ function showSessionSummary() {
       starred.forEach(c => { html += `<div class="sic-star">&#9733;&nbsp; ${esc(translateQ(c))}</div>`; });
       html += `</div>`;
     }
-    if (fullDeck.length - visibleDeck.length <= 0) {
-      html += `<div class="sic-note">${lang==='nl'
+    if (state.fullDeck.length - state.visibleDeck.length <= 0) {
+      html += `<div class="sic-note">${state.lang==='nl'
         ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of houd vast om opnieuw te schudden.'
         : 'That was the whole deck for this selection. Add categories to keep going — or hold to reshuffle it.'}</div>`;
     }
@@ -3612,7 +3615,7 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const HOLD = 550;
   let timer = null;
-  function atEnd(){ return currentIndex >= visibleDeck.length && visibleDeck.length > 0; }
+  function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
   function hint(on){
     const el = document.getElementById('endHint');
     if (el) el.classList.toggle('visible', !!on);
@@ -3665,11 +3668,11 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const btn = document.getElementById('spiceGlyphBtn');
   if (!btn) return;
-  const update = () => btn.classList.toggle('on', spiceMode);
+  const update = () => btn.classList.toggle('on', state.spiceMode);
   window.syncSpiceGlyph = update;
   update();
   btn.addEventListener('click', () => {
-    spiceMode = !spiceMode;
+    state.spiceMode = !state.spiceMode;
     update();
     initDeck();
   });
@@ -3686,7 +3689,7 @@ showSessionSummary = function() {
   const arcEl = qEl.querySelector('.sic-arc');
   if (!arcEl) return;
   const seen = new Set(), cats = [];
-  visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
+  state.visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
   arcEl.innerHTML = cats.map(l =>
     `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
   ).join('<span style="opacity:.35"> · </span>');
@@ -3705,10 +3708,10 @@ showSessionSummary = function() {
 function nextCard() {
   // 1. Skip block
   if (window._skipNextCard) { window._skipNextCard = false; return; }
-  if (visibleDeck.length === 0 && skippedCards.size > 0) { initDeck(); _nextCardBase(); return; }  // all skipped: reshuffle straight into a card
-  if (visibleDeck.length === 0) { _nextCardBase(); return; }
+  if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) { initDeck(); _nextCardBase(); return; }  // all skipped: reshuffle straight into a card
+  if (state.visibleDeck.length === 0) { _nextCardBase(); return; }
   // Guard: already past end (sentinel) — tap offers new round
-  if (currentIndex >= visibleDeck.length) {
+  if (state.currentIndex >= state.visibleDeck.length) {
     /* The end of a draw is a deliberate stop: only a completed hold moves on,
        so tapping through a session can never rush past the summary unseen. */
     if (!window._endHoldOK) { _nudgeEndHold(); return; }
@@ -3720,43 +3723,43 @@ function nextCard() {
 
   // 2. Pick-3 intercept (works in fullscreen too)
   {
-    const picker = document.getElementById(partyMode ? 'partyPicker' : 'cardPicker');
+    const picker = document.getElementById(state.partyMode ? 'partyPicker' : 'cardPicker');
     if (picker && picker.classList.contains('open')) return;
     if (pickMode) {
-      const startIdx = currentIndex + 1;
-      if (startIdx < visibleDeck.length) {
-        const count = Math.min(3, visibleDeck.length - startIdx);
-        if (count >= 2) { openPicker(visibleDeck.slice(startIdx, startIdx + count)); return; }
+      const startIdx = state.currentIndex + 1;
+      if (startIdx < state.visibleDeck.length) {
+        const count = Math.min(3, state.visibleDeck.length - startIdx);
+        if (count >= 2) { openPicker(state.visibleDeck.slice(startIdx, startIdx + count)); return; }
       }
     }
   }
 
   // 3. Was at end before advancing?
-  const wasAtEnd = currentIndex >= visibleDeck.length - 1;
+  const wasAtEnd = state.currentIndex >= state.visibleDeck.length - 1;
 
   // 4. Advance
   _nextCardBase();
 
   // 5. Post-advance hooks
   if (wasAtEnd) {
-    if (partyMode) {
+    if (state.partyMode) {
       // Party summary
       setTimeout(() => {
-        const isArc = randomMode === 'arc';
+        const isArc = state.randomMode === 'arc';
         const pl = document.getElementById('party-level');
         const pq = document.getElementById('party-question');
         const pn = document.getElementById('party-number');
         const pa = document.getElementById('party-accent');
         if (pa) pa.style.background = 'var(--gold-l)';
-        if (pl) { pl.textContent = isArc ? (lang==='nl'?'Arc voltooid':'Arc complete') : (lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
+        if (pl) { pl.textContent = isArc ? (state.lang==='nl'?'Arc voltooid':'Arc complete') : (state.lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
         if (pn) pn.textContent = '— end —';
         if (pq) {
           const seen2 = new Set(), cats2 = [];
-          sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
+          state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
           const arcHtml = cats2.map(l =>
             `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
           ).join('<span style="opacity:.35"> · </span>');
-          pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
+          pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(state.visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
         }
       }, 250);
     } else {
@@ -3770,15 +3773,15 @@ function nextCard() {
 // AUTO-SAVE — called from flipToCard on every card advance
 // ═══════════════════════════════════════════════════════════
 function autoSaveSession() {
-  if (!visibleDeck.length) return;
+  if (!state.visibleDeck.length) return;
   try {
     const data = {
-      deckQuestions: visibleDeck.map(c=>c.question),
-      fullDeckQuestions: fullDeck.map(c=>c.question),
-      position: currentIndex, toggles:[...activeToggles],
-      safeMode, spiceMode, randomMode, cardLimit, lang,
-      activePreset,
-      sessionLog: window.LOG_PERSIST ? sessionLog : undefined,
+      deckQuestions: state.visibleDeck.map(c=>c.question),
+      fullDeckQuestions: state.fullDeck.map(c=>c.question),
+      position: state.currentIndex, toggles:[...state.activeToggles],
+      safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit, lang: state.lang,
+      activePreset: state.activePreset,
+      sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
       savedAt: new Date().toISOString(),
     };
     localStorage.setItem('bu-session', JSON.stringify(data));
@@ -3795,9 +3798,9 @@ function autoSaveSession() {
 
   const origSkipCard = skipCard;
   skipCard = function() {
-    if (currentIndex < 0 || currentIndex >= visibleDeck.length || visibleDeck.length === 0) return;
-    _undoCard  = visibleDeck[currentIndex];
-    _undoIndex = currentIndex;
+    if (state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0) return;
+    _undoCard  = state.visibleDeck[state.currentIndex];
+    _undoIndex = state.currentIndex;
     origSkipCard();
     // Show undo button
     undoBtn.classList.add('visible');
@@ -3814,11 +3817,11 @@ function autoSaveSession() {
     window._skipNextCard = false;   // don't swallow the next tap after an undo
     undoBtn.classList.remove('visible');
     // Re-insert card at original position and remove from skipped set
-    skippedCards.delete(_undoCard.question);
-    const insertAt = Math.min(_undoIndex, visibleDeck.length);
-    visibleDeck.splice(insertAt, 0, _undoCard);
-    currentIndex = insertAt;
-    flipToCard(visibleDeck[currentIndex]);
+    state.skippedCards.delete(_undoCard.question);
+    const insertAt = Math.min(_undoIndex, state.visibleDeck.length);
+    state.visibleDeck.splice(insertAt, 0, _undoCard);
+    state.currentIndex = insertAt;
+    flipToCard(state.visibleDeck[state.currentIndex]);
     updateStarUI();
     updateDeckInfo(); renderProgress(); updateDrawMore();
     _undoCard = null; _undoIndex = null;
@@ -3917,8 +3920,8 @@ const CATEGORY_DESCRIPTIONS = {
   const impBtn = document.getElementById('customImportBtn');
   if (expBtn) {
     expBtn.addEventListener('click', () => {
-      if (!customCards.length) return;
-      const blob = new Blob([JSON.stringify(customCards, null, 2)], {type:'application/json'});
+      if (!state.customCards.length) return;
+      const blob = new Blob([JSON.stringify(state.customCards, null, 2)], {type:'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'between-us-custom-cards.json';
@@ -3937,13 +3940,13 @@ const CATEGORY_DESCRIPTIONS = {
           if (!Array.isArray(imported)) return;
           imported.forEach(c => {
             if (!c.question || !c.level) return;
-            if (customCards.find(x => x.question === c.question)) return; // skip dupes
+            if (state.customCards.find(x => x.question === c.question)) return; // skip dupes
             const card = { level: c.level, question: c.question, custom: true };
             if (c.nl) card.nl = c.nl;
-            customCards.push(card);
+            state.customCards.push(card);
             ALL_CARDS.push(card);
           });
-          localStorage.setItem('bu-custom-cards', JSON.stringify(customCards));
+          localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards));
           renderCustomList();
           updateCatCounts();
           initDeck();
@@ -3971,7 +3974,7 @@ const CATEGORY_DESCRIPTIONS = {
 let pickMode = false;
 
 function openPicker(options) {
-  const inParty = typeof partyMode !== 'undefined' && partyMode;
+  const inParty = typeof state.partyMode !== 'undefined' && state.partyMode;
   const picker = document.getElementById(inParty ? 'partyPicker' : 'cardPicker');
   const optsEl = document.getElementById(inParty ? 'partyPickerOptions' : 'pickerOptions');
   if (!picker || !optsEl) return;
@@ -4004,17 +4007,17 @@ function choosePick(chosen, allOptions) {
   // Remove unchosen cards from both decks silently
   allOptions.forEach(c => {
     if (c.question === chosen.question) return;
-    const vi = visibleDeck.findIndex(x => x.question === c.question);
-    if (vi >= 0) visibleDeck.splice(vi, 1);
-    const fi = fullDeck.findIndex(x => x.question === c.question);
-    if (fi >= 0) fullDeck.splice(fi, 1);
+    const vi = state.visibleDeck.findIndex(x => x.question === c.question);
+    if (vi >= 0) state.visibleDeck.splice(vi, 1);
+    const fi = state.fullDeck.findIndex(x => x.question === c.question);
+    if (fi >= 0) state.fullDeck.splice(fi, 1);
   });
   // Set currentIndex to the chosen card
-  const newIdx = visibleDeck.findIndex(x => x.question === chosen.question);
-  if (newIdx >= 0) currentIndex = newIdx;
+  const newIdx = state.visibleDeck.findIndex(x => x.question === chosen.question);
+  if (newIdx >= 0) state.currentIndex = newIdx;
   closePicker();
   flipToCard(chosen);
-  if (typeof partyMode !== 'undefined' && partyMode && typeof updatePartyDisplay === 'function') updatePartyDisplay(chosen);
+  if (typeof state.partyMode !== 'undefined' && state.partyMode && typeof updatePartyDisplay === 'function') updatePartyDisplay(chosen);
   addToLog(chosen);
   updateStarUI();
   updateDeckInfo();
@@ -4038,9 +4041,9 @@ function choosePick(chosen, allOptions) {
 
     if (pickMode) {
       // Remember current limit and switch to All so there are always enough cards to pick from
-      prevLimit = cardLimit;
-      if (cardLimit !== null) {
-        cardLimit = null;
+      prevLimit = state.cardLimit;
+      if (state.cardLimit !== null) {
+        state.cardLimit = null;
         document.querySelectorAll('.limit-btn').forEach(b =>
           b.classList.toggle('active', b.dataset.limit === 'all'));
         initDeck();
@@ -4049,9 +4052,9 @@ function choosePick(chosen, allOptions) {
       // Restore previous limit
       closePicker();
       if (prevLimit !== null) {
-        cardLimit = prevLimit;
+        state.cardLimit = prevLimit;
         document.querySelectorAll('.limit-btn').forEach(b =>
-          b.classList.toggle('active', String(b.dataset.limit) === String(cardLimit)));
+          b.classList.toggle('active', String(b.dataset.limit) === String(state.cardLimit)));
         initDeck();
       }
       prevLimit = null;
@@ -4076,7 +4079,7 @@ function updateCatCounts() {
 updateCatCounts();
 
 // Apply initial language to all language UI (incl. html lang attribute)
-setLang(lang, true);
+setLang(state.lang, true);
 
 // The early checkSavedSession() call ran before the override existed — run the real one
 checkSavedSession();
@@ -4158,12 +4161,12 @@ applyToggleUI();
   /* AD on = those categories actually join the deck (abyss stays opt-in) */
   $('afterDarkToggle').addEventListener('click',()=>{ setTimeout(()=>{
     if(!$('afterDarkToggle').classList.contains('on')) return;
-    const p=PRESETS[activePreset];
+    const p=PRESETS[state.activePreset];
     SAFE_BLOCKED_LEVELS.forEach(l=>{
       if(OPT_IN_ONLY.includes(l)) return;
       if(!DECK_LEVELS.has(l)) return;
       if(p && !(p.on.includes(l)||p.available.includes(l))) return;
-      activeToggles.add(l);
+      state.activeToggles.add(l);
     });
     applyToggleUI(); initDeck();
   },0); });
@@ -4173,7 +4176,7 @@ applyToggleUI();
   function buildOrderList(){
     const c=$('orderList');
     c.innerHTML=SHUFFLE_MODES.map(m=>
-      `<button class="smp-row ${m===randomMode?'active':''}" data-mode="${m}">
+      `<button class="smp-row ${m===state.randomMode?'active':''}" data-mode="${m}">
          ${typeof shuffleShapeSVG==='function'?shuffleShapeSVG(m):''}
          <span class="smp-txt">
            <span class="smp-name">${m}</span>
@@ -4183,8 +4186,8 @@ applyToggleUI();
   }
   $('orderList').addEventListener('click',e=>{
     const row=e.target.closest('.smp-row'); if(!row) return;
-    randomMode=row.dataset.mode;
-    shuffleModeIdx=SHUFFLE_MODES.indexOf(randomMode);
+    state.randomMode=row.dataset.mode;
+    shuffleModeIdx=SHUFFLE_MODES.indexOf(state.randomMode);
     updateShuffleDisplay(); initDeck(); updateDeckInfo(); updateDrawMore();
     buildOrderList();
     setTimeout(closeTrays,220);
@@ -4203,7 +4206,7 @@ applyToggleUI();
       toks.forEach(([t2,tr2])=>{$(t2).classList.remove('open');$(tr2).classList.remove('open');});
       if(!wasOpen){
         if(tr==='trayOrder') buildOrderList();
-        if(tr==='trayHand') $('handCap').textContent=(typeof lang!=='undefined'&&lang==='nl')?'Hoeveel kaarten per ronde':'How many cards per round';
+        if(tr==='trayHand') $('handCap').textContent=(typeof state.lang!=='undefined'&&state.lang==='nl')?'Hoeveel kaarten per ronde':'How many cards per round';
         $(t).classList.add('open');$(tr).classList.add('open');
       }
     });

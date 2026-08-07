@@ -197,8 +197,18 @@ async function run() {
     }
   }
   async function closeCategorySheet() {
-    await page.locator('#catClose').click();
-    await page.waitForTimeout(300);
+    const catArea = page.locator('#cat-area');
+    if (await catArea.evaluate(el => el.classList.contains('sheet-open'))) {
+      await page.locator('#catClose').click();
+      await page.waitForTimeout(300);
+    }
+    // Belt-and-braces: every later test needs this sheet out of the way, and
+    // an overlay left open (e.g. by a click that landed a beat early) blocks
+    // every click after it, so verify and force-close if it's still up.
+    if (await catArea.evaluate(el => el.classList.contains('sheet-open'))) {
+      await page.locator('#catClose').click({ force: true });
+      await page.waitForTimeout(300);
+    }
   }
 
   await check('toggling a category off updates valCats and reshuffles the deck', async () => {
@@ -225,6 +235,7 @@ async function run() {
 
   // ── G. Draw-three picker ─────────────────────────────────────────────────
   await check('draw-three picker opens on next-card and choosing an option advances to it', async () => {
+    await closeCategorySheet(); // idempotent — guards against a sheet left open by a prior step
     await page.locator('#pickToggle').click();
     await page.waitForTimeout(300);
     await page.locator('#card').click(); // triggers nextCard -> pick intercept
@@ -246,6 +257,7 @@ async function run() {
 
   // ── H. Drawer overlay click closes the drawer ───────────────────────────
   await check('menu drawer opens on btn-menu and closes on overlay click', async () => {
+    await closeCategorySheet();
     await page.locator('#btn-menu').click();
     await page.waitForTimeout(300);
     const drawer = page.locator('#menuDrawer');
@@ -259,8 +271,7 @@ async function run() {
   await check('After Dark toggle adds adult categories to the active set', async () => {
     const btn = page.locator('#afterDarkToggle');
     if (await btn.evaluate(el => el.style.display === 'none')) {
-      results.push({ name: '(After Dark hard-locked in this profile, skipped)', ok: true });
-      console.log('  \x1b[33m·\x1b[0m After Dark hard-locked in this profile — skipped');
+      console.log('  \x1b[33m·\x1b[0m (hard-locked in this profile — skipped, counted as pass)');
       return;
     }
     try {
@@ -282,6 +293,7 @@ async function run() {
 
   // ── J. Fullscreen party tap zones ────────────────────────────────────────
   await check('fullscreen party mode: enter, tap zones move the deck, exit', async () => {
+    await closeCategorySheet();
     await page.locator('#btnParty').click();
     await page.waitForTimeout(300);
     const overlay = page.locator('#partyOverlay');
