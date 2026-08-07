@@ -31,6 +31,10 @@
       SHOW_BACKUP:      true,    // true → shows the hidden Backup overflow category
       LOG_PERSIST:      true,    // true → the session log survives a page reload
       COLBERT_STRICT:   true,    // true → Colbert plays its canonical 15, in order
+      // what "Draw" plays, and what the app opens on. mode 'chapters' unions the
+      // listed chapters; mode 'all' mirrors the All button (everything except
+      // the opt-in-only lists and Abyss). intensity/focus are 0-100, 50=balanced.
+      DEFAULT_SELECTION: { mode:'chapters', chapters:['findout','deeper','aboutus'], intensity:50, focus:50 },
     },
 
     // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.
@@ -47,6 +51,9 @@
       SHOW_BACKUP:      false,
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
+      // narrower room, and a touch softer than balanced — still a real conversation,
+      // just not one that needs Between Us or the far end of the intensity dial
+      DEFAULT_SELECTION: { mode:'chapters', chapters:['findout','deeper'], intensity:35, focus:50 },
     },
 
     // EDITOR — development build: spice pre-activated, dev conveniences on.
@@ -63,6 +70,7 @@
       SHOW_BACKUP:      true,
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
+      DEFAULT_SELECTION: { mode:'all', intensity:50, focus:50 },
     },
 
   };
@@ -853,6 +861,99 @@ body::before{
   .card-area{aspect-ratio:2/1;}
   .card-question{font-size:1.8rem;}
 }
+
+/* ══ PLAY · EXPLORE ══════════════════════════════════════════════════════
+   Two ways into the same deck. Play asks what kind of evening this is and
+   lets the dials shape it; Explore is the whole cabinet, drawer by drawer.
+   The dials weight the draw — steep, but never to zero — they don't filter it. */
+
+.cat-tabs{flex-shrink:0;display:flex;justify-content:center;gap:0;
+  border-bottom:1px solid var(--dim);margin:2px 0 4px;}
+.cat-tab{background:none;border:none;cursor:pointer;position:relative;
+  font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(240,232,216,.4);padding:6px 26px 9px;transition:color .2s;}
+.cat-tab:hover{color:rgba(240,232,216,.75);}
+.cat-tab.on{color:var(--gold);}
+.cat-tab.on::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1px;
+  background:var(--gold);opacity:.8;}
+
+.pane{display:none;}
+.pane.on{display:block;}
+.pane-play{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent;}
+.pane-play.on{display:block;}
+.pane-play::-webkit-scrollbar{width:5px;}
+.pane-play::-webkit-scrollbar-thumb{background:rgba(201,168,76,.35);border-radius:3px;}
+.pane-explore{flex:1;min-height:0;flex-direction:column;}
+.pane-explore.on{display:flex;}
+
+.draw-all{width:100%;background:none;cursor:pointer;
+  border:1px solid var(--border);border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold);padding:12px 0;transition:all .2s;margin:4px 0 4px;}
+.draw-all:hover{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.45);}
+
+.play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.44rem;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--muted);opacity:.8;padding:16px 0 9px;}
+
+/* ── the five chapters ── */
+.chapters{display:flex;flex-direction:column;gap:5px;}
+.chapter{--ch:var(--gold);
+  display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
+  background:none;border:1px solid var(--dim);border-left:2px solid transparent;border-radius:2px;
+  padding:10px 13px;transition:all .2s;}
+.chapter:hover{border-color:var(--border);}
+.chapter .ch-name{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(240,232,216,.62);white-space:nowrap;transition:color .2s;}
+.chapter .ch-desc{flex:1;font-size:.6rem;letter-spacing:.02em;color:var(--muted);opacity:.85;
+  line-height:1.35;}
+.chapter.on{border-left-color:var(--ch);background:rgba(255,255,255,.028);}
+.chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, transparent);}
+.chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
+.chapter.ch-locked{opacity:.18;pointer-events:none;}
+
+/* ── the two dials ── */
+.dials{padding:6px 2px 2px;}
+.dial{padding:12px 0 2px;}
+.dial-ends{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);padding-bottom:7px;}
+.dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;}
+.dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;}
+.dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
+.dial-range::-moz-range-track{height:1px;background:var(--border);}
+.dial-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:13px;height:13px;border-radius:50%;margin-top:-6px;border:none;
+  background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.55);transition:box-shadow .2s;}
+.dial-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;border:none;
+  background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.55);}
+.dial-range:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(201,168,76,.85);}
+.dial-range--foc::-webkit-slider-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
+.dial-range--foc::-moz-range-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
+.dial-range--foc:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(101,201,176,.85);}
+.dial-note{text-align:center;font-size:.55rem;font-style:italic;color:var(--muted);opacity:.65;
+  padding:14px 6px 4px;line-height:1.45;}
+
+/* ── Explore: eight drawers, coloured to trace back to their chapter ── */
+.cat-bucket{display:flex;align-items:center;gap:9px;flex:0 0 100%;width:100%;
+  background:none;border:none;border-bottom:1px solid var(--dim);cursor:pointer;
+  padding:11px 4px 9px;text-align:left;transition:all .2s;--ch:var(--gold);}
+@media(min-width:760px),(min-height:900px){ .cat-bucket{display:flex;} }
+.cat-bucket:hover{background:rgba(255,255,255,.02);}
+.cbk-name{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(240,232,216,.6);transition:color .2s;white-space:nowrap;}
+.cat-bucket.on .cbk-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
+.cat-bucket.part .cbk-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
+.cbk-count{flex:1;font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.14em;
+  color:var(--muted);opacity:.7;}
+.cbk-chev{font-size:.5rem;color:var(--muted);padding:3px 6px;margin:-3px -2px -3px 0;
+  transition:transform .22s ease,color .2s;display:inline-block;}
+.cat-bucket:hover .cbk-chev{color:var(--gold);}
+.cat-bucket.open .cbk-chev{transform:rotate(180deg);}
+.toggle-btn.chip-folded{display:none;}
+.cat-bucket.bkt-hidden{display:none;}
+.cat-bucket.open{border-bottom-color:transparent;}
+
 </style>
 </head>
 <body>
@@ -899,6 +1000,12 @@ body::before{
     <div class="cat-sheet-handle"></div>
     <button class="cat-close" id="catClose">&#10005;</button>
     <div class="cat-sheet-title">Categories</div>
+
+    <div class="cat-tabs" role="tablist">
+      <button class="cat-tab on" id="tabPlay" data-pane="play" role="tab">Play</button>
+      <button class="cat-tab" id="tabExplore" data-pane="explore" role="tab">Explore</button>
+    </div>
+
     <div class="cat-topbar">
       <button class="cat-toggle-lbl" id="catLabel">
         <span class="cat-chevron" id="catArrow">&#9660;</span>
@@ -914,56 +1021,88 @@ body::before{
         </div>
       </div>
     </div>
-    <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
-    <div class="cat-grid-wrap" id="toggles-wrap">
-      <div class="toggles" id="toggles">
-        <!-- Light / fun -->
-        <div class="band-lbl">Openers</div>
-        <button class="toggle-btn" data-level="quick">Quick</button>
-        <button class="toggle-btn" data-level="warm">Warm</button>
-        <div class="band-lbl">Question lists</div>
-        <button class="toggle-btn toggle-btn--list" data-level="colbert">Colbert</button>
-        <button class="toggle-btn toggle-btn--list" data-level="aron">The 36</button>
-        <button class="toggle-btn toggle-btn--list" data-level="magic">Magical</button>
-        <div class="band-lbl">Days &amp; world</div>
-        <button class="toggle-btn" data-level="culture">Culture</button>
-        <button class="toggle-btn" data-level="life">Life</button>
-        <button class="toggle-btn" data-level="home">Home</button>
-        <button class="toggle-btn" data-level="work">Work</button>
-        <button class="toggle-btn" data-level="unwind">Unwind</button>
-        <button class="toggle-btn" data-level="world">World</button>
-        <div class="band-lbl">Inner</div>
-        <button class="toggle-btn" data-level="self">Self</button>
-        <button class="toggle-btn" data-level="body">Body</button>
-        <button class="toggle-btn" data-level="mind">Mind</button>
-        <button class="toggle-btn" data-level="spirit">Spirit</button>
-        <button class="toggle-btn" data-level="values">Values</button>
-        <button class="toggle-btn" data-level="wish">Wish</button>
-        <button class="toggle-btn" data-level="past">Past</button>
-        <button class="toggle-btn" data-level="roots">Roots</button>
-        <button class="toggle-btn" data-level="family">Family</button>
-        <div class="band-lbl">People</div>
-        <button class="toggle-btn" data-level="connect">Connect</button>
-        <button class="toggle-btn" data-level="friends">Friendship</button>
-        <button class="toggle-btn" data-level="date">Romance</button>
-        <button class="toggle-btn" data-level="attract">Attract</button>
-        <button class="toggle-btn" data-level="us">Between Us</button>
-        <button class="toggle-btn" data-level="usfriend">Us: Friends</button>
-        <button class="toggle-btn" data-level="uslove">Us: Love</button>
-        <div class="band-lbl">Deep water</div>
-        <button class="toggle-btn" data-level="deep">Deep</button>
-        <button class="toggle-btn" data-level="raw">Raw</button>
-        <button class="toggle-btn" data-level="grief">Grief</button>
-        <button class="toggle-btn" data-level="shadow">Shadow</button>
-        <div class="band-lbl">After dark</div>
-        <button class="toggle-btn" data-level="usintimate">Us: Intimate &#10022;</button>
-        <button class="toggle-btn" data-level="flesh">Flesh &#10022;</button>
-        <button class="toggle-btn" data-level="carnal">Carnal &#10022;</button>
-        <button class="toggle-btn" data-level="blunt">Bare &#10022;</button>
-        <button class="toggle-btn" data-level="kinks">Kinks &#10022;</button>
-        <button class="toggle-btn" data-level="abyss">Abyss &#10022;</button>
-        <div class="band-lbl">Meta</div>
-        <button class="toggle-btn" data-level="backup" style="opacity:.22;font-style:italic;">Backup</button>
+
+    <div class="pane pane-play on" id="panePlay">
+      <button class="draw-all" id="drawEverything">Draw</button>
+
+      <div class="play-lead">What kind of evening?</div>
+      <div class="chapters" id="chapters">
+        <button class="chapter" data-chapter="warmup" style="--ch:#d9a441"><span class="ch-name">Arrive</span><span class="ch-desc">Get comfortable. Start talking.</span></button>
+        <button class="chapter" data-chapter="findout" style="--ch:#45a0b8"><span class="ch-name">Beneath the Surface</span><span class="ch-desc">Where curiosity becomes connection.</span></button>
+        <button class="chapter" data-chapter="deeper" style="--ch:#8f74b8"><span class="ch-name">Into the Deep</span><span class="ch-desc">When the conversation asks something of you.</span></button>
+        <button class="chapter" data-chapter="aboutus" style="--ch:#d97a92"><span class="ch-name">Between Us</span><span class="ch-desc">What exists only between the two of you.</span></button>
+        <button class="chapter" data-chapter="afterdark" style="--ch:#ff2f2f"><span class="ch-name">After Dark</span><span class="ch-desc">When desire enters the conversation.</span></button>
+      </div>
+
+      <div class="play-lead">And how far in?</div>
+      <div class="dials" id="dials">
+        <div class="dial">
+          <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
+          <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
+                 aria-label="How far in: easy to intense">
+        </div>
+        <div class="dial">
+          <div class="dial-ends"><span>Self</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
+          <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
+                 aria-label="Who it is about: yourself to the two of you">
+        </div>
+        <div class="dial-note">The dials weight the draw, they never close a door.
+          Set to Intense, a warm question still turns up.</div>
+      </div>
+    </div>
+
+    <div class="pane pane-explore" id="paneExplore">
+      <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
+      <div class="cat-grid-wrap" id="toggles-wrap">
+        <div class="toggles" id="toggles">
+        <button type="button" class="cat-bucket" data-bucket="easein" style="--ch:#d9a441"><span class="cbk-name">Ease In</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="quick" data-bucket="easein">Quick</button>
+        <button class="toggle-btn chip-folded" data-level="warm" data-bucket="easein">Warm</button>
+        <button class="toggle-btn toggle-btn--list chip-folded" data-level="colbert" data-bucket="easein">Colbert</button>
+        <button class="toggle-btn toggle-btn--list chip-folded" data-level="aron" data-bucket="easein">The 36</button>
+        <button class="toggle-btn toggle-btn--list chip-folded" data-level="magic" data-bucket="easein">Magical</button>
+        <button type="button" class="cat-bucket" data-bucket="everyday" style="--ch:#3f97ae"><span class="cbk-name">Everyday</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="culture" data-bucket="everyday">Culture</button>
+        <button class="toggle-btn chip-folded" data-level="life" data-bucket="everyday">Life</button>
+        <button class="toggle-btn chip-folded" data-level="home" data-bucket="everyday">Home</button>
+        <button class="toggle-btn chip-folded" data-level="work" data-bucket="everyday">Work</button>
+        <button class="toggle-btn chip-folded" data-level="unwind" data-bucket="everyday">Unwind</button>
+        <button class="toggle-btn chip-folded" data-level="world" data-bucket="everyday">World</button>
+        <button type="button" class="cat-bucket" data-bucket="reflection" style="--ch:#45a0b8"><span class="cbk-name">Reflection</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="self" data-bucket="reflection">Self</button>
+        <button class="toggle-btn chip-folded" data-level="mind" data-bucket="reflection">Mind</button>
+        <button class="toggle-btn chip-folded" data-level="body" data-bucket="reflection">Body</button>
+        <button class="toggle-btn chip-folded" data-level="values" data-bucket="reflection">Values</button>
+        <button class="toggle-btn chip-folded" data-level="wish" data-bucket="reflection">Wish</button>
+        <button type="button" class="cat-bucket" data-bucket="foundations" style="--ch:#50a9c0"><span class="cbk-name">Foundations</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="past" data-bucket="foundations">Past</button>
+        <button class="toggle-btn chip-folded" data-level="roots" data-bucket="foundations">Roots</button>
+        <button class="toggle-btn chip-folded" data-level="family" data-bucket="foundations">Family</button>
+        <button class="toggle-btn chip-folded" data-level="spirit" data-bucket="foundations">Spirit</button>
+        <button type="button" class="cat-bucket" data-bucket="relationships" style="--ch:#5cb2c7"><span class="cbk-name">Relationships</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="connect" data-bucket="relationships">Connect</button>
+        <button class="toggle-btn chip-folded" data-level="friends" data-bucket="relationships">Friendship</button>
+        <button class="toggle-btn chip-folded" data-level="date" data-bucket="relationships">Romance</button>
+        <button class="toggle-btn chip-folded" data-level="attract" data-bucket="relationships">Attract</button>
+        <button type="button" class="cat-bucket" data-bucket="vulnerability" style="--ch:#8f74b8"><span class="cbk-name">Vulnerability</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="deep" data-bucket="vulnerability">Deep</button>
+        <button class="toggle-btn chip-folded" data-level="raw" data-bucket="vulnerability">Raw</button>
+        <button class="toggle-btn chip-folded" data-level="shadow" data-bucket="vulnerability">Shadow</button>
+        <button class="toggle-btn chip-folded" data-level="grief" data-bucket="vulnerability">Grief</button>
+        <button type="button" class="cat-bucket" data-bucket="usb" style="--ch:#d97a92"><span class="cbk-name">Us</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="us" data-bucket="usb">Between Us</button>
+        <button class="toggle-btn chip-folded" data-level="usfriend" data-bucket="usb">Us: Friends</button>
+        <button class="toggle-btn chip-folded" data-level="uslove" data-bucket="usb">Us: Love</button>
+        <button type="button" class="cat-bucket" data-bucket="afterdarkb" style="--ch:#ff2f2f"><span class="cbk-name">After Dark</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="usintimate" data-bucket="afterdarkb">Us: Intimate &#10022;</button>
+        <button class="toggle-btn chip-folded" data-level="flesh" data-bucket="afterdarkb">Flesh &#10022;</button>
+        <button class="toggle-btn chip-folded" data-level="carnal" data-bucket="afterdarkb">Carnal &#10022;</button>
+        <button class="toggle-btn chip-folded" data-level="blunt" data-bucket="afterdarkb">Bare &#10022;</button>
+        <button class="toggle-btn chip-folded" data-level="kinks" data-bucket="afterdarkb">Kinks &#10022;</button>
+        <button class="toggle-btn chip-folded" data-level="abyss" data-bucket="afterdarkb">Abyss &#10022;</button>
+        <button type="button" class="cat-bucket" data-bucket="meta" style="--ch:#5a5a6a"><span class="cbk-name">Meta</span><span class="cbk-count"></span><span class="cbk-chev">&#9662;</span></button>
+        <button class="toggle-btn chip-folded" data-level="backup" data-bucket="meta" style="opacity:.22;font-style:italic;">Backup</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1441,6 +1580,66 @@ const LEVEL_DEPTH = {
   usintimate:6, flesh:6, carnal:6, blunt:6, kinks:6, abyss:6,
 };
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
+
+/* ── Intent: two dials instead of thirty-eight switches ──────────────────
+   A gated bias, not a filter: each category's chance of being drawn is
+   weighted toward the dial position, steeply, but a floor under every
+   weight means nothing is ever truly excluded — a round set to Intense can
+   still turn up the odd Warm card, same as one set to Easy can surprise you
+   with something deeper. The same weighting runs under every shuffle mode,
+   Arc included — Arc's own warm/deep/cool shape does the rest from there.
+
+   Intensity is one scale for the whole deck, so After Dark grades on it too:
+   Us: Intimate and Flesh are an easy end of that scale, Kink is not, and
+   Abyss stays off the dial entirely (opt-in only, like the ordered lists).
+   Focus runs from a question about you to a question about the two of you. */
+const LEVEL_INTENSITY = {
+  quick:1, warm:1, colbert:1, magic:1, aron:2,
+  unwind:1, home:2, culture:2, life:2, work:2, world:3,
+  self:3, mind:3, body:3, values:3, wish:3,
+  family:3, spirit:4, roots:4, past:4,
+  connect:3, friends:3, date:3, attract:4,
+  us:3, usfriend:3, uslove:4,
+  deep:5, raw:5, shadow:6, grief:6,
+  usintimate:3, flesh:3, carnal:4, blunt:4, kinks:5, abyss:7,
+  backup:3, failure:4, lens:3, desire:3, threshold:5, move:2, ground:3, edge:5,
+};
+const LEVEL_FOCUS = {
+  self:-1, mind:-0.9, body:-0.8, values:-0.7, wish:-0.7, spirit:-0.6, past:-0.5, roots:-0.3,
+  quick:0, warm:0, colbert:0, aron:0, magic:0,
+  culture:0, life:0, work:0, unwind:0, world:0, home:0.1,
+  family:0.4, friends:0.5, connect:0.7, attract:0.7, date:0.8,
+  us:1, usfriend:1, uslove:1, usintimate:1,
+  deep:0, raw:0.2, shadow:0, grief:-0.2,
+  flesh:0.6, carnal:0.7, blunt:0.3, kinks:0.4, abyss:0,
+  backup:0,
+};
+function levelIntensity(l){ return LEVEL_INTENSITY[l] != null ? LEVEL_INTENSITY[l] : 3; }
+function levelFocus(l){ return LEVEL_FOCUS[l] != null ? LEVEL_FOCUS[l] : 0; }
+
+let intentIntensity = 0.5;   /* dial position, 0 … 1  */
+let intentFocus     = 0;     /* dial position, -1 … 1 */
+let intentOn        = false; /* Explore hands the deck back untouched */
+
+function intentWeight(lvl, lo, hi){
+  const target = lo + intentIntensity * (hi - lo);
+  const di = levelIntensity(lvl) - target;
+  const df = levelFocus(lvl) - intentFocus;
+  const w  = Math.exp(-(di*di) / (2*1.15*1.15)) * Math.exp(-(df*df) / (2*0.8*0.8));
+  return Math.max(w, 0.05);          /* the floor is where the surprises live */
+}
+
+/* One weighted pass, no replacement, no bias in the ordering it leaves
+   behind (Efraimidis–Spirakis). The shuffle mode then shapes what survives,
+   so Arc still arcs and Breadth still cycles — over a pool the dials chose. */
+function applyIntent(cards){
+  if (!intentOn || cards.length < 8) return cards;
+  const ints = [...new Set(cards.map(c => c.level))].map(levelIntensity);
+  const lo = Math.min(...ints), hi = Math.max(...ints);
+  const keyed = cards.map(c => ({ c, k: Math.pow(Math.random(), 1 / intentWeight(c.level, lo, hi)) }));
+  keyed.sort((a, b) => b.k - a.k);
+  return keyed.slice(0, Math.max(20, Math.ceil(keyed.length * 0.30))).map(x => x.c);
+}
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
 // Above ~48 cards the dots stop being readable, so the summary keeps to words.
@@ -2357,7 +2556,7 @@ function initDeck() {
         b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)))
       );
     }
-    state.fullDeck = applyRandomMode(getFilteredCards());
+    state.fullDeck = applyRandomMode(applyIntent(getFilteredCards()));
     { const r=_unseenFirst(state.fullDeck); state.fullDeck=r.deck; window._drawUnseen=r.unseen; }
   }
   state.currentIndex = -1;
@@ -2439,7 +2638,7 @@ function _arcHand(source, cap){
 function applyLimit(reshuffle = true) {
   state.loggedQuestions.clear();
   if (reshuffle) {
-    state.fullDeck = orderedSoloLevel() ? getOrderedSolo(orderedSoloLevel()) : applyRandomMode(getFilteredCards());
+    state.fullDeck = orderedSoloLevel() ? getOrderedSolo(orderedSoloLevel()) : applyRandomMode(applyIntent(getFilteredCards()));
     if (!orderedSoloLevel()) { const r=_unseenFirst(state.fullDeck); state.fullDeck=r.deck; window._drawUnseen=r.unseen; }
     else window._drawUnseen = state.fullDeck.length;
   }
@@ -2569,6 +2768,7 @@ function applyToggleUI() {
     const isOn = btn.classList.contains('on');
     btn.style.color = isOn ? levelColor(lvl) : '';
   });
+  if (typeof syncIntentUI === 'function') syncIntentUI();
 }
 
 let _prevSafeModeHS = null;   // remembers your After Dark state across hard-safe modes
@@ -2940,7 +3140,7 @@ function setCardDisplay(card) {
     if (accent)   { accent.style.background=''; }
     if (qEl)      { qEl.textContent = state.visibleDeck.length===0
       ? (state.lang==='nl' ? 'Selecteer minstens één categorie.' : 'Select at least one category.')
-      : (state.lang==='nl' ? 'Trek een kaart om te beginnen.'   : 'Draw a card to begin.');
+      : (state.lang==='nl' ? 'Een plek om te beginnen…'   : 'A place to begin…');
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
     if (numEl)    numEl.textContent = '— — —';
@@ -4137,6 +4337,7 @@ applyToggleUI();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
   }
   function closeCats(){ catArea.classList.remove('sheet-open'); scrim.classList.remove('on'); }
+  window.openCats=openCats; window.closeCats=closeCats;
   openRow.addEventListener('click', openCats);
   $('catClose').addEventListener('click', closeCats);
   scrim.addEventListener('click', closeCats);
@@ -4221,6 +4422,229 @@ applyToggleUI();
     }
     partyWasOpen=isOpen;
   }).observe(party,{attributes:true,attributeFilter:['class']});
+})();
+</script>
+
+<script>
+/* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
+   Play asks what kind of evening this is: five chapters you can mix, and two
+   dials that weight the draw inside them. Explore is the same deck as eight
+   drawers, each opening onto the categories it is made of. One selection
+   underneath both, and one spice toggle and After Dark link shared above
+   both tabs, so neither view goes without them.                          */
+(function(){
+  const $ = id => document.getElementById(id);
+
+  const CHAPTERS = {
+    warmup:    ['quick','warm'],
+    findout:   ['culture','life','home','work','unwind','world',
+                'self','mind','body','values','wish',
+                'past','roots','family','spirit',
+                'connect','friends','date','attract'],
+    deeper:    ['deep','raw','shadow','grief'],
+    aboutus:   ['us','usfriend','uslove'],
+    afterdark: ['usintimate','flesh','carnal','blunt','kinks'],
+  };
+  const inDeck = l => DECK_LEVELS.has(l);
+  const chapterLevels = id => (CHAPTERS[id] || []).filter(inDeck);
+  const bucketLevels  = id => [...document.querySelectorAll('.toggle-btn[data-bucket="'+id+'"]')]
+                                .map(b => b.dataset.level).filter(inDeck);
+
+  /* Presets, Draw and Explore each leave their own selection behind. The
+     first chapter you tap takes the selection over rather than adding to
+     whatever was already lit, so "Arrive" never reads as already-on inside
+     a broad preset and quietly subtracts itself on the first tap. */
+  let chapterMode = false;
+
+  function stateOf(levels){
+    const live = levels.filter(l => !(state.safeMode && SAFE_BLOCKED_LEVELS.includes(l)));
+    const pool = live.length ? live : levels;
+    if (!pool.length) return 'off';
+    const on = pool.filter(l => state.activeToggles.has(l)).length;
+    return on === 0 ? 'off' : (on === pool.length ? 'on' : 'part');
+  }
+
+  function releasePresetMask(){
+    document.querySelectorAll('.toggle-btn').forEach(b => {
+      const lvl = b.dataset.level; if (!lvl) return;
+      const lockedOut = (MASTER_SAFE || WORKPLACE_MODE) && SAFE_BLOCKED_LEVELS.includes(lvl);
+      const hide = lockedOut || !inDeck(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
+      b.style.display = hide ? 'none' : '';
+      b.classList.toggle('hard-locked', !hide && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl));
+    });
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    state.activePreset = '';
+    if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
+  }
+
+  function openAfterDark(){
+    if (MASTER_SAFE || WORKPLACE_MODE) return false;
+    if (state.safeMode) { state.safeMode = false; state.spiceMode = true; updateAfterDarkBtn(); }
+    return true;
+  }
+
+  function setLevels(levels, on){
+    levels.forEach(l => {
+      if (on) { if (!(state.safeMode && SAFE_BLOCKED_LEVELS.includes(l))) state.activeToggles.add(l); }
+      else state.activeToggles.delete(l);
+    });
+  }
+
+  const INT_WORDS = ['Easy','Gentle','Balanced','Deeper','Intense'];
+  const FOC_WORDS = ['About you','Leaning you','Balanced','Leaning us','About us'];
+  const word = (list, t) => list[Math.min(list.length - 1, Math.floor(t * list.length))];
+
+  function syncIntentUI(){
+    document.querySelectorAll('.chapter').forEach(btn => {
+      const levels = chapterLevels(btn.dataset.chapter);
+      const st = stateOf(levels);
+      btn.classList.toggle('on',   st === 'on');
+      btn.classList.toggle('part', st === 'part');
+      btn.classList.toggle('ch-locked',
+        !levels.length || (btn.dataset.chapter === 'afterdark' && (MASTER_SAFE || WORKPLACE_MODE)));
+    });
+    document.querySelectorAll('.cat-bucket').forEach(hdr => {
+      const levels  = bucketLevels(hdr.dataset.bucket);
+      const visible = levels.filter(l => {
+        const b = document.querySelector('.toggle-btn[data-level="'+l+'"]');
+        return b && b.style.display !== 'none';
+      });
+      const st = stateOf(visible);
+      hdr.classList.toggle('on',   st === 'on');
+      hdr.classList.toggle('part', st === 'part');
+      hdr.classList.toggle('bkt-hidden', visible.length === 0);
+      const c = hdr.querySelector('.cbk-count');
+      if (c) c.textContent = visible.length
+        ? visible.filter(l => state.activeToggles.has(l)).length + ' / ' + visible.length
+        : '';
+    });
+    const iv = $('dialIntVal'), fv = $('dialFocVal');
+    if (iv) iv.textContent = word(INT_WORDS, intentIntensity);
+    if (fv) fv.textContent = word(FOC_WORDS, (intentFocus + 1) / 2);
+    const ii = $('dialIntensity'), fi = $('dialFocus');
+    if (ii) ii.style.opacity = intentOn ? '1' : '.45';
+    if (fi) fi.style.opacity = intentOn ? '1' : '.45';
+  }
+  window.syncIntentUI = syncIntentUI;
+
+  function commit(){
+    applyToggleUI();   // now calls syncIntentUI() itself
+    initDeck();
+    if (typeof renderShell === 'function') renderShell();
+  }
+
+  /* ── chapters ── */
+  $('chapters').addEventListener('click', e => {
+    const btn = e.target.closest('.chapter'); if (!btn) return;
+    const id = btn.dataset.chapter;
+    const fresh = !chapterMode;
+    const turningOn = fresh || stateOf(chapterLevels(id)) !== 'on';
+    if (id === 'afterdark' && turningOn && !openAfterDark()) return;
+    releasePresetMask();
+    if (fresh) { state.activeToggles.clear(); chapterMode = true; }
+    intentOn = true;
+    setLevels(chapterLevels(id), turningOn);
+    commit();
+  });
+
+  /* ── dials ── */
+  function dial(el, apply){
+    if (!el) return;
+    el.addEventListener('input', () => { apply(+el.value / 100); intentOn = true; syncIntentUI(); });
+    ['change','pointerup','touchend'].forEach(ev =>
+      el.addEventListener(ev, () => { apply(+el.value / 100); intentOn = true; commit(); }, {passive:true}));
+  }
+  dial($('dialIntensity'), t => { intentIntensity = t; });
+  dial($('dialFocus'),     t => { intentFocus = t * 2 - 1; });
+
+  /* ── defaults: what the app opens on, and what Draw plays ── */
+  function applyDefaultSelection(){
+    const d = window.DEFAULT_SELECTION || { mode:'chapters', chapters:['findout','deeper','aboutus'], intensity:50, focus:50 };
+    releasePresetMask();
+    state.activeToggles.clear();
+    chapterMode = true;
+    if (d.mode === 'all') {
+      document.querySelectorAll('.toggle-btn').forEach(b => {
+        const lvl = b.dataset.level;
+        if (!lvl || b.style.display === 'none') return;
+        if (lvl === 'backup' && !window.SHOW_BACKUP) return;
+        if (OPT_IN_ONLY.includes(lvl)) return;
+        if (state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl)) return;
+        state.activeToggles.add(lvl);
+      });
+    } else {
+      (d.chapters || []).forEach(id => {
+        if (id === 'afterdark') { if (!openAfterDark()) return; }
+        setLevels(chapterLevels(id), true);
+      });
+    }
+    intentIntensity = (d.intensity != null ? d.intensity : 50) / 100;
+    intentFocus     = ((d.focus != null ? d.focus : 50) / 100) * 2 - 1;
+    const ii = $('dialIntensity'), fi = $('dialFocus');
+    if (ii) ii.value = d.intensity != null ? d.intensity : 50;
+    if (fi) fi.value = d.focus != null ? d.focus : 50;
+    intentOn = true;
+  }
+
+  /* ── Draw: replay the build's defaults ── */
+  $('drawEverything').addEventListener('click', () => {
+    applyDefaultSelection();
+    commit();
+    if (window.closeCats) window.closeCats();
+  });
+
+  /* ── Explore drawers ── */
+  document.querySelectorAll('.cat-bucket').forEach(hdr => {
+    hdr.addEventListener('click', e => {
+      const id = hdr.dataset.bucket;
+      if (e.target.closest('.cbk-chev')) {
+        const open = hdr.classList.toggle('open');
+        document.querySelectorAll('.toggle-btn[data-bucket="'+id+'"]')
+          .forEach(b => b.classList.toggle('chip-folded', !open));
+        if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
+        return;
+      }
+      const levels = bucketLevels(id).filter(l => {
+        const b = document.querySelector('.toggle-btn[data-level="'+l+'"]');
+        return b && b.style.display !== 'none';
+      });
+      const turningOn = stateOf(levels) !== 'on';
+      if (id === 'afterdarkb' && turningOn && !openAfterDark()) return;
+      releasePresetMask();
+      intentOn = false; chapterMode = false;
+      setLevels(levels.filter(l => !(turningOn && OPT_IN_ONLY.includes(l))), turningOn);
+      commit();
+    });
+  });
+
+  /* a chip, preset or bulk All/None is a selection of its own — chapters and
+     dials stop owning it, so the next chapter tap starts clean again */
+  ['toggles','modeBar'].forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener('click', () => { chapterMode = false; intentOn = false; }, true);
+  });
+
+  /* ── tabs ── */
+  function showPane(name){
+    $('tabPlay').classList.toggle('on', name === 'play');
+    $('tabExplore').classList.toggle('on', name === 'explore');
+    $('panePlay').classList.toggle('on', name === 'play');
+    $('paneExplore').classList.toggle('on', name === 'explore');
+    syncIntentUI();   // looking is not choosing — a tab switch never re-deals the hand
+    if (name === 'explore' && typeof updateGridScrollHint === 'function') updateGridScrollHint();
+  }
+  $('tabPlay').addEventListener('click', () => showPane('play'));
+  $('tabExplore').addEventListener('click', () => showPane('explore'));
+
+  /* ── move the re-homed presets into Play, where they belong ── */
+  const presetHost = document.querySelector('.preset-host'), playPane = $('panePlay');
+  if (presetHost && playPane) playPane.insertBefore(presetHost, playPane.firstChild);
+
+  /* ── the app should never open empty: play the build's defaults now ── */
+  applyDefaultSelection();
+  commit();
+
+  syncIntentUI();
 })();
 </script>
 
