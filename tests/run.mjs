@@ -184,6 +184,23 @@ async function run() {
     assert(after.total === before.total - 1, `expected total ${before.total - 1}, got ${after.total}`);
   });
 
+  // ── E2. Skip-undo: the skipped card comes back at the same position ──────
+  await check('skip-undo restores the skipped card', async () => {
+    const before = await cardParts(page);
+    const beforeQ = await questionText(page);
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(300);
+    const undoBtn = page.locator('#skipUndo');
+    assert(await undoBtn.evaluate(el => el.classList.contains('visible')), 'undo button did not appear after a skip');
+    await undoBtn.click();
+    await page.waitForTimeout(300);
+    const after = await cardParts(page);
+    const afterQ = await questionText(page);
+    assert(after.total === before.total, `deck total did not restore: ${before.total} -> ${after.total}`);
+    assert(afterQ === beforeQ, `card did not come back (${beforeQ} vs ${afterQ})`);
+    assert(!(await undoBtn.evaluate(el => el.classList.contains('visible'))), 'undo button stayed visible after use');
+  });
+
   // ── F. Category toggle reshuffles the deck and updates the token line ──────
   // Categories live in a sheet overlay (#cat-area), opened via the #tokCats
   // token — not the legacy #catLabel, which the adaptation layer left behind

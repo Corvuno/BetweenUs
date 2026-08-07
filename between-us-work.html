@@ -2368,6 +2368,16 @@ function initDeck() {
   setCardDisplay(null);
   updateDeckInfo();
   updateDrawMore();
+  // clear accent on fresh deck
+  const accent=document.getElementById('c-accent');
+  if(accent){ accent.style.background=''; accent.classList.remove('accent-bloom'); }
+  // init level
+  const lv=document.getElementById('card-level');
+  if(lv){ lv.classList.remove('in'); lv.textContent=''; }
+  const qEl=document.getElementById('card-question');
+  if(qEl){ qEl.classList.remove('in'); }
+  setTimeout(()=>{ if(qEl) qEl.classList.add('in'); },20);
+  renderShell();
 }
 
 
@@ -2552,6 +2562,13 @@ function applyToggleUI() {
     btn.classList.toggle('suggested', suggested);
   });
   syncBandLabels();
+  // category colors
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    const lvl = btn.dataset.level;
+    if (!lvl) return;
+    const isOn = btn.classList.contains('on');
+    btn.style.color = isOn ? levelColor(lvl) : '';
+  });
 }
 
 let _prevSafeModeHS = null;   // remembers your After Dark state across hard-safe modes
@@ -3240,18 +3257,6 @@ function updateAfterDarkBtn() {
   });
 };
 
-// ── Override applyToggleUI to set category colors ──
-const _origApplyToggle = applyToggleUI;
-applyToggleUI = function() {
-  _origApplyToggle();
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    const lvl = btn.dataset.level;
-    if (!lvl) return;
-    const isOn = btn.classList.contains('on');
-    btn.style.color = isOn ? levelColor(lvl) : '';
-  });
-};
-
 // nextCard wrappers consolidated — see CONSOLIDATED nextCard below.
 
 // ── Fullscreen party ── (legacy listeners removed, so we bind directly)
@@ -3344,22 +3349,6 @@ document.addEventListener('keydown',e=>{
 });
 
 
-
-// ── Override initDeck to show accent on first load ──
-const _origInitDeck = initDeck;
-initDeck = function() {
-  _origInitDeck();
-  // clear accent on fresh deck
-  const accent=document.getElementById('c-accent');
-  if(accent){ accent.style.background=''; accent.classList.remove('accent-bloom'); }
-  // init level
-  const lv=document.getElementById('card-level');
-  if(lv){ lv.classList.remove('in'); lv.textContent=''; }
-  const qEl=document.getElementById('card-question');
-  if(qEl){ qEl.classList.remove('in'); }
-  setTimeout(()=>{ if(qEl) qEl.classList.add('in'); },20);
-  renderShell();
-};
 
 // ── SHELL RENDER ──────────────────────────────────────────────────────────────
 // Single source of truth for the token-line labels. Every value is derived from
@@ -3469,32 +3458,50 @@ function updateDrawMore() {
 window._skipNextCard = false; // flag to block nextCard after skip
 // skippedCards declared at top with state variables
 
+// Skip-undo bookkeeping lives alongside skipCard itself (not in a wrapper —
+// see the undo button listener below, which shares these three).
+let _undoCard = null, _undoIndex = null, _undoTimer = null;
+
 function skipCard() {
-  if (state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0) return;
-  window._skipNextCard = true;
-  setTimeout(() => { window._skipNextCard = false; }, 600);
-  // Remove from visibleDeck only — fullDeck stays intact for new rounds
-  const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
-  state.skippedCards.add(removed.question);
-  // Show next card (or skipped-all state)
-  if (state.visibleDeck.length === 0) {
-    state.currentIndex = state.visibleDeck.length; // sentinel: past end
-    const el = document.getElementById('card');
-    el.classList.add('flipping');
-    setTimeout(() => {
-      document.getElementById('card-level').className = 'card-level';
-      document.getElementById('card-level').textContent = '';
-      document.getElementById('card-question').innerHTML =
-        `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`;
-      document.getElementById('card-number').textContent = '— end —';
-      el.classList.remove('flipping');
-      updateDrawMore();
-    }, 175);
-  } else {
-    if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
-    flipToCard(state.visibleDeck[state.currentIndex]);
+  // Captured before the guard below, and the "show undo button" step at the
+  // end runs unconditionally too — matching the swipe-down caller, which
+  // already never invokes skipCard() outside a valid index.
+  const undoBtn = document.getElementById('skipUndo');
+  if (undoBtn) { _undoCard = state.visibleDeck[state.currentIndex]; _undoIndex = state.currentIndex; }
+  if (!(state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0)) {
+    window._skipNextCard = true;
+    setTimeout(() => { window._skipNextCard = false; }, 600);
+    // Remove from visibleDeck only — fullDeck stays intact for new rounds
+    const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
+    state.skippedCards.add(removed.question);
+    // Show next card (or skipped-all state)
+    if (state.visibleDeck.length === 0) {
+      state.currentIndex = state.visibleDeck.length; // sentinel: past end
+      const el = document.getElementById('card');
+      el.classList.add('flipping');
+      setTimeout(() => {
+        document.getElementById('card-level').className = 'card-level';
+        document.getElementById('card-level').textContent = '';
+        document.getElementById('card-question').innerHTML =
+          `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`;
+        document.getElementById('card-number').textContent = '— end —';
+        el.classList.remove('flipping');
+        updateDrawMore();
+      }, 175);
+    } else {
+      if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
+      flipToCard(state.visibleDeck[state.currentIndex]);
+    }
+    updateDeckInfo(); renderProgress(); updateDrawMore();
   }
-  updateDeckInfo(); renderProgress(); updateDrawMore();
+  if (undoBtn) {
+    undoBtn.classList.add('visible');
+    clearTimeout(_undoTimer);
+    _undoTimer = setTimeout(() => {
+      undoBtn.classList.remove('visible');
+      _undoCard = null; _undoIndex = null;
+    }, 3000);
+  }
 }
 
 // Skip block integrated into consolidated nextCard below.
@@ -3598,6 +3605,13 @@ function showSessionSummary() {
     qEl.innerHTML = html;
     void qEl.offsetWidth;
     qEl.classList.add('in');
+    // Re-render the arc line with per-category colors (same `cats` computed above)
+    const arcEl = qEl.querySelector('.sic-arc');
+    if (arcEl) {
+      arcEl.innerHTML = cats.map(l =>
+        `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
+      ).join('<span style="opacity:.35"> · </span>');
+    }
   }
 
   const numEl = document.getElementById('card-number');
@@ -3677,23 +3691,6 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     initDeck();
   });
 })();
-
-// ── B: Color each category in the in-card arc line ──
-// (patch showSessionSummary's arc HTML to use levelColor per category)
-const _baseSummary = showSessionSummary;
-showSessionSummary = function() {
-  _baseSummary();
-  // Re-render arc line with per-category colors
-  const qEl = document.getElementById('card-question');
-  if (!qEl) return;
-  const arcEl = qEl.querySelector('.sic-arc');
-  if (!arcEl) return;
-  const seen = new Set(), cats = [];
-  state.visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
-  arcEl.innerHTML = cats.map(l =>
-    `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
-  ).join('<span style="opacity:.35"> · </span>');
-};
 
 // Party end integrated into consolidated nextCard below.
 
@@ -3792,24 +3789,9 @@ function autoSaveSession() {
 // SKIP UNDO — 3-second undo window after skip
 // ═══════════════════════════════════════════════════════════
 (function() {
-  let _undoCard = null, _undoIndex = null, _undoTimer = null;
+  // _undoCard / _undoIndex / _undoTimer are set by skipCard() itself now.
   const undoBtn = document.getElementById('skipUndo');
   if (!undoBtn) return;
-
-  const origSkipCard = skipCard;
-  skipCard = function() {
-    if (state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0) return;
-    _undoCard  = state.visibleDeck[state.currentIndex];
-    _undoIndex = state.currentIndex;
-    origSkipCard();
-    // Show undo button
-    undoBtn.classList.add('visible');
-    clearTimeout(_undoTimer);
-    _undoTimer = setTimeout(() => {
-      undoBtn.classList.remove('visible');
-      _undoCard = null; _undoIndex = null;
-    }, 3000);
-  };
 
   undoBtn.addEventListener('click', () => {
     if (!_undoCard) return;
