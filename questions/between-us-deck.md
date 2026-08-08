@@ -253,7 +253,7 @@ The questions come first, category by category. The full change log is at the bo
 ## World
 1. What's something the next generation will judge this one harshly for?
 2. When did you last actually do something about a problem bigger than you — and did it matter?
-3. Name one law you'd pass tomorrow.
+3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Which room first taught you that class exists?
@@ -410,9 +410,9 @@ The questions come first, category by category. The full change log is at the bo
 3. If I were braver, I would already have...
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
-6. The message you secretly hope to receive one day... ✦
-7. Which wish keeps returning, in new costumes?
-8. Is wanting more a flaw or an engine?
+6. What have you been quietly rooting for, in your own life?
+7. If you fast-forwarded five good years, what would you want to see?
+8. Which part of someone else's life do you envy enough to think about more than you'd admit?
 9. A free year, no obligations — what finally gets done?
 10. What do you want for someone else that you can't give them?
 11. What do you want that would surprise the people who know you?
@@ -547,6 +547,12 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.59 — Wish rebuilt (6, 7, 8), World 3 off lawmaking
+**Wish 6** → *"What have you been quietly rooting for, in your own life?"* Drops the ✦ — no longer a spicy register. Replaces the fully-open "message from anyone" card, which had no handle, with the broader sense of wanting the category description already promises ("what you chase... what keeps returning") rather than a materialist want.
+**Wish 7** → *"If you fast-forwarded five good years, what would you want to see?"* Replaces the disguised-wish card, a near-duplicate of Wish 4 (both were "longing dressed as something else"). Trajectory rather than disguise.
+**Wish 8** → *"Which part of someone else's life do you envy enough to think about more than you'd admit?"* Replaces the flaw-or-engine riddle, which rewarded a clever answer over an honest one. Envy of a specific life, not an abstract question about wanting in general.
+**World 3** → *"What's something you benefit from that you know isn't fair?"* Off lawmaking entirely — the old card was a debate-club prompt with no personal cost. Personal fairness and privilege is untouched ground in a category about "power, fairness, and the world you're actually living in."
 
 ## Patch v6.58 — owner sign-off batch: Mind, Kink, Deep, Raw, World, Between Us, Home, Flesh, Past, Romance, Attract, Values, Carnal
 **Mind 2** → *"What do you consistently resist — and when does that break down?"* Keeps the restraint-as-skill idea, restores the original's own second clause instead of a new one.
