@@ -3208,16 +3208,23 @@ document.getElementById('cardStar').addEventListener('click', e => {
   toggleFavourite();
 });
 
-// Normal mode: tap the card to advance
+// Normal mode: tap the card to advance. The touch handler below owns every
+// swipe gesture and calls preventDefault() when it acts, so the browser
+// never synthesizes a click after a swipe — this handler only ever sees
+// genuine taps and needs no "was that just a swipe?" flag to guard against.
 document.getElementById('card').addEventListener('click', e => {
   if (state.partyMode) return;
   if (e.target.closest('#cardStar')) return;
-  if (window._swipeJustFired) { window._swipeJustFired = false; return; } // block synthetic click after swipe
   nextCard();
   updateDeckInfo();
 });
 
-// Card swipe
+// Card touch gestures — one handler owns all of them (swipe left/right to
+// advance/reverse, swipe down to skip), so there's exactly one place that
+// decides what a touch on the card means. Registered non-passive so it can
+// call preventDefault() and suppress the synthetic click a touch leaves
+// behind, in place of the flag-based "swallow the next call" guards that
+// pattern otherwise forces on every listener downstream.
 (function() {
   const card = document.getElementById('card');
   let startX = 0, startY = 0, startTime = 0;
@@ -3229,12 +3236,17 @@ document.getElementById('card').addEventListener('click', e => {
   card.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - startX;
     const dy = e.changedTouches[0].clientY - startY;
-    if (Date.now() - startTime < 400 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      window._swipeJustFired = true;
-      setTimeout(() => { window._swipeJustFired = false; }, 500);
+    if (dy > 65 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+      // never on the end/summary card
+      if (state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length) {
+        e.preventDefault();
+        skipCard();
+      }
+    } else if (Date.now() - startTime < 400 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      e.preventDefault();
       dx < 0 ? nextCard() : prevCard();
     }
-  }, { passive: true });
+  }, { passive: false });
 })();
 
 
@@ -3604,6 +3616,7 @@ function updateAfterDarkBtn() {
         setCardDisplay(state.visibleDeck[0]);
         renderProgress();
         updateStarUI();
+        updateDrawMore();
       } else if (state.currentIndex >= 0 && state.visibleDeck[state.currentIndex]) {
         updatePartyDisplay(state.visibleDeck[state.currentIndex]);
       }
@@ -3752,6 +3765,10 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
 
 // updateDrawMore — single definition (transforms btn-next, hides standalone button)
 function updateDrawMore() {
+  // This runs after every deck-state change (nextCard, skipCard, initDeck,
+  // choosePick, …), so the end-of-hand hint updates from here too — no need
+  // to separately observe the DOM for it.
+  hint(atEnd());
   // Always hide the standalone draw-more button — it floats awkwardly
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
@@ -3794,9 +3811,9 @@ function updateDrawMore() {
 })();
 
 // ═══════════════════════════════════════════════════════════
-// FEATURE 3: SKIP CARD — swipe down
+// FEATURE 3: SKIP CARD — swipe down (the touch handler that recognizes the
+// gesture lives with the card's other touch handling, above)
 // ═══════════════════════════════════════════════════════════
-window._skipNextCard = false; // flag to block nextCard after skip
 // skippedCards declared at top with state variables
 
 // Skip-undo bookkeeping lives alongside skipCard itself (not in a wrapper —
@@ -3810,8 +3827,6 @@ function skipCard() {
   const undoBtn = document.getElementById('skipUndo');
   if (undoBtn) { _undoCard = state.visibleDeck[state.currentIndex]; _undoIndex = state.currentIndex; }
   if (!(state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0)) {
-    window._skipNextCard = true;
-    setTimeout(() => { window._skipNextCard = false; }, 600);
     // Remove from visibleDeck only — fullDeck stays intact for new rounds
     const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
     state.skippedCards.add(removed.question);
@@ -3845,26 +3860,11 @@ function skipCard() {
   }
 }
 
-// Skip block integrated into consolidated nextCard below.
-
-// Skip is a downward swipe only. Press-and-hold-to-skip was removed: it
-// collided with press-and-hold-to-continue on the end-of-draw screen, and skip
-// sees little use. A hold now only ever means "continue".
-(function(){
-  const cardEl = document.getElementById('card');
-  if (!cardEl) return;
-  let startX = 0, startY = 0;
-  cardEl.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  }, {passive:true});
-  cardEl.addEventListener('touchend', e => {
-    if (state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length) return;  // never on the end/summary card
-    const dy = e.changedTouches[0].clientY - startY;
-    const dx = e.changedTouches[0].clientX - startX;
-    if (dy > 65 && Math.abs(dy) > Math.abs(dx) * 1.5) skipCard();
-  }, {passive:true});
-})();
+// Skip block integrated into consolidated nextCard below. The swipe-down
+// gesture itself is recognized by the card's touch handler, above — skip is
+// downward-swipe-only; press-and-hold-to-skip was removed, since it collided
+// with press-and-hold-to-continue on the end-of-draw screen, and skip sees
+// little use. A hold now only ever means "continue".
 
 // ═══════════════════════════════════════════════════════════
 // FEATURE 4: ARC PHASE INDICATOR
@@ -3966,15 +3966,21 @@ function showSessionSummary() {
 // deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
 // touchend/click, so the gate opens a short swallow window that those handlers
 // (here and on the fullscreen overlay) check, keeping one hold to one advance.
+//
+// atEnd/hint are plain top-level functions (not nested in the IIFE below) so
+// updateDrawMore() — already the one place every deck-state change routes
+// through — can call hint(atEnd()) directly. That replaces a MutationObserver
+// that used to watch #card-question's DOM for changes to infer the same
+// thing: explicit state instead of observing what the DOM did as a result of it.
+function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
+function hint(on){
+  const el = document.getElementById('endHint');
+  if (el) el.classList.toggle('visible', !!on);
+}
 const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const HOLD = 550;
   let timer = null;
-  function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
-  function hint(on){
-    const el = document.getElementById('endHint');
-    if (el) el.classList.toggle('visible', !!on);
-  }
   window._nudgeEndHold = function(){
     const el = document.getElementById('endHint');
     if (!el) return;
@@ -4014,9 +4020,6 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
       }
     }, true);
   });
-  const obs = new MutationObserver(() => hint(atEnd()));
-  const q = document.getElementById('card-question');
-  if (q) obs.observe(q, {childList:true, characterData:true, subtree:true});
 })();
 
 // ── A: Spice glyph buttons (one inline on the After Dark chapter in Play,
@@ -4046,8 +4049,6 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 // CONSOLIDATED nextCard — all hooks in one place
 // ═══════════════════════════════════════════════════════════
 function nextCard() {
-  // 1. Skip block
-  if (window._skipNextCard) { window._skipNextCard = false; return; }
   if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) { initDeck(); _nextCardBase(); return; }  // all skipped: reshuffle straight into a card
   if (state.visibleDeck.length === 0) { _nextCardBase(); return; }
   // Guard: already past end (sentinel) — tap offers new round
@@ -4139,7 +4140,6 @@ function autoSaveSession() {
   undoBtn.addEventListener('click', () => {
     if (!_undoCard) return;
     clearTimeout(_undoTimer);
-    window._skipNextCard = false;   // don't swallow the next tap after an undo
     undoBtn.classList.remove('visible');
     // Re-insert card at original position and remove from skipped set
     state.skippedCards.delete(_undoCard.question);
