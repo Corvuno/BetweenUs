@@ -1695,13 +1695,13 @@ const CATEGORY_TRAITS = {
    vocabulary the chapters and dials can actually produce — not hundreds. */
 const MOOD_WORDS = {
   '0,0':{playful:'Light',    intimate:'Gentle',   reflective:'Curious',    _:'Open'},
-  '0,1':{playful:'Playful',  intimate:'Warm',     reflective:'Curious',    _:'Open'},
-  '0,2':{playful:'Flirty',   intimate:'Warm',     reflective:'Connected',  _:'Mischievous'},
+  '0,1':{playful:'Playful',  intimate:'Fond',     reflective:'Curious',    _:'Open'},
+  '0,2':{playful:'Flirty',   intimate:'Fond',     reflective:'Connected',  _:'Mischievous'},
   '1,0':{playful:'Curious',  intimate:'Revealing',reflective:'Reflective', _:'Grounded'},
   '1,1':{playful:'Curious',  intimate:'Honest',   reflective:'Open',       _:'Real'},
-  '1,2':{playful:'Warm',     intimate:'Intimate', reflective:'Honest',     _:'Close'},
-  '2,0':{playful:'Unfiltered',intimate:'Raw',     reflective:'Searching',  _:'Deep'},
-  '2,1':{playful:'Unfiltered',intimate:'Raw',     reflective:'Searching',  _:'Deep'},
+  '1,2':{playful:'Fond',     intimate:'Intimate', reflective:'Honest',     _:'Close'},
+  '2,0':{playful:'Unfiltered',intimate:'Unshielded',reflective:'Searching',_:'Heavy'},
+  '2,1':{playful:'Unfiltered',intimate:'Unshielded',reflective:'Searching',_:'Heavy'},
   '2,2':{playful:'Charged',  intimate:'Vulnerable',reflective:'Exposed',   _:'Unguarded'},
 };
 
@@ -1715,7 +1715,7 @@ const MOOD_OVERRIDES = [
   { i:1, f:0, any:['life','mind'],             word:'Reflective' },
   { i:1, f:2, any:['connect','friends'],       word:'Close' },
   { i:1, f:2, any:['date'],                    word:'Tender' },
-  { i:2, f:0, any:['past','grief','shadow'],   word:'Raw' },
+  { i:2, f:0, any:['past','grief','shadow'],   word:'Unshielded' },
   { i:2, f:2, any:['uslove','usintimate'],     word:'Vulnerable' },
   { i:2, f:2, any:['attract','carnal'],        word:'Charged' },
   { i:2, f:0, any:['world','values','mind'],   word:'Searching' },
@@ -1754,13 +1754,17 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const meanOf = key => groupVecs.reduce((s,v) => s + v[key], 0) / groupVecs.length;
 
   // sliders are the energy; the selection only tints it
-  const intensity = .65*sliderIntensity01 + .35*meanOf('deep');
-  const focus     = .65*sliderFocus01     + .35*meanOf('us');
+  const intensity = .5*sliderIntensity01 + .5*meanOf('deep');
+  const focus     = .5*sliderFocus01     + .5*meanOf('us');
   const iBand = intensity < .34 ? 0 : intensity < .66 ? 1 : 2;
   const fBand = focus     < .34 ? 0 : focus     < .66 ? 1 : 2;
 
-  const override = MOOD_OVERRIDES.find(o => o.i===iBand && o.f===fBand && o.any.some(l => levels.includes(l)));
-  if (override) return override.word;
+  // overrides are for a clean single-chapter read only — the moment two
+  // groups are mixed, the blend itself is the more honest answer
+  if (Object.keys(groups).length === 1) {
+    const override = MOOD_OVERRIDES.find(o => o.i===iBand && o.f===fBand && o.any.some(l => levels.includes(l)));
+    if (override) return override.word;
+  }
 
   const p = meanOf('playful'), im = meanOf('intimate'), r = meanOf('reflective');
   const spread = Math.max(p,im,r) - Math.min(p,im,r);
