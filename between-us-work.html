@@ -4672,18 +4672,32 @@ applyToggleUI();
       const turningOn = stateOf(controllable(levels)) !== 'on';
       if (id === 'afterdarkb' && turningOn && !openAfterDark()) return;
       releasePresetMask();
-      intentOn = false; chapterMode = false;
+      intentOn = false;   // an Explore edit is a refinement, not a new room — a chapter
+                          // tapped afterwards should still mix in, not wipe it (chapterMode
+                          // is left alone; only a preset click resets that)
       setLevels(levels.filter(l => !(turningOn && OPT_IN_ONLY.includes(l))), turningOn);
       commit();
     });
   });
 
-  /* a chip, preset or bulk All/None is a selection of its own — chapters and
-     dials stop owning it, so the next chapter tap starts clean again */
+  /* A chip, preset or bulk All/None is a selection of its own — the dials
+     stop weighting it, so the next chapter tap doesn't silently resume a
+     weighting the player never asked for here.
+     chapterMode itself is a narrower thing: it only ever forces the NEXT
+     chapter tap to wipe and start fresh, and that's only the right move
+     when the room genuinely just changed — i.e. a preset. Explore edits and
+     All/None are refinements of the current selection, not a new room, so a
+     chapter tapped afterwards should mix into what's there (add its own
+     categories) exactly like it would from a second chapter tap — not
+     wipe out an Explore selection or a bulk All the moment After Dark is
+     tapped next. (That silent wipe was the actual bug: "everything active,
+     switch from Explore, tap After Dark, it deselects everything else.") */
   ['toggles','modeBar','selectAll','deselectAll'].forEach(id => {
     const el = $(id);
-    if (el) el.addEventListener('click', () => { chapterMode = false; intentOn = false; syncIntentUI(); }, true);
+    if (el) el.addEventListener('click', () => { intentOn = false; syncIntentUI(); }, true);
   });
+  const modeBarEl = $('modeBar');
+  if (modeBarEl) modeBarEl.addEventListener('click', () => { chapterMode = false; }, true);
 
   /* Play's All/None are the same action from the other tab — proxy straight
      to the canonical Explore buttons so there is exactly one implementation */
