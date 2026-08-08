@@ -72,7 +72,7 @@ The questions come first, category by category. The full change log is at the bo
 3. What object in your house has survived the most versions of you?
 4. Where in your home do you actually live — which chair, which corner?
 5. What does home actually feel like when you have it — and how do you know?
-6. What has to be true of a space before you can relax in it?
+6. What actually makes you feel at ease somewhere new — and how long does it usually take?
 7. If I walked into your home right now, what would I find?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
@@ -98,7 +98,7 @@ The questions come first, category by category. The full change log is at the bo
 1. What's the decision you almost didn't make that changed everything?
 2. What phase are you in that you can already tell you'll look back on?
 3. Tell about a time you surprised yourself with what you could survive.
-4. Have you ever stayed somewhere — a relationship, a city, a job — longer than you should have? What kept you?
+4. What kept you somewhere long after you knew you should leave?
 5. Trace the moment money started meaning something different to you.
 6. Which teacher saw something in you — or missed it entirely?
 7. Which version of yourself was hardest to let go of?
@@ -142,18 +142,18 @@ The questions come first, category by category. The full change log is at the bo
 3. When did you last move purely for the joy of it — no goal, no fitness?
 4. What music reaches your body before it reaches your head — and what happens?
 5. Point to where you carry your tension right now.
-6. Pain taught you something comfort never could...
+6. What did pain teach you that you couldn't have learned any other way?
 7. Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.
-8. When did you last feel completely at home in your own skin?
+8. Which version of your body do you still compare this one to?
 9. What is your body better at now than it has ever been?
 10. What's your actual relationship with food?
 11. Your body asks for something you routinely deny it...
-12. When did your body last let you down — and how did you take it?
+12. When did your body last let you down?
 
 ## Mind
 *Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
 1. How easily does a new habit stick for you — and which one actually did?
-2. What are you good at not doing — and when does that break down?
+2. What do you consistently resist — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
 4. When has a gut feeling known more than you did?
 5. What can you still do for three hours without noticing?
@@ -216,7 +216,7 @@ The questions come first, category by category. The full change log is at the bo
 5. A flirt of yours gets shot down — describe the next sixty seconds inside you.
 6. What relationship rule do you question more than you admit?
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
-8. Two people at once — has your heart ever done that, and could a relationship hold it?
+8. Have you ever loved two people at the same time — and what did you do about it?
 9. Do you make the first move, or make sure you get chosen?
 10. Which love story — your own or borrowed — do you retell most gladly?
 11. What are you like single — and do you like that version?
@@ -225,10 +225,10 @@ The questions come first, category by category. The full change log is at the bo
 ## Attract ✦
 1. Someone walks into the room. What makes you look twice?
 2. What do you find attractive that you'd never admit on a first date?
-3. Someone wanted you and you didn't want them back — how did you handle it, and did you enjoy being wanted anyway?
+3. Tell about turning someone down — and admit whether you liked being asked.
 4. You tell yourself you have a type. Who do you actually keep ending up with?
 5. What does a barely covered body do that a naked one doesn't?
-6. Which outfit on someone else has never failed on you?
+6. Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
 8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
@@ -246,18 +246,18 @@ The questions come first, category by category. The full change log is at the bo
 7. When did you stay silent and shouldn't have?
 8. Would you tell this table what you earn?
 9. What are the outer limits of your compassion?
-10. Money has cost you something...
+10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
-12. When did competition make you ugly — and did you ever cheat to win?
+12. When did competition make you ugly?
 
 ## World
 1. What's something the next generation will judge this one harshly for?
 2. When did you last actually do something about a problem bigger than you — and did it matter?
-3. Name one law you'd pass tomorrow.
+3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Which room first taught you that class exists?
-7. Broadly: are people improvable?
+7. Do people actually change — or just get better at managing what doesn't?
 8. What has travel actually taught you — beyond the stories?
 9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
@@ -285,8 +285,8 @@ The questions come first, category by category. The full change log is at the bo
 4. Who do you miss who is still alive?
 5. What do you need to hear more often than you admit?
 6. If you could rerun one conversation from your life, which one?
-7. What would people be surprised to learn you struggle with?
-8. Are you easy to love?
+7. What skill did you build out of damage control that now feels effortless?
+8. What do the people who love you have to look past on your worst week?
 9. There was a moment you let someone all the way in. What happened next?
 10. Slowly, you're making peace with...
 11. Which conversation do you keep having — in different rooms, with different people?
@@ -304,11 +304,11 @@ The questions come first, category by category. The full change log is at the bo
 9. What did you get away with this week?
 10. Who have you been unfair to lately?
 11. What are you afraid this game will ask you?
-12. What are you not saying?
+12. What's something you've decided isn't worth saying — but haven't fully let go of?
 
 ## Grief
 1. One loss you're still not finished with...
-2. Nobody thinks to ask about this loss...
+2. What did you grieve before it even happened?
 3. Who do you still talk to that can no longer answer?
 4. What surprised you about how you grieved?
 5. Who showed up when you lost something — and who didn't?
@@ -331,7 +331,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Who became family without being family?
 9. Who in your family knows you best — and do they know that?
 10. What role do you play in your family — and is it one you chose?
-11. What would you be worst at as a parent — or what are you worst at?
+11. What kind of parent are you — or would actually be? The honest guess, not the hoped-for one.
 12. Did you want children — and has that changed?
 
 ## Between Us
@@ -346,7 +346,7 @@ The questions come first, category by category. The full change log is at the bo
 9. What would you warn someone about me — kindly?
 10. What do you hope I never change?
 11. What's the most me thing I've ever done?
-12. Which conversation are we overdue?
+12. What would you tell me if you knew I could actually hear it right now?
 
 ## Us: Friends
 1. Which moment made this friendship real for you?
@@ -410,16 +410,16 @@ The questions come first, category by category. The full change log is at the bo
 3. If I were braver, I would already have...
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
-6. The message you secretly hope to receive one day... ✦
-7. Which wish keeps returning, in new costumes?
-8. Is wanting more a flaw or an engine?
+6. What have you been quietly rooting for, in your own life?
+7. If you fast-forwarded five good years, what would you want to see?
+8. Which part of someone else's life do you envy enough to think about more than you'd admit?
 9. A free year, no obligations — what finally gets done?
 10. What do you want for someone else that you can't give them?
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
 
 ## Flesh 🔞
-1. Some touch undoes you. Describe it.
+1. Some touch undoes you. Describe it, and what it does to you.
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Afterwards, still tangled up — how do you like to come down?
 4. Undressing someone — where do you slow down?
@@ -433,7 +433,7 @@ The questions come first, category by category. The full change log is at the bo
 12. Silk, leather, bare skin, rough hands — which texture does something to you?
 
 ## Carnal 🔞
-1. During sex, are you in your body, watching it, or in your head — and what causes this?
+1. What pulls you out of your body during sex, when it happens?
 2. What do you want more of in bed that you rarely get?
 3. What makes you laugh in bed?
 4. What's your sexual superpower — and the night it proved you right?
@@ -470,7 +470,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What kind of words instantly turn you on?
 8. Who do you turn into in bed — and what does someone do to bring them out?
 9. Undressed and having to wait — what does anticipation do to you?
-10. When did you change your mind halfway — and how did that go?
+10. When did "yes" turn into "actually, no" while it was already happening?
 11. Who introduced you to something you'd never have found or tried alone?
 12. More than two — does it appeal, and what's the pull?
 
@@ -485,7 +485,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Tell about the safeword that got used — or the one that should have been.
 8. Where did you find out you had a limit?
 9. What kind of trust does going that far actually take?
-10. What did you consent to that you didn't want — and why did you?
+10. What did you consent to that you didn't actually want?
 11. Who in your normal life knows about this side of you — do they understand, and who will never find out?
 12. What is something considered 'taboo' by society that you actually find quite appealing?
 
@@ -547,6 +547,41 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.59 — Wish rebuilt (6, 7, 8), World 3 off lawmaking
+**Wish 6** → *"What have you been quietly rooting for, in your own life?"* Drops the ✦ — no longer a spicy register. Replaces the fully-open "message from anyone" card, which had no handle, with the broader sense of wanting the category description already promises ("what you chase... what keeps returning") rather than a materialist want.
+**Wish 7** → *"If you fast-forwarded five good years, what would you want to see?"* Replaces the disguised-wish card, a near-duplicate of Wish 4 (both were "longing dressed as something else"). Trajectory rather than disguise.
+**Wish 8** → *"Which part of someone else's life do you envy enough to think about more than you'd admit?"* Replaces the flaw-or-engine riddle, which rewarded a clever answer over an honest one. Envy of a specific life, not an abstract question about wanting in general.
+**World 3** → *"What's something you benefit from that you know isn't fair?"* Off lawmaking entirely — the old card was a debate-club prompt with no personal cost. Personal fairness and privilege is untouched ground in a category about "power, fairness, and the world you're actually living in."
+
+## Patch v6.58 — owner sign-off batch: Mind, Kink, Deep, Raw, World, Between Us, Home, Flesh, Past, Romance, Attract, Values, Carnal
+**Mind 2** → *"What do you consistently resist — and when does that break down?"* Keeps the restraint-as-skill idea, restores the original's own second clause instead of a new one.
+**Kink 10** → *"When did 'yes' turn into 'actually, no' while it was already happening?"* Clarifies the mid-scene change-of-mind the old wording gestured at without naming.
+**Deep 7** → *"What skill did you build out of damage control that now feels effortless?"* Deep 7 was a soft duplicate of Self 7 (hidden struggle). Pivots to a struggle that became a strength — Deep's register, not Self's ground.
+**Deep 8** → *"What do the people who love you have to look past on your worst week?"* The blunt "are you easy to love?" invited a rehearsed rating; naming the people and the week forces a concrete answer.
+**Raw 12** → *"What's something you've decided isn't worth saying — but haven't fully let go of?"* Old wording was a bare restatement of Raw 1 and 5's withholding move; this one turns on the decision to stay quiet rather than the quiet itself.
+**World 7** → *"Do people actually change — or just get better at managing what doesn't?"* Keeps the philosophical-anthropology territory, drops the clinical "improvable."
+**Between Us 12** → *"What would you tell me if you knew I could actually hear it right now?"* Resolved the twin with Between Us 2 (the unasked question) by pivoting to a shift that's gone unnamed rather than a question that's gone unasked.
+**Home 6** → *"What actually makes you feel at ease somewhere new — and how long does it usually take?"* Resolved the twin with Home 5 (what home feels like) by asking for the mechanism and the timeframe instead of the feeling itself.
+**Flesh 1** gains a clause. *"Some touch undoes you. Describe it, and what it does to you."* The old card named the touch and stopped; the category needed the effect asked for directly.
+**Past 4** → *"What kept you somewhere long after you knew you should leave?"* Tightened off the three-item em-dash list plus a second question.
+**Romance 8** → *"Have you ever loved two people at the same time — and what did you do about it?"* Tightened off the "could a relationship hold it" abstraction.
+**Attract 3** → *"Tell about turning someone down — and admit whether you liked being asked."* Tightened off the stacked how-did-you-handle-it / did-you-enjoy-it double question.
+**Values 12** loses its tail. *"When did competition make you ugly?"* — cheating-to-win was a second question competing with the first; kept the sharper half.
+**Carnal 1** → *"What pulls you out of your body during sex, when it happens?"* Tightened off the three-way menu plus "what causes this."
+
+## Patch v6.57 — owner sign-off batch: Body, Family, Grief, Abyss, Values, closing line
+**Body 8** → *"Which version of your body do you still compare this one to?"* Resolves the belongs-to-you twin with Body 2 — comparing against a past self, a photo, or someone else's body is a different mechanism than the in-the-moment ownership Body 2 already covers.
+**Body 6** → *"What did pain teach you that you couldn't have learned any other way?"* The old wording ("comfort never could") stated its own conclusion; the player just supplied an example instead of discovering one.
+**Body 12** loses its tail. *"When did your body last let you down?"* — "how did you take it" was already implied in any honest answer.
+**Family 11** → *"What kind of parent are you — or would actually be? The honest guess, not the hoped-for one."* Reworded to include people who already are parents, not only the hypothetical — the old wording asked only for a worst-case guess and excluded anyone already raising kids.
+**Grief 2** → *"What did you grieve before it even happened?"* Old Grief 1 and 2 both fished for the same unresolved loss ("not finished with" / "nobody asks about"), so drawn close together they narrowed the table to one story. Anticipatory grief is new ground nothing else in the deck touches.
+**Abyss 10** loses its tail. *"What did you consent to that you didn't actually want?"* — same fix as Body 12; the "why" is already inside a real answer.
+**Values 10** → *"What's a rule you break on purpose, every time, without a shred of guilt?"* Old card overlapped Values 8 (both money cards — earning vs. cost). Values ran twelve cards deep with real weight and nothing that cost the player nothing to answer; this is its airy card, same mechanic as Attract 6.
+**Closing line** trimmed in the app. Cut "Go on. Go first." — stacking two imperatives right after "no winners" read as the deck ordering the room around immediately after promising it wouldn't. Ends on "Whoever walks through first sets the depth for everyone" instead.
+
+## Patch v6.56 — Attract 6 sharpened
+**Attract 6** → *"Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?"* The added clause turns a preference list into a real question — whether the pull is to a look or to whoever's in it — rather than just cataloguing outfits. Reviewer wording, converted to house em dash.
 
 ## Patch v6.52 — Romance 10 reverted
 **Romance 10** back to the retell-love-story card. The surprise card from v6.50 is withdrawn; it never had the owner's sign-off for that slot specifically. Bench for now.
