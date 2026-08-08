@@ -142,13 +142,13 @@ The questions come first, category by category. The full change log is at the bo
 3. When did you last move purely for the joy of it — no goal, no fitness?
 4. What music reaches your body before it reaches your head — and what happens?
 5. Point to where you carry your tension right now.
-6. Pain taught you something comfort never could...
+6. What did pain teach you that you couldn't have learned any other way?
 7. Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.
-8. When did you last feel completely at home in your own skin?
+8. Which version of your body do you still compare this one to?
 9. What is your body better at now than it has ever been?
 10. What's your actual relationship with food?
 11. Your body asks for something you routinely deny it...
-12. When did your body last let you down — and how did you take it?
+12. When did your body last let you down?
 
 ## Mind
 *Thinking, thought patterns, and the inner workings — attention, learning, intuition. (Rebuilt in v6.18.)*
@@ -246,7 +246,7 @@ The questions come first, category by category. The full change log is at the bo
 7. When did you stay silent and shouldn't have?
 8. Would you tell this table what you earn?
 9. What are the outer limits of your compassion?
-10. Money has cost you something...
+10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
 12. When did competition make you ugly — and did you ever cheat to win?
 
@@ -308,7 +308,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Grief
 1. One loss you're still not finished with...
-2. Nobody thinks to ask about this loss...
+2. What did you grieve before it even happened?
 3. Who do you still talk to that can no longer answer?
 4. What surprised you about how you grieved?
 5. Who showed up when you lost something — and who didn't?
@@ -331,7 +331,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Who became family without being family?
 9. Who in your family knows you best — and do they know that?
 10. What role do you play in your family — and is it one you chose?
-11. What would you be worst at as a parent — or what are you worst at?
+11. What kind of parent are you — or would actually be? The honest guess, not the hoped-for one.
 12. Did you want children — and has that changed?
 
 ## Between Us
@@ -485,7 +485,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Tell about the safeword that got used — or the one that should have been.
 8. Where did you find out you had a limit?
 9. What kind of trust does going that far actually take?
-10. What did you consent to that you didn't want — and why did you?
+10. What did you consent to that you didn't actually want?
 11. Who in your normal life knows about this side of you — do they understand, and who will never find out?
 12. What is something considered 'taboo' by society that you actually find quite appealing?
 
@@ -547,6 +547,16 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.57 — owner sign-off batch: Body, Family, Grief, Abyss, Values, closing line
+**Body 8** → *"Which version of your body do you still compare this one to?"* Resolves the belongs-to-you twin with Body 2 — comparing against a past self, a photo, or someone else's body is a different mechanism than the in-the-moment ownership Body 2 already covers.
+**Body 6** → *"What did pain teach you that you couldn't have learned any other way?"* The old wording ("comfort never could") stated its own conclusion; the player just supplied an example instead of discovering one.
+**Body 12** loses its tail. *"When did your body last let you down?"* — "how did you take it" was already implied in any honest answer.
+**Family 11** → *"What kind of parent are you — or would actually be? The honest guess, not the hoped-for one."* Reworded to include people who already are parents, not only the hypothetical — the old wording asked only for a worst-case guess and excluded anyone already raising kids.
+**Grief 2** → *"What did you grieve before it even happened?"* Old Grief 1 and 2 both fished for the same unresolved loss ("not finished with" / "nobody asks about"), so drawn close together they narrowed the table to one story. Anticipatory grief is new ground nothing else in the deck touches.
+**Abyss 10** loses its tail. *"What did you consent to that you didn't actually want?"* — same fix as Body 12; the "why" is already inside a real answer.
+**Values 10** → *"What's a rule you break on purpose, every time, without a shred of guilt?"* Old card overlapped Values 8 (both money cards — earning vs. cost). Values ran twelve cards deep with real weight and nothing that cost the player nothing to answer; this is its airy card, same mechanic as Attract 6.
+**Closing line** trimmed in the app. Cut "Go on. Go first." — stacking two imperatives right after "no winners" read as the deck ordering the room around immediately after promising it wouldn't. Ends on "Whoever walks through first sets the depth for everyone" instead.
 
 ## Patch v6.56 — Attract 6 sharpened
 **Attract 6** → *"Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?"* The added clause turns a preference list into a real question — whether the pull is to a look or to whoever's in it — rather than just cataloguing outfits. Reviewer wording, converted to house em dash.
