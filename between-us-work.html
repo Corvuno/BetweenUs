@@ -3616,6 +3616,7 @@ function updateAfterDarkBtn() {
         setCardDisplay(state.visibleDeck[0]);
         renderProgress();
         updateStarUI();
+        updateDrawMore();
       } else if (state.currentIndex >= 0 && state.visibleDeck[state.currentIndex]) {
         updatePartyDisplay(state.visibleDeck[state.currentIndex]);
       }
@@ -3764,6 +3765,10 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
 
 // updateDrawMore — single definition (transforms btn-next, hides standalone button)
 function updateDrawMore() {
+  // This runs after every deck-state change (nextCard, skipCard, initDeck,
+  // choosePick, …), so the end-of-hand hint updates from here too — no need
+  // to separately observe the DOM for it.
+  hint(atEnd());
   // Always hide the standalone draw-more button — it floats awkwardly
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
@@ -3961,15 +3966,21 @@ function showSessionSummary() {
 // deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
 // touchend/click, so the gate opens a short swallow window that those handlers
 // (here and on the fullscreen overlay) check, keeping one hold to one advance.
+//
+// atEnd/hint are plain top-level functions (not nested in the IIFE below) so
+// updateDrawMore() — already the one place every deck-state change routes
+// through — can call hint(atEnd()) directly. That replaces a MutationObserver
+// that used to watch #card-question's DOM for changes to infer the same
+// thing: explicit state instead of observing what the DOM did as a result of it.
+function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
+function hint(on){
+  const el = document.getElementById('endHint');
+  if (el) el.classList.toggle('visible', !!on);
+}
 const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const HOLD = 550;
   let timer = null;
-  function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
-  function hint(on){
-    const el = document.getElementById('endHint');
-    if (el) el.classList.toggle('visible', !!on);
-  }
   window._nudgeEndHold = function(){
     const el = document.getElementById('endHint');
     if (!el) return;
@@ -4009,9 +4020,6 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
       }
     }, true);
   });
-  const obs = new MutationObserver(() => hint(atEnd()));
-  const q = document.getElementById('card-question');
-  if (q) obs.observe(q, {childList:true, characterData:true, subtree:true});
 })();
 
 // ── A: Spice glyph buttons (one inline on the After Dark chapter in Play,

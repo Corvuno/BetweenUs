@@ -369,6 +369,10 @@ async function run() {
       await page.waitForTimeout(300);
     }
     assert(await atEnd(), `did not reach the end-of-hand screen after 20 taps (${await questionText(page)})`);
+    // The end-hint indicator is now set explicitly (from updateDrawMore(),
+    // via hint(atEnd())) rather than by a MutationObserver watching
+    // #card-question — check it actually turned on.
+    assert(await page.locator('#endHint').evaluate(el => el.classList.contains('visible')), 'end-hint did not appear at the end of the hand');
 
     // Quick tap: pointerdown+up well under the hold threshold must NOT advance.
     await page.evaluate(() => {
@@ -389,6 +393,7 @@ async function run() {
     await page.waitForTimeout(200);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
+    assert(!(await page.locator('#endHint').evaluate(el => el.classList.contains('visible'))), 'end-hint stayed visible into the fresh hand');
   });
 
   await check('no uncaught page errors were raised during the run', async () => {
