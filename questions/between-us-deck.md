@@ -423,14 +423,14 @@ The questions come first, category by category. The full change log is at the bo
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Afterwards, still tangled up — how do you like to come down?
 4. Undressing someone — where do you slow down?
-5. Ice, heat, cold hands, warm breath — what does temperature do to you?
+5. Reconstruct your smoothest pickup ever.
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. What makes you feel completely safe with someone sexually?
 11. In the moment, how do you make what you want known — words, hands, or just taking it?
-12. Silk, leather, bare skin, rough hands — which texture does something to you?
+12. The most memorable places sex has happened — the most beautiful, and the strangest?
 
 ## Carnal 🔞
 1. What pulls you out of your body during sex, when it happens?
@@ -455,9 +455,9 @@ The questions come first, category by category. The full change log is at the bo
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. Reconstruct your smoothest pickup ever.
+9. Have you ever faked it — and did they ever find out?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
-11. The most memorable places sex has happened — the most beautiful, and the strangest?
+11. Tell about the most inconvenient time you've ever been walked in on.
 12. What's the longest you've gone without sex — and how was that?
 
 ## Kink 🔞
@@ -547,6 +547,12 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.60 — Bare and Flesh trade the story cards
+**Flesh 5** ← **Bare 9** (the pickup card) and **Flesh 12** ← **Bare 11** (the beautiful/strangest place card). Both were low-risk, story-based cards that read soft for Bare's blunt/confessional register and fit Flesh's gentler gateway job better — Flesh 5 needed a genuinely new entry-point card after the temperature card was pulled, and the beautiful/strangest card was a stronger genuine "texture" alternative than another material list.
+**Bare 9** → *"Have you ever faked it — and did they ever find out?"* Confession-with-a-twist, direct register, ground Bare had never touched.
+**Bare 11** → *"Tell about the most inconvenient time you've ever been walked in on."* Same register as the outrageous-situation card at 10, distinct story.
+Straight trade, both categories stay at twelve.
 
 ## Patch v6.59 — Wish rebuilt (6, 7, 8), World 3 off lawmaking
 **Wish 6** → *"What have you been quietly rooting for, in your own life?"* Drops the ✦ — no longer a spicy register. Replaces the fully-open "message from anyone" card, which had no handle, with the broader sense of wanting the category description already promises ("what you chase... what keeps returning") rather than a materialist want.
