@@ -120,7 +120,7 @@ async function run() {
   // near the top of the file.
   await check('initial load shows the "draw a card" placeholder, not a card', async () => {
     const q = await questionText(page);
-    assert(/draw a card|trek een kaart/i.test(q), `expected the draw-to-begin placeholder, got "${q}"`);
+    assert(/draw a card|trek een kaart|place to begin|plek om te beginnen/i.test(q), `expected the draw-to-begin placeholder, got "${q}"`);
     const numTxt = (await cardNumberText(page)).trim();
     assert(numTxt === '— — —', `expected the empty card-number placeholder, got "${numTxt}"`);
   });
@@ -212,6 +212,21 @@ async function run() {
       await page.locator('#tokCats').click();
       await page.waitForTimeout(300);
     }
+    // the sheet has an opacity/transform transition; wait it out so later
+    // clicks don't race a still-animating overlay
+    await catArea.evaluate(el => new Promise(res => {
+      const cs = getComputedStyle(el);
+      if (parseFloat(cs.opacity) >= 0.99) return res();
+      const done = () => { el.removeEventListener('transitionend', done); res(); };
+      el.addEventListener('transitionend', done);
+      setTimeout(done, 500);
+    }));
+    // the sheet defaults to the "Shape" tab — the category buckets live
+    // under "Explore"
+    if (!(await page.locator('#tabExplore').evaluate(el => el.classList.contains('on')))) {
+      await page.locator('#tabExplore').click();
+      await page.waitForTimeout(200);
+    }
   }
   async function closeCategorySheet() {
     const catArea = page.locator('#cat-area');
@@ -228,23 +243,34 @@ async function run() {
     }
   }
 
-  await check('toggling a category off updates valCats and reshuffles the deck', async () => {
+  // The token now shows a computed "mood" word rather than a raw count, so
+  // it doesn't necessarily change on every toggle (two selections can land
+  // in the same mood band) — check the underlying state directly instead.
+  // `state` is a top-level `const` in a classic script, so it's not on
+  // `window` — but page.evaluate() shares that same global lexical scope,
+  // so the bare identifier resolves fine.
+  async function activeToggleCount() { return page.evaluate(() => state.activeToggles.size); }
+
+  await check('toggling a category bucket changes the active set and reshuffles the deck', async () => {
     try {
       await openCategorySheet();
-      const onBtn = page.locator('.toggle-btn.on:not(.hard-locked)').first();
-      assert(await onBtn.count() > 0, 'no active category toggle found to click');
-      const beforeCats = await page.locator('#valCats').textContent();
-      await onBtn.click();
+      // Categories are now grouped into buckets (Ease In, Everyday, …) under
+      // the Explore tab; each bucket's cbk-select toggles the whole bucket.
+      const bucket = page.locator('.cat-bucket[data-bucket="everyday"]');
+      assert(await bucket.count() > 0, 'expected an "everyday" bucket');
+      const before = await activeToggleCount();
+      await bucket.locator('.cbk-select').click();
       await page.waitForTimeout(300);
-      const afterCats = await page.locator('#valCats').textContent();
-      assert(afterCats !== beforeCats, `valCats did not change (${beforeCats})`);
+      const after = await activeToggleCount();
+      assert(after !== before, `active category count did not change (${before})`);
       // A toggle change calls initDeck(), which resets to the "draw a card"
       // placeholder (no auto-drawn first card — see the NO INTRO note up top).
       const numTxt = (await cardNumberText(page)).trim();
       assert(numTxt === '— — —', `deck did not reset to the draw-to-begin placeholder, got "${numTxt}"`);
       // restore for later tests
-      await onBtn.click();
+      await bucket.locator('.cbk-select').click();
       await page.waitForTimeout(300);
+      assert((await activeToggleCount()) === before, 'active category count did not restore');
     } finally {
       await closeCategorySheet();
     }
@@ -285,24 +311,28 @@ async function run() {
   });
 
   // ── I. After Dark toggle ─────────────────────────────────────────────────
-  await check('After Dark toggle adds adult categories to the active set', async () => {
-    const btn = page.locator('#afterDarkToggle');
-    if (await btn.evaluate(el => el.style.display === 'none')) {
+  // #afterDarkToggle itself is legacy now (kept only so the old preset /
+  // hard-safe-mode logic still has something to read — its row is
+  // permanently display:none, see .cat-topbar--legacy). The real, current
+  // entry point is the "After Dark" bucket in the Explore tab.
+  await check('the After Dark bucket adds adult categories to the active set', async () => {
+    const legacyBtn = page.locator('#afterDarkToggle');
+    if (await legacyBtn.evaluate(el => el.style.display === 'none')) {
       console.log('  \x1b[33m·\x1b[0m (hard-locked in this profile — skipped, counted as pass)');
       return;
     }
     try {
-      await openCategorySheet(); // the button lives inside the category sheet
-      const wasOn = await btn.evaluate(el => el.classList.contains('on'));
-      const beforeCats = await page.locator('#valCats').textContent();
-      await btn.click();
+      await openCategorySheet();
+      const bucket = page.locator('.cat-bucket[data-bucket="afterdarkb"]');
+      assert(await bucket.count() > 0, 'expected an "afterdarkb" bucket');
+      const before = await activeToggleCount();
+      await bucket.locator('.cbk-select').click();
       await page.waitForTimeout(300);
-      const afterCats = await page.locator('#valCats').textContent();
-      const isOn = await btn.evaluate(el => el.classList.contains('on'));
-      assert(isOn !== wasOn, 'After Dark class did not toggle');
-      if (isOn) assert(afterCats !== beforeCats, 'valCats did not change after enabling After Dark');
-      await btn.click(); // restore
+      const after = await activeToggleCount();
+      assert(after !== before, `active category count did not change after toggling After Dark (${before})`);
+      await bucket.locator('.cbk-select').click(); // restore
       await page.waitForTimeout(300);
+      assert((await activeToggleCount()) === before, 'active category count did not restore');
     } finally {
       await closeCategorySheet();
     }
