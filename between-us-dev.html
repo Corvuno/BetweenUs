@@ -4507,12 +4507,6 @@ applyToggleUI();
      actually control; the count badge still shows against every member. */
   const controllable = levels => { const c = levels.filter(l => !OPT_IN_ONLY.includes(l)); return c.length ? c : levels; };
 
-  /* Presets, Draw and Explore each leave their own selection behind. The
-     first chapter you tap takes the selection over rather than adding to
-     whatever was already lit, so "Arrive" never reads as already-on inside
-     a broad preset and quietly subtracts itself on the first tap. */
-  let chapterMode = false;
-
   function stateOf(levels){
     const live = levels.filter(l => !(state.safeMode && SAFE_BLOCKED_LEVELS.includes(l)));
     const pool = live.length ? live : levels;
@@ -4590,16 +4584,18 @@ applyToggleUI();
     if (typeof renderShell === 'function') renderShell();
   }
 
-  /* ── chapters ── */
+  /* ── chapters: plain add/remove toggles on whatever's already selected —
+     same rule as an Explore bucket, no matter what put the current
+     selection there (a preset, Explore, another chapter). A chapter never
+     wipes the rest of the room; it only ever adds or removes its own
+     categories. ── */
   $('chapters').addEventListener('click', e => {
     if (e.target.closest('.spice-glyph')) return;   // the inline After Dark spice toggle handles itself
     const btn = e.target.closest('.chapter'); if (!btn) return;
     const id = btn.dataset.chapter;
-    const fresh = !chapterMode;
-    const turningOn = fresh || stateOf(chapterLevels(id)) !== 'on';
+    const turningOn = stateOf(controllable(chapterLevels(id))) !== 'on';
     if (id === 'afterdark' && turningOn && !openAfterDark()) return;
     releasePresetMask();
-    if (fresh) { state.activeToggles.clear(); chapterMode = true; }
     intentOn = true;
     setLevels(chapterLevels(id), turningOn);
     commit();
@@ -4626,7 +4622,6 @@ applyToggleUI();
     const d = window.DEFAULT_SELECTION || { mode:'chapters', chapters:['findout','deeper','aboutus'], intensity:50, focus:50 };
     releasePresetMask();
     state.activeToggles.clear();
-    chapterMode = true;
     if (d.mode === 'all') {
       document.querySelectorAll('.toggle-btn').forEach(b => {
         const lvl = b.dataset.level;
@@ -4672,32 +4667,23 @@ applyToggleUI();
       const turningOn = stateOf(controllable(levels)) !== 'on';
       if (id === 'afterdarkb' && turningOn && !openAfterDark()) return;
       releasePresetMask();
-      intentOn = false;   // an Explore edit is a refinement, not a new room — a chapter
-                          // tapped afterwards should still mix in, not wipe it (chapterMode
-                          // is left alone; only a preset click resets that)
+      intentOn = false;   // an Explore edit only drops the dials' weighting — the
+                          // selection itself stays exactly as edited
       setLevels(levels.filter(l => !(turningOn && OPT_IN_ONLY.includes(l))), turningOn);
       commit();
     });
   });
 
   /* A chip, preset or bulk All/None is a selection of its own — the dials
-     stop weighting it, so the next chapter tap doesn't silently resume a
-     weighting the player never asked for here.
-     chapterMode itself is a narrower thing: it only ever forces the NEXT
-     chapter tap to wipe and start fresh, and that's only the right move
-     when the room genuinely just changed — i.e. a preset. Explore edits and
-     All/None are refinements of the current selection, not a new room, so a
-     chapter tapped afterwards should mix into what's there (add its own
-     categories) exactly like it would from a second chapter tap — not
-     wipe out an Explore selection or a bulk All the moment After Dark is
-     tapped next. (That silent wipe was the actual bug: "everything active,
-     switch from Explore, tap After Dark, it deselects everything else.") */
+     stop weighting it, so a chapter tapped afterwards doesn't silently
+     resume a weighting the player never asked for here. The selection
+     itself is untouched; every route in (preset, Explore, a chapter) is a
+     plain add/remove toggle on whatever's already there — nothing wipes
+     the room out from under whatever came before it. */
   ['toggles','modeBar','selectAll','deselectAll'].forEach(id => {
     const el = $(id);
     if (el) el.addEventListener('click', () => { intentOn = false; syncIntentUI(); }, true);
   });
-  const modeBarEl = $('modeBar');
-  if (modeBarEl) modeBarEl.addEventListener('click', () => { chapterMode = false; }, true);
 
   /* Play's All/None are the same action from the other tab — proxy straight
      to the canonical Explore buttons so there is exactly one implementation */
