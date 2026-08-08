@@ -110,7 +110,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Unwind
 1. When did you last stay outside longer than you meant to — and where were you?
-2. What does rest actually feel like for you — do you know how to do it?
+2. What hobby have you never gotten tired of, even after years?
 3. What are you looking forward to?
 4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
@@ -184,7 +184,7 @@ The questions come first, category by category. The full change log is at the bo
 1. How do you show someone they matter to you — the actual method?
 2. When did being needed stop feeling good?
 3. Who taught you the most about how to be close to someone?
-4. You need something from people, and rarely say it out loud...
+4. Do you wait to make the first move, even when you're the one missing them?
 5. How can someone tell you're withdrawing before you've said a word?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
@@ -547,6 +547,10 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.61 — Connect 4 rebuilt, Unwind 2 off "do you know how to rest"
+**Connect 4** → *"Do you wait to make the first move, even when you're the one missing them?"* Replaces the unspoken-need fragment with the reciprocity gap: a category audit found nothing anywhere in Connect asking who initiates, or who's stuck waiting.
+**Unwind 2** → *"What hobby have you never gotten tired of, even after years?"* Replaces the rest-capacity card — Unwind had three travel cards and zero on hobbies or absorption, real gaps against the category's own stated ground (time off, vacation, nature, a book, a hobby that gives something back).
 
 ## Patch v6.60 — Bare and Flesh trade the story cards
 **Flesh 5** ← **Bare 9** (the pickup card) and **Flesh 12** ← **Bare 11** (the beautiful/strangest place card). Both were low-risk, story-based cards that read soft for Bare's blunt/confessional register and fit Flesh's gentler gateway job better — Flesh 5 needed a genuinely new entry-point card after the temperature card was pulled, and the beautiful/strangest card was a stronger genuine "texture" alternative than another material list.
