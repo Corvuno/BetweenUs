@@ -987,7 +987,7 @@ body::before{
 
   <!-- v6 TOKEN LINE -->
   <div class="tok-line" id="tokLine">
-    <button class="tok" id="tokCats"><span class="tok-lbl">Categories</span><span class="tok-val" id="valCats">38</span></button>
+    <button class="tok" id="tokCats"><span class="tok-lbl" id="lblCats">Categories</span><span class="tok-val" id="valCats">38</span></button>
     <button class="tok" id="tokOrder"><span class="tok-lbl">Shuffle</span><span class="tok-val" id="valOrder">Wild</span></button>
     <button class="tok" id="tokHand"><span class="tok-lbl">Cards</span><span class="tok-val" id="valHand">5</span></button>
   </div>
@@ -1663,6 +1663,110 @@ function applyIntent(cards){
   const keyed = cards.map(c => ({ c, k: Math.pow(Math.random(), 1 / intentWeight(c.level, lo, hi)) }));
   keyed.sort((a, b) => b.k - a.k);
   return keyed.slice(0, Math.max(20, Math.ceil(keyed.length * 0.30))).map(x => x.c);
+}
+
+/* ── Mood: the sliders set the energy, the selected categories tint it ──────
+   Intensity/Focus already exist (LEVEL_INTENSITY, LEVEL_FOCUS) — reused here,
+   not duplicated. Playful/Intimate/Reflective is the one new axis: how a
+   category tends to feel, independent of how deep or how relational it is. */
+const CATEGORY_TRAITS = {
+  quick:{playful:1,intimate:0,reflective:0}, warm:{playful:.8,intimate:.2,reflective:0},
+  colbert:{playful:1,intimate:0,reflective:0}, magic:{playful:.8,intimate:.1,reflective:.1}, aron:{playful:.1,intimate:.3,reflective:.6},
+  culture:{playful:.6,intimate:0,reflective:.2}, life:{playful:.4,intimate:.1,reflective:.3},
+  home:{playful:.3,intimate:.2,reflective:.2}, work:{playful:.4,intimate:0,reflective:.1},
+  unwind:{playful:.7,intimate:.1,reflective:.1}, world:{playful:.3,intimate:0,reflective:.5},
+  self:{playful:.1,intimate:.2,reflective:.9}, mind:{playful:.1,intimate:.1,reflective:.9},
+  body:{playful:.3,intimate:.5,reflective:.2}, values:{playful:0,intimate:.1,reflective:.9},
+  wish:{playful:.3,intimate:.2,reflective:.6}, past:{playful:.1,intimate:.4,reflective:.6},
+  roots:{playful:.1,intimate:.3,reflective:.5}, family:{playful:.3,intimate:.4,reflective:.3},
+  connect:{playful:.3,intimate:.5,reflective:.2}, friends:{playful:.5,intimate:.4,reflective:.1},
+  date:{playful:.6,intimate:.6,reflective:.1}, attract:{playful:.5,intimate:.6,reflective:0},
+  us:{playful:.1,intimate:.8,reflective:.1}, usfriend:{playful:.2,intimate:.6,reflective:.2}, uslove:{playful:.1,intimate:.9,reflective:0},
+  deep:{playful:0,intimate:.4,reflective:.7}, raw:{playful:0,intimate:.5,reflective:.6},
+  shadow:{playful:0,intimate:.4,reflective:.7}, grief:{playful:0,intimate:.4,reflective:.7},
+  usintimate:{playful:.1,intimate:.9,reflective:.1}, flesh:{playful:.2,intimate:.9,reflective:0},
+  carnal:{playful:.2,intimate:.9,reflective:0}, blunt:{playful:.4,intimate:.6,reflective:.1},
+  kinks:{playful:.4,intimate:.7,reflective:0}, abyss:{playful:0,intimate:.5,reflective:.9},
+  backup:{playful:.3,intimate:.2,reflective:.4},
+};
+
+/* 3x3 (intensity x focus), each cell a word per dominant trait, last is the
+   fallback when nothing dominates. ~27 in normal reach, matching the size of
+   vocabulary the chapters and dials can actually produce — not hundreds. */
+const MOOD_WORDS = {
+  '0,0':{playful:'Light',    intimate:'Gentle',   reflective:'Curious',    _:'Open'},
+  '0,1':{playful:'Playful',  intimate:'Warm',     reflective:'Curious',    _:'Open'},
+  '0,2':{playful:'Flirty',   intimate:'Warm',     reflective:'Connected',  _:'Mischievous'},
+  '1,0':{playful:'Curious',  intimate:'Revealing',reflective:'Reflective', _:'Grounded'},
+  '1,1':{playful:'Curious',  intimate:'Honest',   reflective:'Open',       _:'Real'},
+  '1,2':{playful:'Warm',     intimate:'Intimate', reflective:'Honest',     _:'Close'},
+  '2,0':{playful:'Unfiltered',intimate:'Raw',     reflective:'Searching',  _:'Deep'},
+  '2,1':{playful:'Unfiltered',intimate:'Raw',     reflective:'Searching',  _:'Deep'},
+  '2,2':{playful:'Charged',  intimate:'Vulnerable',reflective:'Exposed',   _:'Unguarded'},
+};
+
+/* Specific combinations that should read as themselves, not as whatever
+   trait happens to average out on top — "intense + us" is not automatically
+   sexual; which categories got you there decides that. Checked in order,
+   first match wins, before the general trait lookup runs at all. */
+const MOOD_OVERRIDES = [
+  { i:0, f:2, any:['warm','attract'],          word:'Flirty' },
+  { i:0, f:0, any:['warm','life'],             word:'Light' },
+  { i:1, f:0, any:['life','mind'],             word:'Reflective' },
+  { i:1, f:2, any:['connect','friends'],       word:'Close' },
+  { i:1, f:2, any:['date'],                    word:'Tender' },
+  { i:2, f:0, any:['past','grief','shadow'],   word:'Raw' },
+  { i:2, f:2, any:['uslove','usintimate'],     word:'Vulnerable' },
+  { i:2, f:2, any:['attract','carnal'],        word:'Charged' },
+  { i:2, f:0, any:['world','values','mind'],   word:'Searching' },
+];
+
+/* Which of the five chapters each category belongs to, so mixing chapters
+   of very different sizes doesn't let the bigger one drown out the smaller
+   one — Beneath the Surface has 19 members, Into the Deep has 4, and a flat
+   average across raw categories would let 19 always outvote 4. Categories
+   outside any chapter (the ordered lists, Abyss) each stand as their own
+   group of one. Kept in sync with CHAPTERS in the controller script below. */
+const LEVEL_CHAPTER = {};
+[['warmup',['quick','warm']],
+ ['findout',['culture','life','home','work','unwind','world','self','mind','body','values','wish',
+             'past','roots','family','spirit','connect','friends','date','attract']],
+ ['deeper',['deep','raw','shadow','grief']],
+ ['aboutus',['us','usfriend','uslove']],
+ ['afterdark',['usintimate','flesh','carnal','blunt','kinks']],
+].forEach(([id,ls]) => ls.forEach(l => LEVEL_CHAPTER[l] = id));
+
+function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
+  const levels = activeLevels.filter(l => CATEGORY_TRAITS[l]);
+  if (!levels.length) return null;
+
+  // group by chapter (or a singleton group per category outside any chapter),
+  // average each group on its own, then average the groups equally
+  const groups = {};
+  levels.forEach(l => { const g = LEVEL_CHAPTER[l] || l; (groups[g] = groups[g] || []).push(l); });
+  const groupVecs = Object.values(groups).map(ls => ({
+    playful:    ls.reduce((s,l) => s + CATEGORY_TRAITS[l].playful,    0) / ls.length,
+    intimate:   ls.reduce((s,l) => s + CATEGORY_TRAITS[l].intimate,   0) / ls.length,
+    reflective: ls.reduce((s,l) => s + CATEGORY_TRAITS[l].reflective, 0) / ls.length,
+    deep:       ls.reduce((s,l) => s + (levelIntensity(l)-1)/6,       0) / ls.length,
+    us:         ls.reduce((s,l) => s + (levelFocus(l)+1)/2,           0) / ls.length,
+  }));
+  const meanOf = key => groupVecs.reduce((s,v) => s + v[key], 0) / groupVecs.length;
+
+  // sliders are the energy; the selection only tints it
+  const intensity = .65*sliderIntensity01 + .35*meanOf('deep');
+  const focus     = .65*sliderFocus01     + .35*meanOf('us');
+  const iBand = intensity < .34 ? 0 : intensity < .66 ? 1 : 2;
+  const fBand = focus     < .34 ? 0 : focus     < .66 ? 1 : 2;
+
+  const override = MOOD_OVERRIDES.find(o => o.i===iBand && o.f===fBand && o.any.some(l => levels.includes(l)));
+  if (override) return override.word;
+
+  const p = meanOf('playful'), im = meanOf('intimate'), r = meanOf('reflective');
+  const spread = Math.max(p,im,r) - Math.min(p,im,r);
+  const cell = MOOD_WORDS[iBand+','+fBand];
+  if (spread < .15) return cell._;
+  return p >= im && p >= r ? cell.playful : im >= r ? cell.intimate : cell.reflective;
 }
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
@@ -3579,17 +3683,26 @@ document.addEventListener('keydown',e=>{
 // state and written here; callers invoke renderShell() after a state change
 // instead of the shell observing its own DOM for updates.
 function renderShell() {
-  // Categories token: active / total available (excludes Backup + hidden ones)
+  // Categories token -> Mood: the sliders' energy, tinted by what's active.
+  // Bare count only when literally nothing is selected — there's no mood to name.
   const total = [...document.querySelectorAll('.toggle-btn')]
     .filter(b => b.dataset.level && b.dataset.level !== 'backup' && b.style.display !== 'none').length;
-  const vCats = document.getElementById('valCats');
-  if (vCats) vCats.textContent = state.activeToggles.size + '/' + total;
+  const vCats = document.getElementById('valCats'), lCats = document.getElementById('lblCats');
+  if (vCats) {
+    const mood = (typeof computeMood === 'function' && typeof intentIntensity !== 'undefined')
+      ? computeMood([...state.activeToggles], intentIntensity, (intentFocus+1)/2) : null;
+    if (mood) { vCats.textContent = mood; if (lCats) lCats.textContent = 'Mood'; }
+    else      { vCats.textContent = state.activeToggles.size + '/' + total; if (lCats) lCats.textContent = 'Categories'; }
+  }
   // Shuffle token: active mode
   const vOrder = document.getElementById('valOrder');
   if (vOrder && state.randomMode) vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
-  // Cards token: active per-round limit
+  // Cards token: hand size / total matching cards, e.g. "5 / 214"
   const vHand = document.getElementById('valHand');
-  if (vHand) vHand.textContent = (state.cardLimit == null) ? 'All' : String(state.cardLimit);
+  if (vHand) {
+    const handSize = (state.cardLimit == null) ? 'All' : String(state.cardLimit);
+    vHand.textContent = handSize + ' / ' + state.fullDeck.length;
+  }
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); pp.textContent = pt.textContent; }
