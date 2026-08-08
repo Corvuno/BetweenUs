@@ -228,7 +228,7 @@ The questions come first, category by category. The full change log is at the bo
 3. Someone wanted you and you didn't want them back — how did you handle it, and did you enjoy being wanted anyway?
 4. You tell yourself you have a type. Who do you actually keep ending up with?
 5. What does a barely covered body do that a naked one doesn't?
-6. Which outfit on someone else has never failed on you?
+6. Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
 8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
@@ -547,6 +547,9 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.56 — Attract 6 sharpened
+**Attract 6** → *"Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?"* The added clause turns a preference list into a real question — whether the pull is to a look or to whoever's in it — rather than just cataloguing outfits. Reviewer wording, converted to house em dash.
 
 ## Patch v6.52 — Romance 10 reverted
 **Romance 10** back to the retell-love-story card. The surprise card from v6.50 is withdrawn; it never had the owner's sign-off for that slot specifically. Bench for now.
