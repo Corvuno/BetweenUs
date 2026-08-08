@@ -941,8 +941,6 @@ body::before{
   color:var(--muted);padding-bottom:7px;}
 .dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;}
 .dial{position:relative;}
-.dial-anchor{position:absolute;left:50%;top:29px;width:1px;height:9px;margin-left:-.5px;
-  background:var(--gold);opacity:.45;pointer-events:none;}
 .dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;position:relative;z-index:1;}
 .dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
 .dial-range::-moz-range-track{height:1px;background:var(--border);}
@@ -1047,13 +1045,11 @@ body::before{
           <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
           <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
                  aria-label="How far in: easy to intense">
-          <div class="dial-anchor"></div>
         </div>
         <div class="dial">
           <div class="dial-ends"><span>Self</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
           <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
                  aria-label="Who it is about: yourself to the two of you">
-          <div class="dial-anchor"></div>
         </div>
       </div>
 
@@ -4683,6 +4679,35 @@ applyToggleUI();
   ['toggles','modeBar','selectAll','deselectAll'].forEach(id => {
     const el = $(id);
     if (el) el.addEventListener('click', () => { intentOn = false; syncIntentUI(); }, true);
+  });
+
+  /* Each "Start from" room has its own natural depth and focus. The preset
+     itself still decides exactly which categories are on — this only moves
+     the dials to where that room's mood actually sits, so if the player
+     starts mixing chapters in afterwards, the dials aren't left wherever a
+     different room last set them. Strangers and Work sit light; Late Night
+     sits the most intense; Partner leans furthest toward Us. */
+  const PRESET_DIALS = {
+    open:       { intensity:50, focus:50 },
+    newpeople:  { intensity:15, focus:30 },
+    friends:    { intensity:30, focus:45 },
+    dating:     { intensity:40, focus:55 },
+    partner:    { intensity:60, focus:75 },
+    latenight:  { intensity:90, focus:55 },
+    solo:       { intensity:45, focus:5  },
+    work:       { intensity:10, focus:25 },
+    family_p:   { intensity:30, focus:40 },
+  };
+  const modeBarEl = $('modeBar');
+  if (modeBarEl) modeBarEl.addEventListener('click', e => {
+    const modeBtn = e.target.closest('.mode-btn'); if (!modeBtn) return;
+    const d = PRESET_DIALS[modeBtn.dataset.mode]; if (!d) return;
+    intentIntensity = d.intensity / 100;
+    intentFocus     = (d.focus / 100) * 2 - 1;
+    const ii = $('dialIntensity'), fi = $('dialFocus');
+    if (ii) ii.value = d.intensity;
+    if (fi) fi.value = d.focus;
+    syncIntentUI();
   });
 
   /* Play's All/None are the same action from the other tab — proxy straight
