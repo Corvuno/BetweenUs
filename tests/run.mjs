@@ -62,7 +62,10 @@ async function questionText(page) { return (await page.locator('#card-question')
 
 // Dispatch a synthetic touch swipe on an element, optionally followed by the
 // synthetic 'click' mobile browsers fire after a touch gesture — this is
-// exactly the double-fire scenario the app's swipe guards exist to prevent.
+// exactly the double-fire scenario the app's swipe handling exists to
+// prevent. A real browser skips that synthetic click when touchend's
+// preventDefault() was called, so `thenClick` mimics that faithfully
+// instead of firing the click unconditionally.
 async function swipe(page, selector, dx, dy, { thenClick = false } = {}) {
   await page.evaluate(({ selector, dx, dy, thenClick }) => {
     const el = document.querySelector(selector);
@@ -78,8 +81,9 @@ async function swipe(page, selector, dx, dy, { thenClick = false } = {}) {
       });
     }
     el.dispatchEvent(touchEvt('touchstart', x0, y0));
-    el.dispatchEvent(touchEvt('touchend', x1, y1));
-    if (thenClick) el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    const endEvt = touchEvt('touchend', x1, y1);
+    el.dispatchEvent(endEvt);
+    if (thenClick && !endEvt.defaultPrevented) el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
   }, { selector, dx, dy, thenClick });
 }
 
@@ -176,9 +180,9 @@ async function run() {
   });
 
   // ── E. Swipe down skips the current card ────────────────────────────────
-  await check('swipe down skips the current card (deck total shrinks by one)', async () => {
+  await check('swipe down skips exactly one card (no double-fire from synthetic click)', async () => {
     const before = await cardParts(page);
-    await swipe(page, '#card', 0, 100);
+    await swipe(page, '#card', 0, 100, { thenClick: true });
     await page.waitForTimeout(300);
     const after = await cardParts(page);
     assert(after.total === before.total - 1, `expected total ${before.total - 1}, got ${after.total}`);
