@@ -1677,6 +1677,7 @@ const CATEGORY_TRAITS = {
   unwind:{playful:.7,intimate:.1,reflective:.1}, world:{playful:.3,intimate:0,reflective:.5},
   self:{playful:.1,intimate:.2,reflective:.9}, mind:{playful:.1,intimate:.1,reflective:.9},
   body:{playful:.3,intimate:.5,reflective:.2}, values:{playful:0,intimate:.1,reflective:.9},
+  spirit:{playful:0,intimate:.2,reflective:.9},
   wish:{playful:.3,intimate:.2,reflective:.6}, past:{playful:.1,intimate:.4,reflective:.6},
   roots:{playful:.1,intimate:.3,reflective:.5}, family:{playful:.3,intimate:.4,reflective:.3},
   connect:{playful:.3,intimate:.5,reflective:.2}, friends:{playful:.5,intimate:.4,reflective:.1},
@@ -1694,15 +1695,15 @@ const CATEGORY_TRAITS = {
    fallback when nothing dominates. ~27 in normal reach, matching the size of
    vocabulary the chapters and dials can actually produce — not hundreds. */
 const MOOD_WORDS = {
-  '0,0':{playful:'Light',    intimate:'Gentle',   reflective:'Curious',    _:'Open'},
-  '0,1':{playful:'Playful',  intimate:'Fond',     reflective:'Curious',    _:'Open'},
-  '0,2':{playful:'Flirty',   intimate:'Fond',     reflective:'Connected',  _:'Mischievous'},
-  '1,0':{playful:'Curious',  intimate:'Revealing',reflective:'Reflective', _:'Grounded'},
-  '1,1':{playful:'Curious',  intimate:'Honest',   reflective:'Open',       _:'Real'},
-  '1,2':{playful:'Fond',     intimate:'Intimate', reflective:'Honest',     _:'Close'},
-  '2,0':{playful:'Unfiltered',intimate:'Unshielded',reflective:'Searching',_:'Heavy'},
-  '2,1':{playful:'Unfiltered',intimate:'Unshielded',reflective:'Searching',_:'Heavy'},
-  '2,2':{playful:'Charged',  intimate:'Vulnerable',reflective:'Exposed',   _:'Unguarded'},
+  '0,0':{p:'Light',      i:'Gentle',    r:'Curious',    ip:'Breezy',   ir:'Quiet',     pr:'Idle'},
+  '0,1':{p:'Playful',    i:'Fond',      r:'Curious',    ip:'Sunny',    ir:'Thoughtful',pr:'Airy'},
+  '0,2':{p:'Flirty',     i:'Fond',      r:'Connected',  ip:'Mischievous',ir:'Sweet',   pr:'Giddy'},
+  '1,0':{p:'Curious',    i:'Revealing', r:'Reflective', ip:'Exploring',ir:'Personal',  pr:'Grounded'},
+  '1,1':{p:'Curious',    i:'Honest',    r:'Open',       ip:'Genial',   ir:'Sincere',   pr:'Real'},
+  '1,2':{p:'Fond',       i:'Intimate',  r:'Honest',     ip:'Close',    ir:'Tender',    pr:'Trusting'},
+  '2,0':{p:'Unfiltered', i:'Unshielded',r:'Searching',  ip:'Bold',     ir:'Bare',      pr:'Piercing'},
+  '2,1':{p:'Unfiltered', i:'Unshielded',r:'Searching',  ip:'Bold',     ir:'Bare',      pr:'Heavy'},
+  '2,2':{p:'Charged',    i:'Vulnerable',r:'Exposed',    ip:'Electric', ir:'Aching',    pr:'Consuming'},
 };
 
 /* Specific combinations that should read as themselves, not as whatever
@@ -1766,11 +1767,17 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
     if (override) return override.word;
   }
 
+  // the two LEADING traits pick the word, not just whichever is single
+  // highest — a close call between intimate and reflective reads as
+  // genuinely different from a clean intimate win, instead of both
+  // collapsing onto the same word regardless of what the runner-up was
   const p = meanOf('playful'), im = meanOf('intimate'), r = meanOf('reflective');
-  const spread = Math.max(p,im,r) - Math.min(p,im,r);
+  const ranked = [['p',p],['i',im],['r',r]].sort((a,b) => b[1]-a[1]);
+  const [top, second] = ranked;
   const cell = MOOD_WORDS[iBand+','+fBand];
-  if (spread < .15) return cell._;
-  return p >= im && p >= r ? cell.playful : im >= r ? cell.intimate : cell.reflective;
+  if (top[1] - second[1] > .18) return cell[top[0]];   // a clear single winner
+  const pair = [top[0], second[0]].sort().join('');    // close: blend of the top two
+  return cell[pair] || cell[top[0]];
 }
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
