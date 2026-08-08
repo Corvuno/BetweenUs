@@ -537,10 +537,8 @@ body::before{
 .smp-desc{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);}
 
 /* ── CATEGORY TOOLTIP ── */
-.cat-grid-wrap{scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent;}
-.cat-grid-wrap::-webkit-scrollbar{width:5px;}
-.cat-grid-wrap::-webkit-scrollbar-thumb{background:rgba(201,168,76,.35);border-radius:3px;}
-.cat-grid-wrap::-webkit-scrollbar-track{background:transparent;}
+.cat-grid-wrap{scrollbar-width:none;}
+.cat-grid-wrap::-webkit-scrollbar{display:none;width:0;height:0;}
 .grid-fade{position:sticky;bottom:-1px;left:0;right:0;height:34px;margin-top:-34px;pointer-events:none;opacity:0;transition:opacity .25s;background:linear-gradient(to bottom,rgba(14,12,10,0),#0e0c0a 85%);display:block;z-index:2;}
 .cat-grid-wrap.can-scroll .grid-fade{opacity:1;}
 .cat-desc{
@@ -660,9 +658,12 @@ body::before{
    why the drawer only opened some of the time. */
 .cbk-select{flex:1;display:flex;align-items:center;gap:9px;background:none;border:none;
   cursor:pointer;text-align:left;padding:11px 4px 9px 4px;color:inherit;font:inherit;}
-.cbk-expand{flex:0 0 auto;min-width:44px;min-height:40px;display:flex;align-items:center;
-  justify-content:center;background:none;border:none;cursor:pointer;}
+.cbk-expand{flex:0 0 auto;min-width:46px;min-height:40px;display:flex;align-items:center;
+  justify-content:center;background:none;border:none;cursor:pointer;
+  border-left:1px solid var(--dim);margin-left:4px;}
+.cbk-expand:hover{background:rgba(255,255,255,.02);}
 .cbk-expand:hover .cbk-chev{color:var(--gold);}
+.cbk-chev{font-size:.85rem;font-weight:300;color:var(--muted);transition:transform .22s ease,color .2s;}
 .cat-controls{flex-wrap:wrap;justify-content:center;row-gap:10px;gap:20px;}
 .cat-area .cat-desc{flex-shrink:0;}
 .cat-area .cat-grid-wrap{flex:1;max-height:none;min-height:0;border-top:1px solid var(--dim);}
@@ -911,8 +912,9 @@ body::before{
   color:var(--gold);padding:9px 0;transition:all .2s;margin:2px 0;}
 .draw-all:hover{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.45);}
 
-.play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.44rem;letter-spacing:.26em;
-  text-transform:uppercase;color:var(--muted);opacity:.8;padding:10px 0 6px;}
+.play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(240,232,216,.55);opacity:1;padding:14px 0 9px;}
+.play-lead--first{padding-top:6px;}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}
@@ -938,7 +940,10 @@ body::before{
   font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--muted);padding-bottom:7px;}
 .dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;}
-.dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;}
+.dial{position:relative;}
+.dial-anchor{position:absolute;left:50%;top:29px;width:1px;height:9px;margin-left:-.5px;
+  background:var(--gold);opacity:.45;pointer-events:none;}
+.dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;position:relative;z-index:1;}
 .dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
 .dial-range::-moz-range-track{height:1px;background:var(--border);}
 .dial-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
@@ -963,9 +968,8 @@ body::before{
 .cat-bucket.part .cbk-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 .cbk-count{flex:1;font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.14em;
   color:var(--muted);opacity:.7;}
-.cbk-chev{font-size:.5rem;color:var(--muted);transition:transform .22s ease,color .2s;display:inline-block;}
 .cat-bucket:hover .cbk-chev{color:var(--gold);}
-.cat-bucket.open .cbk-chev{transform:rotate(180deg);}
+.cat-bucket.open .cbk-chev{transform:rotate(45deg);}   /* + becomes \u00d7 */
 .toggle-btn.chip-folded{display:none;}
 .cat-bucket.bkt-hidden{display:none;}
 .cat-bucket.open{border-bottom-color:transparent;}
@@ -1037,19 +1041,19 @@ body::before{
     </div>
 
     <div class="pane pane-play on" id="panePlay">
-      <button class="draw-all" id="drawEverything">Draw</button>
-
-      <div class="play-lead">How far in?</div>
+      <div class="play-lead play-lead--first">How far in?</div>
       <div class="dials" id="dials">
         <div class="dial">
           <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
           <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
                  aria-label="How far in: easy to intense">
+          <div class="dial-anchor"></div>
         </div>
         <div class="dial">
           <div class="dial-ends"><span>Self</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
           <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
                  aria-label="Who it is about: yourself to the two of you">
+          <div class="dial-anchor"></div>
         </div>
       </div>
 
@@ -1079,52 +1083,52 @@ body::before{
       </div>
       <div class="cat-grid-wrap" id="toggles-wrap">
         <div class="toggles" id="toggles">
-        <div class="cat-bucket" data-bucket="easein" style="--ch:#d9a441"><button type="button" class="cbk-select"><span class="cbk-name">Ease In</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="easein" style="--ch:#d9a441"><button type="button" class="cbk-select"><span class="cbk-name">Ease In</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="quick" data-bucket="easein">Quick</button>
         <button class="toggle-btn chip-folded" data-level="warm" data-bucket="easein">Warm</button>
         <button class="toggle-btn toggle-btn--list chip-folded" data-level="colbert" data-bucket="easein">Colbert</button>
         <button class="toggle-btn toggle-btn--list chip-folded" data-level="aron" data-bucket="easein">The 36</button>
         <button class="toggle-btn toggle-btn--list chip-folded" data-level="magic" data-bucket="easein">Magical</button>
-        <div class="cat-bucket" data-bucket="everyday" style="--ch:#6bb36e"><button type="button" class="cbk-select"><span class="cbk-name">Everyday</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="everyday" style="--ch:#6bb36e"><button type="button" class="cbk-select"><span class="cbk-name">Everyday</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="culture" data-bucket="everyday">Culture</button>
         <button class="toggle-btn chip-folded" data-level="life" data-bucket="everyday">Life</button>
         <button class="toggle-btn chip-folded" data-level="home" data-bucket="everyday">Home</button>
         <button class="toggle-btn chip-folded" data-level="work" data-bucket="everyday">Work</button>
         <button class="toggle-btn chip-folded" data-level="unwind" data-bucket="everyday">Unwind</button>
         <button class="toggle-btn chip-folded" data-level="world" data-bucket="everyday">World</button>
-        <div class="cat-bucket" data-bucket="reflection" style="--ch:#5082cd"><button type="button" class="cbk-select"><span class="cbk-name">Reflection</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="reflection" style="--ch:#5082cd"><button type="button" class="cbk-select"><span class="cbk-name">Reflection</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="self" data-bucket="reflection">Self</button>
         <button class="toggle-btn chip-folded" data-level="mind" data-bucket="reflection">Mind</button>
         <button class="toggle-btn chip-folded" data-level="body" data-bucket="reflection">Body</button>
         <button class="toggle-btn chip-folded" data-level="values" data-bucket="reflection">Values</button>
         <button class="toggle-btn chip-folded" data-level="wish" data-bucket="reflection">Wish</button>
-        <div class="cat-bucket" data-bucket="foundations" style="--ch:#b79c66"><button type="button" class="cbk-select"><span class="cbk-name">Foundations</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="foundations" style="--ch:#b79c66"><button type="button" class="cbk-select"><span class="cbk-name">Foundations</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="past" data-bucket="foundations">Past</button>
         <button class="toggle-btn chip-folded" data-level="roots" data-bucket="foundations">Roots</button>
         <button class="toggle-btn chip-folded" data-level="family" data-bucket="foundations">Family</button>
         <button class="toggle-btn chip-folded" data-level="spirit" data-bucket="foundations">Spirit</button>
-        <div class="cat-bucket" data-bucket="relationships" style="--ch:#e8997a"><button type="button" class="cbk-select"><span class="cbk-name">Relationships</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="relationships" style="--ch:#e8997a"><button type="button" class="cbk-select"><span class="cbk-name">Relationships</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="connect" data-bucket="relationships">Connect</button>
         <button class="toggle-btn chip-folded" data-level="friends" data-bucket="relationships">Friendship</button>
         <button class="toggle-btn chip-folded" data-level="date" data-bucket="relationships">Romance</button>
         <button class="toggle-btn chip-folded" data-level="attract" data-bucket="relationships">Attract</button>
-        <div class="cat-bucket" data-bucket="vulnerability" style="--ch:#8f74b8"><button type="button" class="cbk-select"><span class="cbk-name">Vulnerability</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="vulnerability" style="--ch:#8f74b8"><button type="button" class="cbk-select"><span class="cbk-name">Vulnerability</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="deep" data-bucket="vulnerability">Deep</button>
         <button class="toggle-btn chip-folded" data-level="raw" data-bucket="vulnerability">Raw</button>
         <button class="toggle-btn chip-folded" data-level="shadow" data-bucket="vulnerability">Shadow</button>
         <button class="toggle-btn chip-folded" data-level="grief" data-bucket="vulnerability">Grief</button>
-        <div class="cat-bucket" data-bucket="usb" style="--ch:#d97a92"><button type="button" class="cbk-select"><span class="cbk-name">Us</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="usb" style="--ch:#d97a92"><button type="button" class="cbk-select"><span class="cbk-name">Us</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="us" data-bucket="usb">Between Us</button>
         <button class="toggle-btn chip-folded" data-level="usfriend" data-bucket="usb">Us: Friends</button>
         <button class="toggle-btn chip-folded" data-level="uslove" data-bucket="usb">Us: Love</button>
-        <div class="cat-bucket" data-bucket="afterdarkb" style="--ch:#ff2f2f"><button type="button" class="cbk-select"><span class="cbk-name">After Dark</span><span class="cbk-count"></span></button> <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn2" title="A little more, once After Dark is open">&#10022;</button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="afterdarkb" style="--ch:#ff2f2f"><button type="button" class="cbk-select"><span class="cbk-name">After Dark</span><span class="cbk-count"></span></button> <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn2" title="A little more, once After Dark is open">&#10022;</button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="usintimate" data-bucket="afterdarkb">Us: Intimate &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="flesh" data-bucket="afterdarkb">Flesh &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="carnal" data-bucket="afterdarkb">Carnal &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="blunt" data-bucket="afterdarkb">Bare &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="kinks" data-bucket="afterdarkb">Kinks &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="abyss" data-bucket="afterdarkb">Abyss &#10022;</button>
-        <div class="cat-bucket" data-bucket="meta" style="--ch:#5a5a6a"><button type="button" class="cbk-select"><span class="cbk-name">Meta</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">&#9662;</span></button></div>
+        <div class="cat-bucket" data-bucket="meta" style="--ch:#5a5a6a"><button type="button" class="cbk-select"><span class="cbk-name">Meta</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="backup" data-bucket="meta" style="opacity:.22;font-style:italic;">Backup</button>
         </div>
       </div>
@@ -4095,6 +4099,18 @@ const CATEGORY_DESCRIPTIONS = {
   backup:    "Overflow — questions with merit that did not make the top ten",
 };
 
+const BUCKET_DESCRIPTIONS = {
+  easein:        "Small talk that's actually good talk — plus the sequences that play in order",
+  everyday:      "Days, rooms, and the ordinary made worth saying",
+  reflection:    "Who you are once the roles come off",
+  foundations:   "Where you're from, and what it's still doing",
+  relationships: "The people you choose, and how you choose them",
+  vulnerability: "The harder questions, for when the room is ready",
+  usb:           "About the two of you. Directly",
+  afterdarkb:    "Desire, named — open to anyone at the table, not only lovers \u2726",
+  meta:          "Overflow — questions with merit that did not make the top ten",
+};
+
 (function() {
   const descEl = document.getElementById('catDesc');
   if (!descEl) return;
@@ -4104,16 +4120,24 @@ const CATEGORY_DESCRIPTIONS = {
     descEl.textContent = desc + (btn.dataset.count ? '  ·  ' + btn.dataset.count + ' cards' : '');
     descEl.classList.add('lit');
   };
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
+  const showBucket = (el) => {
+    const desc = BUCKET_DESCRIPTIONS[el.dataset.bucket];
+    if (!desc) return;
+    descEl.textContent = desc;
+    descEl.classList.add('lit');
+  };
+  document.querySelectorAll('.toggle-btn, .cbk-select').forEach(btn => {
+    const isBucket = btn.classList.contains('cbk-select');
+    const fire = () => isBucket ? showBucket(btn.closest('.cat-bucket')) : show(btn);
     // Desktop hover reads it too, no need to click
-    btn.addEventListener('mouseenter', () => show(btn));
+    btn.addEventListener('mouseenter', fire);
     // Every tap updates the description — same moment the category toggles
-    btn.addEventListener('click', () => { if (!btn._longPressed) show(btn); });
+    btn.addEventListener('click', () => { if (!btn._longPressed) fire(); });
     // Long-press (450ms) reads the description WITHOUT toggling the category
     let touchTimer = null;
     btn.addEventListener('touchstart', () => {
       btn._longPressed = false;
-      touchTimer = setTimeout(() => { btn._longPressed = true; show(btn); }, 450);
+      touchTimer = setTimeout(() => { btn._longPressed = true; fire(); }, 450);
     }, {passive:true});
     btn.addEventListener('touchmove', () => clearTimeout(touchTimer), {passive:true});
     btn.addEventListener('touchend',  () => clearTimeout(touchTimer), {passive:true});
@@ -4582,11 +4606,17 @@ applyToggleUI();
   });
 
   /* ── dials ── */
+  /* Halfway is the default — a released drag within a few percent of it
+     snaps back to exactly 50, so "return to balanced" is a flick, not a
+     precise pinch. */
   function dial(el, apply){
     if (!el) return;
     el.addEventListener('input', () => { apply(+el.value / 100); intentOn = true; syncIntentUI(); });
     ['change','pointerup','touchend'].forEach(ev =>
-      el.addEventListener(ev, () => { apply(+el.value / 100); intentOn = true; commit(); }, {passive:true}));
+      el.addEventListener(ev, () => {
+        if (Math.abs(+el.value - 50) <= 4) el.value = 50;
+        apply(+el.value / 100); intentOn = true; commit();
+      }, {passive:true}));
   }
   dial($('dialIntensity'), t => { intentIntensity = t; });
   dial($('dialFocus'),     t => { intentFocus = t * 2 - 1; });
@@ -4619,13 +4649,6 @@ applyToggleUI();
     if (fi) fi.value = d.focus != null ? d.focus : 50;
     intentOn = true;
   }
-
-  /* ── Draw: replay the build's defaults ── */
-  $('drawEverything').addEventListener('click', () => {
-    applyDefaultSelection();
-    commit();
-    if (window.closeCats) window.closeCats();
-  });
 
   /* ── Explore drawers: select and expand are separate buttons now, each
      with a real touch target, instead of one element with a tiny hot corner
