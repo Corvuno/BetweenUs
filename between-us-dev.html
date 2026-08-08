@@ -3385,21 +3385,10 @@ function updateDeckInfo() {
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
 
-// ── Override enterParty / exitParty for new overlay ──
-function enterParty() {
-  state.partyMode = true;
-  const overlay = document.getElementById('partyOverlay');
-  if (overlay) overlay.classList.add('open');
-  if (state.currentIndex < 0 && state.visibleDeck.length > 0) {
-    state.currentIndex = 0;
-    setCardDisplay(state.visibleDeck[0]);
-    renderProgress();
-    updateStarUI();
-  } else if (state.currentIndex >= 0) {
-    updatePartyDisplay(state.visibleDeck[state.currentIndex]);
-  }
-};
-
+// exitParty is used (Escape key, in fullscreen). Its counterpart enterParty()
+// was dead code — nothing called it, since the #btnParty click handler below
+// duplicates the same logic inline instead — so it's gone rather than kept
+// as a second, unused way to do the same thing.
 function exitParty() {
   state.partyMode = false;
   const overlay = document.getElementById('partyOverlay');
@@ -3417,28 +3406,6 @@ function closeAllDrawers() {
     const el=document.getElementById(id); if(el) el.classList.remove('open');
   });
 }
-
-// ── After Dark: original handler at line 2485 handles the toggle.
-// We only need to ensure spiceMode syncs — patch it via a one-time clone so
-// the original fires ONCE per click, not twice.
-(function(){
-  const btn = document.getElementById('afterDarkToggle');
-  if (!btn) return;
-  const newBtn = btn.cloneNode(true);
-  btn.parentNode.replaceChild(newBtn, btn);
-  newBtn.addEventListener('click', () => {
-    state.safeMode = !state.safeMode;
-    if (state.safeMode) {
-      SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
-      state.spiceMode = false;
-    } else {
-      state.spiceMode = true;
-    }
-    updateAfterDarkBtn();
-    applyToggleUI();
-    initDeck();
-  });
-})();
 
 // ── Language: single switch for toggle row, menu row, and session restore ──
 function setLang(l, skipRefresh) {
@@ -4504,18 +4471,6 @@ applyToggleUI();
   openRow.addEventListener('click', openCats);
   $('catClose').addEventListener('click', closeCats);
   scrim.addEventListener('click', closeCats);
-  /* AD on = those categories actually join the deck (abyss stays opt-in) */
-  $('afterDarkToggle').addEventListener('click',()=>{ setTimeout(()=>{
-    if(!$('afterDarkToggle').classList.contains('on')) return;
-    const p=PRESETS[state.activePreset];
-    SAFE_BLOCKED_LEVELS.forEach(l=>{
-      if(OPT_IN_ONLY.includes(l)) return;
-      if(!DECK_LEVELS.has(l)) return;
-      if(p && !(p.on.includes(l)||p.available.includes(l))) return;
-      state.activeToggles.add(l);
-    });
-    applyToggleUI(); initDeck();
-  },0); });
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
 
   /* ── order list (sort modes as a list, not a cycler) ── */
