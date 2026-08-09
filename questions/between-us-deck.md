@@ -422,7 +422,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Some touch undoes you. Describe it, and what it does to you.
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Afterwards, still tangled up — how do you like to come down?
-4. Undressing someone — where do you slow down?
+4. Walk me through undressing someone — the order, the pace, what you notice.
 5. Reconstruct your smoothest pickup ever.
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
@@ -547,6 +547,9 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.62 — Flesh 4 rebuilt
+**Flesh 4** → *"Walk me through undressing someone — the order, the pace, what you notice."* Same territory as the old card, executed as a live narrated sequence instead of a reflective question — more directive, more concrete, genuinely richer answer.
 
 ## Patch v6.61 — Connect 4 rebuilt, Unwind 2 off "do you know how to rest"
 **Connect 4** → *"Do you wait to make the first move, even when you're the one missing them?"* Replaces the unspoken-need fragment with the reciprocity gap: a category audit found nothing anywhere in Connect asking who initiates, or who's stuck waiting.
