@@ -1711,16 +1711,22 @@ const MOOD_ANCHORS = [
   {i:.35,f:.75,r:.75, word:'Sweet'},       {i:.55,f:.65,r:.75, word:'Intimate'},
   {i:.55,f:.9, r:.78, word:'Trusting'},    {i:.8, f:.7, r:.78, word:'Tender'},
   {i:.85,f:.9, r:.8,  word:'Devoted'},
-  // highest register — After Dark: its own edge, reachable from anywhere,
-  // never crowded out by whatever else is in the mix (see REGISTER_OF_GROUP's
-  // floor for the afterdark group below)
+  // diluted edge — After Dark present but a minority of a wider mix (see
+  // computeMood's adShare below): its own words, distinct from the pure
+  // tier just below, so "everything selected" and "only After Dark
+  // selected" no longer collide on the same word just because they land
+  // in similar intensity/focus territory
+  {i:.35,f:.5, r:.83, word:'Humming'},     {i:.6, f:.6, r:.86, word:'Flushed'},
+  // highest register — After Dark itself, dominant or exclusive: its own
+  // edge, reachable from anywhere, never crowded out by whatever else is
+  // in the mix (see computeMood's afterdark handling below)
   {i:.25,f:.7, r:.92, word:'Teasing'},     {i:.5, f:.6, r:.92, word:'Charged'},
   {i:.5, f:.85,r:.95, word:'Wanting'},     {i:.7, f:.55,r:.93, word:'Electric'},
   {i:.75,f:.85,r:.97, word:'Vulnerable'},  {i:.85,f:.7, r:1,   word:'Aching'},
   {i:.9, f:.9, r:1,   word:'Consuming'},   {i:.9, f:.3, r:.95, word:'Undone'},
   {i:.25,f:.3, r:.9,  word:'Simmering'},
 ];
-const AFTER_DARK_TIER = MOOD_ANCHORS.filter(a => a.r >= .85);
+const AFTER_DARK_TIER = MOOD_ANCHORS.filter(a => a.r >= .82);
 
 /* Which of the five chapters each category belongs to, so mixing chapters
    of very different sizes doesn't let the bigger one drown out the smaller
@@ -1755,14 +1761,27 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const intensity = .5*sliderIntensity01 + .5*meanOf('deep');
   const focus     = .5*sliderFocus01     + .5*meanOf('us');
 
-  // Register: where the active chapters sit on their own journey, averaged —
-  // except After Dark, which sets a floor rather than being averaged down.
-  // "Only after dark with anything should yield its own edge": present at
-  // all, however diluted by everything else in the mix, it still guarantees
-  // the round reads as at least mostly After Dark's register, not a wash.
+  // Register: where the active chapters sit on their own journey, averaged
+  // across whatever's active. After Dark is the one exception, and not
+  // averaged the same way: a plain group-average, or a fixed floor (an
+  // earlier version forced register >=.8 whenever After Dark was present),
+  // both collapse "everything selected, After Dark included" and "only
+  // After Dark selected" to nearly the same register — which is exactly why
+  // both used to land on the same word ("Charged") at identical dial
+  // positions. Register instead tracks adShare: what fraction of the
+  // actually-selected categories (not groups — a lone After Dark category
+  // shouldn't outweigh a 19-member chapter by group-count alone) are After
+  // Dark. Pure/dominant After Dark lands at the top of its tier (1.0);
+  // After Dark as a small part of a big mix lands much lower (.82ish) —
+  // still within the "edge" pool two lines down, but its own distinct
+  // corner of it (see the Humming/Flushed anchors above), not competing
+  // head-on with the pure-tier words for the same intensity/focus spot.
   const groupIds = Object.keys(groups);
   let register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
-  if (groupIds.includes('afterdark')) register = Math.max(register, .8);
+  if (groups.afterdark) {
+    const adShare = groups.afterdark.length / levels.length;
+    register = .82 + .18 * adShare;
+  }
 
   // "Only after dark with anything should yield its own edge" is a
   // guarantee, not just a tendency — its own anchors sit at high focus, so a
@@ -4693,15 +4712,21 @@ applyToggleUI();
   });
 
   /* ── dials ── */
-  /* Halfway is the default — a released drag within a few percent of it
-     snaps back to exactly 50, so "return to balanced" is a flick, not a
-     precise pinch. */
+  /* Halfway is the default — a magnetic dead zone around it, felt during the
+     drag itself (like Android's system sliders, or Lightroom mobile's snap
+     to 0): while the finger is within a few percent of 50, the thumb holds
+     at exactly 50 instead of tracking the finger 1:1, so crossing centre
+     takes a small deliberate push. That reads as a physical catch. The
+     previous version only snapped once on release — the thumb tracked the
+     finger the whole drag, then jumped to 50 after the fact, which read as
+     the value being pulled there rather than the finger feeling anything. */
   function dial(el, apply){
     if (!el) return;
-    el.addEventListener('input', () => { apply(+el.value / 100); intentOn = true; syncIntentUI(); });
+    const snap = () => { if (Math.abs(+el.value - 50) <= 4) el.value = 50; };
+    el.addEventListener('input', () => { snap(); apply(+el.value / 100); intentOn = true; syncIntentUI(); });
     ['change','pointerup','touchend'].forEach(ev =>
       el.addEventListener(ev, () => {
-        if (Math.abs(+el.value - 50) <= 4) el.value = 50;
+        snap();
         apply(+el.value / 100); intentOn = true; commit();
       }, {passive:true}));
   }
