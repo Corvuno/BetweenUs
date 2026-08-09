@@ -1630,7 +1630,7 @@ const LEVEL_INTENSITY = {
   connect:3, friends:3, date:3, attract:4,
   us:3, usfriend:3, uslove:4,
   deep:5, raw:5, shadow:6, grief:6,
-  usintimate:3, flesh:3, carnal:4, bare:4, kinks:5, abyss:7,
+  usintimate:3, flesh:3, carnal:4, bare:4, kinks:6, abyss:8,
   backup:3, failure:4, lens:3, desire:3, threshold:5, move:2, ground:3, edge:5,
 };
 const LEVEL_FOCUS = {
@@ -1746,7 +1746,7 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const groups = {};
   levels.forEach(l => { const g = LEVEL_CHAPTER[l] || l; (groups[g] = groups[g] || []).push(l); });
   const groupVecs = Object.values(groups).map(ls => ({
-    deep: ls.reduce((s,l) => s + (levelIntensity(l)-1)/6, 0) / ls.length,
+    deep: ls.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / ls.length,
     us:   ls.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / ls.length,
   }));
   const meanOf = key => groupVecs.reduce((s,v) => s + v[key], 0) / groupVecs.length;
@@ -3625,8 +3625,13 @@ function updateAfterDarkBtn() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
-    /* a hold just continued the draw — its release must not advance again */
-    if (window._endHoldFired) { window._endHoldFired = false; e.preventDefault(); return; }
+    /* a hold just continued the draw — its release must not advance again.
+       Reads the flag, doesn't clear it: the click handler below checks it
+       too, in case this touchend's preventDefault doesn't fully suppress a
+       trailing click (inconsistent across browsers after a long hold) —
+       clearing it here would leave that click unprotected. start() clears
+       it at the top of the next press. */
+    if (window._endHoldFired) { e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
     const dx = e.changedTouches[0].clientX - ptsx;
     const dy = e.changedTouches[0].clientY - ptsy;
@@ -3646,7 +3651,7 @@ function updateAfterDarkBtn() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
-    if (window._endHoldFired) { window._endHoldFired = false; return; }
+    if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
@@ -3992,11 +3997,16 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     const el = document.getElementById(id); if (!el) return;
     el.addEventListener('pointerdown', start);
     ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
-    /* swallow the click that a completed hold leaves behind */
+    /* swallow the click that a completed hold leaves behind. Reads the flag
+       but never clears it here — on the party overlay, touchend checks the
+       same flag before this does, and if it were the one to clear it, a
+       trailing click that slips through anyway (preventDefault doesn't
+       always suppress it, especially after a long hold rather than a quick
+       tap) would find the flag already gone and double-advance. start()
+       is the only place that resets it, at the top of the next press. */
     el.addEventListener('click', e => {
       if (window._endHoldFired) {
         e.stopImmediatePropagation(); e.preventDefault();
-        window._endHoldFired = false;
       }
     }, true);
   });
