@@ -1121,7 +1121,7 @@ body::before{
         <button class="toggle-btn chip-folded" data-level="usintimate" data-bucket="afterdarkb">Us: Intimate &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="flesh" data-bucket="afterdarkb">Flesh &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="carnal" data-bucket="afterdarkb">Carnal &#10022;</button>
-        <button class="toggle-btn chip-folded" data-level="blunt" data-bucket="afterdarkb">Bare &#10022;</button>
+        <button class="toggle-btn chip-folded" data-level="bare" data-bucket="afterdarkb">Bare &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="kinks" data-bucket="afterdarkb">Kinks &#10022;</button>
         <button class="toggle-btn chip-folded" data-level="abyss" data-bucket="afterdarkb">Abyss &#10022;</button>
         <div class="cat-bucket" data-bucket="meta" style="--ch:#5a5a6a"><button type="button" class="cbk-select"><span class="cbk-name">Meta</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
@@ -1576,7 +1576,7 @@ const MASTER_SAFE       = window.MASTER_SAFE;
 const SPICE_MODE        = window.SPICE_MODE || false;
 const NL_DEFAULT        = window.NL_DEFAULT || false;
 
-const SAFE_BLOCKED_LEVELS = ["flesh","carnal","kinks","usintimate","blunt","abyss"];
+const SAFE_BLOCKED_LEVELS = ["flesh","carnal","kinks","usintimate","bare","abyss"];
 
 // ── LEVEL COLORS for accent bar ──
 const LEVEL_COLORS = {
@@ -1589,7 +1589,7 @@ const LEVEL_COLORS = {
   colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
   usintimate:"#e84a4a",edge:"#c44ba8",flesh:"#e08055",carnal:"#c81f1f",
   flesh:"#8a305a",kinks:"#a1247a",backup:"#5a5a6a",
-  desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",blunt:"#e2603c",abyss:"#b00000",aron:"#e75783",magic:"#8066e1",
+  desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",bare:"#e2603c",abyss:"#b00000",aron:"#e75783",magic:"#8066e1",
 };
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 
@@ -1601,7 +1601,7 @@ const LEVEL_DEPTH = {
   self:3, body:3, mind:3, spirit:3, values:3, wish:3, past:3, roots:3, family:3,
   connect:4, friends:4, date:4, attract:4, us:4, usfriend:4, uslove:4,
   deep:5, raw:5, grief:5, shadow:5,
-  usintimate:6, flesh:6, carnal:6, blunt:6, kinks:6, abyss:6,
+  usintimate:6, flesh:6, carnal:6, bare:6, kinks:6, abyss:6,
 };
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
 
@@ -1625,7 +1625,7 @@ const LEVEL_INTENSITY = {
   connect:3, friends:3, date:3, attract:4,
   us:3, usfriend:3, uslove:4,
   deep:5, raw:5, shadow:6, grief:6,
-  usintimate:3, flesh:3, carnal:4, blunt:4, kinks:5, abyss:7,
+  usintimate:3, flesh:3, carnal:4, bare:4, kinks:5, abyss:7,
   backup:3, failure:4, lens:3, desire:3, threshold:5, move:2, ground:3, edge:5,
 };
 const LEVEL_FOCUS = {
@@ -1635,7 +1635,7 @@ const LEVEL_FOCUS = {
   family:0.4, friends:0.5, connect:0.7, attract:0.7, date:0.8,
   us:1, usfriend:1, uslove:1, usintimate:1,
   deep:0, raw:0.2, shadow:0, grief:-0.2,
-  flesh:0.6, carnal:0.7, blunt:0.3, kinks:0.4, abyss:0,
+  flesh:0.6, carnal:0.7, bare:0.3, kinks:0.4, abyss:0,
   backup:0,
 };
 function levelIntensity(l){ return LEVEL_INTENSITY[l] != null ? LEVEL_INTENSITY[l] : 3; }
@@ -1729,7 +1729,7 @@ const LEVEL_CHAPTER = {};
              'past','roots','family','spirit','connect','friends','date','attract']],
  ['deeper',['deep','raw','shadow','grief']],
  ['aboutus',['us','usfriend','uslove']],
- ['afterdark',['usintimate','flesh','carnal','blunt','kinks']],
+ ['afterdark',['usintimate','flesh','carnal','bare','kinks']],
 ].forEach(([id,ls]) => ls.forEach(l => LEVEL_CHAPTER[l] = id));
 
 function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
@@ -1824,7 +1824,7 @@ const LEVEL_STYLES = {
   usintimate:"level-usintimate", shadow:"level-shadow",
   wish:"level-wish", quick:"level-quick", colbert:"level-colbert",
   lens:"level-lens", ground:"level-ground",
-  desire:"level-desire", threshold:"level-threshold", failure:"level-failure", blunt:"level-blunt", abyss:"level-abyss", aron:"level-aron", magic:"level-magic"
+  desire:"level-desire", threshold:"level-threshold", failure:"level-failure", bare:"level-bare", abyss:"level-abyss", aron:"level-aron", magic:"level-magic"
 };
 
 const LEVEL_LABELS = {
@@ -1840,7 +1840,7 @@ const LEVEL_LABELS = {
   usintimate:"Us: Intimate ✦", shadow:"Shadow",
   wish:"Wish", quick:"Quick", colbert:"Colbert",
   lens:"Lens", ground:"Ground",
-  desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", blunt:"Bare ✦", abyss:"Abyss ✦", aron:"The 36", magic:"Magical"
+  desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", bare:"Bare ✦", abyss:"Abyss ✦", aron:"The 36", magic:"Magical"
 };
 
 const COLBERT_CARDS = [
@@ -2302,18 +2302,18 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?" },
 
   // ─── BLUNT ───
-  { level: "blunt", question: "Sex — how important is it, honestly, in the whole of your life?" },
-  { level: "blunt", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
-  { level: "blunt", question: "When has your body not done what you wanted in bed — and what did you do?" },
-  { level: "blunt", question: "What do people consistently get wrong about your sexuality?" },
-  { level: "blunt", question: "What did you believe about sex that turned out to be nonsense?" },
-  { level: "blunt", question: "Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands." },
-  { level: "blunt", question: "Tell about the moment sex went most embarrassingly wrong." },
-  { level: "blunt", question: "What does sexual fulfilment feel like — and do you have it now?" },
-  { level: "blunt", question: "Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?" },
-  { level: "blunt", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
-  { level: "blunt", question: "The most memorable places sex has happened — the most beautiful, and the strangest?" },
-  { level: "blunt", question: "What's the longest you've gone without sex — and how was that?" },
+  { level: "bare", question: "Sex — how important is it, honestly, in the whole of your life?" },
+  { level: "bare", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
+  { level: "bare", question: "When has your body not done what you wanted in bed — and what did you do?" },
+  { level: "bare", question: "What do people consistently get wrong about your sexuality?" },
+  { level: "bare", question: "What did you believe about sex that turned out to be nonsense?" },
+  { level: "bare", question: "Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands." },
+  { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
+  { level: "bare", question: "What does sexual fulfilment feel like — and do you have it now?" },
+  { level: "bare", question: "Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?" },
+  { level: "bare", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
+  { level: "bare", question: "The most memorable places sex has happened — the most beautiful, and the strangest?" },
+  { level: "bare", question: "What's the longest you've gone without sex — and how was that?" },
 
   // ─── KINKS ───
   { level: "kinks", question: "What does it feel like to be completely at someone's mercy — or to have someone completely at yours?" },
@@ -2423,7 +2423,7 @@ const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","blunt"],
+    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","bare"],
     available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
     subtitle:  "Everything on the table"
   },
@@ -2433,22 +2433,22 @@ const PRESETS = {
     subtitle:  "Strangers, parties, after the dance floor"
   },
   friends: {
-    on:        ["warm","friends","connect","culture","life","past","unwind","blunt","deep","usfriend"],
+    on:        ["warm","friends","connect","culture","life","past","unwind","bare","deep","usfriend"],
     available: ["values","mind","us","grief","body","flesh","carnal","abyss","aron","magic"],
     subtitle:  "The people you chose"
   },
   dating: {
-    on:        ["warm","attract","date","connect","culture","blunt"],
+    on:        ["warm","attract","date","connect","culture","bare"],
     available: ["self","past","wish","values","us","usintimate","body","flesh","carnal","abyss","aron","magic"],
     subtitle:  "For two, finding out"
   },
   partner: {
-    on:        ["us","uslove","connect","date","deep","wish","blunt"],
+    on:        ["us","uslove","connect","date","deep","wish","bare"],
     available: ["usintimate","family","roots","grief","raw","home","body","flesh","carnal","kinks","abyss","aron","magic"],
     subtitle:  "The two of you"
   },
   latenight: {
-    on:        ["deep","raw","self","connect","values","shadow","wish","blunt"],
+    on:        ["deep","raw","self","connect","values","shadow","wish","bare"],
     available: ["spirit","grief","past","roots","family","mind","world","body","carnal","abyss"],
     subtitle:  "When it gets late and honest"
   },
@@ -2507,7 +2507,7 @@ const state = {
 };
 
 // Shuffle mode category pools
-const SPICY_LEVELS  = ['flesh','carnal','kinks','attract','blunt','abyss'];
+const SPICY_LEVELS  = ['flesh','carnal','kinks','attract','bare','abyss'];
 const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
 const LIGHT_LEVELS  = ['warm','culture','unwind','home','work'];
 const BORDER_LEVELS = ['attract','raw'];
@@ -2620,12 +2620,17 @@ function applyRandomMode(arr) {
       const wt = c => {
         if (['quick','colbert','warm','culture','unwind'].includes(c.level)) return 'L'; // light/warm
         if (['deep','raw','grief','shadow','wish'].includes(c.level)) return 'H'; // heavy/deep
-        if (['flesh','carnal','kinks','attract','date','us','usfriend','uslove','usintimate'].includes(c.level)) return 'S'; // spicy
-        return 'M'; // medium/cool
+        // After Dark itself, graded — not one flat tier. usintimate/flesh sit at
+        // the easy end of this pool, kinks/abyss at the heavy end (see LEVEL_INTENSITY).
+        if (['flesh','carnal','kinks','bare','usintimate','abyss'].includes(c.level)) return 'S';
+        return 'M'; // medium/cool (includes attract/date/us/usfriend/uslove — relational, not after-dark)
       };
       const pools = { L:[], M:[], H:[], S:[] };
       arr.forEach(c => pools[wt(c)].push(c));
       Object.values(pools).forEach(a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} });
+      // S ramps mild -> heavy by LEVEL_INTENSITY (stable sort keeps the shuffle
+      // within each intensity tier, so it's a graded ramp, not a fixed order).
+      pools.S.sort((a, b) => levelIntensity(a.level) - levelIntensity(b.level));
       let li=0, mi=0, hi=0, si=0;
       const total = arr.length;
       const result = [];
@@ -3681,10 +3686,14 @@ function renderShell() {
   const vOrder = document.getElementById('valOrder');
   if (vOrder && state.randomMode) vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
   // Cards token: hand size / total matching cards, e.g. "5 / 214"
+  // Uses the raw filtered match count, not state.fullDeck.length — that's
+  // already post-applyIntent (trimmed to the top ~30%, floor 20), so using
+  // it here understated the real pool (e.g. showed "20" when 66 cards
+  // actually matched the active selection).
   const vHand = document.getElementById('valHand');
   if (vHand) {
     const handSize = (state.cardLimit == null) ? 'All' : String(state.cardLimit);
-    vHand.textContent = handSize + ' / ' + state.fullDeck.length;
+    vHand.textContent = handSize + ' / ' + getFilteredCards().length;
   }
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
@@ -4159,7 +4168,7 @@ const CATEGORY_DESCRIPTIONS = {
   grief:     "Loss, and the shape it left",
   family:    "The family you have now — roles, rules, and what you'd pass on",
   failure:   "Mistakes and the patterns you keep repeating — what they cost, what they taught",
-  blunt:     "Direct to a fault — the questions your friends ask three drinks in ✦",
+  bare:     "Direct to a fault — the questions your friends ask three drinks in ✦",
   abyss:     "The far room. For the ones who go further than most. Aftercare included. ✦",
   aron:      "Arthur Aron's 36 questions — the closeness study. Alone, they play in their original order",
   magic:     "Priya Parker's magical questions — light, surprising, proven",
@@ -4560,7 +4569,7 @@ applyToggleUI();
                 'connect','friends','date','attract'],
     deeper:    ['deep','raw','shadow','grief'],
     aboutus:   ['us','usfriend','uslove'],
-    afterdark: ['usintimate','flesh','carnal','blunt','kinks'],
+    afterdark: ['usintimate','flesh','carnal','bare','kinks'],
   };
   const inDeck = l => DECK_LEVELS.has(l);
   const chapterLevels = id => (CHAPTERS[id] || []).filter(inDeck);
