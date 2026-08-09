@@ -213,6 +213,7 @@ body::before{
   box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);
   display:flex;flex-direction:column;align-items:center;overflow:hidden;
   cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;touch-action:manipulation;
 }
 .card:active{transform:scale(.997);}
 .card::before,.card::after{
@@ -260,7 +261,7 @@ body::before{
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid var(--dim);color:var(--muted);width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:var(--border);color:var(--gold);}
-.btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.57rem;letter-spacing:.23em;text-transform:uppercase;padding:10px 0;cursor:pointer;transition:all .2s;text-align:center;}
+.btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.57rem;letter-spacing:.23em;text-transform:uppercase;padding:10px 0;cursor:pointer;transition:all .2s;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 .btn-draw:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
 .btn-draw:active{transform:scale(.98);}
 .btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:6px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -368,6 +369,7 @@ body::before{
   display:flex;position:fixed;inset:0;z-index:200;
   background:var(--bg);align-items:center;justify-content:center;cursor:pointer;
   opacity:0;pointer-events:none;transition:opacity .25s ease;
+  user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
 }
 .party-overlay.open{opacity:1;pointer-events:all;}
 .party-overlay::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");opacity:.7;}
@@ -1593,15 +1595,18 @@ const LEVEL_COLORS = {
 };
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 
-// ── Depth scale: the bands of the category grid, light (1) to deep (6).
-//    Only used for drawing — where a round travelled, not what it's worth. ──
+// ── Depth scale: the bands of the category grid, light (1) to deepest (8).
+//    Drives both the round-summary line AND Arc's own hand-shaping
+//    (_arcHand below) — After Dark is graded here too (usintimate/flesh
+//    easiest, kinks heavier, Abyss deepest), same ranking as LEVEL_INTENSITY,
+//    so Arc can tell them apart instead of treating them as one flat tier. ──
 const LEVEL_DEPTH = {
   quick:1, warm:1, colbert:1, aron:1, magic:1,
   culture:2, life:2, home:2, work:2, unwind:2, world:2,
   self:3, body:3, mind:3, spirit:3, values:3, wish:3, past:3, roots:3, family:3,
   connect:4, friends:4, date:4, attract:4, us:4, usfriend:4, uslove:4,
   deep:5, raw:5, grief:5, shadow:5,
-  usintimate:6, flesh:6, carnal:6, bare:6, kinks:6, abyss:6,
+  usintimate:6, flesh:6, carnal:6.5, bare:6.5, kinks:7, abyss:8,
 };
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
 
