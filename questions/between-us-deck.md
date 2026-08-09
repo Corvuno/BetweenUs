@@ -511,6 +511,9 @@ The questions come first, category by category. The full change log is at the bo
 - **Deep** — "What's the one thing you most want someone to understand about you?"
 - **Grief** — "Which grief do you carry that isn't yours?"
 - **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (STD/health-disclosure direction, approved but not slotted)
+- **Bare** — "Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?" (age-gap direction, approved but not slotted — works with or without a real age-gap history, per house rule 5)
+- **Flesh** — "How much do you enjoy making someone wait before you touch them?" (approved, no slot yet)
+- **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
