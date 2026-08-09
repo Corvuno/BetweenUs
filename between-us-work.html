@@ -1665,62 +1665,57 @@ function applyIntent(cards){
   return keyed.slice(0, Math.max(20, Math.ceil(keyed.length * 0.30))).map(x => x.c);
 }
 
-/* ── Mood: the sliders set the energy, the selected categories tint it ──────
-   Intensity/Focus already exist (LEVEL_INTENSITY, LEVEL_FOCUS) — reused here,
-   not duplicated. Playful/Intimate/Reflective is the one new axis: how a
-   category tends to feel, independent of how deep or how relational it is. */
-const CATEGORY_TRAITS = {
-  quick:{playful:1,intimate:0,reflective:0}, warm:{playful:.8,intimate:.2,reflective:0},
-  colbert:{playful:1,intimate:0,reflective:0}, magic:{playful:.8,intimate:.1,reflective:.1}, aron:{playful:.1,intimate:.3,reflective:.6},
-  culture:{playful:.6,intimate:0,reflective:.2}, life:{playful:.4,intimate:.1,reflective:.3},
-  home:{playful:.3,intimate:.2,reflective:.2}, work:{playful:.4,intimate:0,reflective:.1},
-  unwind:{playful:.7,intimate:.1,reflective:.1}, world:{playful:.3,intimate:0,reflective:.5},
-  self:{playful:.1,intimate:.2,reflective:.9}, mind:{playful:.1,intimate:.1,reflective:.9},
-  body:{playful:.3,intimate:.5,reflective:.2}, values:{playful:0,intimate:.1,reflective:.9},
-  spirit:{playful:0,intimate:.2,reflective:.9},
-  wish:{playful:.3,intimate:.2,reflective:.6}, past:{playful:.1,intimate:.4,reflective:.6},
-  roots:{playful:.1,intimate:.3,reflective:.5}, family:{playful:.3,intimate:.4,reflective:.3},
-  connect:{playful:.3,intimate:.5,reflective:.2}, friends:{playful:.5,intimate:.4,reflective:.1},
-  date:{playful:.6,intimate:.6,reflective:.1}, attract:{playful:.5,intimate:.6,reflective:0},
-  us:{playful:.1,intimate:.8,reflective:.1}, usfriend:{playful:.2,intimate:.6,reflective:.2}, uslove:{playful:.1,intimate:.9,reflective:0},
-  deep:{playful:0,intimate:.4,reflective:.7}, raw:{playful:0,intimate:.5,reflective:.6},
-  shadow:{playful:0,intimate:.4,reflective:.7}, grief:{playful:0,intimate:.4,reflective:.7},
-  usintimate:{playful:.1,intimate:.9,reflective:.1}, flesh:{playful:.2,intimate:.9,reflective:0},
-  carnal:{playful:.2,intimate:.9,reflective:0}, blunt:{playful:.4,intimate:.6,reflective:.1},
-  kinks:{playful:.4,intimate:.7,reflective:0}, abyss:{playful:0,intimate:.5,reflective:.9},
-  backup:{playful:.3,intimate:.2,reflective:.4},
+/* ── Mood: the sliders set the energy, the selected chapters set the register ── */
+/* Mood lives in a real 3D space, not a 2D grid with a tie-breaker bolted on:
+
+     Intensity   Easy .......................... Intense   (the dial)
+     Focus       Self ........................... Us       (the dial)
+     Register    Arrive → Surface → Deep → Us → After Dark  (which chapters)
+
+   Register is new: it is not the Playful/Intimate/Reflective trait blend
+   from before (that only ever broke ties inside a fixed 2D cell, which is
+   why mixing chapters barely moved the result — it wasn't a real axis, it
+   was a tiebreaker). Register is the chapters' own position along the
+   journey they already sit in on the Play screen, averaged across whatever
+   is active. Two selections that land on the same Intensity and Focus but
+   come from different chapters now genuinely end up in different places,
+   because Register is a full third coordinate, not a fallback.
+
+   There are no bands. A word is not looked up in a grid cell; it is the
+   nearest of ~28 fixed points scattered through the cube (Intensity,
+   Focus, Register), by plain distance. That is also why "5 steps, not 3"
+   stops being a real question — nothing is bucketed into 3 or 5 of
+   anything; the coordinates are continuous, so the answer changes exactly
+   as smoothly as the dials move. */
+const REGISTER_OF_GROUP = {
+  warmup:0, findout:.32, deeper:.6, aboutus:.72, afterdark:1,
+  colbert:.05, aron:.25, magic:.12, abyss:1, backup:.4,
 };
 
-/* 3x3 (intensity x focus), each cell a word per dominant trait, last is the
-   fallback when nothing dominates. ~27 in normal reach, matching the size of
-   vocabulary the chapters and dials can actually produce — not hundreds. */
-const MOOD_WORDS = {
-  '0,0':{p:'Light',      i:'Gentle',    r:'Curious',    ip:'Breezy',   ir:'Quiet',     pr:'Idle'},
-  '0,1':{p:'Playful',    i:'Fond',      r:'Curious',    ip:'Sunny',    ir:'Thoughtful',pr:'Airy'},
-  '0,2':{p:'Flirty',     i:'Fond',      r:'Connected',  ip:'Mischievous',ir:'Sweet',   pr:'Giddy'},
-  '1,0':{p:'Curious',    i:'Revealing', r:'Reflective', ip:'Exploring',ir:'Personal',  pr:'Grounded'},
-  '1,1':{p:'Curious',    i:'Honest',    r:'Open',       ip:'Genial',   ir:'Sincere',   pr:'Real'},
-  '1,2':{p:'Fond',       i:'Intimate',  r:'Honest',     ip:'Close',    ir:'Tender',    pr:'Trusting'},
-  '2,0':{p:'Unfiltered', i:'Unshielded',r:'Searching',  ip:'Bold',     ir:'Bare',      pr:'Piercing'},
-  '2,1':{p:'Unfiltered', i:'Unshielded',r:'Searching',  ip:'Bold',     ir:'Bare',      pr:'Heavy'},
-  '2,2':{p:'Charged',    i:'Vulnerable',r:'Exposed',    ip:'Electric', ir:'Aching',    pr:'Consuming'},
-};
-
-/* Specific combinations that should read as themselves, not as whatever
-   trait happens to average out on top — "intense + us" is not automatically
-   sexual; which categories got you there decides that. Checked in order,
-   first match wins, before the general trait lookup runs at all. */
-const MOOD_OVERRIDES = [
-  { i:0, f:2, any:['warm','attract'],          word:'Flirty' },
-  { i:0, f:0, any:['warm','life'],             word:'Light' },
-  { i:1, f:0, any:['life','mind'],             word:'Reflective' },
-  { i:1, f:2, any:['connect','friends'],       word:'Close' },
-  { i:1, f:2, any:['date'],                    word:'Tender' },
-  { i:2, f:0, any:['past','grief','shadow'],   word:'Unshielded' },
-  { i:2, f:2, any:['uslove','usintimate'],     word:'Vulnerable' },
-  { i:2, f:2, any:['attract','carnal'],        word:'Charged' },
-  { i:2, f:0, any:['world','values','mind'],   word:'Searching' },
+const MOOD_ANCHORS = [
+  // low register — Arrive / Beneath the Surface
+  {i:.15,f:.35,r:.08, word:'Light'},       {i:.15,f:.65,r:.08, word:'Playful'},
+  {i:.4, f:.15,r:.22, word:'Curious'},     {i:.4, f:.5, r:.22, word:'Genial'},
+  {i:.4, f:.85,r:.22, word:'Fond'},        {i:.7, f:.2, r:.25, word:'Grounded'},
+  {i:.7, f:.5, r:.28, word:'Sincere'},     {i:.7, f:.8, r:.3,  word:'Close'},
+  // mid register — Into the Deep
+  {i:.3, f:.3, r:.55, word:'Reflective'},  {i:.3, f:.7, r:.55, word:'Personal'},
+  {i:.55,f:.5, r:.55, word:'Open'},        {i:.8, f:.15,r:.58, word:'Searching'},
+  {i:.8, f:.45,r:.58, word:'Unshielded'},  {i:.9, f:.75,r:.6,  word:'Piercing'},
+  // higher register — Between Us
+  {i:.35,f:.75,r:.75, word:'Sweet'},       {i:.55,f:.65,r:.75, word:'Intimate'},
+  {i:.55,f:.9, r:.78, word:'Trusting'},    {i:.8, f:.7, r:.78, word:'Tender'},
+  {i:.85,f:.9, r:.8,  word:'Devoted'},
+  // highest register — After Dark: its own edge, reachable from anywhere,
+  // never crowded out by whatever else is in the mix (see REGISTER_OF_GROUP's
+  // floor for the afterdark group below)
+  {i:.25,f:.7, r:.92, word:'Teasing'},     {i:.5, f:.6, r:.92, word:'Charged'},
+  {i:.5, f:.85,r:.95, word:'Wanting'},     {i:.7, f:.55,r:.93, word:'Electric'},
+  {i:.75,f:.85,r:.97, word:'Vulnerable'},  {i:.85,f:.7, r:1,   word:'Aching'},
+  {i:.9, f:.9, r:1,   word:'Consuming'},   {i:.9, f:.3, r:.95, word:'Undone'},
+  {i:.25,f:.3, r:.9,  word:'Simmering'},
 ];
+const AFTER_DARK_TIER = MOOD_ANCHORS.filter(a => a.r >= .85);
 
 /* Which of the five chapters each category belongs to, so mixing chapters
    of very different sizes doesn't let the bigger one drown out the smaller
@@ -1738,7 +1733,7 @@ const LEVEL_CHAPTER = {};
 ].forEach(([id,ls]) => ls.forEach(l => LEVEL_CHAPTER[l] = id));
 
 function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
-  const levels = activeLevels.filter(l => CATEGORY_TRAITS[l]);
+  const levels = activeLevels.filter(l => DECK_LEVELS.has(l));
   if (!levels.length) return null;
 
   // group by chapter (or a singleton group per category outside any chapter),
@@ -1746,38 +1741,35 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const groups = {};
   levels.forEach(l => { const g = LEVEL_CHAPTER[l] || l; (groups[g] = groups[g] || []).push(l); });
   const groupVecs = Object.values(groups).map(ls => ({
-    playful:    ls.reduce((s,l) => s + CATEGORY_TRAITS[l].playful,    0) / ls.length,
-    intimate:   ls.reduce((s,l) => s + CATEGORY_TRAITS[l].intimate,   0) / ls.length,
-    reflective: ls.reduce((s,l) => s + CATEGORY_TRAITS[l].reflective, 0) / ls.length,
-    deep:       ls.reduce((s,l) => s + (levelIntensity(l)-1)/6,       0) / ls.length,
-    us:         ls.reduce((s,l) => s + (levelFocus(l)+1)/2,           0) / ls.length,
+    deep: ls.reduce((s,l) => s + (levelIntensity(l)-1)/6, 0) / ls.length,
+    us:   ls.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / ls.length,
   }));
   const meanOf = key => groupVecs.reduce((s,v) => s + v[key], 0) / groupVecs.length;
 
   // sliders are the energy; the selection only tints it
   const intensity = .5*sliderIntensity01 + .5*meanOf('deep');
   const focus     = .5*sliderFocus01     + .5*meanOf('us');
-  const iBand = intensity < .34 ? 0 : intensity < .66 ? 1 : 2;
-  const fBand = focus     < .34 ? 0 : focus     < .66 ? 1 : 2;
 
-  // overrides are for a clean single-chapter read only — the moment two
-  // groups are mixed, the blend itself is the more honest answer
-  if (Object.keys(groups).length === 1) {
-    const override = MOOD_OVERRIDES.find(o => o.i===iBand && o.f===fBand && o.any.some(l => levels.includes(l)));
-    if (override) return override.word;
+  // Register: where the active chapters sit on their own journey, averaged —
+  // except After Dark, which sets a floor rather than being averaged down.
+  // "Only after dark with anything should yield its own edge": present at
+  // all, however diluted by everything else in the mix, it still guarantees
+  // the round reads as at least mostly After Dark's register, not a wash.
+  const groupIds = Object.keys(groups);
+  let register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
+  if (groupIds.includes('afterdark')) register = Math.max(register, .8);
+
+  // "Only after dark with anything should yield its own edge" is a
+  // guarantee, not just a tendency — its own anchors sit at high focus, so a
+  // low-focus dial could otherwise drift the nearest match away from them
+  // entirely. Its presence restricts the search to its own tier outright.
+  const pool = groupIds.includes('afterdark') ? AFTER_DARK_TIER : MOOD_ANCHORS;
+  let best = null, bestD = Infinity;
+  for (const a of pool) {
+    const d = (a.i-intensity)**2 + (a.f-focus)**2 + (a.r-register)**2 * 1.4;  // register weighted a little heavier: it's the axis most likely to get washed out otherwise
+    if (d < bestD) { bestD = d; best = a; }
   }
-
-  // the two LEADING traits pick the word, not just whichever is single
-  // highest — a close call between intimate and reflective reads as
-  // genuinely different from a clean intimate win, instead of both
-  // collapsing onto the same word regardless of what the runner-up was
-  const p = meanOf('playful'), im = meanOf('intimate'), r = meanOf('reflective');
-  const ranked = [['p',p],['i',im],['r',r]].sort((a,b) => b[1]-a[1]);
-  const [top, second] = ranked;
-  const cell = MOOD_WORDS[iBand+','+fBand];
-  if (top[1] - second[1] > .18) return cell[top[0]];   // a clear single winner
-  const pair = [top[0], second[0]].sort().join('');    // close: blend of the top two
-  return cell[pair] || cell[top[0]];
+  return best.word;
 }
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
