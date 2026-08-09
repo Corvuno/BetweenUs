@@ -430,7 +430,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. What makes you feel completely safe with someone sexually?
 11. In the moment, how do you make what you want known — words, hands, or just taking it?
-12. The most memorable places sex has happened — the most beautiful, and the strangest?
+12. How much do you enjoy making someone wait before you touch them?
 
 ## Carnal 🔞
 1. What pulls you out of your body during sex, when it happens?
@@ -455,9 +455,9 @@ The questions come first, category by category. The full change log is at the bo
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. What's a health conversation you've avoided having, right when you should have had it?
+9. Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
-11. Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?
+11. The most memorable places sex has happened — the most beautiful, and the strangest?
 12. What's the longest you've gone without sex — and how was that?
 
 ## Kink 🔞
@@ -510,7 +510,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Deep** — "When did you last let someone see you struggling?"
 - **Deep** — "What's the one thing you most want someone to understand about you?"
 - **Grief** — "Which grief do you carry that isn't yours?"
-- **Flesh** — "How much do you enjoy making someone wait before you touch them?" (approved, no slot yet)
+- **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (bumped from Bare 9 when the age-gap card moved in from 11; still approved, just unslotted again)
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 
 ## NOTE — decks living in the app, not in this file
@@ -549,6 +549,9 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.64 — final Bare/Flesh shuffle
+**Bare 9** ← age gap card (moved from 11). **Bare 11** ← the beautiful/strangest-place card, back in its native slot. **Flesh 12** ← "How much do you enjoy making someone wait before you touch them?" (pulled off the bench, filling the slot the place card vacated). The pickup card stays put at Flesh 5. Health-conversation is bumped back to the bench, still approved, just displaced again.
 
 ## Patch v6.63 — Bare 9/11 corrected, Flesh 1 tail cut
 **Bare 9** → *"What's a health conversation you've avoided having, right when you should have had it?"* Replaces the faked-it card, which was flat (a real "no, never" answer isn't much of a story). Pulled straight off the bench — already approved, just unslotted.
