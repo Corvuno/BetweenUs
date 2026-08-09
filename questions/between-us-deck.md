@@ -419,7 +419,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What did you want last year that you've already stopped wanting?
 
 ## Flesh 🔞
-1. Some touch undoes you. Describe it, and what it does to you.
+1. Some touch undoes you. Describe it.
 2. What's something you thought you'd never enjoy until you actually experienced it?
 3. Afterwards, still tangled up — how do you like to come down?
 4. Walk me through undressing someone — the order, the pace, what you notice.
@@ -455,9 +455,9 @@ The questions come first, category by category. The full change log is at the bo
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. Have you ever faked it — and did they ever find out?
+9. What's a health conversation you've avoided having, right when you should have had it?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
-11. Tell about the most inconvenient time you've ever been walked in on.
+11. Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?
 12. What's the longest you've gone without sex — and how was that?
 
 ## Kink 🔞
@@ -510,8 +510,6 @@ The questions come first, category by category. The full change log is at the bo
 - **Deep** — "When did you last let someone see you struggling?"
 - **Deep** — "What's the one thing you most want someone to understand about you?"
 - **Grief** — "Which grief do you carry that isn't yours?"
-- **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (STD/health-disclosure direction, approved but not slotted)
-- **Bare** — "Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?" (age-gap direction, approved but not slotted — works with or without a real age-gap history, per house rule 5)
 - **Flesh** — "How much do you enjoy making someone wait before you touch them?" (approved, no slot yet)
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 
@@ -551,6 +549,11 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.63 — Bare 9/11 corrected, Flesh 1 tail cut
+**Bare 9** → *"What's a health conversation you've avoided having, right when you should have had it?"* Replaces the faked-it card, which was flat (a real "no, never" answer isn't much of a story). Pulled straight off the bench — already approved, just unslotted.
+**Bare 11** → *"Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?"* Replaces the walked-in-on card, which failed house rule 5 outright — no incident, no answer, dead end for half the table. Also pulled off the bench.
+**Flesh 1** loses the tail added in an earlier patch. *"Some touch undoes you. Describe it."* The added clause ("and what it does to you") didn't change the answer — a real description of an undoing touch already carries what it does to you. House rule 3.
 
 ## Patch v6.62 — Flesh 4 rebuilt
 **Flesh 4** → *"Walk me through undressing someone — the order, the pace, what you notice."* Same territory as the old card, executed as a live narrated sequence instead of a reflective question — more directive, more concrete, genuinely richer answer.
