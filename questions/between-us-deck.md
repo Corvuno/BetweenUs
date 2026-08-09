@@ -510,6 +510,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Deep** — "When did you last let someone see you struggling?"
 - **Deep** — "What's the one thing you most want someone to understand about you?"
 - **Grief** — "Which grief do you carry that isn't yours?"
+- **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (STD/health-disclosure direction, approved but not slotted)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
