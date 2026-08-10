@@ -185,7 +185,7 @@ body::before{
 .deselect-btn:hover{color:var(--gold);}
 .deselect-btn:first-child::after{content:'·';margin-left:8px;opacity:.25;pointer-events:none;}
 
-/* F: Mode bar active state — stronger signal */
+/* Mode bar active state — stronger signal */
 .mode-btn.active{color:var(--gold);font-weight:400;}
 .mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--gold);opacity:.7;}
 
@@ -574,7 +574,7 @@ body::before{
 
 
 
-/* ═════════ v6.1 SHELL — token line, trays, category drawer, fullscreen stage, desktop ═════════ */
+/* ═════════ APP SHELL — token line, trays, category drawer, fullscreen stage, desktop ═════════ */
 
 /* ── TOKEN LINE — three symmetric words, ember only when lit ── */
 .tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:10px 0 2px;
@@ -2873,7 +2873,8 @@ function _nextCardBase() {
     }, 175);
   }
 }
-// nextCard is defined below in the adaptation layer (consolidated)
+// nextCard is defined below (APP SHELL section) — it wraps _nextCardBase with
+// the end-of-draw hold gate and post-advance hooks (party/session summary).
 
 function prevCard() {
   if (state.currentIndex > 0) {
@@ -3298,8 +3299,7 @@ document.getElementById('card').addEventListener('click', e => {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// NEW DESIGN ADAPTATION LAYER
-// Overrides old DOM references, adds new UI event listeners
+// APP SHELL — UI wiring: card display, drawers, party mode, save/continue
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SHUFFLE_MODES = ['wild','deep','breadth','arc'];
@@ -3313,7 +3313,7 @@ function updateShuffleDisplay() {
   if (vo) vo.textContent = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-// setCardDisplay — single definition (accent bar + fullscreen sync)
+// setCardDisplay — updates card face, accent bar, and fullscreen sync
 function setCardDisplay(card) {
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
@@ -3350,7 +3350,7 @@ function setCardDisplay(card) {
   updatePartyDisplay(card);
 };
 
-// flipToCard — consolidated (accent bloom + arc indicator + fullscreen sync)
+// flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 function flipToCard(card) {
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
@@ -3409,7 +3409,6 @@ function updatePartyDisplay(card) {
   if (pn) pn.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
 }
 
-// ── Override toggleCategories for new DOM ──
 function toggleCategories() {
   state.categoriesCollapsed = !state.categoriesCollapsed;
   const wrap  = document.getElementById('toggles-wrap');
@@ -3420,17 +3419,13 @@ function toggleCategories() {
   if (lbl)   { lbl.classList.toggle('open', !state.categoriesCollapsed); lbl.blur(); }
 };
 
-// ── Override updateDeckInfo ──
 function updateDeckInfo() {
   const shown = state.visibleDeck.length, total = state.fullDeck.length;
   const el = document.getElementById('deckCount');
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
 
-// exitParty is used (Escape key, in fullscreen). Its counterpart enterParty()
-// was dead code — nothing called it, since the #btnParty click handler below
-// duplicates the same logic inline instead — so it's gone rather than kept
-// as a second, unused way to do the same thing.
+// Entering party mode is handled inline by the #btnParty click handler below.
 function exitParty() {
   state.partyMode = false;
   const overlay = document.getElementById('partyOverlay');
@@ -3466,7 +3461,7 @@ const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLang
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
 
 // Shuffle mode is chosen from the Shuffle token tray (see the order list in the
-// v6.1 shell wiring below); the mode is applied via updateShuffleDisplay().
+// app shell wiring below); the mode is applied via updateShuffleDisplay().
 // ── Reshuffle button: re-deal in the current shuffle mode ──
 document.getElementById('d-reshuffle').addEventListener('click',()=>{
   initDeck();
@@ -3514,7 +3509,6 @@ document.getElementById('d-save').addEventListener('click',()=>{
   if (saveMode==='continue') { continueSession(); }
   else { saveSession(); }
 });
-// saveSession — single definition (updates the save-button label)
 function saveSession() {
   if (!state.visibleDeck.length) return;
   const data = {
@@ -3532,7 +3526,6 @@ function saveSession() {
     if (lbl) { lbl.textContent='Saved ✓'; setTimeout(()=>{ lbl.textContent='Save session'; },2000); }
   } catch(e){}
 };
-// Override checkSavedSession
 function checkSavedSession() {
   try {
     const v = localStorage.getItem('bu-session');
@@ -3589,7 +3582,6 @@ document.getElementById('customText').addEventListener('keydown',e=>{if(e.key===
 document.getElementById('d-help').addEventListener('click',()=>{ closeAllDrawers(); openDrawer('helpDrawer'); });
 document.getElementById('closeHelp').addEventListener('click',()=>closeAllDrawers());
 
-// updateAfterDarkBtn — single definition (new After Dark button)
 function updateAfterDarkBtn() {
   const btn=document.getElementById('afterDarkToggle'); if(!btn) return;
   if (MASTER_SAFE || WORKPLACE_MODE) {
@@ -3610,9 +3602,7 @@ function updateAfterDarkBtn() {
   });
 };
 
-// nextCard wrappers consolidated — see CONSOLIDATED nextCard below.
-
-// ── Fullscreen party ── (legacy listeners removed, so we bind directly)
+// ── Fullscreen party ──
 (function(){
   const btn = document.getElementById('btnParty');
   if (btn) {
@@ -3781,7 +3771,7 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
   if(qEl) setTimeout(()=>qEl.classList.add('in'),400);
 })();
 
-// updateDrawMore — single definition (transforms btn-next, hides standalone button)
+// updateDrawMore — transforms btn-next into "draw more" / "hold to continue" as needed
 function updateDrawMore() {
   // This runs after every deck-state change (nextCard, skipCard, initDeck,
   // choosePick, …), so the end-of-hand hint updates from here too — no need
@@ -3878,11 +3868,9 @@ function skipCard() {
   }
 }
 
-// Skip block integrated into consolidated nextCard below. The swipe-down
-// gesture itself is recognized by the card's touch handler, above — skip is
-// downward-swipe-only; press-and-hold-to-skip was removed, since it collided
-// with press-and-hold-to-continue on the end-of-draw screen, and skip sees
-// little use. A hold now only ever means "continue".
+// The swipe-down gesture that calls skipCard() is recognized by the card's
+// touch handler, above — skip is downward-swipe-only; a hold always means
+// "continue" (see the end-of-draw hold gate below).
 
 // ═══════════════════════════════════════════════════════════
 // FEATURE 4: ARC PHASE INDICATOR
@@ -3902,8 +3890,6 @@ function updateArcIndicator() {
     d.className = 'arc-dot' + (i <= phase ? ' lit-' + i : '');
   }
 }
-
-// Arc indicator is integrated into flipToCard above.
 
 // ═══════════════════════════════════════════════════════════
 // FEATURE 5: SESSION SUMMARY
@@ -3977,8 +3963,6 @@ function showSessionSummary() {
   if (numEl) numEl.textContent = '— end —';
 }
 
-// Session summary integrated into consolidated nextCard below.
-
 // ── End-of-draw hold gate ──
 // The end screen is a stop, not something you tap through: continuing takes a
 // deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
@@ -4045,7 +4029,7 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
   });
 })();
 
-// ── A: Spice glyph buttons (one inline on the After Dark chapter in Play,
+// ── Spice glyph buttons (one inline on the After Dark chapter in Play,
 //    one inline on the After Dark drawer in Explore) — same state, kept in sync ──
 (function(){
   const btns = [...document.querySelectorAll('.spice-glyph')];
@@ -4061,15 +4045,11 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
   }));
 })();
 
-// Party end integrated into consolidated nextCard below.
-
-// Fullscreen end-of-draw continue is handled by the shared end-gate below
-// (bound to #partyOverlay too) — a separate hold handler here used to stack
-// with it and advance several cards at once, so it was removed.
-
+// Fullscreen end-of-draw continue is handled by the shared end-gate above
+// (bound to #partyOverlay too).
 
 // ═══════════════════════════════════════════════════════════
-// CONSOLIDATED nextCard — all hooks in one place
+// nextCard — advances the deck and runs post-advance hooks (party/session summary)
 // ═══════════════════════════════════════════════════════════
 function nextCard() {
   if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) { initDeck(); _nextCardBase(); return; }  // all skipped: reshuffle straight into a card
@@ -4394,8 +4374,6 @@ function choosePick(chosen, allOptions) {
   updateArcIndicator();
 }
 
-// Pick-3 integrated into consolidated nextCard below.
-
 // Pick toggle
 (function(){
   const btn = document.getElementById('pickToggle');
@@ -4449,7 +4427,6 @@ updateCatCounts();
 // Apply initial language to all language UI (incl. html lang attribute)
 setLang(state.lang, true);
 
-// The early checkSavedSession() call ran before the override existed — run the real one
 checkSavedSession();
 
 // ── Category grid: make it obvious that it scrolls ──
@@ -4493,7 +4470,7 @@ applyToggleUI();
 
 </script>
 <script>
-/* ═════════ v6.1 SHELL WIRING — additive only; game logic untouched ═════════ */
+/* ═════════ APP SHELL WIRING — trays, drawers, presets, dials ═════════ */
 (function(){
   const $=id=>document.getElementById(id);
 
