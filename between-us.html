@@ -1715,8 +1715,12 @@ const MOOD_ANCHORS = [
   // computeMood's adShare below): its own words, distinct from the pure
   // tier just below, so "everything selected" and "only After Dark
   // selected" no longer collide on the same word just because they land
-  // in similar intensity/focus territory
-  {i:.35,f:.5, r:.83, word:'Humming'},     {i:.6, f:.6, r:.86, word:'Flushed'},
+  // in similar intensity/focus territory. Four points, not two — a
+  // two-anchor pool that has to cover the whole intensity/focus square by
+  // itself just becomes two words alternating on which side of a diagonal
+  // a selection falls, which is its own kind of flatness.
+  {i:.2, f:.4, r:.82, word:'Kindled'},     {i:.35,f:.5, r:.83, word:'Humming'},
+  {i:.6, f:.6, r:.86, word:'Flushed'},     {i:.75,f:.4, r:.85, word:'Restless'},
   // highest register — After Dark itself, dominant or exclusive: its own
   // edge, reachable from anywhere, never crowded out by whatever else is
   // in the mix (see computeMood's afterdark handling below)
@@ -1727,6 +1731,19 @@ const MOOD_ANCHORS = [
   {i:.25,f:.3, r:.9,  word:'Simmering'},
 ];
 const AFTER_DARK_TIER = MOOD_ANCHORS.filter(a => a.r >= .82);
+// Split for pool selection (see computeMood): diluted vs pure are picked
+// between categorically, by adShare crossing a threshold, not left to
+// compete within one distance metric. A blend was tried first and wasn't
+// robust — a diluted mix's intensity/focus land close enough to the pure
+// tier's own anchors (broad averages regress toward the middle, same
+// territory the pure tier's central words already occupy) that the small
+// register penalty lost to it more often than not, e.g. "Select All" (which
+// excludes the opt-in-only categories, so it's a smaller, higher-average mix
+// than "every category" sounds like) landing on "Charged" same as pure
+// After Dark. A hard split can't lose that way: below the threshold, the
+// pure words aren't even candidates.
+const AFTER_DARK_DILUTED = AFTER_DARK_TIER.filter(a => a.r < .9);
+const AFTER_DARK_PURE    = AFTER_DARK_TIER.filter(a => a.r >= .9);
 
 /* Which of the five chapters each category belongs to, so mixing chapters
    of very different sizes doesn't let the bigger one drown out the smaller
@@ -1778,16 +1795,24 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   // head-on with the pure-tier words for the same intensity/focus spot.
   const groupIds = Object.keys(groups);
   let register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
-  if (groups.afterdark) {
-    const adShare = groups.afterdark.length / levels.length;
-    register = .82 + .18 * adShare;
-  }
+  const adShare = groups.afterdark ? groups.afterdark.length / levels.length : 0;
+  if (groups.afterdark) register = .82 + .18 * adShare;
 
   // "Only after dark with anything should yield its own edge" is a
   // guarantee, not just a tendency — its own anchors sit at high focus, so a
   // low-focus dial could otherwise drift the nearest match away from them
   // entirely. Its presence restricts the search to its own tier outright.
-  const pool = groupIds.includes('afterdark') ? AFTER_DARK_TIER : MOOD_ANCHORS;
+  //
+  // Diluted vs pure is a hard split on adShare, not left to compete within
+  // one distance metric — a blended version lost too often to intensity/
+  // focus proximity (a diluted mix and a pure After Dark selection can land
+  // in similar territory there; register alone isn't always enough of a
+  // tiebreaker to overcome that). Below the threshold, pure words aren't
+  // even candidates, so there's nothing for a diluted mix to accidentally
+  // win on i/f closeness alone.
+  const pool = !groups.afterdark ? MOOD_ANCHORS
+             : adShare >= .5     ? AFTER_DARK_PURE
+             :                      AFTER_DARK_DILUTED;
   let best = null, bestD = Infinity;
   for (const a of pool) {
     const d = (a.i-intensity)**2 + (a.f-focus)**2 + (a.r-register)**2 * 1.4;  // register weighted a little heavier: it's the axis most likely to get washed out otherwise
