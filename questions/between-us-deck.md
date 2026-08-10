@@ -42,20 +42,20 @@ The questions come first, category by category. The full change log is at the bo
 1. Which piece of art still does something to you, every time?
 2. Something universally loved leaves you completely cold...
 3. Which piece of music do you protect — the one you won't play for just anyone?
-4. You collect something, officially or accidentally...
-5. Which public space taught you something about beauty?
+4. What do you own more of than you'd admit to a stranger?
+5. Which place have you stood in and simply forgotten to move?
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
-8. The one you love that everyone else seems to have missed...
+8. What do you love that you've stopped recommending, because no one gets it?
 9. Does great art excuse a terrible artist?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
-12. What was the last thing you read, watched, or listened to that genuinely changed how you think?
+12. What would a stranger guess about you from your bookshelf or your playlist — and would they be wrong?
 
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
 2. What would have to change for your life to feel more like your own?
-3. Which chore do you secretly not mind?
+3. What do you spend money on that you don't defend?
 4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
@@ -89,7 +89,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Look at a photo of young you — what looks back?
 7. What did a normal evening look like when you were young?
 8. At home, to be safe, you had to be...
-9. What did you play with until it fell apart?
+9. Was there a kid at school everyone picked on — and where were you in that?
 10. What did you learn about love from watching your parents?
 11. The moment you realised your normal wasn't — take us back.
 12. Which adult from your childhood were you never quite safe with?
@@ -105,15 +105,15 @@ The questions come first, category by category. The full change log is at the bo
 8. Describe a failure you're only now able to talk about.
 9. What's the best trouble you ever got into?
 10. Which scar still carries the best story?
-11. Which year of your life simply vanished?
+11. Where have you been luckier than you like to admit?
 12. If your younger self could see your life right now, what would surprise them most?
 
 ## Unwind
 1. When did you last stay outside longer than you meant to — and where were you?
-2. What hobby have you never gotten tired of, even after years?
-3. What are you looking forward to?
+2. What hobby would you protect even if it started costing you something?
+3. What's something you did once that you'll never stop bringing up?
 4. The hour of the week that's entirely yours...
-5. Some things look like rest and leave you emptier...
+5. What kind of rest actually leaves you more tired than before?
 6. There was a moment you felt completely free. Where were you?
 7. What's something you do purely for pleasure that has absolutely no productive value?
 8. The most unexpected beauty a trip ever handed you...
@@ -133,7 +133,7 @@ The questions come first, category by category. The full change log is at the bo
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
-11. What's the most predictable thing about you?
+11. When do you find yourself becoming controlling?
 12. What holds you up that isn't a person?
 
 ## Body
@@ -184,13 +184,13 @@ The questions come first, category by category. The full change log is at the bo
 1. How do you show someone they matter to you — the actual method?
 2. When did being needed stop feeling good?
 3. Who taught you the most about how to be close to someone?
-4. Do you wait to make the first move, even when you're the one missing them?
+4. Is there a friendship in your life that would end if you stopped being the one who tries?
 5. How can someone tell you're withdrawing before you've said a word?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
 8. Is there something you wish people asked you instead of 'how are you'?
 9. Who did you forgive, without ever telling them?
-10. Where are you a regular — and do they know your name?
+10. What do you fight about that is never actually what you're fighting about?
 11. When someone cries in front of you, what happens in you?
 12. In which company do you stop performing?
 
@@ -254,7 +254,7 @@ The questions come first, category by category. The full change log is at the bo
 1. What's something the next generation will judge this one harshly for?
 2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. What's something you benefit from that you know isn't fair?
-4. What change in your lifetime still amazes you?
+4. Whose life would you swap with for a week?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Which room first taught you that class exists?
 7. Do people actually change — or just get better at managing what doesn't?
@@ -265,17 +265,17 @@ The questions come first, category by category. The full change log is at the bo
 12. Which common belief about how the world works do you think is simply wrong?
 
 ## Work
-1. What's the strangest job you've ever had?
+1. What have you sacrificed for a job you don't even like anymore?
 2. What would you do professionally if status played no role at all?
 3. What's the piece of work you're most proud of that nobody applauded?
-4. Which colleague changed how you work?
+4. What do your colleagues think drives you — and are they right?
 5. Has your idea of success survived contact with reality?
-6. Tell about your most instructive professional failure.
+6. What corner do you cut at work that you'd never admit to cutting?
 7. Is ambition something you have or something that has you?
 8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
-11. What does the word "retirement" do to you?
+11. If you could never work again starting tomorrow, what's the first habit you'd have to break?
 12. What do colleagues learn about you in the first week — and what only after a year?
 
 ## Deep
@@ -325,7 +325,7 @@ The questions come first, category by category. The full change log is at the bo
 2. What's the unspoken rule in your family that everyone follows and no one names?
 3. What did a parent give you that you only learned to value late?
 4. Where does your family still see an old version of you?
-5. What does your family argue about that doesn't matter at all?
+5. Have you ever worried about someone's relationship with a substance — or had someone worry about yours?
 6. Which inherited trait do you watch for in the mirror, with dread?
 7. Your parents are getting old. What is that doing to you?
 8. Who became family without being family?
@@ -514,6 +514,23 @@ The questions come first, category by category. The full change log is at the bo
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 - **Romance** — "Is there a version of 'cheating' you don't actually think counts?" (approved, no slot yet — Romance is the likely home, already runs relationship rules and patterns)
 - **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle, parked pending a softer take — the harder framing read as consent territory, not Connect's register)
+- **Connect** — "Do you wait to make the first move, even when you're the one missing them?" (displaced from Connect 4 in v6.66 by the sharper friendship-stakes version; still a fine card, just the weaker of the two)
+- **Connect** — "Where are you a regular — and do they know your name?" (displaced from Connect 10 in v6.67 by the ordinary-conflict card; belonging-to-a-place, closer to Warm/Quick territory than Connect's actual ground)
+- **Culture** — "You collect something, officially or accidentally..." (displaced from Culture 4 in v6.67; pure topic, no tension)
+- **Culture** — "Which public space taught you something about beauty?" (displaced from Culture 5 in v6.67; "taught you" read intellectual rather than experiential)
+- **Culture** — "The one you love that everyone else seems to have missed..." (displaced from Culture 8 in v6.67; taste-preference with no behaviour attached)
+- **Culture** — "What was the last thing you read, watched, or listened to that genuinely changed how you think?" (displaced from Culture 12 in v6.67; the generic "changed how you think" register)
+- **Life** — "Which chore do you secretly not mind?" (displaced from Life 3 in v6.67; trivial, no real stakes)
+- **Roots** — "What did you play with until it fell apart?" (displaced from Roots 9 in v6.67 by the peer-bullying card; overlapped Home 3's "object that survived versions of you" ground)
+- **Past** — "Which year of your life simply vanished?" (displaced from Past 11 in v6.67 by the luck-vs-merit card)
+- **Unwind** — "What hobby have you never gotten tired of, even after years?" (displaced from Unwind 2 in v6.67; predictable answer, no tension — same weakness flagged when it was installed in v6.61)
+- **Self** — "What's the most predictable thing about you?" (displaced from Self 11 in v6.67 by the power/control card; topic, not mechanism)
+- **World** — "What change in your lifetime still amazes you?" (displaced from World 4 in v6.67 by the status/comparison card; flat and factual)
+- **Work** — "What's the strangest job you've ever had?" (displaced from Work 1 in v6.67; fun but generic — fine as a Quick/Warm card if a slot opens there)
+- **Work** — "Which colleague changed how you work?" (displaced from Work 4 in v6.67; conventional influence-story framing)
+- **Work** — "Tell about your most instructive professional failure." (displaced from Work 6 in v6.67; interview-question register)
+- **Work** — "What does the word \"retirement\" do to you?" (displaced from Work 11 in v6.67; interesting phrasing but too conceptual, no concrete handle)
+- **Family** — "What does your family argue about that doesn't matter at all?" (displaced from Family 5 in v6.67 by the substance-worry card)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -551,6 +568,42 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.67 — full pass on the flagged-weak batch, two new gap cards seated, two brand-new subjects added
+Acting on the full feedback pass rather than just the two easy swaps: every card explicitly named as weak (not just diagnosed as a category), plus concrete cards for two of the biggest named subject gaps, plus the two brand-new subjects (bullying, substance) that had wording but no home.
+
+**Culture** — four cards rebuilt (3/4/8/12 were flagged as conventional taste-listing with no tension):
+- **4** → *"What do you own more of than you'd admit to a stranger?"* (was: "you collect something" — pure topic)
+- **5** → *"Which place have you stood in and simply forgotten to move?"* (was: "taught you something about beauty" — too intellectual, not experiential)
+- **8** → *"What do you love that you've stopped recommending, because no one gets it?"* (was: "the one everyone else missed" — taste with no behaviour)
+- **12** → *"What would a stranger guess about you from your bookshelf or your playlist — and would they be wrong?"* (was: the generic "changed how you think" card)
+
+**Work** — four cards rebuilt (1/4/6/11 named as generic-interview-question territory):
+- **1** → *"What have you sacrificed for a job you don't even like anymore?"* (was: "strangest job" — a fun fact, not a reveal)
+- **4** → *"What do your colleagues think drives you — and are they right?"* (was: "which colleague changed how you work" — conventional)
+- **6** → *"What corner do you cut at work that you'd never admit to cutting?"* (was: "most instructive professional failure" — interviewish)
+- **11** → *"If you could never work again starting tomorrow, what's the first habit you'd have to break?"* (was: "what does 'retirement' do to you" — interesting phrasing, but conceptual with no handle)
+
+**Unwind** — the two cards flagged weak that Unwind 3 didn't already fix:
+- **2** → *"What hobby would you protect even if it started costing you something?"* (the v6.61 replacement — "never gotten tired of" — was itself flagged as predictable; this version adds a stake)
+- **5** → *"What kind of rest actually leaves you more tired than before?"* (was too abstract, asked the player to construct the premise themselves; same idea, asked directly)
+
+**Two named subject gaps seated with concrete cards**, each displacing the flattest card in a plausible home category rather than opening a new slot elsewhere:
+- **Life 3** → *"What do you spend money on that you don't defend?"* (money-as-behaviour, not money-as-biography; was "which chore do you secretly not mind" — trivial)
+- **Connect 10** → *"What do you fight about that is never actually what you're fighting about?"* (ordinary conflict, the biggest interpersonal gap named; was "where are you a regular" — closer to Warm's ground than Connect's)
+- **Self 11** → *"When do you find yourself becoming controlling?"* (power between ordinary people; was "most predictable thing about you" — topic, not mechanism)
+- **World 4** → *"Whose life would you swap with for a week?"* (status/comparison; was "what change in your lifetime still amazes you" — flat and factual)
+- **Past 11** → *"Where have you been luckier than you like to admit?"* (luck vs. merit, deepening the single existing hook at Values 3; was "which year of your life simply vanished")
+
+**Two brand-new subjects, now with a home:**
+- **Roots 9** → *"Was there a kid at school everyone picked on — and where were you in that?"* (peer bullying — genuinely absent before; "where were you in that" doesn't presume victim, bystander, or perpetrator. Was: "what did you play with until it fell apart," which overlapped Home 3.)
+- **Family 5** → *"Have you ever worried about someone's relationship with a substance — or had someone worry about yours?"* (no named substance, bidirectional. Was: "what does your family argue about that doesn't matter at all" — the flattest Family card, no real stakes.)
+
+All eleven displaced cards moved to BENCH rather than deleted, per house rule 6. Status/comparison, real-money-behaviour, power, and luck/merit each now have one seated card; the remaining named gaps (anger, boredom, secrets, reputation, trust, aging, uncertainty) are still open and unaddressed — noted, not solved by this patch.
+
+## Patch v6.66 — Connect 4 and Unwind 3 swapped on owner sign-off
+**Connect 4** → *"Is there a friendship in your life that would end if you stopped being the one who tries?"* Supersedes the v6.61 reciprocity-gap card ("do you wait to make the first move") — that card asked about a feeling, this one names a specific relationship and a real stake (it ending), which is the sharper version of the same gap. Old card benched below.
+**Unwind 3** → *"What's something you did once that you'll never stop bringing up?"* Replaces "What's something you're looking forward to?", flagged as pure conversational lubricant with no identity distinct from Warm. "Never stop bringing up" names the mechanism — a personal legend you keep retelling — rather than just pointing at an event.
 
 ## Patch v6.65 — two approved cards actually benched this time
 **Romance** and **Connect** each gain a bench entry — the cheating-concept card and the boundaries card — both approved in conversation but never actually written into the file. Correcting that gap now rather than leaving them as claims with nothing behind them.
