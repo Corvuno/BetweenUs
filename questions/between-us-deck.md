@@ -553,20 +553,23 @@ Useful for auditing a category rather than generating cards. In rough order of h
 Four real answers to four cards in this deck. The test a card design lives or dies by: point it at ten different people and each one should be able to land somewhere this specific — the card supplies the aperture, the answer supplies everything else.
 
 **Attract, 8** — *Who is your celebrity crush — and does that line up with your actual type?*
-> Nicole Mejia, Florence Pugh, Matilda Lutz, Alicia Vikander, Jessica Biel — my type has one common denominator: strong women, in presence and physically. The range runs from thick-fit to just fit; I like strong, give me some muscle on my partner. Tight in the right places, and preferably soft in the right places too, though if not, that's fine — lines showing everywhere, definition is *mjam*. Thin without the muscle does nothing for me.
+> Nicole Mejia, Florence Pugh, Matilda Lutz, Alicia Vikander, Jessica Biel — the common thread is strength, in presence as much as physique. My type ranges from athletic and curvy to simply toned; what matters is real muscle, definition you can actually see. Softness in the right places is a bonus, not a requirement. What doesn't work for me is thinness without any strength behind it.
 
-**World, 7** — *Do people actually change — or just get better at managing what doesn't?*
-> No — we live in circles that collapse in on themselves again. Look at all the ancient civilizations. We've just stretched ours a little further.
+**World, 10** — *Is progress real?*
+> No — we live in circles that collapse in on themselves again and again. Every ancient civilization shows the same arc; ours has just stretched it out a little further.
 
 **Home, 8** — *The view from your kitchen window — what could you look at every day and never tire of?*
-> I want to see a buzzing city — life rushing by, from a safe distance. I like to be at least on the third floor, so everything is close enough to see, far enough not to be in my face. I like liveliness. (Although sometimes rolling hills are good too, from time to time.)
+> I want a view of a buzzing city — life rushing by, watched from a safe distance. At least the third floor, so everything is close enough to take in but far enough not to feel like it's in my face. I like liveliness. That said, rolling hills win out sometimes too.
 
 **Flesh, 12** — *How much do you enjoy making someone wait before you touch them?*
-> I don't — I like the feeling of skin too much, so I tend to find a way to get my hands underneath clothing as soon as I can.
+> Not much — I like the feel of skin too much, so I tend to find a way to get my hands under clothing as soon as I possibly can.
 
 ---
 
 # Change log
+
+## Patch v6.67 — worked examples corrected and properly polished
+The World answer was misattributed to card 7 in v6.66; it's the answer to **World 10** ("Is progress real?"), not card 7. Fixed. All four answers (Attract 8, World 10, Home 8, Flesh 12) rewritten as proper prose rather than lightly tidied transcription — same point, logic and viewpoint throughout, with the Attract 8 answer specifically de-crudened for general readability.
 
 ## Patch v6.66 — worked examples added to house style
 New "How this works in practice" section under House Style, with four real cleaned-up answers (Attract 8, World 7, Home 8, Flesh 12) as a concrete illustration of the aperture test. Flesh 5's answer was excellent but stays out of the file — not for public reference.
