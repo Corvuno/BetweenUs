@@ -1717,39 +1717,28 @@ const MOOD_ANCHORS = [
   {i:.35,f:.75,r:.75, word:'Sweet'},       {i:.55,f:.65,r:.75, word:'Intimate'},
   {i:.55,f:.9, r:.78, word:'Trusting'},    {i:.8, f:.7, r:.78, word:'Tender'},
   {i:.85,f:.9, r:.8,  word:'Devoted'},
-  // diluted edge — After Dark present but a minority of a wider mix (see
-  // computeMood's adShare below): its own words, distinct from the pure
-  // tier just below, so "everything selected" and "only After Dark
-  // selected" no longer collide on the same word just because they land
-  // in similar intensity/focus territory. Four points, not two — a
-  // two-anchor pool that has to cover the whole intensity/focus square by
-  // itself just becomes two words alternating on which side of a diagonal
-  // a selection falls, which is its own kind of flatness.
-  {i:.2, f:.4, r:.82, word:'Kindled'},     {i:.35,f:.5, r:.83, word:'Humming'},
-  {i:.6, f:.6, r:.86, word:'Heated'},      {i:.75,f:.4, r:.85, word:'Restless'},
-  // highest register — After Dark itself, dominant or exclusive: its own
-  // edge, reachable from anywhere, never crowded out by whatever else is
-  // in the mix (see computeMood's afterdark handling below)
-  {i:.25,f:.7, r:.92, word:'Teasing'},     {i:.5, f:.6, r:.92, word:'Charged'},
-  {i:.5, f:.85,r:.95, word:'Wanting'},     {i:.7, f:.55,r:.93, word:'Electric'},
-  {i:.75,f:.85,r:.97, word:'Vulnerable'},  {i:.85,f:.7, r:1,   word:'Aching'},
-  {i:.9, f:.9, r:1,   word:'Consuming'},   {i:.9, f:.3, r:.95, word:'Undone'},
-  {i:.25,f:.3, r:.9,  word:'Simmering'},
 ];
-const AFTER_DARK_TIER = MOOD_ANCHORS.filter(a => a.r >= .82);
-// Split for pool selection (see computeMood): diluted vs pure are picked
-// between categorically, by adShare crossing a threshold, not left to
-// compete within one distance metric. A blend was tried first and wasn't
-// robust — a diluted mix's intensity/focus land close enough to the pure
-// tier's own anchors (broad averages regress toward the middle, same
-// territory the pure tier's central words already occupy) that the small
-// register penalty lost to it more often than not, e.g. "Select All" (which
-// excludes the opt-in-only categories, so it's a smaller, higher-average mix
-// than "every category" sounds like) landing on "Charged" same as pure
-// After Dark. A hard split can't lose that way: below the threshold, the
-// pure words aren't even candidates.
-const AFTER_DARK_DILUTED = AFTER_DARK_TIER.filter(a => a.r < .9);
-const AFTER_DARK_PURE    = AFTER_DARK_TIER.filter(a => a.r >= .9);
+
+/* After Dark's own words are separate from MOOD_ANCHORS and only ever
+   reachable one way: every active category is one of the five After Dark
+   beats (usintimate/flesh/carnal/bare/kinks) and nothing else — no other
+   chapter mixed in at all. Anything short of that (even 90% After Dark plus
+   one other category) reads as a plain, non-sexual word from MOOD_ANCHORS
+   above instead. Two earlier versions tried to keep some sexual flavour for
+   diluted mixes (a floor on register, then a whole second "diluted edge"
+   tier of its own words) — both were the wrong shape of fix: the ask was
+   never "make the diluted case read differently from the pure case", it was
+   "nothing should read as sexual unless the selection actually is only
+   After Dark".
+   Three words, not the previous tier's nine — because the five beats are
+   meant to weigh equally (any combination of them is just "After Dark", not
+   a specific one of them asserting itself over the others), the only axis
+   left worth distinguishing on is the intensity dial itself: */
+const AFTER_DARK_WORDS = [
+  {i:.2,  word:'Heated'},
+  {i:.5,  word:'Sultry'},
+  {i:.85, word:'Charged'},
+];
 
 /* Which of the five chapters each category belongs to, so mixing chapters
    of very different sizes doesn't let the bigger one drown out the smaller
@@ -1770,8 +1759,29 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const levels = activeLevels.filter(l => DECK_LEVELS.has(l));
   if (!levels.length) return null;
 
-  // group by chapter (or a singleton group per category outside any chapter),
-  // average each group on its own, then average the groups equally
+  // Only After Dark, and nothing else, reads as sexual — every active
+  // category has to be one of the five After Dark beats. The five weigh
+  // equally (any combination is just "After Dark", not one beat asserting
+  // itself), so the only thing left to grade on is the intensity dial: a
+  // plain average of the blend already used for intensity below, blended
+  // with the dial the same 50/50 way, then matched to the nearest of three
+  // words. No focus, no register — a smaller pool on purpose, not a
+  // shrunken version of the old nine-word tier.
+  if (levels.every(l => LEVEL_CHAPTER[l] === 'afterdark')) {
+    const avgDeep = levels.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / levels.length;
+    const intensity = .5*sliderIntensity01 + .5*avgDeep;
+    let best = null, bestD = Infinity;
+    for (const a of AFTER_DARK_WORDS) {
+      const d = Math.abs(a.i - intensity);
+      if (d < bestD) { bestD = d; best = a; }
+    }
+    return best.word;
+  }
+
+  // Everything else — including a selection that's mostly After Dark plus
+  // one other category — is plain, non-sexual territory: the five beats
+  // simply take part in the ordinary register/intensity/focus blend below,
+  // the same as any other category would.
   const groups = {};
   levels.forEach(l => { const g = LEVEL_CHAPTER[l] || l; (groups[g] = groups[g] || []).push(l); });
   const groupVecs = Object.values(groups).map(ls => ({
@@ -1784,43 +1794,16 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const intensity = .5*sliderIntensity01 + .5*meanOf('deep');
   const focus     = .5*sliderFocus01     + .5*meanOf('us');
 
-  // Register: where the active chapters sit on their own journey, averaged
-  // across whatever's active. After Dark is the one exception, and not
-  // averaged the same way: a plain group-average, or a fixed floor (an
-  // earlier version forced register >=.8 whenever After Dark was present),
-  // both collapse "everything selected, After Dark included" and "only
-  // After Dark selected" to nearly the same register — which is exactly why
-  // both used to land on the same word ("Charged") at identical dial
-  // positions. Register instead tracks adShare: what fraction of the
-  // actually-selected categories (not groups — a lone After Dark category
-  // shouldn't outweigh a 19-member chapter by group-count alone) are After
-  // Dark. Pure/dominant After Dark lands at the top of its tier (1.0);
-  // After Dark as a small part of a big mix lands much lower (.82ish) —
-  // still within the "edge" pool two lines down, but its own distinct
-  // corner of it (see the Humming/Heated anchors above), not competing
-  // head-on with the pure-tier words for the same intensity/focus spot.
+  // Register: where the active chapters sit on their own journey, plainly
+  // averaged across whatever's active — no special case for After Dark
+  // here any more (an earlier version forced this up whenever After Dark
+  // was present at all, specifically to keep some sexual flavour even when
+  // diluted; that was the wrong ask to begin with).
   const groupIds = Object.keys(groups);
-  let register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
-  const adShare = groups.afterdark ? groups.afterdark.length / levels.length : 0;
-  if (groups.afterdark) register = .82 + .18 * adShare;
+  const register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
 
-  // "Only after dark with anything should yield its own edge" is a
-  // guarantee, not just a tendency — its own anchors sit at high focus, so a
-  // low-focus dial could otherwise drift the nearest match away from them
-  // entirely. Its presence restricts the search to its own tier outright.
-  //
-  // Diluted vs pure is a hard split on adShare, not left to compete within
-  // one distance metric — a blended version lost too often to intensity/
-  // focus proximity (a diluted mix and a pure After Dark selection can land
-  // in similar territory there; register alone isn't always enough of a
-  // tiebreaker to overcome that). Below the threshold, pure words aren't
-  // even candidates, so there's nothing for a diluted mix to accidentally
-  // win on i/f closeness alone.
-  const pool = !groups.afterdark ? MOOD_ANCHORS
-             : adShare >= .5     ? AFTER_DARK_PURE
-             :                      AFTER_DARK_DILUTED;
   let best = null, bestD = Infinity;
-  for (const a of pool) {
+  for (const a of MOOD_ANCHORS) {
     const d = (a.i-intensity)**2 + (a.f-focus)**2 + (a.r-register)**2 * 1.4;  // register weighted a little heavier: it's the axis most likely to get washed out otherwise
     if (d < bestD) { bestD = d; best = a; }
   }
