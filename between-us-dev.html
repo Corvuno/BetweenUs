@@ -938,10 +938,16 @@ body::before{
 /* ── the two dials ── */
 .dials{padding:2px 2px 0;}
 .dial{padding:8px 0 0;}
-.dial-ends{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+.dial-ends{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:8px;
   font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--muted);padding-bottom:7px;}
-.dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;}
+.dial-ends>span:first-child{justify-self:start;}
+.dial-ends>span:last-child{justify-self:end;}
+/* grid (not flex+space-between) so the middle word sits on the row's true
+   centre — space-between divides remaining space by the OUTER labels'
+   widths, so "Balanced" drifted toward "Easy" (4 chars) away from
+   "Intense" (7 chars) instead of sitting equidistant from both. */
+.dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;justify-self:center;}
 .dial{position:relative;}
 .dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;position:relative;z-index:1;}
 .dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
@@ -1720,7 +1726,7 @@ const MOOD_ANCHORS = [
   // itself just becomes two words alternating on which side of a diagonal
   // a selection falls, which is its own kind of flatness.
   {i:.2, f:.4, r:.82, word:'Kindled'},     {i:.35,f:.5, r:.83, word:'Humming'},
-  {i:.6, f:.6, r:.86, word:'Flushed'},     {i:.75,f:.4, r:.85, word:'Restless'},
+  {i:.6, f:.6, r:.86, word:'Sultry'},      {i:.75,f:.4, r:.85, word:'Restless'},
   // highest register — After Dark itself, dominant or exclusive: its own
   // edge, reachable from anywhere, never crowded out by whatever else is
   // in the mix (see computeMood's afterdark handling below)
@@ -1791,7 +1797,7 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   // Dark. Pure/dominant After Dark lands at the top of its tier (1.0);
   // After Dark as a small part of a big mix lands much lower (.82ish) —
   // still within the "edge" pool two lines down, but its own distinct
-  // corner of it (see the Humming/Flushed anchors above), not competing
+  // corner of it (see the Humming/Sultry anchors above), not competing
   // head-on with the pure-tier words for the same intensity/focus spot.
   const groupIds = Object.keys(groups);
   let register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
