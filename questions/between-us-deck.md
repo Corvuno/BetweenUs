@@ -548,9 +548,28 @@ Useful for auditing a category rather than generating cards. In rough order of h
 
 **Memory · Story · Preference · Embodiment** — already saturated. A new card in one of these registers has to beat an existing card, not merely fill a hole.
 
+## How this works in practice
+
+Four real answers to four cards in this deck. The test a card design lives or dies by: point it at ten different people and each one should be able to land somewhere this specific — the card supplies the aperture, the answer supplies everything else.
+
+**Attract, 8** — *Who is your celebrity crush — and does that line up with your actual type?*
+> Nicole Mejia, Florence Pugh, Matilda Lutz, Alicia Vikander, Jessica Biel — my type has one common denominator: strong women, in presence and physically. The range runs from thick-fit to just fit; I like strong, give me some muscle on my partner. Tight in the right places, and preferably soft in the right places too, though if not, that's fine — lines showing everywhere, definition is *mjam*. Thin without the muscle does nothing for me.
+
+**World, 7** — *Do people actually change — or just get better at managing what doesn't?*
+> No — we live in circles that collapse in on themselves again. Look at all the ancient civilizations. We've just stretched ours a little further.
+
+**Home, 8** — *The view from your kitchen window — what could you look at every day and never tire of?*
+> I want to see a buzzing city — life rushing by, from a safe distance. I like to be at least on the third floor, so everything is close enough to see, far enough not to be in my face. I like liveliness. (Although sometimes rolling hills are good too, from time to time.)
+
+**Flesh, 12** — *How much do you enjoy making someone wait before you touch them?*
+> I don't — I like the feeling of skin too much, so I tend to find a way to get my hands underneath clothing as soon as I can.
+
 ---
 
 # Change log
+
+## Patch v6.66 — worked examples added to house style
+New "How this works in practice" section under House Style, with four real cleaned-up answers (Attract 8, World 7, Home 8, Flesh 12) as a concrete illustration of the aperture test. Flesh 5's answer was excellent but stays out of the file — not for public reference.
 
 ## Patch v6.65 — two approved cards actually benched this time
 **Romance** and **Connect** each gain a bench entry — the cheating-concept card and the boundaries card — both approved in conversation but never actually written into the file. Correcting that gap now rather than leaving them as claims with nothing behind them.
