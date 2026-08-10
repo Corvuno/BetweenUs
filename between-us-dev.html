@@ -1726,7 +1726,7 @@ const MOOD_ANCHORS = [
   // itself just becomes two words alternating on which side of a diagonal
   // a selection falls, which is its own kind of flatness.
   {i:.2, f:.4, r:.82, word:'Kindled'},     {i:.35,f:.5, r:.83, word:'Humming'},
-  {i:.6, f:.6, r:.86, word:'Sultry'},      {i:.75,f:.4, r:.85, word:'Restless'},
+  {i:.6, f:.6, r:.86, word:'Heated'},      {i:.75,f:.4, r:.85, word:'Restless'},
   // highest register — After Dark itself, dominant or exclusive: its own
   // edge, reachable from anywhere, never crowded out by whatever else is
   // in the mix (see computeMood's afterdark handling below)
@@ -1797,7 +1797,7 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   // Dark. Pure/dominant After Dark lands at the top of its tier (1.0);
   // After Dark as a small part of a big mix lands much lower (.82ish) —
   // still within the "edge" pool two lines down, but its own distinct
-  // corner of it (see the Humming/Sultry anchors above), not competing
+  // corner of it (see the Humming/Heated anchors above), not competing
   // head-on with the pure-tier words for the same intensity/focus spot.
   const groupIds = Object.keys(groups);
   let register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
