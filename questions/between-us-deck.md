@@ -512,6 +512,8 @@ The questions come first, category by category. The full change log is at the bo
 - **Grief** — "Which grief do you carry that isn't yours?"
 - **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (bumped from Bare 9 when the age-gap card moved in from 11; still approved, just unslotted again)
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
+- **Romance** — "Is there a version of 'cheating' you don't actually think counts?" (approved, no slot yet — Romance is the likely home, already runs relationship rules and patterns)
+- **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle, parked pending a softer take — the harder framing read as consent territory, not Connect's register)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -549,6 +551,9 @@ Useful for auditing a category rather than generating cards. In rough order of h
 ---
 
 # Change log
+
+## Patch v6.65 — two approved cards actually benched this time
+**Romance** and **Connect** each gain a bench entry — the cheating-concept card and the boundaries card — both approved in conversation but never actually written into the file. Correcting that gap now rather than leaving them as claims with nothing behind them.
 
 ## Patch v6.64 — final Bare/Flesh shuffle
 **Bare 9** ← age gap card (moved from 11). **Bare 11** ← the beautiful/strangest-place card, back in its native slot. **Flesh 12** ← "How much do you enjoy making someone wait before you touch them?" (pulled off the bench, filling the slot the place card vacated). The pickup card stays put at Flesh 5. Health-conversation is bumped back to the bench, still approved, just displaced again.
