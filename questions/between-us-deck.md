@@ -111,13 +111,13 @@ The questions come first, category by category. The full change log is at the bo
 ## Unwind
 1. When did you last stay outside longer than you meant to — and where were you?
 2. What hobby have you never gotten tired of, even after years?
-3. What are you looking forward to?
+3. What reliably gets you out of your own head?
 4. The hour of the week that's entirely yours...
 5. Some things look like rest and leave you emptier...
 6. There was a moment you felt completely free. Where were you?
 7. What's something you do purely for pleasure that has absolutely no productive value?
 8. The most unexpected beauty a trip ever handed you...
-9. What's the first thing you go and find when you get somewhere new?
+9. Describe a moment recently when life felt uncomplicated.
 10. A place you keep going back to — not because it's the best, but because it's yours...
 11. What's the smallest thing that makes a day better — and where do you find it?
 12. What does the first warm day of the year do to you?
@@ -133,7 +133,7 @@ The questions come first, category by category. The full change log is at the bo
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
-11. What's the most predictable thing about you?
+11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
 ## Body
@@ -282,12 +282,12 @@ The questions come first, category by category. The full change log is at the bo
 1. Something true about you has never had an occasion to be said...
 2. You're still waiting for someone to notice...
 3. When did you last cry, and what was underneath it?
-4. Who do you miss who is still alive?
+4. Who left your life better than they found it?
 5. What do you need to hear more often than you admit?
 6. If you could rerun one conversation from your life, which one?
 7. What skill did you build out of damage control that now feels effortless?
 8. What do the people who love you have to look past on your worst week?
-9. There was a moment you let someone all the way in. What happened next?
+9. Who changed your idea of what a good person looks like?
 10. Slowly, you're making peace with...
 11. Which conversation do you keep having — in different rooms, with different people?
 12. What would you want said about you tonight, if you weren't here to hear it?
@@ -299,7 +299,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What are you angry about that you've been calling something else?
 5. What are you pretending to be fine with?
 6. What are you performing right now — and for whom?
-7. What have you already decided about someone here?
+7. Whose way of living makes you question your own choices?
 8. What's the pettiest thing you've felt this evening?
 9. What did you get away with this week?
 10. Who have you been unfair to lately?
@@ -514,6 +514,12 @@ The questions come first, category by category. The full change log is at the bo
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 - **Romance** — "Is there a version of 'cheating' you don't actually think counts?" (approved, no slot yet — Romance is the likely home, already runs relationship rules and patterns)
 - **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle, parked pending a softer take — the harder framing read as consent territory, not Connect's register)
+- **Unwind** — "What are you looking forward to?" (displaced from Unwind 3 in v6.68; too close to pure conversational lubricant, no identity distinct from Warm)
+- **Unwind** — "What's the first thing you go and find when you get somewhere new?" (displaced from Unwind 9 in v6.68; more observational than revealing)
+- **Self** — "What's the most predictable thing about you?" (displaced from Self 11 in v6.68; topic, not mechanism)
+- **Deep** — "Who do you miss who is still alive?" (displaced from Deep 4 in v6.68; Deep already carries substantial loss elsewhere)
+- **Deep** — "There was a moment you let someone all the way in. What happened next?" (displaced from Deep 9 in v6.68; overlapped the vulnerability register Deep already runs deep on)
+- **Raw** — "What have you already decided about someone here?" (displaced from Raw 7 in v6.68; social-poker register, less insight than the replacement)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -567,6 +573,25 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.68 — six owner-approved swaps, five held for collision
+Owner reviewed a batch of eleven proposed swaps and approved wording for all eleven; six are entered here, five are held back because they'd create a twin with another card (either an existing one or another card in the same batch) and need a resolution first.
+
+**Entered:**
+- **Raw 7** → *"Whose way of living makes you question your own choices?"* Replaces "What have you already decided about someone here?" — keeps Raw's uncomfortable honesty while producing insight instead of social poker.
+- **Deep 4** → *"Who left your life better than they found it?"* Replaces "Who do you miss who is still alive?" — Deep already carries substantial loss; this adds gratitude without softening the category.
+- **Deep 9** → *"Who changed your idea of what a good person looks like?"* Replaces "There was a moment you let someone all the way in. What happened next?" — introduces admiration and perspective change rather than more vulnerability.
+- **Self 11** → *"What's something true about you that took far too long to notice?"* Replaces "What's the most predictable thing about you?" — earned self-awareness instead of a description.
+- **Unwind 3** → *"What reliably gets you out of your own head?"* Replaces "What are you looking forward to?" — distinctly Unwind rather than generic anticipation.
+- **Unwind 9** → *"Describe a moment recently when life felt uncomplicated."* Replaces "What's the first thing you go and find when you get somewhere new?" — closer to Unwind's emotional center (rest, ease) than the old observational card.
+
+**Held — approved wording, but creates a collision:**
+- **Culture 9** ("Which artist changed how you look at the world?") duplicates Culture 12's "changed how you think" mechanism in the same category.
+- **Work 11** ("Who made you better at your work without ever formally teaching you?") duplicates Work 4's "Which colleague changed how you work?" in the same category.
+- **Life 10** ("Who do you know that's built a life you secretly admire?") and **Wish 8** ("What's a life you've seen from the outside and thought: 'how did they end up there?'") duplicate each other — both proposed in the same batch, different categories, same mechanism.
+- **Friends 8** ("What part of your personality was shaped by your friends?") duplicates Friends 1's "What did your best friendship teach you that no romance did?" in the same category.
+
+None of these four are entered. Waiting on the owner to pick which side of each collision survives.
 
 ## Patch v6.67 — worked examples corrected and properly polished
 The World answer was misattributed to card 7 in v6.66; it's the answer to **World 10** ("Is progress real?"), not card 7. Fixed. All four answers (Attract 8, World 10, Home 8, Flesh 12) rewritten as proper prose rather than lightly tidied transcription — same point, logic and viewpoint throughout, with the Attract 8 answer specifically de-crudened for general readability.
