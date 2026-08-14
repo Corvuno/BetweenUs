@@ -1759,50 +1759,65 @@ function registerState(activeLevels) {
 }
 
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
+// Each cell holds 2 words, not 1 — see the note on computeMood below for why.
 const MOOD_GRID = {
   arrive: {
-    light: { self:'Easy', mostlySelf:'Curious', balanced:'Playful', mostlyUs:'Friendly', us:'Warm' },
-    easy:  { self:'Relaxed', mostlySelf:'Interested', balanced:'Genial', mostlyUs:'Companionable', us:'Fond' },
-    open:  { self:'Thoughtful', mostlySelf:'Engaged', balanced:'Open', mostlyUs:'Familiar', us:'Close' },
-    deep:  { self:'Grounded', mostlySelf:'Sincere', balanced:'Honest', mostlyUs:'Trusting', us:'Tender' },
-    raw:   { self:'Direct', mostlySelf:'Unfiltered', balanced:'Candid', mostlyUs:'Exposed', us:'Bare' },
+    light: { self:['Easy','Easygoing'], mostlySelf:['Curious','Wondering'], balanced:['Playful','Lighthearted'], mostlyUs:['Friendly','Amiable'], us:['Warm','Kind'] },
+    easy:  { self:['Relaxed','Unhurried'], mostlySelf:['Interested','Attentive'], balanced:['Genial','Amicable'], mostlyUs:['Companionable','Sociable'], us:['Fond','Affectionate'] },
+    open:  { self:['Thoughtful','Considered'], mostlySelf:['Engaged','Invested'], balanced:['Open','Forthcoming'], mostlyUs:['Familiar','Comfortable'], us:['Close','Near'] },
+    deep:  { self:['Grounded','Steady'], mostlySelf:['Sincere','Earnest'], balanced:['Honest','Frank'], mostlyUs:['Trusting','Assured'], us:['Tender','Gentle'] },
+    raw:   { self:['Direct','Blunt'], mostlySelf:['Unfiltered','Uncensored'], balanced:['Candid','Plainspoken'], mostlyUs:['Exposed','Uncovered'], us:['Bare','Stripped'] },
   },
   surface: {
-    light: { self:'Bright', mostlySelf:'Inquisitive', balanced:'Lively', mostlyUs:'Social', us:'Cheerful' },
-    easy:  { self:'Wondering', mostlySelf:'Curious', balanced:'Conversational', mostlyUs:'Welcoming', us:'Affectionate' },
-    open:  { self:'Reflective', mostlySelf:'Personal', balanced:'Alive', mostlyUs:'Connected', us:'Close' },
-    deep:  { self:'Searching', mostlySelf:'Contemplative', balanced:'Meaningful', mostlyUs:'Trusting', us:'Intimate' },
-    raw:   { self:'Piercing', mostlySelf:'Unsettled', balanced:'Sharp', mostlyUs:'Revealing', us:'Unshielded' },
+    light: { self:['Bright','Sunny'], mostlySelf:['Inquisitive','Curious'], balanced:['Lively','Animated'], mostlyUs:['Social','Outgoing'], us:['Cheerful','Upbeat'] },
+    easy:  { self:['Wondering','Musing'], mostlySelf:['Curious','Interested'], balanced:['Conversational','Chatty'], mostlyUs:['Welcoming','Hospitable'], us:['Affectionate','Warm'] },
+    open:  { self:['Reflective','Pensive'], mostlySelf:['Personal','Candid'], balanced:['Alive','Vivid'], mostlyUs:['Connected','Linked'], us:['Close','Near'] },
+    deep:  { self:['Searching','Probing'], mostlySelf:['Contemplative','Reflective'], balanced:['Meaningful','Weighty'], mostlyUs:['Trusting','Assured'], us:['Intimate','Close'] },
+    raw:   { self:['Piercing','Cutting'], mostlySelf:['Unsettled','Shaken'], balanced:['Sharp','Incisive'], mostlyUs:['Revealing','Uncovering'], us:['Unshielded','Defenseless'] },
   },
   deepwater: {
-    light: { self:'Quiet', mostlySelf:'Attentive', balanced:'Measured', mostlyUs:'Gentle', us:'Soft' },
-    easy:  { self:'Reflective', mostlySelf:'Thoughtful', balanced:'Resonant', mostlyUs:'Caring', us:'Held' },
-    open:  { self:'Introspective', mostlySelf:'Searching', balanced:'Open', mostlyUs:'Vulnerable', us:'Trusting' },
-    deep:  { self:'Deep', mostlySelf:'Unshielded', balanced:'Serious', mostlyUs:'Tender', us:'Intimate' },
-    raw:   { self:'Raw', mostlySelf:'Exposed', balanced:'Piercing', mostlyUs:'Fragile', us:'Naked' },
+    light: { self:['Quiet','Still'], mostlySelf:['Attentive','Watchful'], balanced:['Measured','Careful'], mostlyUs:['Gentle','Mild'], us:['Soft','Tender'] },
+    easy:  { self:['Reflective','Musing'], mostlySelf:['Thoughtful','Considered'], balanced:['Resonant','Stirring'], mostlyUs:['Caring','Warm'], us:['Held','Cradled'] },
+    open:  { self:['Introspective','Inward'], mostlySelf:['Searching','Probing'], balanced:['Open','Forthcoming'], mostlyUs:['Vulnerable','Unguarded'], us:['Trusting','Assured'] },
+    deep:  { self:['Deep','Weighty'], mostlySelf:['Unshielded','Defenseless'], balanced:['Serious','Grave'], mostlyUs:['Tender','Gentle'], us:['Intimate','Close'] },
+    raw:   { self:['Raw','Stripped'], mostlySelf:['Exposed','Uncovered'], balanced:['Piercing','Cutting'], mostlyUs:['Fragile','Brittle'], us:['Naked','Bare'] },
   },
   betweenus: {
-    light: { self:'Sweet', mostlySelf:'Fond', balanced:'Warm', mostlyUs:'Close', us:'Tender' },
-    easy:  { self:'Personal', mostlySelf:'Familiar', balanced:'Connected', mostlyUs:'Affectionate', us:'Safe' },
-    open:  { self:'Open', mostlySelf:'Trusting', balanced:'Intimate', mostlyUs:'Mutual', us:'Seen' },
-    deep:  { self:'Honest', mostlySelf:'Vulnerable', balanced:'Devoted', mostlyUs:'Protective', us:'Bound' },
-    raw:   { self:'Unshielded', mostlySelf:'Exposed', balanced:'Reckoning', mostlyUs:'Bare', us:'All-In' },
+    light: { self:['Sweet','Cherished'], mostlySelf:['Fond','Affectionate'], balanced:['Warm','Kind'], mostlyUs:['Close','Near'], us:['Tender','Gentle'] },
+    easy:  { self:['Personal','Candid'], mostlySelf:['Familiar','Comfortable'], balanced:['Connected','Linked'], mostlyUs:['Affectionate','Warm'], us:['Safe','Secure'] },
+    open:  { self:['Open','Forthcoming'], mostlySelf:['Trusting','Assured'], balanced:['Intimate','Close'], mostlyUs:['Mutual','Shared'], us:['Seen','Witnessed'] },
+    deep:  { self:['Honest','Frank'], mostlySelf:['Vulnerable','Unguarded'], balanced:['Devoted','Committed'], mostlyUs:['Protective','Guarding'], us:['Bound','Tied'] },
+    raw:   { self:['Unshielded','Defenseless'], mostlySelf:['Exposed','Uncovered'], balanced:['Reckoning','Confronting'], mostlyUs:['Bare','Stripped'], us:['All-In','Unreserved'] },
   },
   afterdark: {
-    light: { self:'Sparked', mostlySelf:'Teasing', balanced:'Glowing', mostlyUs:'Magnetic', us:'Drawn' },
-    easy:  { self:'Warm-Blooded', mostlySelf:'Flirtatious', balanced:'Heated', mostlyUs:'Inviting', us:'Close' },
-    open:  { self:'Bold', mostlySelf:'Electric', balanced:'Charged', mostlyUs:'Hungry', us:'Intimate' },
-    deep:  { self:'Sultry', mostlySelf:'Velvet', balanced:'Intense', mostlyUs:'Devouring', us:'Possessive' },
-    raw:   { self:'Primal', mostlySelf:'Untamed', balanced:'Fevered', mostlyUs:'Ravenous', us:'Consumed' },
+    light: { self:['Sparked','Kindled'], mostlySelf:['Teasing','Playful'], balanced:['Glowing','Radiant'], mostlyUs:['Magnetic','Pulling'], us:['Drawn','Pulled'] },
+    easy:  { self:['Warm-Blooded','Ardent'], mostlySelf:['Flirtatious','Coy'], balanced:['Heated','Simmering'], mostlyUs:['Inviting','Welcoming'], us:['Close','Near'] },
+    open:  { self:['Bold','Daring'], mostlySelf:['Electric','Live-Wire'], balanced:['Charged','Humming'], mostlyUs:['Hungry','Craving'], us:['Intimate','Close'] },
+    deep:  { self:['Sultry','Smoldering'], mostlySelf:['Velvet','Silken'], balanced:['Intense','Fervent'], mostlyUs:['Devouring','Consuming'], us:['Possessive','Claiming'] },
+    raw:   { self:['Primal','Feral'], mostlySelf:['Untamed','Wild'], balanced:['Fevered','Blazing'], mostlyUs:['Ravenous','Voracious'], us:['Consumed','Overtaken'] },
   },
   charged: {
-    light: { self:'Mischievous', mostlySelf:'Suggestive', balanced:'Sparked', mostlyUs:'Tense', us:'Flirtatious' },
-    easy:  { self:'Bright-Edged', mostlySelf:'Playfully Charged', balanced:'Electric', mostlyUs:'Magnetic', us:'Close' },
-    open:  { self:'Bold', mostlySelf:'Unpredictable', balanced:'Charged', mostlyUs:'Pulling', us:'Intimate' },
-    deep:  { self:'Restless', mostlySelf:'Tempted', balanced:'Intense', mostlyUs:'Dangerously Honest', us:'Exposed' },
-    raw:   { self:'Unfiltered', mostlySelf:'Edged', balanced:'Volatile', mostlyUs:'Revealing', us:'Bare' },
+    light: { self:['Mischievous','Playful'], mostlySelf:['Suggestive','Insinuating'], balanced:['Sparked','Kindled'], mostlyUs:['Tense','Taut'], us:['Flirtatious','Teasing'] },
+    easy:  { self:['Bright-Edged','Keen-Edged'], mostlySelf:['Playfully Charged','Sparky'], balanced:['Electric','Live-Wire'], mostlyUs:['Magnetic','Pulling'], us:['Close','Near'] },
+    open:  { self:['Bold','Daring'], mostlySelf:['Unpredictable','Volatile'], balanced:['Charged','Live'], mostlyUs:['Pulling','Drawing'], us:['Intimate','Close'] },
+    deep:  { self:['Restless','Unsettled'], mostlySelf:['Tempted','Drawn'], balanced:['Intense','Fervent'], mostlyUs:['Dangerously Honest','Recklessly Honest'], us:['Exposed','Uncovered'] },
+    raw:   { self:['Unfiltered','Uncensored'], mostlySelf:['Edged','Sharpened'], balanced:['Volatile','Combustible'], mostlyUs:['Revealing','Uncovering'], us:['Bare','Stripped'] },
   },
 };
+
+// Deterministic pick out of a cell's word list, keyed to exactly which
+// categories are active (not the dial) — same selection always gives the
+// same word (no randomness to fight), but two selections that land in the
+// identical (register, depth band, focus band) cell can still read
+// differently, instead of collapsing onto one word every time the dial
+// doesn't move. This is the third axis: register (which room) × depth/focus
+// band (the dial) × this fingerprint (which categories, within the cell).
+function pickFromCell(cell, levels) {
+  const key = [...levels].sort().join(',');
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  return cell[h % cell.length];
+}
 
 /* Mood = which room the selected chapters put you in (register), crossed
    with how exposed (depth band) and who it's about (focus band). Rule-based
@@ -1814,9 +1829,27 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   if (!levels.length) return null;
 
   const register = registerState(levels);
-  const depth = depthBand(sliderIntensity01);
-  const focus = focusBand(sliderFocus01);
-  return MOOD_GRID[register][depth][focus];
+
+  // Depth/focus bands stay dial-led (the dial is what the player actually
+  // reached for), tinted 70/30 by what's selected so the band itself isn't
+  // 100% frozen to a fixed dial position — that nudge alone can't do all
+  // the work of breaking a repeat, though, since two different selections
+  // often average out close to the same spot. This nudge never touches
+  // register, only depth/focus — register washing out from averaging
+  // chapters of very different sizes was the original bug, not this.
+  const avgDepth = levels.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / levels.length;
+  const avgFocus = levels.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / levels.length;
+  const depth01 = Math.max(0, Math.min(1, .7*sliderIntensity01 + .3*avgDepth));
+  const focus01 = Math.max(0, Math.min(1, .7*sliderFocus01     + .3*avgFocus));
+
+  const depth = depthBand(depth01);
+  const focus = focusBand(focus01);
+
+  // The real fix for the repeat: within whichever cell the dial+selection
+  // lands on, which of its 2 words shows is keyed to exactly which
+  // categories are active, not just the coarse band — so "same dial, same
+  // register" no longer means "same word" the instant the selection differs.
+  return pickFromCell(MOOD_GRID[register][depth][focus], levels);
 }
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
