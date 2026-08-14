@@ -1812,11 +1812,29 @@ const MOOD_GRID = {
 // differently, instead of collapsing onto one word every time the dial
 // doesn't move. This is the third axis: register (which room) × depth/focus
 // band (the dial) × this fingerprint (which categories, within the cell).
-function pickFromCell(cell, levels) {
+// A hash-only pick still repeats whenever a click leaves the register and
+// band unmoved (common — toggling a category within the same chapter, or
+// adding a second After Dark pick to an already-Charged one, rarely shifts
+// either): the hash is unrelated to the click, so it's a coin flip whether
+// it lands on the same word again. lastMoodWord breaks that; lastMoodInputKey
+// guards it — renderShell() gets called from places that don't touch mood
+// state at all (resize, drawer open, party-mode toggle), and without the
+// guard, re-rendering the *same* selection twice in a row would flip the
+// word for no reason (it'd always look "different from lastMoodWord", even
+// though nothing about the round changed). Only a genuinely new signature
+// is allowed to advance past a repeat.
+let lastMoodInputKey = null;
+let lastMoodWord = null;
+function pickFromCell(cell, levels, signature) {
+  if (signature === lastMoodInputKey) return lastMoodWord;
   const key = [...levels].sort().join(',');
   let h = 0;
   for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
-  return cell[h % cell.length];
+  let idx = h % cell.length;
+  if (cell.length > 1 && cell[idx] === lastMoodWord) idx = (idx + 1) % cell.length;
+  lastMoodWord = cell[idx];
+  lastMoodInputKey = signature;
+  return lastMoodWord;
 }
 
 /* Mood = which room the selected chapters put you in (register), crossed
@@ -1849,7 +1867,8 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   // lands on, which of its 2 words shows is keyed to exactly which
   // categories are active, not just the coarse band — so "same dial, same
   // register" no longer means "same word" the instant the selection differs.
-  return pickFromCell(MOOD_GRID[register][depth][focus], levels);
+  const signature = register + '|' + depth + '|' + focus + '|' + [...levels].sort().join(',');
+  return pickFromCell(MOOD_GRID[register][depth][focus], levels, signature);
 }
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
