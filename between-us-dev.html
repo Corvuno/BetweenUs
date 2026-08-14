@@ -1698,116 +1698,125 @@ function applyIntent(cards){
    stops being a real question — nothing is bucketed into 3 or 5 of
    anything; the coordinates are continuous, so the answer changes exactly
    as smoothly as the dials move. */
-const REGISTER_OF_GROUP = {
-  warmup:0, findout:.32, deeper:.6, aboutus:.72, afterdark:1,
-  colbert:.05, aron:.25, magic:.12, abyss:1, backup:.4,
-};
-
-const MOOD_ANCHORS = [
-  // low register — Arrive / Beneath the Surface
-  {i:.15,f:.35,r:.08, word:'Light'},       {i:.15,f:.65,r:.08, word:'Playful'},
-  {i:.4, f:.15,r:.22, word:'Curious'},     {i:.4, f:.5, r:.22, word:'Genial'},
-  {i:.4, f:.85,r:.22, word:'Fond'},        {i:.7, f:.2, r:.25, word:'Grounded'},
-  {i:.7, f:.5, r:.28, word:'Sincere'},     {i:.7, f:.8, r:.3,  word:'Close'},
-  // mid register — Into the Deep
-  {i:.3, f:.3, r:.55, word:'Reflective'},  {i:.3, f:.7, r:.55, word:'Personal'},
-  {i:.55,f:.5, r:.55, word:'Open'},        {i:.8, f:.15,r:.58, word:'Searching'},
-  {i:.8, f:.45,r:.58, word:'Unshielded'},  {i:.9, f:.75,r:.6,  word:'Piercing'},
-  // higher register — Between Us
-  {i:.35,f:.75,r:.75, word:'Sweet'},       {i:.55,f:.65,r:.75, word:'Intimate'},
-  {i:.55,f:.9, r:.78, word:'Trusting'},    {i:.8, f:.7, r:.78, word:'Tender'},
-  {i:.85,f:.9, r:.8,  word:'Devoted'},
-];
-
-/* After Dark's own words are separate from MOOD_ANCHORS and only ever
-   reachable one way: every active category is one of the five After Dark
-   beats (usintimate/flesh/carnal/bare/kinks) and nothing else — no other
-   chapter mixed in at all. Anything short of that (even 90% After Dark plus
-   one other category) reads as a plain, non-sexual word from MOOD_ANCHORS
-   above instead. Two earlier versions tried to keep some sexual flavour for
-   diluted mixes (a floor on register, then a whole second "diluted edge"
-   tier of its own words) — both were the wrong shape of fix: the ask was
-   never "make the diluted case read differently from the pure case", it was
-   "nothing should read as sexual unless the selection actually is only
-   After Dark".
-   Three words, not the previous tier's nine — because the five beats are
-   meant to weigh equally (any combination of them is just "After Dark", not
-   a specific one of them asserting itself over the others), the only axis
-   left worth distinguishing on is the intensity dial itself: */
-const AFTER_DARK_WORDS = [
-  {i:.2,  word:'Heated'},
-  {i:.5,  word:'Sultry'},
-  {i:.85, word:'Charged'},
-];
-
 /* Which of the five chapters each category belongs to, so mixing chapters
    of very different sizes doesn't let the bigger one drown out the smaller
    one — Beneath the Surface has 19 members, Into the Deep has 4, and a flat
    average across raw categories would let 19 always outvote 4. Categories
-   outside any chapter (the ordered lists, Abyss) each stand as their own
-   group of one. Kept in sync with CHAPTERS in the controller script below. */
+   outside the five main chapters (Colbert, The 36, Magical, Backup, Abyss)
+   fold into whichever chapter they read closest to on register. Kept in
+   sync with CHAPTERS in the controller script below. */
 const LEVEL_CHAPTER = {};
-[['warmup',['quick','warm']],
+[['warmup',['quick','warm','colbert','magic']],
  ['findout',['culture','life','home','work','unwind','world','self','mind','body','values','wish',
-             'past','roots','family','spirit','connect','friends','date','attract']],
+             'past','roots','family','spirit','connect','friends','date','attract','aron','backup']],
  ['deeper',['deep','raw','shadow','grief']],
  ['aboutus',['us','usfriend','uslove']],
- ['afterdark',['usintimate','flesh','carnal','bare','kinks']],
+ ['afterdark',['usintimate','flesh','carnal','bare','kinks','abyss']],
 ].forEach(([id,ls]) => ls.forEach(l => LEVEL_CHAPTER[l] = id));
 
+// Depth dial → 5 bands: how exposed the conversation gets.
+function depthBand(depth01) {
+  if (depth01 < .20) return 'light';
+  if (depth01 < .40) return 'easy';
+  if (depth01 < .60) return 'open';
+  if (depth01 < .80) return 'deep';
+  return 'raw';
+}
+
+// Self/Us dial → 5 bands: who the conversation is about.
+function focusBand(focus01) {
+  if (focus01 < .20) return 'self';
+  if (focus01 < .40) return 'mostlySelf';
+  if (focus01 < .60) return 'balanced';
+  if (focus01 < .80) return 'mostlyUs';
+  return 'us';
+}
+
+/* Which room the selected chapters put you in — a rule, not an average, so
+   very different combinations of categories can't collapse into the same
+   blended number. Pure After Dark is its own room; After Dark mixed with
+   anything else is a distinct "charged" room rather than washing out into
+   whichever chapter has more categories active. */
+function registerState(activeLevels) {
+  const chapters = new Set();
+  activeLevels.forEach(l => { const ch = LEVEL_CHAPTER[l]; if (ch) chapters.add(ch); });
+
+  const hasWarmup    = chapters.has('warmup');
+  const hasFindout   = chapters.has('findout');
+  const hasDeeper    = chapters.has('deeper');
+  const hasAboutUs   = chapters.has('aboutus');
+  const hasAfterDark = chapters.has('afterdark');
+  const count = chapters.size;
+
+  if (hasAfterDark && count === 1) return 'afterdark';
+  if (hasAfterDark && count > 1)   return 'charged';
+
+  if (hasAboutUs)  return 'betweenus';
+  if (hasDeeper)   return 'deepwater';
+  if (hasFindout)  return 'surface';
+  if (hasWarmup)   return 'arrive';
+  return 'arrive';
+}
+
+// The 5×5 mood word for each of the six rooms — depth band × focus band.
+const MOOD_GRID = {
+  arrive: {
+    light: { self:'Easy', mostlySelf:'Curious', balanced:'Playful', mostlyUs:'Friendly', us:'Warm' },
+    easy:  { self:'Relaxed', mostlySelf:'Interested', balanced:'Genial', mostlyUs:'Companionable', us:'Fond' },
+    open:  { self:'Thoughtful', mostlySelf:'Engaged', balanced:'Open', mostlyUs:'Familiar', us:'Close' },
+    deep:  { self:'Grounded', mostlySelf:'Sincere', balanced:'Honest', mostlyUs:'Trusting', us:'Tender' },
+    raw:   { self:'Direct', mostlySelf:'Unfiltered', balanced:'Candid', mostlyUs:'Exposed', us:'Bare' },
+  },
+  surface: {
+    light: { self:'Bright', mostlySelf:'Inquisitive', balanced:'Lively', mostlyUs:'Social', us:'Cheerful' },
+    easy:  { self:'Wondering', mostlySelf:'Curious', balanced:'Conversational', mostlyUs:'Welcoming', us:'Affectionate' },
+    open:  { self:'Reflective', mostlySelf:'Personal', balanced:'Alive', mostlyUs:'Connected', us:'Close' },
+    deep:  { self:'Searching', mostlySelf:'Contemplative', balanced:'Meaningful', mostlyUs:'Trusting', us:'Intimate' },
+    raw:   { self:'Piercing', mostlySelf:'Unsettled', balanced:'Sharp', mostlyUs:'Revealing', us:'Unshielded' },
+  },
+  deepwater: {
+    light: { self:'Quiet', mostlySelf:'Attentive', balanced:'Measured', mostlyUs:'Gentle', us:'Soft' },
+    easy:  { self:'Reflective', mostlySelf:'Thoughtful', balanced:'Resonant', mostlyUs:'Caring', us:'Held' },
+    open:  { self:'Introspective', mostlySelf:'Searching', balanced:'Open', mostlyUs:'Vulnerable', us:'Trusting' },
+    deep:  { self:'Deep', mostlySelf:'Unshielded', balanced:'Serious', mostlyUs:'Tender', us:'Intimate' },
+    raw:   { self:'Raw', mostlySelf:'Exposed', balanced:'Piercing', mostlyUs:'Fragile', us:'Naked' },
+  },
+  betweenus: {
+    light: { self:'Sweet', mostlySelf:'Fond', balanced:'Warm', mostlyUs:'Close', us:'Tender' },
+    easy:  { self:'Personal', mostlySelf:'Familiar', balanced:'Connected', mostlyUs:'Affectionate', us:'Safe' },
+    open:  { self:'Open', mostlySelf:'Trusting', balanced:'Intimate', mostlyUs:'Mutual', us:'Seen' },
+    deep:  { self:'Honest', mostlySelf:'Vulnerable', balanced:'Devoted', mostlyUs:'Protective', us:'Bound' },
+    raw:   { self:'Unshielded', mostlySelf:'Exposed', balanced:'Reckoning', mostlyUs:'Bare', us:'All-In' },
+  },
+  afterdark: {
+    light: { self:'Sparked', mostlySelf:'Teasing', balanced:'Glowing', mostlyUs:'Magnetic', us:'Drawn' },
+    easy:  { self:'Warm-Blooded', mostlySelf:'Flirtatious', balanced:'Heated', mostlyUs:'Inviting', us:'Close' },
+    open:  { self:'Bold', mostlySelf:'Electric', balanced:'Charged', mostlyUs:'Hungry', us:'Intimate' },
+    deep:  { self:'Sultry', mostlySelf:'Velvet', balanced:'Intense', mostlyUs:'Devouring', us:'Possessive' },
+    raw:   { self:'Primal', mostlySelf:'Untamed', balanced:'Fevered', mostlyUs:'Ravenous', us:'Consumed' },
+  },
+  charged: {
+    light: { self:'Mischievous', mostlySelf:'Suggestive', balanced:'Sparked', mostlyUs:'Tense', us:'Flirtatious' },
+    easy:  { self:'Bright-Edged', mostlySelf:'Playfully Charged', balanced:'Electric', mostlyUs:'Magnetic', us:'Close' },
+    open:  { self:'Bold', mostlySelf:'Unpredictable', balanced:'Charged', mostlyUs:'Pulling', us:'Intimate' },
+    deep:  { self:'Restless', mostlySelf:'Tempted', balanced:'Intense', mostlyUs:'Dangerously Honest', us:'Exposed' },
+    raw:   { self:'Unfiltered', mostlySelf:'Edged', balanced:'Volatile', mostlyUs:'Revealing', us:'Bare' },
+  },
+};
+
+/* Mood = which room the selected chapters put you in (register), crossed
+   with how exposed (depth band) and who it's about (focus band). Rule-based
+   lookup, not a nearest-anchor search over an averaged coordinate — mixing
+   chapters of very different sizes, or diluting After Dark into a single
+   other category, no longer blends into a washed-out midpoint word. */
 function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   const levels = activeLevels.filter(l => DECK_LEVELS.has(l));
   if (!levels.length) return null;
 
-  // Only After Dark, and nothing else, reads as sexual — every active
-  // category has to be one of the five After Dark beats. The five weigh
-  // equally (any combination is just "After Dark", not one beat asserting
-  // itself), so the only thing left to grade on is the intensity dial: a
-  // plain average of the blend already used for intensity below, blended
-  // with the dial the same 50/50 way, then matched to the nearest of three
-  // words. No focus, no register — a smaller pool on purpose, not a
-  // shrunken version of the old nine-word tier.
-  if (levels.every(l => LEVEL_CHAPTER[l] === 'afterdark')) {
-    const avgDeep = levels.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / levels.length;
-    const intensity = .5*sliderIntensity01 + .5*avgDeep;
-    let best = null, bestD = Infinity;
-    for (const a of AFTER_DARK_WORDS) {
-      const d = Math.abs(a.i - intensity);
-      if (d < bestD) { bestD = d; best = a; }
-    }
-    return best.word;
-  }
-
-  // Everything else — including a selection that's mostly After Dark plus
-  // one other category — is plain, non-sexual territory: the five beats
-  // simply take part in the ordinary register/intensity/focus blend below,
-  // the same as any other category would.
-  const groups = {};
-  levels.forEach(l => { const g = LEVEL_CHAPTER[l] || l; (groups[g] = groups[g] || []).push(l); });
-  const groupVecs = Object.values(groups).map(ls => ({
-    deep: ls.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / ls.length,
-    us:   ls.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / ls.length,
-  }));
-  const meanOf = key => groupVecs.reduce((s,v) => s + v[key], 0) / groupVecs.length;
-
-  // sliders are the energy; the selection only tints it
-  const intensity = .5*sliderIntensity01 + .5*meanOf('deep');
-  const focus     = .5*sliderFocus01     + .5*meanOf('us');
-
-  // Register: where the active chapters sit on their own journey, plainly
-  // averaged across whatever's active — no special case for After Dark
-  // here any more (an earlier version forced this up whenever After Dark
-  // was present at all, specifically to keep some sexual flavour even when
-  // diluted; that was the wrong ask to begin with).
-  const groupIds = Object.keys(groups);
-  const register = groupIds.reduce((s,g) => s + (REGISTER_OF_GROUP[g] != null ? REGISTER_OF_GROUP[g] : .55), 0) / groupIds.length;
-
-  let best = null, bestD = Infinity;
-  for (const a of MOOD_ANCHORS) {
-    const d = (a.i-intensity)**2 + (a.f-focus)**2 + (a.r-register)**2 * 1.4;  // register weighted a little heavier: it's the axis most likely to get washed out otherwise
-    if (d < bestD) { bestD = d; best = a; }
-  }
-  return best.word;
+  const register = registerState(levels);
+  const depth = depthBand(sliderIntensity01);
+  const focus = focusBand(sliderFocus01);
+  return MOOD_GRID[register][depth][focus];
 }
 
 // The round as a line: one dot per card, in its category colour, placed by depth.
