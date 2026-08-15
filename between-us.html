@@ -457,9 +457,11 @@ body::before{
   color:rgba(240,232,216,.45);
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
   padding:6px 8px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:5px;
 }
 .pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:rgba(201,168,76,.4);}
 .pick-toggle.on{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
+.pick-toggle .pt-card{width:10px;height:14px;flex-shrink:0;}
 
 /* card-area is the positioning context for the picker */
 .card-area{position:relative;}
@@ -1183,7 +1185,7 @@ body::before{
       <button class="btn-sq" id="btn-menu">&#8801;</button>
     </div>
     <div class="screen-row">
-      <button class="pick-toggle" id="pickToggle">Draw three</button>
+      <button class="pick-toggle" id="pickToggle"><svg class="pt-card" viewBox="0 0 16 22" aria-hidden="true"><rect x="1" y="1" width="14" height="20" rx="2" fill="rgba(201,168,76,.14)" stroke="currentColor" stroke-width="1.3"/></svg><span>three</span></button>
       <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty">&#9974; Full Screen</button>
       <button class="btn-fullscreen" id="btn-lang-inline">EN</button>
     </div>
@@ -3797,7 +3799,7 @@ function renderShell() {
   }
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
-  if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); pp.textContent = pt.textContent; }
+  if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
 }
 
 // ── INIT ──
