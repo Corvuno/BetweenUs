@@ -87,7 +87,7 @@ The questions come first, category by category. The full change log is at the bo
 4. The day you finally understood something your parent did...
 5. What did your upbringing give you that you're glad of?
 6. Look at a photo of young you — what looks back?
-7. Was there a kid at school whose opinion of you mattered way more than it should have?
+7. Who from school could still make you feel like a kid again if you ran into them today?
 8. At home, to be safe, you had to be...
 9. What did you play with until it fell apart?
 10. What did you learn about love from watching your parents?
@@ -551,6 +551,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Values** — "Would you tell this table what you earn?" (displaced from Values 8 in v6.70; held since v6.68 for colliding with Quick 3, now resolved with fresh wording)
 - **Wish** — "What's a compliment you'd love to earn in the next five years that you haven't earned yet?" (displaced from Wish 9 in v6.70, itself only one patch old)
 - **Work** — "What part of your job might genuinely count as a form of craft, even if nobody would call it that?" (displaced from Work 1 in v6.70, itself only one patch old)
+- **Roots** — "Was there a kid at school whose opinion of you mattered way more than it should have?" (displaced from Roots 7 in v6.71, itself only one patch old)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -604,6 +605,11 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.71 — Roots 7 revised, Unwind 7/9 collision still open
+**Roots 7** → *"Who from school could still make you feel like a kid again if you ran into them today?"* Replaces the v6.70 "whose opinion mattered too much" card, owner's second pass at the slot.
+
+**Unwind 7 held.** Owner proposed *"What does travel give you that staying home never could?"* to resolve the Unwind 7/9 collision (see v6.70), reviving it from what they believed was a freed-up World 8 slot. But World 8 in this file was never changed — it's still *"What has travel actually taught you — beyond the stories?"* — so the proposed Unwind 7 would create a new collision with World 8 instead of fixing the old one. Not entered. Waiting on the owner: either change World 8 too, or pick different wording for Unwind 7 that isn't about travel.
 
 ## Patch v6.70 — remaining six v6.68 collisions resolved with fresh wording, plus revisions
 Owner sent 12 cards resolving the last of the collisions held since v6.68/v6.69. Deep 1 is still open — the flag it references has never been shown to me. Deep 2 was resubmitted with identical wording to what's already live — no-op.
