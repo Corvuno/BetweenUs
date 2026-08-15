@@ -32,7 +32,7 @@ The questions come first, category by category. The full change log is at the bo
 5. What do you know a suspiciously specific amount about?
 6. Which stranger do you still remember fondly?
 7. Is there something you're genuinely bad at that you still refuse to stop doing?
-8. Whose skill do you quietly envy?
+8. When's the last time you watched someone do something and thought, I wish I could do that?
 9. What have you repaired instead of replaced — and why?
 10. What do you knowingly blow out of proportion?
 11. When did you last go gloriously too far — and was it worth it?
@@ -41,16 +41,16 @@ The questions come first, category by category. The full change log is at the bo
 ## Culture
 1. Which piece of art still does something to you, every time?
 2. Something universally loved leaves you completely cold...
-3. Which piece of music do you protect — the one you won't play for just anyone?
-4. You collect something, officially or accidentally...
-5. Which public space taught you something about beauty?
+3. What's a piece of clothing that changes how you carry yourself the second you put it on?
+4. When did you last change your mind about something you'd dismissed on sight?
+5. What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
-8. The one you love that everyone else seems to have missed...
+8. What's something you appreciate far more now that you understand how it actually works?
 9. Does great art excuse a terrible artist?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
-12. What was the last thing you read, watched, or listened to that genuinely changed how you think?
+12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
 
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
@@ -59,10 +59,10 @@ The questions come first, category by category. The full change log is at the bo
 4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
-7. Is an ordinary life something to fear or to aim for?
+7. What's something you're doing right now without knowing if it'll actually work out?
 8. What are you putting off that you know you'll regret?
 9. What does getting older take from you that you didn't expect, and what does it give?
-10. How much of your day runs on autopilot, honestly?
+10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
 11. What's different about your life this year?
 12. If you stopped explaining why you can't, what would change about how you live?
 
@@ -87,7 +87,7 @@ The questions come first, category by category. The full change log is at the bo
 4. The day you finally understood something your parent did...
 5. What did your upbringing give you that you're glad of?
 6. Look at a photo of young you — what looks back?
-7. What did a normal evening look like when you were young?
+7. Who from school could still make you feel like a kid again if you ran into them today?
 8. At home, to be safe, you had to be...
 9. What did you play with until it fell apart?
 10. What did you learn about love from watching your parents?
@@ -110,12 +110,12 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Unwind
 1. When did you last stay outside longer than you meant to — and where were you?
-2. What hobby have you never gotten tired of, even after years?
+2. What's something you do now for fun that would've bored you stiff ten years ago?
 3. What reliably gets you out of your own head?
 4. The hour of the week that's entirely yours...
-5. Some things look like rest and leave you emptier...
+5. What's the difference between a day you needed and a day you just let slip by?
 6. There was a moment you felt completely free. Where were you?
-7. What's something you do purely for pleasure that has absolutely no productive value?
+7. What does travel give you that staying home never could?
 8. The most unexpected beauty a trip ever handed you...
 9. Describe a moment recently when life felt uncomplicated.
 10. A place you keep going back to — not because it's the best, but because it's yours...
@@ -128,8 +128,8 @@ The questions come first, category by category. The full change log is at the bo
 3. When are you most lonely — and is anyone around when it happens?
 4. What did someone once point out about you that you now see everywhere?
 5. Who decided they didn't like you — and did you let it go?
-6. Do you take up space in a room, or fold into it?
-7. What have you had to manage that most people never saw?
+6. When has having power over someone made you kinder, not crueler?
+7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
@@ -156,10 +156,10 @@ The questions come first, category by category. The full change log is at the bo
 2. What do you consistently resist — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
 4. When has a gut feeling known more than you did?
-5. What can you still do for three hours without noticing?
+5. Silence, no phone, nothing to do — how long before you actually start enjoying it?
 6. What does your inner voice sound like — and whose is it?
 7. Which of your opinions is just something you heard once?
-8. Do you decide fast and adjust, or slow and stick?
+8. What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?
 9. What's the earliest thing you remember — and is it actually yours?
 10. Which question do you keep returning to across the years?
 11. What are you bad at learning?
@@ -188,9 +188,9 @@ The questions come first, category by category. The full change log is at the bo
 5. How can someone tell you're withdrawing before you've said a word?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
-8. Is there something you wish people asked you instead of 'how are you'?
+8. Have you ever worried about someone's relationship with a substance — or had someone worry about yours?
 9. Who did you forgive, without ever telling them?
-10. Where are you a regular — and do they know your name?
+10. Do you apologize first even when you're not sure you're wrong, just to end it?
 11. When someone cries in front of you, what happens in you?
 12. In which company do you stop performing?
 
@@ -202,8 +202,8 @@ The questions come first, category by category. The full change log is at the bo
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
 6. One friend deserves a better version of you...
 7. How do you make friends now — and is it harder than it used to be?
-8. What do your friends come to you for — and is it what you'd choose?
-9. What do you say about your friends when they're not there?
+8. Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?
+9. Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?
 10. The friend I'd call when I'm in real trouble is...
 11. Who can make you laugh when you really don't want to?
 12. Are you a better friend now than ten years ago — by whose measure?
@@ -239,12 +239,12 @@ The questions come first, category by category. The full change log is at the bo
 ## Values
 1. There's something you'd refuse to do, whatever it cost...
 2. Which of your values survives worst under pressure?
-3. How much of where you are now is luck?
+3. If you had to guess, what percentage of your life is choice, and what percentage is circumstance?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
 6. Who gets authority over you faster than you'd like?
 7. When did you stay silent and shouldn't have?
-8. Would you tell this table what you earn?
+8. What does money let you avoid — a conversation, a choice, a person?
 9. What are the outer limits of your compassion?
 10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
@@ -258,36 +258,36 @@ The questions come first, category by category. The full change log is at the bo
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Which room first taught you that class exists?
 7. Do people actually change — or just get better at managing what doesn't?
-8. What has travel actually taught you — beyond the stories?
+8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
 9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
 11. What would you defend about your country to a foreigner — and what not?
 12. Which common belief about how the world works do you think is simply wrong?
 
 ## Work
-1. What's the strangest job you've ever had?
+1. If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?
 2. What would you do professionally if status played no role at all?
 3. What's the piece of work you're most proud of that nobody applauded?
-4. Which colleague changed how you work?
+4. What's the strangest job you've ever had?
 5. Has your idea of success survived contact with reality?
-6. Tell about your most instructive professional failure.
+6. Would you rather be seen as reliable or brilliant — and which one do people actually see you as?
 7. Is ambition something you have or something that has you?
 8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
-11. What does the word "retirement" do to you?
+11. Would you rather stop working today or never be allowed to stop — which one actually scares you more?
 12. What do colleagues learn about you in the first week — and what only after a year?
 
 ## Deep
-1. Something true about you has never had an occasion to be said...
-2. You're still waiting for someone to notice...
+1. What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?
+2. What do you do differently the moment you know you're being watched?
 3. When did you last cry, and what was underneath it?
 4. Who left your life better than they found it?
 5. What do you need to hear more often than you admit?
 6. If you could rerun one conversation from your life, which one?
 7. What skill did you build out of damage control that now feels effortless?
 8. What do the people who love you have to look past on your worst week?
-9. Who changed your idea of what a good person looks like?
+9. Has anyone ever forgiven you in a way that changed how you treat people now?
 10. Slowly, you're making peace with...
 11. Which conversation do you keep having — in different rooms, with different people?
 12. What would you want said about you tonight, if you weren't here to hear it?
@@ -412,8 +412,8 @@ The questions come first, category by category. The full change log is at the bo
 5. What's the gap between your current life and the one part of you expects?
 6. What have you been quietly rooting for, in your own life?
 7. If you fast-forwarded five good years, what would you want to see?
-8. Which part of someone else's life do you envy enough to think about more than you'd admit?
-9. A free year, no obligations — what finally gets done?
+8. What's a life you've seen from the outside and thought: "how did they end up there?"
+9. What's a skill or trait you're actively working on right now that nobody's asked you to?
 10. What do you want for someone else that you can't give them?
 11. What do you want that would surprise the people who know you?
 12. What did you want last year that you've already stopped wanting?
@@ -520,6 +520,40 @@ The questions come first, category by category. The full change log is at the bo
 - **Deep** — "Who do you miss who is still alive?" (displaced from Deep 4 in v6.68; Deep already carries substantial loss elsewhere)
 - **Deep** — "There was a moment you let someone all the way in. What happened next?" (displaced from Deep 9 in v6.68; overlapped the vulnerability register Deep already runs deep on)
 - **Raw** — "What have you already decided about someone here?" (displaced from Raw 7 in v6.68; social-poker register, less insight than the replacement)
+- **Connect** — "Is there something you wish people asked you instead of 'how are you'?" (displaced from Connect 8 in v6.69 by the substance-worry card, finally given a home)
+- **Connect** — "Where are you a regular — and do they know your name?" (displaced from Connect 10 in v6.69 by the ordinary-conflict card)
+- **Culture** — "Which piece of music do you protect — the one you won't play for just anyone?" (displaced from Culture 3 in v6.69)
+- **Culture** — "You collect something, officially or accidentally..." (displaced from Culture 4 in v6.69)
+- **Culture** — "The one you love that everyone else seems to have missed..." (displaced from Culture 8 in v6.69)
+- **Deep** — "You're still waiting for someone to notice..." (displaced from Deep 2 in v6.69)
+- **Friendship** — "What do you say about your friends when they're not there?" (displaced from Friendship 9 in v6.69 by the trust-style card)
+- **Life** — "Is an ordinary life something to fear or to aim for?" (displaced from Life 7 in v6.69)
+- **Life** — "How much of your day runs on autopilot, honestly?" (displaced from Life 10 in v6.69)
+- **Mind** — "What can you still do for three hours without noticing?" (displaced from Mind 5 in v6.69 by the boredom/silence card — finally seats the Boredom gap noted earlier)
+- **Mind** — "Do you decide fast and adjust, or slow and stick?" (displaced from Mind 8 in v6.69)
+- **Self** — "Do you take up space in a room, or fold into it?" (displaced from Self 6 in v6.69 by the power card — finally seats the Power gap noted earlier)
+- **Unwind** — "What hobby have you never gotten tired of, even after years?" (displaced from Unwind 2 in v6.69)
+- **Unwind** — "Some things look like rest and leave you emptier..." (displaced from Unwind 5 in v6.69)
+- **Warm** — "Whose skill do you quietly envy?" (displaced from Warm 8 in v6.69, replaced with a near-identical but sharper phrasing of the same card)
+- **Wish** — "A free year, no obligations — what finally gets done?" (displaced from Wish 9 in v6.69)
+- **Work** — "Tell about your most instructive professional failure." (displaced from Work 6 in v6.69)
+- **Work** — "What does the word \"retirement\" do to you?" (displaced from Work 11 in v6.69)
+- **Work** — "Which colleague changed how you work?" (displaced from Work 4 in v6.69 — the strangest-job card relocated there from Work 1 instead)
+- **Wish** — "Which part of someone else's life do you envy enough to think about more than you'd admit?" (displaced from Wish 8 in v6.69; the replacement was held back in v6.68 for colliding with Life 10, now clear since Life 10 changed too)
+- **Values** — "How much of where you are now is luck?" (displaced from Values 3 in v6.69, replaced with a sharper phrasing of the same card)
+- **Connect** — "In an argument, are you the one who goes quiet or the one who won't stop talking — does the other person know that about you?" (displaced from Connect 10 in v6.70, itself only one patch old)
+- **Culture** — "Which public space taught you something about beauty?" (displaced from Culture 5 in v6.70; the v6.68 replacement was held for colliding with Culture 10, now resolved with fresh wording instead)
+- **Culture** — "What was the last thing you read, watched, or listened to that genuinely changed how you think?" (displaced from Culture 12 in v6.70; same story as Culture 5 — held for colliding with Culture 1, now resolved with fresh wording)
+- **Deep** — "Who changed your idea of what a good person looks like?" (displaced from Deep 9 in v6.70, itself only one patch old)
+- **Friendship** — "What do your friends come to you for — and is it what you'd choose?" (displaced from Friendship 8 in v6.70; held since v6.68 for colliding with Friendship 1, now resolved with fresh wording)
+- **Roots** — "What did a normal evening look like when you were young?" (displaced from Roots 7 in v6.70; held since v6.68 for colliding with Shadow 12, now resolved with fresh wording)
+- **Self** — "What have you had to manage that most people never saw?" (displaced from Self 7 in v6.70; held since v6.68 for colliding with Life 9, now resolved with fresh wording)
+- **Values** — "Would you tell this table what you earn?" (displaced from Values 8 in v6.70; held since v6.68 for colliding with Quick 3, now resolved with fresh wording)
+- **Wish** — "What's a compliment you'd love to earn in the next five years that you haven't earned yet?" (displaced from Wish 9 in v6.70, itself only one patch old)
+- **Work** — "What part of your job might genuinely count as a form of craft, even if nobody would call it that?" (displaced from Work 1 in v6.70, itself only one patch old)
+- **Roots** — "Was there a kid at school whose opinion of you mattered way more than it should have?" (displaced from Roots 7 in v6.71, itself only one patch old)
+- **Deep** — "Something true about you has never had an occasion to be said..." (displaced from Deep 1 in v6.72; the original card, held since it first got flagged)
+- **World** — "What has travel actually taught you — beyond the stories?" (displaced from World 8 in v6.72; freed up the "travel" subject for Unwind 7, which is where it landed instead)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -573,6 +607,56 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.72 — Deep 1 confirmed, World 8 frees up travel for Unwind 7
+**Deep 1** → *"What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?"* Owner confirmed this stands as originally proposed; the referenced flag was never resolved but the owner is proceeding anyway.
+**World 8** → *"Is there a topic you've just stopped following entirely, because the news stopped doing you any good?"* Moves World off travel entirely, resolving the block from v6.71.
+**Unwind 7** → *"What does travel give you that staying home never could?"* Now clear to enter since World 8 no longer holds the travel subject. Note: this puts two travel-flavoured cards in Unwind (7 and 8, "the most unexpected beauty a trip ever handed you") — different enough mechanisms (general reflection vs. a specific story) that it's not a hard duplicate, but flagging the thematic density for awareness.
+
+## Patch v6.71 — Roots 7 revised, Unwind 7/9 collision still open
+**Roots 7** → *"Who from school could still make you feel like a kid again if you ran into them today?"* Replaces the v6.70 "whose opinion mattered too much" card, owner's second pass at the slot.
+
+**Unwind 7 held.** Owner proposed *"What does travel give you that staying home never could?"* to resolve the Unwind 7/9 collision (see v6.70), reviving it from what they believed was a freed-up World 8 slot. But World 8 in this file was never changed — it's still *"What has travel actually taught you — beyond the stories?"* — so the proposed Unwind 7 would create a new collision with World 8 instead of fixing the old one. Not entered. Waiting on the owner: either change World 8 too, or pick different wording for Unwind 7 that isn't about travel.
+
+## Patch v6.70 — remaining six v6.68 collisions resolved with fresh wording, plus revisions
+Owner sent 12 cards resolving the last of the collisions held since v6.68/v6.69. Deep 1 is still open — the flag it references has never been shown to me. Deep 2 was resubmitted with identical wording to what's already live — no-op.
+
+**Collisions resolved (fresh wording, not the previously-held text):**
+- **Culture 5** → *"What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?"* No longer overlaps Culture 10.
+- **Culture 12** → *"Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?"* No longer overlaps Culture 1.
+- **Roots 7** → *"Was there a kid at school whose opinion of you mattered way more than it should have?"* No longer overlaps Shadow 12's apology ground. (Sits close to Self 5's "who decided they didn't like you" — noted, not blocking; different mechanism and scope.)
+- **Self 7** → *"What's something you used to associate with being 'old' that you now just call Tuesday?"* No longer overlaps Life 9.
+- **Values 8** → *"What does money let you avoid — a conversation, a choice, a person?"* No longer overlaps Quick 3.
+- **Friendship 8** → *"Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?"* No longer overlaps Friendship 1.
+
+**Revisions of cards applied in the last two patches**, owner chose to take another pass:
+- **Connect 10** → *"Do you apologize first even when you're not sure you're wrong, just to end it?"* Replaces the v6.69 "goes quiet or won't stop talking" card.
+- **Deep 9** → *"Has anyone ever forgiven you in a way that changed how you treat people now?"* Replaces the v6.68 "good person" card.
+- **Wish 9** → *"What's a skill or trait you're actively working on right now that nobody's asked you to?"* Replaces the v6.69 "compliment you'd love to earn" card.
+- **Work 1** → *"If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?"* Replaces the v6.69 "craft" card.
+
+**Held — new collision found in this batch:**
+- **Unwind 9** ("do something just because it was fun, with zero other reason") is a near-twin of **Unwind 7** ("purely for pleasure that has absolutely no productive value") — same category, same premise. Not entered.
+
+## Patch v6.69 — large owner-approved batch, three of the v6.68 collisions resolved, six new ones held
+Owner sent a 29-card batch. Five were already applied in v6.68 (Deep 4, Deep 9, Raw 7, Unwind 3, Unwind 9) — no-ops here. Culture 9 unchanged by owner's own note. Deep 1 held pending clarification on a referenced flag that wasn't visible in the batch. The rest split into clean entries and new collisions, checked against the full deck before anything was written.
+
+**Entered — Connect 8/10, Culture 3/4/8, Deep 2, Friendship 9, Life 7/10, Mind 5/8, Self 6, Unwind 2/5, Values 3, Warm 8, Wish 8/9, Work 1/4/6/11.** Full text in the categories above; displaced cards moved to BENCH.
+
+Three collisions held in v6.68 are resolved by this batch:
+- **Culture 9 vs Culture 12** — resolved: Culture 9 stays unchanged, Culture 12 gets fresh unrelated wording.
+- **Work 4 vs Work 11** — resolved: Work 1's old "strangest job" text relocated to Work 4, Work 11 gets fresh "would you rather" wording. No twins.
+- **Life 10 vs Wish 8** — resolved: Life 10 gets fresh wording, freeing Wish 8 to take the previously-held "life seen from the outside" card.
+
+**New collisions found in this batch, held rather than entered:**
+- **Culture 5** ("stop talking mid-sentence... just to look at it") vs **Culture 10** ("beauty catch you completely unprepared") — same mechanism.
+- **Culture 12** ("return to for the feeling of it, not the meaning") vs **Culture 1** ("piece of art still does something to you, every time") — same mechanism.
+- **Roots 7** ("who from school still owes you an apology") vs **Shadow 12** ("Which apology do you still owe?") — overlapping apology theme.
+- **Self 7** ("something about getting older turned out better than expected") vs **Life 9** ("what getting older takes... and gives") — near-twin.
+- **Values 8** ("most money spent on something impractical") vs **Quick 3** ("greatest extravagance") — same concept.
+- **Friendship 8** ("part of your personality shaped by your friends") vs **Friendship 1** ("what did your best friendship teach you") — unresolved from v6.68, Friendship 1 untouched in this batch too.
+
+None of these six are entered. Waiting on the owner.
 
 ## Patch v6.68 — six owner-approved swaps, five held for collision
 Owner reviewed a batch of eleven proposed swaps and approved wording for all eleven; six are entered here, five are held back because they'd create a twin with another card (either an existing one or another card in the same batch) and need a resolution first.
