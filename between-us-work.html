@@ -757,8 +757,10 @@ body::before{
 .btn-draw:hover{filter:brightness(1.06);}
 .btn-draw.nudge{animation:drawNudge .3s ease;}
 @keyframes drawNudge{0%,100%{transform:none;}30%{transform:translateX(-3px);}60%{transform:translateX(3px);}}
-.screen-row{display:flex;justify-content:center;align-items:center;gap:26px;margin-top:4px;width:100%;}
-.screen-row > *{justify-self:auto;}
+.screen-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:26px;margin-top:4px;width:100%;}
+.screen-row > *:first-child{justify-self:start;}
+.screen-row .btn-fullscreen{justify-self:center;}
+.screen-row > *:last-child{justify-self:end;}
 .pick-toggle,.btn-fullscreen,.lang-toggle--inline .lang-opt{
   font-size:.55rem;letter-spacing:.18em;color:var(--muted);border:none;padding:5px 2px;}
 .pick-toggle:hover,.btn-fullscreen:hover{color:var(--gold);border:none;}
@@ -1178,7 +1180,7 @@ body::before{
     </div>
     <div class="screen-row">
       <button class="pick-toggle" id="pickToggle">Draw three</button>
-      <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty">&#8862; Full Screen</button>
+      <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty" aria-label="Full screen">&#9974;</button>
       <button class="btn-fullscreen" id="btn-lang-inline">EN</button>
     </div>
     <!-- Cards-per-round buttons — re-homed into the Cards token tray by the shell wiring -->
