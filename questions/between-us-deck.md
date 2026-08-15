@@ -115,7 +115,7 @@ The questions come first, category by category. The full change log is at the bo
 4. The hour of the week that's entirely yours...
 5. What's the difference between a day you needed and a day you just let slip by?
 6. There was a moment you felt completely free. Where were you?
-7. What's something you do purely for pleasure that has absolutely no productive value?
+7. What does travel give you that staying home never could?
 8. The most unexpected beauty a trip ever handed you...
 9. Describe a moment recently when life felt uncomplicated.
 10. A place you keep going back to — not because it's the best, but because it's yours...
@@ -258,7 +258,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
 6. Which room first taught you that class exists?
 7. Do people actually change — or just get better at managing what doesn't?
-8. What has travel actually taught you — beyond the stories?
+8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
 9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
 11. What would you defend about your country to a foreigner — and what not?
@@ -279,7 +279,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What do colleagues learn about you in the first week — and what only after a year?
 
 ## Deep
-1. Something true about you has never had an occasion to be said...
+1. What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?
 2. What do you do differently the moment you know you're being watched?
 3. When did you last cry, and what was underneath it?
 4. Who left your life better than they found it?
@@ -552,6 +552,8 @@ The questions come first, category by category. The full change log is at the bo
 - **Wish** — "What's a compliment you'd love to earn in the next five years that you haven't earned yet?" (displaced from Wish 9 in v6.70, itself only one patch old)
 - **Work** — "What part of your job might genuinely count as a form of craft, even if nobody would call it that?" (displaced from Work 1 in v6.70, itself only one patch old)
 - **Roots** — "Was there a kid at school whose opinion of you mattered way more than it should have?" (displaced from Roots 7 in v6.71, itself only one patch old)
+- **Deep** — "Something true about you has never had an occasion to be said..." (displaced from Deep 1 in v6.72; the original card, held since it first got flagged)
+- **World** — "What has travel actually taught you — beyond the stories?" (displaced from World 8 in v6.72; freed up the "travel" subject for Unwind 7, which is where it landed instead)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -605,6 +607,11 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.72 — Deep 1 confirmed, World 8 frees up travel for Unwind 7
+**Deep 1** → *"What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?"* Owner confirmed this stands as originally proposed; the referenced flag was never resolved but the owner is proceeding anyway.
+**World 8** → *"Is there a topic you've just stopped following entirely, because the news stopped doing you any good?"* Moves World off travel entirely, resolving the block from v6.71.
+**Unwind 7** → *"What does travel give you that staying home never could?"* Now clear to enter since World 8 no longer holds the travel subject. Note: this puts two travel-flavoured cards in Unwind (7 and 8, "the most unexpected beauty a trip ever handed you") — different enough mechanisms (general reflection vs. a specific story) that it's not a hard duplicate, but flagging the thematic density for awareness.
 
 ## Patch v6.71 — Roots 7 revised, Unwind 7/9 collision still open
 **Roots 7** → *"Who from school could still make you feel like a kid again if you ran into them today?"* Replaces the v6.70 "whose opinion mattered too much" card, owner's second pass at the slot.
