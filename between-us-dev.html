@@ -933,7 +933,7 @@ body::before{
 .chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
 .chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
-.chapter.ch-locked{opacity:.18;pointer-events:none;}
+.chapter.ch-hidden{display:none;}
 
 /* ── the two dials ── */
 .dials{padding:2px 2px 0;}
@@ -1502,7 +1502,7 @@ body::before{
     <p>Choose either under <em>Start from</em> and it takes the deck over: fifteen questions in their original order for Colbert, thirty-six rising ones for The 36 &mdash; the closeness study, meant to be done in one sitting, with one other person. Mixed in among other categories they're simply more cards; on their own, they're the evening. (Magical behaves the same way if you pick it alone.)</p>
 
     <h4>Categories and After Dark</h4>
-    <p>The grid runs from light to deep &mdash; Openers, Question lists, Days &amp; world, Inner, People, Deep water. Anything marked &#10022; is adult territory and stays out of every deck until you turn <strong>After Dark</strong> on yourself. The small &#10022; beside that button is a bias rather than a switch: with it on, spicy cards get woven through a round instead of filling it. Work and Family lock the whole of it away; everywhere else it's yours to decide.</p>
+    <p>The grid runs from light to deep &mdash; Openers, Question lists, Days &amp; world, Inner, People, Deep water. Anything marked &#10022; is adult territory and stays out of every deck until you turn <strong>After Dark</strong> on yourself. The small &#10022; beside that button is a bias rather than a switch: with it on, spicy cards get woven through a round instead of filling it. Modes with nothing of it inside &mdash; Work, Family, New people, Solo &mdash; lock it away entirely; everywhere else it's yours to decide.</p>
 
     <h4>Shuffle</h4>
     <div class="hp-shuf">
@@ -3019,8 +3019,13 @@ function applyPreset(mode) {
       try { activeBtn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } catch(e) {}
     }
   });
-  const HARD_SAFE = ['work', 'family_p'];
-  if (HARD_SAFE.includes(mode)) {
+  // A mode is hard-safe when none of its categories — on or merely available —
+  // ever reach adult territory. That used to be hardcoded to Work and Family;
+  // it now covers any mode built that way, so a mode with nothing under
+  // After Dark locks it away the same as Work and Family always did.
+  const hasAfterDark = SAFE_BLOCKED_LEVELS.some(l => DECK_LEVELS.has(l) &&
+                        (preset.on.includes(l) || preset.available.includes(l)));
+  if (!hasAfterDark) {
     if (_prevSafeModeHS === null) _prevSafeModeHS = state.safeMode;
     state.safeMode = true;
   } else if (_prevSafeModeHS !== null) {
@@ -3053,14 +3058,9 @@ function applyPreset(mode) {
   if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
 
   const glyphBtn = document.getElementById('spiceGlyphBtn');
-  const reachable = !HARD_SAFE.includes(mode) && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE
-                    && SAFE_BLOCKED_LEVELS.some(l => DECK_LEVELS.has(l) &&
-                       (preset.on.includes(l) || preset.available.includes(l)));
-  if (HARD_SAFE.includes(mode)) {
-    const adBtn = document.getElementById('afterDarkToggle'); if(adBtn) adBtn.classList.add('hidden');
-  } else {
-    const adBtn2 = document.getElementById('afterDarkToggle'); if(adBtn2) adBtn2.classList.remove('hidden');
-  }
+  const reachable = hasAfterDark && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE;
+  const adBtn = document.getElementById('afterDarkToggle');
+  if (adBtn) adBtn.classList.toggle('hidden', !hasAfterDark);
   /* the spice glyph is meaningless where no adult category exists */
   if (glyphBtn) glyphBtn.classList.toggle('spice-hidden', !reachable);
 
@@ -4709,12 +4709,21 @@ applyToggleUI();
 
   function syncIntentUI(){
     document.querySelectorAll('.chapter').forEach(btn => {
-      const levels = chapterLevels(btn.dataset.chapter);
-      const st = stateOf(levels);
+      const levels  = chapterLevels(btn.dataset.chapter);
+      const visible = levels.filter(l => {
+        const b = document.querySelector('.toggle-btn[data-level="'+l+'"]');
+        return b && b.style.display !== 'none';
+      });
+      const st = stateOf(visible);
       btn.classList.toggle('on',   st === 'on');
       btn.classList.toggle('part', st === 'part');
-      btn.classList.toggle('ch-locked',
-        !levels.length || (btn.dataset.chapter === 'afterdark' && (MASTER_SAFE || WORKPLACE_MODE)));
+      /* a chapter with nothing reachable under it in the current mode doesn't
+         belong on screen at all — the same rule an Explore drawer already
+         follows (bkt-hidden), applied one level up. This is what used to
+         hard-lock After Dark for Work/Family only; now it applies to any
+         chapter in any mode, e.g. After Dark in New people/Solo, or
+         Into the Deep in Work/Date/New people. */
+      btn.classList.toggle('ch-hidden', visible.length === 0);
     });
     document.querySelectorAll('.cat-bucket').forEach(hdr => {
       const levels  = bucketLevels(hdr.dataset.bucket);
