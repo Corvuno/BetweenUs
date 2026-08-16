@@ -60,7 +60,7 @@ The questions come first, category by category. The full change log is at the bo
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. What's something you're doing right now without knowing if it'll actually work out?
-8. What are you putting off that you know you'll regret?
+8. What's a rule you've quietly made for yourself that nobody else knows about?
 9. What does getting older take from you that you didn't expect, and what does it give?
 10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
 11. What's different about your life this year?
@@ -185,7 +185,7 @@ The questions come first, category by category. The full change log is at the bo
 2. When did being needed stop feeling good?
 3. Who taught you the most about how to be close to someone?
 4. Do you wait to make the first move, even when you're the one missing them?
-5. How can someone tell you're withdrawing before you've said a word?
+5. Who do you let interrupt you without ever getting annoyed?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
 8. Have you ever worried about someone's relationship with a substance — or had someone worry about yours?
@@ -242,7 +242,7 @@ The questions come first, category by category. The full change log is at the bo
 3. If you had to guess, what percentage of your life is choice, and what percentage is circumstance?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
-6. Who gets authority over you faster than you'd like?
+6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
 7. When did you stay silent and shouldn't have?
 8. What does money let you avoid — a conversation, a choice, a person?
 9. What are the outer limits of your compassion?
@@ -503,6 +503,9 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
+- **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
+- **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -612,6 +615,20 @@ Four real answers to four cards in this deck. The test a card design lives or di
 Owner feedback asked for the deck's own modifier idea (comparing an answer against an earlier self, arguing the other side, guessing what someone close to you would say) to live as a mechanic layered on top of any card by the app itself, not as bespoke wording written into individual cards. Shipped as **Twist**: a small always-available control under whichever question is showing. A tap lays one of ten generic modifier templates on top of the current card ("How would you have answered this five years ago?", "What's the strongest argument against your own answer?", "What would someone who knows you well say?"...), a second tap rerolls it, and it never survives the next draw. The set lives in `MODIFIERS` in the app's script, works in both the normal and fullscreen views, is bilingual, and is documented for players in the help drawer under "Play." Deliberately not attached to specific cards — the whole point is that it stays a layer over *any* card rather than more editorial content to maintain per category.
 
 No card text changed in this patch. A separate light-content pass was drafted (nine candidate swaps) but **not entered** — card swaps now require the owner's explicit sign-off per slot before anything is written here; see the issue cards raised for review instead of a change log entry.
+
+## Patch v6.74 — three owner-approved swaps from the light-pass issue cards
+Owner reviewed the nine issue cards raised in v6.73 and approved three, each picking a specific alternative rather than a card of ours:
+- **Life 8** → *"What's a rule you've quietly made for yourself that nobody else knows about?"* Replaces the regret/procrastination card — same "ordinary life" territory, without the guilt trigger.
+- **Connect 5** → *"Who do you let interrupt you without ever getting annoyed?"* Replaces the withdrawing card, which blurred with Connect 6.
+- **Values 6** → *"What's something you pretend to have a strong opinion about, but actually don't care about at all?"* Replaces the authority card. Owner notes Values now needs a fresh card for the power-struggle/authority ground this one leaves empty — see open issue below.
+
+The other six issue cards (Quick 11, Warm 9, Culture 9, Self 9, Friendship 6, World 6) are still under discussion — none of those three are settled and none were touched.
+
+**Open, not yet resolved:**
+- Values needs a new power-struggle/authority card for a future slot — owner request, no candidate card or slot chosen yet.
+- Self 9 — owner wants the full list of cards it collides with, plus sharper alternatives; standard-question alternatives already offered weren't strong enough on their own.
+- Culture 9 stays as written (owner defends the art/artist dichotomy). Two of its three proposed alternatives are strong enough to place elsewhere — new "victim" slots to be proposed.
+- World 6 — owner is comparing it against World 3 before deciding; alternatives to be sharpened.
 
 ## Patch v6.72 — Deep 1 confirmed, World 8 frees up travel for Unwind 7
 **Deep 1** → *"What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?"* Owner confirmed this stands as originally proposed; the referenced flag was never resolved but the owner is proceeding anyway.
