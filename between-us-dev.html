@@ -245,6 +245,25 @@ body::before{
   opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
 }
 .card-question.in{opacity:1;transform:none;}
+/* ── Twist: a modifier layered onto the drawn card, not written into it ──
+   Off by default (a "+ Twist" prompt); tapping picks a generic modifier
+   template and swaps the button's own label for it — tapping again rerolls.
+   It never survives a new card; flipToCard resets it every draw. */
+.card-twist-btn{
+  background:none;border:1px solid var(--dim);color:var(--muted);
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.1em;text-transform:none;
+  padding:6px 14px;border-radius:99px;cursor:pointer;transition:all .2s;
+  max-width:88%;opacity:.8;flex-shrink:0;
+}
+.card-twist-btn:hover{border-color:var(--border);color:var(--gold-l);opacity:1;}
+/* Deliberately a caption, not a second question — the card is fixed-height
+   and overflow:hidden, so the twist has to read small next to the question
+   rather than compete with it for the same vertical space. */
+.card-twist-btn.active{
+  border-color:color-mix(in srgb, var(--gold) 45%, transparent);color:var(--gold-l);
+  font-family:'Jost',sans-serif;font-size:.58rem;font-weight:400;letter-spacing:.04em;
+  line-height:1.4;padding:6px 16px;opacity:1;max-width:92%;border-radius:10px;
+}
 .card-number{
   position:absolute;bottom:11px;left:0;right:0;text-align:center;
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.18em;color:var(--muted);opacity:.65;
@@ -397,7 +416,13 @@ body::before{
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.56rem,1.2vw,.72rem);letter-spacing:.24em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:2;}
+/* party-zone-prev/next are full-height, z-index:4 tap zones layered over the
+   whole card for prev/next navigation — the twist button needs to sit above
+   them (a stacking context of its own, via position+z-index) or every tap
+   on it is swallowed as a "next card" tap instead. */
+.party-twist-btn{order:2;font-size:clamp(.6rem,1.3vw,.7rem);position:relative;z-index:5;}
+.party-twist-btn.active{font-size:clamp(.64rem,1.4vw,.8rem);max-width:min(92%,560px);}
+.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:3;}
 .party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:.4;}
 /* party card click zones — prev left 28%, next right 72% */
 .party-zone-prev,.party-zone-next{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
@@ -1156,6 +1181,7 @@ body::before{
         <div class="card-body-inner">
           <div class="card-level" id="card-level"></div>
           <div class="card-question" id="card-question">Draw a card to begin.</div>
+          <button class="card-twist-btn" id="cardTwistBtn" type="button">+ Twist</button>
         </div>
         <div class="card-number" id="card-number">&#8212; &#8212; &#8212;</div>
       </div>
@@ -1475,7 +1501,8 @@ body::before{
           <span>Keep</span>
         </div>
       </div>
-      <p class="hp-sub">Tap or click the card, or swipe. With a keyboard the arrow keys do the same, and &#8595; skips.</p></div></div>
+      <p class="hp-sub">Tap or click the card, or swipe. With a keyboard the arrow keys do the same, and &#8595; skips.</p>
+      <p class="hp-sub">Under the question sits a small <span class="ui">+ Twist</span>. Tap it and the card doesn't change &mdash; a modifier lands on top of it instead: how you'd have answered five years ago, the strongest argument against your own answer, what someone close to you would guess. Tap again for a different one. It's optional, and it never survives the next card &mdash; only add it when it would actually make that question better.</p></div></div>
     <div class="hp-step"><span class="hp-num">4</span><div class="hp-body"><p><strong>Let the round end.</strong> When the hand runs out, the card turns gold and shows you where you went: the categories you covered and anything you starred. Stop there. Stand up, stretch, get some air, let the last answer settle &mdash; a round has an end for a reason, and the deck will wait. Rolling straight into the next one is how a table stops listening.</p></div></div>
     <div class="hp-step"><span class="hp-num">5</span><div class="hp-body"><p><strong>Keep what's worth keeping.</strong> The menu (&#8801;) holds the log of everything drawn this session, the cards you starred, a save so you can pick the deck up later, your own written cards, the language switch, and Reshuffle &mdash; a fresh shuffle without changing anything else.</p></div></div>
 
@@ -1579,6 +1606,7 @@ body::before{
     <div class="party-inner">
       <div class="party-level" id="party-level"></div>
       <div class="party-question" id="party-question">Tap to begin.</div>
+      <button class="card-twist-btn party-twist-btn" id="partyTwistBtn" type="button">+ Twist</button>
       <div class="party-number" id="party-number"></div>
     </div>
   </div>
@@ -1984,7 +2012,7 @@ const NEWDECK_CARDS = [
   { level: "quick", question: "What nickname do you go by — and who gave it?", nl: "Welke bijnaam heb je — en van wie kreeg je die?" },
   { level: "quick", question: "Which texture can you not stop touching?" },
   { level: "quick", question: "What's the most childish thing that still delights you?", nl: "Wat is het meest kinderlijke dat je nog steeds blij maakt?" },
-  { level: "quick", question: "Which season fits you best — and how does it show?", nl: "Welk seizoen lijkt het meest op jou?" },
+  { level: "quick", question: "What's a completely useless skill you're oddly proud of?", nl: "Welke compleet nutteloze vaardigheid ben jij toch stiekem trots op?" },
   { level: "quick", question: "What do you quietly fix or straighten in other people's houses?" },
 
   // ─── WARM ───
@@ -1996,7 +2024,7 @@ const NEWDECK_CARDS = [
   { level: "warm", question: "Which stranger do you still remember fondly?", nl: "Een ontmoeting die maar kort duurde, maar je is bijgebleven..." },
   { level: "warm", question: "Is there something you're genuinely bad at that you still refuse to stop doing?", nl: "Is er iets waar je echt slecht in bent en toch niet mee stopt?" },
   { level: "warm", question: "When's the last time you watched someone do something and thought, I wish I could do that?", nl: "Wanneer zag je voor het laatst iemand iets doen en dacht je: dat zou ik ook willen kunnen?" },
-  { level: "warm", question: "What have you repaired instead of replaced — and why?", nl: "Wat heb je gerepareerd terwijl vervangen makkelijker was?" },
+  { level: "warm", question: "What would your warning label say?", nl: "Wat zou er op jouw waarschuwingslabel staan?" },
   { level: "warm", question: "What do you knowingly blow out of proportion?", nl: "Waar maak jij bewust meer drama van dan nodig?" },
   { level: "warm", question: "When did you last go gloriously too far — and was it worth it?", nl: "Wanneer sloeg jouw enthousiasme volledig op hol?" },
   { level: "warm", question: "Quote the sentence people around you are most tired of hearing from you.", nl: "Welke uitspraak zouden mensen graag een tijdje niet meer uit jouw mond horen?" },
@@ -2010,7 +2038,7 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "Do you use music to feel more, or to feel less?", nl: "Zet jij muziek aan om ergens in te verdwijnen, of juist om iets te voelen?" },
   { level: "culture", question: "Is taste something you have or something you build?", nl: "Welke smaak moest bij jou groeien?" },
   { level: "culture", question: "What's something you appreciate far more now that you understand how it actually works?", nl: "Wat waardeer je veel meer nu je begrijpt hoe het echt werkt?" },
-  { level: "culture", question: "Does great art excuse a terrible artist?", nl: "Pleit grote kunst een slecht mens vrij?" },
+  { level: "culture", question: "What's something you used to think was sophisticated that now makes you laugh?", nl: "Wat vond je vroeger stijlvol, en vind je nu vooral lachwekkend?" },
   { level: "culture", question: "When did beauty catch you completely unprepared?" },
   { level: "culture", question: "Take us to the moment a story last made you cry." },
   { level: "culture", question: "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?", nl: "Is er iets — een boek, serie, nummer — dat je expres niet hebt afgemaakt, omdat je niet wilt dat het voorbij is?" },
@@ -2023,7 +2051,7 @@ const NEWDECK_CARDS = [
   { level: "life", question: "What takes up far more of your life than anyone would guess?" },
   { level: "life", question: "What's something you've done that cost you something — and that you'd do exactly the same again?", nl: "Wat heb je gedaan dat je iets kostte — en wat je precies zo weer zou doen?" },
   { level: "life", question: "What's something you're doing right now without knowing if it'll actually work out?", nl: "Wat doe je nu, zonder te weten of het gaat lukken?" },
-  { level: "life", question: "What are you putting off that you know you'll regret?", nl: "Wat blijft maar op je lijstje staan?" },
+  { level: "life", question: "What's a rule you've quietly made for yourself that nobody else knows about?", nl: "Welke ongeschreven regel heb jij stiekem voor jezelf gemaakt, die niemand anders kent?" },
   { level: "life", question: "What does getting older take from you that you didn't expect, and what does it give?", nl: "Wat neemt ouder worden je af dat je niet had verwacht — en wat geeft het?" },
   { level: "life", question: "What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?", nl: "Wat is iets heel gewoons in je leven dat je echt zou missen als het morgen verdween?" },
   { level: "life", question: "What's different about your life this year?", nl: "Wat is er dit jaar anders aan je leven?" },
@@ -2094,7 +2122,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "When has having power over someone made you kinder, not crueler?", nl: "Wanneer maakte macht over iemand je vriendelijker, niet wreder?" },
   { level: "self", question: "What's something you used to associate with being \"old\" that you now just call Tuesday?", nl: "Wat associeerde je vroeger met 'oud zijn', maar noem je nu gewoon een dinsdag?" },
   { level: "self", question: "There was a time you completely lost your footing. What held — and what did you rebuild first after?", nl: "Er was een tijd dat je de grond onder je voeten verloor. Wat hield je overeind — en wat bouwde je daarna als eerste weer op?" },
-  { level: "self", question: "What have you had to accept that you never chose?", nl: "Wat heb je moeten accepteren wat je nooit gekozen hebt?" },
+  { level: "self", question: "What's something you have a completely unreasonable opinion about?", nl: "Waarover heb jij een compleet onredelijke mening?" },
   { level: "self", question: "Strip away the job, the roles, the routines — what's left standing?", nl: "Zonder functie, status of prestaties. Wie blijft er over?" },
   { level: "self", question: "What's something true about you that took far too long to notice?", nl: "Wat is iets waars over jezelf dat je veel te lang niet doorhad?" },
   { level: "self", question: "What holds you up that isn't a person?" },
@@ -2147,7 +2175,7 @@ const NEWDECK_CARDS = [
   { level: "connect", question: "When did being needed stop feeling good?" },
   { level: "connect", question: "Who taught you the most about how to be close to someone?" },
   { level: "connect", question: "Do you wait to make the first move, even when you're the one missing them?" },
-  { level: "connect", question: "How can someone tell you're withdrawing before you've said a word?", nl: "Hoe merken mensen dat jij afstand neemt?" },
+  { level: "connect", question: "Who do you let interrupt you without ever getting annoyed?", nl: "Wie mag jou altijd onderbreken zonder dat het je ooit irriteert?" },
   { level: "connect", question: "What do you do when you feel misunderstood — and does it work?", nl: "Wat doe je als je je onbegrepen voelt — en werkt dat?" },
   { level: "connect", question: "Are you listening, or waiting for your turn?", nl: "Luister je echt, of wacht je op je beurt?" },
   { level: "connect", question: "Have you ever worried about someone's relationship with a substance — or had someone worry about yours?", nl: "Heb je je ooit zorgen gemaakt om iemands relatie met een middel — of maakte iemand zich zorgen om die van jou?" },
@@ -2162,7 +2190,7 @@ const NEWDECK_CARDS = [
   { level: "friends", question: "Which friendship ended without ever officially ending?", nl: "Een vriendschap die eindigde zonder echt afscheid..." },
   { level: "friends", question: "Which friend gets the honest version of you — and which gets the polite one?", nl: "Wie krijgt de ongefilterde versie van jou?" },
   { level: "friends", question: "Tell about a moment a friend showed up for you in a way you didn't expect.", nl: "Een vriend verraste je precies toen je hem nodig had." },
-  { level: "friends", question: "One friend deserves a better version of you...", nl: "Welke vriend verdient meer van jou dan hij krijgt?" },
+  { level: "friends", question: "Which friend brings out your worst behaviour — in the best way?", nl: "Welke vriend(in) haalt het slechtste in je naar boven — op de leukste manier?" },
   { level: "friends", question: "How do you make friends now — and is it harder than it used to be?", nl: "Hoe maak je nu vrienden — en is dat moeilijker dan vroeger?" },
   { level: "friends", question: "Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?", nl: "Met welke vriend heb je nooit echt ruzie gehad — en denk je dat dat gezond is, of gewoon geluk?" },
   { level: "friends", question: "Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?", nl: "Vertrouw je mensen standaard en word je af en toe bedrogen, of vertrouw je langzaam en verras je zelden — wie ben jij?" },
@@ -2204,7 +2232,7 @@ const NEWDECK_CARDS = [
   { level: "values", question: "If you had to guess, what percentage of your life is choice, and what percentage is circumstance?", nl: "Als je moest gokken: welk percentage van je leven is keuze, en welk percentage omstandigheid?" },
   { level: "values", question: "What line have you watched someone cross that told you everything?", nl: "Wanneer vertelde iemands gedrag je alles wat je moest weten?" },
   { level: "values", question: "Quote the sentence your parents repeated — that you now live by, or against." },
-  { level: "values", question: "Who gets authority over you faster than you'd like?" },
+  { level: "values", question: "What's something you pretend to have a strong opinion about, but actually don't care about at all?", nl: "Waarover doe jij alsof je een sterke mening hebt, terwijl het je eigenlijk niets kan schelen?" },
   { level: "values", question: "When did you stay silent and shouldn't have?", nl: "Een keer dat je had moeten spreken maar zweeg..." },
   { level: "values", question: "What does money let you avoid — a conversation, a choice, a person?", nl: "Wat laat geld je vermijden — een gesprek, een keuze, een persoon?" },
   { level: "values", question: "What are the outer limits of your compassion?", nl: "Waar houdt jouw medeleven op?" },
@@ -2218,7 +2246,7 @@ const NEWDECK_CARDS = [
   { level: "world", question: "What's something you benefit from that you know isn't fair?" },
   { level: "world", question: "What change in your lifetime still amazes you?", nl: "Welke verandering uit jouw levenstijd blijft bijzonder?" },
   { level: "world", question: "Is there a political position you hold that you find genuinely hard to defend to people who disagree?", nl: "Heb je een politiek standpunt dat je echt moeilijk kunt verdedigen tegenover mensen die het oneens zijn?" },
-  { level: "world", question: "Which room first taught you that class exists?" },
+  { level: "world", question: "What's a fact about how the world works that you still can't quite believe is true?", nl: "Welk feit over hoe de wereld werkt kun je nog steeds bijna niet geloven?" },
   { level: "world", question: "Do people actually change — or just get better at managing what doesn't?" },
   { level: "world", question: "Is there a topic you've just stopped following entirely, because the news stopped doing you any good?", nl: "Is er een onderwerp waar je gewoon helemaal mee bent gestopt, omdat het nieuws je niets meer opleverde?" },
   { level: "world", question: "Is there something happening in the world that genuinely worries you?", nl: "Is er iets in de wereld dat je oprecht zorgen baart?" },
@@ -2527,6 +2555,46 @@ const MAGIC_CARDS = [
 
 const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);
 const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
+
+// ── TWIST — a modifier layered on top of whatever card is showing, not
+// written into any card's own text. It's the deck's one editorial mechanic
+// that lives in the app instead of the deck: a small, deliberately generic
+// set of turns (compare against an earlier self, argue the other side, guess
+// what someone close to you would say...) that can be laid over *any*
+// question to break an answer that's gone automatic. Never attached to a
+// card by default — a tap chooses one, a new draw clears it. See
+// pickTwist/renderTwist below and the reset in flipToCard.
+const MODIFIERS = [
+  { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },
+  { en: "What do you suspect you'll answer differently five years from now?", nl: "Wat denk je dat je hier over vijf jaar anders op zou antwoorden?" },
+  { en: "What's the strongest argument against your own answer?", nl: "Wat is het sterkste argument tegen je eigen antwoord?" },
+  { en: "What would someone who knows you well say?", nl: "Wat zou iemand die jou goed kent hierop zeggen?" },
+  { en: "Does your behaviour actually agree with that answer?", nl: "Komt je gedrag eigenlijk overeen met dat antwoord?" },
+  { en: "What would you say if there were no consequences at all?", nl: "Wat zou je zeggen als er totaal geen gevolgen waren?" },
+  { en: "What part of your own answer just surprised you?", nl: "Welk deel van je eigen antwoord verraste jezelf?" },
+  { en: "What would the version of you from ten years ago have said?", nl: "Wat zou de versie van jou van tien jaar geleden hebben gezegd?" },
+  { en: "What would the opposite answer say about you?", nl: "Wat zou het tegenovergestelde antwoord over je zeggen?" },
+  { en: "What do people close to you notice about this before you do?", nl: "Wat merken mensen die dicht bij je staan hieraan op, voordat jij het zelf doorhebt?" },
+];
+let currentTwist = null;
+function pickTwist() {
+  const pool = MODIFIERS.filter(m => m !== currentTwist);
+  return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
+}
+function twistPrompt() { return state.lang === 'nl' ? '+ Wending' : '+ Twist'; }
+function renderTwist() {
+  const text = currentTwist ? (state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en) : twistPrompt();
+  [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(btn => {
+    if (!btn) return;
+    btn.textContent = text;
+    btn.classList.toggle('active', !!currentTwist);
+  });
+}
+function toggleTwist() { currentTwist = pickTwist(); renderTwist(); }
+function clearTwist() { currentTwist = null; renderTwist(); }
+[document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(btn => {
+  if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
+});
 
 const PRESETS = {
   open: {
@@ -3402,8 +3470,11 @@ function setCardDisplay(card) {
     if (nextBtn)  nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
     // Update party display too
     updatePartyDisplay(null);
+    clearTwist();
+    [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(b => { if (b) b.style.display = 'none'; });
     return;
   }
+  [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(b => { if (b) b.style.display = ''; });
   const color = levelColor(card.level);
   if (accent) {
     accent.style.background = color;
@@ -3417,10 +3488,13 @@ function setCardDisplay(card) {
   if (nextBtn) nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
   // Update party display
   updatePartyDisplay(card);
+  renderTwist();   // same modifier, re-rendered in whichever language is now active
 };
 
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 function flipToCard(card) {
+  clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
+  [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(b => { if (b) b.style.display = ''; });
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const accent = document.getElementById('c-accent');
@@ -3717,6 +3791,7 @@ function updateAfterDarkBtn() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
+    if (e.target.closest('#partyTwistBtn')) return;
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -3743,6 +3818,7 @@ function updateAfterDarkBtn() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
+    if (e.target.closest('#partyTwistBtn')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });

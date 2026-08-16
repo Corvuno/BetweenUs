@@ -60,6 +60,20 @@ The rules that follow from that:
 The full version, with the lens list used to audit a category, is in
 [`questions/between-us-deck.md`](questions/between-us-deck.md#house-style--how-a-card-is-built).
 
+### Twist — a modifier layered on the card, not written into it
+
+Some of the deck's best cards are modifiers in disguise — *"How would you have answered
+this five years ago?"* turns an ordinary answer into a comparison with an earlier self.
+Rather than writing more cards like that one by one, that mechanism is a feature of the
+app: a small `+ Twist` control sits under whichever question is showing. Tap it and the
+card itself doesn't change — a generic modifier (an earlier-self comparison, the strongest
+argument against your own answer, what someone close to you would guess) lands on top of
+it instead. Tap again to reroll. It never survives the next draw, and it's never attached
+to a card by default — the player decides, per card, whether it would actually make that
+question better. The template set lives in `MODIFIERS` in the app's script, not in
+`questions/`, because it's a layer any card can wear rather than more editorial content to
+maintain per category.
+
 ## Updating
 
 All three HTML files are kept in sync with each app update. They now differ by exactly one
