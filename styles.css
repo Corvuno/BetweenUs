@@ -157,10 +157,15 @@ body::before{
 /* ── CONTROLS ── */
 .controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
 .controls-wrap.in{opacity:1;transform:none;}
-.progress{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:center;}
-.progress-dot{width:4px;height:4px;border-radius:50%;background:var(--muted);opacity:.15;transition:all .3s;flex-shrink:0;}
-.progress-dot.seen{opacity:.85;background:var(--gold);}
-.progress-dot.current{width:14px;border-radius:2px;background:var(--gold-l);opacity:1;}
+.progress{display:flex;gap:var(--dot-gap,4px);align-items:center;flex-wrap:wrap;justify-content:center;}
+.progress-dot{
+  width:var(--dot-size,4px);height:var(--dot-size,4px);border-radius:50%;
+  background:var(--dot-color,var(--muted));opacity:.22;
+  transition:opacity .3s ease,transform .3s ease,box-shadow .3s ease;
+  flex-shrink:0;
+}
+.progress-dot.seen{opacity:.65;}
+.progress-dot.current{opacity:1;transform:scale(1.6);box-shadow:0 0 7px 1px var(--dot-color,var(--gold-l));}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid var(--dim);color:var(--muted);width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:var(--border);color:var(--gold);}
@@ -408,7 +413,6 @@ body::before{
   .btn-fullscreen{font-size:.62rem;padding:8px 8px;}
   .limit-btn{font-size:.72rem;padding:3px 9px;}.mode-btn{font-size:.64rem;padding:10px 18px;}
   .cat-toggle-lbl{font-size:.62rem;}.toggle-btn{font-size:.62rem;padding:8px 15px;}
-  .progress-dot{width:5px;height:5px;}.progress-dot.current{width:18px;}
 }
 @media(min-width:1024px){
   .app{max-width:720px;}.title{font-size:2.6rem;}.card-question{font-size:2rem;}
@@ -627,9 +631,6 @@ body::before{
 .card-wrap{margin-top:12px;}
 
 /* bottom cluster — matched to the approved mock */
-.progress{gap:4px;}
-.progress-dot{width:4px;height:4px;}
-.progress-dot.current{width:14px;border-radius:2px;}
 .nav-row{gap:10px;}
 .btn-sq{width:42px;height:42px;border:1px solid var(--dim);border-radius:0;color:var(--muted);font-size:.9rem;}
 .btn-sq:hover{border-color:var(--border);color:var(--cream);}

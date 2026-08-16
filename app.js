@@ -852,23 +852,40 @@ function prevCard() {
 }
 
 // ── PROGRESS & INFO ───────────────────────────────────────────────────────────
+// Dot size steps down as the deck grows, so a 5- or 10-card arc gets big,
+// colorful dots while a 40-card round still fits on one line.
+const DOT_SIZE_STEPS = [
+  [8,  10, 8],
+  [14, 8,  6],
+  [24, 6,  5],
+  [36, 5,  4],
+  [Infinity, 4, 3],
+];
 function renderProgress() {
   const container = document.getElementById('progress');
   const deckLen = state.visibleDeck.length;
   container.innerHTML = '';
   const MAX_DOTS = 60;
   if (deckLen <= MAX_DOTS) {
-    // One dot per card — accurate for any normal-sized session
+    // One dot per card, colored by category — accurate for any normal-sized
+    // session, and doubles as a preview of the round's emotional shape.
+    const [, size, gap] = DOT_SIZE_STEPS.find(([max]) => deckLen <= max);
+    container.style.setProperty('--dot-size', size + 'px');
+    container.style.setProperty('--dot-gap', gap + 'px');
     for (let i = 0; i < deckLen; i++) {
+      const card = state.visibleDeck[i];
       const dot = document.createElement('div');
       const isSeen    = i < state.currentIndex;
       const isCurrent = i === state.currentIndex;
       dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
+      dot.style.setProperty('--dot-color', levelColor(card.level));
       container.appendChild(dot);
     }
   } else {
     // Large decks (e.g. 'All' in Everything): bucket into MAX_DOTS proportional dots
     // so the trail always spans the whole deck instead of running out partway.
+    container.style.setProperty('--dot-size', '4px');
+    container.style.setProperty('--dot-gap', '3px');
     const perBucket = deckLen / MAX_DOTS;
     const currentBucket = state.currentIndex < 0 ? -1 : Math.floor(state.currentIndex / perBucket);
     for (let i = 0; i < MAX_DOTS; i++) {
