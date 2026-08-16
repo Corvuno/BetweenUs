@@ -861,24 +861,29 @@ const DOT_SIZE_STEPS = [
   [36, 5,  4],
   [Infinity, 4, 3],
 ];
-function renderProgress() {
+// `currentOverride`, when given, replaces state.currentIndex for this render
+// only — used by the end-of-round summary to show every card as passed
+// without a "current" dot, without touching real session position.
+function renderProgress(currentOverride) {
   const container = document.getElementById('progress');
   const deckLen = state.visibleDeck.length;
   container.innerHTML = '';
   const MAX_DOTS = 60;
+  const cur = currentOverride === undefined ? state.currentIndex : currentOverride;
   if (deckLen <= MAX_DOTS) {
-    // One dot per card, colored by category — accurate for any normal-sized
-    // session, and doubles as a preview of the round's emotional shape.
+    // One dot per card. Passed and current cards reveal their category
+    // colour; cards still ahead stay neutral gold so the shape of what's
+    // coming isn't spoiled.
     const [, size, gap] = DOT_SIZE_STEPS.find(([max]) => deckLen <= max);
     container.style.setProperty('--dot-size', size + 'px');
     container.style.setProperty('--dot-gap', gap + 'px');
     for (let i = 0; i < deckLen; i++) {
       const card = state.visibleDeck[i];
       const dot = document.createElement('div');
-      const isSeen    = i < state.currentIndex;
-      const isCurrent = i === state.currentIndex;
+      const isSeen    = i < cur;
+      const isCurrent = i === cur;
       dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
-      dot.style.setProperty('--dot-color', levelColor(card.level));
+      if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
       container.appendChild(dot);
     }
   } else {
@@ -887,7 +892,7 @@ function renderProgress() {
     container.style.setProperty('--dot-size', '4px');
     container.style.setProperty('--dot-gap', '3px');
     const perBucket = deckLen / MAX_DOTS;
-    const currentBucket = state.currentIndex < 0 ? -1 : Math.floor(state.currentIndex / perBucket);
+    const currentBucket = cur < 0 ? -1 : Math.floor(cur / perBucket);
     for (let i = 0; i < MAX_DOTS; i++) {
       const dot = document.createElement('div');
       const isSeen    = i < currentBucket;
@@ -1947,6 +1952,9 @@ function showSessionSummary() {
 
   const numEl = document.getElementById('card-number');
   if (numEl) numEl.textContent = '— end —';
+
+  // The round is over — every dot reads as passed, none as "current".
+  renderProgress(state.visibleDeck.length);
 }
 
 // ── End-of-draw hold gate ──
