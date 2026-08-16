@@ -1,5 +1,8 @@
 {
   "name": "between-us-tests",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
 }

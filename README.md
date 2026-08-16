@@ -1,6 +1,7 @@
 # Between Us
 
-A deck-of-questions card game, played as a single self-contained HTML file.
+A deck-of-questions card game, played in the browser. No build step — the source is a
+handful of plain HTML/CSS/JS files, opened directly.
 
 ## Play online
 
@@ -10,26 +11,44 @@ A deck-of-questions card game, played as a single self-contained HTML file.
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us-work.html) | `between-us-work.html` | `work` | Workplace-safe version — Dutch, no adult content reachable. |
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us-dev.html) | `between-us-dev.html` | `editor` | Development build — everything on by default. dev conveniences on. |
 
-The **Play** links open the live game on GitHub Pages. (Clicking the filename on GitHub shows the source instead — that's why plain filename links don't launch it.)
+The **Play** links open the live game on GitHub Pages. (Clicking a filename on GitHub shows
+the source instead — that's why plain filename links don't launch it.)
 
 [**▶ Open Between Us**](https://corvuno.github.io/BetweenUs/) — the site root redirects to the main version.
 
-Hand out whichever URL you want — each file's version is baked in, so (for example) the
+Hand out whichever URL you want — each shell's version is baked in, so (for example) the
 work URL always opens the work version. Nobody has to pick anything.
 
-## Build profiles
+## File layout
 
-Each file is fully self-contained (HTML/CSS/JS, no build step). Which version a file *is*
-comes from a single line at the very top of the `<head>` script:
-
-```js
-const BUILD_PROFILE = "public";   // "public" · "work" · "editor"
+```
+between-us.html          ─┐
+between-us-work.html      ├─ thin shells — head/body markup + one line choosing the profile
+between-us-dev.html      ─┘
+styles.css                  all CSS, shared by every shell
+questions.js                 the question deck (content only, no app logic)
+app.js                        state, deck engine, and UI — shared by every shell
 ```
 
-Change that one line and the file becomes that version. All three profiles — and every
-setting they control (language, shuffle, adult-content locking, spice, backup category,
-etc.) — are defined once, in the `PROFILES` object right below that line, and are identical
-across all three files. To fine-tune a version, edit its block in `PROFILES`.
+`styles.css`, `questions.js` and `app.js` are each a single real file — there is no
+generated copy to keep in sync. Edit any of them once and all three shells pick it up
+immediately, since they all load the same files.
+
+Each shell's *only* difference from the other two is one line near the top of `<head>`:
+
+```html
+<script>window.BUILD_PROFILE = "public";   // "public" · "work" · "editor"</script>
+```
+
+`app.js` reads `window.BUILD_PROFILE` and applies the matching block from the `PROFILES`
+object defined at the top of `app.js` (language, shuffle, adult-content locking, spice,
+backup category, etc.), which is itself defined once — not duplicated per shell. To
+fine-tune a version, edit its block in `PROFILES`; to change what all three versions share,
+edit anything else in `app.js`.
+
+Note: because the app is now split across files, `between-us.html` is no longer a single
+file you can hand someone to double-click and play offline — you'd need the whole folder,
+or the hosted GitHub Pages link. The **Play** links above are unaffected.
 
 ## Questions
 
@@ -62,6 +81,7 @@ The full version, with the lens list used to audit a category, is in
 
 ## Updating
 
-All three HTML files are kept in sync with each app update. They now differ by exactly one
-line — the `BUILD_PROFILE` selector — so any app or settings change should be applied
-identically to all three, and the `PROFILES` block must stay identical between them.
+App and settings changes go in `app.js` once — all three shells pick them up automatically,
+since they load the same file. The only thing that should ever differ between
+`between-us.html`, `between-us-work.html` and `between-us-dev.html` is their one
+`BUILD_PROFILE` line.
