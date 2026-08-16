@@ -2,16 +2,16 @@
 
 A deck-of-questions card game.
 
-**Architecture note:** right now each build is one self-contained HTML file
+**Architecture note:** each build is currently one self-contained HTML file
 (HTML/CSS/JS inline, no build step) — see "Build profiles" below for how that
-currently works. That's being phased out. The intended shape going forward is
-a small split: a JS file for the app's systems (deck logic, state, draw
+works. That's how the app runs today, not a stopgap. On top of it, a further
+split is planned: a JS file for the app's systems (deck logic, state, draw
 mechanics) and a CSS file for the look (colours, type, layout), with the HTML
 files becoming thin shells that reference them — kept separate specifically
 so styling and behaviour can be worked on without wading through one 5,000-line
-file each time. This hasn't happened yet (no file split has been done as of
-this note) — treat any doc or assumption that still says "single file" as
-describing the current-but-temporary state, not a constraint to preserve.
+file each time. No file split has been done as of this note — don't assume it
+exists, and don't treat "single file" as something to work around in the
+meantime; it's simply how the project is structured until that split happens.
 
 ## Play online
 
