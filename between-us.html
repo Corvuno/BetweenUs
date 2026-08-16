@@ -245,29 +245,24 @@ body::before{
   opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
 }
 .card-question.in{opacity:1;transform:none;}
-/* ── Twist: a modifier layered onto the drawn card, not written into it ──
-   Off by default (a "+ Twist" prompt); tapping picks a generic modifier
-   template and swaps the button's own label for it — tapping again rerolls.
-   It never survives a new card; flipToCard resets it every draw. */
-.card-twist-btn{
-  background:none;border:1px solid var(--dim);color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.1em;text-transform:none;
-  padding:6px 14px;border-radius:99px;cursor:pointer;transition:all .2s;
-  max-width:88%;opacity:.8;flex-shrink:0;
-}
-.card-twist-btn:hover{border-color:var(--border);color:var(--gold-l);opacity:1;}
-/* Deliberately a caption, not a second question — the card is fixed-height
-   and overflow:hidden, so the twist has to read small next to the question
-   rather than compete with it for the same vertical space. */
-.card-twist-btn.active{
-  border-color:color-mix(in srgb, var(--gold) 45%, transparent);color:var(--gold-l);
-  font-family:'Jost',sans-serif;font-size:.58rem;font-weight:400;letter-spacing:.04em;
-  line-height:1.4;padding:6px 16px;opacity:1;max-width:92%;border-radius:10px;
-}
 .card-number{
   position:absolute;bottom:11px;left:0;right:0;text-align:center;
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.18em;color:var(--muted);opacity:.65;
+  transition:color .2s ease;padding:0 20px;
 }
+/* ── Twist: a modifier layered onto the drawn card, not written into it ──
+   The trigger lives in the control row (same slot the language switch used
+   to hold — language moved to the menu only). Tapping it doesn't add
+   anything to the card: the counter that's already printed there ("1 / 5")
+   swaps to the modifier instead, in the same spot, same size family, no new
+   element anywhere. Default palette only — this has nothing to do with
+   which category is showing, so it never borrows the category accent.
+   Never survives a new card; flipToCard resets it every draw. */
+.card-number.twist{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.68rem;
+  letter-spacing:.01em;color:var(--gold-l);opacity:1;
+}
+.twist-trigger.active{color:var(--gold);}
 /* card flip animation */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
@@ -403,6 +398,12 @@ body::before{
 .party-pick:hover{color:var(--cream);}
 .party-pick.on{color:var(--gold);}
 .party-overlay.idle .party-pick{opacity:0;pointer-events:none;}
+.party-twist{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:2;background:none;border:none;color:var(--muted);
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  padding:8px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
+.party-twist:hover{color:var(--cream);}
+.party-twist.active{color:var(--gold);}
+.party-overlay.idle .party-twist{opacity:0;pointer-events:none;}
 .party-card{
   position:relative;z-index:1;width:min(92vw,820px);min-height:55vh;
   background:var(--card-bg);border:1px solid var(--border);
@@ -416,13 +417,8 @@ body::before{
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.56rem,1.2vw,.72rem);letter-spacing:.24em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-/* party-zone-prev/next are full-height, z-index:4 tap zones layered over the
-   whole card for prev/next navigation — the twist button needs to sit above
-   them (a stacking context of its own, via position+z-index) or every tap
-   on it is swallowed as a "next card" tap instead. */
-.party-twist-btn{order:2;font-size:clamp(.6rem,1.3vw,.7rem);position:relative;z-index:5;}
-.party-twist-btn.active{font-size:clamp(.64rem,1.4vw,.8rem);max-width:min(92%,560px);}
-.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:3;}
+.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:2;transition:color .2s ease;}
+.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.68rem,1.6vw,.88rem);letter-spacing:.01em;color:var(--gold-l);opacity:.95;}
 .party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:.4;}
 /* party card click zones — prev left 28%, next right 72% */
 .party-zone-prev,.party-zone-next{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
@@ -1181,7 +1177,6 @@ body::before{
         <div class="card-body-inner">
           <div class="card-level" id="card-level"></div>
           <div class="card-question" id="card-question">Draw a card to begin.</div>
-          <button class="card-twist-btn" id="cardTwistBtn" type="button">+ Twist</button>
         </div>
         <div class="card-number" id="card-number">&#8212; &#8212; &#8212;</div>
       </div>
@@ -1213,7 +1208,7 @@ body::before{
     <div class="screen-row">
       <button class="pick-toggle" id="pickToggle"><svg class="pt-card" viewBox="0 0 16 22" aria-hidden="true"><rect x="1" y="1" width="14" height="20" rx="2" fill="rgba(201,168,76,.14)" stroke="currentColor" stroke-width="1.3"/></svg><span>three</span></button>
       <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty">&#9974; Full Screen</button>
-      <button class="btn-fullscreen" id="btn-lang-inline">EN</button>
+      <button class="btn-fullscreen twist-trigger" id="btnTwist" type="button">Twist</button>
     </div>
     <!-- Cards-per-round buttons — re-homed into the Cards token tray by the shell wiring -->
     <div class="limit-row" id="limitBtns">
@@ -1502,7 +1497,7 @@ body::before{
         </div>
       </div>
       <p class="hp-sub">Tap or click the card, or swipe. With a keyboard the arrow keys do the same, and &#8595; skips.</p>
-      <p class="hp-sub">Under the question sits a small <span class="ui">+ Twist</span>. Tap it and the card doesn't change &mdash; a modifier lands on top of it instead: how you'd have answered five years ago, the strongest argument against your own answer, what someone close to you would guess. Tap again for a different one. It's optional, and it never survives the next card &mdash; only add it when it would actually make that question better.</p></div></div>
+      <p class="hp-sub"><span class="ui">Twist</span>, next to Full Screen, gives the card a different lens before you've answered it &mdash; how you'd have answered this five years ago, what someone close to you would notice first, what you'd say if it cost you nothing. Tap it and the card's own count swaps to the lens for that draw; tap again for a different one. Optional, and it never survives the next card.</p></div></div>
     <div class="hp-step"><span class="hp-num">4</span><div class="hp-body"><p><strong>Let the round end.</strong> When the hand runs out, the card turns gold and shows you where you went: the categories you covered and anything you starred. Stop there. Stand up, stretch, get some air, let the last answer settle &mdash; a round has an end for a reason, and the deck will wait. Rolling straight into the next one is how a table stops listening.</p></div></div>
     <div class="hp-step"><span class="hp-num">5</span><div class="hp-body"><p><strong>Keep what's worth keeping.</strong> The menu (&#8801;) holds the log of everything drawn this session, the cards you starred, a save so you can pick the deck up later, your own written cards, the language switch, and Reshuffle &mdash; a fresh shuffle without changing anything else.</p></div></div>
 
@@ -1592,6 +1587,7 @@ body::before{
 <!-- FULLSCREEN OVERLAY -->
 <div class="party-overlay" id="partyOverlay">
   <button class="party-exit" id="partyExit">&#8249;&nbsp;&nbsp;Close</button>
+    <button class="party-twist" id="partyBtnTwist" type="button">Twist</button>
     <button class="party-pick" id="partyPick">Draw three</button>
   <button class="party-prev-btn" id="partyPrevBtn" style="display:none;"></button>
   <button class="party-more-btn" id="partyMoreBtn" style="display:none;"></button>
@@ -1606,7 +1602,6 @@ body::before{
     <div class="party-inner">
       <div class="party-level" id="party-level"></div>
       <div class="party-question" id="party-question">Tap to begin.</div>
-      <button class="card-twist-btn party-twist-btn" id="partyTwistBtn" type="button">+ Twist</button>
       <div class="party-number" id="party-number"></div>
     </div>
   </div>
@@ -2556,43 +2551,49 @@ const MAGIC_CARDS = [
 const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);
 const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
 
-// ── TWIST — a modifier layered on top of whatever card is showing, not
-// written into any card's own text. It's the deck's one editorial mechanic
-// that lives in the app instead of the deck: a small, deliberately generic
-// set of turns (compare against an earlier self, argue the other side, guess
-// what someone close to you would say...) that can be laid over *any*
-// question to break an answer that's gone automatic. Never attached to a
-// card by default — a tap chooses one, a new draw clears it. See
-// pickTwist/renderTwist below and the reset in flipToCard.
+// ── TWIST — a lens on the card, chosen the moment it's opened, not a
+// follow-up on an answer that doesn't exist yet. Four modifiers, each one
+// changing who's telling the story or what it costs to tell it — never a
+// request to critique or reverse an answer already given, and never an
+// abstract argument-for/against move (this deck is stories, not positions).
+// The trigger lives in the control row (Twist/partyBtnTwist) and in the
+// party header; tapping it doesn't add anything to the card — the counter
+// that's already printed there ("1 / 5") swaps to the modifier in place.
+// Never survives a new card; flipToCard/clearTwist reset it every draw.
 const MODIFIERS = [
   { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },
   { en: "What do you suspect you'll answer differently five years from now?", nl: "Wat denk je dat je hier over vijf jaar anders op zou antwoorden?" },
-  { en: "What's the strongest argument against your own answer?", nl: "Wat is het sterkste argument tegen je eigen antwoord?" },
-  { en: "What would someone who knows you well say?", nl: "Wat zou iemand die jou goed kent hierop zeggen?" },
-  { en: "Does your behaviour actually agree with that answer?", nl: "Komt je gedrag eigenlijk overeen met dat antwoord?" },
+  { en: "What would someone close to you notice about this before you do?", nl: "Wat zou iemand die dicht bij je staat hieraan merken, voordat jij het zelf doorhebt?" },
   { en: "What would you say if there were no consequences at all?", nl: "Wat zou je zeggen als er totaal geen gevolgen waren?" },
-  { en: "What part of your own answer just surprised you?", nl: "Welk deel van je eigen antwoord verraste jezelf?" },
-  { en: "What would the version of you from ten years ago have said?", nl: "Wat zou de versie van jou van tien jaar geleden hebben gezegd?" },
-  { en: "What would the opposite answer say about you?", nl: "Wat zou het tegenovergestelde antwoord over je zeggen?" },
-  { en: "What do people close to you notice about this before you do?", nl: "Wat merken mensen die dicht bij je staan hieraan op, voordat jij het zelf doorhebt?" },
 ];
 let currentTwist = null;
 function pickTwist() {
   const pool = MODIFIERS.filter(m => m !== currentTwist);
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
-function twistPrompt() { return state.lang === 'nl' ? '+ Wending' : '+ Twist'; }
+function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
+// Applies (or clears) the twist text on a counter element, leaving it alone
+// entirely when there's nothing to show — the base "x / y" text is written
+// by flipToCard/setCardDisplay/updatePartyDisplay just before this runs.
+function applyTwistToCounter(el) {
+  if (!el) return;
+  if (currentTwist) {
+    el.textContent = state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en;
+    el.classList.add('twist');
+  } else {
+    el.classList.remove('twist');
+  }
+}
 function renderTwist() {
-  const text = currentTwist ? (state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en) : twistPrompt();
-  [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(btn => {
-    if (!btn) return;
-    btn.textContent = text;
-    btn.classList.toggle('active', !!currentTwist);
+  applyTwistToCounter(document.getElementById('card-number'));
+  applyTwistToCounter(document.getElementById('party-number'));
+  [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
+    if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
   });
 }
 function toggleTwist() { currentTwist = pickTwist(); renderTwist(); }
 function clearTwist() { currentTwist = null; renderTwist(); }
-[document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(btn => {
+[document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
   if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
 });
 
@@ -3471,10 +3472,8 @@ function setCardDisplay(card) {
     // Update party display too
     updatePartyDisplay(null);
     clearTwist();
-    [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(b => { if (b) b.style.display = 'none'; });
     return;
   }
-  [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(b => { if (b) b.style.display = ''; });
   const color = levelColor(card.level);
   if (accent) {
     accent.style.background = color;
@@ -3494,7 +3493,6 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 function flipToCard(card) {
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
-  [document.getElementById('cardTwistBtn'), document.getElementById('partyTwistBtn')].forEach(b => { if (b) b.style.display = ''; });
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const accent = document.getElementById('c-accent');
@@ -3587,18 +3585,18 @@ function closeAllDrawers() {
   });
 }
 
-// ── Language: single switch for toggle row, menu row, and session restore ──
+// ── Language: single switch, menu row only now — the inline row toggle was
+// removed to make room for the Twist trigger; the menu's own language row
+// (d-lang) was already a full duplicate of it. ──
 function setLang(l, skipRefresh) {
   state.lang = l;
   document.documentElement.lang = l;
   const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
-  const inlineBtn = document.getElementById('btn-lang-inline'); if (inlineBtn) inlineBtn.textContent = l.toUpperCase();
   const sub = document.getElementById('dLangSub');
   if (sub) sub.textContent = l === 'en' ? 'Switch to Nederlands' : 'Schakel naar English';
   if (!skipRefresh) setCardDisplay(state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length ? state.visibleDeck[state.currentIndex] : null);
 }
 document.getElementById('d-lang').addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
-const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLangBtn) inlineLangBtn.addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
 
 // ── Category label toggle ──
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
@@ -3791,7 +3789,7 @@ function updateAfterDarkBtn() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
-    if (e.target.closest('#partyTwistBtn')) return;
+    if (e.target.closest('#partyBtnTwist')) return;
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -3818,7 +3816,7 @@ function updateAfterDarkBtn() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
-    if (e.target.closest('#partyTwistBtn')) return;
+    if (e.target.closest('#partyBtnTwist')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });

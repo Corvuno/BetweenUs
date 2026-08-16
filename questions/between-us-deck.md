@@ -612,6 +612,42 @@ Four real answers to four cards in this deck. The test a card design lives or di
 
 # Change log
 
+## Patch v6.76 — Twist redesigned: relocated, recoloured, cut from ten modifiers to four
+The v6.73 shape of Twist — a pill on the card face, ten modifiers, coloured to match the
+category — didn't survive contact with the owner. Three separate problems, fixed together:
+
+**Placement.** The on-card pill read as clutter on a card that's otherwise fully composed —
+a rounded, foreign shape sitting in the middle of a rectilinear, hairline-bordered system,
+and long modifier text could overflow the card's fixed height and paint over the counter
+underneath it. Twist no longer touches the card face's layout at all: the trigger now lives
+in the control row under Draw Card, in the slot the inline language switch used to occupy
+(language was fully redundant with the menu's own switch, so the inline copy was removed
+entirely rather than duplicated). Tapping it swaps the card's own "1 / 5" count to the lens
+text, in place — no new element, nothing added, same treatment in fullscreen with a matching
+control in the party header.
+
+**Colour.** The active state borrowed the category's accent colour, which was conceptually
+backwards — the accent marks *which category*, and Twist has nothing to do with that; it's
+the same four lenses regardless of what's showing. It now uses the app's default gold/cream
+palette only, same as the rest of the app's chrome.
+
+**The modifiers themselves.** Cut from ten to four. Six failed one of two tests once actually
+named: a lens has to work the instant the card opens, before anyone has answered — "what's
+the strongest argument against your own answer," "does your behaviour agree with that
+answer," "what part of your answer surprised you," and "what would the opposite answer say"
+all presuppose an answer that doesn't exist yet at that point, and the last of those is also
+an abstract argument-move rather than a story lens (three of the ten were also just straight
+duplicates of another one: five-years-ago/ten-years-ago, and the two "outside view" cards).
+Two further candidates were drafted and cut before shipping: a "blurted, unfiltered"
+first-instinct lens (rejected — this deck asks for considered answers, not reflexes) and a
+"the scene, not the summary" lens (rejected as redundant — a well-written card already
+anchors on the pivot by house rule, no modifier needed to make it do that twice). What
+shipped:
+- How would you have answered this five years ago?
+- What do you suspect you'll answer differently five years from now?
+- What would someone close to you notice about this before you do?
+- What would you say if there were no consequences at all?
+
 ## Patch v6.73 — Twist shipped as an app-layer mechanic; no cards touched
 Owner feedback asked for the deck's own modifier idea (comparing an answer against an earlier self, arguing the other side, guessing what someone close to you would say) to live as a mechanic layered on top of any card by the app itself, not as bespoke wording written into individual cards. Shipped as **Twist**: a small always-available control under whichever question is showing. A tap lays one of ten generic modifier templates on top of the current card ("How would you have answered this five years ago?", "What's the strongest argument against your own answer?", "What would someone who knows you well say?"...), a second tap rerolls it, and it never survives the next draw. The set lives in `MODIFIERS` in the app's script, works in both the normal and fullscreen views, is bilingual, and is documented for players in the help drawer under "Play." Deliberately not attached to specific cards — the whole point is that it stays a layer over *any* card rather than more editorial content to maintain per category.
 
