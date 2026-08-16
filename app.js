@@ -887,17 +887,23 @@ function renderProgress(currentOverride) {
       container.appendChild(dot);
     }
   } else {
-    // Large decks (e.g. 'All' in Everything): bucket into MAX_DOTS proportional dots
-    // so the trail always spans the whole deck instead of running out partway.
-    container.style.setProperty('--dot-size', '4px');
-    container.style.setProperty('--dot-gap', '3px');
-    const perBucket = deckLen / MAX_DOTS;
-    const currentBucket = cur < 0 ? -1 : Math.floor(cur / perBucket);
-    for (let i = 0; i < MAX_DOTS; i++) {
+    // Large decks (e.g. 'All' in Everything, 300+ cards): a fixed-width
+    // window of real per-card dots slides along the deck instead of
+    // collapsing everything into averaged buckets. It always keeps one
+    // neutral "next" dot in view, and drops the oldest passed dot off the
+    // left edge as you advance — a continuous band, not a dulled-down summary.
+    const WINDOW = 20;
+    container.style.setProperty('--dot-size', '7px');
+    container.style.setProperty('--dot-gap', '6px');
+    const windowStart = Math.max(0, Math.min(cur - (WINDOW - 2), deckLen - WINDOW));
+    const windowEnd = Math.min(deckLen, windowStart + WINDOW);
+    for (let i = windowStart; i < windowEnd; i++) {
+      const card = state.visibleDeck[i];
       const dot = document.createElement('div');
-      const isSeen    = i < currentBucket;
-      const isCurrent = i === currentBucket;
+      const isSeen    = i < cur;
+      const isCurrent = i === cur;
       dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
+      if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
       container.appendChild(dot);
     }
   }
