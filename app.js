@@ -1349,8 +1349,6 @@ function flipToCard(card) {
     el.classList.remove('flipping');
     renderProgress();
     updatePartyDisplay(card);
-    // Arc indicator update
-    setTimeout(updateArcIndicator, 200);
     // Auto-save on every card
     autoSaveSession();
   }, 175);
@@ -1863,25 +1861,6 @@ function skipCard() {
 // "continue" (see the end-of-draw hold gate below).
 
 // ═══════════════════════════════════════════════════════════
-// FEATURE 4: ARC PHASE INDICATOR
-// ═══════════════════════════════════════════════════════════
-function updateArcIndicator() {
-  const ind = document.getElementById('arcIndicator');
-  if (!ind) return;
-  const isArc = state.randomMode === 'arc';
-  ind.classList.toggle('visible', isArc && state.visibleDeck.length > 0 && state.currentIndex >= 0);
-  if (!isArc || state.visibleDeck.length === 0 || state.currentIndex < 0) return;
-  // 4 phases: 0–25%, 25–50%, 50–75%, 75–100%
-  const pct = (state.currentIndex + 1) / state.visibleDeck.length;
-  const phase = pct <= .25 ? 1 : pct <= .5 ? 2 : pct <= .75 ? 3 : 4;
-  for (let i = 1; i <= 4; i++) {
-    const d = document.getElementById('arc-d' + i);
-    if (!d) continue;
-    d.className = 'arc-dot' + (i <= phase ? ' lit-' + i : '');
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
 // FEATURE 5: SESSION SUMMARY
 // ═══════════════════════════════════════════════════════════
 function showSessionSummary() {
@@ -2361,7 +2340,6 @@ function choosePick(chosen, allOptions) {
   updateDeckInfo();
   renderProgress();
   updateDrawMore();
-  updateArcIndicator();
 }
 
 // Pick toggle
@@ -2397,8 +2375,6 @@ function choosePick(chosen, allOptions) {
     }
   });
 })();
-
-updateArcIndicator();
 
 // ── Category card counts in the grid ──
 function updateCatCounts() {

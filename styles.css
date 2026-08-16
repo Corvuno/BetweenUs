@@ -316,23 +316,6 @@ body::before{
 }
 .party-zone-prev:hover::after{opacity:.4;}
 
-/* ── ARC PHASE INDICATOR ── */
-.arc-indicator{
-  /* always in flow — toggling display here shifted the whole page on desktop */
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  visibility:hidden;
-}
-.arc-indicator.visible{visibility:visible;}
-.arc-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--muted);opacity:.18;
-  transition:background .7s ease,opacity .7s ease;
-}
-.arc-dot.lit-1{background:#c9a84c;opacity:.75;} /* warm gold */
-.arc-dot.lit-2{background:#8a9e7a;opacity:.75;} /* earthy green */
-.arc-dot.lit-3{background:#5a7aaa;opacity:.75;} /* deep blue */
-.arc-dot.lit-4{background:#c9a04a;opacity:.45;} /* gold return, softer */
-
 /* ── IN-CARD SESSION SUMMARY ── */
 .sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
 .sic-label{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
