@@ -1,6 +1,17 @@
 # Between Us
 
-A deck-of-questions card game, played as a single self-contained HTML file.
+A deck-of-questions card game.
+
+**Architecture note:** right now each build is one self-contained HTML file
+(HTML/CSS/JS inline, no build step) — see "Build profiles" below for how that
+currently works. That's being phased out. The intended shape going forward is
+a small split: a JS file for the app's systems (deck logic, state, draw
+mechanics) and a CSS file for the look (colours, type, layout), with the HTML
+files becoming thin shells that reference them — kept separate specifically
+so styling and behaviour can be worked on without wading through one 5,000-line
+file each time. This hasn't happened yet (no file split has been done as of
+this note) — treat any doc or assumption that still says "single file" as
+describing the current-but-temporary state, not a constraint to preserve.
 
 ## Play online
 
@@ -19,8 +30,9 @@ work URL always opens the work version. Nobody has to pick anything.
 
 ## Build profiles
 
-Each file is fully self-contained (HTML/CSS/JS, no build step). Which version a file *is*
-comes from a single line at the very top of the `<head>` script:
+For now, each file is fully self-contained (HTML/CSS/JS, no build step) — see the
+architecture note above for why that's not meant to stay true indefinitely. Which version
+a file *is* comes from a single line at the very top of the `<head>` script:
 
 ```js
 const BUILD_PROFILE = "public";   // "public" · "work" · "editor"
@@ -79,3 +91,9 @@ maintain per category.
 All three HTML files are kept in sync with each app update. They now differ by exactly one
 line — the `BUILD_PROFILE` selector — so any app or settings change should be applied
 identically to all three, and the `PROFILES` block must stay identical between them.
+
+Once the JS/CSS split above happens, this sync discipline moves with it: the three HTML
+shells would still only differ by `BUILD_PROFILE`, but the shared logic and style would
+each live in one file referenced by all three, rather than being copy-pasted three times.
+Don't assume that split exists until it's actually been done — check for separate `.js`/
+`.css` files in the repo root before editing as if it has.
