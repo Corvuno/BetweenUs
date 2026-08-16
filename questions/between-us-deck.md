@@ -17,7 +17,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What nickname do you go by — and who gave it?
 9. Which texture can you not stop touching?
 10. What's the most childish thing that still delights you?
-11. What's a completely useless skill you're oddly proud of?
+11. Which season fits you best — and how does it show?
 12. What do you quietly fix or straighten in other people's houses?
 
 ## Colbert
@@ -33,7 +33,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Which stranger do you still remember fondly?
 7. Is there something you're genuinely bad at that you still refuse to stop doing?
 8. When's the last time you watched someone do something and thought, I wish I could do that?
-9. What would your warning label say?
+9. What have you repaired instead of replaced — and why?
 10. What do you knowingly blow out of proportion?
 11. When did you last go gloriously too far — and was it worth it?
 12. Quote the sentence people around you are most tired of hearing from you.
@@ -47,7 +47,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Do you use music to feel more, or to feel less?
 7. Is taste something you have or something you build?
 8. What's something you appreciate far more now that you understand how it actually works?
-9. What's something you used to think was sophisticated that now makes you laugh?
+9. Does great art excuse a terrible artist?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
 12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
@@ -60,7 +60,7 @@ The questions come first, category by category. The full change log is at the bo
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. What's something you're doing right now without knowing if it'll actually work out?
-8. What's a rule you've quietly made for yourself that nobody else knows about?
+8. What are you putting off that you know you'll regret?
 9. What does getting older take from you that you didn't expect, and what does it give?
 10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
 11. What's different about your life this year?
@@ -131,7 +131,7 @@ The questions come first, category by category. The full change log is at the bo
 6. When has having power over someone made you kinder, not crueler?
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
-9. What's something you have a completely unreasonable opinion about?
+9. What have you had to accept that you never chose?
 10. Strip away the job, the roles, the routines — what's left standing?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
@@ -185,7 +185,7 @@ The questions come first, category by category. The full change log is at the bo
 2. When did being needed stop feeling good?
 3. Who taught you the most about how to be close to someone?
 4. Do you wait to make the first move, even when you're the one missing them?
-5. Who do you let interrupt you without ever getting annoyed?
+5. How can someone tell you're withdrawing before you've said a word?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
 8. Have you ever worried about someone's relationship with a substance — or had someone worry about yours?
@@ -200,7 +200,7 @@ The questions come first, category by category. The full change log is at the bo
 3. Which friendship ended without ever officially ending?
 4. Which friend gets the honest version of you — and which gets the polite one?
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
-6. Which friend brings out your worst behaviour — in the best way?
+6. One friend deserves a better version of you...
 7. How do you make friends now — and is it harder than it used to be?
 8. Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?
 9. Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?
@@ -242,7 +242,7 @@ The questions come first, category by category. The full change log is at the bo
 3. If you had to guess, what percentage of your life is choice, and what percentage is circumstance?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
-6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
+6. Who gets authority over you faster than you'd like?
 7. When did you stay silent and shouldn't have?
 8. What does money let you avoid — a conversation, a choice, a person?
 9. What are the outer limits of your compassion?
@@ -256,7 +256,7 @@ The questions come first, category by category. The full change log is at the bo
 3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
-6. What's a fact about how the world works that you still can't quite believe is true?
+6. Which room first taught you that class exists?
 7. Do people actually change — or just get better at managing what doesn't?
 8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
 9. Is there something happening in the world that genuinely worries you?
@@ -503,15 +503,6 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
-- **Quick** — "Which season fits you best — and how does it show?" (displaced from Quick 11 in v6.73; read closer to trivia than a door — the useless-skill card carries more character in the same slot)
-- **Warm** — "What have you repaired instead of replaced — and why?" (displaced from Warm 9 in v6.73; a fact question, not much of an aperture — the warning-label card asks for a bigger, funnier claim)
-- **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.73; read as a debate-club prompt with no personal cost — the sophistication card asks for a specific embarrassment instead of an abstract position)
-- **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.73; guilt-first framing — the private-rule card is lighter and still reveals something nobody else would guess)
-- **Self** — "What have you had to accept that you never chose?" (displaced from Self 9 in v6.73; overlapped the loss-of-control register Self already runs at 3, 8 and 10 — the unreasonable-opinion card gives Self a genuinely light, revealing door it didn't have)
-- **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.73; abstract and a little clinical — the fake-opinion card is Values' second airy card, same job Attract 6 and Values 10 already do for their categories)
-- **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.73; close enough to Connect 6's "feel misunderstood" to blur together — the interrupt card is Connect's own light, revealing-access door)
-- **Friendship** — "One friend deserves a better version of you..." (displaced from Friendship 6 in v6.73; guilt-inducing in a category that already carries real weight at 3 and 9 — the worst-behaviour card keeps the honesty but flips it to affection)
-- **World** — "Which room first taught you that class exists?" (displaced from World 6 in v6.73; overlapped World 3's fairness/privilege ground — the still-can't-believe-it's-true card gives World a genuine light-wonder door to sit next to World 4)
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -617,23 +608,10 @@ Four real answers to four cards in this deck. The test a card design lives or di
 
 # Change log
 
-## Patch v6.73 — light pass: nine cards swapped for sharper, lighter doors; Twist shipped as an app-layer mechanic
-Owner feedback flagged two things: the deck needed more light material — not generic "hamburger" questions (favourite food, cats-or-dogs) but light *with a turn*, the kind that still makes someone stop and think — and that the deck's own modifier idea (comparing an answer against an earlier self, arguing the other side, guessing what someone close to you would say) should live as a mechanic layered on top of any card by the app itself, not as bespoke wording written into individual cards.
+## Patch v6.73 — Twist shipped as an app-layer mechanic; no cards touched
+Owner feedback asked for the deck's own modifier idea (comparing an answer against an earlier self, arguing the other side, guessing what someone close to you would say) to live as a mechanic layered on top of any card by the app itself, not as bespoke wording written into individual cards. Shipped as **Twist**: a small always-available control under whichever question is showing. A tap lays one of ten generic modifier templates on top of the current card ("How would you have answered this five years ago?", "What's the strongest argument against your own answer?", "What would someone who knows you well say?"...), a second tap rerolls it, and it never survives the next draw. The set lives in `MODIFIERS` in the app's script, works in both the normal and fullscreen views, is bilingual, and is documented for players in the help drawer under "Play." Deliberately not attached to specific cards — the whole point is that it stays a layer over *any* card rather than more editorial content to maintain per category.
 
-**Nine swaps, chosen where a category had the least light material and the displaced card either read as trivia, overlapped ground the category already covered, or leaned on guilt/abstraction where a lighter register would open the same territory better.** Full rationale for each is in BENCH above; each replacement is single-question, doesn't name its own category, and is answerable by someone with no story to tell, per house rule.
-- **Quick 11** → *"What's a completely useless skill you're oddly proud of?"*
-- **Warm 9** → *"What would your warning label say?"*
-- **Culture 9** → *"What's something you used to think was sophisticated that now makes you laugh?"*
-- **Life 8** → *"What's a rule you've quietly made for yourself that nobody else knows about?"*
-- **Self 9** → *"What's something you have a completely unreasonable opinion about?"*
-- **Values 6** → *"What's something you pretend to have a strong opinion about, but actually don't care about at all?"*
-- **Connect 5** → *"Who do you let interrupt you without ever getting annoyed?"*
-- **Friendship 6** → *"Which friend brings out your worst behaviour — in the best way?"*
-- **World 6** → *"What's a fact about how the world works that you still can't quite believe is true?"*
-
-None of these touch Quick's, Warm's, Culture's, Unwind's or Home's card count or identity beyond the single swap each — those categories were already reading light by design (see `LIGHT_LEVELS` in the app). The heavier lift went to categories the app's own `DEEP_LEVELS` list biases toward in Wild/Deep shuffle — Self, Values, Connect, Friendship, World, Life — each of which had at most one clearly light card before this patch and now has two.
-
-**Twist**, the modifier mechanic, did *not* enter the deck as more cards. It ships instead as a small always-available control under whichever question is showing: a tap lays one of ten generic modifier templates on top of the current card ("How would you have answered this five years ago?", "What's the strongest argument against your own answer?", "What would someone who knows you well say?"...), a second tap rerolls it, and it never survives the next draw. The set lives in `MODIFIERS` in the app's script, works in both the normal and fullscreen views, is bilingual, and is documented for players in the help drawer under "Play." Deliberately not attached to specific cards — the whole point, per the owner, is that it stays a layer over *any* card rather than more editorial content to maintain per-category.
+No card text changed in this patch. A separate light-content pass was drafted (nine candidate swaps) but **not entered** — card swaps now require the owner's explicit sign-off per slot before anything is written here; see the issue cards raised for review instead of a change log entry.
 
 ## Patch v6.72 — Deep 1 confirmed, World 8 frees up travel for Unwind 7
 **Deep 1** → *"What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?"* Owner confirmed this stands as originally proposed; the referenced flag was never resolved but the owner is proceeding anyway.
