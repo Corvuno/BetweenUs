@@ -50,6 +50,25 @@ Note: because the app is now split across files, `between-us.html` is no longer 
 file you can hand someone to double-click and play offline — you'd need the whole folder,
 or the hosted GitHub Pages link. The **Play** links above are unaffected.
 
+### Building a single-file copy
+
+When you do want one file to hand someone directly:
+
+```
+node scripts/build-single-file.mjs public   # -> dist/between-us.html
+node scripts/build-single-file.mjs work      # -> dist/between-us-work.html
+node scripts/build-single-file.mjs dev        # -> dist/between-us-dev.html
+node scripts/build-single-file.mjs all         # all three
+```
+
+It inlines `styles.css`/`questions.js`/`app.js` into the chosen shell. `dist/` is
+untracked (see `.gitignore`) — the build is disposable, rebuilt on demand, never a copy
+you keep in sync by hand.
+
+Or build it on GitHub without a local checkout: **Actions → "Build single-file version" →
+Run workflow**, pick a profile, then download the `between-us-single-file` artifact from
+the finished run.
+
 ## Questions
 
 The question deck is developed separately from the app, in [`questions/`](questions/), to

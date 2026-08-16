@@ -51,14 +51,14 @@
   </div>
 
   <!-- CATEGORIES -->
-  <div class="cat-area" id="cat-area">
+  <div class="cat-area" id="cat-area" role="dialog" aria-modal="true" aria-label="Categories" tabindex="-1">
     <div class="cat-sheet-handle"></div>
     <button class="cat-close" id="catClose">&#10005;</button>
     <div class="cat-sheet-title">Categories</div>
 
     <div class="cat-tabs" role="tablist">
-      <button class="cat-tab on" id="tabPlay" data-pane="play" role="tab">Shape</button>
-      <button class="cat-tab" id="tabExplore" data-pane="explore" role="tab">Explore</button>
+      <button class="cat-tab on" id="tabPlay" data-pane="play" role="tab" aria-selected="true" aria-controls="panePlay">Shape</button>
+      <button class="cat-tab" id="tabExplore" data-pane="explore" role="tab" aria-selected="false" aria-controls="paneExplore">Explore</button>
     </div>
 
     <!-- legacy controls: kept for existing preset / hard-safe-mode logic to
@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div class="pane pane-play on" id="panePlay">
+    <div class="pane pane-play on" id="panePlay" role="tabpanel" aria-labelledby="tabPlay">
       <div class="play-lead play-lead--first">How far in?</div>
       <div class="dials" id="dials">
         <div class="dial">
@@ -108,7 +108,7 @@
       </div>
     </div>
 
-    <div class="pane pane-explore" id="paneExplore">
+    <div class="pane pane-explore" id="paneExplore" role="tabpanel" aria-labelledby="tabExplore">
       <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
       <div class="allnone-row allnone-row--pane">
         <button class="deselect-btn" id="selectAll">All</button>
@@ -176,7 +176,7 @@
         <button class="card-star" id="cardStar">&#9733;</button>
         <div class="card-body-inner">
           <div class="card-level" id="card-level"></div>
-          <div class="card-question" id="card-question">Draw a card to begin.</div>
+          <div class="card-question" id="card-question" aria-live="polite" aria-atomic="true">Draw a card to begin.</div>
         </div>
         <div class="card-number" id="card-number">&#8212; &#8212; &#8212;</div>
       </div>
@@ -203,7 +203,7 @@
     <div class="nav-row">
       <button class="btn-sq" id="btn-prev">&#8592;</button>
       <button class="btn-draw" id="btn-next">Draw Card</button>
-      <button class="btn-sq" id="btn-menu">&#8801;</button>
+      <button class="btn-sq" id="btn-menu" aria-haspopup="dialog" aria-expanded="false">&#8801;</button>
     </div>
     <div class="screen-row">
       <button class="pick-toggle" id="pickToggle"><svg class="pt-card" viewBox="0 0 16 22" aria-hidden="true"><rect x="1" y="1" width="14" height="20" rx="2" fill="rgba(201,168,76,.14)" stroke="currentColor" stroke-width="1.3"/></svg><span>three</span></button>
@@ -232,24 +232,24 @@
 <div class="overlay" id="overlay"></div>
 
 <!-- MAIN MENU DRAWER -->
-<div class="drawer" id="menuDrawer">
+<div class="drawer" id="menuDrawer" role="dialog" aria-modal="true" aria-label="Menu" tabindex="-1" aria-hidden="true">
   <div class="drawer-handle"><div class="handle-bar"></div></div>
   <div class="drawer-body">
-    <button class="d-item" id="d-cats">
+    <button class="d-item" id="d-cats" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon">&#9636;</div>
       <div class="d-text"><span class="d-label">Categories</span><span class="d-sub">What's on the table</span></div>
     </button>
     <div class="d-divider"></div>
-    <button class="d-item" id="d-help">
+    <button class="d-item" id="d-help" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon">&#9432;</div>
       <div class="d-text"><span class="d-label">How to play</span><span class="d-sub">Ways to play, and how it works</span></div>
     </button>
     <div class="d-divider"></div>
-    <button class="d-item" id="d-log">
+    <button class="d-item" id="d-log" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon">&#128203;</div>
       <div class="d-text"><span class="d-label">Log</span><span class="d-sub">Session history &amp; export</span></div>
     </button>
-    <button class="d-item" id="d-favs">
+    <button class="d-item" id="d-favs" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon">&#9733;</div>
       <div class="d-text"><span class="d-label">Favourites</span><span class="d-sub">Cards you've starred</span></div>
     </button>
@@ -257,7 +257,7 @@
       <div class="d-icon">&#8595;</div>
       <div class="d-text"><span class="d-label" id="saveBtnLabel">Save session</span><span class="d-sub">Resume where you left off</span></div>
     </button>
-    <button class="d-item" id="d-custom">
+    <button class="d-item" id="d-custom" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon">+</div>
       <div class="d-text"><span class="d-label">Custom card</span><span class="d-sub">Add your own question</span></div>
     </button>
@@ -276,7 +276,7 @@
 <!-- Truly fixed to the viewport — must live outside any transformed ancestor (the drawers all use transform) -->
 
 <!-- LOG DRAWER -->
-<div class="sub-drawer" id="logDrawer">
+<div class="sub-drawer" id="logDrawer" role="dialog" aria-modal="true" aria-label="This session" tabindex="-1" aria-hidden="true">
   <button class="drawer-close" id="closeLog">&#10005;</button>
   <div class="drawer-title">This session</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;justify-content:center;">
@@ -288,14 +288,14 @@
 </div>
 
 <!-- FAVOURITES DRAWER -->
-<div class="sub-drawer" id="favsDrawer">
+<div class="sub-drawer" id="favsDrawer" role="dialog" aria-modal="true" aria-label="Favourites" tabindex="-1" aria-hidden="true">
   <button class="drawer-close" id="closeFavs">&#10005;</button>
   <div class="drawer-title">Favourites</div>
   <div id="favsList"><div class="drawer-empty">No favourites yet. Tap &#9733; on a card.</div></div>
 </div>
 
 <!-- CUSTOM CARD DRAWER -->
-<div class="sub-drawer" id="customDrawer">
+<div class="sub-drawer" id="customDrawer" role="dialog" aria-modal="true" aria-label="Add your own card" tabindex="-1" aria-hidden="true">
   <button class="drawer-close" id="closeCustom">&#10005;</button>
   <div class="drawer-title">Add your own card</div>
   <div style="width:100%;max-width:380px;margin:0 auto;">
@@ -345,7 +345,7 @@
 </div>
 
 <!-- HELP DRAWER -->
-<div class="sub-drawer" id="helpDrawer">
+<div class="sub-drawer" id="helpDrawer" role="dialog" aria-modal="true" aria-label="How to play" tabindex="-1" aria-hidden="true">
   <button class="drawer-close" id="closeHelp">&#10005;</button>
   <div class="drawer-title">How to play</div>
   <div class="help-content">

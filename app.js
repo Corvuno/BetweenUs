@@ -17,7 +17,6 @@
 
     // PUBLIC — the copy you hand someone by default.
     public: {
-      CLASSIC_DECK:     false,   // true → original pre-rewrite deck (incl. Failure/Backup)
       MASTER_SAFE:      false,   // true → no adult content anywhere, ever (hard lock)
       WORKPLACE_MODE:   false,   // true → hard lock + starts in Work mode
       DEFAULT_LANGUAGE: "en",    // "en" or "nl"
@@ -37,7 +36,6 @@
 
     // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.
     work: {
-      CLASSIC_DECK:     false,
       MASTER_SAFE:      false,
       WORKPLACE_MODE:   true,
       DEFAULT_LANGUAGE: "nl",
@@ -56,7 +54,6 @@
 
     // EDITOR — development build: spice pre-activated, dev conveniences on.
     editor: {
-      CLASSIC_DECK:     false,
       MASTER_SAFE:      false,
       WORKPLACE_MODE:   false,
       DEFAULT_LANGUAGE: "en",
@@ -416,22 +413,6 @@ function shuffleShapeSVG(mode) {
 }
 
 
-const LEVEL_STYLES = {
-  warm:"level-warm", deep:"level-deep", life:"level-life", home:"level-home",
-  roots:"level-roots", past:"level-past", self:"level-self", body:"level-body", move:"level-move",
-  connect:"level-connect", friends:"level-friends", values:"level-values",
-  world:"level-world", spirit:"level-spirit", mind:"level-mind",
-  culture:"level-culture", unwind:"level-unwind", raw:"level-raw",
-  date:"level-date", attract:"level-attract", flesh:"level-flesh", carnal:"level-carnal",
-  flesh:"level-flesh", kinks:"level-kinks", work:"level-work",
-  backup:"level-deep", family:"level-family", grief:"level-grief",
-  us:"level-us", usfriend:"level-usfriend", uslove:"level-uslove",
-  usintimate:"level-usintimate", shadow:"level-shadow",
-  wish:"level-wish", quick:"level-quick", colbert:"level-colbert",
-  lens:"level-lens", ground:"level-ground",
-  desire:"level-desire", threshold:"level-threshold", failure:"level-failure", bare:"level-bare", abyss:"level-abyss", aron:"level-aron", magic:"level-magic"
-};
-
 const LEVEL_LABELS = {
   warm:"Warm", deep:"Deep", life:"Life", home:"Home",
   roots:"Roots", past:"Past", self:"Self", body:"Body", move:"Move",
@@ -554,10 +535,6 @@ function getFilteredCards() {
     if (effectiveSafe && c.safe === false) return false;
     return true;
   });
-}
-
-function isColbertSolo() {
-  return state.activeToggles.size === 1 && state.activeToggles.has('colbert');
 }
 
 // Sets that play in their canonical order when selected alone
@@ -1423,15 +1400,31 @@ function exitParty() {
 };
 
 // ── Drawer helpers ──
-function openDrawer(id) {
+// btn-menu is the one drawer trigger that's never itself inside a drawer, so
+// it's always a safe, visible place to return focus to when any drawer closes
+// — the sub-drawer triggers (d-log, d-favs, ...) live inside menuDrawer, which
+// is already closed by the time a sub-drawer closes, so focusing them back
+// would land focus inside a hidden dialog.
+const DRAWER_TRIGGER_IDS = ['btn-menu', 'd-log', 'd-favs', 'd-custom', 'd-help'];
+function openDrawer(id, triggerEl) {
   document.getElementById('overlay').classList.add('open');
-  document.getElementById(id).classList.add('open');
+  const el = document.getElementById(id);
+  el.classList.add('open');
+  el.setAttribute('aria-hidden', 'false');
+  if (triggerEl) triggerEl.setAttribute('aria-expanded', 'true');
+  el.focus();
 }
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
   ['menuDrawer','logDrawer','favsDrawer','customDrawer','helpDrawer'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.classList.remove('open');
+    const el=document.getElementById(id);
+    if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
   });
+  DRAWER_TRIGGER_IDS.forEach(id=>{
+    const el=document.getElementById(id); if(el) el.setAttribute('aria-expanded', 'false');
+  });
+  const btnMenu = document.getElementById('btn-menu');
+  if (btnMenu) try { btnMenu.focus(); } catch(e) {}
 }
 
 // ── Language: single switch for toggle row, menu row, and session restore ──
@@ -1460,11 +1453,11 @@ document.getElementById('d-reshuffle').addEventListener('click',()=>{
 });
 
 // ── Menu drawer ──
-document.getElementById('btn-menu').addEventListener('click',()=>openDrawer('menuDrawer'));
+document.getElementById('btn-menu').addEventListener('click',(e)=>openDrawer('menuDrawer', e.currentTarget));
 document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 
 // ── Log ──
-document.getElementById('d-log').addEventListener('click',()=>{ closeAllDrawers(); renderLog(); openDrawer('logDrawer'); });
+document.getElementById('d-log').addEventListener('click',(e)=>{ closeAllDrawers(); renderLog(); openDrawer('logDrawer', e.currentTarget); });
 document.getElementById('closeLog').addEventListener('click',()=>closeAllDrawers());
 document.getElementById('btnExport').addEventListener('click', () => {
   if (!state.sessionLog.length) return;
@@ -1489,7 +1482,7 @@ document.getElementById('btnClearLog').addEventListener('click', () => {
 });
 
 // ── Favourites ──
-document.getElementById('d-favs').addEventListener('click',()=>{ closeAllDrawers(); renderFavourites(); openDrawer('favsDrawer'); });
+document.getElementById('d-favs').addEventListener('click',(e)=>{ closeAllDrawers(); renderFavourites(); openDrawer('favsDrawer', e.currentTarget); });
 document.getElementById('closeFavs').addEventListener('click',()=>closeAllDrawers());
 
 // ── Save / Continue ──
@@ -1563,13 +1556,13 @@ function continueSession() {
 };
 
 // ── Custom cards ──
-document.getElementById('d-custom').addEventListener('click',()=>{ closeAllDrawers(); renderCustomList(); openDrawer('customDrawer'); });
+document.getElementById('d-custom').addEventListener('click',(e)=>{ closeAllDrawers(); renderCustomList(); openDrawer('customDrawer', e.currentTarget); });
 document.getElementById('closeCustom').addEventListener('click',()=>closeAllDrawers());
 document.getElementById('customAddBtn').addEventListener('click',addCustomCard);
 document.getElementById('customText').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addCustomCard();}});
 
 // ── Help ──
-document.getElementById('d-help').addEventListener('click',()=>{ closeAllDrawers(); openDrawer('helpDrawer'); });
+document.getElementById('d-help').addEventListener('click',(e)=>{ closeAllDrawers(); openDrawer('helpDrawer', e.currentTarget); });
 document.getElementById('closeHelp').addEventListener('click',()=>closeAllDrawers());
 
 function updateAfterDarkBtn() {
@@ -1674,7 +1667,14 @@ function updateAfterDarkBtn() {
 // ── Keyboard ──
 document.addEventListener('keydown',e=>{
   if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;   // don't hijack typing
-  if(document.querySelector('[id$="Drawer"].open')) return;               // drawers own the keys
+  if(document.querySelector('[id$="Drawer"].open')){
+    if(e.key==='Escape') closeAllDrawers();
+    return;                                                               // drawers own the keys
+  }
+  if(document.getElementById('cat-area')?.classList.contains('sheet-open')){
+    if(e.key==='Escape' && typeof closeCats==='function') closeCats();
+    return;
+  }
   if(typeof pickMode!=='undefined' && pickMode) return;
   if(state.partyMode){
     if(e.key==='Escape')     exitParty();
@@ -2486,8 +2486,19 @@ applyToggleUI();
     if(!togglesWrap.classList.contains('open')) catLabel.click(); /* keep original state machine in sync */
     catArea.classList.add('sheet-open'); scrim.classList.add('on');
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
+    catArea.removeAttribute('aria-hidden');
+    $('d-cats').setAttribute('aria-expanded', 'true');
+    catArea.focus();
   }
-  function closeCats(){ catArea.classList.remove('sheet-open'); scrim.classList.remove('on'); }
+  function closeCats(){
+    catArea.classList.remove('sheet-open'); scrim.classList.remove('on');
+    catArea.setAttribute('aria-hidden', 'true');
+    $('d-cats').setAttribute('aria-expanded', 'false');
+    // d-cats lives inside menuDrawer, already closed by the time this fires — a
+    // stable, always-visible anchor (same one closeAllDrawers uses) is safer to
+    // refocus than a trigger that may now sit inside a hidden dialog.
+    const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus(); } catch(e) {}
+  }
   window.openCats=openCats; window.closeCats=closeCats;
   openRow.addEventListener('click', openCats);
   $('catClose').addEventListener('click', closeCats);
@@ -2825,6 +2836,8 @@ applyToggleUI();
   function showPane(name){
     $('tabPlay').classList.toggle('on', name === 'play');
     $('tabExplore').classList.toggle('on', name === 'explore');
+    $('tabPlay').setAttribute('aria-selected', String(name === 'play'));
+    $('tabExplore').setAttribute('aria-selected', String(name === 'explore'));
     $('panePlay').classList.toggle('on', name === 'play');
     $('paneExplore').classList.toggle('on', name === 'explore');
     syncIntentUI();   // looking is not choosing — a tab switch never re-deals the hand

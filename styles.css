@@ -33,7 +33,6 @@ body::before{
 .preset-outer.in{opacity:1;}
 .preset-wrap{flex:1;overflow-x:auto;} /* borders removed — buttons float */
 .preset-row{display:inline-flex;min-width:100%;justify-content:center;}
-.no-overflow .preset-row{justify-content:center;}
 .mode-btn{
   flex:0 0 auto;background:transparent;border:none;
   color:rgba(240,232,216,.45);font-family:'Jost',sans-serif;font-size:.62rem;font-weight:300;
@@ -44,7 +43,6 @@ body::before{
 .mode-btn:hover{color:rgba(240,232,216,.9);}
 .mode-btn.active{color:var(--gold);}
 .mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--gold);opacity:.5;}
-.scroll-arrow:hover{color:var(--gold);}
 
 /* ── CATEGORIES ── */
 .cat-area{width:100%;margin-top:8px;opacity:0;transition:opacity .4s .12s ease;}
@@ -498,17 +496,8 @@ body::before{
 .tok:hover .tok-val{color:var(--gold-l);}
 .tok.open .tok-lbl{color:var(--cream);}
 .tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
-.cst-count{color:var(--cream);opacity:.5;margin-left:8px;font-size:.9em;}
-.tok .car{display:none;}
 .tok:hover{opacity:.95;}
 .tok.open{opacity:1;border-bottom-color:rgba(201,168,76,.55);}
-.tok-dot{display:none;}
-/* the ember: pure state, appears only when After Dark / spice is on */
-.tok-glyph{font-size:.78rem;padding:3px 0 2px;border-bottom:none;display:none;pointer-events:none;cursor:default;color:#e8a040;
-  text-shadow:0 0 8px rgba(232,160,64,.5);opacity:.95;}
-.tok-glyph.on{display:inline-block;animation:emberIn .5s ease;}
-@keyframes emberIn{from{opacity:0;transform:scale(.6);}to{opacity:.95;transform:scale(1);}}
-#emberDot{display:none;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
@@ -820,12 +809,6 @@ body::before{
 .pane-explore{flex:1;min-height:0;flex-direction:column;}
 .pane-explore.on{display:flex;}
 
-.draw-all{width:100%;background:none;cursor:pointer;
-  border:1px solid var(--border);border-radius:2px;
-  font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--gold);padding:9px 0;transition:all .2s;margin:2px 0;}
-.draw-all:hover{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.45);}
-
 .play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.22em;
   text-transform:uppercase;color:rgba(240,232,216,.55);opacity:1;padding:14px 0 9px;}
 .play-lead--first{padding-top:6px;}
@@ -873,7 +856,6 @@ body::before{
 .dial-range--foc::-webkit-slider-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
 .dial-range--foc::-moz-range-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
 .dial-range--foc:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(101,201,176,.85);}
-.dial-note{display:none;}   /* dropped: the row it sat in was the app's forced scroll */
 
 /* ── Explore: eight drawers, coloured to trace back to their chapter ── */
 .cat-bucket{display:flex;align-items:stretch;gap:0;flex:0 0 100%;width:100%;
