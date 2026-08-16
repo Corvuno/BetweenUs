@@ -132,7 +132,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
-10. Strip away the job, the roles, the routines — what's left standing?
+10. The headline on your warning label. What does the fine print actually say?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
@@ -506,6 +506,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
 - **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
+- **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.75, owner-approved; collided with Self 8 — both were "what holds you up/what's left when things fall apart")
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -625,10 +626,13 @@ Owner reviewed the nine issue cards raised in v6.73 and approved three, each pic
 The other six issue cards (Quick 11, Warm 9, Culture 9, Self 9, Friendship 6, World 6) are still under discussion — none of those three are settled and none were touched.
 
 **Open, not yet resolved:**
-- Values needs a new power-struggle/authority card for a future slot — owner request, no candidate card or slot chosen yet.
-- Self 9 — owner wants the full list of cards it collides with, plus sharper alternatives; standard-question alternatives already offered weren't strong enough on their own.
-- Culture 9 stays as written (owner defends the art/artist dichotomy). Two of its three proposed alternatives are strong enough to place elsewhere — new "victim" slots to be proposed.
-- World 6 — owner is comparing it against World 3 before deciding; alternatives to be sharpened.
+- Values needs a new power-struggle/authority card. Owner approved the wording — *"Where in your life do you let someone have power over you that you never actually agreed to give them?"* — but no slot chosen yet.
+- Self 9 stays as written (owner: "that's the point of Self, who are you"). Self 8/10 turned out to be the real collision instead — resolved by rewording 10 (see above). Self 9 itself is not up for a swap right now.
+- Culture 9 stays as written (owner defends the art/artist dichotomy). The two light alternatives drafted for it are too art/culture-specific to relocate outside the category — candidate victims elsewhere *within* Culture to be proposed instead.
+- World 6 — owner agrees it overlaps World 3 after seeing both side by side, but the alternatives offered so far "don't feel right." Needs another pass.
+
+## Patch v6.75 — Self 10 reworded to resolve the Self 8/10 collision
+**Self 10** → *"The headline on your warning label. What does the fine print actually say?"* Replaces the strip-away-the-job card, which was close enough to Self 8 ("what held, what did you rebuild") to be the same "what's left standing" mechanism twice in one category. The new card keeps Self's identity register but runs the contradiction lens instead — public reputation vs. private truth.
 
 ## Patch v6.72 — Deep 1 confirmed, World 8 frees up travel for Unwind 7
 **Deep 1** → *"What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?"* Owner confirmed this stands as originally proposed; the referenced flag was never resolved but the owner is proceeding anyway.
