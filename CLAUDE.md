@@ -26,3 +26,10 @@ picking (or rewriting) one of the alternatives for that specific slot.
 
 This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
 only the deck's own card content.
+
+## Always cite cards in full
+
+Whenever a card is mentioned for any reason — a proposal, a collision, an example — cite
+it as `Category, number, "question text"`, every time, not just category+number and not
+just the text. The owner has no lookup table and isn't expected to build one; the full
+citation is what makes a reply readable without cross-referencing the deck file.
