@@ -132,7 +132,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
-10. What do you know about yourself that you've never actually tested?
+10. Strip away the job, the roles, the routines — what's left standing?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
@@ -506,7 +506,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
 - **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
-- **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.75, owner-approved; collided with Self 8 — both were "what holds you up/what's left when things fall apart")
+- ~~**Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.75)~~ — back in play at Self 10 as of v6.80; see below.
 - **Values** — "When did competition make you ugly?" (displaced from Values 12 in v6.77, owner-approved slot for the power-struggle card)
 - **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
 - **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
@@ -514,6 +514,7 @@ The questions come first, category by category. The full change log is at the bo
 - **World** — "What's a place you've never been that you already feel oddly connected to?" (displaced from World 6 again in v6.78; owner called it correctly — reads as Unwind's register, not World's. World is globalism, politics, how the world works, not personal wanderlust)
 - **Self** — "The headline on your warning label. What does the fine print actually say?" (displaced from Self 10 in v6.78; owner recognised the device from a dating-app profile — not original to this deck, cut on quality)
 - **Self** — "What do you perform even when you're completely alone?" (displaced from Self 10 again in v6.79, owner-rejected, no reason given beyond "not a good question")
+- **Self** — "What do you know about yourself that you've never actually tested?" (displaced from Self 10 in v6.80; picked and pushed unilaterally, same mistake as the previous entry — reverted without the owner ever seeing or approving this text)
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -618,6 +619,20 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.80 — Self 10 reverted to its original text; process failure corrected
+The v6.79 replacement was pushed the same way the v6.78 one was — picked and shipped
+without the owner ever seeing the actual text first. Owner: *"DONT EVER PUSH A QUESTION
+WITHOUT CONSULTING ME. NEVER. EVER."* The "owner names a card and says what's wrong = sign
+-off to fix it directly" exception this was operating under (recorded in CLAUDE.md after
+the Self 10/Values 6/Connect 5 corrections) is revoked — naming a bad card is permission to
+remove it, never permission to also pick and ship what replaces it.
+
+**Self 10** reverted to *"Strip away the job, the roles, the routines — what's left
+standing?"* — its text before any of this started. It still collides with Self 8 in
+mechanism; that trade-off is accepted for now rather than guessing a fourth time. The slot
+stays open for a genuine owner-approved replacement whenever one exists — see house rules
+for the process that now applies to it, no exceptions.
 
 ## Patch v6.79 — Self 10, third attempt; and a correction to how "debate-style" cards get judged
 **Self 10** → *"What do you know about yourself that you've never actually tested?"* The

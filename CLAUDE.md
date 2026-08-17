@@ -34,13 +34,16 @@ One issue card per proposed change, three alternatives each — never pick a sin
 winner yourself. Only write a swap into the deck files after the owner has replied
 picking (or rewriting) one of the alternatives for that specific slot.
 
-**Exception — when the owner names a specific card and says what's wrong with it, that
-*is* the sign-off.** "Fix it," or pointing at a card and explaining why it doesn't work
-(borrowed from somewhere else, wrong register for the category, whatever), means fix that
-card directly and commit — don't turn it back into an issue card with three alternatives.
-The issue-card format is for proposals *I'm* raising unprompted; it's not the required
-shape for the owner's own corrections. General requests ("add more light") still don't
-count as sign-off on any specific card — that distinction is unchanged.
+**NEVER PUSH A QUESTION WITHOUT CONSULTING THE OWNER FIRST. NEVER.** There used to be an
+exception here for when the owner names a specific card and says what's wrong with it —
+that exception is revoked. It was used to justify picking replacement text unilaterally
+and shipping it, twice in a row, on the same slot, without the owner ever having seen the
+actual words before they went live. The owner naming a bad card and saying so is
+permission to remove it — it is not permission to also pick what replaces it. Even then,
+show the proposed replacement text and get it approved before it's written into
+`questions.js` or the deck file. No exception, no "this one's obviously fine," no
+"they'll probably like this one." Every single card, every single time, the owner sees
+the exact final words before they're pushed.
 
 This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
 only the deck's own card content.
