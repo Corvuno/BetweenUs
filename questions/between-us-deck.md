@@ -132,7 +132,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
-10. Strip away the job, the roles, the routines — what's left standing?
+10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
@@ -506,7 +506,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
 - **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
-- ~~**Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.75)~~ — back in play at Self 10 as of v6.80; see below.
+- **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.81, owner-approved exact text; back on the bench for good this time)
 - **Values** — "When did competition make you ugly?" (displaced from Values 12 in v6.77, owner-approved slot for the power-struggle card)
 - **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
 - **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
@@ -619,6 +619,16 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.81 — Self 10, owner's own wording, resolved for good
+**Self 10** → *"What's a part of your character you hope never changes — even if it makes
+life just a bit harder?"* Owner's exact text, given verbatim rather than picked from
+alternatives. Resolves the Self 8/10 collision open since v6.75 — this asks what you'd
+protect in your own character, a different mechanism from Self 8's "what held you up
+during a collapse." Deliberately keeps a turn in the text ("even if it makes life just a
+bit harder") rather than the fully clause-free version drafted first — the owner's call,
+after weighing that Twist can already add a turn to any card on demand, and choosing to
+keep one written into this specific card anyway.
 
 ## Patch v6.80 — Self 10 reverted to its original text; process failure corrected
 The v6.79 replacement was pushed the same way the v6.78 one was — picked and shipped

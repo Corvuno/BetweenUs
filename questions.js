@@ -146,7 +146,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "What's something you used to associate with being \"old\" that you now just call Tuesday?", nl: "Wat associeerde je vroeger met 'oud zijn', maar noem je nu gewoon een dinsdag?" },
   { level: "self", question: "There was a time you completely lost your footing. What held — and what did you rebuild first after?", nl: "Er was een tijd dat je de grond onder je voeten verloor. Wat hield je overeind — en wat bouwde je daarna als eerste weer op?" },
   { level: "self", question: "What have you had to accept that you never chose?", nl: "Wat heb je moeten accepteren wat je nooit gekozen hebt?" },
-  { level: "self", question: "Strip away the job, the roles, the routines — what's left standing?", nl: "Zonder functie, status of prestaties. Wie blijft er over?" },
+  { level: "self", question: "What's a part of your character you hope never changes — even if it makes life just a bit harder?", nl: "Welk deel van jouw karakter hoop je dat nooit verandert — zelfs als dat het leven een beetje moeilijker maakt?" },
   { level: "self", question: "What's something true about you that took far too long to notice?", nl: "Wat is iets waars over jezelf dat je veel te lang niet doorhad?" },
   { level: "self", question: "What holds you up that isn't a person?" },
 
