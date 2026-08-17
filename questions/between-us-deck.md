@@ -42,10 +42,10 @@ The questions come first, category by category. The full change log is at the bo
 1. Which piece of art still does something to you, every time?
 2. Something universally loved leaves you completely cold...
 3. What's a piece of clothing that changes how you carry yourself the second you put it on?
-4. When did you last change your mind about something you'd dismissed on sight?
+4. What's something you used to think was sophisticated that now makes you laugh?
 5. What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?
 6. Do you use music to feel more, or to feel less?
-7. Is taste something you have or something you build?
+7. What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?
 8. What's something you appreciate far more now that you understand how it actually works?
 9. Does great art excuse a terrible artist?
 10. When did beauty catch you completely unprepared?
@@ -248,7 +248,7 @@ The questions come first, category by category. The full change log is at the bo
 9. What are the outer limits of your compassion?
 10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
-12. When did competition make you ugly?
+12. Where in your life do you let someone have power over you that you never actually agreed to give them?
 
 ## World
 1. What's something the next generation will judge this one harshly for?
@@ -256,7 +256,7 @@ The questions come first, category by category. The full change log is at the bo
 3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
-6. Which room first taught you that class exists?
+6. What's a place you've never been that you already feel oddly connected to?
 7. Do people actually change — or just get better at managing what doesn't?
 8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
 9. Is there something happening in the world that genuinely worries you?
@@ -507,6 +507,10 @@ The questions come first, category by category. The full change log is at the bo
 - **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
 - **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.75, owner-approved; collided with Self 8 — both were "what holds you up/what's left when things fall apart")
+- **Values** — "When did competition make you ugly?" (displaced from Values 12 in v6.77, owner-approved slot for the power-struggle card)
+- **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
+- **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
+- **World** — "Which room first taught you that class exists?" (displaced from World 6 in v6.77, owner-approved; overlapped World 3's fairness/privilege ground)
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -612,6 +616,18 @@ Four real answers to four cards in this deck. The test a card design lives or di
 
 # Change log
 
+## Patch v6.77 — Values' power-struggle card, both Culture victims, and a fresh World 6
+Four owner-approved swaps, closing out the last of the open issue cards from the v6.73
+light pass:
+- **Values 12** → *"Where in your life do you let someone have power over you that you never actually agreed to give them?"* Replaces the competition/ugliness card. Owner picked slot 12, not the 3 originally proposed — restores the power/authority ground Values lost when 6 changed in v6.74.
+- **Culture 4** → *"What's something you used to think was sophisticated that now makes you laugh?"* Replaces the changed-your-mind card.
+- **Culture 7** → *"What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?"* Replaces the taste-you-have-or-build card.
+- **World 6** → *"What's a place you've never been that you already feel oddly connected to?"* Replaces the class-awareness card, resolving the overlap with World 3 flagged in v6.75. Owner declined the three alternatives offered there and asked for a genuinely fun, wonder-at-scale question instead — "the world is big, vast and interesting, there's more to ask here" — rather than another angle on fairness or privilege.
+
+An automated audit of `between-us-deck.md` against the `NEWDECK_CARDS` array in the app
+confirmed all 34 categories, 408 cards, matched exactly before this patch — no drift
+between the deck source and the app.
+
 ## Patch v6.76 — Twist redesigned: relocated, recoloured, cut from ten modifiers to four
 The v6.73 shape of Twist — a pill on the card face, ten modifiers, coloured to match the
 category — didn't survive contact with the owner. Three separate problems, fixed together:
@@ -661,11 +677,7 @@ Owner reviewed the nine issue cards raised in v6.73 and approved three, each pic
 
 The other six issue cards (Quick 11, Warm 9, Culture 9, Self 9, Friendship 6, World 6) are still under discussion — none of those three are settled and none were touched.
 
-**Open, not yet resolved:**
-- Values needs a new power-struggle/authority card. Owner approved the wording — *"Where in your life do you let someone have power over you that you never actually agreed to give them?"* — but no slot chosen yet.
-- Self 9 stays as written (owner: "that's the point of Self, who are you"). Self 8/10 turned out to be the real collision instead — resolved by rewording 10 (see above). Self 9 itself is not up for a swap right now.
-- Culture 9 stays as written (owner defends the art/artist dichotomy). The two light alternatives drafted for it are too art/culture-specific to relocate outside the category — candidate victims elsewhere *within* Culture to be proposed instead.
-- World 6 — owner agrees it overlaps World 3 after seeing both side by side, but the alternatives offered so far "don't feel right." Needs another pass.
+**Resolved in v6.77** (see below): Values' power-struggle card, both Culture victims, and World 6. **Settled, no further action:** Self 9 stays as written (owner: "that's the point of Self, who are you").
 
 ## Patch v6.75 — Self 10 reworded to resolve the Self 8/10 collision
 **Self 10** → *"The headline on your warning label. What does the fine print actually say?"* Replaces the strip-away-the-job card, which was close enough to Self 8 ("what held, what did you rebuild") to be the same "what's left standing" mechanism twice in one category. The new card keeps Self's identity register but runs the contradiction lens instead — public reputation vs. private truth.
