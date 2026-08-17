@@ -161,7 +161,7 @@ body::before{
    which category is showing, so it never borrows the category accent.
    Never survives a new card; flipToCard resets it every draw. */
 .card-number.twist{
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.68rem;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.8rem;line-height:1.4;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
