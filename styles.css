@@ -138,7 +138,7 @@ body::before{
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:4px;transition:opacity .2s;
 }
 .card-star:hover{opacity:.65;}.card-star.active{opacity:1;}
-.card-body-inner{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
+.card-body-inner{flex:1;min-height:0;overflow:hidden;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
 .card-level{font-family:'Jost',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;opacity:0;transition:color .5s ease,opacity .35s ease;}
 .card-level.in{opacity:.95;}
 .card-question{
@@ -148,9 +148,9 @@ body::before{
 }
 .card-question.in{opacity:1;transform:none;}
 .card-number{
-  position:absolute;bottom:11px;left:0;right:0;text-align:center;
+  flex:0 0 auto;width:100%;text-align:center;
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.18em;color:var(--muted);opacity:.65;
-  transition:color .2s ease;padding:0 20px;
+  transition:color .2s ease;padding:0 28px 12px;
 }
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
@@ -159,12 +159,17 @@ body::before{
    swaps to the modifier instead, in the same spot, same size family, no new
    element anywhere. Default palette only — this has nothing to do with
    which category is showing, so it never borrows the category accent.
-   Never survives a new card; flipToCard resets it every draw. */
+   Never survives a new card; flipToCard resets it every draw.
+   In-flow (not position:absolute) like .party-number, so a long modifier
+   sentence pushes the question's flex area to make room instead of
+   floating over it or the card's corner marks — see .card-body-inner's
+   min-height:0, which is what lets it actually shrink. */
 .card-number.twist{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.8rem;line-height:1.4;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
+.twist-trigger.disabled,.party-twist.disabled{opacity:.32;pointer-events:none;}
 /* card flip animation */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
