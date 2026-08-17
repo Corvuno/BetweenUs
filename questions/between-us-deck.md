@@ -132,7 +132,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
-10. What do you perform even when you're completely alone?
+10. What do you know about yourself that you've never actually tested?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
@@ -513,6 +513,7 @@ The questions come first, category by category. The full change log is at the bo
 - **World** — "Which room first taught you that class exists?" (displaced from World 6 in v6.77, owner-approved; overlapped World 3's fairness/privilege ground)
 - **World** — "What's a place you've never been that you already feel oddly connected to?" (displaced from World 6 again in v6.78; owner called it correctly — reads as Unwind's register, not World's. World is globalism, politics, how the world works, not personal wanderlust)
 - **Self** — "The headline on your warning label. What does the fine print actually say?" (displaced from Self 10 in v6.78; owner recognised the device from a dating-app profile — not original to this deck, cut on quality)
+- **Self** — "What do you perform even when you're completely alone?" (displaced from Self 10 again in v6.79, owner-rejected, no reason given beyond "not a good question")
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -617,6 +618,24 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.79 — Self 10, third attempt; and a correction to how "debate-style" cards get judged
+**Self 10** → *"What do you know about yourself that you've never actually tested?"* The
+contradiction-lens replacement from v6.78 was rejected too — no reason given beyond "not a
+good question." Third attempt at the same slot, still resolving the original Self 8/10
+collision (Self 8 already owns "what held you up when things fell apart"): this one asks
+about an untested self-belief instead, a different mechanism from both the warning-label
+device and the performed-self card.
+
+**Also recorded, not a card change:** open, position-inviting questions that read like a
+debate ("is a maker connected to their art or not," "what relationship rule do you question
+more than you admit") are not a flaw to be edited out. The owner: *"debating is cool, it
+lets people take a position, a well constructed open question does more than a thousand
+specific ones... they are there to change the monotone feeling of questions."* Romance 6
+was proposed as a light-pass swap on exactly this reasoning and is withdrawn — the category
+identity this deck runs (see house style, Culture 9) deliberately includes cards that ask
+for a position, not only cards that ask for a story. Future light-pass proposals won't cite
+"reads like a debate" as a reason for change on its own.
 
 ## Patch v6.78 — World 6 corrected again; Self 10 cut for being a borrowed device
 Two immediate corrections to v6.77/v6.75, both owner-driven, both entered directly rather

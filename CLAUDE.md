@@ -45,6 +45,18 @@ count as sign-off on any specific card — that distinction is unchanged.
 This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
 only the deck's own card content.
 
+## Open, position-inviting questions are not a flaw
+
+Don't cite "reads like a debate" or "asks for a position instead of a story" as a reason to
+flag a card. The owner has said explicitly that these are a deliberate, valued card type in
+this deck — *"debating is cool, it lets people take a position, a well constructed open
+question does more than a thousand specific ones"* — there to break up the monotone feel of
+a deck that's otherwise all personal-anecdote prompts. Culture 9 (the art/artist dichotomy)
+and Romance 6 (which relationship rule you question) are examples the owner has explicitly
+defended on this basis. Judge these cards on the same tests as any other — is it interesting,
+is it distinctive, does it duplicate another card — not on whether it invites a position
+rather than a story.
+
 ## No dating-profile questions
 
 If a candidate card reads like something off a dating-app prompt list ("what's your
