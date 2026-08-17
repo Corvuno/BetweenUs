@@ -42,10 +42,10 @@ The questions come first, category by category. The full change log is at the bo
 1. Which piece of art still does something to you, every time?
 2. Something universally loved leaves you completely cold...
 3. What's a piece of clothing that changes how you carry yourself the second you put it on?
-4. When did you last change your mind about something you'd dismissed on sight?
+4. What's something you used to think was sophisticated that now makes you laugh?
 5. What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?
 6. Do you use music to feel more, or to feel less?
-7. Is taste something you have or something you build?
+7. What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?
 8. What's something you appreciate far more now that you understand how it actually works?
 9. Does great art excuse a terrible artist?
 10. When did beauty catch you completely unprepared?
@@ -60,7 +60,7 @@ The questions come first, category by category. The full change log is at the bo
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. What's something you're doing right now without knowing if it'll actually work out?
-8. What are you putting off that you know you'll regret?
+8. What's a rule you've quietly made for yourself that nobody else knows about?
 9. What does getting older take from you that you didn't expect, and what does it give?
 10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
 11. What's different about your life this year?
@@ -132,7 +132,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
-10. Strip away the job, the roles, the routines — what's left standing?
+10. What do you perform even when you're completely alone?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
@@ -185,7 +185,7 @@ The questions come first, category by category. The full change log is at the bo
 2. When did being needed stop feeling good?
 3. Who taught you the most about how to be close to someone?
 4. Do you wait to make the first move, even when you're the one missing them?
-5. How can someone tell you're withdrawing before you've said a word?
+5. Who do you let interrupt you without ever getting annoyed?
 6. What do you do when you feel misunderstood — and does it work?
 7. Are you listening, or waiting for your turn?
 8. Have you ever worried about someone's relationship with a substance — or had someone worry about yours?
@@ -242,13 +242,13 @@ The questions come first, category by category. The full change log is at the bo
 3. If you had to guess, what percentage of your life is choice, and what percentage is circumstance?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
-6. Who gets authority over you faster than you'd like?
+6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
 7. When did you stay silent and shouldn't have?
 8. What does money let you avoid — a conversation, a choice, a person?
 9. What are the outer limits of your compassion?
 10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
-12. When did competition make you ugly?
+12. Where in your life do you let someone have power over you that you never actually agreed to give them?
 
 ## World
 1. What's something the next generation will judge this one harshly for?
@@ -256,7 +256,7 @@ The questions come first, category by category. The full change log is at the bo
 3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
-6. Which room first taught you that class exists?
+6. What's something you wish people understood about your culture?
 7. Do people actually change — or just get better at managing what doesn't?
 8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
 9. Is there something happening in the world that genuinely worries you?
@@ -503,6 +503,16 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
+- **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
+- **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
+- **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.75, owner-approved; collided with Self 8 — both were "what holds you up/what's left when things fall apart")
+- **Values** — "When did competition make you ugly?" (displaced from Values 12 in v6.77, owner-approved slot for the power-struggle card)
+- **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
+- **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
+- **World** — "Which room first taught you that class exists?" (displaced from World 6 in v6.77, owner-approved; overlapped World 3's fairness/privilege ground)
+- **World** — "What's a place you've never been that you already feel oddly connected to?" (displaced from World 6 again in v6.78; owner called it correctly — reads as Unwind's register, not World's. World is globalism, politics, how the world works, not personal wanderlust)
+- **Self** — "The headline on your warning label. What does the fine print actually say?" (displaced from Self 10 in v6.78; owner recognised the device from a dating-app profile — not original to this deck, cut on quality)
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -607,6 +617,89 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.78 — World 6 corrected again; Self 10 cut for being a borrowed device
+Two immediate corrections to v6.77/v6.75, both owner-driven, both entered directly rather
+than raised as issue cards — a standing change to how this process runs: when the owner
+names a specific card and what's wrong with it, that's the sign-off for that card; it gets
+fixed, not re-proposed with alternatives.
+
+**World 6** → *"What's something you wish people understood about your culture?"* The
+wonder-at-scale pick from v6.77 was too personal-wanderlust — closer to Unwind's register
+than World's. World runs globalism, politics, how the world actually works; this asks for
+that directly, through identity and misunderstanding rather than debate.
+
+**Self 10** → *"What do you perform even when you're completely alone?"* The warning-label
+card from v6.75 turned out to be a device the owner had seen on a dating-app profile, not
+original to this deck. Replaced with a genuinely fresh contradiction-lens card — the
+performed self persisting even with no audience — keeping the register the collision-fix
+was chasing without borrowing the format.
+
+## Patch v6.77 — Values' power-struggle card, both Culture victims, and a fresh World 6
+Four owner-approved swaps, closing out the last of the open issue cards from the v6.73
+light pass:
+- **Values 12** → *"Where in your life do you let someone have power over you that you never actually agreed to give them?"* Replaces the competition/ugliness card. Owner picked slot 12, not the 3 originally proposed — restores the power/authority ground Values lost when 6 changed in v6.74.
+- **Culture 4** → *"What's something you used to think was sophisticated that now makes you laugh?"* Replaces the changed-your-mind card.
+- **Culture 7** → *"What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?"* Replaces the taste-you-have-or-build card.
+- **World 6** → *"What's a place you've never been that you already feel oddly connected to?"* Replaces the class-awareness card, resolving the overlap with World 3 flagged in v6.75. Owner declined the three alternatives offered there and asked for a genuinely fun, wonder-at-scale question instead — "the world is big, vast and interesting, there's more to ask here" — rather than another angle on fairness or privilege.
+
+An automated audit of `between-us-deck.md` against the `NEWDECK_CARDS` array in the app
+confirmed all 34 categories, 408 cards, matched exactly before this patch — no drift
+between the deck source and the app.
+
+## Patch v6.76 — Twist redesigned: relocated, recoloured, cut from ten modifiers to four
+The v6.73 shape of Twist — a pill on the card face, ten modifiers, coloured to match the
+category — didn't survive contact with the owner. Three separate problems, fixed together:
+
+**Placement.** The on-card pill read as clutter on a card that's otherwise fully composed —
+a rounded, foreign shape sitting in the middle of a rectilinear, hairline-bordered system,
+and long modifier text could overflow the card's fixed height and paint over the counter
+underneath it. Twist no longer touches the card face's layout at all: the trigger now lives
+in the control row under Draw Card, in the slot the inline language switch used to occupy
+(language was fully redundant with the menu's own switch, so the inline copy was removed
+entirely rather than duplicated). Tapping it swaps the card's own "1 / 5" count to the lens
+text, in place — no new element, nothing added, same treatment in fullscreen with a matching
+control in the party header.
+
+**Colour.** The active state borrowed the category's accent colour, which was conceptually
+backwards — the accent marks *which category*, and Twist has nothing to do with that; it's
+the same four lenses regardless of what's showing. It now uses the app's default gold/cream
+palette only, same as the rest of the app's chrome.
+
+**The modifiers themselves.** Cut from ten to four. Six failed one of two tests once actually
+named: a lens has to work the instant the card opens, before anyone has answered — "what's
+the strongest argument against your own answer," "does your behaviour agree with that
+answer," "what part of your answer surprised you," and "what would the opposite answer say"
+all presuppose an answer that doesn't exist yet at that point, and the last of those is also
+an abstract argument-move rather than a story lens (three of the ten were also just straight
+duplicates of another one: five-years-ago/ten-years-ago, and the two "outside view" cards).
+Two further candidates were drafted and cut before shipping: a "blurted, unfiltered"
+first-instinct lens (rejected — this deck asks for considered answers, not reflexes) and a
+"the scene, not the summary" lens (rejected as redundant — a well-written card already
+anchors on the pivot by house rule, no modifier needed to make it do that twice). What
+shipped:
+- How would you have answered this five years ago?
+- What do you suspect you'll answer differently five years from now?
+- What would someone close to you notice about this before you do?
+- What would you say if there were no consequences at all?
+
+## Patch v6.73 — Twist shipped as an app-layer mechanic; no cards touched
+Owner feedback asked for the deck's own modifier idea (comparing an answer against an earlier self, arguing the other side, guessing what someone close to you would say) to live as a mechanic layered on top of any card by the app itself, not as bespoke wording written into individual cards. Shipped as **Twist**: a small always-available control under whichever question is showing. A tap lays one of ten generic modifier templates on top of the current card ("How would you have answered this five years ago?", "What's the strongest argument against your own answer?", "What would someone who knows you well say?"...), a second tap rerolls it, and it never survives the next draw. The set lives in `MODIFIERS` in the app's script, works in both the normal and fullscreen views, is bilingual, and is documented for players in the help drawer under "Play." Deliberately not attached to specific cards — the whole point is that it stays a layer over *any* card rather than more editorial content to maintain per category.
+
+No card text changed in this patch. A separate light-content pass was drafted (nine candidate swaps) but **not entered** — card swaps now require the owner's explicit sign-off per slot before anything is written here; see the issue cards raised for review instead of a change log entry.
+
+## Patch v6.74 — three owner-approved swaps from the light-pass issue cards
+Owner reviewed the nine issue cards raised in v6.73 and approved three, each picking a specific alternative rather than a card of ours:
+- **Life 8** → *"What's a rule you've quietly made for yourself that nobody else knows about?"* Replaces the regret/procrastination card — same "ordinary life" territory, without the guilt trigger.
+- **Connect 5** → *"Who do you let interrupt you without ever getting annoyed?"* Replaces the withdrawing card, which blurred with Connect 6.
+- **Values 6** → *"What's something you pretend to have a strong opinion about, but actually don't care about at all?"* Replaces the authority card. Owner notes Values now needs a fresh card for the power-struggle/authority ground this one leaves empty — see open issue below.
+
+The other six issue cards (Quick 11, Warm 9, Culture 9, Self 9, Friendship 6, World 6) are still under discussion — none of those three are settled and none were touched.
+
+**Resolved in v6.77** (see below): Values' power-struggle card, both Culture victims, and World 6. **Settled, no further action:** Self 9 stays as written (owner: "that's the point of Self, who are you").
+
+## Patch v6.75 — Self 10 reworded to resolve the Self 8/10 collision
+**Self 10** → *"The headline on your warning label. What does the fine print actually say?"* Replaces the strip-away-the-job card, which was close enough to Self 8 ("what held, what did you rebuild") to be the same "what's left standing" mechanism twice in one category. The new card keeps Self's identity register but runs the contradiction lens instead — public reputation vs. private truth.
 
 ## Patch v6.72 — Deep 1 confirmed, World 8 frees up travel for Unwind 7
 **Deep 1** → *"What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?"* Owner confirmed this stands as originally proposed; the referenced flag was never resolved but the owner is proceeding anyway.

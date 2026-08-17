@@ -435,6 +435,51 @@ const LEVEL_LABELS = {
   desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", bare:"Bare ✦", abyss:"Abyss ✦", aron:"The 36", magic:"Magical"
 };
 
+// ── TWIST — a lens on the card, chosen the moment it's opened, not a
+// follow-up on an answer that doesn't exist yet. Four modifiers, each one
+// changing who's telling the story or what it costs to tell it — never a
+// request to critique or reverse an answer already given, and never an
+// abstract argument-for/against move (this deck is stories, not positions).
+// The trigger lives in the control row (Twist/partyBtnTwist) and in the
+// party header; tapping it doesn't add anything to the card — the counter
+// that's already printed there ("1 / 5") swaps to the modifier in place.
+// Never survives a new card; flipToCard/clearTwist reset it every draw.
+const MODIFIERS = [
+  { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },
+  { en: "What do you suspect you'll answer differently five years from now?", nl: "Wat denk je dat je hier over vijf jaar anders op zou antwoorden?" },
+  { en: "What would someone close to you notice about this before you do?", nl: "Wat zou iemand die dicht bij je staat hieraan merken, voordat jij het zelf doorhebt?" },
+  { en: "What would you say if there were no consequences at all?", nl: "Wat zou je zeggen als er totaal geen gevolgen waren?" },
+];
+let currentTwist = null;
+function pickTwist() {
+  const pool = MODIFIERS.filter(m => m !== currentTwist);
+  return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
+}
+function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
+// Applies (or clears) the twist text on a counter element, leaving it alone
+// entirely when there's nothing to show — the base "x / y" text is written
+// by flipToCard/setCardDisplay/updatePartyDisplay just before this runs.
+function applyTwistToCounter(el) {
+  if (!el) return;
+  if (currentTwist) {
+    el.textContent = state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en;
+    el.classList.add('twist');
+  } else {
+    el.classList.remove('twist');
+  }
+}
+function renderTwist() {
+  applyTwistToCounter(document.getElementById('card-number'));
+  applyTwistToCounter(document.getElementById('party-number'));
+  [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
+    if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
+  });
+}
+function toggleTwist() { currentTwist = pickTwist(); renderTwist(); }
+function clearTwist() { currentTwist = null; renderTwist(); }
+[document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
+  if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
+});
 
 const PRESETS = {
   open: {
@@ -1334,6 +1379,7 @@ function setCardDisplay(card) {
     if (nextBtn)  nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
     // Update party display too
     updatePartyDisplay(null);
+    clearTwist();
     return;
   }
   const color = levelColor(card.level);
@@ -1349,10 +1395,12 @@ function setCardDisplay(card) {
   if (nextBtn) nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
   // Update party display
   updatePartyDisplay(card);
+  renderTwist();   // same modifier, re-rendered in whichever language is now active
 };
 
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 function flipToCard(card) {
+  clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const accent = document.getElementById('c-accent');
@@ -1459,18 +1507,18 @@ function closeAllDrawers() {
   if (btnMenu) try { btnMenu.focus(); } catch(e) {}
 }
 
-// ── Language: single switch for toggle row, menu row, and session restore ──
+// ── Language: single switch, menu row only now — the inline row toggle was
+// removed to make room for the Twist trigger; the menu's own language row
+// (d-lang) was already a full duplicate of it. ──
 function setLang(l, skipRefresh) {
   state.lang = l;
   document.documentElement.lang = l;
   const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
-  const inlineBtn = document.getElementById('btn-lang-inline'); if (inlineBtn) inlineBtn.textContent = l.toUpperCase();
   const sub = document.getElementById('dLangSub');
   if (sub) sub.textContent = l === 'en' ? 'Switch to Nederlands' : 'Schakel naar English';
   if (!skipRefresh) setCardDisplay(state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length ? state.visibleDeck[state.currentIndex] : null);
 }
 document.getElementById('d-lang').addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
-const inlineLangBtn = document.getElementById('btn-lang-inline'); if (inlineLangBtn) inlineLangBtn.addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
 
 // ── Category label toggle ──
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
@@ -1663,6 +1711,7 @@ function updateAfterDarkBtn() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('#partyExit')) return;
+    if (e.target.closest('#partyBtnTwist')) return;
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -1689,6 +1738,7 @@ function updateAfterDarkBtn() {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('#partyExit')) return;
+    if (e.target.closest('#partyBtnTwist')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
