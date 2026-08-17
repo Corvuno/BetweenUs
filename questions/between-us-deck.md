@@ -132,7 +132,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you used to associate with being "old" that you now just call Tuesday?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
-10. The headline on your warning label. What does the fine print actually say?
+10. What do you perform even when you're completely alone?
 11. What's something true about you that took far too long to notice?
 12. What holds you up that isn't a person?
 
@@ -256,7 +256,7 @@ The questions come first, category by category. The full change log is at the bo
 3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
 5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
-6. What's a place you've never been that you already feel oddly connected to?
+6. What's something you wish people understood about your culture?
 7. Do people actually change — or just get better at managing what doesn't?
 8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
 9. Is there something happening in the world that genuinely worries you?
@@ -511,6 +511,8 @@ The questions come first, category by category. The full change log is at the bo
 - **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
 - **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
 - **World** — "Which room first taught you that class exists?" (displaced from World 6 in v6.77, owner-approved; overlapped World 3's fairness/privilege ground)
+- **World** — "What's a place you've never been that you already feel oddly connected to?" (displaced from World 6 again in v6.78; owner called it correctly — reads as Unwind's register, not World's. World is globalism, politics, how the world works, not personal wanderlust)
+- **Self** — "The headline on your warning label. What does the fine print actually say?" (displaced from Self 10 in v6.78; owner recognised the device from a dating-app profile — not original to this deck, cut on quality)
 - **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
@@ -615,6 +617,23 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.78 — World 6 corrected again; Self 10 cut for being a borrowed device
+Two immediate corrections to v6.77/v6.75, both owner-driven, both entered directly rather
+than raised as issue cards — a standing change to how this process runs: when the owner
+names a specific card and what's wrong with it, that's the sign-off for that card; it gets
+fixed, not re-proposed with alternatives.
+
+**World 6** → *"What's something you wish people understood about your culture?"* The
+wonder-at-scale pick from v6.77 was too personal-wanderlust — closer to Unwind's register
+than World's. World runs globalism, politics, how the world actually works; this asks for
+that directly, through identity and misunderstanding rather than debate.
+
+**Self 10** → *"What do you perform even when you're completely alone?"* The warning-label
+card from v6.75 turned out to be a device the owner had seen on a dating-app profile, not
+original to this deck. Replaced with a genuinely fresh contradiction-lens card — the
+performed self persisting even with no audience — keeping the register the collision-fix
+was chasing without borrowing the format.
 
 ## Patch v6.77 — Values' power-struggle card, both Culture victims, and a fresh World 6
 Four owner-approved swaps, closing out the last of the open issue cards from the v6.73
