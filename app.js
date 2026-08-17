@@ -548,6 +548,7 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 const state = {
   activeToggles: new Set(),
   activePreset: '',       // tracks current preset so we avoid DOM queries
+  pickerOpen: false,      // tracks the pick-3 picker so nextCard() avoids a DOM query
   safeMode: false,
   spiceMode: false,
   randomMode: window.DEFAULT_SHUFFLE || 'wild',
@@ -863,6 +864,23 @@ function translateQ(card) {
 }
 
 // ── CARD DISPLAY ──────────────────────────────────────────────────────────────
+// Shared by every "we've reached the end of this hand" case (out of fresh
+// cards, all skipped, ...): swap the card face for an end message on the same
+// 175ms beat flipToCard() uses, so different endings don't each reinvent the
+// same DOM sequence with their own copy of the timing.
+function renderEndMessage(html) {
+  const el = document.getElementById('card');
+  el.classList.add('flipping');
+  setTimeout(() => {
+    document.getElementById('card-level').className   = 'card-level';
+    document.getElementById('card-level').textContent = '';
+    document.getElementById('card-question').innerHTML = html;
+    document.getElementById('card-number').textContent = '— end —';
+    el.classList.remove('flipping');
+    updateDrawMore();
+  }, 175);
+}
+
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
@@ -872,23 +890,14 @@ function _nextCardBase() {
     updateStarUI();
     if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();
   } else {
-    const remaining = state.fullDeck.filter(c => c && !state.skippedCards.has(c.question)).length - state.visibleDeck.length;
-    const el = document.getElementById('card');
-    el.classList.add('flipping');
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    setTimeout(() => {
-      document.getElementById('card-level').className   = 'card-level';
-      document.getElementById('card-level').textContent = '';
-      const _fresh = (()=>{const sn=new Set(state.sessionLog.map(c=>c.question));return state.fullDeck.filter(c=>!sn.has(c.question)).length;})();
-      document.getElementById('card-question').innerHTML = _fresh > 0
-        ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${_fresh} ${state.lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(_fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
-        : `<span style="font-size:1rem;color:var(--muted)">${state.lang==='nl'
-            ? `Dat was dit hele deck — alle ${state.visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
-            : `That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
-      document.getElementById('card-number').textContent = '— end —';
-      el.classList.remove('flipping');
-      updateDrawMore();
-    }, 175);
+    const fresh = (()=>{const sn=new Set(state.sessionLog.map(c=>c.question));return state.fullDeck.filter(c=>!sn.has(c.question)).length;})();
+    const html = fresh > 0
+      ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${fresh} ${state.lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
+      : `<span style="font-size:1rem;color:var(--muted)">${state.lang==='nl'
+          ? `Dat was dit hele deck — alle ${state.visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
+          : `That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
+    renderEndMessage(html);
   }
 }
 // nextCard is defined below (APP SHELL section) — it wraps _nextCardBase with
@@ -1913,17 +1922,7 @@ function skipCard() {
     // Show next card (or skipped-all state)
     if (state.visibleDeck.length === 0) {
       state.currentIndex = state.visibleDeck.length; // sentinel: past end
-      const el = document.getElementById('card');
-      el.classList.add('flipping');
-      setTimeout(() => {
-        document.getElementById('card-level').className = 'card-level';
-        document.getElementById('card-level').textContent = '';
-        document.getElementById('card-question').innerHTML =
-          `<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`;
-        document.getElementById('card-number').textContent = '— end —';
-        el.classList.remove('flipping');
-        updateDrawMore();
-      }, 175);
+      renderEndMessage(`<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`);
     } else {
       if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
       flipToCard(state.visibleDeck[state.currentIndex]);
@@ -2107,65 +2106,78 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 // ═══════════════════════════════════════════════════════════
 // nextCard — advances the deck and runs post-advance hooks (party/session summary)
 // ═══════════════════════════════════════════════════════════
-function nextCard() {
-  if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) { initDeck(); _nextCardBase(); return; }  // all skipped: reshuffle straight into a card
-  if (state.visibleDeck.length === 0) { _nextCardBase(); return; }
-  // Guard: already past end (sentinel) — tap offers new round
+// Pure: given the current state (plus the hold-gate flag, which is state too,
+// just not on the `state` object), decide what a "next" press should do. No
+// DOM reads, no DOM writes, no side effects — so this decision can be
+// reasoned about (or tested) on its own, separately from executing it.
+function decideNextCardAction() {
+  if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) return { type: 'reshuffle' };  // all skipped: reshuffle straight into a card
+  if (state.visibleDeck.length === 0) return { type: 'advance', wasAtEnd: false };  // _nextCardBase() no-ops safely on an empty deck
+
+  // Already past end (sentinel) — a tap offers a new round, but only once a
+  // completed hold has cleared it: the end of a draw is a deliberate stop,
+  // so tapping through a session can never rush past the summary unseen.
   if (state.currentIndex >= state.visibleDeck.length) {
-    /* The end of a draw is a deliberate stop: only a completed hold moves on,
-       so tapping through a session can never rush past the summary unseen. */
-    if (!window._endHoldOK) { _nudgeEndHold(); return; }
-    window._endHoldOK = false;
-    initDeck();
-    _nextCardBase();   /* deal straight into the next hand — no blank card */
-    return;
+    if (!window._endHoldOK) return { type: 'blocked' };
+    return { type: 'reshuffle', consumeHold: true };
   }
 
-  // 2. Pick-3 intercept (works in fullscreen too)
-  {
-    const picker = document.getElementById(state.partyMode ? 'partyPicker' : 'cardPicker');
-    if (picker && picker.classList.contains('open')) return;
-    if (pickMode) {
-      const startIdx = state.currentIndex + 1;
-      if (startIdx < state.visibleDeck.length) {
-        const count = Math.min(3, state.visibleDeck.length - startIdx);
-        if (count >= 2) { openPicker(state.visibleDeck.slice(startIdx, startIdx + count)); return; }
+  if (state.pickerOpen) return { type: 'noop' };  // pick-3 intercept (works in fullscreen too)
+  if (pickMode) {
+    const startIdx = state.currentIndex + 1;
+    if (startIdx < state.visibleDeck.length) {
+      const count = Math.min(3, state.visibleDeck.length - startIdx);
+      if (count >= 2) return { type: 'pick3', startIdx, count };
+    }
+  }
+
+  return { type: 'advance', wasAtEnd: state.currentIndex >= state.visibleDeck.length - 1 };
+}
+
+// Everything below is the execution side: run the DOM/side-effect step the
+// decision calls for. nextCard() itself is now just a dispatcher.
+function runPartySummary() {
+  const isArc = state.randomMode === 'arc';
+  const pl = document.getElementById('party-level');
+  const pq = document.getElementById('party-question');
+  const pn = document.getElementById('party-number');
+  const pa = document.getElementById('party-accent');
+  if (pa) pa.style.background = 'var(--gold-l)';
+  if (pl) { pl.textContent = isArc ? (state.lang==='nl'?'Arc voltooid':'Arc complete') : (state.lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
+  if (pn) pn.textContent = '— end —';
+  if (pq) {
+    const seen2 = new Set(), cats2 = [];
+    state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
+    const arcHtml = cats2.map(l =>
+      `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
+    ).join('<span style="opacity:.35"> · </span>');
+    pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(state.visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
+  }
+}
+
+function nextCard() {
+  const action = decideNextCardAction();
+  switch (action.type) {
+    case 'blocked':
+      _nudgeEndHold();
+      return;
+    case 'noop':
+      return;
+    case 'reshuffle':
+      if (action.consumeHold) window._endHoldOK = false;
+      initDeck();
+      _nextCardBase();   /* deal straight into the next hand — no blank card */
+      return;
+    case 'pick3':
+      openPicker(state.visibleDeck.slice(action.startIdx, action.startIdx + action.count));
+      return;
+    case 'advance':
+      _nextCardBase();
+      if (action.wasAtEnd) {
+        if (state.partyMode) setTimeout(runPartySummary, 250);
+        else                 setTimeout(showSessionSummary, 500);
       }
-    }
-  }
-
-  // 3. Was at end before advancing?
-  const wasAtEnd = state.currentIndex >= state.visibleDeck.length - 1;
-
-  // 4. Advance
-  _nextCardBase();
-
-  // 5. Post-advance hooks
-  if (wasAtEnd) {
-    if (state.partyMode) {
-      // Party summary
-      setTimeout(() => {
-        const isArc = state.randomMode === 'arc';
-        const pl = document.getElementById('party-level');
-        const pq = document.getElementById('party-question');
-        const pn = document.getElementById('party-number');
-        const pa = document.getElementById('party-accent');
-        if (pa) pa.style.background = 'var(--gold-l)';
-        if (pl) { pl.textContent = isArc ? (state.lang==='nl'?'Arc voltooid':'Arc complete') : (state.lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
-        if (pn) pn.textContent = '— end —';
-        if (pq) {
-          const seen2 = new Set(), cats2 = [];
-          state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
-          const arcHtml = cats2.map(l =>
-            `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
-          ).join('<span style="opacity:.35"> · </span>');
-          pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(state.visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
-        }
-      }, 250);
-    } else {
-      // Normal mode session summary
-      setTimeout(showSessionSummary, 500);
-    }
+      return;
   }
 }
 
@@ -2399,12 +2411,14 @@ function openPicker(options) {
   });
 
   picker.classList.add('open');
+  state.pickerOpen = true;
 }
 
 function closePicker() {
   ['cardPicker','partyPicker'].forEach(id=>{
     const p=document.getElementById(id); if(p) p.classList.remove('open');
   });
+  state.pickerOpen = false;
 }
 
 function choosePick(chosen, allOptions) {
