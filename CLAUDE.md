@@ -45,6 +45,14 @@ count as sign-off on any specific card — that distinction is unchanged.
 This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
 only the deck's own card content.
 
+## No dating-profile questions
+
+If a candidate card reads like something off a dating-app prompt list ("what's your
+warning label," "what's your red flag," "three words that describe you") — a device
+borrowed from somewhere else rather than written for this deck — it's disqualified before
+any other test runs, regardless of how well it otherwise scores on light/surprising/story.
+Screen for this before proposing a card, not after the owner catches it.
+
 ## Always cite cards in full
 
 Whenever a card is mentioned for any reason — a proposal, a collision, an example — cite
