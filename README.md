@@ -8,8 +8,8 @@ handful of plain HTML/CSS/JS files, opened directly.
 | Play | File | Build profile | Purpose |
 |---|---|---|---|
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html) | `between-us.html` | `public` | **Main version.** What you hand someone by default. |
-| [▶ Play](https://corvuno.github.io/BetweenUs/between-us-work.html) | `between-us-work.html` | `work` | Workplace-safe version — Dutch, no adult content reachable. Redirects to `between-us.html?profile=work`. |
-| [▶ Play](https://corvuno.github.io/BetweenUs/between-us-dev.html) | `between-us-dev.html` | `editor` | Development build — everything on by default, dev conveniences on. Redirects to `between-us.html?profile=editor`. |
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=work) | `between-us-work.html` | `work` | Workplace-safe version — Dutch, no adult content reachable. Redirects to `between-us.html?profile=work`. |
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=editor) | `between-us-dev.html` | `editor` | Development build — everything on by default, dev conveniences on. Redirects to `between-us.html?profile=editor`. |
 
 The **Play** links open the live game on GitHub Pages. (Clicking a filename on GitHub shows
 the source instead — that's why plain filename links don't launch it.)
