@@ -1,14 +1,20 @@
 (function () {
   // ╔══════════════════════════════════════════════════════════════════════╗
   // ║  BUILD PROFILE                                                         ║
-  // ║  Which version this is comes from the ONE line near the top of each    ║
-  // ║  shell file (between-us.html / -work.html / -dev.html): it sets        ║
-  // ║  window.BUILD_PROFILE before this shared app.js loads. The URL you     ║
-  // ║  hand out then always opens exactly that version — nobody has to       ║
-  // ║  pick anything. Everything else below is derived from the profile.     ║
+  // ║  There's one shell (between-us.html) for every version — which one      ║
+  // ║  this is comes from ?profile= in the URL (public/work/editor), so       ║
+  // ║  the URL you hand out still always opens exactly that version with      ║
+  // ║  nobody picking anything. window.BUILD_PROFILE is a fallback for the    ║
+  // ║  offline single-file build (scripts/build-single-file.mjs), which has   ║
+  // ║  no URL to read and bakes the profile in as a script tag instead.       ║
+  // ║  Everything else below is derived from the profile.                     ║
   // ╚══════════════════════════════════════════════════════════════════════╝
+  //
+  // NOTE: the work profile's adult-content lock relies on the profile being
+  // trusted input. Anyone can edit ?profile= in the address bar to switch
+  // away from it — this is a courtesy default, not a security boundary.
 
-  const BUILD_PROFILE = window.BUILD_PROFILE || "public";   // "public" · "work" · "editor"
+  const BUILD_PROFILE = new URLSearchParams(location.search).get('profile') || window.BUILD_PROFILE || "public";   // "public" · "work" · "editor"
 
   // ── PROFILE DEFINITIONS ──────────────────────────────────────────────────
   // Shared, identical in every build. Fine-tune a version by editing its block

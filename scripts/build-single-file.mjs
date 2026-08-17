@@ -5,6 +5,11 @@
 // the source of truth; this script's output is disposable and untracked
 // (see dist/ in .gitignore), rebuilt on demand rather than kept in sync.
 //
+// There's one real shell (between-us.html) for every profile — normally the
+// profile comes from ?profile= in the URL, but an offline file has no URL to
+// read, so this script bakes it in as a small inline script instead (app.js
+// falls back to window.BUILD_PROFILE when there's no query string).
+//
 // Usage:
 //   node scripts/build-single-file.mjs public          # -> dist/between-us.html
 //   node scripts/build-single-file.mjs work             # -> dist/between-us-work.html
@@ -18,34 +23,39 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-const SHELLS = {
-  public: 'between-us.html',
-  work: 'between-us-work.html',
-  dev: 'between-us-dev.html',
+// CLI name -> [output filename, internal PROFILES key in app.js]
+const PROFILES = {
+  public: ['between-us.html', 'public'],
+  work: ['between-us-work.html', 'work'],
+  dev: ['between-us-dev.html', 'editor'],
 };
 
 function buildOne(profile) {
-  const shellFile = SHELLS[profile];
-  const shellPath = path.join(ROOT, shellFile);
+  const [outFile, profileKey] = PROFILES[profile];
+  const shellPath = path.join(ROOT, 'between-us.html'); // the one real shell
   let html = readFileSync(shellPath, 'utf8');
 
   const css = readFileSync(path.join(ROOT, 'styles.css'), 'utf8');
   const questions = readFileSync(path.join(ROOT, 'questions.js'), 'utf8');
   const app = readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 
+  const headMarker = '<head>';
+  if (!html.includes(headMarker)) throw new Error('between-us.html: <head> not found — shell markup changed?');
+  html = html.replace(headMarker, `<head>\n<script>window.BUILD_PROFILE = ${JSON.stringify(profileKey)};</script>`);
+
   const linkTag = '<link rel="stylesheet" href="styles.css">';
-  if (!html.includes(linkTag)) throw new Error(`${shellFile}: stylesheet link not found — shell markup changed?`);
+  if (!html.includes(linkTag)) throw new Error('between-us.html: stylesheet link not found — shell markup changed?');
   html = html.replace(linkTag, `<style>\n${css}\n</style>`);
 
   const scriptTags = '<script src="questions.js"></script>\n<script src="app.js"></script>';
-  if (!html.includes(scriptTags)) throw new Error(`${shellFile}: script tags not found — shell markup changed?`);
+  if (!html.includes(scriptTags)) throw new Error('between-us.html: script tags not found — shell markup changed?');
   html = html.replace(scriptTags, `<script>\n${questions}\n</script>\n<script>\n${app}\n</script>`);
 
   const outDir = path.join(ROOT, 'dist');
   mkdirSync(outDir, { recursive: true });
-  const outPath = path.join(outDir, shellFile);
+  const outPath = path.join(outDir, outFile);
   writeFileSync(outPath, html);
-  console.log(`built dist/${shellFile}  (${(html.length / 1024).toFixed(0)} KB, single file)`);
+  console.log(`built dist/${outFile}  (${(html.length / 1024).toFixed(0)} KB, single file, profile=${profileKey})`);
 }
 
 const arg = process.argv[2];
@@ -54,5 +64,5 @@ if (!arg || !['public', 'work', 'dev', 'all'].includes(arg)) {
   process.exit(1);
 }
 
-if (arg === 'all') Object.keys(SHELLS).forEach(buildOne);
+if (arg === 'all') Object.keys(PROFILES).forEach(buildOne);
 else buildOne(arg);
