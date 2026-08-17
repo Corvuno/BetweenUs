@@ -134,7 +134,7 @@ The questions come first, category by category. The full change log is at the bo
 9. What have you had to accept that you never chose?
 10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
 11. What's something true about you that took far too long to notice?
-12. What holds you up that isn't a person?
+12. What's a strength of yours that most people still miss — including, until recently, you?
 
 ## Body
 1. When did your body surprise you with what it could do?
@@ -507,6 +507,7 @@ The questions come first, category by category. The full change log is at the bo
 - **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
 - **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.81, owner-approved exact text; back on the bench for good this time)
+- **Self** — "What holds you up that isn't a person?" (displaced from Self 12 in v6.82, owner-approved; category needed a positive-register card here more than this one)
 - **Values** — "When did competition make you ugly?" (displaced from Values 12 in v6.77, owner-approved slot for the power-struggle card)
 - **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
 - **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
@@ -619,6 +620,15 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.82 — Self 12, a positive-register card, combined from two owner-picked alternatives
+**Self 12** → *"What's a strength of yours that most people still miss — including, until
+recently, you?"* Replaces "What holds you up that isn't a person?" Owner asked for the
+category's positive side (where Self is *well*, not just where it cracks) and, of three
+alternatives offered, picked two — "a quiet strength most people miss" and "something that's
+only recently clicked into place" — and asked for them combined. This is that combination:
+the strength was invisible to other people *and* to the person themselves until recently,
+which is the turn the owner specifically wanted preserved.
 
 ## Patch v6.81 — Self 10, owner's own wording, resolved for good
 **Self 10** → *"What's a part of your character you hope never changes — even if it makes

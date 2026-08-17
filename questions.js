@@ -148,7 +148,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "What have you had to accept that you never chose?", nl: "Wat heb je moeten accepteren wat je nooit gekozen hebt?" },
   { level: "self", question: "What's a part of your character you hope never changes — even if it makes life just a bit harder?", nl: "Welk deel van jouw karakter hoop je dat nooit verandert — zelfs als dat het leven een beetje moeilijker maakt?" },
   { level: "self", question: "What's something true about you that took far too long to notice?", nl: "Wat is iets waars over jezelf dat je veel te lang niet doorhad?" },
-  { level: "self", question: "What holds you up that isn't a person?" },
+  { level: "self", question: "What's a strength of yours that most people still miss — including, until recently, you?", nl: "Welke kracht van jou zien de meeste mensen nog over het hoofd — inclusief, tot voor kort, jijzelf?" },
 
   // ─── BODY ───
   { level: "body", question: "When did your body surprise you with what it could do?", nl: "Wanneer verraste je lichaam je met wat het kon?" },
