@@ -475,7 +475,9 @@ function renderTwist() {
     if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
   });
 }
-function toggleTwist() { currentTwist = pickTwist(); renderTwist(); }
+// atEnd() is defined further down (function declarations hoist), but this
+// only ever runs from a click, well after the whole script has evaluated.
+function toggleTwist() { if (atEnd()) return; currentTwist = pickTwist(); renderTwist(); }
 function clearTwist() { currentTwist = null; renderTwist(); }
 [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
   if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
@@ -1865,6 +1867,12 @@ function updateDrawMore() {
   const remaining = state.fullDeck.length - state.visibleDeck.length;
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
   const atLastCard = state.visibleDeck.length > 0 && state.currentIndex === state.visibleDeck.length - 1; // last card of the hand
+
+  // Twist is a lens on a drawn card — nothing to twist on the summary screen.
+  [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
+    if (btn) btn.classList.toggle('disabled', atSummary);
+  });
+
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
@@ -2011,6 +2019,10 @@ function showSessionSummary() {
     }
   }
 
+  // A Twist held over from the last card doesn't belong on the summary —
+  // clear it before writing "— end —" so it can't get overwritten back to
+  // a modifier sentence, and so the button itself stops reading as active.
+  clearTwist();
   const numEl = document.getElementById('card-number');
   if (numEl) numEl.textContent = '— end —';
 
