@@ -152,7 +152,7 @@ const NEWDECK_CARDS = [
 
   // ─── BODY ───
   { level: "body", question: "When did your body surprise you with what it could do?", nl: "Wanneer verraste je lichaam je met wat het kon?" },
-  { level: "body", question: "When does your body feel like it belongs to you?", nl: "Wanneer voelt je lichaam alsof het van jou is?" },
+  { level: "body", question: "When did you last trust your body completely — what were you doing?", nl: "Wanneer vertrouwde je voor het laatst volledig op je lichaam — wat was je aan het doen?" },
   { level: "body", question: "When did you last move purely for the joy of it — no goal, no fitness?", nl: "Wanneer bewoog je voor het laatst puur voor het plezier — geen doel, geen work-out?" },
   { level: "body", question: "What music reaches your body before it reaches your head — and what happens?", nl: "Welke muziek bereikt je lichaam eerder dan je hoofd — en wat gebeurt er dan?" },
   { level: "body", question: "Point to where you carry your tension right now." },
@@ -171,7 +171,7 @@ const NEWDECK_CARDS = [
   { level: "mind", question: "When has a gut feeling known more than you did?", nl: "Wanneer wist een onderbuikgevoel meer dan jij?" },
   { level: "mind", question: "Silence, no phone, nothing to do — how long before you actually start enjoying it?", nl: "Stilte, geen telefoon, niets te doen — hoe lang duurt het voor je dat echt begint te genieten?" },
   { level: "mind", question: "What does your inner voice sound like — and whose is it?", nl: "Hoe klinkt je innerlijke stem — en van wie is die?" },
-  { level: "mind", question: "Which of your opinions is just something you heard once?", nl: "Welke van jouw meningen heb je eigenlijk ooit ergens opgepikt?" },
+  { level: "mind", question: "What's the most useful thing you've ever unlearned?", nl: "Wat is het nuttigste dat je jezelf ooit hebt afgeleerd?" },
   { level: "mind", question: "What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?", nl: "Wat is het laatste dat je irriteerde waarvan je je een beetje zou schamen dat het je irriteerde?" },
   { level: "mind", question: "What's the earliest thing you remember — and is it actually yours?", nl: "Wat is je vroegste herinnering — en is die eigenlijk wel van jou?" },
   { level: "mind", question: "What do you keep understanding differently each time you think you've worked it out?", nl: "Wat blijf je telkens anders begrijpen, net als je denkt dat je het eindelijk doorhebt?" },
@@ -200,8 +200,8 @@ const NEWDECK_CARDS = [
   { level: "connect", question: "Do you wait to make the first move, even when you're the one missing them?" },
   { level: "connect", question: "Who do you let interrupt you without ever getting annoyed?", nl: "Wie mag jou altijd onderbreken zonder dat het je ooit irriteert?" },
   { level: "connect", question: "What do you do when you feel misunderstood — and does it work?", nl: "Wat doe je als je je onbegrepen voelt — en werkt dat?" },
-  { level: "connect", question: "Are you listening, or waiting for your turn?", nl: "Luister je echt, of wacht je op je beurt?" },
-  { level: "connect", question: "Have you ever worried about someone's relationship with a substance — or had someone worry about yours?", nl: "Heb je je ooit zorgen gemaakt om iemands relatie met een middel — of maakte iemand zich zorgen om die van jou?" },
+  { level: "connect", question: "Do you tend to over-explain or under-explain — and what does that cost you?", nl: "Leg jij te veel uit, of juist te weinig — en wat kost je dat?" },
+  { level: "connect", question: "What's the one thing someone could do that would make you feel instantly safe with them?", nl: "Wat zou iemand kunnen doen waardoor je je meteen veilig bij diegene voelt?" },
   { level: "connect", question: "Who did you forgive, without ever telling them?", nl: "Iemand die je hebt vergeven zonder het ooit te zeggen..." },
   { level: "connect", question: "Do you apologize first even when you're not sure you're wrong, just to end it?", nl: "Bied jij als eerste je excuses aan, zelfs als je niet zeker weet dat je fout zit, gewoon om het op te lossen?" },
   { level: "connect", question: "When someone cries in front of you, what happens in you?", nl: "Wat gebeurt er met jou als iemand begint te huilen?" },
@@ -226,7 +226,7 @@ const NEWDECK_CARDS = [
   { level: "date", question: "Which pattern do you keep bringing into relationships, invited or not?", nl: "Iets dat je telkens weer meeneemt een relatie in..." },
   { level: "date", question: "How do you end things — and how do you want to be left?", nl: "Hoe maak jij een eind aan een relatie — en hoe wil je zelf verlaten worden?" },
   { level: "date", question: "Previous partners undervalued something you offer in love...", nl: "Iets dat jij in een relatie geeft en lang niet altijd terugkrijgt..." },
-  { level: "date", question: "A flirt of yours gets shot down — describe the next sixty seconds inside you.", nl: "Je laat merken dat je iemand leuk vindt door..." },
+  { level: "date", question: "What has a relationship given you that you didn't know you needed?", nl: "Wat heeft een relatie je gegeven waarvan je niet wist dat je het nodig had?" },
   { level: "date", question: "What relationship rule do you question more than you admit?" },
   { level: "date", question: "Which frightens you more: a relationship costing your freedom, or no relationship at all?", nl: "Wat zou je moeilijker vinden: vastzitten of alleen eindigen?" },
   { level: "date", question: "Have you ever loved two people at the same time — and what did you do about it?" },
@@ -343,7 +343,7 @@ const NEWDECK_CARDS = [
   { level: "family", question: "Your parents are getting old. What is that doing to you?", nl: "Je ouders worden ouder. Wat doet dat met je?" },
   { level: "family", question: "Who became family without being family?" },
   { level: "family", question: "Who in your family knows you best — and do they know that?", nl: "Wie in je familie kent jou het best — en weet diegene dat?" },
-  { level: "family", question: "What role do you play in your family — and is it one you chose?", nl: "Welke rol speel jij in je familie — en heb je die zelf gekozen?" },
+  { level: "family", question: "How much do you choose your family — and how much do you just endure them?", nl: "Hoeveel kies jij je familie eigenlijk — en hoeveel verdraag je ze gewoon?" },
   { level: "family", question: "What kind of parent are you — or would actually be? The honest guess, not the hoped-for one." },
   { level: "family", question: "Did you want children — and has that changed?" },
 
@@ -372,7 +372,7 @@ const NEWDECK_CARDS = [
   { level: "usfriend", question: "What would you trust me with that you'd trust no one else?" },
   { level: "usfriend", question: "When were you proudest of me?" },
   { level: "usfriend", question: "When have I made you laugh hardest?" },
-  { level: "usfriend", question: "If this friendship had a title, what would it be?", nl: "Als deze vriendschap een titel had..." },
+  { level: "usfriend", question: "What's something about our friendship that's shifted — and have we talked about it?", nl: "Wat is er in onze vriendschap verschoven — en hebben we het daar ooit over gehad?" },
   { level: "usfriend", question: "Who would you introduce me to — and why?", nl: "Aan wie zou je mij voorstellen — en waarom?" },
 
   // ─── USLOVE ───
@@ -414,7 +414,7 @@ const NEWDECK_CARDS = [
   { level: "shadow", question: "Has your anger ever frightened someone?", nl: "Wanneer schrok iemand van jouw boosheid?" },
   { level: "shadow", question: "What would make you safeword out of life, if life had one?" },
   { level: "shadow", question: "When did you last choose comfort over integrity?", nl: "Wanneer koos je voor comfort boven je principes?" },
-  { level: "shadow", question: "What are you doing right up until someone walks in?" },
+  { level: "shadow", question: "What do you despise in others that you quietly recognize in yourself?", nl: "Wat verafschuw je in anderen dat je stiekem ook in jezelf herkent?" },
   { level: "shadow", question: "Which apology do you still owe?", nl: "Tegen wie heb jij nog iets goed te maken?" },
 
   // ─── WISH ───
