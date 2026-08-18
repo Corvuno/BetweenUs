@@ -45,12 +45,12 @@ The questions come first, category by category. The full change log is at the bo
 4. What's something you used to think was sophisticated that now makes you laugh?
 5. What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?
 6. Do you use music to feel more, or to feel less?
-7. What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?
+7. How much of who you are is shaped by the creative work you love?
 8. What's something you appreciate far more now that you understand how it actually works?
 9. Does great art excuse a terrible artist — got an example?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
-12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
+12. Is there a creative work you've deliberately not finished, because you don't want it to be over?
 
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
@@ -624,6 +624,25 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.84 — Culture 7 and 12, owner-flagged drift
+Owner flagged that Culture 7 read as off-category: nothing in it referenced art, taste,
+or culture at all, just a generic personal-shame prompt that could sit in almost any
+category. Culture 12 was flagged separately for carrying a "book, show, song" summary
+list that narrowed the card more than it needed to. Both resolved to a shared umbrella
+term, "creative work," picked by the owner over narrower options ("stories," "art") as
+the one word that covers books, film, music, theatre, and visual art without listing
+them out. Two other cards using narrower medium words — **Culture 9** ("great art" /
+"terrible artist") and **Culture 11** ("a story last made you cry") — were considered
+for the same swap and declined: broadening either would blur the specific mechanism the
+card runs on, so both were left as-is.
+
+- **Culture 7** → *"How much of who you are is shaped by the creative work you love?"*
+  Replaces *"What's something about yourself you were embarrassed to admit you liked,
+  before you felt allowed to?"*
+- **Culture 12** → *"Is there a creative work you've deliberately not finished, because
+  you don't want it to be over?"* Replaces *"Is there a piece of culture — book, show,
+  song — you've deliberately not finished, because you don't want it to be over?"*
 
 ## Patch v6.83 — first batch from the "version one" review: four owner-approved swaps
 Owner went through 55 candidate cards surfaced from an earlier version of the app, each

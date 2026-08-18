@@ -59,12 +59,12 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "What's something you used to think was sophisticated that now makes you laugh?", nl: "Wat vond je vroeger stijlvol, en vind je nu vooral lachwekkend?" },
   { level: "culture", question: "What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?", nl: "Naar welke plek, toegankelijk voor iedereen, zou je iemand meenemen als je indruk wilde maken zonder iets te zeggen?" },
   { level: "culture", question: "Do you use music to feel more, or to feel less?", nl: "Zet jij muziek aan om ergens in te verdwijnen, of juist om iets te voelen?" },
-  { level: "culture", question: "What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?", nl: "Wat vond je vroeger gênant om toe te geven dat je het leuk vond, totdat je het jezelf eindelijk toestond?" },
+  { level: "culture", question: "How much of who you are is shaped by the creative work you love?", nl: "Hoeveel van wie je bent is gevormd door het creatieve werk waar je van houdt?" },
   { level: "culture", question: "What's something you appreciate far more now that you understand how it actually works?", nl: "Wat waardeer je veel meer nu je begrijpt hoe het echt werkt?" },
   { level: "culture", question: "Does great art excuse a terrible artist — got an example?", nl: "Pleit grote kunst een slecht mens vrij — heb je een voorbeeld?" },
   { level: "culture", question: "When did beauty catch you completely unprepared?" },
   { level: "culture", question: "Take us to the moment a story last made you cry." },
-  { level: "culture", question: "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?", nl: "Is er iets — een boek, serie, nummer — dat je expres niet hebt afgemaakt, omdat je niet wilt dat het voorbij is?" },
+  { level: "culture", question: "Is there a creative work you've deliberately not finished, because you don't want it to be over?", nl: "Is er een creatief werk dat je expres niet hebt afgemaakt, omdat je niet wilt dat het voorbij is?" },
 
   // ─── LIFE ───
   { level: "life", question: "Walk me through your first thirty minutes after waking — the real version.", nl: "Je ochtend begint meestal met..." },
