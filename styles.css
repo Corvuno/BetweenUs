@@ -110,11 +110,19 @@ body::before{
 /* ── CARD ── */
 .card-wrap{width:100%;margin-top:10px;opacity:0;transform:translateY(10px);transition:opacity .55s .05s ease,transform .55s .05s ease;}
 .card-wrap.in{opacity:1;transform:none;}
-.card-area{width:100%;aspect-ratio:12/7;position:relative;}
+/* .card-area used to force a fixed height via aspect-ratio, and .card
+   (position:absolute;inset:0) just filled it exactly — so a card whose
+   question + Twist text needed more room than that fixed height had
+   nowhere to go: overflow:hidden anywhere in the chain clipped it,
+   overflow:visible let it overlap. Making .card itself the ratio'd box
+   (in normal flow, no inset:0) lets the browser treat aspect-ratio as a
+   *default* height that a flex column still grows past when its content
+   needs more — .card-area, an unstyled wrapper, just follows along. */
+.card-area{width:100%;position:relative;}
 .card{
-  position:absolute;inset:0;background:var(--card-bg);border:1px solid var(--border);
+  position:relative;width:100%;aspect-ratio:12/7;background:var(--card-bg);border:1px solid var(--border);
   box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);
-  display:flex;flex-direction:column;align-items:center;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;
   cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;
   -webkit-touch-callout:none;touch-action:manipulation;
 }
@@ -148,9 +156,9 @@ body::before{
 }
 .card-question.in{opacity:1;transform:none;}
 .card-number{
-  position:absolute;bottom:11px;left:0;right:0;text-align:center;
+  flex:0 0 auto;width:100%;text-align:center;
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.18em;color:var(--muted);opacity:.65;
-  transition:color .2s ease;padding:0 20px;
+  transition:color .2s ease;padding:0 28px 12px;
 }
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
@@ -159,12 +167,17 @@ body::before{
    swaps to the modifier instead, in the same spot, same size family, no new
    element anywhere. Default palette only — this has nothing to do with
    which category is showing, so it never borrows the category accent.
-   Never survives a new card; flipToCard resets it every draw. */
+   Never survives a new card; flipToCard resets it every draw.
+   In-flow (not position:absolute) like .party-number, so a long modifier
+   sentence pushes the question's flex area to make room instead of
+   floating over it or the card's corner marks — see .card-body-inner's
+   min-height:0, which is what lets it actually shrink. */
 .card-number.twist{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.8rem;line-height:1.4;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
+.twist-trigger.disabled,.party-twist.disabled{opacity:.32;pointer-events:none;}
 /* card flip animation */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
@@ -766,7 +779,7 @@ body::before{
   .order-list .smp-row{padding:12px 16px;}
   .session-btn{font-size:.64rem;padding:9px 18px;}
   .help-content p{font-size:1.15rem;}
-  .card-area{aspect-ratio:3/2;}
+  .card{aspect-ratio:3/2;}
   .card-question{font-size:2.1rem;line-height:1.42;}
   .card-body-inner{padding:30px 64px 20px;}
   .title{font-size:2.4rem;}
@@ -786,7 +799,7 @@ body::before{
 /* short desktop windows: keep everything on one screen */
 @media(min-width:768px) and (max-height:820px){
   .app{max-width:820px;}
-  .card-area{aspect-ratio:2/1;}
+  .card{aspect-ratio:2/1;}
   .card-question{font-size:1.8rem;}
 }
 

@@ -48,14 +48,17 @@ function buildOne(profile) {
   if (!html.includes(headMarker)) throw new Error('between-us.html: <head> not found — shell markup changed?');
   html = html.replace(headMarker, `<head>\n<script>window.BUILD_PROFILE = ${JSON.stringify(profileKey)};</script>`);
 
-  const linkTag = '<link rel="stylesheet" href="styles.css">';
-  if (!html.includes(linkTag)) throw new Error('between-us.html: stylesheet link not found — shell markup changed?');
-  html = html.replace(linkTag, `<style>\n${css}\n</style>`);
+  // Matches the cache-busting ?v=... query string (see the comment above the
+  // link/script tags in between-us.html) without needing to know its value.
+  const linkRe = /<link rel="stylesheet" href="styles\.css(?:\?[^"]*)?">/;
+  if (!linkRe.test(html)) throw new Error('between-us.html: stylesheet link not found — shell markup changed?');
+  html = html.replace(linkRe, `<style>\n${css}\n</style>`);
 
-  const scriptTags = '<script src="questions.js"></script>\n' + APP_MODULES.map(name => `<script src="${name}.js"></script>`).join('\n');
-  if (!html.includes(scriptTags)) throw new Error('between-us.html: script tags not found — shell markup changed?');
+  const scriptNames = ['questions', ...APP_MODULES];
+  const scriptRe = new RegExp(scriptNames.map(name => `<script src="${name}\\.js(?:\\?[^"]*)?"></script>`).join('\\n'));
+  if (!scriptRe.test(html)) throw new Error('between-us.html: script tags not found — shell markup changed?');
   const inlineScripts = [questions, ...appModules].map(src => `<script>\n${src}\n</script>`).join('\n');
-  html = html.replace(scriptTags, inlineScripts);
+  html = html.replace(scriptRe, inlineScripts);
 
   const outDir = path.join(ROOT, 'dist');
   mkdirSync(outDir, { recursive: true });

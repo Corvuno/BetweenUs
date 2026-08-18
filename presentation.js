@@ -525,6 +525,13 @@ function updateDrawMore() {
   const remaining = state.fullDeck.length - state.visibleDeck.length;
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
   const atLastCard = state.visibleDeck.length > 0 && state.currentIndex === state.visibleDeck.length - 1; // last card of the hand
+
+  // Twist is a lens on a drawn card — nothing to twist before the first
+  // draw or on the end-of-round summary.
+  [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
+    if (btn) btn.classList.toggle('disabled', !hasCurrentCard());
+  });
+
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
@@ -611,6 +618,10 @@ function showSessionSummary() {
     }
   }
 
+  // A Twist held over from the last card doesn't belong on the summary —
+  // clear it before writing "— end —" so it can't get overwritten back to
+  // a modifier sentence, and so the button itself stops reading as active.
+  clearTwist();
   const numEl = document.getElementById('card-number');
   if (numEl) numEl.textContent = '— end —';
 
@@ -631,6 +642,9 @@ function showSessionSummary() {
 // thing: explicit state instead of observing what the DOM did as a result of it.
 
 function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
+// True only while a real, drawn card is on screen — false before the
+// first draw (currentIndex -1) and at the end-of-round summary alike.
+function hasCurrentCard(){ return state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length; }
 function hint(on){
   const el = document.getElementById('endHint');
   if (el) el.classList.toggle('visible', !!on);

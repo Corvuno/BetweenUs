@@ -44,7 +44,13 @@ function renderTwist() {
     if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
   });
 }
-function toggleTwist() { currentTwist = pickTwist(); renderTwist(); }
+// Twist is a lens on a drawn card, so it only makes sense while one is
+// actually showing — not before the first draw (currentIndex is -1) and
+// not on the end-of-round summary (currentIndex >= visibleDeck.length).
+// hasCurrentCard() lives in presentation.js, next to atEnd() — safe to call
+// from here since this only ever runs from a click, well after every module
+// has loaded.
+function toggleTwist() { if (!hasCurrentCard()) return; currentTwist = pickTwist(); renderTwist(); }
 function clearTwist() { currentTwist = null; renderTwist(); }
 
 // ── TRANSLATION ───────────────────────────────────────────────────────────────
