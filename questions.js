@@ -174,7 +174,7 @@ const NEWDECK_CARDS = [
   { level: "mind", question: "Which of your opinions is just something you heard once?", nl: "Welke van jouw meningen heb je eigenlijk ooit ergens opgepikt?" },
   { level: "mind", question: "What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?", nl: "Wat is het laatste dat je irriteerde waarvan je je een beetje zou schamen dat het je irriteerde?" },
   { level: "mind", question: "What's the earliest thing you remember — and is it actually yours?", nl: "Wat is je vroegste herinnering — en is die eigenlijk wel van jou?" },
-  { level: "mind", question: "Which question do you keep returning to across the years?", nl: "Welke vraag blijft met je meelopen?" },
+  { level: "mind", question: "What do you keep understanding differently each time you think you've worked it out?", nl: "Wat blijf je telkens anders begrijpen, net als je denkt dat je het eindelijk doorhebt?" },
   { level: "mind", question: "What are you bad at learning?", nl: "Waar ben je slecht in om te leren?" },
   { level: "mind", question: "What are you like at three in the morning?" },
 
@@ -298,7 +298,7 @@ const NEWDECK_CARDS = [
   { level: "deep", question: "Who left your life better than they found it?", nl: "Wie heeft jouw leven beter achtergelaten dan ze het aantroffen?" },
   { level: "deep", question: "What do you need to hear more often than you admit?", nl: "Wat zou je vaker willen horen dan je toegeeft?" },
   { level: "deep", question: "If you could rerun one conversation from your life, which one?", nl: "Als één gesprek terug mocht komen..." },
-  { level: "deep", question: "What skill did you build out of damage control that now feels effortless?" },
+  { level: "deep", question: "What did failing teach you that success couldn't have?", nl: "Wat heeft falen je geleerd dat succes je nooit had kunnen leren?" },
   { level: "deep", question: "What do the people who love you have to look past on your worst week?" },
   { level: "deep", question: "Has anyone ever forgiven you in a way that changed how you treat people now?", nl: "Heeft iemand je ooit vergeven op een manier die veranderde hoe je nu met mensen omgaat?" },
   { level: "deep", question: "Slowly, you're making peace with...", nl: "Waar sluit je langzaam vrede mee?" },
@@ -420,7 +420,7 @@ const NEWDECK_CARDS = [
   // ─── WISH ───
   { level: "wish", question: "The life you almost lived — how close did it come?" },
   { level: "wish", question: "What did you once wish for that you now have?", nl: "Wat wenste je ooit en heb je nu?" },
-  { level: "wish", question: "If I were braver, I would already have...", nl: "Als lef geen rol speelde..." },
+  { level: "wish", question: "What have you been postponing that isn't really about time?", nl: "Wat stel jij uit dat eigenlijk niets met tijd te maken heeft?" },
   { level: "wish", question: "Which longing have you domesticated into a hobby?", nl: "Welke droom heb je klein gemaakt zodat hij beter paste?" },
   { level: "wish", question: "What's the gap between your current life and the one part of you expects?", nl: "Waar botst je huidige leven met wat je ooit verwachtte?" },
   { level: "wish", question: "What have you been quietly rooting for, in your own life?" },

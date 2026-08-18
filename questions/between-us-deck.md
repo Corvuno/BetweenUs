@@ -161,7 +161,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Which of your opinions is just something you heard once?
 8. What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?
 9. What's the earliest thing you remember — and is it actually yours?
-10. Which question do you keep returning to across the years?
+10. What do you keep understanding differently each time you think you've worked it out?
 11. What are you bad at learning?
 12. What are you like at three in the morning?
 
@@ -285,7 +285,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Who left your life better than they found it?
 5. What do you need to hear more often than you admit?
 6. If you could rerun one conversation from your life, which one?
-7. What skill did you build out of damage control that now feels effortless?
+7. What did failing teach you that success couldn't have?
 8. What do the people who love you have to look past on your worst week?
 9. Has anyone ever forgiven you in a way that changed how you treat people now?
 10. Slowly, you're making peace with...
@@ -407,7 +407,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Wish
 1. The life you almost lived — how close did it come?
 2. What did you once wish for that you now have?
-3. If I were braver, I would already have...
+3. What have you been postponing that isn't really about time?
 4. Which longing have you domesticated into a hobby?
 5. What's the gap between your current life and the one part of you expects?
 6. What have you been quietly rooting for, in your own life?
@@ -624,6 +624,39 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.84 — second batch from the "version one" review: three owner-approved swaps
+Continuing the same review. These three came out of a collision pass — each candidate
+had been flagged as overlapping an existing card, and the owner judged the candidate the
+stronger version rather than a true duplicate:
+
+- **Mind 10** → *"What do you keep understanding differently each time you think you've
+  worked it out?"* Replaces "Which question do you keep returning to across the years?",
+  which had also been flagged as heavy/abstract in an earlier pass — the new card resolves
+  both the collision and that older complaint at once.
+- **Deep 7** → *"What did failing teach you that success couldn't have?"* Replaces "What
+  skill did you build out of damage control that now feels effortless?" — the owner's
+  call: the new one is broader.
+- **Wish 3** → *"What have you been postponing that isn't really about time?"* Replaces
+  "If I were braver, I would already have..." — flagged as a possible collision with the
+  new card, but the owner judged them distinct enough that either could stand; picked the
+  new one on preference.
+
+Also from this pass: **Grief, 3, "Who do you still talk to that can no longer answer?"**
+and **Grief, 12, "After they were gone, you had to become..."** were compared against a
+submitted candidate ("What's the hardest goodbye you've ever had to say?") and both judged
+sharper — the candidate is not entered. **Connect, 1, "How do you show someone they matter
+to you — the actual method?"** was compared against two submitted candidates recategorised
+from Raw ("What's the one thing someone could do that would make you feel instantly safe
+with them?" / "What's the most intimate thing someone can do that has nothing to do with
+sex?") and judged the stronger card, though the owner liked both candidates enough that
+they're still in play for other Connect slots. **Deep, 11, "Which conversation do you keep
+having — in different rooms, with different people?"** is flagged as difficult to answer
+in practice — no replacement chosen yet. **Deep, 1** was singled out as the most telling
+card in its category — no change.
+
+Roughly 32 candidates remain from the original 55, still to be ranked and matched to
+slots.
 
 ## Patch v6.83 — first batch from the "version one" review: four owner-approved swaps
 Owner went through 55 candidate cards surfaced from an earlier version of the app, each
