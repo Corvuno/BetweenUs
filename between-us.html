@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260817f">
+<link rel="stylesheet" href="styles.css?v=20260818a">
 </head>
 <body>
 <div class="glow"></div>
@@ -61,8 +61,8 @@
     <div class="cat-sheet-title">Categories</div>
 
     <div class="cat-tabs" role="tablist">
-      <button class="cat-tab on" id="tabPlay" data-pane="play" role="tab" aria-selected="true" aria-controls="panePlay">Shape</button>
-      <button class="cat-tab" id="tabExplore" data-pane="explore" role="tab" aria-selected="false" aria-controls="paneExplore">Explore</button>
+      <button class="cat-tab on" id="tabPlay" data-pane="play" role="tab" aria-selected="true" aria-controls="panePlay">Shape<span class="cat-tab-note">start here</span></button>
+      <button class="cat-tab" id="tabExplore" data-pane="explore" role="tab" aria-selected="false" aria-controls="paneExplore">Explore<span class="cat-tab-note">optional</span></button>
     </div>
 
     <!-- legacy controls: kept for existing preset / hard-safe-mode logic to
@@ -93,8 +93,10 @@
                  aria-label="Who it is about: yourself to the two of you">
         </div>
       </div>
+      <div class="play-note">These two lean the draw &mdash; they never rule anything out on their own.</div>
 
       <div class="play-lead">What kind of evening?</div>
+      <div class="play-note">Pick one or more. Together with the dials above, this decides what gets drawn.</div>
       <div class="chapters" id="chapters">
         <button class="chapter" data-chapter="warmup" style="--ch:#d9a441"><span class="ch-name">Arrive</span><span class="ch-desc">Get comfortable. Start talking.</span></button>
         <button class="chapter" data-chapter="findout" style="--ch:#45a0b8"><span class="ch-name">Beneath the Surface</span><span class="ch-desc">Where curiosity becomes connection.</span></button>
@@ -605,15 +607,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260817f"></script>
-<script src="config.js?v=20260817f"></script>
-<script src="state.js?v=20260817f"></script>
-<script src="deck.js?v=20260817f"></script>
-<script src="card.js?v=20260817f"></script>
-<script src="library.js?v=20260817f"></script>
-<script src="session.js?v=20260817f"></script>
-<script src="selection.js?v=20260817f"></script>
-<script src="presentation.js?v=20260817f"></script>
-<script src="ui.js?v=20260817f"></script>
+<script src="questions.js?v=20260818a"></script>
+<script src="config.js?v=20260818a"></script>
+<script src="state.js?v=20260818a"></script>
+<script src="deck.js?v=20260818a"></script>
+<script src="card.js?v=20260818a"></script>
+<script src="library.js?v=20260818a"></script>
+<script src="session.js?v=20260818a"></script>
+<script src="selection.js?v=20260818a"></script>
+<script src="presentation.js?v=20260818a"></script>
+<script src="ui.js?v=20260818a"></script>
 </body>
 </html>

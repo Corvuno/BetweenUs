@@ -92,7 +92,13 @@ function setCardDisplay(card) {
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
     if (numEl)    numEl.textContent = '— — —';
-    if (nextBtn)  nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
+    if (nextBtn) {
+      nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
+      // nothing's been dealt yet (fresh load, or a settings change just
+      // reset the hand) — make this the obvious "start" tap, not just
+      // another "next" tap.
+      nextBtn.classList.add('btn-draw--start');
+    }
     // Update party display too
     updatePartyDisplay(null);
     clearTwist();
@@ -108,7 +114,10 @@ function setCardDisplay(card) {
   }
   if (qEl)   qEl.textContent = translateQ(card);
   if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
-  if (nextBtn) nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
+  if (nextBtn) {
+    nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    nextBtn.classList.remove('btn-draw--start');
+  }
   // Update party display
   updatePartyDisplay(card);
   renderTwist();   // same modifier, re-rendered in whichever language is now active
@@ -116,15 +125,21 @@ function setCardDisplay(card) {
 
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
-function flipToCard(card) {
+function flipToCard(card, isFirstDraw) {
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
-  const el     = document.getElementById('card');
-  const lvlEl  = document.getElementById('card-level');
-  const accent = document.getElementById('c-accent');
+  const el      = document.getElementById('card');
+  const lvlEl   = document.getElementById('card-level');
+  const accent  = document.getElementById('c-accent');
+  const nextBtn = document.getElementById('btn-next');
+  if (nextBtn) nextBtn.classList.remove('btn-draw--start');
   if (lvlEl) lvlEl.classList.remove('in');
   const qEl = document.getElementById('card-question');
   if (qEl)  qEl.classList.remove('in');
-  el.classList.add('flipping');
+  // the first deal of a hand gets the riffle animation (shows the settings
+  // that were just chosen are actually taking effect); every card after
+  // that gets the plain, quicker flip.
+  const animClass = isFirstDraw ? 'shuffling' : 'flipping';
+  el.classList.add(animClass);
   setTimeout(() => {
     const color = levelColor(card.level);
     if (accent) {
@@ -145,12 +160,12 @@ function flipToCard(card) {
       if (lvlEl) lvlEl.classList.add('in');
       if (qEl2)  qEl2.classList.add('in');
     });
-    el.classList.remove('flipping');
+    el.classList.remove(animClass);
     renderProgress();
     updatePartyDisplay(card);
     // Auto-save on every card
     autoSaveSession();
-  }, 175);
+  }, isFirstDraw ? 480 : 175);   // 480ms matches the .card.shuffling animation-duration in styles.css
 };
 
 // ── Party display sync ──

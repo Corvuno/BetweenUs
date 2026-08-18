@@ -42,7 +42,10 @@
       // what "Draw" plays, and what the app opens on. mode 'chapters' unions the
       // listed chapters; mode 'all' mirrors the All button (everything except
       // the opt-in-only lists and Abyss). intensity/focus are 0-100, 50=balanced.
-      DEFAULT_SELECTION: { mode:'chapters', chapters:['findout','deeper','aboutus'], intensity:50, focus:50 },
+      // "Into the Deep" starts deselected — playtesters found it too daring
+      // to be on by default; people can switch it on themselves once they
+      // know what they're choosing.
+      DEFAULT_SELECTION: { mode:'chapters', chapters:['findout','aboutus'], intensity:50, focus:50 },
     },
 
     // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.

@@ -131,7 +131,9 @@ async function run() {
 
   await check('first tap on the card draws card 1 of the hand', async () => {
     await page.locator('#card').click();
-    await page.waitForTimeout(300);
+    // the first draw of a hand plays the (longer) shuffle animation rather
+    // than the plain 175ms flip — see .card.shuffling in styles.css
+    await page.waitForTimeout(650);
     const { index, total } = await cardParts(page);
     assert(index === 1, `expected card 1, got ${index}`);
     assert(total > 0, 'deck total is 0');
@@ -390,7 +392,9 @@ async function run() {
 
     // Full hold: must advance into a fresh hand.
     await pointerHold(page, '#btn-next', 650);
-    await page.waitForTimeout(200);
+    // a fresh hand's first card plays the shuffle animation, not the plain
+    // 175ms flip — see .card.shuffling in styles.css
+    await page.waitForTimeout(650);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
     assert(!(await page.locator('#endHint').evaluate(el => el.classList.contains('visible'))), 'end-hint stayed visible into the fresh hand');

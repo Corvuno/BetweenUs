@@ -347,8 +347,9 @@ function renderEndMessage(html) {
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
+    const isFirstDraw = state.currentIndex === -1;   // nothing dealt yet this hand — deck.js:225/306
     state.currentIndex++;
-    flipToCard(state.visibleDeck[state.currentIndex]);
+    flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();
     if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();

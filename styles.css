@@ -181,6 +181,27 @@ body::before{
 /* card flip animation */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
+/* the first deal of a hand — plays instead of the plain flip, whether this
+   is the very first card of the session or a fresh hand after the
+   categories/dials/chapters changed. Ghost edges (via box-shadow, no extra
+   DOM) riffle out and settle back, so a settings change visibly *does*
+   something instead of just quietly rebuilding a list. */
+.card.shuffling{animation:cardShuffle .48s cubic-bezier(.4,0,.2,1);}
+.card.shuffling .card-level,.card.shuffling .card-question{opacity:0;transform:translateY(6px);}
+@keyframes cardShuffle{
+  0%{transform:translateY(0) rotate(0deg);
+     box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);}
+  16%{transform:translateY(-3px) rotate(-2.2deg);
+     box-shadow:-7px 4px 0 -3px rgba(0,0,0,.3),7px 7px 0 -4px rgba(0,0,0,.24),0 4px 32px rgba(0,0,0,.44);}
+  34%{transform:translateY(0) rotate(2.4deg);
+     box-shadow:7px 3px 0 -3px rgba(0,0,0,.3),-7px 7px 0 -4px rgba(0,0,0,.24),0 4px 32px rgba(0,0,0,.44);}
+  52%{transform:translateY(-2px) rotate(-1.6deg);
+     box-shadow:-4px 2px 0 -3px rgba(0,0,0,.24),4px 5px 0 -4px rgba(0,0,0,.18),0 4px 32px rgba(0,0,0,.44);}
+  70%{transform:translateY(0) rotate(1deg);}
+  86%{transform:translateY(-1px) rotate(-.4deg);}
+  100%{transform:none;box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);}
+}
+
 /* ── CONTROLS ── */
 .controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
 .controls-wrap.in{opacity:1;transform:none;}
@@ -207,6 +228,15 @@ body::before{
 /* ── LIMIT ── */
 /* draw-mode: btn-next transforms at end of deck */
 .btn-draw.draw-mode,.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
+/* the very first draw of a hand — before any card has been dealt, or right
+   after a settings change reset the deck. A pulsing glow makes this the
+   obvious "start" tap instead of looking like every other "next" tap. */
+.btn-draw--start{padding-top:14px;padding-bottom:14px;font-size:.62rem;letter-spacing:.28em;
+  animation:startPulse 2.4s ease-in-out infinite;}
+@keyframes startPulse{
+  0%,100%{box-shadow:0 0 0 rgba(201,168,76,0);}
+  50%{box-shadow:0 0 20px rgba(201,168,76,.6);}
+}
 /* pressed-and-holding feedback on the end-of-draw button */
 .btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
@@ -508,17 +538,22 @@ body::before{
 .tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:10px 0 2px;
   opacity:0;transform:translateY(-4px);transition:opacity .5s .12s ease,transform .5s .12s ease;}
 .tok-line.in{opacity:1;transform:none;}
-.tok{background:none;border:none;cursor:pointer;font-family:'Jost',sans-serif;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:5px 6px 4px;border-bottom:1px solid transparent;transition:all .2s;white-space:nowrap;}
+/* visible chrome at rest (not just on hover) — a bare label with no border
+   or fill reads as plain text, not a button, until you touch it. The caret
+   is the same "this opens something" cue used everywhere else in the app. */
+.tok{background:rgba(255,255,255,.035);border:1px solid var(--dim);border-radius:7px;cursor:pointer;
+  font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 13px 5px;transition:all .2s;white-space:nowrap;}
 .tok-lbl{font-size:.4rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);opacity:.8;transition:color .2s;}
 .tok-val{font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);transition:color .2s;}
+.tok-val::after{content:'\25BE';display:inline-block;margin-left:5px;font-size:.85em;opacity:.55;transition:transform .2s;}
+.tok:hover{background:rgba(255,255,255,.06);border-color:var(--border);opacity:.95;}
 .tok:hover .tok-lbl{color:var(--cream);}
 .tok:hover .tok-val{color:var(--gold-l);}
 .tok.open .tok-lbl{color:var(--cream);}
 .tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
-.tok:hover{opacity:.95;}
-.tok.open{opacity:1;border-bottom-color:rgba(201,168,76,.55);}
+.tok.open{opacity:1;background:rgba(201,168,76,.09);border-color:rgba(201,168,76,.45);}
+.tok.open .tok-val::after{transform:rotate(180deg);}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
@@ -820,6 +855,11 @@ body::before{
 .cat-tab.on{color:var(--gold);}
 .cat-tab.on::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1px;
   background:var(--gold);opacity:.8;}
+/* "start here" / "optional" — Shape and Explore read as interchangeable
+   until labelled: one is the default path, the other is a side room most
+   people never need to open. */
+.cat-tab-note{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.5rem;letter-spacing:.03em;text-transform:none;opacity:.6;margin-top:2px;}
 
 .pane{display:none;}
 .pane.on{display:block;}
@@ -833,6 +873,10 @@ body::before{
 .play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.22em;
   text-transform:uppercase;color:rgba(240,232,216,.55);opacity:1;padding:14px 0 9px;}
 .play-lead--first{padding-top:6px;}
+/* connects the dials to the chapters below them — playtesters found the
+   combination of the two unclear once they'd found either control */
+.play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.72rem;line-height:1.4;color:var(--muted);opacity:.75;padding:0 10px 6px;}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}
