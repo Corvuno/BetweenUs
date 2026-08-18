@@ -475,9 +475,12 @@ function renderTwist() {
     if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
   });
 }
-// atEnd() is defined further down (function declarations hoist), but this
-// only ever runs from a click, well after the whole script has evaluated.
-function toggleTwist() { if (atEnd()) return; currentTwist = pickTwist(); renderTwist(); }
+// Twist is a lens on a drawn card, so it only makes sense while one is
+// actually showing — not before the first draw (currentIndex is -1) and
+// not on the end-of-round summary (currentIndex >= visibleDeck.length).
+// hasCurrentCard() is defined further down (function declarations hoist),
+// but this only ever runs from a click, well after the script has evaluated.
+function toggleTwist() { if (!hasCurrentCard()) return; currentTwist = pickTwist(); renderTwist(); }
 function clearTwist() { currentTwist = null; renderTwist(); }
 [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
   if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
@@ -1868,9 +1871,10 @@ function updateDrawMore() {
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
   const atLastCard = state.visibleDeck.length > 0 && state.currentIndex === state.visibleDeck.length - 1; // last card of the hand
 
-  // Twist is a lens on a drawn card — nothing to twist on the summary screen.
+  // Twist is a lens on a drawn card — nothing to twist before the first
+  // draw or on the end-of-round summary.
   [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-    if (btn) btn.classList.toggle('disabled', atSummary);
+    if (btn) btn.classList.toggle('disabled', !hasCurrentCard());
   });
 
   const nextBtn = document.getElementById('btn-next');
@@ -2042,6 +2046,9 @@ function showSessionSummary() {
 // that used to watch #card-question's DOM for changes to infer the same
 // thing: explicit state instead of observing what the DOM did as a result of it.
 function atEnd(){ return state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0; }
+// True only while a real, drawn card is on screen — false before the
+// first draw (currentIndex -1) and at the end-of-round summary alike.
+function hasCurrentCard(){ return state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length; }
 function hint(on){
   const el = document.getElementById('endHint');
   if (el) el.classList.toggle('visible', !!on);
