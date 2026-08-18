@@ -1148,6 +1148,16 @@ function loadCustomCards() {
   renderCustomList();
 }
 
+/* Common tail of every custom-card edit: persist, re-render the drawer list,
+   refresh the grid's per-category counts, and reshuffle the deck to reflect
+   the new ALL_CARDS. */
+function persistCustomCards() {
+  try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
+  renderCustomList();
+  if (typeof updateCatCounts === 'function') updateCatCounts();
+  initDeck();
+}
+
 function addCustomCard() {
   const text   = document.getElementById('customText').value.trim();
   const textNl = (document.getElementById('customTextNl')?.value||'').trim();
@@ -1157,22 +1167,16 @@ function addCustomCard() {
   if (textNl) card.nl = textNl;
   state.customCards.push(card);
   ALL_CARDS.push(card);
-  try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
   document.getElementById('customText').value = '';
   if (document.getElementById('customTextNl')) document.getElementById('customTextNl').value = '';
-  renderCustomList();
-  if (typeof updateCatCounts === 'function') updateCatCounts();
-  initDeck();
+  persistCustomCards();
 }
 
 function removeCustomCard(question) {
   state.customCards = state.customCards.filter(c => c.question !== question);
   const idx   = ALL_CARDS.findIndex(c => c.question === question && c.custom);
   if (idx >= 0) ALL_CARDS.splice(idx, 1);
-  try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
-  renderCustomList();
-  if (typeof updateCatCounts === 'function') updateCatCounts();
-  initDeck();
+  persistCustomCards();
 }
 
 function renderCustomList() {
@@ -1593,9 +1597,11 @@ document.getElementById('d-save').addEventListener('click',()=>{
   if (saveMode==='continue') { continueSession(); }
   else { saveSession(); }
 });
-function saveSession() {
-  if (!state.visibleDeck.length) return;
-  const data = {
+/* Snapshot of everything continueSession() needs to rehydrate a session.
+   Pure function of state: reads state, writes nothing. Shared by the manual
+   Save button and the after-every-card autosave so the two never drift. */
+function serializeSession() {
+  return {
     deckQuestions: state.visibleDeck.map(c=>c.question),
     fullDeckQuestions: state.fullDeck.map(c=>c.question),
     position: state.currentIndex, toggles:[...state.activeToggles],
@@ -1604,8 +1610,12 @@ function saveSession() {
     sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
     savedAt: new Date().toISOString(),
   };
+}
+
+function saveSession() {
+  if (!state.visibleDeck.length) return;
   try {
-    localStorage.setItem('bu-session', JSON.stringify(data));
+    localStorage.setItem('bu-session', JSON.stringify(serializeSession()));
     const lbl = document.getElementById('saveBtnLabel');
     if (lbl) { lbl.textContent='Saved ✓'; setTimeout(()=>{ lbl.textContent='Save session'; },2000); }
   } catch(e){}
@@ -2199,16 +2209,7 @@ function nextCard() {
 function autoSaveSession() {
   if (!state.visibleDeck.length) return;
   try {
-    const data = {
-      deckQuestions: state.visibleDeck.map(c=>c.question),
-      fullDeckQuestions: state.fullDeck.map(c=>c.question),
-      position: state.currentIndex, toggles:[...state.activeToggles],
-      safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit, lang: state.lang,
-      activePreset: state.activePreset,
-      sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
-      savedAt: new Date().toISOString(),
-    };
-    localStorage.setItem('bu-session', JSON.stringify(data));
+    localStorage.setItem('bu-session', JSON.stringify(serializeSession()));
   } catch(e) {}
 }
 
