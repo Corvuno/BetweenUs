@@ -61,7 +61,7 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "Do you use music to feel more, or to feel less?", nl: "Zet jij muziek aan om ergens in te verdwijnen, of juist om iets te voelen?" },
   { level: "culture", question: "What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?", nl: "Wat vond je vroeger gênant om toe te geven dat je het leuk vond, totdat je het jezelf eindelijk toestond?" },
   { level: "culture", question: "What's something you appreciate far more now that you understand how it actually works?", nl: "Wat waardeer je veel meer nu je begrijpt hoe het echt werkt?" },
-  { level: "culture", question: "Does great art excuse a terrible artist?", nl: "Pleit grote kunst een slecht mens vrij?" },
+  { level: "culture", question: "Does great art excuse a terrible artist — got an example?", nl: "Pleit grote kunst een slecht mens vrij — heb je een voorbeeld?" },
   { level: "culture", question: "When did beauty catch you completely unprepared?" },
   { level: "culture", question: "Take us to the moment a story last made you cry." },
   { level: "culture", question: "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?", nl: "Is er iets — een boek, serie, nummer — dat je expres niet hebt afgemaakt, omdat je niet wilt dat het voorbij is?" },
@@ -90,7 +90,7 @@ const NEWDECK_CARDS = [
   { level: "home", question: "If I walked into your home right now, what would I find?", nl: "Als ik nu je huis binnenliep, wat zou ik aantreffen?" },
   { level: "home", question: "The view from your kitchen window — what could you look at every day and never tire of?", nl: "Het uitzicht uit je keukenraam waar je nooit op uitgekeken raakt — wat is het?" },
   { level: "home", question: "Your home tells people something about you. What?", nl: "Wat vertelt jouw huis over jou voordat jij iets hebt gezegd?" },
-  { level: "home", question: "Where would you live if nothing was stopping you — and what would you live in?" },
+  { level: "home", question: "What kind of home do you want to live in — and how far is that from where you are now?", nl: "Wat voor huis wil je eigenlijk bewonen — en hoe ver staat dat af van waar je nu woont?" },
   { level: "home", question: "Which house from your life do you still walk through in dreams?", nl: "In welk huis uit je verleden kom je nog steeds terug?" },
   { level: "home", question: "Who have you shared a home with — and what did it teach you?", nl: "Met wie heb je een huis gedeeld — en wat leerde je daarvan?" },
 
@@ -148,7 +148,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "What have you had to accept that you never chose?", nl: "Wat heb je moeten accepteren wat je nooit gekozen hebt?" },
   { level: "self", question: "What's a part of your character you hope never changes — even if it makes life just a bit harder?", nl: "Welk deel van jouw karakter hoop je dat nooit verandert — zelfs als dat het leven een beetje moeilijker maakt?" },
   { level: "self", question: "What's something true about you that took far too long to notice?", nl: "Wat is iets waars over jezelf dat je veel te lang niet doorhad?" },
-  { level: "self", question: "What's a strength of yours that most people still miss — including, until recently, you?", nl: "Welke kracht van jou zien de meeste mensen nog over het hoofd — inclusief, tot voor kort, jijzelf?" },
+  { level: "self", question: "What do you come back to after everything else falls away?", nl: "Waar kom jij op terug, als al het andere wegvalt?" },
 
   // ─── BODY ───
   { level: "body", question: "When did your body surprise you with what it could do?", nl: "Wanneer verraste je lichaam je met wat het kon?" },
@@ -239,7 +239,7 @@ const NEWDECK_CARDS = [
   { level: "attract", question: "Someone walks into the room. What makes you look twice?" },
   { level: "attract", question: "What do you find attractive that you'd never admit on a first date?" },
   { level: "attract", question: "Tell about turning someone down — and admit whether you liked being asked." },
-  { level: "attract", question: "You tell yourself you have a type. Who do you actually keep ending up with?", nl: "Je zegt dat je een type hebt. Bij wie kom je in werkelijkheid steeds uit?" },
+  { level: "attract", question: "You tell yourself you have a type — does that correspond with who you actually keep ending up with?", nl: "Je zegt dat je een type hebt — komt dat overeen met bij wie je in werkelijkheid steeds uitkomt?" },
   { level: "attract", question: "What does a barely covered body do that a naked one doesn't?" },
   { level: "attract", question: "Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?" },
   { level: "attract", question: "Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?" },

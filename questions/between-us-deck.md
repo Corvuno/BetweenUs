@@ -47,7 +47,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Do you use music to feel more, or to feel less?
 7. What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?
 8. What's something you appreciate far more now that you understand how it actually works?
-9. Does great art excuse a terrible artist?
+9. Does great art excuse a terrible artist — got an example?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
 12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
@@ -76,7 +76,7 @@ The questions come first, category by category. The full change log is at the bo
 7. If I walked into your home right now, what would I find?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
-10. Where would you live if nothing was stopping you — and what would you live in?
+10. What kind of home do you want to live in — and how far is that from where you are now?
 11. Which house from your life do you still walk through in dreams?
 12. Who have you shared a home with — and what did it teach you?
 
@@ -134,7 +134,7 @@ The questions come first, category by category. The full change log is at the bo
 9. What have you had to accept that you never chose?
 10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
 11. What's something true about you that took far too long to notice?
-12. What's a strength of yours that most people still miss — including, until recently, you?
+12. What do you come back to after everything else falls away?
 
 ## Body
 1. When did your body surprise you with what it could do?
@@ -226,7 +226,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Someone walks into the room. What makes you look twice?
 2. What do you find attractive that you'd never admit on a first date?
 3. Tell about turning someone down — and admit whether you liked being asked.
-4. You tell yourself you have a type. Who do you actually keep ending up with?
+4. You tell yourself you have a type — does that correspond with who you actually keep ending up with?
 5. What does a barely covered body do that a naked one doesn't?
 6. Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?
 7. Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?
@@ -503,6 +503,10 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.83, owner-approved; kept the dichotomy, added a concrete-example clause rather than replacing it outright)
+- **Home** — "Where would you live if nothing was stopping you — and what would you live in?" (displaced from Home 10 in v6.83, owner-approved; too close to Home 8's kitchen-window card, both purely aspirational)
+- **Attract** — "You tell yourself you have a type. Who do you actually keep ending up with?" (displaced from Attract 4 in v6.83, owner-approved; reworded to a single question with the "does that correspond" turn instead of two sentences)
+- **Self** — "What's a strength of yours that most people still miss — including, until recently, you?" (displaced from Self 12 in v6.83, owner-approved; only lived at Self 12 since v6.82 — owner reconsidered in favour of the "version one" Ground card instead)
 - **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
 - **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
@@ -620,6 +624,64 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.83 — first batch from the "version one" review: four owner-approved swaps
+Owner went through 55 candidate cards surfaced from an earlier version of the app, each
+tagged with the category it came from (some retired: Lens, Playful, Move, Ground, Make).
+Before anything was proposed, every candidate was checked against the current deck —
+twelve turned out to duplicate or closely overlap a card already in play (see the audit
+below) and were excluded outright. Four of the survivors were resolved this patch:
+
+- **Culture 9** → *"Does great art excuse a terrible artist — got an example?"* The owner
+  defended the original's dichotomy explicitly but liked the specificity a "version one"
+  candidate about a loved artist/hated person offered — rather than replace one with the
+  other, added a clause asking for a concrete example, keeping the abstract question and
+  gaining the specificity in one card.
+- **Home 10** → *"What kind of home do you want to live in — and how far is that from
+  where you are now?"* The old card ("where would you live if nothing was stopping you")
+  sat too close to Home 8's kitchen-window card — both pure fantasy, no grounding. The new
+  one keeps the aspiration but adds the gap-from-reality the old one lacked.
+- **Attract 4** → *"You tell yourself you have a type — does that correspond with who you
+  actually keep ending up with?"* Tightened from two sentences to one question with a turn,
+  keeping the original's "you tell yourself" opening.
+- **Self 12** → *"What do you come back to after everything else falls away?"* Replaces the
+  v6.82 card, which only lived at Self 12 for one patch — the owner reconsidered in favour
+  of this "version one" phrasing of the same territory (what holds up when everything else
+  doesn't) once it was flagged as close to the card v6.82 had just retired.
+
+**Excluded — duplicates or close overlaps with cards already in the deck, not entered:**
+- "Was there a moment that changed how you think about money?" (Values) — collided with
+  **Past, 5, "Trace the moment money started meaning something different to you."**
+- "Is there an artist whose work you love but whose person you can't stand?" (Culture) —
+  a concrete instance of **Culture, 9**'s own dichotomy; folded into 9 instead (see above).
+- "What kind of home do you want to live in — and how far is that from where you are now?"
+  (Home) — entered at Home 10 (see above), not excluded.
+- "What would you want to ask me that you haven't yet?" (Between Us) — near-duplicate of
+  **Us, 2, "What question have you wanted to ask me but haven't?"**
+- "What's your actual type — the one you keep ending up with — and what does that pattern
+  tell you?" (Attract) — folded into Attract 4 instead (see above), not excluded outright.
+- "What's a work of art — painting, installation, performance — that stopped you in your
+  tracks?" (Culture) — collided with both **Culture, 1, "Which piece of art still does
+  something to you, every time?"** and **Culture, 10, "When did beauty catch you completely
+  unprepared?"**
+- "What would you be doing if no one was paying attention to what you chose?" (Work) —
+  collided with **Work, 2, "What would you do professionally if status played no role at
+  all?"**
+- "What music reaches your body before it reaches your head?" (Move) — verbatim duplicate
+  of **Body, 4, "What music reaches your body before it reaches your head — and what
+  happens?"**
+- "What would change if you stopped explaining yourself?" (Lens) — collided with **Life,
+  12, "If you stopped explaining why you can't, what would change about how you live?"**
+- "What are you grateful for that the person you're grateful to doesn't know?" (Spirit) —
+  collided with **Spirit, 7, "Who are you overdue to thank — and what for?"**
+- "Where in your body does anxiety live — and do you recognise it when it arrives?" (Body)
+  — collided with **Body, 5, "Point to where you carry your tension right now."**
+- "What do you come back to after everything else falls away?" (Ground) — entered at Self
+  12 instead (see above), not excluded.
+
+Roughly 35 candidates remain from the original 55, still to be ranked and matched to
+slots — see the open items below rather than the change log, since none of them are
+resolved yet.
 
 ## Patch v6.82 — Self 12, a positive-register card, combined from two owner-picked alternatives
 **Self 12** → *"What's a strength of yours that most people still miss — including, until
