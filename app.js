@@ -544,7 +544,6 @@ const PRESETS = {
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-// ── STATE ─────────────────────────────────────────────────────────────────────
 const state = {
   activeToggles: new Set(),
   activePreset: '',       // tracks current preset so we avoid DOM queries
@@ -556,6 +555,7 @@ const state = {
   cardLimit: (window.DEFAULT_LIMIT === 0 ? null : (window.DEFAULT_LIMIT || 5)),
   fullDeck: [],
   visibleDeck: [],
+  drawUnseen: undefined,  // how many of fullDeck this session hasn't shown yet; set by buildFullDeck()
   currentIndex: -1,
   skippedCards: new Set(),
   partyMode: false,
@@ -730,32 +730,49 @@ function applyRandomMode(arr) {
   }
 }
 
+/* Builds a fresh fullDeck from the current filters/shuffle mode. Pure function
+   of state: reads ALL_CARDS/state, writes nothing. In ordered-solo modes the
+   whole set always plays in canonical order, so "unseen" doesn't apply there
+   and comes back null. */
+function buildFullDeck() {
+  const solo = orderedSoloLevel();
+  if (solo) return { deck: getOrderedSolo(solo), unseen: null };
+  return _unseenFirst(applyRandomMode(applyIntent(getFilteredCards())));
+}
+
+/* Slices fullDeck down to the hand actually shown: honours cardLimit, and
+   outside ordered-solo modes draws unseen cards first. */
+function sliceVisibleDeck(fullDeck, unseen) {
+  if (orderedSoloLevel()) {
+    return state.cardLimit === null ? [...fullDeck] : fullDeck.slice(0, state.cardLimit);
+  }
+  return _sliceDraw(fullDeck, unseen);
+}
+
+/* Mirrors state.cardLimit onto the limit-button row's active class. */
+function syncLimitButtons() {
+  document.querySelectorAll('.limit-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)))
+  );
+}
+
 function initDeck() {
   state.skippedCards.clear();
   state.loggedQuestions.clear();
-  const _solo = orderedSoloLevel();
-  if (_solo) {
+  if (orderedSoloLevel()) {
     if (state.colbertPrevLimit === null) state.colbertPrevLimit = state.cardLimit;   // remember to restore later
     state.cardLimit = null;
-    document.querySelectorAll('.limit-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.limit === 'all')
-    );
-    state.fullDeck = getOrderedSolo(_solo);
-  } else {
-    if (state.colbertPrevLimit !== null) {                               // leaving Colbert-solo: restore
-      if (state.cardLimit === null) state.cardLimit = state.colbertPrevLimit;
-      state.colbertPrevLimit = null;
-      document.querySelectorAll('.limit-btn').forEach(b =>
-        b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)))
-      );
-    }
-    state.fullDeck = applyRandomMode(applyIntent(getFilteredCards()));
-    { const r=_unseenFirst(state.fullDeck); state.fullDeck=r.deck; window._drawUnseen=r.unseen; }
+    syncLimitButtons();
+  } else if (state.colbertPrevLimit !== null) {                          // leaving Colbert-solo: restore
+    if (state.cardLimit === null) state.cardLimit = state.colbertPrevLimit;
+    state.colbertPrevLimit = null;
+    syncLimitButtons();
   }
+  const built = buildFullDeck();
+  state.fullDeck = built.deck;
+  state.drawUnseen = built.unseen;
   state.currentIndex = -1;
-  state.visibleDeck  = orderedSoloLevel()
-    ? (state.cardLimit === null ? [...state.fullDeck] : state.fullDeck.slice(0, state.cardLimit))
-    : _sliceDraw(state.fullDeck, window._drawUnseen === undefined ? state.fullDeck.length : window._drawUnseen);
+  state.visibleDeck = sliceVisibleDeck(state.fullDeck, state.drawUnseen);
   renderProgress();
   setCardDisplay(null);
   updateDeckInfo();
@@ -828,16 +845,12 @@ function _arcHand(source, cap){
   return out;
 }
 
-function applyLimit(reshuffle = true) {
+function applyLimit() {
   state.loggedQuestions.clear();
-  if (reshuffle) {
-    state.fullDeck = orderedSoloLevel() ? getOrderedSolo(orderedSoloLevel()) : applyRandomMode(applyIntent(getFilteredCards()));
-    if (!orderedSoloLevel()) { const r=_unseenFirst(state.fullDeck); state.fullDeck=r.deck; window._drawUnseen=r.unseen; }
-    else window._drawUnseen = state.fullDeck.length;
-  }
-  state.visibleDeck  = orderedSoloLevel()
-    ? (state.cardLimit === null ? [...state.fullDeck] : state.fullDeck.slice(0, state.cardLimit))
-    : _sliceDraw(state.fullDeck, window._drawUnseen === undefined ? state.fullDeck.length : window._drawUnseen);
+  const built = buildFullDeck();
+  state.fullDeck = built.deck;
+  state.drawUnseen = built.unseen;
+  state.visibleDeck = sliceVisibleDeck(state.fullDeck, state.drawUnseen);
   state.currentIndex = -1;
   renderProgress();
   setCardDisplay(null);
@@ -1289,10 +1302,9 @@ document.getElementById('deselectAll').addEventListener('click', () => {
 document.getElementById('limitBtns').addEventListener('click', e => {
   const btn = e.target.closest('.limit-btn');
   if (!btn) return;
-  document.querySelectorAll('.limit-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
   state.cardLimit = btn.dataset.limit === 'all' ? null : parseInt(btn.dataset.limit);
-  applyLimit(true);
+  syncLimitButtons();
+  applyLimit();
 });
 
 // Draw controls
@@ -1635,7 +1647,7 @@ function continueSession() {
     state.visibleDeck=(data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
     state.fullDeck=(data.fullDeckQuestions||data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
     state.currentIndex=data.position??-1;
-    document.querySelectorAll('.limit-btn').forEach(b=>b.classList.toggle('active',b.dataset.limit===(state.cardLimit===null?'all':String(state.cardLimit))));
+    syncLimitButtons();
     updateDeckInfo(); updateDrawMore(); renderProgress();
     setCardDisplay(state.currentIndex>=0 ? state.visibleDeck[state.currentIndex] : null);
     const lbl=document.getElementById('saveBtnLabel'); if(lbl) lbl.textContent='Save session';
@@ -2459,8 +2471,7 @@ function choosePick(chosen, allOptions) {
       prevLimit = state.cardLimit;
       if (state.cardLimit !== null) {
         state.cardLimit = null;
-        document.querySelectorAll('.limit-btn').forEach(b =>
-          b.classList.toggle('active', b.dataset.limit === 'all'));
+        syncLimitButtons();
         initDeck();
       }
     } else {
@@ -2468,8 +2479,7 @@ function choosePick(chosen, allOptions) {
       closePicker();
       if (prevLimit !== null) {
         state.cardLimit = prevLimit;
-        document.querySelectorAll('.limit-btn').forEach(b =>
-          b.classList.toggle('active', String(b.dataset.limit) === String(state.cardLimit)));
+        syncLimitButtons();
         initDeck();
       }
       prevLimit = null;
