@@ -46,25 +46,45 @@ jobs:
       - name: Build all profiles
         run: node scripts/build-single-file.mjs all
 
-      - name: Create release
+      - name: Create or update release
         # Uses the gh CLI (preinstalled on GitHub-hosted runners) instead of a
         # third-party action, so this doesn't depend on whatever this repo's
         # "Allow select actions" setting permits. Release-notes text goes
         # through an env var and a file, not spliced into the run script, so
         # markdown/backticks/quotes in it can't be misread as shell syntax.
+        # Idempotent: if the tag already has a release (e.g. re-running for
+        # the same version, or a release GitHub auto-generated some other
+        # way), this updates it in place instead of failing on the collision.
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_NOTES: ${{ inputs.notes }}
           RELEASE_PRERELEASE: ${{ inputs.prerelease }}
+          REPO: ${{ github.repository }}
         run: |
           printf '%s' "$RELEASE_NOTES" > release-notes.md
-          PRERELEASE_FLAG=""
-          if [ "$RELEASE_PRERELEASE" = "true" ]; then PRERELEASE_FLAG="--prerelease"; fi
-          gh release create "$RELEASE_VERSION" \
-            --repo "${{ github.repository }}" \
-            --title "Between Us $RELEASE_VERSION" \
-            --notes-file release-notes.md \
-            --target "${{ github.sha }}" \
-            $PRERELEASE_FLAG \
-            dist/*.html
+          # create's --prerelease is a plain on/off flag (no value); edit's
+          # needs an explicit =false to unset a prerelease flag an existing
+          # release might already have.
+          CREATE_PRERELEASE_FLAG=""
+          EDIT_PRERELEASE_FLAG="--prerelease=false"
+          if [ "$RELEASE_PRERELEASE" = "true" ]; then
+            CREATE_PRERELEASE_FLAG="--prerelease"
+            EDIT_PRERELEASE_FLAG="--prerelease"
+          fi
+          if gh release view "$RELEASE_VERSION" --repo "$REPO" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_VERSION" --repo "$REPO" \
+              --title "Between Us $RELEASE_VERSION" \
+              --notes-file release-notes.md \
+              --draft=false \
+              $EDIT_PRERELEASE_FLAG
+            gh release upload "$RELEASE_VERSION" dist/*.html --repo "$REPO" --clobber
+          else
+            gh release create "$RELEASE_VERSION" \
+              --repo "$REPO" \
+              --title "Between Us $RELEASE_VERSION" \
+              --notes-file release-notes.md \
+              --target "${{ github.sha }}" \
+              $CREATE_PRERELEASE_FLAG \
+              dist/*.html
+          fi
