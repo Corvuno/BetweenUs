@@ -1,0 +1,90 @@
+name: Cut a release
+
+# Builds all three profiles and publishes them as a GitHub Release — tag,
+# release notes and attached single-file HTML builds, all created by GitHub
+# itself on its own runner. Nothing here depends on a git push from outside
+# GitHub, so it isn't affected by any external push restrictions the way a
+# locally-pushed tag can be.
+#
+# Run it from the Actions tab -> "Cut a release" -> "Run workflow", fill in
+# the version and notes, and this does the rest: build, tag, release, attach.
+#
+# One-time repo setup this relies on: Settings -> Actions -> General ->
+# Workflow permissions -> "Read and write permissions". Without that, the
+# default GITHUB_TOKEN can't create releases and this workflow 403s.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Tag for this release, e.g. v1.1.0"
+        required: true
+        type: string
+      notes:
+        description: "Release notes (Markdown)"
+        required: true
+        type: string
+      prerelease:
+        description: "Mark as a pre-release"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build all profiles
+        run: node scripts/build-single-file.mjs all
+
+      - name: Create or update release
+        # Uses the gh CLI (preinstalled on GitHub-hosted runners) instead of a
+        # third-party action, so this doesn't depend on whatever this repo's
+        # "Allow select actions" setting permits. Release-notes text goes
+        # through an env var and a file, not spliced into the run script, so
+        # markdown/backticks/quotes in it can't be misread as shell syntax.
+        # Idempotent: if the tag already has a release (e.g. re-running for
+        # the same version, or a release GitHub auto-generated some other
+        # way), this updates it in place instead of failing on the collision.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_NOTES: ${{ inputs.notes }}
+          RELEASE_PRERELEASE: ${{ inputs.prerelease }}
+          REPO: ${{ github.repository }}
+        run: |
+          printf '%s' "$RELEASE_NOTES" > release-notes.md
+          # create's --prerelease is a plain on/off flag (no value); edit's
+          # needs an explicit =false to unset a prerelease flag an existing
+          # release might already have.
+          CREATE_PRERELEASE_FLAG=""
+          EDIT_PRERELEASE_FLAG="--prerelease=false"
+          if [ "$RELEASE_PRERELEASE" = "true" ]; then
+            CREATE_PRERELEASE_FLAG="--prerelease"
+            EDIT_PRERELEASE_FLAG="--prerelease"
+          fi
+          if gh release view "$RELEASE_VERSION" --repo "$REPO" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_VERSION" --repo "$REPO" \
+              --title "Between Us $RELEASE_VERSION" \
+              --notes-file release-notes.md \
+              --draft=false \
+              $EDIT_PRERELEASE_FLAG
+            gh release upload "$RELEASE_VERSION" dist/*.html --repo "$REPO" --clobber
+          else
+            gh release create "$RELEASE_VERSION" \
+              --repo "$REPO" \
+              --title "Between Us $RELEASE_VERSION" \
+              --notes-file release-notes.md \
+              --target "${{ github.sha }}" \
+              $CREATE_PRERELEASE_FLAG \
+              dist/*.html
+          fi

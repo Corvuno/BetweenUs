@@ -33,18 +33,28 @@ between-us-work.html   1-line redirect to between-us.html?profile=work, for old 
 between-us-dev.html     1-line redirect to between-us.html?profile=editor, for old links
 styles.css          all CSS
 questions.js          the question deck (content only, no app logic)
-app.js                  state, deck engine, and UI
+config.js             build profile + static lookup tables (colors, depth, labels, presets)
+state.js               the app's mutable, cross-cutting state
+deck.js                 filtering, shuffling, building and advancing through the deck
+card.js                 the card in front of you: language, face render, Twist, star, picker
+library.js              favourites and custom cards — load/persist/render their drawers
+session.js              the session log and save/restore
+selection.js            category/preset selection
+presentation.js         mood engine, progress, shell chrome, party display, summaries
+ui.js                   DOM event wiring and app bootstrap — loads last
 ```
 
-`between-us.html`, `styles.css`, `questions.js` and `app.js` are each a single real file —
-there is no generated copy to keep in sync, and no body markup duplicated between profiles.
-Edit any of them once and every profile picks it up immediately.
+`between-us.html` and `styles.css` are each a single real file — there is no generated copy
+to keep in sync, and no body markup duplicated between profiles. `questions.js` and the 9
+`*.js` app modules load as separate `<script>` tags, in the dependency order listed above
+(each one relies on globals the ones before it declare); edit any of them once and every
+profile picks it up immediately.
 
-`app.js` reads the profile from the URL (`new URLSearchParams(location.search).get('profile')`,
+`config.js` reads the profile from the URL (`new URLSearchParams(location.search).get('profile')`,
 falling back to `"public"`) and applies the matching block from the `PROFILES` object defined
-at the top of `app.js` (language, shuffle, adult-content locking, spice, backup category,
-etc.). To fine-tune a version, edit its block in `PROFILES`; to change what every version
-shares, edit anything else in `app.js`.
+at its top (language, shuffle, adult-content locking, spice, backup category, etc.). To
+fine-tune a version, edit its block in `PROFILES`; to change what every version shares, edit
+whichever of the 9 modules owns that behavior.
 
 Note: because the app is split across files, `between-us.html` is no longer a single file
 you can hand someone to double-click and play offline — you'd need the whole folder, or the
@@ -62,10 +72,10 @@ node scripts/build-single-file.mjs dev        # -> dist/between-us-dev.html
 node scripts/build-single-file.mjs all         # all three
 ```
 
-It inlines `styles.css`/`questions.js`/`app.js` into `between-us.html`, baking in the
-chosen profile as a script tag (there's no URL to read `?profile=` from once it's a local
-file). `dist/` is untracked (see `.gitignore`) — the build is disposable, rebuilt on demand,
-never a copy you keep in sync by hand.
+It inlines `styles.css`, `questions.js`, and the 9 app modules into `between-us.html`, baking
+in the chosen profile as a script tag (there's no URL to read `?profile=` from once it's a
+local file). `dist/` is untracked (see `.gitignore`) — the build is disposable, rebuilt on
+demand, never a copy you keep in sync by hand.
 
 Or build it on GitHub without a local checkout: **Actions → "Build single-file version" →
 Run workflow**, pick a profile, then download the `between-us-single-file` artifact from
@@ -119,14 +129,15 @@ and a "the scene, not the summary" lens were both drafted and both cut — the f
 this deck asks for considered answers, not reflexes, the second because a well-written card
 already does that on its own.
 
-The template set lives in `MODIFIERS` in `app.js`, not in `questions/` or `questions.js`,
+The template set lives in `MODIFIERS` in `card.js`, not in `questions/` or `questions.js`,
 because it's a lens any card can wear rather than more editorial content to maintain per
 category. It carries the app's default palette only — Twist has nothing to do with which
 category is showing, so it never borrows a category's accent colour.
 
 ## Updating
 
-App and settings changes go in `app.js`/`styles.css`/`questions.js` once — every profile
-picks them up automatically, since there's only one shell and one copy of each file.
+App and settings changes go in the 9 `*.js` app modules, `styles.css`, or `questions.js`
+once — every profile picks them up automatically, since there's only one shell and one copy
+of each file.
 `between-us-work.html` and `between-us-dev.html` should never need touching; they're
 redirects, not copies.

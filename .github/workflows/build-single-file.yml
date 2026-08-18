@@ -1,9 +1,9 @@
 name: Build single-file version
 
-# On-demand build: merges styles.css/questions.js/app.js into one standalone
-# HTML file per profile, for handing someone a single file to double-click
-# and play offline. The split source in the repo stays the source of truth —
-# this just produces a disposable, downloadable copy.
+# On-demand build: merges styles.css/questions.js/the 9 app modules into one
+# standalone HTML file per profile, for handing someone a single file to
+# double-click and play offline. The split source in the repo stays the
+# source of truth — this just produces a disposable, downloadable copy.
 #
 # Run it from the Actions tab -> "Build single-file version" -> "Run workflow",
 # pick a profile, then download the "between-us-single-file" artifact from

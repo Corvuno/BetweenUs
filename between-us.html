@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- One shell for every version — app.js reads ?profile= from the URL
+<!-- One shell for every version — config.js reads ?profile= from the URL
      (public/work/editor) and falls back to "public" with none given. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,11 @@
 <meta name="description" content="Between Us — a deck of questions for the conversations that don't happen on their own.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0c0a'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23c9a84c'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<!-- ?v= busts GitHub Pages' / the browser's cache on CSS/JS — no build step
+     rewrites these, so bump the date+letter by hand whenever styles.css,
+     questions.js, or any of the 9 app modules change, or a fix can sit
+     invisible in an already-open tab or a cached edge response indefinitely. -->
+<link rel="stylesheet" href="styles.css?v=20260817f">
 </head>
 <body>
 <div class="glow"></div>
@@ -601,7 +605,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js"></script>
-<script src="app.js"></script>
+<script src="questions.js?v=20260817f"></script>
+<script src="config.js?v=20260817f"></script>
+<script src="state.js?v=20260817f"></script>
+<script src="deck.js?v=20260817f"></script>
+<script src="card.js?v=20260817f"></script>
+<script src="library.js?v=20260817f"></script>
+<script src="session.js?v=20260817f"></script>
+<script src="selection.js?v=20260817f"></script>
+<script src="presentation.js?v=20260817f"></script>
+<script src="ui.js?v=20260817f"></script>
 </body>
 </html>
