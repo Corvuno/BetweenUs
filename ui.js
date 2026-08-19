@@ -850,8 +850,35 @@ applyToggleUI();
     const ii = $('dialIntensity'), fi = $('dialFocus');
     if (ii) ii.style.opacity = intentOn ? '1' : '.45';
     if (fi) fi.style.opacity = intentOn ? '1' : '.45';
+    updateListModeNote();
   }
   window.syncIntentUI = syncIntentUI;
+
+  // Colbert / The 36 aren't evenings built from chapters — they're fixed,
+  // ordered lists, so "What kind of evening?" has nothing under it to show
+  // once one is picked. Rather than leave that blank, swap the chapter grid
+  // for a line saying what's actually playing.
+  const LIST_MODE_TEXT = {
+    colbertmode: CATEGORY_DESCRIPTIONS.colbert,
+    aronmode:    CATEGORY_DESCRIPTIONS.aron,
+  };
+  function updateListModeNote(){
+    const note  = $('listModeNote');
+    if (!note) return;
+    const chaps = $('chapters');
+    const allnone = document.querySelector('.play-sect--1 .allnone-row');
+    const text = LIST_MODE_TEXT[state.activePreset];
+    if (text) {
+      note.textContent = text;
+      note.style.display = 'block';
+      if (chaps) chaps.style.display = 'none';
+      if (allnone) allnone.style.display = 'none';
+    } else {
+      note.style.display = 'none';
+      if (chaps) chaps.style.display = '';
+      if (allnone) allnone.style.display = '';
+    }
+  }
 
   function commit(){
     applyToggleUI();   // now calls syncIntentUI() itself

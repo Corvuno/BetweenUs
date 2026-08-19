@@ -43,12 +43,14 @@ body::before{
 .mode-btn:hover{color:rgba(240,232,216,.9);}
 /* every mode carries its colour as a small dot, at rest — not only once
    it's the active one, which was the whole point of colour-coding them
-   and had gone missing */
-.mode-btn::before{content:'';position:absolute;left:9px;top:50%;transform:translateY(-50%);
+   and had gone missing. Excludes the list buttons (Colbert/The 36): they
+   already carry their own ☰ marker (.mode-btn--list::before below), and
+   the dot rule was clashing with it, showing two marks on one button. */
+.mode-btn:not(.mode-btn--list)::before{content:'';position:absolute;left:9px;top:50%;transform:translateY(-50%);
   width:5px;height:5px;border-radius:50%;background:var(--mc,var(--gold));opacity:.5;
   transition:opacity .2s,box-shadow .2s;}
 .mode-btn.active{color:var(--mc,var(--gold));}
-.mode-btn.active::before{opacity:1;box-shadow:0 0 6px var(--mc,var(--gold));}
+.mode-btn.active:not(.mode-btn--list)::before{opacity:1;box-shadow:0 0 6px var(--mc,var(--gold));}
 .mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--mc,var(--gold));opacity:.6;}
 /* Per-mode colour, reused from the exact category colours those modes draw
    from (levelColor in config.js) — not decorative, so "Friends" really is
@@ -207,21 +209,21 @@ body::before{
    being thrown down onto the table: it drops in from above at an angle
    with a couple of trailing ghost cards (real elements, inserted/removed
    by flipToCard in card.js), then settles flat. */
-.card.dealing{animation:cardDeal .48s cubic-bezier(.22,.68,0,1.1) both;}
+.card.dealing{animation:cardDeal 1.05s cubic-bezier(.22,.68,0,1.1) both;}
 .card.dealing .card-level,.card.dealing .card-question{opacity:0;}
 @keyframes cardDeal{
-  0%{transform:translateY(-140px) rotate(-6deg) scale(.92);opacity:0;}
-  55%{transform:translateY(8px) rotate(1.5deg) scale(1.01);opacity:1;}
-  75%{transform:translateY(-3px) rotate(-.5deg) scale(1);}
+  0%{transform:translateY(-190px) rotate(-6deg) scale(.92);opacity:0;}
+  55%{transform:translateY(10px) rotate(1.5deg) scale(1.01);opacity:1;}
+  78%{transform:translateY(-4px) rotate(-.5deg) scale(1);}
   100%{transform:translateY(0) rotate(0deg) scale(1);opacity:1;}
 }
 .deal-ghost{position:absolute;inset:0;background:var(--card-bg);border:1px solid var(--border);
-  border-radius:2px;z-index:1;animation:cardDealGhost .5s ease-in both;pointer-events:none;}
+  border-radius:2px;z-index:1;animation:cardDealGhost 1.1s ease-in both;pointer-events:none;}
 @keyframes cardDealGhost{
-  0%{transform:translateY(-160px) rotate(-8deg);opacity:0;}
-  40%{opacity:.5;}
-  80%{transform:translateY(4px) rotate(2deg);opacity:.25;}
-  100%{transform:translateY(30px) rotate(3deg);opacity:0;}
+  0%{transform:translateY(-210px) rotate(-8deg);opacity:0;}
+  35%{opacity:.5;}
+  80%{transform:translateY(6px) rotate(2deg);opacity:.25;}
+  100%{transform:translateY(40px) rotate(3deg);opacity:0;}
 }
 
 /* ── CONTROLS ── */
@@ -371,16 +373,16 @@ body::before{
 .party-pick.on{color:var(--gold);}
 .party-overlay.idle .party-pick{opacity:0;pointer-events:none;}
 /* Lower, not top-center-alone: up there it read as a fourth, disconnected
-   corner control, easy to miss entirely. This sits just above the hint line,
-   in the same cluster of "things near the card" as the rest of the controls
-   a player actually reaches for during a round. */
-.party-twist{position:fixed;bottom:52px;left:50%;transform:translateX(-50%);z-index:2;
-  background:rgba(255,255,255,.03);border:1px solid rgba(240,232,216,.16);border-radius:2px;
+   corner control, easy to miss entirely. Sits down in the same cluster as
+   the hint line, its own space near the bottom chrome rather than crowding
+   the card — no box around it, just larger, legible type. */
+.party-twist{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;
+  background:none;border:none;
   color:rgba(240,232,216,.7);
-  font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
-  padding:8px 16px;cursor:pointer;transition:color .2s,border-color .2s,opacity .5s ease;}
-.party-twist:hover{color:var(--cream);border-color:rgba(240,232,216,.32);}
-.party-twist.active{color:var(--gold);border-color:rgba(201,168,76,.4);}
+  font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:8px 16px;cursor:pointer;transition:color .2s,opacity .5s ease;}
+.party-twist:hover{color:var(--cream);}
+.party-twist.active{color:var(--gold);}
 .party-overlay.idle .party-twist{opacity:0;pointer-events:none;}
 .party-card{
   position:relative;z-index:1;width:min(92vw,820px);min-height:55vh;
@@ -719,12 +721,14 @@ body::before{
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 .preset-host .mode-btn{font-size:.55rem;padding:7px 10px 7px 17px;}
-.preset-host .mode-btn::before{left:6px;width:4px;height:4px;}
-/* Colbert/The 36 sit in this same row as an evening type would, but aren't
-   one — a fixed list has nothing to do with the mood dial or the chapters,
-   so it gets said here rather than leaving the two of them unexplained */
-.preset-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.68rem;line-height:1.4;color:rgba(240,232,216,.55);padding:6px 14px 0;}
+.preset-host .mode-btn--list{padding:7px 10px;}
+.preset-host .mode-btn:not(.mode-btn--list)::before{left:6px;width:4px;height:4px;}
+/* Colbert/The 36 aren't chapters, so picking one leaves "What kind of
+   evening?" with nothing under it to show — expected, not a bug, but the
+   empty space is exactly where a description of what's actually playing
+   belongs instead (see #listModeNote / updateListModeNote in ui.js). */
+.list-mode-note{display:none;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.85rem;line-height:1.5;color:rgba(240,232,216,.75);padding:8px 10px 4px;}
 
 /* suggested: in this room, not yet chosen — the exploration hint */
 .toggle-btn.suggested{opacity:.6;border-bottom:1px dotted currentColor;}
@@ -740,7 +744,7 @@ body::before{
 /* question lists — Colbert and The 36 are sequences, not filters: marked, and in their own colour */
 .toggle-btn--list::before{content:'\25B8';margin-right:5px;font-size:.85em;opacity:.45;}
 .toggle-btn--list.on::before{opacity:.9;}
-.mode-btn--list{color:rgba(240,232,216,.5);}
+.mode-btn--list{color:rgba(240,232,216,.5);padding-left:16px;}
 /* a list plays start-to-finish in a fixed order — a different KIND of thing
    from the filter modes next to it, so it gets a different kind of glyph
    (a small stack, not the triangle every other affordance in the app uses

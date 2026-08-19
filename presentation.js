@@ -137,10 +137,10 @@ const REGISTER_COLOR = {
 // same thing Wild already says. One flat colour splits the difference: a
 // blend of the warm and cool ends of its own journey (steering clear of
 // gold, which already means "no lean" here, and of Deep's own purple).
-// Breadth still carries no token colour — it doesn't move through a few
-// rooms in sequence, it draws from all of them at once, which a single
-// in-between hue can't honestly stand in for the way Arc's blend can.
-const SHUFFLE_COLOR = { deep: '#8f74b8', arc: '#6a8ab8' };
+// Breadth gets one back too — the same teal its own icon already leans on
+// (Connect's colour), standing in for "touches everything at once" the way
+// Arc's blend stands in for "moves through a few rooms in sequence".
+const SHUFFLE_COLOR = { deep: '#8f74b8', arc: '#6a8ab8', breadth: '#65c9b0' };
 
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
 // Each cell holds 2 words, not 1 — see the note on computeMood below for why.

@@ -179,7 +179,7 @@ function flipToCard(card, isFirstDraw) {
     updatePartyDisplay(card);
     // Auto-save on every card
     autoSaveSession();
-  }, isFirstDraw ? 480 : 175);   // 480ms matches the .card.dealing animation-duration in styles.css
+  }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.dealing animation-duration in styles.css
 };
 
 // ── Party display sync ──

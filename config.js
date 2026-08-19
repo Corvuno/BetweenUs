@@ -309,7 +309,7 @@ const SHUFFLE_DESCRIPTIONS = {
 
 const CATEGORY_DESCRIPTIONS = {
   quick:     "Small true things, answered before you can think",
-  colbert:   "The Colbert Questionert — same 15 questions, asked in order",
+  colbert:   "The Colbert Questionnaire — same 15 questions, asked in order",
   warm:      "The fond, the funny and the faintly ridiculous",
   culture:   "What moves you, what leaves you cold, and the places that shaped your eye",
   unwind:    "Rest, weather, small pleasures, and where you go to stop",
