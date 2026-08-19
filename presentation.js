@@ -468,9 +468,11 @@ function timeOfDayWord() {
   return state.lang === 'nl' ? w.nl : w.en;
 }
 function updateTimeOfDayHeading() {
-  const el = document.getElementById('playLeadFirst');
-  if (!el) return;
-  el.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + timeOfDayWord() + '?';
+  const word = timeOfDayWord();
+  const heading = document.getElementById('playLeadFirst');
+  if (heading) heading.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + word + '?';
+  const customizeBtn = document.getElementById('customizeBtn');
+  if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? ('Pas je ' + word + ' aan') : ('Customize your ' + word);
 }
 
 function setLang(l, skipRefresh) {

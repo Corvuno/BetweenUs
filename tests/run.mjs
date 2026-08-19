@@ -227,10 +227,10 @@ async function run() {
       el.addEventListener('transitionend', done);
       setTimeout(done, 500);
     }));
-    // the sheet defaults to the "Shape" tab — the category buckets live
-    // under "Explore"
-    if (!(await page.locator('#tabExplore').evaluate(el => el.classList.contains('on')))) {
-      await page.locator('#tabExplore').click();
+    // the sheet defaults to Shape — the category buckets live behind the
+    // Customize button, which swaps in Explore's pane
+    if (!(await page.locator('#paneExplore').evaluate(el => el.classList.contains('on')))) {
+      await page.locator('#customizeBtn').click();
       await page.waitForTimeout(200);
     }
   }

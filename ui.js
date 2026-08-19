@@ -854,17 +854,17 @@ applyToggleUI();
     const note  = $('listModeNote');
     if (!note) return;
     const chaps = $('chapters');
-    const allnone = document.querySelector('.play-sect--1 .allnone-row');
+    const customizeBtn = $('customizeBtn');
     const text = LIST_MODE_TEXT[state.activePreset];
     if (text) {
       note.textContent = text;
       note.style.display = 'block';
       if (chaps) chaps.style.display = 'none';
-      if (allnone) allnone.style.display = 'none';
+      if (customizeBtn) customizeBtn.style.display = 'none';
     } else {
       note.style.display = 'none';
       if (chaps) chaps.style.display = '';
-      if (allnone) allnone.style.display = '';
+      if (customizeBtn) customizeBtn.style.display = '';
     }
   }
 
@@ -1021,25 +1021,18 @@ applyToggleUI();
     syncIntentUI();
   });
 
-  /* Play's All/None are the same action from the other tab — proxy straight
-     to the canonical Explore buttons so there is exactly one implementation */
-  const playAll = $('selectAllPlay'), playNone = $('deselectAllPlay');
-  if (playAll)  playAll.addEventListener('click',  () => $('selectAll').click());
-  if (playNone) playNone.addEventListener('click', () => $('deselectAll').click());
-
-  /* ── tabs ── */
+  /* Shape is always what the sheet opens to; Customize (under the chapters)
+     is the only way down into Explore's category grid, and Back is the only
+     way up again — no tab strip to flip between the two any more. */
   function showPane(name){
-    $('tabPlay').classList.toggle('on', name === 'play');
-    $('tabExplore').classList.toggle('on', name === 'explore');
-    $('tabPlay').setAttribute('aria-selected', String(name === 'play'));
-    $('tabExplore').setAttribute('aria-selected', String(name === 'explore'));
     $('panePlay').classList.toggle('on', name === 'play');
     $('paneExplore').classList.toggle('on', name === 'explore');
-    syncIntentUI();   // looking is not choosing — a tab switch never re-deals the hand
+    syncIntentUI();   // looking is not choosing — switching panes never re-deals the hand
     if (name === 'explore' && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
-  $('tabPlay').addEventListener('click', () => showPane('play'));
-  $('tabExplore').addEventListener('click', () => showPane('explore'));
+  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn');
+  if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
+  if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
 
   /* ── move the re-homed presets into Play, where they belong ── */
   const presetHost = document.querySelector('.preset-host'), playPane = $('panePlay');

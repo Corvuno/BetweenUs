@@ -907,20 +907,20 @@ body::before{
    lets the dials shape it; Explore is the whole cabinet, drawer by drawer.
    The dials weight the draw — steep, but never to zero — they don't filter it. */
 
-.cat-tabs{flex-shrink:0;display:flex;justify-content:center;gap:0;
-  border-bottom:1px solid var(--dim);margin:2px 0 4px;}
-.cat-tab{background:none;border:none;cursor:pointer;position:relative;
-  font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;
-  color:rgba(240,232,216,.4);padding:6px 26px 9px;transition:color .2s;}
-.cat-tab:hover{color:rgba(240,232,216,.75);}
-.cat-tab.on{color:var(--gold);}
-.cat-tab.on::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1px;
-  background:var(--gold);opacity:.8;}
-/* "start here" / "optional" — Shape and Explore read as interchangeable
-   until labelled: one is the default path, the other is a side room most
-   people never need to open. */
-.cat-tab-note{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.5rem;letter-spacing:.03em;text-transform:none;opacity:.6;margin-top:2px;}
+/* Customize leads from Shape into Explore's category grid — the sheet's only
+   way down into that level of detail now that there's no tab strip to flip
+   between the two; Back (in Explore) is the only way back up. */
+.customize-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;
+  margin-top:10px;padding:11px 14px;background:none;border:1px solid rgba(201,168,76,.35);
+  border-radius:3px;color:rgba(240,232,216,.85);font-family:'Jost',sans-serif;font-size:.58rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s;}
+.customize-btn::after{content:'\203A';font-size:.85rem;opacity:.6;}
+.customize-btn:hover{border-color:rgba(201,168,76,.7);color:var(--gold-l);}
+
+.pane-back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;
+  color:rgba(240,232,216,.5);font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;padding:4px 0 8px;transition:color .2s;}
+.pane-back-btn:hover{color:var(--gold);}
 
 .pane{display:none;}
 .pane.on{display:block;}
