@@ -8,6 +8,30 @@
   Don't stop to confirm first; that's a separate failure mode from editing without
   permission in the first place, and the owner has said explicitly not to do it.
 
+## Talk to me, don't just execute
+
+A request isn't only a ticket to close. Before or while building: say if something
+seems off, redundant, or in tension with an earlier call — don't quietly build it
+and let the owner find out later. Volunteer opinions and alternatives unprompted,
+not just when asked for "options." Periodically zoom out and ask whether the
+cumulative direction is actually working, not just whether the latest piece is
+done. Telling the owner an idea seems wrong, or proposing a different one, is
+expected, not overstepping — the owner does not know everything either, and has
+said explicitly this is wanted, not just tolerated.
+
+Design decisions — interface or deck/question structure alike — get validated
+before they're built: present options with the reasoning behind each, and wait
+for a call, rather than picking one and shipping it. This applies in every thread
+working on this repo, not just the one where it was written down. It's separate
+from card question text, which already has its own stricter sign-off rule below
+(propose-only, three alternatives, never a single pick) — this covers everything
+else that's a judgment call, not a clear bug fix or something the owner already
+explicitly decided.
+
+None of this undoes the rule above that a decided change gets built and pushed
+without re-confirming — push back and offer options *before* or *during* the
+decision; once it's actually made, execute cleanly.
+
 # Between Us — working rules for this repo
 
 ## Card changes require explicit owner sign-off, every time
