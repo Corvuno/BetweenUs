@@ -59,6 +59,21 @@ async function cardParts(page) {
   return m ? { index: +m[1], total: +m[2] } : { raw: t };
 }
 async function questionText(page) { return (await page.locator('#card-question').textContent()).trim(); }
+// Polls real DOM state instead of sleeping a fixed duration — the deal
+// animation's length is a styling detail, not a contract, so a test that
+// waits for it to *finish* (rather than guessing how long it takes) doesn't
+// need re-tuning every time that duration changes.
+async function waitForCardIndex(page, n, timeout = 3000) {
+  await page.waitForFunction(
+    (expected) => {
+      const t = (document.getElementById('card-number').textContent || '').trim();
+      const m = t.match(/^(\d+)\s*\/\s*(\d+)$/);
+      return !!m && +m[1] === expected;
+    },
+    n,
+    { timeout }
+  );
+}
 
 // Dispatch a synthetic touch swipe on an element, optionally followed by the
 // synthetic 'click' mobile browsers fire after a touch gesture — this is
@@ -132,8 +147,9 @@ async function run() {
   await check('first tap on the card draws card 1 of the hand', async () => {
     await page.locator('#card').click();
     // the first draw of a hand plays the (longer) shuffle animation rather
-    // than the plain 175ms flip — see .card.dealing in styles.css
-    await page.waitForTimeout(1250);
+    // than the plain 175ms flip — see .card.dealing in styles.css; wait for
+    // the actual reveal instead of guessing its duration
+    await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
     assert(index === 1, `expected card 1, got ${index}`);
     assert(total > 0, 'deck total is 0');
@@ -389,11 +405,11 @@ async function run() {
     const stillEnd = await page.locator('#card-question').innerHTML();
     assert(/sic-wrap|Draw complete|Ronde afgerond/.test(stillEnd), 'a quick tap advanced past the end-of-hand gate');
 
-    // Full hold: must advance into a fresh hand. The deal animation only
-    // plays once per session (already used up earlier in this run), so this
-    // is a plain flip — the generous wait just keeps this robust either way.
+    // Full hold: must advance into a fresh hand — wait for the actual reveal
+    // rather than a guessed duration (works whether this replays the deal
+    // animation or not; the deal animation only plays once per session).
     await pointerHold(page, '#btn-next', 650);
-    await page.waitForTimeout(1250);
+    await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
     assert(!(await page.locator('#endHint').evaluate(el => el.classList.contains('visible'))), 'end-hint stayed visible into the fresh hand');

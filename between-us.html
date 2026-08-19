@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260820h">
+<link rel="stylesheet" href="styles.css?v=20260820i">
 </head>
 <body>
 <div class="glow"></div>
@@ -41,16 +41,16 @@
       <div class="preset-row" id="modeBar">
         <button class="mode-btn" data-mode="open">Everything</button>
         <button class="mode-btn active" data-mode="balanced">Balanced</button>
-        <button class="mode-btn" data-mode="newpeople">New people</button>
+        <span class="mode-group-lbl">Who's here</span>
+        <button class="mode-btn mode-btn--group-start" data-mode="newpeople">Strangers</button>
         <button class="mode-btn" data-mode="friends">Friends</button>
         <button class="mode-btn" data-mode="dating">Date</button>
         <button class="mode-btn" data-mode="partner">Partner</button>
+        <button class="mode-btn" data-mode="family_p">Family</button>
+        <span class="mode-group-lbl">Context</span>
+        <button class="mode-btn mode-btn--group-start" data-mode="work">Work</button>
         <button class="mode-btn" data-mode="latenight">Late night</button>
         <button class="mode-btn" data-mode="solo">Solo</button>
-        <button class="mode-btn" data-mode="work">Work</button>
-        <button class="mode-btn" data-mode="family_p">Family</button>
-        <button class="mode-btn mode-btn--list" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert</button>
-        <button class="mode-btn mode-btn--list" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
       </div>
     </div>
   </div>
@@ -59,7 +59,7 @@
   <div class="cat-area" id="cat-area" role="dialog" aria-modal="true" aria-label="Categories" tabindex="-1">
     <div class="cat-sheet-handle"></div>
     <button class="cat-close" id="catClose">&#10005;</button>
-    <div class="cat-sheet-title">Categories</div>
+    <div class="cat-sheet-title" id="catSheetTitle">Categories</div>
 
     <!-- legacy controls: kept for existing preset / hard-safe-mode logic to
          read and toggle, but no longer a visible row of their own — the
@@ -97,14 +97,12 @@
         <div class="play-lead">Tune the conversation</div>
         <div class="dials" id="dials">
           <div class="dial">
-            <div class="dial-name">Depth</div>
             <div class="dial-desc">Shifts the balance of the questions &mdash; lighter, or more intense.</div>
             <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
             <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
                    aria-label="Depth: easy to intense">
           </div>
           <div class="dial">
-            <div class="dial-name">Me &#8596; Us</div>
             <div class="dial-desc">Decides who the questions are about.</div>
             <div class="dial-ends"><span>Me</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
             <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
@@ -187,6 +185,11 @@
         <div class="cat-bucket" data-bucket="meta" style="--ch:#5a5a6a"><button type="button" class="cbk-select"><span class="cbk-name">Meta</span><span class="cbk-count"></span></button><button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>
         <button class="toggle-btn chip-folded" data-level="backup" data-bucket="meta" style="opacity:.22;font-style:italic;">Backup</button>
         </div>
+      </div>
+      <div class="fixed-seq">
+        <div class="fixed-seq-lbl">Or play a fixed set, start to finish</div>
+        <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert Questionnaire</button>
+        <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
       </div>
     </div>
 
@@ -628,15 +631,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260820h"></script>
-<script src="config.js?v=20260820h"></script>
-<script src="state.js?v=20260820h"></script>
-<script src="deck.js?v=20260820h"></script>
-<script src="card.js?v=20260820h"></script>
-<script src="library.js?v=20260820h"></script>
-<script src="session.js?v=20260820h"></script>
-<script src="selection.js?v=20260820h"></script>
-<script src="presentation.js?v=20260820h"></script>
-<script src="ui.js?v=20260820h"></script>
+<script src="questions.js?v=20260820i"></script>
+<script src="config.js?v=20260820i"></script>
+<script src="state.js?v=20260820i"></script>
+<script src="deck.js?v=20260820i"></script>
+<script src="card.js?v=20260820i"></script>
+<script src="library.js?v=20260820i"></script>
+<script src="session.js?v=20260820i"></script>
+<script src="selection.js?v=20260820i"></script>
+<script src="presentation.js?v=20260820i"></script>
+<script src="ui.js?v=20260820i"></script>
 </body>
 </html>

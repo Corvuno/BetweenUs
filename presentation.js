@@ -278,23 +278,41 @@ function drawRoundTrace(cards) {
        + dots + `</svg>`;
 }
 
+// Sample colors from whatever categories are actually active right now —
+// not the literal order a real draw would deal them (that would preview
+// the round and spoil it), just a representative "these hues are in play"
+// read, so Breadth/Arc's dots mean something instead of being decoration.
+// Falls back to a fixed palette when nothing's active yet to sample from.
+function activeCategoryColors(n, fallback) {
+  const levels = Array.from(state.activeToggles || []);
+  if (!levels.length) return fallback;
+  const out = [];
+  for (let i = 0; i < n; i++) out.push(levelColor(levels[i % levels.length]));
+  return out;
+}
+
 // The four shuffle modes, drawn as the shape of a round.
 function shuffleShapeSVG(mode) {
   const d = 'r="2.4" fill="currentColor"';
+  const breadthFallback = ['#d58b34','#f3c33c','#669bbb','#65c9b0','#96b87b','#df7a91','#8066e1','#4dbebe'];
+  const arcFallback     = ['#d9a441','#b48c7c','#8f74b8','#6a8ab8','#45a0b8'];
   const shapes = {
     wild: `<circle cx="6" cy="20" ${d}/><circle cx="18" cy="7" ${d}/><circle cx="30" cy="23" ${d}/><circle cx="42" cy="11" ${d}/>`
         + `<circle cx="54" cy="25" ${d}/><circle cx="66" cy="9" ${d}/><circle cx="78" cy="19" ${d}/><circle cx="90" cy="13" ${d}/>`,
     deep: `<polyline points="6,23 18,20 30,17 42,14 54,11 66,9 78,7 90,5" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".3"/>`
         + `<circle cx="6" cy="23" ${d}/><circle cx="18" cy="20" ${d}/><circle cx="30" cy="17" ${d}/><circle cx="42" cy="14" ${d}/>`
         + `<circle cx="54" cy="11" ${d}/><circle cx="66" cy="9" ${d}/><circle cx="78" cy="7" ${d}/><circle cx="90" cy="5" ${d}/>`,
-    breadth: ['#d58b34','#f3c33c','#669bbb','#65c9b0','#96b87b','#df7a91','#8066e1','#4dbebe']
+    breadth: activeCategoryColors(8, breadthFallback)
         .map((c, i) => `<circle cx="${6 + i * 12}" cy="15" r="2.6" fill="${c}"/>`).join(''),
-    // Same idea as Breadth's own dots, not currentColor — Arc genuinely
-    // moves through three different rooms (warmup gold -> deeper purple ->
-    // findout blue, the exact chapter colours), so the icon carries that
-    // instead of asking a single flat colour to stand in for a journey.
-    arc: `<path d="M5 24 C 20 24 22 6 48 6 S 76 24 91 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".35"/>`
-       + `<circle cx="5" cy="24" r="2.4" fill="#d9a441"/><circle cx="26" cy="9" r="2.4" fill="#b48c7c"/><circle cx="48" cy="6" r="2.4" fill="#8f74b8"/><circle cx="70" cy="9" r="2.4" fill="#6a8ab8"/><circle cx="91" cy="24" r="2.4" fill="#45a0b8"/>`,
+    // Same idea as Breadth's own dots, not currentColor — a colored path
+    // through a few of what's actually active, not the exact chapter
+    // colours it used to be hardcoded to.
+    arc: (() => {
+      const pts = [[5,24],[26,9],[48,6],[70,9],[91,24]];
+      const cols = activeCategoryColors(5, arcFallback);
+      const path = `<path d="M5 24 C 20 24 22 6 48 6 S 76 24 91 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".35"/>`;
+      return path + pts.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="2.4" fill="${cols[i]}"/>`).join('');
+    })(),
   };
   if (!shapes[mode]) return '';
   return `<svg class="smp-shape" viewBox="0 0 96 30" aria-hidden="true">${shapes[mode]}</svg>`;
@@ -473,6 +491,16 @@ function updateTimeOfDayHeading() {
   if (heading) heading.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + word + '?';
   const customizeBtn = document.getElementById('customizeBtn');
   if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? ('Pas je ' + word + ' aan') : ('Customize your ' + word);
+  // The sheet's own title tracks which pane is showing — "Categories" only
+  // actually describes Explore; Shape gets the same time-of-day framing as
+  // its heading and the Customize button, so all three read as one line.
+  const title = document.getElementById('catSheetTitle');
+  if (title) {
+    const exploring = document.getElementById('paneExplore') && document.getElementById('paneExplore').classList.contains('on');
+    title.textContent = exploring
+      ? (state.lang === 'nl' ? 'Categorieën' : 'Categories')
+      : (state.lang === 'nl' ? ('Vorm je ' + word) : ('Shape your ' + word));
+  }
 }
 
 function setLang(l, skipRefresh) {
