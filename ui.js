@@ -74,13 +74,25 @@ checkSavedSession();
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 
 
-// Card limit
+// Card limit — the token tray's #limitBtns and Section 3's own
+// #limitBtnsDrawer are two separate button sets over the same state;
+// syncLimitButtons() already matches on the .limit-btn class everywhere in
+// the document, so picking one here updates both without extra wiring.
+function selectCardLimit(limitAttr) {
+  state.cardLimit = limitAttr === 'all' ? null : parseInt(limitAttr);
+  syncLimitButtons();
+  applyLimit();
+}
 document.getElementById('limitBtns').addEventListener('click', e => {
   const btn = e.target.closest('.limit-btn');
   if (!btn) return;
-  state.cardLimit = btn.dataset.limit === 'all' ? null : parseInt(btn.dataset.limit);
-  syncLimitButtons();
-  applyLimit();
+  selectCardLimit(btn.dataset.limit);
+});
+const limitBtnsDrawer = document.getElementById('limitBtnsDrawer');
+if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
+  const btn = e.target.closest('.limit-btn');
+  if (!btn) return;
+  selectCardLimit(btn.dataset.limit);
 });
 
 // Draw controls
@@ -632,10 +644,24 @@ applyToggleUI();
   scrim.addEventListener('click', closeCats);
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
 
-  /* ── order list (sort modes as a list, not a cycler) ── */
+  // "Draw Cards" — closes the sheet and deals straight into the first hand
+  // of whatever's now selected, the same reshuffle-then-deal the app already
+  // does elsewhere (deck.js's end-of-hand hold) — so finishing the sheet
+  // never leaves the placeholder card sitting there waiting for one more tap.
+  const goBtn = $('catGoBtn');
+  if (goBtn) goBtn.addEventListener('click', () => {
+    initDeck();
+    _nextCardBase();
+    updateDeckInfo(); updateDrawMore();
+    closeCats();
+  });
+
+  /* ── order list (sort modes as a list, not a cycler) ──
+     Renders into both the token tray's #orderList AND Section 3 of the
+     Shape pane's #orderListDrawer — same markup, same state, so picking a
+     mode in either place is instantly reflected in the other. */
   function buildOrderList(){
-    const c=$('orderList');
-    c.innerHTML=SHUFFLE_MODES.map(m=>
+    const html = SHUFFLE_MODES.map(m=>
       `<button class="smp-row ${m===state.randomMode?'active':''}" data-mode="${m}">
          ${typeof shuffleShapeSVG==='function'?shuffleShapeSVG(m):''}
          <span class="smp-txt">
@@ -643,15 +669,26 @@ applyToggleUI();
            <span class="smp-desc">${(typeof SHUFFLE_DESCRIPTIONS!=='undefined'&&SHUFFLE_DESCRIPTIONS[m])||''}</span>
          </span>
        </button>`).join('');
+    const c = $('orderList'); if (c) c.innerHTML = html;
+    const cd = $('orderListDrawer'); if (cd) cd.innerHTML = html;
+  }
+  function selectShuffleMode(mode){
+    state.randomMode = mode;
+    shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
+    updateShuffleDisplay(); initDeck(); updateDeckInfo(); updateDrawMore();
+    buildOrderList();
   }
   $('orderList').addEventListener('click',e=>{
     const row=e.target.closest('.smp-row'); if(!row) return;
-    state.randomMode=row.dataset.mode;
-    shuffleModeIdx=SHUFFLE_MODES.indexOf(state.randomMode);
-    updateShuffleDisplay(); initDeck(); updateDeckInfo(); updateDrawMore();
-    buildOrderList();
+    selectShuffleMode(row.dataset.mode);
     setTimeout(closeTrays,220);
   });
+  const orderListDrawer = $('orderListDrawer');
+  if (orderListDrawer) orderListDrawer.addEventListener('click', e => {
+    const row = e.target.closest('.smp-row'); if (!row) return;
+    selectShuffleMode(row.dataset.mode);
+  });
+  buildOrderList();   // Section 3 isn't a lazily-opened tray — render it up front
 
   /* ── accordion trays ── */
   const toks=[['tokOrder','trayOrder'],['tokHand','trayHand']];

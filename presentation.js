@@ -100,11 +100,41 @@ function registerState(activeLevels) {
 // about it. Cards is a magnitude, not a kind of anything, so it never gets
 // one either; forcing a colour onto it would be exactly the "random, not
 // logical" pattern this table exists to avoid.
+// The Shape pane's live sentence — a plain-language read of where the two
+// dials currently sit, in the player's own terms (no "depth band"/"focus
+// band" talk, just what it means for the round). Reuses depthBand/focusBand
+// so it always agrees with whatever computeMood is also reading off the
+// same dials.
+const DEPTH_PHRASE = {
+  light: ['A', 'light'], easy: ['An', 'easy'], open: ['An', 'open'],
+  deep: ['A', 'deep'], raw: ['A', 'raw'],
+};
+const FOCUS_PHRASE = {
+  self: 'mostly about yourself', mostlySelf: 'leaning your way',
+  balanced: 'balanced between the two of you', mostlyUs: 'leaning toward the two of you',
+  us: 'all about the two of you',
+};
+function roundSentence(intensity01, focus01) {
+  const [art, adj] = DEPTH_PHRASE[depthBand(intensity01)];
+  const foc = FOCUS_PHRASE[focusBand(focus01)];
+  return `${art} ${adj} evening, ${foc}.`;
+}
+
 const REGISTER_COLOR = {
   arrive: '#d9a441', surface: '#45a0b8', deepwater: '#8f74b8',
   betweenus: '#d97a92', afterdark: '#ff2f2f', charged: '#ff4f7a',
 };
-const SHUFFLE_COLOR = { deep: '#8f74b8', breadth: '#65c9b0', arc: '#e8997a' };
+// Deep leans toward one place (Into the Deep's own purple) so it gets a flat
+// colour. Breadth and Arc don't lean toward one thing, they move across
+// several — reusing shuffleShapeSVG's own breadth palette and the three
+// chapters Arc's "warm start, deeper water, cool-down" journey actually
+// passes through, rather than picking one more single hue to stand in for
+// several. Wild has no lean at all, so it's left out — no entry here.
+const SHUFFLE_COLOR = { deep: '#8f74b8' };
+const SHUFFLE_GRADIENT = {
+  breadth: ['#d58b34','#f3c33c','#669bbb','#65c9b0','#96b87b','#df7a91','#8066e1','#4dbebe'],
+  arc: ['#d9a441','#8f74b8','#45a0b8'],
+};
 
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
 // Each cell holds 2 words, not 1 — see the note on computeMood below for why.
@@ -526,8 +556,19 @@ function renderShell() {
   const tokOrder = document.getElementById('tokOrder');
   if (vOrder && state.randomMode) {
     vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
-    const sc = SHUFFLE_COLOR[state.randomMode];
-    if (tokOrder) sc ? tokOrder.style.setProperty('--tokc', sc) : tokOrder.style.removeProperty('--tokc');
+    if (tokOrder) {
+      const grad = SHUFFLE_GRADIENT[state.randomMode];
+      const sc = SHUFFLE_COLOR[state.randomMode];
+      if (grad) {
+        tokOrder.style.setProperty('--tokgrad', `linear-gradient(90deg, ${grad.join(',')})`);
+        tokOrder.style.setProperty('--tokc', grad[grad.length - 1]);
+        tokOrder.classList.add('tok--grad');
+      } else {
+        tokOrder.style.removeProperty('--tokgrad');
+        tokOrder.classList.remove('tok--grad');
+        sc ? tokOrder.style.setProperty('--tokc', sc) : tokOrder.style.removeProperty('--tokc');
+      }
+    }
   }
   // Cards token: hand size / total matching cards, e.g. "5 / 214"
   // Uses the raw filtered match count, not state.fullDeck.length — that's
@@ -542,6 +583,12 @@ function renderShell() {
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
+
+  // Shape pane's live sentence — same dial reading as the Mood token, spelled out
+  const sentenceEl = document.getElementById('roundSentence');
+  if (sentenceEl && typeof intentIntensity !== 'undefined') {
+    sentenceEl.textContent = roundSentence(intentIntensity, (intentFocus + 1) / 2);
+  }
 }
 
 function updateDrawMore() {

@@ -409,7 +409,7 @@ body::before{
 .sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
 .drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
 .drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
-#orderList.order-list .smp-row{flex-direction:row;align-items:center;gap:13px;text-align:left;justify-content:flex-start;}
+#orderList.order-list .smp-row,#orderListDrawer.order-list .smp-row{flex-direction:row;align-items:center;gap:13px;text-align:left;justify-content:flex-start;}
 .smp-shape{flex:0 0 54px;width:54px;height:auto;color:rgba(240,232,216,.45);}
 .smp-row.active .smp-shape{color:var(--gold-l);}
 .smp-txt{display:flex;flex-direction:column;gap:2px;min-width:0;}
@@ -574,6 +574,11 @@ body::before{
 .tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
 .tok.open{opacity:1;border-bottom-color:var(--tokc,var(--gold));}
 .tok.open .tok-val::after{transform:rotate(180deg);}
+/* Breadth and Arc don't lean toward one thing, they move across several —
+   a single flat colour would be exactly the "arbitrary pick" this whole
+   system exists to avoid, so their token value is a gradient instead
+   (--tokgrad, set alongside a representative --tokc for the underline). */
+.tok--grad .tok-val{background-image:var(--tokgrad);-webkit-background-clip:text;background-clip:text;color:transparent;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
@@ -897,10 +902,47 @@ body::before{
 .play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.22em;
   text-transform:uppercase;color:rgba(240,232,216,.55);opacity:1;padding:14px 0 9px;}
 .play-lead--first{padding-top:6px;}
-/* connects the dials to the chapters below them — playtesters found the
-   combination of the two unclear once they'd found either control */
+/* each of the three controls in Shape (what/how far/how it plays) gets one
+   short line saying what it does in player terms — no "chapters" or
+   "categories", just what happens to the round */
 .play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
   font-size:.72rem;line-height:1.4;color:var(--muted);opacity:.75;padding:0 10px 6px;}
+
+/* Shape is three different KINDS of decision (what's in play, how it leans,
+   how it's dealt out) — text only, no numbering (felt like a form, not part
+   of this deck) — a coloured rule is enough to tell them apart at a glance. */
+.play-sect{border-left:2px solid transparent;padding-left:12px;margin-left:-12px;}
+.play-sect--1{border-left-color:rgba(201,168,76,.35);}
+.play-sect--2{border-left-color:rgba(101,201,176,.35);}
+.play-sect--3{border-left-color:rgba(180,170,150,.3);}
+.play-sect+.play-sect{margin-top:8px;padding-top:2px;}
+
+/* a live, plain-language read of the current dial position — updates as the
+   sliders move, sitting above the controls instead of only after the fact
+   in the token row's single mood word */
+.round-sentence{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.92rem;line-height:1.5;color:var(--gold-l);opacity:.9;
+  padding:2px 12px 12px;border-bottom:1px solid var(--dim);margin-bottom:6px;}
+
+/* Section 3's own copies of the Shuffle/Cards pickers — same controls as the
+   token row above the card, kept here too so the whole round is decided in
+   one place without hunting back up for two of the three settings. */
+.order-list--drawer{max-width:none;}
+.limit-row--drawer{justify-content:center;padding-top:4px;}
+#handCapDrawer{padding:10px 0 2px;}
+
+/* "start" bar at the foot of the sheet — .cat-area is itself the flex column
+   (the panes scroll internally, flex:1), so a plain flex child here just
+   sits pinned below them, always visible regardless of scroll position.
+   Closes the sheet and deals straight into the first hand, so finishing
+   here never dead-ends into "now what?" */
+.cat-go-bar{flex-shrink:0;padding:12px 0 max(14px,env(safe-area-inset-bottom));
+  background:linear-gradient(to top, var(--surface) 60%, transparent);}
+.cat-go-btn{display:block;width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
+  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;padding:13px 0;border-radius:3px;cursor:pointer;transition:filter .2s;}
+.cat-go-btn:hover{filter:brightness(1.06);}
+.cat-go-btn:active{transform:scale(.99);}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}
