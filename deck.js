@@ -347,8 +347,13 @@ function renderEndMessage(html) {
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
-    const isFirstDraw = state.currentIndex === -1;   // nothing dealt yet this hand — deck.js:225/306
+    // The deal animation is a one-time first impression, not a beat every fresh
+    // hand replays — so it only fires on the very first card this session ever
+    // shows (state.currentIndex === -1 alone would also be true after every
+    // settings change or Draw more, which is the "new hand" case, not "first ever").
+    const isFirstDraw = state.currentIndex === -1 && !state.hasDealtEver;
     state.currentIndex++;
+    if (isFirstDraw) state.hasDealtEver = true;
     flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();

@@ -389,10 +389,10 @@ async function run() {
     const stillEnd = await page.locator('#card-question').innerHTML();
     assert(/sic-wrap|Draw complete|Ronde afgerond/.test(stillEnd), 'a quick tap advanced past the end-of-hand gate');
 
-    // Full hold: must advance into a fresh hand.
+    // Full hold: must advance into a fresh hand. The deal animation only
+    // plays once per session (already used up earlier in this run), so this
+    // is a plain flip — the generous wait just keeps this robust either way.
     await pointerHold(page, '#btn-next', 650);
-    // a fresh hand's first card plays the shuffle animation, not the plain
-    // 175ms flip — see .card.dealing in styles.css
     await page.waitForTimeout(1250);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
