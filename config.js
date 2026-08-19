@@ -210,7 +210,10 @@ const PRESETS = {
   balanced: {
     on:        ["culture","life","home","work","unwind","world","self","mind","body","values","wish",
                 "past","roots","family","spirit","connect","friends","date","attract","us","usfriend","uslove"],
-    available: ["deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
+    // "warm"/"quick" (Arrive) weren't listed at all, on or available — that
+    // hid the whole Arrive chapter rather than just leaving it unselected,
+    // which isn't what "not on by default" was supposed to mean.
+    available: ["warm","quick","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {

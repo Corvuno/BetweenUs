@@ -135,11 +135,24 @@ function flipToCard(card, isFirstDraw) {
   if (lvlEl) lvlEl.classList.remove('in');
   const qEl = document.getElementById('card-question');
   if (qEl)  qEl.classList.remove('in');
-  // the first deal of a hand gets the riffle animation (shows the settings
-  // that were just chosen are actually taking effect); every card after
-  // that gets the plain, quicker flip.
-  const animClass = isFirstDraw ? 'shuffling' : 'flipping';
+  // The first deal of a hand gets thrown onto the table — two ghost cards
+  // trail behind the real one as it drops in at an angle (shows the
+  // settings that were just chosen are actually taking effect); every card
+  // after that gets the plain, quicker flip. Ghosts are real, temporary
+  // elements (not a pure-CSS trick) — removed once the animation is done.
+  const animClass = isFirstDraw ? 'dealing' : 'flipping';
   el.classList.add(animClass);
+  let ghosts = [];
+  if (isFirstDraw) {
+    const area = el.parentElement;
+    ghosts = [0, 1].map(i => {
+      const g = document.createElement('div');
+      g.className = 'deal-ghost';
+      g.style.animationDelay = (i * 40) + 'ms';
+      area.insertBefore(g, el);
+      return g;
+    });
+  }
   setTimeout(() => {
     const color = levelColor(card.level);
     if (accent) {
@@ -161,11 +174,12 @@ function flipToCard(card, isFirstDraw) {
       if (qEl2)  qEl2.classList.add('in');
     });
     el.classList.remove(animClass);
+    ghosts.forEach(g => g.remove());
     renderProgress();
     updatePartyDisplay(card);
     // Auto-save on every card
     autoSaveSession();
-  }, isFirstDraw ? 480 : 175);   // 480ms matches the .card.shuffling animation-duration in styles.css
+  }, isFirstDraw ? 480 : 175);   // 480ms matches the .card.dealing animation-duration in styles.css
 };
 
 // ── Party display sync ──

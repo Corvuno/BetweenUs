@@ -130,11 +130,17 @@ const REGISTER_COLOR = {
   betweenus: '#d97a92', afterdark: '#ff2f2f', charged: '#ff4f7a',
 };
 // Deep leans toward one place (Into the Deep's own purple) so it gets a flat
-// colour, a real single lean. Wild, Breadth and Arc don't lean toward one
-// thing — Wild has no bias at all, and Breadth/Arc move across several
-// categories rather than one — so none of them get a token colour; a
-// gradient here just read as noise on the one row meant to stay calm.
-const SHUFFLE_COLOR = { deep: '#8f74b8' };
+// colour, a real single lean. Wild has no bias at all, so it stays
+// uncoloured. Arc genuinely moves through three rooms (see its icon, which
+// keeps the full three-colour journey), but a gradient on the one row meant
+// to stay calm read as noise, and no colour at all read as "no lens" — the
+// same thing Wild already says. One flat colour splits the difference: a
+// blend of the warm and cool ends of its own journey (steering clear of
+// gold, which already means "no lean" here, and of Deep's own purple).
+// Breadth still carries no token colour — it doesn't move through a few
+// rooms in sequence, it draws from all of them at once, which a single
+// in-between hue can't honestly stand in for the way Arc's blend can.
+const SHUFFLE_COLOR = { deep: '#8f74b8', arc: '#6a8ab8' };
 
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
 // Each cell holds 2 words, not 1 — see the note on computeMood below for why.
