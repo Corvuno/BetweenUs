@@ -283,12 +283,11 @@ async function run() {
   });
 
   // ── G. Draw-three picker ─────────────────────────────────────────────────
-  await check('draw-three picker opens on next-card and choosing an option advances to it', async () => {
+  await check('draw-three picker opens instantly on toggle and choosing an option advances to it', async () => {
     await closeCategorySheet(); // idempotent — guards against a sheet left open by a prior step
+    // turning pick mode on IS the draw now — no extra tap on a blank card needed
     await page.locator('#pickToggle').click();
-    await page.waitForTimeout(300);
-    await page.locator('#card').click(); // triggers nextCard -> pick intercept
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     const picker = page.locator('#cardPicker');
     assert(await picker.evaluate(el => el.classList.contains('open')), 'picker did not open');
     const opts = page.locator('#pickerOptions .pick-opt');

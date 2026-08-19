@@ -517,6 +517,11 @@ let pickMode = false;
         syncLimitButtons();
         initDeck();
       }
+      // Turning this on IS the draw — show the first three immediately
+      // instead of leaving the "place to begin" placeholder sitting there
+      // for an extra, unsignposted tap.
+      nextCard();
+      updateDeckInfo();
     } else {
       // Restore previous limit
       closePicker();
