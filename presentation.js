@@ -447,12 +447,39 @@ function closeAllDrawers() {
 // removed to make room for the Twist trigger; the menu's own language row
 // (d-lang) was already a full duplicate of it. ──
 
+// "What kind of evening?" only means something in the evening — asking it at
+// 9am reads as a bug, not a deliberate choice of words. Read the real clock
+// instead of hard-coding one time of day.
+const TIME_OF_DAY_WORD = {
+  morning:   { en: 'morning',   nl: 'ochtend' },
+  afternoon: { en: 'afternoon', nl: 'middag' },
+  evening:   { en: 'evening',   nl: 'avond' },
+  night:     { en: 'night',     nl: 'nacht' },
+};
+function timeOfDay() {
+  const h = new Date().getHours();
+  if (h >= 5  && h < 12) return 'morning';
+  if (h >= 12 && h < 17) return 'afternoon';
+  if (h >= 17 && h < 22) return 'evening';
+  return 'night';
+}
+function timeOfDayWord() {
+  const w = TIME_OF_DAY_WORD[timeOfDay()];
+  return state.lang === 'nl' ? w.nl : w.en;
+}
+function updateTimeOfDayHeading() {
+  const el = document.getElementById('playLeadFirst');
+  if (!el) return;
+  el.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + timeOfDayWord() + '?';
+}
+
 function setLang(l, skipRefresh) {
   state.lang = l;
   document.documentElement.lang = l;
   const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
   const sub = document.getElementById('dLangSub');
   if (sub) sub.textContent = l === 'en' ? 'Switch to Nederlands' : 'Schakel naar English';
+  updateTimeOfDayHeading();
   if (!skipRefresh) setCardDisplay(state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length ? state.visibleDeck[state.currentIndex] : null);
 }
 document.getElementById('d-lang').addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));

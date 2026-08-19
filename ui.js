@@ -269,6 +269,8 @@ updateShuffleDisplay();
 // Apply After Dark state
 document.getElementById('afterDarkToggle').classList.toggle('on',!state.safeMode);
 
+updateTimeOfDayHeading();
+
 // Animate UI in
 setTimeout(()=>document.getElementById('card-wrap').classList.add('in'),60);
 setTimeout(()=>document.getElementById('hdr').classList.add('in'),200);
