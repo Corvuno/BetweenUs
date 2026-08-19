@@ -207,7 +207,11 @@ function syncLimitButtons() {
   );
 }
 
-function initDeck() {
+function initDeck(isContinuation) {
+  // isContinuation: true only from drawMore() (Draw more / hold-to-continue),
+  // which deals a fresh hand under the SAME settings — the deal animation is
+  // reserved for a hand that starts because something actually changed.
+  state.skipDealAnim = !!isContinuation;
   state.skippedCards.clear();
   state.loggedQuestions.clear();
   if (orderedSoloLevel()) {
@@ -298,6 +302,7 @@ function _arcHand(source, cap){
 }
 
 function applyLimit() {
+  state.skipDealAnim = false;   // a card-limit change is a settings change, not a continuation
   state.loggedQuestions.clear();
   const built = buildFullDeck();
   state.fullDeck = built.deck;
@@ -317,7 +322,7 @@ function drawMore() {
      The hand is always the size you picked (5) — it never becomes 10 or 15.
      initDeck() deals unseen cards first, so a new hand doesn't repeat what this
      session already showed. Same behaviour as Continue on the end screen. */
-  initDeck();
+  initDeck(true);
   _nextCardBase();
   updateDeckInfo();
   updateDrawMore();
@@ -347,13 +352,12 @@ function renderEndMessage(html) {
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
-    // The deal animation is a one-time first impression, not a beat every fresh
-    // hand replays — so it only fires on the very first card this session ever
-    // shows (state.currentIndex === -1 alone would also be true after every
-    // settings change or Draw more, which is the "new hand" case, not "first ever").
-    const isFirstDraw = state.currentIndex === -1 && !state.hasDealtEver;
+    // The deal animation marks a new hand actually starting from a settings
+    // change — not "Draw more"/hold-to-continue, which extends play with the
+    // same settings and should feel like a plain next card, not a re-deal.
+    // initDeck(isContinuation) sets skipDealAnim accordingly on every reset.
+    const isFirstDraw = state.currentIndex === -1 && !state.skipDealAnim;
     state.currentIndex++;
-    if (isFirstDraw) state.hasDealtEver = true;
     flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();
@@ -475,7 +479,7 @@ function nextCard() {
       return;
     case 'reshuffle':
       if (action.consumeHold) window._endHoldOK = false;
-      initDeck();
+      initDeck(true);   /* same settings, next hand — no deal animation */
       _nextCardBase();   /* deal straight into the next hand — no blank card */
       return;
     case 'pick3':

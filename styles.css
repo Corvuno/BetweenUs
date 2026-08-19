@@ -250,8 +250,8 @@ body::before{
 .btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
 
 /* ── LIMIT ── */
-/* draw-mode: btn-next transforms at end of deck */
-.btn-draw.draw-mode,.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
+/* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
+.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.18em;}
 /* the very first draw of a hand — before any card has been dealt, or right
    after a settings change reset the deck. A pulsing glow makes this the
    obvious "start" tap instead of looking like every other "next" tap. */

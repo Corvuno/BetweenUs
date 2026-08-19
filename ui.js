@@ -301,21 +301,7 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
   if(qEl) setTimeout(()=>qEl.classList.add('in'),400);
 })();
 
-// updateDrawMore — transforms btn-next into "draw more" / "hold to continue" as needed
-
-
-// Tap btn-next while it shows "Draw more cards" → drawMore(). Capture phase, so
-// it runs instead of the normal nextCard click. No hold required.
-(function(){
-  const btn = document.getElementById('btn-next');
-  if (!btn) return;
-  btn.addEventListener('click', e => {
-    if (!btn.classList.contains('draw-mode')) return;
-    e.stopImmediatePropagation(); e.preventDefault();
-    btn.classList.remove('draw-mode');
-    drawMore(); updateDeckInfo();
-  }, true);
-})();
+// updateDrawMore — transforms btn-next into "hold to continue" at the end of a hand
 
 const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){

@@ -32,9 +32,10 @@ const state = {
   favourites: [],
   customCards: [],
   categoriesCollapsed: DEFAULT_COLLAPSED,
-  hasDealtEver: false,   // the "thrown onto the table" deal animation is a first-impression
-                          // moment, not a per-hand one — true after it's played once, so a
-                          // fresh hand (new settings, Draw more) gets the plain quick flip
+  skipDealAnim: false,   // set by initDeck(isContinuation) — true while dealing a fresh
+                          // hand under unchanged settings (Draw more, hold-to-continue),
+                          // so only a hand that starts from an actual settings change
+                          // gets the "thrown onto the table" animation
 };
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);

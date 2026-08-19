@@ -608,9 +608,7 @@ function updateDrawMore() {
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
 
-  const remaining = state.fullDeck.length - state.visibleDeck.length;
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
-  const atLastCard = state.visibleDeck.length > 0 && state.currentIndex === state.visibleDeck.length - 1; // last card of the hand
 
   // Twist is a lens on a drawn card — nothing to twist before the first
   // draw or on the end-of-round summary.
@@ -624,16 +622,12 @@ function updateDrawMore() {
   if (atSummary) {
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
     // pile 10 extra cards onto the finished hand instead of dealing a new one).
-    nextBtn.classList.remove('draw-mode');
+    // This is the only state that skips straight to a new hand, and it always
+    // needs the hold gesture — the last card of a hand still goes through this
+    // screen first, never a one-tap shortcut around it.
     nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
     nextBtn.textContent = state.lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
-  } else if (atLastCard && remaining > 0) {
-    // On the last card you can still extend the current hand by holding.
-    nextBtn.classList.remove('hold-mode');
-    nextBtn.classList.add('draw-mode');
-    nextBtn.textContent = state.lang === 'nl' ? 'Trek meer kaarten' : 'Draw more cards';
   } else {
-    nextBtn.classList.remove('draw-mode');
     nextBtn.classList.remove('hold-mode');
     nextBtn.textContent = state.currentIndex >= 0 ? (state.lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (state.lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
