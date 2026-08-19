@@ -565,19 +565,28 @@ body::before{
    (renderShell(), presentation.js), is what's actually happening right now:
    Mood takes the colour of the room the selection is in, Shuffle the colour
    of its bias. Cards has no "kind" to colour, so it stays neutral gold. */
-.tok{background:none;border:none;cursor:pointer;
+.tok{background:none;border:none;cursor:pointer;position:relative;
   font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:6px 10px 5px;border-bottom:2px solid color-mix(in srgb, var(--tokc,var(--gold)) 45%, transparent);
-  transition:all .2s;white-space:nowrap;}
+  padding:6px 14px 8px;transition:opacity .2s;white-space:nowrap;}
 .tok-lbl{font-size:.4rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);opacity:.8;transition:color .2s;}
-.tok-val{font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
-.tok-val::after{content:'\25BE';display:inline-block;margin-left:5px;font-size:.85em;opacity:.55;transition:transform .2s;color:var(--tokc,var(--gold));}
-.tok:hover{border-bottom-color:var(--tokc,var(--gold));opacity:.95;}
+/* the word itself stays centred in the token — the caret is taken out of
+   the text's own box (not just appended after it) and floated just past
+   its edge, so a longer word doesn't drag the whole label off-centre */
+.tok-val{position:relative;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
+.tok-val::after{content:'\25BE';position:absolute;left:100%;top:50%;transform:translateY(-50%);
+  margin-left:4px;font-size:.85em;opacity:.55;transition:transform .2s;color:var(--tokc,var(--gold));}
+/* underline as its own inset bar instead of a full-width border — spanning
+   the whole padded box read as heavier than the word it sits under */
+.tok::after{content:'';position:absolute;left:16px;right:16px;bottom:0;height:2px;
+  background:color-mix(in srgb, var(--tokc,var(--gold)) 45%, transparent);transition:background .2s;}
+.tok:hover{opacity:.95;}
+.tok:hover::after{background:var(--tokc,var(--gold));}
 .tok:hover .tok-lbl{color:var(--cream);}
 .tok.open .tok-lbl{color:var(--cream);}
 .tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
-.tok.open{opacity:1;border-bottom-color:var(--tokc,var(--gold));}
-.tok.open .tok-val::after{transform:rotate(180deg);}
+.tok.open{opacity:1;}
+.tok.open::after{background:var(--tokc,var(--gold));}
+.tok.open .tok-val::after{transform:translateY(-50%) rotate(180deg);}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
@@ -961,10 +970,12 @@ body::before{
 /* ── the two dials ── */
 .dials{padding:2px 2px 0;}
 .dial{padding:8px 0 0;}
-/* each dial's own line — a shared "How far in?" heading over two sliders
-   left it unclear which one measured what */
+/* each dial gets its own name AND its own line saying what moving it does —
+   one shared line over both sliders left it unclear which one did what */
 .dial-name{text-align:center;font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.16em;
-  text-transform:uppercase;color:rgba(240,232,216,.7);padding-bottom:4px;}
+  text-transform:uppercase;color:rgba(240,232,216,.7);padding-bottom:2px;}
+.dial-desc{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.7rem;line-height:1.35;color:var(--muted);opacity:.8;padding-bottom:8px;}
 .dial-ends{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:8px;
   font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--muted);padding-bottom:7px;}

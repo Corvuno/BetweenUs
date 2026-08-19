@@ -283,8 +283,12 @@ function shuffleShapeSVG(mode) {
         + `<circle cx="54" cy="11" ${d}/><circle cx="66" cy="9" ${d}/><circle cx="78" cy="7" ${d}/><circle cx="90" cy="5" ${d}/>`,
     breadth: ['#d58b34','#f3c33c','#669bbb','#65c9b0','#96b87b','#df7a91','#8066e1','#4dbebe']
         .map((c, i) => `<circle cx="${6 + i * 12}" cy="15" r="2.6" fill="${c}"/>`).join(''),
+    // Same idea as Breadth's own dots, not currentColor — Arc genuinely
+    // moves through three different rooms (warmup gold -> deeper purple ->
+    // findout blue, the exact chapter colours), so the icon carries that
+    // instead of asking a single flat colour to stand in for a journey.
     arc: `<path d="M5 24 C 20 24 22 6 48 6 S 76 24 91 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".35"/>`
-       + `<circle cx="5" cy="24" ${d}/><circle cx="26" cy="9" ${d}/><circle cx="48" cy="6" ${d}/><circle cx="70" cy="9" ${d}/><circle cx="91" cy="24" ${d}/>`,
+       + `<circle cx="5" cy="24" r="2.4" fill="#d9a441"/><circle cx="26" cy="9" r="2.4" fill="#b48c7c"/><circle cx="48" cy="6" r="2.4" fill="#8f74b8"/><circle cx="70" cy="9" r="2.4" fill="#6a8ab8"/><circle cx="91" cy="24" r="2.4" fill="#45a0b8"/>`,
   };
   if (!shapes[mode]) return '';
   return `<svg class="smp-shape" viewBox="0 0 96 30" aria-hidden="true">${shapes[mode]}</svg>`;
