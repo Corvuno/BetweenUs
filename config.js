@@ -44,8 +44,12 @@
       // the opt-in-only lists and Abyss). intensity/focus are 0-100, 50=balanced.
       // "Into the Deep" starts deselected — playtesters found it too daring
       // to be on by default; people can switch it on themselves once they
-      // know what they're choosing.
-      DEFAULT_SELECTION: { mode:'chapters', chapters:['findout','aboutus'], intensity:50, focus:50 },
+      // know what they're choosing. mode:'preset' routes through the same
+      // applyPreset() every mode button uses (PRESETS.balanced, below) so
+      // the matching button is correctly shown active on load, instead of
+      // a bespoke chapters-only selection no button could ever honestly
+      // claim.
+      DEFAULT_SELECTION: { mode:'preset', preset:'balanced', intensity:50, focus:50 },
     },
 
     // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.
@@ -193,6 +197,20 @@ const PRESETS = {
   open: {
     on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","bare"],
     available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
+    subtitle:  "Everything on the table"
+  },
+  // The public build's actual opening selection — Beneath the Surface +
+  // Between Us, deliberately short of Into the Deep and After Dark (see the
+  // "Into the Deep starts deselected" note on DEFAULT_SELECTION above). This
+  // used to be applied through a separate chapters-only code path that never
+  // marked any mode button active, since it matches neither "Everything"
+  // (broader) nor any narrower preset — it's its own thing, so it gets its
+  // own preset and button rather than leaving the row showing nothing
+  // selected.
+  balanced: {
+    on:        ["culture","life","home","work","unwind","world","self","mind","body","values","wish",
+                "past","roots","family","spirit","connect","friends","date","attract","us","usfriend","uslove"],
+    available: ["deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {

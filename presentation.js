@@ -100,24 +100,29 @@ function registerState(activeLevels) {
 // about it. Cards is a magnitude, not a kind of anything, so it never gets
 // one either; forcing a colour onto it would be exactly the "random, not
 // logical" pattern this table exists to avoid.
-// The Shape pane's live sentence — a plain-language read of where the two
-// dials currently sit, in the player's own terms (no "depth band"/"focus
-// band" talk, just what it means for the round). Reuses depthBand/focusBand
-// so it always agrees with whatever computeMood is also reading off the
-// same dials.
+// The Shape pane's live sentence — a plain-language read of where the round
+// actually sits, in the player's own terms (no "depth band"/"focus band"
+// talk). Runs through the same blendedBands() as the Mood token, so cranking
+// a dial with only light categories selected (Arrive alone, say) can't claim
+// "raw" here either — the words follow what could really get drawn, not
+// just where the slider happens to sit. Never assumes exactly two people:
+// the deck plays from two up to a full table (see the "How to play" tiles),
+// so "each other"/"the table" stands in for whoever showed up.
 const DEPTH_PHRASE = {
-  light: ['A', 'light'], easy: ['An', 'easy'], open: ['An', 'open'],
-  deep: ['A', 'deep'], raw: ['A', 'raw'],
+  light: ['A', 'light, easy'], easy: ['An', 'easygoing'], open: ['An', 'honest, open'],
+  deep: ['A', 'deep'], raw: ['A', 'raw, no-holds-barred'],
 };
 const FOCUS_PHRASE = {
-  self: 'mostly about yourself', mostlySelf: 'leaning your way',
-  balanced: 'balanced between the two of you', mostlyUs: 'leaning toward the two of you',
-  us: 'all about the two of you',
+  self: 'turned inward, everyone in their own head',
+  mostlySelf: 'leaning personal, but out loud',
+  balanced: 'split evenly between the personal and the shared',
+  mostlyUs: 'leaning toward what connects you',
+  us: "entirely about what's between you",
 };
-function roundSentence(intensity01, focus01) {
-  const [art, adj] = DEPTH_PHRASE[depthBand(intensity01)];
-  const foc = FOCUS_PHRASE[focusBand(focus01)];
-  return `${art} ${adj} evening, ${foc}.`;
+function roundSentence(activeLevels, intensity01, focus01) {
+  const { depth, focus } = blendedBands(activeLevels, intensity01, focus01);
+  const [art, adj] = DEPTH_PHRASE[depth];
+  return `${art} ${adj} evening, ${FOCUS_PHRASE[focus]}.`;
 }
 
 const REGISTER_COLOR = {
@@ -125,16 +130,11 @@ const REGISTER_COLOR = {
   betweenus: '#d97a92', afterdark: '#ff2f2f', charged: '#ff4f7a',
 };
 // Deep leans toward one place (Into the Deep's own purple) so it gets a flat
-// colour. Breadth and Arc don't lean toward one thing, they move across
-// several — reusing shuffleShapeSVG's own breadth palette and the three
-// chapters Arc's "warm start, deeper water, cool-down" journey actually
-// passes through, rather than picking one more single hue to stand in for
-// several. Wild has no lean at all, so it's left out — no entry here.
+// colour, a real single lean. Wild, Breadth and Arc don't lean toward one
+// thing — Wild has no bias at all, and Breadth/Arc move across several
+// categories rather than one — so none of them get a token colour; a
+// gradient here just read as noise on the one row meant to stay calm.
 const SHUFFLE_COLOR = { deep: '#8f74b8' };
-const SHUFFLE_GRADIENT = {
-  breadth: ['#d58b34','#f3c33c','#669bbb','#65c9b0','#96b87b','#df7a91','#8066e1','#4dbebe'],
-  arc: ['#d9a441','#8f74b8','#45a0b8'],
-};
 
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
 // Each cell holds 2 words, not 1 — see the note on computeMood below for why.
@@ -215,6 +215,23 @@ function pickFromCell(cell, levels, signature) {
   return lastMoodWord;
 }
 
+// Depth/focus bands stay dial-led (the dial is what the player actually
+// reached for), tinted 70/30 by what's actually selected — so cranking a
+// dial to its extreme with only light categories active (Arrive alone, say)
+// can't claim "raw" on its own; the selection pulls back toward what could
+// really get drawn. Shared by computeMood (the token's mood word) and
+// roundSentence (Shape's live line), so the two never disagree about what
+// the current dial+selection combination actually means.
+function blendedBands(activeLevels, sliderIntensity01, sliderFocus01){
+  const levels = activeLevels.filter(l => DECK_LEVELS.has(l));
+  if (!levels.length) return { depth01: sliderIntensity01, focus01: sliderFocus01, depth: depthBand(sliderIntensity01), focus: focusBand(sliderFocus01) };
+  const avgDepth = levels.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / levels.length;
+  const avgFocus = levels.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / levels.length;
+  const depth01 = Math.max(0, Math.min(1, .7*sliderIntensity01 + .3*avgDepth));
+  const focus01 = Math.max(0, Math.min(1, .7*sliderFocus01     + .3*avgFocus));
+  return { depth01, focus01, depth: depthBand(depth01), focus: focusBand(focus01) };
+}
+
 /* Mood = which room the selected chapters put you in (register), crossed
    with how exposed (depth band) and who it's about (focus band). Rule-based
    lookup, not a nearest-anchor search over an averaged coordinate — mixing
@@ -225,21 +242,7 @@ function computeMood(activeLevels, sliderIntensity01, sliderFocus01){
   if (!levels.length) return null;
 
   const register = registerState(levels);
-
-  // Depth/focus bands stay dial-led (the dial is what the player actually
-  // reached for), tinted 70/30 by what's selected so the band itself isn't
-  // 100% frozen to a fixed dial position — that nudge alone can't do all
-  // the work of breaking a repeat, though, since two different selections
-  // often average out close to the same spot. This nudge never touches
-  // register, only depth/focus — register washing out from averaging
-  // chapters of very different sizes was the original bug, not this.
-  const avgDepth = levels.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / levels.length;
-  const avgFocus = levels.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / levels.length;
-  const depth01 = Math.max(0, Math.min(1, .7*sliderIntensity01 + .3*avgDepth));
-  const focus01 = Math.max(0, Math.min(1, .7*sliderFocus01     + .3*avgFocus));
-
-  const depth = depthBand(depth01);
-  const focus = focusBand(focus01);
+  const { depth, focus } = blendedBands(levels, sliderIntensity01, sliderFocus01);
 
   // The real fix for the repeat: within whichever cell the dial+selection
   // lands on, which of its 2 words shows is keyed to exactly which
@@ -551,23 +554,18 @@ function renderShell() {
       if (tokCats) tokCats.style.removeProperty('--tokc');
     }
   }
-  // Shuffle token: active mode, coloured by what its bias actually leans toward
+  // Shuffle token: active mode. Deep gets its own flat colour (a real,
+  // single lean); Breadth and Arc move across several categories at once,
+  // and a gradient here read as noisy on the one row that's meant to stay
+  // calm — that richer picture stays where there's room for it (the order
+  // list's own icon), the main-screen token stays plain.
   const vOrder = document.getElementById('valOrder');
   const tokOrder = document.getElementById('tokOrder');
   if (vOrder && state.randomMode) {
     vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
     if (tokOrder) {
-      const grad = SHUFFLE_GRADIENT[state.randomMode];
       const sc = SHUFFLE_COLOR[state.randomMode];
-      if (grad) {
-        tokOrder.style.setProperty('--tokgrad', `linear-gradient(90deg, ${grad.join(',')})`);
-        tokOrder.style.setProperty('--tokc', grad[grad.length - 1]);
-        tokOrder.classList.add('tok--grad');
-      } else {
-        tokOrder.style.removeProperty('--tokgrad');
-        tokOrder.classList.remove('tok--grad');
-        sc ? tokOrder.style.setProperty('--tokc', sc) : tokOrder.style.removeProperty('--tokc');
-      }
+      sc ? tokOrder.style.setProperty('--tokc', sc) : tokOrder.style.removeProperty('--tokc');
     }
   }
   // Cards token: hand size / total matching cards, e.g. "5 / 214"
@@ -584,10 +582,10 @@ function renderShell() {
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
 
-  // Shape pane's live sentence — same dial reading as the Mood token, spelled out
+  // Shape pane's live sentence — same dial+selection reading as the Mood token, spelled out
   const sentenceEl = document.getElementById('roundSentence');
   if (sentenceEl && typeof intentIntensity !== 'undefined') {
-    sentenceEl.textContent = roundSentence(intentIntensity, (intentFocus + 1) / 2);
+    sentenceEl.textContent = roundSentence([...state.activeToggles], intentIntensity, (intentFocus + 1) / 2);
   }
 }
 

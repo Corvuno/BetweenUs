@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260819d">
+<link rel="stylesheet" href="styles.css?v=20260820a">
 </head>
 <body>
 <div class="glow"></div>
@@ -39,7 +39,8 @@
   <div class="preset-outer" id="preset-outer">
     <div class="preset-wrap" id="modeBarWrap">
       <div class="preset-row" id="modeBar">
-        <button class="mode-btn active" data-mode="open">Everything</button>
+        <button class="mode-btn" data-mode="open">Everything</button>
+        <button class="mode-btn active" data-mode="balanced">Balanced</button>
         <button class="mode-btn" data-mode="newpeople">New people</button>
         <button class="mode-btn" data-mode="friends">Friends</button>
         <button class="mode-btn" data-mode="dating">Date</button>
@@ -89,7 +90,7 @@
           <button class="chapter" data-chapter="warmup" style="--ch:#d9a441"><span class="ch-name">Arrive</span><span class="ch-desc">Get comfortable. Start talking.</span></button>
           <button class="chapter" data-chapter="findout" style="--ch:#45a0b8"><span class="ch-name">Beneath the Surface</span><span class="ch-desc">Where curiosity becomes connection.</span></button>
           <button class="chapter" data-chapter="deeper" style="--ch:#8f74b8"><span class="ch-name">Into the Deep</span><span class="ch-desc">When the conversation asks something of you.</span></button>
-          <button class="chapter" data-chapter="aboutus" style="--ch:#d97a92"><span class="ch-name">Between Us</span><span class="ch-desc">What exists only between the two of you.</span></button>
+          <button class="chapter" data-chapter="aboutus" style="--ch:#d97a92"><span class="ch-name">Between Us</span><span class="ch-desc">What's true only between the people at the table.</span></button>
           <div class="chapter chapter--afterdark" data-chapter="afterdark" style="--ch:#ff2f2f">
             <button type="button" class="ch-hit"><span class="ch-name">After Dark</span><span class="ch-desc">When desire enters the conversation.</span></button>
             <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn" title="A little more, once After Dark is open">&#10022;</button>
@@ -106,14 +107,16 @@
         <div class="play-note">These tilt how deep it goes, and who it's about &mdash; without changing what's on the table.</div>
         <div class="dials" id="dials">
           <div class="dial">
+            <div class="dial-name">Depth</div>
             <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
             <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
-                   aria-label="How far in: easy to intense">
+                   aria-label="Depth: easy to intense">
           </div>
           <div class="dial">
-            <div class="dial-ends"><span>Self</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
+            <div class="dial-name">Me &#8596; Us</div>
+            <div class="dial-ends"><span>Me</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
             <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
-                   aria-label="Who it is about: yourself to the two of you">
+                   aria-label="Me to Us: who it is about">
           </div>
         </div>
       </div>
@@ -632,15 +635,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260819d"></script>
-<script src="config.js?v=20260819d"></script>
-<script src="state.js?v=20260819d"></script>
-<script src="deck.js?v=20260819d"></script>
-<script src="card.js?v=20260819d"></script>
-<script src="library.js?v=20260819d"></script>
-<script src="session.js?v=20260819d"></script>
-<script src="selection.js?v=20260819d"></script>
-<script src="presentation.js?v=20260819d"></script>
-<script src="ui.js?v=20260819d"></script>
+<script src="questions.js?v=20260820a"></script>
+<script src="config.js?v=20260820a"></script>
+<script src="state.js?v=20260820a"></script>
+<script src="deck.js?v=20260820a"></script>
+<script src="card.js?v=20260820a"></script>
+<script src="library.js?v=20260820a"></script>
+<script src="session.js?v=20260820a"></script>
+<script src="selection.js?v=20260820a"></script>
+<script src="presentation.js?v=20260820a"></script>
+<script src="ui.js?v=20260820a"></script>
 </body>
 </html>

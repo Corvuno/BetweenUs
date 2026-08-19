@@ -711,6 +711,11 @@ applyToggleUI();
 
   /* token labels are rendered from state by renderShell() — no self-observation */
   renderShell();
+  // .limit-btn's "active" state was only ever applied reactively, after a
+  // tap — Section 3's #limitBtnsDrawer copy has no hardcoded default in its
+  // markup, so on load neither of its buttons showed the actual default
+  // (state.cardLimit, set from DEFAULT_LIMIT in state.js) as selected.
+  if (typeof syncLimitButtons === 'function') syncLimitButtons();
   $('tokLine').classList.add('in');
 
   /* fullscreen mirror of the pick-3 toggle */
@@ -895,23 +900,33 @@ applyToggleUI();
 
   /* ── defaults: what the app opens on, and what Draw plays ── */
   function applyDefaultSelection(){
-    const d = window.DEFAULT_SELECTION || { mode:'chapters', chapters:['findout','deeper','aboutus'], intensity:50, focus:50 };
-    releasePresetMask();
-    state.activeToggles.clear();
-    if (d.mode === 'all') {
-      document.querySelectorAll('.toggle-btn').forEach(b => {
-        const lvl = b.dataset.level;
-        if (!lvl || b.style.display === 'none') return;
-        if (lvl === 'backup' && !window.SHOW_BACKUP) return;
-        if (OPT_IN_ONLY.includes(lvl)) return;
-        if (state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl)) return;
-        state.activeToggles.add(lvl);
-      });
+    const d = window.DEFAULT_SELECTION || { mode:'preset', preset:'balanced', intensity:50, focus:50 };
+    if (d.mode === 'preset') {
+      // Routes through the exact same applyPreset() every mode button
+      // uses, so the matching button legitimately shows active — a
+      // selection that doesn't match any preset shouldn't leave every
+      // button looking equally (un)selected, see PRESETS.balanced.
+      applyPreset(d.preset);
+      document.querySelectorAll('.mode-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.mode === d.preset));
     } else {
-      (d.chapters || []).forEach(id => {
-        if (id === 'afterdark') { if (!openAfterDark()) return; }
-        setLevels(chapterLevels(id), true);
-      });
+      releasePresetMask();
+      state.activeToggles.clear();
+      if (d.mode === 'all') {
+        document.querySelectorAll('.toggle-btn').forEach(b => {
+          const lvl = b.dataset.level;
+          if (!lvl || b.style.display === 'none') return;
+          if (lvl === 'backup' && !window.SHOW_BACKUP) return;
+          if (OPT_IN_ONLY.includes(lvl)) return;
+          if (state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl)) return;
+          state.activeToggles.add(lvl);
+        });
+      } else {
+        (d.chapters || []).forEach(id => {
+          if (id === 'afterdark') { if (!openAfterDark()) return; }
+          setLevels(chapterLevels(id), true);
+        });
+      }
     }
     intentIntensity = (d.intensity != null ? d.intensity : 50) / 100;
     intentFocus     = ((d.focus != null ? d.focus : 50) / 100) * 2 - 1;
@@ -969,6 +984,7 @@ applyToggleUI();
      sits the most intense; Partner leans furthest toward Us. */
   const PRESET_DIALS = {
     open:       { intensity:50, focus:50 },
+    balanced:   { intensity:50, focus:50 },
     newpeople:  { intensity:15, focus:30 },
     friends:    { intensity:20, focus:45 },
     dating:     { intensity:40, focus:55 },
