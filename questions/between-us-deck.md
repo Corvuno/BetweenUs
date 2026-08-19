@@ -138,7 +138,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Body
 1. When did your body surprise you with what it could do?
-2. When does your body feel like it belongs to you?
+2. When did you last trust your body completely — what were you doing?
 3. When did you last move purely for the joy of it — no goal, no fitness?
 4. What music reaches your body before it reaches your head — and what happens?
 5. Point to where you carry your tension right now.
@@ -158,7 +158,7 @@ The questions come first, category by category. The full change log is at the bo
 4. When has a gut feeling known more than you did?
 5. Silence, no phone, nothing to do — how long before you actually start enjoying it?
 6. What does your inner voice sound like — and whose is it?
-7. Which of your opinions is just something you heard once?
+7. What's the most useful thing you've ever unlearned?
 8. What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?
 9. What's the earliest thing you remember — and is it actually yours?
 10. What do you keep understanding differently each time you think you've worked it out?
@@ -187,8 +187,8 @@ The questions come first, category by category. The full change log is at the bo
 4. Do you wait to make the first move, even when you're the one missing them?
 5. Who do you let interrupt you without ever getting annoyed?
 6. What do you do when you feel misunderstood — and does it work?
-7. Are you listening, or waiting for your turn?
-8. Have you ever worried about someone's relationship with a substance — or had someone worry about yours?
+7. Do you tend to over-explain or under-explain — and what does that cost you?
+8. What's the one thing someone could do that would make you feel instantly safe with them?
 9. Who did you forgive, without ever telling them?
 10. Do you apologize first even when you're not sure you're wrong, just to end it?
 11. When someone cries in front of you, what happens in you?
@@ -213,7 +213,7 @@ The questions come first, category by category. The full change log is at the bo
 2. Which pattern do you keep bringing into relationships, invited or not?
 3. How do you end things — and how do you want to be left?
 4. Previous partners undervalued something you offer in love...
-5. A flirt of yours gets shot down — describe the next sixty seconds inside you.
+5. What has a relationship given you that you didn't know you needed?
 6. What relationship rule do you question more than you admit?
 7. Which frightens you more: a relationship costing your freedom, or no relationship at all?
 8. Have you ever loved two people at the same time — and what did you do about it?
@@ -330,7 +330,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Your parents are getting old. What is that doing to you?
 8. Who became family without being family?
 9. Who in your family knows you best — and do they know that?
-10. What role do you play in your family — and is it one you chose?
+10. How much do you choose your family — and how much do you just endure them?
 11. What kind of parent are you — or would actually be? The honest guess, not the hoped-for one.
 12. Did you want children — and has that changed?
 
@@ -359,7 +359,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What would you trust me with that you'd trust no one else?
 9. When were you proudest of me?
 10. When have I made you laugh hardest?
-11. If this friendship had a title, what would it be?
+11. What's something about our friendship that's shifted — and have we talked about it?
 12. Who would you introduce me to — and why?
 
 ## Us: Love
@@ -401,7 +401,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Has your anger ever frightened someone?
 9. What would make you safeword out of life, if life had one?
 10. When did you last choose comfort over integrity?
-11. What are you doing right up until someone walks in?
+11. What do you despise in others that you quietly recognize in yourself?
 12. Which apology do you still owe?
 
 ## Wish
@@ -624,6 +624,47 @@ Four real answers to four cards in this deck. The test a card design lives or di
 ---
 
 # Change log
+
+## Patch v6.85 — third batch from the "version one" review: eight owner-approved swaps
+Owner picked donor slots for eight of the Tier-1 candidates from the ranked list, each
+naming the exact card to remove:
+
+- **Body 2** → *"When did you last trust your body completely — what were you doing?"*
+  Owner's own alternative pick, replacing "When does your body feel like it belongs to
+  you?" — flagged the previous patch as too abstract to answer from a concrete memory.
+- **Shadow 11** → *"What do you despise in others that you quietly recognize in
+  yourself?"* Replaces "What are you doing right up until someone walks in?" — the pure
+  projection lens, the mechanism no existing Shadow card used.
+- **Mind 7** → *"What's the most useful thing you've ever unlearned?"* Replaces "Which of
+  your opinions is just something you heard once?" (Mind 10 went to a different candidate
+  from the same batch last patch — this is Mind's second open slot.)
+- **Us: Friends 11** → *"What's something about our friendship that's shifted — and have
+  we talked about it?"* Replaces "If this friendship had a title, what would it be?" —
+  the meta-communication turn nothing else in the category does.
+- **Family 10** → *"How much do you choose your family — and how much do you just endure
+  them?"* Replaces "What role do you play in your family — and is it one you chose?" —
+  the two were flagged as close in territory; the owner resolved the near-duplicate by
+  swapping the older card out rather than running both.
+- **Romance 5** → *"What has a relationship given you that you didn't know you needed?"*
+  Replaces "A flirt of yours gets shot down — describe the next sixty seconds inside
+  you." Part of correcting Romance's balance — an audit this patch found four of its
+  twelve cards coded toward fear, rejection or conflict against only four in a genuinely
+  light/romantic register; this swap thins the heavy cluster by one.
+- **Connect 7** → *"Do you tend to over-explain or under-explain — and what does that
+  cost you?"* Replaces "Are you listening, or waiting for your turn?" — both were
+  communication-style/self-awareness cards sitting close together; the owner kept the
+  dichotomy version.
+- **Connect 8** → *"What's the one thing someone could do that would make you feel
+  instantly safe with them?"* Replaces "Have you ever worried about someone's
+  relationship with a substance — or had someone worry about yours?" — owner's call: the
+  substance-worry card didn't fit Connect's register, too heavy for the category.
+
+A second Connect candidate from the same batch, *"What's the most intimate thing someone
+can do that has nothing to do with sex?"* (recategorised from Raw, like the one above),
+is still unplaced — no donor slot chosen yet.
+
+Roughly 24 candidates remain from the original 55, still to be ranked and matched to
+slots.
 
 ## Patch v6.84 — second batch from the "version one" review: three owner-approved swaps
 Continuing the same review. These three came out of a collision pass — each candidate
