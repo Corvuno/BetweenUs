@@ -48,7 +48,7 @@ body::before{
    the same gold-tan as the Friendship category, "Dating" the same rose as
    Romance, and so on. "Everything" stays neutral: it has no single lean. */
 .mode-btn[data-mode="newpeople"]{--mc:#c99765;}
-.mode-btn[data-mode="friends"]{--mc:#d2a158;}
+.mode-btn[data-mode="friends"]{--mc:#6bb36e;}
 .mode-btn[data-mode="dating"]{--mc:#df7a91;}
 .mode-btn[data-mode="partner"]{--mc:#df7777;}
 .mode-btn[data-mode="latenight"]{--mc:#75609c;}

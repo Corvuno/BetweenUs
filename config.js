@@ -110,7 +110,7 @@ const LEVEL_COLORS = {
   mind:"#5082cd",attract:"#e8997a",grief:"#7d7da0",lens:"#96b87b",ground:"#86a666",
   connect:"#65c9b0",spirit:"#ad7ac6",past:"#b79c66",wish:"#937ac6",home:"#97c965",
   culture:"#c99765",date:"#df7a91",work:"#4dbebe",values:"#caae3d",
-  body:"#7bb397",move:"#65c77f",life:"#80bb66",roots:"#ad8d4c",friends:"#d2a158",
+  body:"#7bb397",move:"#65c77f",life:"#80bb66",roots:"#ad8d4c",friends:"#6bb36e",
   world:"#3aabdd",family:"#ba8e58",unwind:"#4ec1a0",
   colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
   usintimate:"#e84a4a",edge:"#c44ba8",flesh:"#e08055",carnal:"#c81f1f",
