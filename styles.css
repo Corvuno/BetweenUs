@@ -41,8 +41,20 @@ body::before{
 }
 .mode-btn:last-child{border-right:none;}
 .mode-btn:hover{color:rgba(240,232,216,.9);}
-.mode-btn.active{color:var(--gold);}
-.mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--gold);opacity:.5;}
+.mode-btn.active{color:var(--mc,var(--gold));}
+.mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--mc,var(--gold));opacity:.6;}
+/* Per-mode colour, reused from the exact category colours those modes draw
+   from (levelColor in config.js) — not decorative, so "Friends" really is
+   the same gold-tan as the Friendship category, "Dating" the same rose as
+   Romance, and so on. "Everything" stays neutral: it has no single lean. */
+.mode-btn[data-mode="newpeople"]{--mc:#c99765;}
+.mode-btn[data-mode="friends"]{--mc:#d2a158;}
+.mode-btn[data-mode="dating"]{--mc:#df7a91;}
+.mode-btn[data-mode="partner"]{--mc:#df7777;}
+.mode-btn[data-mode="latenight"]{--mc:#75609c;}
+.mode-btn[data-mode="solo"]{--mc:#669bbb;}
+.mode-btn[data-mode="work"]{--mc:#4dbebe;}
+.mode-btn[data-mode="family_p"]{--mc:#ba8e58;}
 
 /* ── CATEGORIES ── */
 .cat-area{width:100%;margin-top:8px;opacity:0;transition:opacity .4s .12s ease;}
@@ -89,8 +101,8 @@ body::before{
 .deselect-btn:first-child::after{content:'·';margin-left:8px;opacity:.25;pointer-events:none;}
 
 /* Mode bar active state — stronger signal */
-.mode-btn.active{color:var(--gold);font-weight:400;}
-.mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--gold);opacity:.7;}
+.mode-btn.active{color:var(--mc,var(--gold));font-weight:400;}
+.mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--mc,var(--gold));opacity:.7;}
 
 /* category grid */
 .cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
@@ -348,7 +360,11 @@ body::before{
 .party-pick:hover{color:var(--cream);}
 .party-pick.on{color:var(--gold);}
 .party-overlay.idle .party-pick{opacity:0;pointer-events:none;}
-.party-twist{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:2;background:none;border:none;color:var(--muted);
+/* Lower, not top-center-alone: up there it read as a fourth, disconnected
+   corner control, easy to miss entirely. This sits just above the hint line,
+   in the same cluster of "things near the card" as the rest of the controls
+   a player actually reaches for during a round. */
+.party-twist{position:fixed;bottom:52px;left:50%;transform:translateX(-50%);z-index:2;background:none;border:none;color:var(--muted);
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
   padding:8px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
 .party-twist:hover{color:var(--cream);}
@@ -538,21 +554,25 @@ body::before{
 .tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:10px 0 2px;
   opacity:0;transform:translateY(-4px);transition:opacity .5s .12s ease,transform .5s .12s ease;}
 .tok-line.in{opacity:1;transform:none;}
-/* visible chrome at rest (not just on hover) — a bare label with no border
-   or fill reads as plain text, not a button, until you touch it. The caret
-   is the same "this opens something" cue used everywhere else in the app. */
-.tok{background:rgba(255,255,255,.035);border:1px solid var(--dim);border-radius:7px;cursor:pointer;
+/* Visible at rest, not just on hover — a bare label with no border or fill
+   reads as plain text, not a button, until you touch it. Underline + caret
+   is the same "this opens something" cue used elsewhere, no pill/box (that
+   read as web-chrome, not part of this deck). --tokc, when a token sets it
+   (renderShell(), presentation.js), is what's actually happening right now:
+   Mood takes the colour of the room the selection is in, Shuffle the colour
+   of its bias. Cards has no "kind" to colour, so it stays neutral gold. */
+.tok{background:none;border:none;cursor:pointer;
   font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:6px 13px 5px;transition:all .2s;white-space:nowrap;}
+  padding:6px 10px 5px;border-bottom:2px solid color-mix(in srgb, var(--tokc,var(--gold)) 45%, transparent);
+  transition:all .2s;white-space:nowrap;}
 .tok-lbl{font-size:.4rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);opacity:.8;transition:color .2s;}
-.tok-val{font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);transition:color .2s;}
-.tok-val::after{content:'\25BE';display:inline-block;margin-left:5px;font-size:.85em;opacity:.55;transition:transform .2s;}
-.tok:hover{background:rgba(255,255,255,.06);border-color:var(--border);opacity:.95;}
+.tok-val{font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
+.tok-val::after{content:'\25BE';display:inline-block;margin-left:5px;font-size:.85em;opacity:.55;transition:transform .2s;color:var(--tokc,var(--gold));}
+.tok:hover{border-bottom-color:var(--tokc,var(--gold));opacity:.95;}
 .tok:hover .tok-lbl{color:var(--cream);}
-.tok:hover .tok-val{color:var(--gold-l);}
 .tok.open .tok-lbl{color:var(--cream);}
 .tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
-.tok.open{opacity:1;background:rgba(201,168,76,.09);border-color:rgba(201,168,76,.45);}
+.tok.open{opacity:1;border-bottom-color:var(--tokc,var(--gold));}
 .tok.open .tok-val::after{transform:rotate(180deg);}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
@@ -690,7 +710,11 @@ body::before{
 .toggle-btn--list::before{content:'\25B8';margin-right:5px;font-size:.85em;opacity:.45;}
 .toggle-btn--list.on::before{opacity:.9;}
 .mode-btn--list{color:rgba(240,232,216,.5);}
-.mode-btn--list::before{content:'\25B8';margin-right:5px;font-size:.85em;opacity:.5;}
+/* a list plays start-to-finish in a fixed order — a different KIND of thing
+   from the filter modes next to it, so it gets a different kind of glyph
+   (a small stack, not the triangle every other affordance in the app uses
+   to mean "this opens/points onward") */
+.mode-btn--list::before{content:'\2630';margin-right:6px;font-size:.8em;opacity:.55;}
 .mode-btn--list:hover{color:var(--list-col);}
 .mode-btn--list.active{color:var(--list-col);}
 .mode-btn--list.active::before{opacity:1;}

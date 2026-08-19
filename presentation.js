@@ -89,6 +89,23 @@ function registerState(activeLevels) {
   return 'arrive';
 }
 
+// Token-line colour, reused rather than invented: the Mood token takes the
+// same colour as the chapter/room registerState() says the selection is in
+// (the exact --ch colours the chapters already wear in the Shape pane), and
+// the Shuffle token takes the colour of what its bias actually leans toward
+// (Deep -> the same purple as leaning into Into the Deep; Breadth -> the
+// teal already used for Connect, since it spans everything at once; Arc ->
+// the warm coral of Attract, for its warm-in/warm-out journey). Wild has no
+// lean, so it stays uncoloured — the absence of a colour here IS the fact
+// about it. Cards is a magnitude, not a kind of anything, so it never gets
+// one either; forcing a colour onto it would be exactly the "random, not
+// logical" pattern this table exists to avoid.
+const REGISTER_COLOR = {
+  arrive: '#d9a441', surface: '#45a0b8', deepwater: '#8f74b8',
+  betweenus: '#d97a92', afterdark: '#ff2f2f', charged: '#ff4f7a',
+};
+const SHUFFLE_COLOR = { deep: '#8f74b8', breadth: '#65c9b0', arc: '#e8997a' };
+
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
 // Each cell holds 2 words, not 1 — see the note on computeMood below for why.
 const MOOD_GRID = {
@@ -489,15 +506,29 @@ function renderShell() {
   const total = [...document.querySelectorAll('.toggle-btn')]
     .filter(b => b.dataset.level && b.dataset.level !== 'backup' && b.style.display !== 'none').length;
   const vCats = document.getElementById('valCats'), lCats = document.getElementById('lblCats');
+  const tokCats = document.getElementById('tokCats');
   if (vCats) {
+    const activeLevels = [...state.activeToggles].filter(l => DECK_LEVELS.has(l));
     const mood = (typeof computeMood === 'function' && typeof intentIntensity !== 'undefined')
       ? computeMood([...state.activeToggles], intentIntensity, (intentFocus+1)/2) : null;
-    if (mood) { vCats.textContent = mood; if (lCats) lCats.textContent = 'Mood'; }
-    else      { vCats.textContent = state.activeToggles.size + '/' + total; if (lCats) lCats.textContent = 'Categories'; }
+    if (mood) {
+      vCats.textContent = mood; if (lCats) lCats.textContent = 'Mood';
+      const reg = activeLevels.length ? registerState(activeLevels) : null;
+      const col = reg && REGISTER_COLOR[reg];
+      if (tokCats) col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
+    } else {
+      vCats.textContent = state.activeToggles.size + '/' + total; if (lCats) lCats.textContent = 'Categories';
+      if (tokCats) tokCats.style.removeProperty('--tokc');
+    }
   }
-  // Shuffle token: active mode
+  // Shuffle token: active mode, coloured by what its bias actually leans toward
   const vOrder = document.getElementById('valOrder');
-  if (vOrder && state.randomMode) vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
+  const tokOrder = document.getElementById('tokOrder');
+  if (vOrder && state.randomMode) {
+    vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
+    const sc = SHUFFLE_COLOR[state.randomMode];
+    if (tokOrder) sc ? tokOrder.style.setProperty('--tokc', sc) : tokOrder.style.removeProperty('--tokc');
+  }
   // Cards token: hand size / total matching cards, e.g. "5 / 214"
   // Uses the raw filtered match count, not state.fullDeck.length — that's
   // already post-applyIntent (trimmed to the top ~30%, floor 20), so using
