@@ -65,16 +65,21 @@ body::before{
 .mode-btn[data-mode="work"]{--mc:#4dbebe;}
 .mode-btn[data-mode="family_p"]{--mc:#ba8e58;}
 
-/* Grouping without extra chrome: a touch of breathing room marks a new
-   cluster on mobile — no caption, real estate matters more than a label
-   there. The label itself only earns its keep once there's room to spare. */
-.mode-btn--group-start{margin-left:8px;}
+/* Grouping without extra chrome. Who's-here just needs breathing room
+   before it, not its own line — a bigger gap after Balanced is enough of a
+   seam. Context (Work/Late night/Solo) gets a hard line break at every
+   width, same mechanism the desktop label already uses (flex-basis:100%)
+   — collapsed to zero height so it costs nothing on mobile, and the same
+   element becomes the visible caption once there's room to spare. */
+.mode-btn--group-start{margin-left:14px;}
 .mode-group-lbl{display:none;}
+.mode-group-lbl--break{display:block;flex-basis:100%;height:0;overflow:hidden;}
 @media(min-width:768px){
   .mode-btn--group-start{margin-left:0;}
   .mode-group-lbl{display:block;flex-basis:100%;text-align:center;
     font-family:'Jost',sans-serif;font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;
     color:rgba(240,232,216,.35);padding:6px 0 1px;}
+  .mode-group-lbl--break{height:auto;overflow:visible;}
 }
 
 /* ── CATEGORIES ── */
@@ -387,12 +392,14 @@ body::before{
 /* Lower, not top-center-alone: up there it read as a fourth, disconnected
    corner control, easy to miss entirely. Sits down in the same cluster as
    the hint line, its own space near the bottom chrome rather than crowding
-   the card — no box around it, just larger, legible type. */
+   the card. The label itself is back to matching Close/Draw three exactly
+   (same size, same muted color, no border) — the legibility problem was
+   never the button word, it was the twist question text once chosen; see
+   .party-number.twist below. */
 .party-twist{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;
-  background:none;border:none;
-  color:rgba(240,232,216,.7);
-  font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
-  padding:8px 16px;cursor:pointer;transition:color .2s,opacity .5s ease;}
+  background:none;border:none;color:var(--muted);
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  padding:8px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
 .party-twist:hover{color:var(--cream);}
 .party-twist.active{color:var(--gold);}
 .party-overlay.idle .party-twist{opacity:0;pointer-events:none;}
@@ -410,7 +417,11 @@ body::before{
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.56rem,1.2vw,.72rem);letter-spacing:.24em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
 .party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:2;transition:color .2s ease;}
-.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.68rem,1.6vw,.88rem);letter-spacing:.01em;color:var(--gold-l);opacity:.95;}
+/* the actual illegibility problem: this wraps to two lines for most
+   modifiers and had no line-height of its own, inheriting the browser
+   default — cramped for italic serif at this size. */
+.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.68rem,1.6vw,.88rem);
+  letter-spacing:.01em;line-height:1.5;color:var(--gold-l);opacity:.95;padding:6px 0 2px;max-width:640px;}
 .party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:.4;}
 /* party card click zones — prev left 28%, next right 72% */
 .party-zone-prev,.party-zone-next{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}

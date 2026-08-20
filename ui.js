@@ -854,17 +854,17 @@ applyToggleUI();
     const note  = $('listModeNote');
     if (!note) return;
     const chaps = $('chapters');
-    const customizeBtn = $('customizeBtn');
     const text = LIST_MODE_TEXT[state.activePreset];
+    // Customize stays visible even in list mode — it's the only door into
+    // Explore now that the tab strip is gone, so hiding it here dead-ended
+    // anyone wanting to browse categories or switch fixed sets.
     if (text) {
       note.textContent = text;
       note.style.display = 'block';
       if (chaps) chaps.style.display = 'none';
-      if (customizeBtn) customizeBtn.style.display = 'none';
     } else {
       note.style.display = 'none';
       if (chaps) chaps.style.display = '';
-      if (customizeBtn) customizeBtn.style.display = '';
     }
   }
 
