@@ -416,7 +416,12 @@ body::before{
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.56rem,1.2vw,.72rem);letter-spacing:.24em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:2;transition:color .2s ease;}
+/* min-height reserves the twist state's typical two-line height up front —
+   without it, turning Twist on/off changes this element's height, and
+   since .party-inner centers the whole column, the question above jumps
+   to re-center. Reserving the space means nothing above ever has to move. */
+.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;
+  padding-bottom:2px;order:2;transition:color .2s ease;min-height:2.9rem;display:flex;align-items:center;justify-content:center;}
 /* the actual illegibility problem: this wraps to two lines for most
    modifiers and had no line-height of its own, inheriting the browser
    default — cramped for italic serif at this size. */
