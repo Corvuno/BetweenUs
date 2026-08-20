@@ -937,12 +937,12 @@ body::before{
 /* Customize leads from Shape into Explore's category grid — the sheet's only
    way down into that level of detail now that there's no tab strip to flip
    between the two; Back (in Explore) is the only way back up. */
-.customize-btn{display:flex;align-items:center;gap:5px;width:fit-content;margin:12px auto 0;
-  padding:2px 1px 3px;background:none;border:none;border-bottom:1px solid rgba(201,168,76,.4);
-  color:rgba(240,232,216,.75);font-family:'Jost',sans-serif;font-size:.58rem;
-  letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .2s,border-color .2s;}
+.customize-btn{display:flex;align-items:center;gap:5px;width:fit-content;margin:8px auto 0;
+  background:none;border:none;cursor:pointer;
+  color:rgba(240,232,216,.5);font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.2em;
+  text-transform:uppercase;padding:4px 0 8px;transition:color .2s;}
 .customize-btn::after{content:'\203A';font-size:.85rem;opacity:.6;}
-.customize-btn:hover{color:var(--gold-l);border-color:rgba(201,168,76,.8);}
+.customize-btn:hover{color:var(--gold);}
 
 /* Colbert/The 36 aren't tunable moods, so Explore is where they belong now —
    their own small block, not squeezed among filter-style category chips. */

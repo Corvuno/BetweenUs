@@ -1034,11 +1034,6 @@ applyToggleUI();
   const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn');
   if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
   if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
-  // Colbert/The 36 live in Explore now, but picking one is a "go" action
-  // like any preset — land back on Shape so the result (the list-mode note,
-  // chapters tucked away) is immediately visible, not left behind in Explore.
-  document.querySelectorAll('.fixed-seq-btn').forEach(btn =>
-    btn.addEventListener('click', () => showPane('play')));
 
   /* ── move the re-homed presets into Play, where they belong ── */
   const presetHost = document.querySelector('.preset-host'), playPane = $('panePlay');
