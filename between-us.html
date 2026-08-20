@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260820j">
+<link rel="stylesheet" href="styles.css?v=20260820k">
 </head>
 <body>
 <div class="glow"></div>
@@ -187,9 +187,11 @@
         </div>
       </div>
       <div class="fixed-seq">
-        <div class="fixed-seq-lbl">Or play a fixed set, start to finish</div>
-        <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert Questionnaire</button>
-        <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
+        <button class="fixed-seq-toggle" id="fixedSeqToggle">Or play a fixed set, start to finish</button>
+        <div class="fixed-seq-options" id="fixedSeqOptions">
+          <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert Questionnaire</button>
+          <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
+        </div>
       </div>
     </div>
 
@@ -631,15 +633,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260820j"></script>
-<script src="config.js?v=20260820j"></script>
-<script src="state.js?v=20260820j"></script>
-<script src="deck.js?v=20260820j"></script>
-<script src="card.js?v=20260820j"></script>
-<script src="library.js?v=20260820j"></script>
-<script src="session.js?v=20260820j"></script>
-<script src="selection.js?v=20260820j"></script>
-<script src="presentation.js?v=20260820j"></script>
-<script src="ui.js?v=20260820j"></script>
+<script src="questions.js?v=20260820k"></script>
+<script src="config.js?v=20260820k"></script>
+<script src="state.js?v=20260820k"></script>
+<script src="deck.js?v=20260820k"></script>
+<script src="card.js?v=20260820k"></script>
+<script src="library.js?v=20260820k"></script>
+<script src="session.js?v=20260820k"></script>
+<script src="selection.js?v=20260820k"></script>
+<script src="presentation.js?v=20260820k"></script>
+<script src="ui.js?v=20260820k"></script>
 </body>
 </html>

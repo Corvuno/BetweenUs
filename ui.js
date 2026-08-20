@@ -1035,6 +1035,14 @@ applyToggleUI();
   if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
   if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
 
+  // Fixed sets (Colbert/The 36) stay collapsed until asked for — no
+  // permanent space for something most sessions never touch.
+  const fixedSeqToggle = $('fixedSeqToggle'), fixedSeqOptions = $('fixedSeqOptions');
+  if (fixedSeqToggle && fixedSeqOptions) fixedSeqToggle.addEventListener('click', () => {
+    const open = fixedSeqOptions.classList.toggle('open');
+    fixedSeqToggle.classList.toggle('open', open);
+  });
+
   /* ── move the re-homed presets into Play, where they belong ── */
   const presetHost = document.querySelector('.preset-host'), playPane = $('panePlay');
   if (presetHost && playPane) playPane.insertBefore(presetHost, playPane.firstChild);

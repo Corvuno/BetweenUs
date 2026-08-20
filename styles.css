@@ -934,30 +934,31 @@ body::before{
    lets the dials shape it; Explore is the whole cabinet, drawer by drawer.
    The dials weight the draw — steep, but never to zero — they don't filter it. */
 
-/* Customize leads from Shape into Explore's category grid — the sheet's only
-   way down into that level of detail now that there's no tab strip to flip
-   between the two; Back (in Explore) is the only way back up. */
-.customize-btn{display:flex;align-items:center;gap:5px;width:fit-content;margin:8px auto 0;
-  background:none;border:none;cursor:pointer;
-  color:rgba(240,232,216,.5);font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.2em;
-  text-transform:uppercase;padding:4px 0 8px;transition:color .2s;}
-.customize-btn::after{content:'\203A';font-size:.85rem;opacity:.6;}
-.customize-btn:hover{color:var(--gold);}
+/* One shared "whisper" link style — Customize (Shape -> Explore), Back
+   (Explore -> Shape), and the fixed-set fold all read as the same kind of
+   affordance: plain text, a glyph, nothing louder. */
+.customize-btn,.pane-back-btn,.fixed-seq-toggle{display:flex;align-items:center;gap:5px;
+  background:none;border:none;cursor:pointer;color:rgba(240,232,216,.5);
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:4px 0 8px;transition:color .2s;}
+.customize-btn:hover,.pane-back-btn:hover,.fixed-seq-toggle:hover{color:var(--gold);}
+.customize-btn{width:fit-content;margin:8px auto 0;}
+.customize-btn::after,.fixed-seq-toggle::after{content:'\203A';font-size:.85rem;opacity:.6;
+  transition:transform .2s;}
 
-/* Colbert/The 36 aren't tunable moods, so Explore is where they belong now —
-   their own small block, not squeezed among filter-style category chips. */
-.fixed-seq{flex-shrink:0;border-top:1px solid var(--dim);margin-top:6px;padding:10px 4px 2px;}
-.fixed-seq-lbl{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.7rem;color:rgba(240,232,216,.5);padding-bottom:8px;}
+/* Colbert/The 36 aren't tunable moods, but almost nobody needs them most
+   sessions — a permanent block for them outweighed the actual category
+   grid. Tucked behind the same kind of fold Customize/Back already use:
+   zero space until opened. */
+.fixed-seq{flex-shrink:0;border-top:1px solid var(--dim);margin-top:6px;padding:6px 4px 2px;}
+.fixed-seq-toggle{width:fit-content;margin:8px auto 0;}
+.fixed-seq-toggle.open::after{transform:rotate(90deg);}
+.fixed-seq-options{display:none;padding-top:4px;}
+.fixed-seq-options.open{display:block;}
 .fixed-seq-btn{display:flex;width:100%;justify-content:center;padding:9px 10px;margin-bottom:5px;
   border:1px solid rgba(240,232,216,.14);border-radius:3px;}
 .fixed-seq-btn:last-child{margin-bottom:0;}
 .fixed-seq-btn::after{display:none;}
-
-.pane-back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;
-  color:rgba(240,232,216,.5);font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.2em;
-  text-transform:uppercase;padding:4px 0 8px;transition:color .2s;}
-.pane-back-btn:hover{color:var(--gold);}
 
 .pane{display:none;}
 .pane.on{display:block;}
