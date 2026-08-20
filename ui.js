@@ -691,7 +691,7 @@ applyToggleUI();
       toks.forEach(([t2,tr2])=>{$(t2).classList.remove('open');$(tr2).classList.remove('open');});
       if(!wasOpen){
         if(tr==='trayOrder') buildOrderList();
-        if(tr==='trayHand') $('handCap').textContent=(typeof state.lang!=='undefined'&&state.lang==='nl')?'Hoeveel kaarten per ronde':'How many cards per round';
+        if(tr==='trayHand') $('handCap').textContent=(typeof state.lang!=='undefined'&&state.lang==='nl')?'Hoeveel kaarten tegelijk':'How many cards per hand';
         $(t).classList.add('open');$(tr).classList.add('open');
       }
     });
