@@ -593,7 +593,7 @@ applyToggleUI();
   /* modes now live in the categories drawer as presets */
   const presetHost=document.createElement('div');
   presetHost.className='preset-host';
-  presetHost.innerHTML='<div class="preset-host-lbl">Start from</div>';
+  presetHost.innerHTML='<div class="preset-host-lbl">Who\'s at the table?</div>';
   presetHost.appendChild($('preset-outer'));
   const topbar=document.querySelector('.cat-area .cat-topbar');
   topbar.before(presetHost);            /* presets first … */

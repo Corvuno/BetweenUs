@@ -289,7 +289,13 @@ const ORDERED_SOLO_LEVELS = ['colbert', 'aron', 'magic'];
 // Opt-in-only: never swept up by Select All or auto-spice — a deliberate tap required.
 const OPT_IN_ONLY = ['colbert', 'aron', 'magic', 'abyss'];
 
-const SHUFFLE_MODES = ['wild','deep','breadth','arc'];
+// Deep and Breadth dropped from the picker: Deep duplicated what the Depth
+// dial already does (and does more precisely, continuously); Breadth's
+// whole premise ("one from every active category") surfaced "categories"
+// as a concept the player has to think about, which the app otherwise goes
+// out of its way to keep invisible. applyRandomMode()'s 'deep'/'breadth'
+// cases are left in place in deck.js, just unreachable from the UI now.
+const SHUFFLE_MODES = ['wild','arc'];
 
 
 // ═══════════════════════════════════════════════════════════

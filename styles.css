@@ -753,8 +753,11 @@ body::before{
 
 /* presets (former modes) at the top of the categories drawer */
 .preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:8px;}
-.preset-host-lbl{text-align:center;font-family:'Jost',sans-serif;font-size:.44rem;letter-spacing:.26em;
-  text-transform:uppercase;color:rgba(240,232,216,.6);padding-bottom:7px;}
+/* A real question, not a category caption — same italic serif voice as the
+   other "what does this do" notes, sized up a step for readability since
+   it's doing more work than a two-word label was. */
+.preset-host-lbl{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.9rem;line-height:1.3;color:rgba(240,232,216,.78);padding-bottom:8px;}
 .preset-host .preset-outer{display:block;width:100%;opacity:1;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
