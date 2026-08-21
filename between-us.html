@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260820p">
+<link rel="stylesheet" href="styles.css?v=20260820q">
 </head>
 <body>
 <div class="glow"></div>
@@ -26,14 +26,10 @@
   </div>
 
 
-  <!-- v6 TOKEN LINE -->
+  <!-- v6 TOKEN LINE — one entry point now: the active preset, in its own colour -->
   <div class="tok-line" id="tokLine">
-    <button class="tok" id="tokCats"><span class="tok-lbl" id="lblCats">Categories</span><span class="tok-val" id="valCats">38</span></button>
-    <button class="tok" id="tokOrder"><span class="tok-lbl">Shuffle</span><span class="tok-val" id="valOrder">Wild</span></button>
-    <button class="tok" id="tokHand"><span class="tok-lbl">Cards</span><span class="tok-val" id="valHand">5</span></button>
+    <button class="tok tok-preset" id="tokCats"><span class="tok-val" id="valCats">Balanced</span></button>
   </div>
-  <div class="tray" id="trayOrder"><div class="tray-inner" id="trayOrderInner"><div class="order-list" id="orderList"></div></div></div>
-  <div class="tray" id="trayHand"><div class="tray-inner" id="trayHandInner"><div class="tray-cap" id="handCap"></div></div></div>
 
   <!-- PRESET ROW -->
   <div class="preset-outer" id="preset-outer">
@@ -94,36 +90,40 @@
       </div>
 
       <div class="play-sect play-sect--2">
-        <div class="play-lead">Tune the conversation</div>
-        <div class="dials" id="dials">
-          <div class="dial">
-            <div class="dial-desc">Shifts the balance of the questions.</div>
-            <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
-            <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
-                   aria-label="Depth: easy to intense">
+        <div class="fixed-seq">
+          <button class="fixed-seq-toggle" id="finetuneToggle">Fine-tune the hand</button>
+          <div class="fixed-seq-options" id="finetuneOptions">
+            <div class="dials" id="dials">
+              <div class="dial">
+                <div class="dial-desc">Shifts the balance of the questions.</div>
+                <div class="dial-ends"><span>Easy</span><span class="dial-val" id="dialIntVal">Balanced</span><span>Intense</span></div>
+                <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
+                       aria-label="Depth: easy to intense">
+              </div>
+              <div class="dial">
+                <div class="dial-desc">Decides who the questions are about.</div>
+                <div class="dial-ends"><span>Me</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
+                <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
+                       aria-label="Me to Us: who it is about">
+              </div>
+            </div>
+            <div class="tray-cap" id="shuffleToggleCap">How the hand is shaped</div>
+            <div class="shuffle-toggle" id="shuffleToggle">
+              <button class="shuffle-toggle-opt" data-mode="arc">Arc</button>
+              <button class="shuffle-toggle-opt" data-mode="wild">Wild</button>
+            </div>
+            <div class="shuffle-toggle-note" id="shuffleToggleNote"></div>
+            <div class="tray-cap" id="handCapDrawer">How many cards per hand</div>
+            <div class="limit-row limit-row--drawer" id="limitBtnsDrawer">
+              <button class="limit-btn" data-limit="5">5</button>
+              <span class="limit-sep">&#183;</span>
+              <button class="limit-btn" data-limit="10">10</button>
+              <span class="limit-sep">&#183;</span>
+              <button class="limit-btn" data-limit="20">20</button>
+              <span class="limit-sep">&#183;</span>
+              <button class="limit-btn" data-limit="all">All</button>
+            </div>
           </div>
-          <div class="dial">
-            <div class="dial-desc">Decides who the questions are about.</div>
-            <div class="dial-ends"><span>Me</span><span class="dial-val" id="dialFocVal">Balanced</span><span>Us</span></div>
-            <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
-                   aria-label="Me to Us: who it is about">
-          </div>
-        </div>
-      </div>
-
-      <div class="play-sect play-sect--3">
-        <div class="play-lead">How does it play?</div>
-        <div class="play-note">The order you'll go through them, and how many you'll draw.</div>
-        <div class="order-list order-list--drawer" id="orderListDrawer"></div>
-        <div class="tray-cap" id="handCapDrawer">How many cards per hand</div>
-        <div class="limit-row limit-row--drawer" id="limitBtnsDrawer">
-          <button class="limit-btn" data-limit="5">5</button>
-          <span class="limit-sep">&#183;</span>
-          <button class="limit-btn" data-limit="10">10</button>
-          <span class="limit-sep">&#183;</span>
-          <button class="limit-btn" data-limit="20">20</button>
-          <span class="limit-sep">&#183;</span>
-          <button class="limit-btn" data-limit="all">All</button>
         </div>
       </div>
     </div>
@@ -234,16 +234,6 @@
       <button class="pick-toggle" id="pickToggle"><svg class="pt-card" viewBox="0 0 16 22" aria-hidden="true"><rect x="1" y="1" width="14" height="20" rx="2" fill="rgba(201,168,76,.14)" stroke="currentColor" stroke-width="1.3"/></svg><span>three</span></button>
       <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty">&#9974; Full Screen</button>
       <button class="btn-fullscreen twist-trigger" id="btnTwist" type="button">Twist</button>
-    </div>
-    <!-- Cards-per-round buttons — re-homed into the Cards token tray by the shell wiring -->
-    <div class="limit-row" id="limitBtns">
-      <button class="limit-btn active" data-limit="5">5</button>
-      <span class="limit-sep">&#183;</span>
-      <button class="limit-btn" data-limit="10">10</button>
-      <span class="limit-sep">&#183;</span>
-      <button class="limit-btn" data-limit="20">20</button>
-      <span class="limit-sep">&#183;</span>
-      <button class="limit-btn" data-limit="all">All</button>
     </div>
     <button class="draw-more-btn" id="drawMoreBtn">+ Draw 10 more</button>
     <div class="deck-info" id="deckInfo" style="display:none;"></div>
@@ -633,15 +623,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260820p"></script>
-<script src="config.js?v=20260820p"></script>
-<script src="state.js?v=20260820p"></script>
-<script src="deck.js?v=20260820p"></script>
-<script src="card.js?v=20260820p"></script>
-<script src="library.js?v=20260820p"></script>
-<script src="session.js?v=20260820p"></script>
-<script src="selection.js?v=20260820p"></script>
-<script src="presentation.js?v=20260820p"></script>
-<script src="ui.js?v=20260820p"></script>
+<script src="questions.js?v=20260820q"></script>
+<script src="config.js?v=20260820q"></script>
+<script src="state.js?v=20260820q"></script>
+<script src="deck.js?v=20260820q"></script>
+<script src="card.js?v=20260820q"></script>
+<script src="library.js?v=20260820q"></script>
+<script src="session.js?v=20260820q"></script>
+<script src="selection.js?v=20260820q"></script>
+<script src="presentation.js?v=20260820q"></script>
+<script src="ui.js?v=20260820q"></script>
 </body>
 </html>

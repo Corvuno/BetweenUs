@@ -89,17 +89,6 @@ function registerState(activeLevels) {
   return 'arrive';
 }
 
-// Token-line colour, reused rather than invented: the Mood token takes the
-// same colour as the chapter/room registerState() says the selection is in
-// (the exact --ch colours the chapters already wear in the Shape pane), and
-// the Shuffle token takes the colour of what its bias actually leans toward
-// (Deep -> the same purple as leaning into Into the Deep; Breadth -> the
-// teal already used for Connect, since it spans everything at once; Arc ->
-// the warm coral of Attract, for its warm-in/warm-out journey). Wild has no
-// lean, so it stays uncoloured — the absence of a colour here IS the fact
-// about it. Cards is a magnitude, not a kind of anything, so it never gets
-// one either; forcing a colour onto it would be exactly the "random, not
-// logical" pattern this table exists to avoid.
 // The Shape pane's live sentence — a plain-language read of where the round
 // actually sits, in the player's own terms (no "depth band"/"focus band"
 // talk). Runs through the same blendedBands() as the Mood token, so cranking
@@ -124,23 +113,6 @@ function roundSentence(activeLevels, intensity01, focus01) {
   const [art, adj] = DEPTH_PHRASE[depth];
   return `${art} ${adj} evening, ${FOCUS_PHRASE[focus]}.`;
 }
-
-const REGISTER_COLOR = {
-  arrive: '#d9a441', surface: '#45a0b8', deepwater: '#8f74b8',
-  betweenus: '#d97a92', afterdark: '#ff2f2f', charged: '#ff4f7a',
-};
-// Deep leans toward one place (Into the Deep's own purple) so it gets a flat
-// colour, a real single lean. Wild has no bias at all, so it stays
-// uncoloured. Arc genuinely moves through three rooms (see its icon, which
-// keeps the full three-colour journey), but a gradient on the one row meant
-// to stay calm read as noise, and no colour at all read as "no lens" — the
-// same thing Wild already says. One flat colour splits the difference: a
-// blend of the warm and cool ends of its own journey (steering clear of
-// gold, which already means "no lean" here, and of Deep's own purple).
-// Breadth gets one back too — the same teal its own icon already leans on
-// (Connect's colour), standing in for "touches everything at once" the way
-// Arc's blend stands in for "moves through a few rooms in sequence".
-const SHUFFLE_COLOR = { deep: '#8f74b8', arc: '#6a8ab8', breadth: '#65c9b0' };
 
 // The 5×5 mood word for each of the six rooms — depth band × focus band.
 // Each cell holds 2 words, not 1 — see the note on computeMood below for why.
@@ -601,55 +573,36 @@ function updateAfterDarkBtn() {
 // state and written here; callers invoke renderShell() after a state change
 // instead of the shell observing its own DOM for updates.
 function renderShell() {
-  // Categories token -> Mood: the sliders' energy, tinted by what's active.
-  // Bare count only when literally nothing is selected — there's no mood to name.
-  const total = [...document.querySelectorAll('.toggle-btn')]
-    .filter(b => b.dataset.level && b.dataset.level !== 'backup' && b.style.display !== 'none').length;
-  const vCats = document.getElementById('valCats'), lCats = document.getElementById('lblCats');
+  // Entry token -> the active preset's own name and colour, read straight
+  // off its .mode-btn (data-mode=state.activePreset) in the preset row —
+  // the same --mc/--list-col custom property that row already colours
+  // itself with, so the token can't drift out of sync with what "Balanced"
+  // or "Strangers" mean there. No colour set (open/balanced) falls back to
+  // gold via --tokc's own default.
+  const vCats = document.getElementById('valCats');
   const tokCats = document.getElementById('tokCats');
   if (vCats) {
-    const activeLevels = [...state.activeToggles].filter(l => DECK_LEVELS.has(l));
-    const mood = (typeof computeMood === 'function' && typeof intentIntensity !== 'undefined')
-      ? computeMood([...state.activeToggles], intentIntensity, (intentFocus+1)/2) : null;
-    if (mood) {
-      vCats.textContent = mood; if (lCats) lCats.textContent = 'Mood';
-      const reg = activeLevels.length ? registerState(activeLevels) : null;
-      const col = reg && REGISTER_COLOR[reg];
-      if (tokCats) col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
-    } else {
-      vCats.textContent = state.activeToggles.size + '/' + total; if (lCats) lCats.textContent = 'Categories';
-      if (tokCats) tokCats.style.removeProperty('--tokc');
+    const presetBtn = document.querySelector('.mode-btn[data-mode="' + state.activePreset + '"]');
+    vCats.textContent = state.activePreset === 'colbertmode' ? 'Colbert'
+      : (presetBtn ? presetBtn.textContent.trim() : state.activePreset);
+    if (tokCats) {
+      const cs = presetBtn && getComputedStyle(presetBtn);
+      const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
+      col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
     }
   }
-  // Shuffle token: active mode. Deep gets its own flat colour (a real,
-  // single lean); Breadth and Arc move across several categories at once,
-  // and a gradient here read as noisy on the one row that's meant to stay
-  // calm — that richer picture stays where there's room for it (the order
-  // list's own icon), the main-screen token stays plain.
-  const vOrder = document.getElementById('valOrder');
-  const tokOrder = document.getElementById('tokOrder');
-  if (vOrder && state.randomMode) {
-    vOrder.textContent = state.randomMode.charAt(0).toUpperCase() + state.randomMode.slice(1);
-    if (tokOrder) {
-      const sc = SHUFFLE_COLOR[state.randomMode];
-      sc ? tokOrder.style.setProperty('--tokc', sc) : tokOrder.style.removeProperty('--tokc');
-    }
-  }
-  // Cards token: hand size / total matching cards, e.g. "5 / 214"
-  // Uses the raw filtered match count, not state.fullDeck.length — that's
-  // already post-applyIntent (trimmed to the top ~30%, floor 20), so using
-  // it here understated the real pool (e.g. showed "20" when 66 cards
-  // actually matched the active selection).
-  const vHand = document.getElementById('valHand');
-  if (vHand) {
-    const handSize = (state.cardLimit == null) ? 'All' : String(state.cardLimit);
-    vHand.textContent = handSize + ' / ' + getFilteredCards().length;
-  }
+  // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
+  // that the main-screen Shuffle token is gone.
+  document.querySelectorAll('.shuffle-toggle-opt').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === state.randomMode));
+  const shuffleNote = document.getElementById('shuffleToggleNote');
+  if (shuffleNote) shuffleNote.textContent =
+    (typeof SHUFFLE_DESCRIPTIONS !== 'undefined' && SHUFFLE_DESCRIPTIONS[state.randomMode]) || '';
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
 
-  // Shape pane's live sentence — same dial+selection reading as the Mood token, spelled out
+  // Shape pane's live sentence — a plain-language read of the dials + selection
   const sentenceEl = document.getElementById('roundSentence');
   if (sentenceEl && typeof intentIntensity !== 'undefined') {
     sentenceEl.textContent = roundSentence([...state.activeToggles], intentIntensity, (intentFocus + 1) / 2);

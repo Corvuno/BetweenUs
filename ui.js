@@ -74,20 +74,13 @@ checkSavedSession();
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 
 
-// Card limit — the token tray's #limitBtns and Section 3's own
-// #limitBtnsDrawer are two separate button sets over the same state;
-// syncLimitButtons() already matches on the .limit-btn class everywhere in
-// the document, so picking one here updates both without extra wiring.
+// Card limit — #limitBtnsDrawer (inside the "Fine-tune the hand" fold) is
+// now the only card-count picker in the app.
 function selectCardLimit(limitAttr) {
   state.cardLimit = limitAttr === 'all' ? null : parseInt(limitAttr);
   syncLimitButtons();
   applyLimit();
 }
-document.getElementById('limitBtns').addEventListener('click', e => {
-  const btn = e.target.closest('.limit-btn');
-  if (!btn) return;
-  selectCardLimit(btn.dataset.limit);
-});
 const limitBtnsDrawer = document.getElementById('limitBtnsDrawer');
 if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
   const btn = e.target.closest('.limit-btn');
@@ -600,7 +593,6 @@ applyToggleUI();
   presetHost.after(topbar);             /* … then After Dark · All · None */
   const openRow=$('tokCats');
   const dc=$('deckCount'); dc.style.display='none'; openRow.appendChild(dc);
-  $('trayHandInner').append($('limitBtns'));  /* caption stays first */
 
   /* ── category sheet ── */
   const catArea=document.getElementById('cat-area'), scrim=$('catScrim'),
@@ -644,57 +636,27 @@ applyToggleUI();
     closeCats();
   });
 
-  /* ── order list (sort modes as a list, not a cycler) ──
-     Renders into both the token tray's #orderList AND Section 3 of the
-     Shape pane's #orderListDrawer — same markup, same state, so picking a
-     mode in either place is instantly reflected in the other. */
-  function buildOrderList(){
-    const html = SHUFFLE_MODES.map(m=>
-      `<button class="smp-row ${m===state.randomMode?'active':''}" data-mode="${m}">
-         ${typeof shuffleShapeSVG==='function'?shuffleShapeSVG(m):''}
-         <span class="smp-txt">
-           <span class="smp-name">${m}</span>
-           <span class="smp-desc">${(typeof SHUFFLE_DESCRIPTIONS!=='undefined'&&SHUFFLE_DESCRIPTIONS[m])||''}</span>
-         </span>
-       </button>`).join('');
-    const c = $('orderList'); if (c) c.innerHTML = html;
-    const cd = $('orderListDrawer'); if (cd) cd.innerHTML = html;
-  }
+  /* ── shuffle toggle: Arc vs Wild, a straight two-way switch ──
+     Deep/Breadth are gone from the picker (see SHUFFLE_MODES' note in
+     config.js) — Arc and Wild are the only two live shuffle modes, so this
+     is a plain toggle inside the fold, not a list. */
   function selectShuffleMode(mode){
     state.randomMode = mode;
     shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
-    updateShuffleDisplay(); initDeck(); updateDeckInfo(); updateDrawMore();
-    buildOrderList();
+    initDeck(); updateDeckInfo(); updateDrawMore();
+    renderShell();
   }
-  $('orderList').addEventListener('click',e=>{
-    const row=e.target.closest('.smp-row'); if(!row) return;
-    selectShuffleMode(row.dataset.mode);
-    setTimeout(closeTrays,220);
+  const shuffleToggle = $('shuffleToggle');
+  if (shuffleToggle) shuffleToggle.addEventListener('click', e => {
+    const btn = e.target.closest('.shuffle-toggle-opt'); if (!btn) return;
+    selectShuffleMode(btn.dataset.mode);
   });
-  const orderListDrawer = $('orderListDrawer');
-  if (orderListDrawer) orderListDrawer.addEventListener('click', e => {
-    const row = e.target.closest('.smp-row'); if (!row) return;
-    selectShuffleMode(row.dataset.mode);
-  });
-  buildOrderList();   // Section 3 isn't a lazily-opened tray — render it up front
 
-  /* ── accordion trays ── */
-  const toks=[['tokOrder','trayOrder'],['tokHand','trayHand']];
-  function closeTrays(){toks.forEach(([t2,tr2])=>{$(t2).classList.remove('open');$(tr2).classList.remove('open');});}
-  /* selection anywhere inside a tray closes it — open, change, close */
-  ;[['trayHandInner','.limit-btn']].forEach(([box,sel])=>{
-    $(box).addEventListener('click',e=>{ if(e.target.closest(sel)) setTimeout(closeTrays,220); });
-  });
-  toks.forEach(([t,tr])=>{
-    $(t).addEventListener('click',()=>{
-      const wasOpen=$(tr).classList.contains('open');
-      toks.forEach(([t2,tr2])=>{$(t2).classList.remove('open');$(tr2).classList.remove('open');});
-      if(!wasOpen){
-        if(tr==='trayOrder') buildOrderList();
-        if(tr==='trayHand') $('handCap').textContent=(typeof state.lang!=='undefined'&&state.lang==='nl')?'Hoeveel kaarten tegelijk':'How many cards per hand';
-        $(t).classList.add('open');$(tr).classList.add('open');
-      }
-    });
+  /* ── "Fine-tune the hand" fold: dials, shuffle toggle, card count ── */
+  const finetuneToggle = $('finetuneToggle'), finetuneOptions = $('finetuneOptions');
+  if (finetuneToggle && finetuneOptions) finetuneToggle.addEventListener('click', () => {
+    const open = finetuneOptions.classList.toggle('open');
+    finetuneToggle.classList.toggle('open', open);
   });
 
   /* token labels are rendered from state by renderShell() — no self-observation */
