@@ -988,9 +988,11 @@ body::before{
    "categories", just what happens to the round. Upright, not italic —
    italic Cormorant Garamond at this size read as too thin/faint to hold up
    as an instruction line (unlike the bigger card-question text it's
-   normally reserved for). */
+   normally reserved for). Weight + upright fixed the legibility; .94rem
+   overshot it the other way, reading bigger than the header it sits under
+   — pulled back under .play-lead's own .62rem-but-uppercase footprint. */
 .play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-weight:400;
-  font-size:.94rem;line-height:1.5;color:var(--cream);padding:0 10px 12px;}
+  font-size:.78rem;line-height:1.4;color:rgba(240,232,216,.8);padding:0 10px 8px;}
 
 /* Shape is three different KINDS of decision (what's in play, how it leans,
    how it's dealt out) — text only, no numbering (felt like a form, not part
