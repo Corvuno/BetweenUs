@@ -219,45 +219,49 @@ const PRESETS = {
     available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
     subtitle:  "Everything on the table"
   },
+  // Every preset below is banded now: "on" respects the depth ceiling the
+  // subtitle promises, "available" is the honest stretch beyond it. Full
+  // reasoning (why each is or isn't thin on purpose) is in the design log —
+  // the short version is in each subtitle.
   newpeople: {
-    on:        ["warm","quick","culture","unwind","world"],
-    available: ["connect","self","life","mind","wish","attract","spirit","body","aron","magic"],
-    subtitle:  "Strangers, parties, after the dance floor"
-  },
-  friends: {
-    on:        ["warm","friends","connect","culture","life","past","unwind","bare","deep","usfriend"],
-    available: ["values","mind","us","grief","body","flesh","carnal","abyss","aron","magic"],
-    subtitle:  "The people you chose"
-  },
-  dating: {
-    on:        ["warm","attract","date","connect","culture","bare"],
-    available: ["self","past","wish","values","us","usintimate","body","flesh","carnal","abyss","aron","magic"],
-    subtitle:  "For two, finding out"
-  },
-  partner: {
-    on:        ["us","uslove","connect","date","deep","wish","bare"],
-    available: ["usintimate","family","roots","grief","raw","home","body","flesh","carnal","kinks","abyss","aron","magic"],
-    subtitle:  "The two of you"
-  },
-  latenight: {
-    on:        ["deep","raw","self","connect","values","shadow","wish","bare"],
-    available: ["spirit","grief","past","roots","family","mind","world","body","carnal","abyss"],
-    subtitle:  "When it gets late and honest"
-  },
-  solo: {
-    on:        ["self","wish"],
-    available: ["deep","raw","shadow","mind","spirit","past","grief","body","magic"],
-    subtitle:  "Just you"
+    on:        ["quick","warm","culture","life","home","work","unwind","world"],
+    available: [],
+    subtitle:  "Light stuff only"
   },
   work: {
-    on:        ["quick","warm","work","culture","mind"],
-    available: ["life","values","world","connect","friends","unwind","wish","magic"],
-    subtitle:  "Safe for the office"
+    on:        ["quick","warm","culture","life","home","work","unwind","world","mind","wish"],
+    available: ["attract","friends","aron","magic"],
+    subtitle:  "Colleagues, with a little more room"
+  },
+  friends: {
+    on:        ["warm","culture","life","unwind","connect","friends","attract","usfriend"],
+    available: ["self","values","family","flesh","bare","past","deep","aron","magic"],
+    subtitle:  "The people you chose — going further"
   },
   family_p: {
-    on:        ["warm","quick","roots","family","culture","past"],
-    available: ["home","life","grief","us","usfriend","unwind","magic"],
-    subtitle:  "Across generations"
+    on:        ["warm","quick","culture","life","home","family","past"],
+    available: ["connect","usfriend","roots","magic"],
+    subtitle:  "Warm by default, deeper if you want it"
+  },
+  dating: {
+    on:        ["warm","culture","life","connect","date","attract","wish","values","spirit"],
+    available: ["self","flesh","bare","carnal","aron","magic"],
+    subtitle:  "Romance-shaped, still finding out"
+  },
+  partner: {
+    on:        ["us","uslove","connect","wish","family","body","spirit","self","values","date"],
+    available: ["past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","abyss","aron","magic"],
+    subtitle:  "Mostly everything — you already know each other"
+  },
+  latenight: {
+    on:        ["connect","self","values","wish","deep","unwind"],
+    available: ["raw","shadow","grief","past","roots","usintimate","flesh","carnal","bare","kinks","abyss"],
+    subtitle:  "Late, honest, and still fun"
+  },
+  solo: {
+    on:        ["self","wish","mind","values","spirit"],
+    available: ["past","roots","deep","magic"],
+    subtitle:  "Just you, and what you're chasing"
   },
   colbertmode: {
     on:        ["colbert"],
