@@ -741,11 +741,10 @@ applyToggleUI();
 
   const CHAPTERS = {
     warmup:    ['quick','warm'],
-    findout:   ['culture','life','home','work','unwind','world',
-                'self','mind','body','values','wish',
-                'past','roots','family','spirit',
-                'connect','friends','date','attract'],
-    deeper:    ['deep','raw','shadow','grief'],
+    surface:   ['culture','life','home','work','unwind','world'],
+    findout:   ['self','mind','body','values','wish',
+                'connect','friends','date','attract','family','spirit'],
+    deeper:    ['past','roots','deep','raw','shadow','grief'],
     aboutus:   ['us','usfriend','uslove'],
     afterdark: ['usintimate','flesh','carnal','bare','kinks'],
   };

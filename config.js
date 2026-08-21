@@ -66,8 +66,12 @@
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
       // narrower room, and a touch softer than balanced — still a real conversation,
-      // just not one that needs Between Us or the far end of the intensity dial
-      DEFAULT_SELECTION: { mode:'chapters', chapters:['findout','deeper'], intensity:35, focus:50 },
+      // just not one that needs Between Us or the far end of the intensity dial.
+      // 'surface' added alongside the split: 'findout' used to carry the light
+      // everyday categories itself, so leaving it out here would have quietly
+      // dropped Work straight into personal/reflective territory with no easy
+      // on-ramp left in front of it.
+      DEFAULT_SELECTION: { mode:'chapters', chapters:['surface','findout','deeper'], intensity:35, focus:50 },
     },
 
     // EDITOR — development build: spice pre-activated, dev conveniences on.
@@ -124,18 +128,28 @@ const LEVEL_COLORS = {
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 
 
-// ── Depth scale: the bands of the category grid, light (1) to deepest (8).
-//    Drives both the round-summary line AND Arc's own hand-shaping
-//    (_arcHand below) — After Dark is graded here too (usintimate/flesh
-//    easiest, kinks heavier, Abyss deepest), same ranking as LEVEL_INTENSITY,
-//    so Arc can tell them apart instead of treating them as one flat tier. ──
+// ── Depth/exposure scale: 1 (icebreaker) to 7 (confrontational), by how much
+//    a category's actual cards ask you to reveal — not by topic, and not by
+//    the After Dark gate. The gate (✦, SPICY_LEVELS below) is a separate axis
+//    entirely: who's allowed to see the card, not how hard it is to answer.
+//    That's why After Dark categories land all over this scale instead of
+//    clustering at the top — flesh/bare are mostly descriptive (band 3),
+//    kinks asks you to name something you keep quiet (band 5), abyss reads
+//    the same as roots/past — "tell me about the time/place you found this
+//    out" — so it sits with them (band 6), not off on its own.
+//    One table drives both the round-summary line and Arc's hand-shaping
+//    (_arcHand below); LEVEL_DEPTH and LEVEL_INTENSITY are kept as two names
+//    for historical call-site reasons, but they're intentionally identical
+//    now — a category has one depth, not two disagreeing ones. ──
 const LEVEL_DEPTH = {
-  quick:1, warm:1, colbert:1, aron:1, magic:1,
+  quick:1, warm:1, colbert:1, magic:1,
   culture:2, life:2, home:2, work:2, unwind:2, world:2,
-  self:3, body:3, mind:3, spirit:3, values:3, wish:3, past:3, roots:3, family:3,
-  connect:4, friends:4, date:4, attract:4, us:4, usfriend:4, uslove:4,
-  deep:5, raw:5, grief:5, shadow:5,
-  usintimate:6, flesh:6, carnal:6.5, bare:6.5, kinks:7, abyss:8,
+  mind:3, wish:3, attract:3, flesh:3, bare:3, friends:3,
+  connect:4, us:4, usfriend:4, uslove:4, usintimate:4, spirit:4, carnal:4,
+  self:5, values:5, body:5, date:5, family:5, kinks:5,
+  past:6, roots:6, abyss:6,
+  deep:7, raw:7, shadow:7, grief:7,
+  aron:4,
 };
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
 
@@ -147,22 +161,8 @@ function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
    still turn up the odd Warm card, same as one set to Easy can surprise you
    with something deeper. The same weighting runs under every shuffle mode,
    Arc included — Arc's own warm/deep/cool shape does the rest from there.
-
-   Intensity is one scale for the whole deck, so After Dark grades on it too:
-   Us: Intimate and Flesh are an easy end of that scale, Kink is not, and
-   Abyss stays off the dial entirely (opt-in only, like the ordered lists).
    Focus runs from a question about you to a question about the two of you. */
-const LEVEL_INTENSITY = {
-  quick:1, warm:1, colbert:1, magic:1, aron:2,
-  unwind:1, home:2, culture:2, life:2, work:2, world:3,
-  self:3, mind:3, body:3, values:3, wish:3,
-  family:3, spirit:4, roots:4, past:4,
-  connect:3, friends:3, date:3, attract:4,
-  us:3, usfriend:3, uslove:4,
-  deep:5, raw:5, shadow:6, grief:6,
-  usintimate:3, flesh:3, carnal:4, bare:4, kinks:6, abyss:8,
-  backup:3, failure:4, lens:3, desire:3, threshold:5, move:2, ground:3, edge:5,
-};
+const LEVEL_INTENSITY = LEVEL_DEPTH;
 const LEVEL_FOCUS = {
   self:-1, mind:-0.9, body:-0.8, values:-0.7, wish:-0.7, spirit:-0.6, past:-0.5, roots:-0.3,
   quick:0, warm:0, colbert:0, aron:0, magic:0,
@@ -275,7 +275,11 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 
 
 // Shuffle mode category pools
-const SPICY_LEVELS  = ['flesh','carnal','kinks','attract','bare','abyss'];
+// SPICY_LEVELS is the actual After Dark gate set (✦ in LEVEL_LABELS) — used
+// by Wild's spice-mode weave and by Arc's hand-shaping below to keep the
+// gate itself separate from the depth scale above. It used to list `attract`
+// (not gated) and miss `usintimate` (gated) — fixed to match the real ✦ set.
+const SPICY_LEVELS  = ['usintimate','flesh','carnal','bare','kinks','abyss'];
 const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
 const LIGHT_LEVELS  = ['warm','culture','unwind','home','work'];
 const BORDER_LEVELS = ['attract','raw'];

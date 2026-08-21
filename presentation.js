@@ -29,18 +29,22 @@
    stops being a real question — nothing is bucketed into 3 or 5 of
    anything; the coordinates are continuous, so the answer changes exactly
    as smoothly as the dials move. */
-/* Which of the five chapters each category belongs to, so mixing chapters
-   of very different sizes doesn't let the bigger one drown out the smaller
-   one — Beneath the Surface has 19 members, Into the Deep has 4, and a flat
-   average across raw categories would let 19 always outvote 4. Categories
-   outside the five main chapters (Colbert, The 36, Magical, Backup, Abyss)
-   fold into whichever chapter they read closest to on register. Kept in
-   sync with CHAPTERS in the controller script below. */
+/* Which chapter each category belongs to, so mixing chapters of very
+   different sizes doesn't let the bigger one drown out the smaller one, and
+   a flat average across raw categories can't let one outvote the rest.
+   Register stays coarser than the Play screen's chapter list on purpose —
+   The Surface and Beneath the Surface are two separate chapters to choose
+   from, but one "room" for mood purposes, same as Colbert/The 36/Magical/
+   Backup, which have no chapter of their own and fold into whichever room
+   they read closest to. Kept in sync with CHAPTERS in the controller
+   script below (past/roots moved from here into 'deeper' — a childhood
+   history question reads closer to Into the Deep's room than to Beneath
+   the Surface's). */
 const LEVEL_CHAPTER = {};
 [['warmup',['quick','warm','colbert','magic']],
  ['findout',['culture','life','home','work','unwind','world','self','mind','body','values','wish',
-             'past','roots','family','spirit','connect','friends','date','attract','aron','backup']],
- ['deeper',['deep','raw','shadow','grief']],
+             'family','spirit','connect','friends','date','attract','aron','backup']],
+ ['deeper',['past','roots','deep','raw','shadow','grief']],
  ['aboutus',['us','usfriend','uslove']],
  ['afterdark',['usintimate','flesh','carnal','bare','kinks','abyss']],
 ].forEach(([id,ls]) => ls.forEach(l => LEVEL_CHAPTER[l] = id));
@@ -231,7 +235,7 @@ function pickFromCell(cell, levels, signature) {
 function blendedBands(activeLevels, sliderIntensity01, sliderFocus01){
   const levels = activeLevels.filter(l => DECK_LEVELS.has(l));
   if (!levels.length) return { depth01: sliderIntensity01, focus01: sliderFocus01, depth: depthBand(sliderIntensity01), focus: focusBand(sliderFocus01) };
-  const avgDepth = levels.reduce((s,l) => s + (levelIntensity(l)-1)/7, 0) / levels.length;
+  const avgDepth = levels.reduce((s,l) => s + (levelIntensity(l)-1)/6, 0) / levels.length;
   const avgFocus = levels.reduce((s,l) => s + (levelFocus(l)+1)/2,     0) / levels.length;
   const depth01 = Math.max(0, Math.min(1, .7*sliderIntensity01 + .3*avgDepth));
   const focus01 = Math.max(0, Math.min(1, .7*sliderFocus01     + .3*avgFocus));
