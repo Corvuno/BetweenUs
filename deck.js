@@ -85,40 +85,6 @@ function applyRandomMode(arr) {
       }
       return shuffle(arr);
 
-    case 'deep': {
-      const deepPool = shuffle(arr.filter(c => DEEP_LEVELS.includes(c.level)));
-      const border   = shuffle(arr.filter(c => !state.safeMode && BORDER_LEVELS.includes(c.level) && !DEEP_LEVELS.includes(c.level)));
-      const light    = shuffle(arr.filter(c => LIGHT_LEVELS.includes(c.level) && !DEEP_LEVELS.includes(c.level)));
-      const spicy    = shuffle(arr.filter(c => !state.safeMode && SPICY_LEVELS.includes(c.level) && !BORDER_LEVELS.includes(c.level)));
-      const result = [];
-      let di=0, bi=0, li=0, si=0;
-      while (di<deepPool.length || bi<border.length || si<spicy.length) {
-        for (let i=0; i<4 && di<deepPool.length; i++) result.push(deepPool[di++]);
-        if (li < light.length && di % 8 < 2) result.push(light[li++]);
-        if (bi < border.length) result.push(border[bi++]);
-        if (si < spicy.length && di > deepPool.length * 0.7) result.push(spicy[si++]);
-      }
-      while (li<light.length) result.push(light[li++]);
-      return result;
-    }
-
-    case 'breadth': {
-      const byLevel = {};
-      arr.forEach(c => { (byLevel[c.level] = byLevel[c.level] || []).push(c); });
-      Object.keys(byLevel).forEach(k => { byLevel[k] = shuffle(byLevel[k]); });
-      const levels = shuffle(Object.keys(byLevel));
-      const result = [];
-      let round = 0, exhausted = false;
-      while (!exhausted) {
-        exhausted = true;
-        for (const lvl of levels) {
-          if (byLevel[lvl][round]) { result.push(byLevel[lvl][round]); exhausted = false; }
-        }
-        round++;
-      }
-      return result;
-    }
-
     case 'arc': {
       // Arc: cycling mini-arc pattern optimised for 5–20 card sessions.
       // Pattern per 4 cards: Warm → Deep → Deep → Cool (repeat).
