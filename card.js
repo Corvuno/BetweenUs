@@ -25,9 +25,11 @@ function pickTwist() {
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
 function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
-// Applies (or clears) the twist text on a counter element, leaving it alone
-// entirely when there's nothing to show — the base "x / y" text is written
-// by flipToCard/setCardDisplay/updatePartyDisplay just before this runs.
+// Applies (or clears) the twist text on a counter element. Clearing used to
+// just leave the element alone, on the assumption a fresh flipToCard() had
+// always just written the real "x / y" text a moment earlier — true when a
+// twist only ever cleared on a new card, false now that tapping Twist a
+// second time clears it in place, so this restores the count itself.
 function applyTwistToCounter(el) {
   if (!el) return;
   if (currentTwist) {
@@ -35,6 +37,7 @@ function applyTwistToCounter(el) {
     el.classList.add('twist');
   } else {
     el.classList.remove('twist');
+    if (hasCurrentCard()) el.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   }
 }
 function renderTwist() {
@@ -50,7 +53,12 @@ function renderTwist() {
 // hasCurrentCard() lives in presentation.js, next to atEnd() — safe to call
 // from here since this only ever runs from a click, well after every module
 // has loaded.
-function toggleTwist() { if (!hasCurrentCard()) return; currentTwist = pickTwist(); renderTwist(); }
+function toggleTwist() {
+  if (!hasCurrentCard()) return;
+  if (currentTwist) { clearTwist(); return; }   // tap again to untwist — was previously a one-way door
+  currentTwist = pickTwist();
+  renderTwist();
+}
 function clearTwist() { currentTwist = null; renderTwist(); }
 
 // ── TRANSLATION ───────────────────────────────────────────────────────────────

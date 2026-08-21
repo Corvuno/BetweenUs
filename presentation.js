@@ -276,7 +276,7 @@ function drawRoundTrace(cards) {
   const dots = pts.map((p, i) =>
     `<circle cx="${p[0]}" cy="${p[1]}" r="${cards.length > 24 ? 2.2 : 3}" fill="${levelColor(cards[i].level)}"/>`
   ).join('');
-  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The round you drew: ${cards.length} cards, from light to deep.">`
+  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The hand you drew: ${cards.length} cards, from light to deep.">`
        + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
        + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
        + dots + `</svg>`;

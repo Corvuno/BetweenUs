@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260820n">
+<link rel="stylesheet" href="styles.css?v=20260820p">
 </head>
 <body>
 <div class="glow"></div>
@@ -116,7 +116,7 @@
         <div class="play-lead">How does it play?</div>
         <div class="play-note">The order you'll go through them, and how many you'll draw.</div>
         <div class="order-list order-list--drawer" id="orderListDrawer"></div>
-        <div class="tray-cap" id="handCapDrawer">How many cards per round</div>
+        <div class="tray-cap" id="handCapDrawer">How many cards per hand</div>
         <div class="limit-row limit-row--drawer" id="limitBtnsDrawer">
           <button class="limit-btn" data-limit="5">5</button>
           <span class="limit-sep">&#183;</span>
@@ -487,7 +487,7 @@
 
     <h4>Going through the app</h4>
     <div class="hp-step"><span class="hp-num">1</span><div class="hp-body"><p><strong>Set the room.</strong> The three words at the top &mdash; <span class="ui">Categories</span> <span class="ui">Shuffle</span> <span class="ui">Cards</span> &mdash; are the whole setup. Open Categories and pick something to <em>start from</em>: Everything, New people, Friends, Date, Partner, Late night, Solo, Work, Family, or one of the two lists. Each switches on what fits that room and marks what's within reach. Below sits every category: choose one to add or drop it, hold it to read what it holds without changing anything.</p></div></div>
-    <div class="hp-step"><span class="hp-num">2</span><div class="hp-body"><p><strong>Choose how you draw.</strong> Shuffle sets the order, Cards sets how many you draw per round &mdash; 5, 10, 20, or the whole selection. Five is a conversation; twenty is an evening.</p></div></div>
+    <div class="hp-step"><span class="hp-num">2</span><div class="hp-body"><p><strong>Choose how you draw.</strong> Shuffle sets the order, Cards sets how many you draw at once &mdash; 5, 10, 20, or the whole selection. Five is a conversation; twenty is an evening.</p></div></div>
     <div class="hp-step"><span class="hp-num">3</span><div class="hp-body"><p><strong>Play.</strong> <span class="ui">Draw card</span> starts it, and the card itself does the rest:</p>
       <div class="hp-gest">
         <div class="hp-g">
@@ -524,7 +524,7 @@
       </div>
       <p class="hp-sub">Tap or click the card, or swipe. With a keyboard the arrow keys do the same, and &#8595; skips.</p>
       <p class="hp-sub"><span class="ui">Twist</span>, next to Full Screen, gives the card a different lens before you've answered it &mdash; how you'd have answered this five years ago, what someone close to you would notice first, what you'd say if it cost you nothing. Tap it and the card's own count swaps to the lens for that draw; tap again for a different one. Optional, and it never survives the next card.</p></div></div>
-    <div class="hp-step"><span class="hp-num">4</span><div class="hp-body"><p><strong>Let the round end.</strong> When the hand runs out, the card turns gold and shows you where you went: the categories you covered and anything you starred. Stop there. Stand up, stretch, get some air, let the last answer settle &mdash; a round has an end for a reason, and the deck will wait. Rolling straight into the next one is how a table stops listening.</p></div></div>
+    <div class="hp-step"><span class="hp-num">4</span><div class="hp-body"><p><strong>Let the hand end.</strong> When the hand runs out, the card turns gold and shows you where you went: the categories you covered and anything you starred. Stop there. Stand up, stretch, get some air, let the last answer settle &mdash; a hand has an end for a reason, and the deck will wait. Rolling straight into the next one is how a table stops listening.</p></div></div>
     <div class="hp-step"><span class="hp-num">5</span><div class="hp-body"><p><strong>Keep what's worth keeping.</strong> The menu (&#8801;) holds the log of everything drawn this session, the cards you starred, a save so you can pick the deck up later, your own written cards, the language switch, and Reshuffle &mdash; a fresh shuffle without changing anything else.</p></div></div>
 
     <h4>Filters, and lists</h4>
@@ -596,9 +596,9 @@
         <circle cx="48" cy="6" r="2.6" fill="currentColor"/><circle cx="70" cy="9" r="2.6" fill="currentColor"/>
         <circle cx="91" cy="24" r="2.6" fill="currentColor"/>
       </svg>
-      <div class="hp-shuf-t"><b>Arc</b>A warm start, deeper water, a cool-down &mdash; then round again. The four dots under the card show where you are.</div>
+      <div class="hp-shuf-t"><b>Arc</b>A warm start, deeper water, a cool-down &mdash; then it climbs again. The four dots under the card show where you are.</div>
     </div>
-    <p>Cards you've already drawn move to the back, so each new round gives you unseen questions until the selection runs dry. The lists ignore all of this: they play in their own order, always.</p>
+    <p>Cards you've already drawn move to the back, so each new hand gives you unseen questions until the selection runs dry. The lists ignore all of this: they play in their own order, always.</p>
 
     <h4>Full screen</h4>
     <p>The <span class="ui">Full screen</span> button leaves you the card and nothing else &mdash; for the middle of a table, or any screen the room can see. The right side of the card takes you to the next question, the left edge back, and swiping works too. Everything else fades away after a few seconds, and the screen won't sleep. Close, or Esc, brings the app back.</p>
@@ -634,15 +634,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260820n"></script>
-<script src="config.js?v=20260820n"></script>
-<script src="state.js?v=20260820n"></script>
-<script src="deck.js?v=20260820n"></script>
-<script src="card.js?v=20260820n"></script>
-<script src="library.js?v=20260820n"></script>
-<script src="session.js?v=20260820n"></script>
-<script src="selection.js?v=20260820n"></script>
-<script src="presentation.js?v=20260820n"></script>
-<script src="ui.js?v=20260820n"></script>
+<script src="questions.js?v=20260820p"></script>
+<script src="config.js?v=20260820p"></script>
+<script src="state.js?v=20260820p"></script>
+<script src="deck.js?v=20260820p"></script>
+<script src="card.js?v=20260820p"></script>
+<script src="library.js?v=20260820p"></script>
+<script src="session.js?v=20260820p"></script>
+<script src="selection.js?v=20260820p"></script>
+<script src="presentation.js?v=20260820p"></script>
+<script src="ui.js?v=20260820p"></script>
 </body>
 </html>

@@ -211,7 +211,7 @@ body::before{
    floating over it or the card's corner marks — see .card-body-inner's
    min-height:0, which is what lets it actually shrink. */
 .card-number.twist{
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.8rem;line-height:1.4;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
@@ -416,11 +416,16 @@ body::before{
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.56rem,1.2vw,.72rem);letter-spacing:.24em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;padding-bottom:2px;order:2;transition:color .2s ease;}
+/* min-height reserves the twist state's typical two-line height up front —
+   without it, turning Twist on/off changes this element's height, and
+   since .party-inner centers the whole column, the question above jumps
+   to re-center. Reserving the space means nothing above ever has to move. */
+.party-number{font-family:'Jost',sans-serif;font-size:clamp(.5rem,1vw,.58rem);letter-spacing:.2em;color:var(--muted);opacity:.38;
+  padding-bottom:2px;order:2;transition:color .2s ease;min-height:2.9rem;display:flex;align-items:center;justify-content:center;}
 /* the actual illegibility problem: this wraps to two lines for most
    modifiers and had no line-height of its own, inheriting the browser
    default — cramped for italic serif at this size. */
-.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.68rem,1.6vw,.88rem);
+.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.92rem,2.4vw,1.3rem);
   letter-spacing:.01em;line-height:1.5;color:var(--gold-l);opacity:.95;padding:6px 0 2px;max-width:640px;}
 .party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:.4;}
 /* party card click zones — prev left 28%, next right 72% */
@@ -762,7 +767,7 @@ body::before{
 .preset-host .preset-outer{display:block;width:100%;opacity:1;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
-.preset-host .mode-btn{font-size:.55rem;padding:7px 10px 7px 17px;}
+.preset-host .mode-btn{font-size:.64rem;padding:8px 11px 8px 18px;}
 .preset-host .mode-btn--list{padding:7px 10px;}
 .preset-host .mode-btn:not(.mode-btn--list)::before{left:6px;width:4px;height:4px;}
 /* Colbert/The 36 aren't chapters, so picking one leaves "What kind of
@@ -984,14 +989,14 @@ body::before{
 .pane-explore{flex:1;min-height:0;flex-direction:column;}
 .pane-explore.on{display:flex;}
 
-.play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(240,232,216,.55);opacity:1;padding:14px 0 9px;}
+.play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(240,232,216,.6);opacity:1;padding:14px 0 9px;}
 .play-lead--first{padding-top:6px;}
 /* each of the three controls in Shape (what/how far/how it plays) gets one
    short line saying what it does in player terms — no "chapters" or
    "categories", just what happens to the round */
 .play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.76rem;line-height:1.4;color:rgba(240,232,216,.68);padding:0 10px 6px;}
+  font-size:.84rem;line-height:1.4;color:rgba(240,232,216,.72);padding:0 10px 6px;}
 
 /* Shape is three different KINDS of decision (what's in play, how it leans,
    how it's dealt out) — text only, no numbering (felt like a form, not part
@@ -1045,9 +1050,9 @@ body::before{
   background:none;border:1px solid var(--dim);border-left:2px solid transparent;border-radius:2px;
   padding:8px 13px;transition:all .2s;}
 .chapter:hover{border-color:var(--border);}
-.chapter .ch-name{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.16em;
-  text-transform:uppercase;color:rgba(240,232,216,.62);white-space:nowrap;transition:color .2s;}
-.chapter .ch-desc{flex:1;font-size:.6rem;letter-spacing:.02em;color:var(--muted);opacity:.85;
+.chapter .ch-name{font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
+.chapter .ch-desc{flex:1;font-size:.68rem;letter-spacing:.02em;color:var(--muted);opacity:.9;
   line-height:1.35;}
 .chapter.on{border-left-color:var(--ch);background:rgba(255,255,255,.028);}
 .chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
@@ -1064,7 +1069,7 @@ body::before{
 /* the name label ("Depth"/"Me <-> Us") was dead weight once the dial-desc
    line already says what moving it does — cut, not just hidden */
 .dial-desc{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.74rem;line-height:1.35;color:rgba(240,232,216,.68);padding-bottom:8px;}
+  font-size:.82rem;line-height:1.35;color:rgba(240,232,216,.72);padding-bottom:8px;}
 .dial-ends{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:8px;
   font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--muted);padding-bottom:7px;}
