@@ -730,7 +730,11 @@ body::before{
 }
 
 /* presets (former modes) at the top of the categories drawer */
-.preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:8px;}
+/* Bottom margin carries most of the gap to "What kind of morning?" below —
+   it and "Who's at the table?" are meant to read as the same rank of
+   header, and a thin 8px hand-off read as one continuing list instead of
+   two sections. */
+.preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
 /* Same family as the other section headers in this drawer (What kind of
    [time]?, Tune the conversation, How does it play?) — all-caps, grey,
    Jost — not the italic serif notes underneath them. Sized up a step from
@@ -972,12 +976,21 @@ body::before{
 
 .play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;
   text-transform:uppercase;color:rgba(240,232,216,.6);opacity:1;padding:14px 0 9px;}
-.play-lead--first{padding-top:6px;}
+/* Was trimmed to 6px on the assumption this sits right under other chrome
+   with its own spacing — but "Who's at the table?" above gets to read as a
+   clean section start (title, breathing room, then the label); this was
+   getting swallowed into the preset row it follows instead. Matches
+   .play-lead's own top padding now, so the two headers actually read as
+   the same rank they're meant to be. */
+.play-lead--first{padding-top:14px;}
 /* each of the three controls in Shape (what/how far/how it plays) gets one
    short line saying what it does in player terms — no "chapters" or
-   "categories", just what happens to the round */
-.play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.9rem;line-height:1.45;color:rgba(240,232,216,.82);padding:0 10px 8px;}
+   "categories", just what happens to the round. Upright, not italic —
+   italic Cormorant Garamond at this size read as too thin/faint to hold up
+   as an instruction line (unlike the bigger card-question text it's
+   normally reserved for). */
+.play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-weight:400;
+  font-size:.94rem;line-height:1.5;color:var(--cream);padding:0 10px 12px;}
 
 /* Shape is three different KINDS of decision (what's in play, how it leans,
    how it's dealt out) — text only, no numbering (felt like a form, not part
