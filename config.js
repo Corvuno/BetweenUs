@@ -209,11 +209,14 @@ const PRESETS = {
   // selected.
   balanced: {
     on:        ["culture","life","home","work","unwind","world","self","mind","body","values","wish",
-                "past","roots","family","spirit","connect","friends","date","attract","us","usfriend","uslove"],
+                "family","spirit","connect","friends","date","attract","us","usfriend","uslove"],
     // "warm"/"quick" (Arrive) weren't listed at all, on or available — that
     // hid the whole Arrive chapter rather than just leaving it unselected,
-    // which isn't what "not on by default" was supposed to mean.
-    available: ["warm","quick","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
+    // which isn't what "not on by default" was supposed to mean. past/roots
+    // moved here from "on" too, now that they're part of Into the Deep —
+    // leaving them on left that chapter's button showing "part" on load, so
+    // a first click completed it to fully-on instead of clearing it.
+    available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
     subtitle:  "Everything on the table"
   },
   newpeople: {
