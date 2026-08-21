@@ -90,13 +90,17 @@ function applyRandomMode(arr) {
       // Pattern per 4 cards: Warm → Deep → Deep → Cool (repeat).
       // After 70% of deck: Warm slot becomes Deep (full depth phase).
       // No recovery breaths — unnecessary at short session lengths.
+      // Tiers read off the band table instead of a hardcoded list, so a future
+      // rebalance of LEVEL_DEPTH doesn't quietly drift out of sync with this.
+      // The gate (SPICY_LEVELS) is checked first and always wins 'S' — After
+      // Dark is graded by depth *within* S (see the sort below), not folded
+      // into L/M/H by its band number, since the gate is its own axis.
       const wt = c => {
-        if (['quick','colbert','warm','culture','unwind'].includes(c.level)) return 'L'; // light/warm
-        if (['deep','raw','grief','shadow','wish'].includes(c.level)) return 'H'; // heavy/deep
-        // After Dark itself, graded — not one flat tier. usintimate/flesh sit at
-        // the easy end of this pool, kinks/abyss at the heavy end (see LEVEL_INTENSITY).
-        if (['flesh','carnal','kinks','bare','usintimate','abyss'].includes(c.level)) return 'S';
-        return 'M'; // medium/cool (includes attract/date/us/usfriend/uslove — relational, not after-dark)
+        if (SPICY_LEVELS.includes(c.level)) return 'S';
+        const d = levelDepth(c.level);
+        if (d <= 2) return 'L';   // light/warm
+        if (d >= 5) return 'H';   // heavy/deep
+        return 'M';               // medium/cool
       };
       const pools = { L:[], M:[], H:[], S:[] };
       arr.forEach(c => pools[wt(c)].push(c));
@@ -264,6 +268,22 @@ function _arcHand(source, cap){
   const out = new Array(byDepth.length);
   let lo = 0, hi = byDepth.length - 1;
   byDepth.forEach((c, i) => { if (i % 2 === 0) out[lo++] = c; else out[hi--] = c; });
+
+  /* An opener from After Dark reads as a different game than the one the
+     table sat down for — fine as where a round lands, wrong as where it
+     starts. Never the first card; a rare 5% chance it survives as the
+     second; free everywhere from the third card on. Skipped when the hand
+     is After-Dark-only (nothing else to open with) or has none at all. */
+  const isAD = c => SPICY_LEVELS.includes(c.level);
+  if (out.some(c => !isAD(c))) {
+    const bump = (idx, surviveChance) => {
+      if (!out[idx] || !isAD(out[idx]) || Math.random() < surviveChance) return;
+      const swapAt = out.findIndex((c, i) => i > idx && !isAD(c));
+      if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
+    };
+    bump(0, 0);      // spot 1: never
+    bump(1, 0.05);   // spot 2: survives 5% of the time
+  }
   return out;
 }
 

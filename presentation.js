@@ -1,4 +1,3 @@
-// ── PRESENTATION ─────────────────────────────────────────────────────────────
 // Rendering that isn't specific to one card or one selection: progress dots,
 // the app shell's token line, party-mode display, drawers, language
 // switching, and the end-of-hand/end-of-round summaries — plus the listeners
