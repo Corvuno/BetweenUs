@@ -645,6 +645,11 @@ body::before{
 .tok.open::after{background:var(--tokc,var(--gold));}
 .tok.open .tok-val::after{transform:translateY(-50%) rotate(180deg);}
 
+/* the token row is down to one entry point — the active preset itself —
+   so it gets to read a size up from the old three-word row it replaced */
+.tok-preset{padding:8px 20px 10px;}
+.tok-preset .tok-val{font-size:.82rem;letter-spacing:.14em;}
+
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
 .tray.open{max-height:290px;overflow-y:auto;}
@@ -979,6 +984,22 @@ body::before{
   border:1px solid rgba(240,232,216,.14);border-radius:3px;}
 .fixed-seq-btn:last-child{margin-bottom:0;}
 .fixed-seq-btn::after{display:none;}
+
+/* Arc/Wild — a straight two-way switch, not a picker, now that Deep and
+   Breadth are gone. Arc gets its rainbow back as a gradient fill (it's the
+   one people should actually reach for); Wild stays a single warm amber —
+   it has no journey to show, just total chance. */
+.shuffle-toggle{display:flex;width:100%;max-width:320px;margin:10px auto 0;
+  border:1px solid rgba(240,232,216,.16);border-radius:20px;overflow:hidden;padding:3px;}
+.shuffle-toggle-opt{flex:1;text-align:center;padding:9px 0;font-family:'Jost',sans-serif;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.5);
+  background:none;border:none;border-radius:16px;cursor:pointer;transition:background .2s,color .2s;}
+.shuffle-toggle-opt[data-mode="arc"].active{
+  background:linear-gradient(90deg,#d9a441,#b48c7c,#8f74b8,#6a8ab8,#45a0b8);
+  color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);}
+.shuffle-toggle-opt[data-mode="wild"].active{background:rgba(232,160,64,.16);color:#e8a040;}
+.shuffle-toggle-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.78rem;color:rgba(240,232,216,.55);padding:8px 20px 2px;}
 
 .pane{display:none;}
 .pane.on{display:block;}
