@@ -730,6 +730,12 @@ applyToggleUI();
     return on === 0 ? 'off' : (on === pool.length ? 'on' : 'part');
   }
 
+  // Name is historical — it used to also drop state.activePreset and
+  // un-highlight the preset row, on the theory that touching a chapter or
+  // Explore bucket meant you'd left the preset behind. A tweak on top of
+  // Balanced is still Balanced, not nothing, so that part's gone: this now
+  // only re-syncs which toggle buttons are visible/locked (safe mode,
+  // in-deck, backup) — the preset identity itself survives an edit.
   function releasePresetMask(){
     document.querySelectorAll('.toggle-btn').forEach(b => {
       const lvl = b.dataset.level; if (!lvl) return;
@@ -738,8 +744,6 @@ applyToggleUI();
       b.style.display = hide ? 'none' : '';
       b.classList.toggle('hard-locked', !hide && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl));
     });
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-    state.activePreset = '';
     if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
 
@@ -886,6 +890,11 @@ applyToggleUI();
       document.querySelectorAll('.mode-btn').forEach(b =>
         b.classList.toggle('active', b.dataset.mode === d.preset));
     } else {
+      // Unlike an in-flight edit, this genuinely isn't any preset — the
+      // config named a chapter set or "all" instead, so nothing should
+      // claim to be Balanced (or anything else) here.
+      state.activePreset = '';
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
       releasePresetMask();
       state.activeToggles.clear();
       if (d.mode === 'all') {

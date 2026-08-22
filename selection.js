@@ -117,8 +117,8 @@ document.getElementById('toggles').addEventListener('click', e => {
   if (btn._longPressed) { btn._longPressed = false; return; }   // long-press reads, never toggles
   const lvl = btn.dataset.level;
   state.activeToggles[state.activeToggles.has(lvl) ? 'delete' : 'add'](lvl);
-  state.activePreset = '';
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  // activePreset deliberately survives this — a category tweak on top of
+  // Balanced is still "Balanced," not nothing. See releasePresetMask().
   applyToggleUI();
   initDeck();
   // Show tooltip briefly then fade
