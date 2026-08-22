@@ -226,42 +226,42 @@ const PRESETS = {
   newpeople: {
     on:        ["quick","warm","culture","life","home","work","unwind","world"],
     available: [],
-    subtitle:  "Light stuff only"
+    subtitle:  "No history required."
   },
   work: {
     on:        ["quick","warm","culture","life","home","work","unwind","world","mind","wish"],
     available: ["attract","friends","aron","magic"],
-    subtitle:  "Colleagues, with a little more room"
+    subtitle:  "Still colleagues after this."
   },
   friends: {
     on:        ["warm","culture","life","unwind","connect","friends","attract","usfriend"],
     available: ["self","values","family","flesh","bare","past","deep","aron","magic"],
-    subtitle:  "The people you chose — going further"
+    subtitle:  "Old comfort, new ground."
   },
   family_p: {
     on:        ["warm","quick","culture","life","home","family","past"],
     available: ["connect","usfriend","roots","magic"],
-    subtitle:  "Warm by default, deeper if you want it"
+    subtitle:  "Nothing that can't be said with grandma in the room."
   },
   dating: {
     on:        ["warm","culture","life","connect","date","attract","wish","values","spirit"],
     available: ["self","flesh","bare","carnal","aron","magic"],
-    subtitle:  "Romance-shaped, still finding out"
+    subtitle:  "Finding out if there's a second one."
   },
   partner: {
     on:        ["us","uslove","connect","wish","family","body","spirit","self","values","date"],
     available: ["past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","abyss","aron","magic"],
-    subtitle:  "Mostly everything — you already know each other"
+    subtitle:  "Just the two of you."
   },
   latenight: {
     on:        ["connect","self","values","wish","deep","unwind"],
     available: ["raw","shadow","grief","past","roots","usintimate","flesh","carnal","bare","kinks","abyss"],
-    subtitle:  "Late, honest, and still fun"
+    subtitle:  "The friends who don't flinch."
   },
   solo: {
     on:        ["self","wish","mind","values","spirit"],
     available: ["past","roots","deep","magic"],
-    subtitle:  "Just you, and what you're chasing"
+    subtitle:  "Nobody's listening but you."
   },
   colbertmode: {
     on:        ["colbert"],
@@ -371,12 +371,12 @@ const CATEGORY_DESCRIPTIONS = {
 
 
 const BUCKET_DESCRIPTIONS = {
-  easein:        "Small talk that's actually good talk — plus the sequences that play in order",
+  easein:        "Small talk that's actually good talk",
   everyday:      "Days, rooms, and the ordinary made worth saying",
+  viewpoints:    "What you make of things — taste, the world, and what you believe",
   reflection:    "Who you are once the roles come off",
-  foundations:   "Where you're from, and what it's still doing",
-  relationships: "The people you choose, and how you choose them",
-  vulnerability: "The harder questions, for when the room is ready",
+  relationships: "The people you choose, and the family you didn't",
+  vulnerability: "Where you're from, and how far the room is willing to go",
   usb:           "About the two of you. Directly",
   afterdarkb:    "Desire, named — open to anyone at the table, not only lovers \u2726",
   meta:          "Overflow — questions with merit that did not make the top ten",
