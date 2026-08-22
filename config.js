@@ -281,15 +281,11 @@ const PRESETS = {
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 
-// Shuffle mode category pools
 // SPICY_LEVELS is the actual After Dark gate set (✦ in LEVEL_LABELS) — used
-// by Wild's spice-mode weave and by Arc's hand-shaping below to keep the
-// gate itself separate from the depth scale above. It used to list `attract`
-// (not gated) and miss `usintimate` (gated) — fixed to match the real ✦ set.
+// by Wild's spice-mode weave and by Arc's hand-shaping. It used to list
+// `attract` (not gated) and miss `usintimate` (gated) — fixed to match the
+// real ✦ set.
 const SPICY_LEVELS  = ['usintimate','flesh','carnal','bare','kinks','abyss'];
-const DEEP_LEVELS   = ['deep','raw','self','values','mind','spirit','past','roots','connect','life','date','friends','world','body'];
-const LIGHT_LEVELS  = ['warm','culture','unwind','home','work'];
-const BORDER_LEVELS = ['attract','raw'];
 // COLBERT_OPTIONAL: questions present in the deck but not in the canonical 15.
 // When COLBERT_STRICT = true (HTML setting), these are filtered out during Colbert-solo play.
 const COLBERT_OPTIONAL = ['Window or aisle?','Earliest memory?','Cats or dogs?'];
@@ -304,8 +300,9 @@ const OPT_IN_ONLY = ['colbert', 'aron', 'magic', 'abyss'];
 // dial already does (and does more precisely, continuously); Breadth's
 // whole premise ("one from every active category") surfaced "categories"
 // as a concept the player has to think about, which the app otherwise goes
-// out of its way to keep invisible. applyRandomMode()'s 'deep'/'breadth'
-// cases are left in place in deck.js, just unreachable from the UI now.
+// out of its way to keep invisible. applyRandomMode()'s switch in deck.js
+// still has a default (plain shuffle) for any old saved session that has
+// 'deep'/'breadth' in storage, but the cases themselves are gone.
 const SHUFFLE_MODES = ['wild','arc'];
 
 
@@ -313,10 +310,8 @@ const SHUFFLE_MODES = ['wild','arc'];
 // SHUFFLE MODE DESCRIPTIONS
 // ═══════════════════════════════════════════════════════════
 const SHUFFLE_DESCRIPTIONS = {
-  wild:    'Fully random — anything goes',
-  deep:    'Leans toward harder, more vulnerable questions',
-  breadth: 'One from every active category, cycling',
-  arc:     'Warm start, depth, cool-down — repeating pattern'
+  wild: 'Fully random — anything goes',
+  arc:  'Warm start, depth, cool-down — repeating pattern'
 };
 
 

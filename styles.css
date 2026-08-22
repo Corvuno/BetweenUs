@@ -451,24 +451,6 @@ body::before{
 .sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
 .drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
 .drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
-.smp-shape{width:38px;height:auto;color:rgba(240,232,216,.45);}
-.smp-row.active .smp-shape{color:var(--gold-l);}
-/* The tray copy (#orderList) is rebuilt fresh every time it's opened — a
-   discrete action — so its dots get a brief pulse-in, signalling the
-   coloring is live, not decoration. The always-visible drawer copy
-   (#orderListDrawer) stays still; looping there would fight the calm
-   main screen. */
-@keyframes smpDotPulse{0%{opacity:.25;transform:scale(.6);}65%{opacity:1;transform:scale(1.15);}100%{opacity:1;transform:scale(1);}}
-#orderList .smp-shape circle{transform-box:fill-box;transform-origin:center;
-  animation:smpDotPulse .5s ease-out backwards;}
-#orderList .smp-shape circle:nth-of-type(2){animation-delay:.035s;}
-#orderList .smp-shape circle:nth-of-type(3){animation-delay:.07s;}
-#orderList .smp-shape circle:nth-of-type(4){animation-delay:.105s;}
-#orderList .smp-shape circle:nth-of-type(5){animation-delay:.14s;}
-#orderList .smp-shape circle:nth-of-type(6){animation-delay:.175s;}
-#orderList .smp-shape circle:nth-of-type(7){animation-delay:.21s;}
-#orderList .smp-shape circle:nth-of-type(8){animation-delay:.245s;}
-.smp-txt{display:flex;flex-direction:column;gap:2px;min-width:0;align-items:center;}
 .sic-star{font-family:'Jost',sans-serif;font-size:.54rem;letter-spacing:.07em;color:var(--muted);line-height:1.45;text-align:center;}
 
 
@@ -558,20 +540,6 @@ body::before{
 /* ── LANG TOGGLE INLINE (screen-row) ── */
 .lang-toggle--inline{display:flex;border:none;flex-shrink:0;gap:2px;}
 .lang-toggle--inline .lang-opt{padding:8px 8px;}
-
-/* ── SHUFFLE MODE TILES (used by both the Shuffle token tray and Section 3
-   of the Shape pane) — four short rows used to run the full height of
-   whichever list held them; a 2x2 grid of compact tiles says the same
-   thing (icon, name, one line on what it does) in a quarter of the space. */
-.smp-row{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;
-  background:none;border:1px solid var(--dim);border-radius:4px;cursor:pointer;
-  padding:10px 8px;transition:all .2s;}
-.smp-row:hover{border-color:var(--border);background:rgba(255,255,255,.02);}
-.smp-row.active{border-color:rgba(201,168,76,.45);background:rgba(201,168,76,.06);}
-.smp-row.active .smp-name{color:var(--gold);}
-.smp-name{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);}
-.smp-desc{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.74rem;line-height:1.3;color:rgba(240,232,216,.62);
-  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;}
 
 /* ── CATEGORY TOOLTIP ── */
 .cat-grid-wrap{scrollbar-width:none;}
@@ -762,7 +730,11 @@ body::before{
 }
 
 /* presets (former modes) at the top of the categories drawer */
-.preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:8px;}
+/* Bottom margin carries most of the gap to "What kind of morning?" below —
+   it and "Who's at the table?" are meant to read as the same rank of
+   header, and a thin 8px hand-off read as one continuing list instead of
+   two sections. */
+.preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
 /* Same family as the other section headers in this drawer (What kind of
    [time]?, Tune the conversation, How does it play?) — all-caps, grey,
    Jost — not the italic serif notes underneath them. Sized up a step from
@@ -851,10 +823,6 @@ body::before{
 .d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}
 .d-label{letter-spacing:.2em;}
 
-/* shuffle-mode tiles — 2x2 grid, used by both the token tray and Section 3 */
-.order-list{width:100%;max-width:400px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.order-list .smp-name{letter-spacing:.18em;}
-
 /* ── DESKTOP — a room, not a stretched phone ── */
 @media(min-width:768px){
   .tok{font-size:.68rem;}
@@ -904,8 +872,6 @@ body::before{
   .d-label{font-size:.72rem;} .d-sub{font-size:.6rem;} .d-icon{font-size:.95rem;}
   .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.6rem;}
   .session-btn{font-size:.66rem;padding:9px 18px;}
-  .smp-name{font-size:.76rem;} .smp-desc{font-size:1rem;}
-  .order-list .smp-row{padding:12px 16px;}
   .toggle-btn{font-size:.64rem;padding:9px 14px 7px;}
   .band-lbl{font-size:.5rem;}
   .preset-host .mode-btn{font-size:.66rem;padding:9px 14px;}
@@ -923,8 +889,6 @@ body::before{
   .drawer-item-meta{font-size:.6rem;}
   .drawer-title,.cat-sheet-title{font-size:.72rem;}
   .d-label{font-size:.7rem;} .d-sub{font-size:.58rem;}
-  .smp-name{font-size:.78rem;} .smp-desc{font-size:1.05rem;}
-  .order-list .smp-row{padding:12px 16px;}
   .session-btn{font-size:.64rem;padding:9px 18px;}
   .help-content p{font-size:1.15rem;}
   .card{aspect-ratio:3/2;}
@@ -1012,12 +976,21 @@ body::before{
 
 .play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;
   text-transform:uppercase;color:rgba(240,232,216,.6);opacity:1;padding:14px 0 9px;}
-.play-lead--first{padding-top:6px;}
+/* Was trimmed to 6px on the assumption this sits right under other chrome
+   with its own spacing — but "Who's at the table?" above gets to read as a
+   clean section start (title, breathing room, then the label); this was
+   getting swallowed into the preset row it follows instead. Matches
+   .play-lead's own top padding now, so the two headers actually read as
+   the same rank they're meant to be. */
+.play-lead--first{padding-top:14px;}
 /* each of the three controls in Shape (what/how far/how it plays) gets one
    short line saying what it does in player terms — no "chapters" or
-   "categories", just what happens to the round */
-.play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.84rem;line-height:1.4;color:rgba(240,232,216,.72);padding:0 10px 6px;}
+   "categories", just what happens to the round. Upright, not italic —
+   italic Cormorant Garamond at this size read as too thin/faint to hold up
+   as an instruction line (unlike the bigger card-question text it's
+   normally reserved for). */
+.play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-weight:400;
+  font-size:.94rem;line-height:1.5;color:var(--cream);padding:0 10px 12px;}
 
 /* Shape is three different KINDS of decision (what's in play, how it leans,
    how it's dealt out) — text only, no numbering (felt like a form, not part
@@ -1035,14 +1008,10 @@ body::before{
   font-size:.92rem;line-height:1.5;color:var(--gold-l);opacity:.9;
   padding:2px 12px 12px;border-bottom:1px solid var(--dim);margin-bottom:6px;}
 
-/* Section 3's own copies of the Shuffle/Cards pickers — same controls as the
-   token row above the card, kept here too so the whole round is decided in
-   one place without hunting back up for two of the three settings. */
-.order-list--drawer{max-width:none;}
-/* Card count sat as a tiny text row next to the shuffle tiles' full bordered
-   treatment — a ten-to-one size gap for two choices of equal weight. Gives
-   it the same tile language (no description text needed, the numbers speak
-   for themselves) instead of shrinking the shuffle tiles to match. */
+/* Card count inside the "Fine-tune the hand" fold — a ten-to-one size gap
+   for choices of equal weight would look wrong, so it gets the same tile
+   language as the shuffle toggle above it (no description text needed,
+   the numbers speak for themselves). */
 .limit-row--drawer{justify-content:center;padding-top:4px;gap:8px;}
 .limit-row--drawer .limit-btn{border:1px solid var(--dim);border-radius:4px;padding:12px 18px;
   font-size:.68rem;letter-spacing:.14em;opacity:.75;}
