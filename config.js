@@ -256,7 +256,7 @@ const PRESETS = {
   latenight: {
     on:        ["connect","self","values","wish","deep","unwind"],
     available: ["raw","shadow","grief","past","roots","usintimate","flesh","carnal","bare","kinks","abyss"],
-    subtitle:  "Close enough to go there."
+    subtitle:  "When it doesn't need softening."
   },
   solo: {
     on:        ["self","wish","mind","values","spirit"],

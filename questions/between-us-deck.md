@@ -651,13 +651,23 @@ Two failure modes, both tried and rejected before this was clear:
 
 The actual target sits between those two: a short phrase, familiar words, bent
 slightly sideways — an idiom half-borrowed rather than invented from scratch, with a
-little unresolved space left in it, not fully answering "what will happen." Landed
-examples: **"Getting to know another side"** (twists "getting to know someone"),
-**"Humble beginnings with potential"** (twists "humble beginnings"), **"Close enough
-to go there"** (double meaning — close friends, and close enough to go deep, same
-trick as "everything on the table"), **"The people who knew you first"** (plain, no
-twist needed — sometimes exact and unadorned is the right call, same as "just the two
-of you").
+little unresolved space left in it, not fully answering "what will happen." There's a
+third, quieter failure mode in the same family as the cute/gimmicky one: reaching for
+a *worn* phrase instead of a fresh one. "Close enough to go there" felt right on paper
+(a genuine double meaning) but "go there" is a cliché doing the reaching-for-relatable
+work "grandma" did, just less obviously — it didn't survive being read back in
+context. Replaced with "When it doesn't need softening," which borrows a word `raw`
+already uses about itself (see its own tooltip) instead of reaching outside the deck's
+own vocabulary for an image.
+
+Landed examples: **"Getting to know another side"** (twists "getting to know
+someone"), **"Humble beginnings with potential"** (twists "humble beginnings"),
+**"Just enough edge"** (echoes "just the two of you"'s shape — starts with "Just,"
+names Balanced's real character instead of describing its on-list), **"Professional,
+mostly"** (a small paradox — implies the exceptions by naming the rule), **"When it
+doesn't need softening"** (borrows the deck's own word for `raw` rather than an
+outside image), **"The people who knew you first"** (plain, no twist needed —
+sometimes exact and unadorned is the right call, same as "just the two of you").
 
 ---
 
