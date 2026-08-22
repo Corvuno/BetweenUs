@@ -217,7 +217,7 @@ const PRESETS = {
     // leaving them on left that chapter's button showing "part" on load, so
     // a first click completed it to fully-on instead of clearing it.
     available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
-    subtitle:  "Everything, without going all in."
+    subtitle:  "Just enough edge."
   },
   // Every preset below is banded now: "on" respects the depth ceiling the
   // subtitle promises, "available" is the honest stretch beyond it. Full
@@ -231,7 +231,7 @@ const PRESETS = {
   work: {
     on:        ["quick","warm","culture","life","home","work","unwind","world","mind","wish"],
     available: ["attract","friends","aron","magic"],
-    subtitle:  "Still colleagues after this."
+    subtitle:  "Professional, mostly."
   },
   friends: {
     on:        ["warm","culture","life","unwind","connect","friends","attract","usfriend"],
