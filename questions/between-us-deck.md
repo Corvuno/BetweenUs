@@ -623,6 +623,44 @@ Four real answers to four cards in this deck. The test a card design lives or di
 
 ---
 
+# APP COPY STYLE — preset & chapter subtitles
+
+*Not deck content — these are the short taglines under each preset button and chapter
+name in the app (config.js's PRESETS, the chapter descriptions in between-us.html).
+Different craft than a card: a card asks a question, a subtitle has to make someone
+want to press the button. Written down after several rounds of missing in both
+directions before landing on what actually works.*
+
+The two that work without dispute: **"Everything on the table"** (the Everything
+preset) and **"Just the two of you"** (Partner). Neither describes what's in the
+preset's on-list. Neither names a mechanic. Both are four or five words, and both take
+a phrase already sitting in the language and bend it slightly: "everything on the
+table" is a common idiom (all cards revealed, nothing held back) doing double duty as
+a description of the game itself; "just the two of you" is plain but exact — no
+adjective doing any work, just names who's playing.
+
+Two failure modes, both tried and rejected before this was clear:
+
+1. **Describing the mechanic.** "Mostly everything," "romance-shaped, still finding
+   out," "you choose how deep it goes" — accurate, but it's reading the on-list back
+   to the player instead of inviting them in.
+2. **Reaching for a cute, concrete image to compensate.** "Grandma in the room,"
+   "finding out if there's a second one," "the friends who don't flinch" — trying to
+   be relatable/vivid instead lands as gimmicky, a different register than the rest of
+   the app entirely.
+
+The actual target sits between those two: a short phrase, familiar words, bent
+slightly sideways — an idiom half-borrowed rather than invented from scratch, with a
+little unresolved space left in it, not fully answering "what will happen." Landed
+examples: **"Getting to know another side"** (twists "getting to know someone"),
+**"Humble beginnings with potential"** (twists "humble beginnings"), **"Close enough
+to go there"** (double meaning — close friends, and close enough to go deep, same
+trick as "everything on the table"), **"The people who knew you first"** (plain, no
+twist needed — sometimes exact and unadorned is the right call, same as "just the two
+of you").
+
+---
+
 # Change log
 
 ## Patch v6.85 — third batch from the "version one" review: eight owner-approved swaps

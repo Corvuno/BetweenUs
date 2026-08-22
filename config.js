@@ -217,7 +217,7 @@ const PRESETS = {
     // leaving them on left that chapter's button showing "part" on load, so
     // a first click completed it to fully-on instead of clearing it.
     available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
-    subtitle:  "Everything on the table"
+    subtitle:  "Everything, without going all in."
   },
   // Every preset below is banded now: "on" respects the depth ceiling the
   // subtitle promises, "available" is the honest stretch beyond it. Full
@@ -236,17 +236,17 @@ const PRESETS = {
   friends: {
     on:        ["warm","culture","life","unwind","connect","friends","attract","usfriend"],
     available: ["self","values","family","flesh","bare","past","deep","aron","magic"],
-    subtitle:  "Old comfort, new ground."
+    subtitle:  "Getting to know another side."
   },
   family_p: {
     on:        ["warm","quick","culture","life","home","family","past"],
     available: ["connect","usfriend","roots","magic"],
-    subtitle:  "Nothing that can't be said with grandma in the room."
+    subtitle:  "The people who knew you first."
   },
   dating: {
     on:        ["warm","culture","life","connect","date","attract","wish","values","spirit"],
     available: ["self","flesh","bare","carnal","aron","magic"],
-    subtitle:  "Finding out if there's a second one."
+    subtitle:  "Humble beginnings with potential."
   },
   partner: {
     on:        ["us","uslove","connect","wish","family","body","spirit","self","values","date"],
@@ -256,12 +256,12 @@ const PRESETS = {
   latenight: {
     on:        ["connect","self","values","wish","deep","unwind"],
     available: ["raw","shadow","grief","past","roots","usintimate","flesh","carnal","bare","kinks","abyss"],
-    subtitle:  "The friends who don't flinch."
+    subtitle:  "Close enough to go there."
   },
   solo: {
     on:        ["self","wish","mind","values","spirit"],
     available: ["past","roots","deep","magic"],
-    subtitle:  "Nobody's listening but you."
+    subtitle:  "The one conversation you don't perform."
   },
   colbertmode: {
     on:        ["colbert"],
