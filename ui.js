@@ -668,7 +668,10 @@ applyToggleUI();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
     catArea.removeAttribute('aria-hidden');
     $('d-cats').setAttribute('aria-expanded', 'true');
-    catArea.focus();
+    // preventScroll: catArea is position:fixed, covering the viewport — it
+    // needs no scroll to be "in view," but browsers don't know that and will
+    // scroll the page to it anyway without this.
+    catArea.focus({preventScroll: true});
   }
   function closeCats(){
     catArea.classList.remove('sheet-open'); scrim.classList.remove('on');
@@ -677,7 +680,11 @@ applyToggleUI();
     // d-cats lives inside menuDrawer, already closed by the time this fires — a
     // stable, always-visible anchor (same one closeAllDrawers uses) is safer to
     // refocus than a trigger that may now sit inside a hidden dialog.
-    const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus(); } catch(e) {}
+    // preventScroll here too: btn-menu sits down in the Controls section,
+    // below the Card section — without it, closing the sheet silently
+    // scrolled the whole page down to bring btn-menu into view, leaving the
+    // header/title pushed off the top after every close.
+    const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
   }
   window.openCats=openCats; window.closeCats=closeCats;
   openRow.addEventListener('click', openCats);
