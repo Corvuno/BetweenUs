@@ -735,19 +735,19 @@ body::before{
   .cat-band.band-hidden,.band-lbl.band-hidden{display:none;}
 }
 
-/* presets (former modes) at the top of the categories drawer */
-/* Bottom margin carries most of the gap to "What kind of morning?" below —
-   it and "Who's at the table?" are meant to read as the same rank of
-   header, and a thin 8px hand-off read as one continuing list instead of
-   two sections. */
-.preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
-/* Same family as the other section headers in this drawer (What kind of
-   [time]?, Tune the conversation, How does it play?) — all-caps, grey,
-   Jost — not the italic serif notes underneath them. Sized up a step from
-   the old tiny label for readability. */
-.preset-host-lbl{text-align:center;font-family:'Jost',sans-serif;font-size:.64rem;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(240,232,216,.55);padding-bottom:8px;}
-.preset-host .preset-outer{display:block;width:100%;opacity:1;}
+/* presets (former modes) at the top of the categories drawer — collapsed
+   behind one line by default ("Starting from Balanced"), expanding to the
+   wrapped grid below on tap. Never a permanent block, never a scrolling
+   bar either way. */
+.preset-host{flex-shrink:0;padding:2px 0 4px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
+.preset-host-toggle{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  background:none;border:none;cursor:pointer;padding:10px 18px;font-family:'Jost',sans-serif;}
+.preset-host-lbl{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,232,216,.4);}
+.preset-host-val{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-l);font-weight:400;}
+.preset-host-chev{font-size:.75rem;color:rgba(240,232,216,.35);transition:transform .2s;}
+.preset-host.open .preset-host-chev{transform:rotate(90deg);}
+.preset-host .preset-outer{display:none;width:100%;opacity:1;padding:6px 24px 10px;}
+.preset-host.open .preset-outer{display:block;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 .preset-host .mode-btn{font-size:.64rem;padding:8px 11px 8px 18px;}

@@ -583,11 +583,28 @@ applyToggleUI();
   const $=id=>document.getElementById(id);
 
   /* ── re-home existing controls into trays ── */
-  /* modes now live in the categories drawer as presets */
+  /* modes now live in the categories drawer as presets — collapsed behind
+     a single "Starting from X" line by default (never a permanent grid,
+     never a scrolling bar) and revealed as a wrapped grid on tap. The
+     value mirrors the same live preset name + colour the top token
+     already tracks (see presentation.js), so there's one source of truth
+     for "what preset is this," not two. */
   const presetHost=document.createElement('div');
   presetHost.className='preset-host';
-  presetHost.innerHTML='<div class="preset-host-lbl">Who\'s at the table?</div>';
+  presetHost.innerHTML=
+    '<button type="button" class="preset-host-toggle" id="presetHostToggle">'+
+      '<span class="preset-host-lbl">Starting from</span>'+
+      '<span class="preset-host-val" id="presetHostVal">Balanced</span>'+
+      '<span class="preset-host-chev">&#8250;</span>'+
+    '</button>';
   presetHost.appendChild($('preset-outer'));
+  // querySelector on presetHost itself, not document.getElementById — this
+  // node isn't attached to the document yet at this point in the wiring,
+  // so a document-wide lookup would silently find nothing.
+  const presetHostToggle=presetHost.querySelector('.preset-host-toggle');
+  if (presetHostToggle) presetHostToggle.addEventListener('click', () => {
+    presetHost.classList.toggle('open');
+  });
   const topbar=document.querySelector('.cat-area .cat-topbar');
   topbar.before(presetHost);            /* presets first … */
   presetHost.after(topbar);             /* … then After Dark · All · None */
