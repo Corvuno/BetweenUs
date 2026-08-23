@@ -996,6 +996,23 @@ applyToggleUI();
   if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
   if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
 
+  /* ── "Tune the hand" info tooltip — a tap target, not a permanent
+     explainer line eating space in the console. ── */
+  const fineInfoBtn = $('fineInfoBtn'), fineInfoTip = $('fineInfoTip');
+  if (fineInfoBtn && fineInfoTip) {
+    fineInfoBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = fineInfoTip.classList.toggle('open');
+      fineInfoBtn.classList.toggle('open', open);
+    });
+    document.addEventListener('click', e => {
+      if (fineInfoTip.classList.contains('open') && !fineInfoBtn.contains(e.target) && !fineInfoTip.contains(e.target)) {
+        fineInfoTip.classList.remove('open');
+        fineInfoBtn.classList.remove('open');
+      }
+    });
+  }
+
   // Fixed sets (Colbert/The 36) stay collapsed until asked for — no
   // permanent space for something most sessions never touch.
   const fixedSeqToggle = $('fixedSeqToggle'), fixedSeqOptions = $('fixedSeqOptions');
