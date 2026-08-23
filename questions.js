@@ -26,7 +26,7 @@ const NEWDECK_CARDS = [
 
   // ─── QUICK ───
   { level: "quick", question: "Name the last thing you made with your hands.", nl: "Het laatste dat je maakte met je eigen handen..." },
-  { level: "quick", question: "What song's been stuck in your head this week?", nl: "Welk liedje krijg je deze week je hoofd niet uit?" },
+  { level: "quick", question: "What's a song you know every word to and have never told anyone you love?" },
   { level: "quick", question: "What's your greatest extravagance?", nl: "Wat is je grootste extravagantie?" },
   { level: "quick", question: "Which drawer in your house is the disgrace?", nl: "Welke kast of lade thuis mag dicht blijven?" },
   { level: "quick", question: "You're always late for...", nl: "Waar kom jij structureel te laat?" },
@@ -77,7 +77,7 @@ const NEWDECK_CARDS = [
   { level: "life", question: "What's a rule you've quietly made for yourself that nobody else knows about?", nl: "Welke ongeschreven regel heb jij stiekem voor jezelf gemaakt, die niemand anders kent?" },
   { level: "life", question: "What does getting older take from you that you didn't expect, and what does it give?", nl: "Wat neemt ouder worden je af dat je niet had verwacht — en wat geeft het?" },
   { level: "life", question: "What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?", nl: "Wat is iets heel gewoons in je leven dat je echt zou missen als het morgen verdween?" },
-  { level: "life", question: "What's different about your life this year?", nl: "Wat is er dit jaar anders aan je leven?" },
+  { level: "life", question: "What did this year quietly take off your plate — and did you notice it leaving?" },
   { level: "life", question: "If you stopped explaining why you can't, what would change about how you live?", nl: "Als je stopte met uitleggen waarom iets niet kan, wat zou er dan veranderen aan hoe je leeft?" },
 
   // ─── HOME ───
@@ -87,7 +87,7 @@ const NEWDECK_CARDS = [
   { level: "home", question: "Where in your home do you actually live — which chair, which corner?", nl: "Waar in huis speelt jouw leven zich echt af?" },
   { level: "home", question: "What does home actually feel like when you have it — and how do you know?", nl: "Hoe voelt thuis echt als je het hebt — en hoe weet je dat?" },
   { level: "home", question: "What actually makes you feel at ease somewhere new — and how long does it usually take?" },
-  { level: "home", question: "If I walked into your home right now, what would I find?", nl: "Als ik nu je huis binnenliep, wat zou ik aantreffen?" },
+  { level: "home", question: "What would a stranger get completely wrong about you from looking at your home?" },
   { level: "home", question: "The view from your kitchen window — what could you look at every day and never tire of?", nl: "Het uitzicht uit je keukenraam waar je nooit op uitgekeken raakt — wat is het?" },
   { level: "home", question: "Your home tells people something about you. What?", nl: "Wat vertelt jouw huis over jou voordat jij iets hebt gezegd?" },
   { level: "home", question: "What kind of home do you want to live in — and how far is that from where you are now?", nl: "Wat voor huis wil je eigenlijk bewonen — en hoe ver staat dat af van waar je nu woont?" },
@@ -134,7 +134,7 @@ const NEWDECK_CARDS = [
   { level: "unwind", question: "Describe a moment recently when life felt uncomplicated.", nl: "Beschrijf een recent moment waarop het leven simpel voelde." },
   { level: "unwind", question: "A place you keep going back to — not because it's the best, but because it's yours...", nl: "Naar welke plek blijf je teruggaan omdat die van jou voelt?" },
   { level: "unwind", question: "What's the smallest thing that makes a day better — and where do you find it?" },
-  { level: "unwind", question: "What does the first warm day of the year do to you?" },
+  { level: "unwind", question: "What do you always mean to do more of once the weather turns, and never actually do?" },
 
   // ─── SELF ───
   { level: "self", question: "Two traits of yours that seem to work against each other..." },
@@ -160,7 +160,7 @@ const NEWDECK_CARDS = [
   { level: "body", question: "Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.", nl: "Wijs de plek op je lichaam aan waar je de moeizaamste relatie mee hebt — en dan de plek die je als mooi zou verdedigen." },
   { level: "body", question: "Which version of your body do you still compare this one to?" },
   { level: "body", question: "What is your body better at now than it has ever been?" },
-  { level: "body", question: "What's your actual relationship with food?", nl: "Eten en jij..." },
+  { level: "body", question: "What food rule do you still follow that nobody's enforcing anymore?" },
   { level: "body", question: "Your body asks for something you routinely deny it...", nl: "Je lichaam vraagt regelmatig om iets waar je niet naar luistert." },
   { level: "body", question: "When did your body last let you down?" },
 
@@ -175,7 +175,7 @@ const NEWDECK_CARDS = [
   { level: "mind", question: "What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?", nl: "Wat is het laatste dat je irriteerde waarvan je je een beetje zou schamen dat het je irriteerde?" },
   { level: "mind", question: "What's the earliest thing you remember — and is it actually yours?", nl: "Wat is je vroegste herinnering — en is die eigenlijk wel van jou?" },
   { level: "mind", question: "What do you keep understanding differently each time you think you've worked it out?", nl: "Wat blijf je telkens anders begrijpen, net als je denkt dat je het eindelijk doorhebt?" },
-  { level: "mind", question: "What are you bad at learning?", nl: "Waar ben je slecht in om te leren?" },
+  { level: "mind", question: "What have you pretended to understand for years rather than ask?" },
   { level: "mind", question: "What are you like at three in the morning?" },
 
   // ─── SPIRIT ───
@@ -189,8 +189,8 @@ const NEWDECK_CARDS = [
   { level: "spirit", question: "What do you hope is true, even if you doubt it?", nl: "Wat hoop je dat waar is, ook al twijfel je eraan?" },
   { level: "spirit", question: "When were you last completely present — nothing to fix, nothing to plan?", nl: "Wanneer was je voor het laatst volledig aanwezig — niets op te lossen, niets te plannen?" },
   { level: "spirit", question: "Have you ever tried to reach something through your body — breath, fasting, dance, stillness?", nl: "Heb je ooit iets proberen te bereiken via je lichaam — ademhaling, vasten, dans, stilte?" },
-  { level: "spirit", question: "A place that's sacred to you..." },
-  { level: "spirit", question: "The closest thing I have to a ritual is...", nl: "Een ritueel dat ongemerkt belangrijk voor je werd..." },
+  { level: "spirit", question: "What place have you never told anyone means something to you?" },
+  { level: "spirit", question: "What did you turn into a ritual by accident, just from repeating it?" },
 
 
   // ─── CONNECT ───

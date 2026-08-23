@@ -8,7 +8,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Quick
 1. Name the last thing you made with your hands.
-2. What song's been stuck in your head this week?
+2. What's a song you know every word to and have never told anyone you love?
 3. What's your greatest extravagance?
 4. Which drawer in your house is the disgrace?
 5. You're always late for...
@@ -63,7 +63,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What's a rule you've quietly made for yourself that nobody else knows about?
 9. What does getting older take from you that you didn't expect, and what does it give?
 10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
-11. What's different about your life this year?
+11. What did this year quietly take off your plate — and did you notice it leaving?
 12. If you stopped explaining why you can't, what would change about how you live?
 
 ## Home
@@ -73,7 +73,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Where in your home do you actually live — which chair, which corner?
 5. What does home actually feel like when you have it — and how do you know?
 6. What actually makes you feel at ease somewhere new — and how long does it usually take?
-7. If I walked into your home right now, what would I find?
+7. What would a stranger get completely wrong about you from looking at your home?
 8. The view from your kitchen window — what could you look at every day and never tire of?
 9. Your home tells people something about you. What?
 10. What kind of home do you want to live in — and how far is that from where you are now?
@@ -120,7 +120,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Describe a moment recently when life felt uncomplicated.
 10. A place you keep going back to — not because it's the best, but because it's yours...
 11. What's the smallest thing that makes a day better — and where do you find it?
-12. What does the first warm day of the year do to you?
+12. What do you always mean to do more of once the weather turns, and never actually do?
 
 ## Self
 1. Two traits of yours that seem to work against each other...
@@ -146,7 +146,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.
 8. Which version of your body do you still compare this one to?
 9. What is your body better at now than it has ever been?
-10. What's your actual relationship with food?
+10. What food rule do you still follow that nobody's enforcing anymore?
 11. Your body asks for something you routinely deny it...
 12. When did your body last let you down?
 
@@ -162,7 +162,7 @@ The questions come first, category by category. The full change log is at the bo
 8. What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?
 9. What's the earliest thing you remember — and is it actually yours?
 10. What do you keep understanding differently each time you think you've worked it out?
-11. What are you bad at learning?
+11. What have you pretended to understand for years rather than ask?
 12. What are you like at three in the morning?
 
 ## Spirit
@@ -176,8 +176,8 @@ The questions come first, category by category. The full change log is at the bo
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
 10. Have you ever tried to reach something through your body — breath, fasting, dance, stillness?
-11. A place that's sacred to you...
-12. The closest thing I have to a ritual is...
+11. What place have you never told anyone means something to you?
+12. What did you turn into a ritual by accident, just from repeating it?
 
 
 ## Connect
@@ -672,6 +672,41 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.86 — first batch from the "50 weakest" review: eight owner-approved swaps
+Owner reviewed a fresh ranked list of the deck's 50 weakest cards (a "retrieval vs.
+discovery" pass — does the player have to think, or just look something up). Picked
+alternatives for eight of the top-ranked candidates:
+
+- **Life 11** → *"What did this year quietly take off your plate — and did you notice it
+  leaving?"* Replaces "What's different about your life this year?" — too much empty
+  space, no angle of its own next to the "ordinary thing you'd miss tomorrow" card beside it.
+- **Body 10** → *"What food rule do you still follow that nobody's enforcing anymore?"*
+  Replaces "What's your actual relationship with food?" — too broad, no particular doorway
+  into pleasure, family, body image, control.
+- **Mind 11** → *"What have you pretended to understand for years rather than ask?"*
+  Replaces "What are you bad at learning?" — collapsed to a list answer, revealed nothing
+  about how the person's mind actually works.
+- **Unwind 12** → *"What do you always mean to do more of once the weather turns, and
+  never actually do?"* Replaces "What does the first warm day of the year do to you?" —
+  predictable, answers collapsed to "happier / want to go outside."
+- **Home 7** → *"What would a stranger get completely wrong about you from looking at your
+  home?"* Replaces "If I walked into your home right now, what would I find?" — an
+  invitation to describe the room, not a psychological hook.
+- **Spirit 11** → *"What place have you never told anyone means something to you?"*
+  Replaces "A place that's sacred to you..." — too close to the standard "what's sacred to
+  you" prompt, no twist.
+- **Spirit 12** → *"What did you turn into a ritual by accident, just from repeating it?"*
+  Replaces "The closest thing I have to a ritual is..." — same issue, lacked the
+  distinctive mechanism of Spirit's stronger cards.
+- **Quick 2** → *"What's a song you know every word to and have never told anyone you
+  love?"* Replaces "What song's been stuck in your head this week?" — generic filler,
+  almost zero editorial identity.
+
+Several more candidates from the same review are still open — fresh alternatives
+requested for Quick 11, Warm 2, World 9, Friends 10, Quick 6, Culture 1, Culture 10, and
+Spirit 7 (flagged as miscategorised — reads as Connect); revised wording pending
+confirmation for Quick 3 and Culture 11.
 
 ## Patch v6.85 — third batch from the "version one" review: eight owner-approved swaps
 Owner picked donor slots for eight of the Tier-1 candidates from the ranked list, each
