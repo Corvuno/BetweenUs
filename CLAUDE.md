@@ -32,6 +32,39 @@ None of this undoes the rule above that a decided change gets built and pushed
 without re-confirming — push back and offer options *before* or *during* the
 decision; once it's actually made, execute cleanly.
 
+## Running more than one Claude Code session at once
+
+**What's actually going on:** every Claude Code session works on this project by
+downloading a copy of the code, changing it, and then pushing those changes back to
+the one shared copy online (`main`) — the same "shared copy" every session reads from
+and writes to. If two sessions are both changing the same part of the code at close to
+the same time, whichever one pushes second has to reconcile its changes with what the
+first one already pushed. Usually that's automatic and invisible. Sometimes — when both
+sessions touched the exact same lines — it isn't, and the second session has to stop
+and manually sort out which change wins where. That's what happened this session: a
+different Claude Code session fixed the same bug we did, and separately, a different
+session restyled the exact screen area we were rebuilding at the same time.
+
+Nothing broke because of it — both times it got sorted out and double-checked before
+being pushed — but it's wasted effort, and if it landed wrong nobody would necessarily
+notice until later. It's avoidable.
+
+**For you (no coding needed):**
+- If you're running two Claude Code sessions on this repo at the same time, tell each
+  one plainly what part of the app it owns (e.g. "you handle the deck subtitles, you
+  handle the card animations") so they're not likely to touch the same files.
+- If you're not sure whether two tasks overlap, just run them one after another
+  instead of at the same time — slower, but it can't collide.
+- If a session tells you it hit a conflict with another session's work, that's it
+  self-reporting exactly this — nothing to fix on your end, just good to know two
+  sessions were active on overlapping ground.
+
+**For any Claude session reading this file:** before starting a large or structural
+change (touching many files, or a shared/foundational file like `config.js`), fetch
+`origin/main` and skim the last handful of commits first. If another session has
+recent or unfamiliar-looking work in the same area, say so before proceeding rather
+than finding out at push time.
+
 # Between Us — working rules for this repo
 
 ## Card changes require explicit owner sign-off, every time

@@ -151,7 +151,11 @@ function openDrawer(id, triggerEl) {
   el.classList.add('open');
   el.setAttribute('aria-hidden', 'false');
   if (triggerEl) triggerEl.setAttribute('aria-expanded', 'true');
-  el.focus();
+  // preventScroll: these drawers are fixed-position overlays, not something
+  // the page needs to scroll to reach — without this, focusing a drawer
+  // that starts below the fold (or closing back to btn-menu, same issue
+  // below) silently scrolled the whole page to bring it into view.
+  el.focus({preventScroll: true});
 }
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
@@ -163,7 +167,7 @@ function closeAllDrawers() {
     const el=document.getElementById(id); if(el) el.setAttribute('aria-expanded', 'false');
   });
   const btnMenu = document.getElementById('btn-menu');
-  if (btnMenu) try { btnMenu.focus(); } catch(e) {}
+  if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
 }
 
 // ── Language: single switch, menu row only now — the inline row toggle was

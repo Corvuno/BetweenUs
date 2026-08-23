@@ -42,12 +42,23 @@ function applyPreset(mode) {
   const preset = PRESETS[mode];
   if (!preset) return;
   state.activePreset = mode;
-  // bring the active mode button into the centre of its scroll strip
+  // Bring the active mode button into the centre of its own horizontal
+  // strip — scrolling that strip's element directly (.preset-wrap's own
+  // scrollLeft), not scrollIntoView(). scrollIntoView asks "make this
+  // visible," and the preset row now lives inside the Categories sheet
+  // (closed, position:fixed, off-screen until opened) — so it doesn't just
+  // scroll the strip, it scrolls the whole page trying to reveal a button
+  // that's deliberately hidden by app state, on every boot (applyPreset()
+  // runs at startup). Setting scrollLeft on the one specific container
+  // can't ever escape to the page, regardless of what's hiding it.
   requestAnimationFrame(() => {
     const activeBtn = document.querySelector(`.mode-btn[data-mode="${mode}"]`);
-    if (activeBtn && activeBtn.scrollIntoView) {
-      try { activeBtn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } catch(e) {}
-    }
+    const strip = activeBtn && activeBtn.closest('.preset-wrap');
+    if (!strip) return;   // wrapped layouts (.preset-host) don't scroll — nothing to centre
+    try {
+      const target = activeBtn.offsetLeft - (strip.clientWidth - activeBtn.clientWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    } catch(e) {}
   });
   // A mode is hard-safe when none of its categories — on or merely available —
   // ever reach adult territory. That used to be hardcoded to Work and Family;

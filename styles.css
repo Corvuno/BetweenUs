@@ -143,6 +143,10 @@ body::before{
 .cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
 .cat-grid-wrap.open{display:block;}
 .toggles{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;padding:8px 0 4px;}
+/* #bucketGrid holds the JS-generated bucket/category buttons; display:contents
+   keeps it invisible to .toggles' flex layout, so its children still wrap as
+   direct flex items — same as when they were direct children of .toggles. */
+#bucketGrid{display:contents;}
 .toggle-btn{
   flex:0 0 auto;background:none;border:none;cursor:pointer;
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;

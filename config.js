@@ -109,89 +109,185 @@ const MASTER_SAFE       = window.MASTER_SAFE;
 const SPICE_MODE        = window.SPICE_MODE || false;
 const NL_DEFAULT        = window.NL_DEFAULT || false;
 
-const SAFE_BLOCKED_LEVELS = ["flesh","carnal","kinks","usintimate","bare","abyss"];
 
+// ── CATEGORIES — one record per category, one place that knows anything
+//    about it. Everything below this block (LEVEL_COLORS, LEVEL_DEPTH,
+//    LEVEL_LABELS, CATEGORY_DESCRIPTIONS, CHAPTERS, the Explore bucket grid
+//    in between-us.html, SPICY_LEVELS, OPT_IN_ONLY, ORDERED_SOLO_LEVELS...)
+//    used to each carry their own copy of some subset of this — color in
+//    one table, depth in another, gate membership in a third, chapter
+//    membership in ui.js, bucket membership only in hand-typed HTML
+//    attributes nowhere near any of it. Four separate real bugs came out of
+//    that shape this session alone (SPICY_LEVELS missing usintimate and
+//    wrongly including attract; LEVEL_COLORS and LEVEL_LABELS each silently
+//    shadowing an earlier `flesh` entry with a later duplicate key; presets
+//    quietly holding onto categories that had moved chapters). A duplicate
+//    fact is a fact that can disagree with itself — this is the fix.
+//
+//    label       — display name (✦ embedded for gated categories)
+//    color       — accent color
+//    band        — 1 (icebreaker) to 7 (confrontational): how much the
+//                  actual cards ask you to reveal. Not the same axis as
+//                  `gate` — see the note that used to live on LEVEL_DEPTH,
+//                  preserved below.
+//    focus       — -1 (about you) to 1 (about the two of you)
+//    desc        — the tooltip
+//    chapter     — which Play chapter it belongs to, or omitted (Colbert/
+//                  The 36/Abyss/Backup aren't part of the guided evenings)
+//    bucket      — which Explore bucket it belongs to, or omitted (Colbert/
+//                  The 36 get their own entry point instead, same reasoning
+//                  as not being in a chapter)
+//    gate        — true only for the six actual After Dark (✦) categories
+//    optIn       — never swept up by Select All or auto-spice; needs a
+//                  deliberate tap (the ordered sets, plus Abyss)
+//    ordered     — plays in a fixed, canonical order when selected alone
+//
+//    Depth/exposure note, preserved from the old LEVEL_DEPTH comment: band
+//    is scored by how much the actual cards ask you to reveal, not by
+//    topic and not by the After Dark gate — they're deliberately different
+//    axes. That's why After Dark categories land all over the band scale
+//    instead of clustering at the top: flesh/bare are mostly descriptive
+//    (band 3), kinks asks you to name something you keep quiet (band 5),
+//    abyss reads the same as roots/past — "tell me about the time/place
+//    you found this out" — so it sits with them (band 6), not off on its
+//    own. Intensity runs the same scale as depth (a category has one
+//    depth, not two disagreeing ones); focus runs from a question about
+//    you to a question about the two of you. ──
+const CATEGORIES = {
+  quick:  { label:"Quick",  color:"#f3c33c", band:1, focus:0,
+            desc:"Small true things, answered before you can think",
+            chapter:"warmup", bucket:"easein" },
+  warm:   { label:"Warm",   color:"#d58b34", band:1, focus:0,
+            desc:"The fond, the funny and the faintly ridiculous",
+            chapter:"warmup", bucket:"easein" },
 
-// ── LEVEL COLORS for accent bar ──
-const LEVEL_COLORS = {
-  warm:"#d58b34",deep:"#f3c33c",self:"#669bbb",raw:"#eb6d6d",shadow:"#75609c",
-  mind:"#5082cd",attract:"#e8997a",grief:"#7d7da0",lens:"#96b87b",ground:"#86a666",
-  connect:"#65c9b0",spirit:"#ad7ac6",past:"#b79c66",wish:"#937ac6",home:"#97c965",
-  culture:"#c99765",date:"#df7a91",work:"#4dbebe",values:"#caae3d",
-  body:"#7bb397",move:"#65c77f",life:"#80bb66",roots:"#ad8d4c",friends:"#6bb36e",
-  world:"#3aabdd",family:"#ba8e58",unwind:"#4ec1a0",
-  colbert:"#f3c33c",quick:"#f3c33c",us:"#e8af7a",usfriend:"#bea466",uslove:"#df7777",
-  usintimate:"#e84a4a",edge:"#c44ba8",flesh:"#e08055",carnal:"#c81f1f",
-  flesh:"#8a305a",kinks:"#a1247a",backup:"#5a5a6a",
-  desire:"#b05080",threshold:"#7a3060",failure:"#8a6040",bare:"#e2603c",abyss:"#b00000",aron:"#e75783",magic:"#8066e1",
+  culture:{ label:"Culture", color:"#c99765", band:2, focus:0,
+            desc:"What moves you, what leaves you cold, and the places that shaped your eye",
+            chapter:"surface", bucket:"viewpoints" },
+  life:   { label:"Life",   color:"#80bb66", band:2, focus:0,
+            desc:"The shape of your ordinary days — and whether they're yours",
+            chapter:"surface", bucket:"everyday" },
+  home:   { label:"Home",   color:"#97c965", band:2, focus:0.1,
+            desc:"Rooms, objects, and the feeling of belonging somewhere",
+            chapter:"surface", bucket:"everyday" },
+  work:   { label:"Work",   color:"#4dbebe", band:2, focus:0,
+            desc:"What you do all day — and who you become doing it",
+            chapter:"surface", bucket:"everyday" },
+  unwind: { label:"Unwind", color:"#4ec1a0", band:2, focus:0,
+            desc:"Rest, weather, small pleasures, and where you go to stop",
+            chapter:"surface", bucket:"everyday" },
+  world:  { label:"World",  color:"#3aabdd", band:2, focus:0,
+            desc:"Power, fairness, and the world you're actually living in",
+            chapter:"surface", bucket:"viewpoints" },
+
+  self:   { label:"Self",   color:"#669bbb", band:5, focus:-1,
+            desc:"Who you are once the roles come off — and what keeps you standing",
+            chapter:"findout", bucket:"reflection" },
+  mind:   { label:"Mind",   color:"#5082cd", band:3, focus:-0.9,
+            desc:"How your head actually works — attention, memory, habit, doubt",
+            chapter:"findout", bucket:"reflection" },
+  body:   { label:"Body",   color:"#7bb397", band:5, focus:-0.8,
+            desc:"Living in a body — pleasure, tension, failure and repair",
+            chapter:"findout", bucket:"reflection" },
+  values: { label:"Values", color:"#caae3d", band:5, focus:-0.7,
+            desc:"Where your lines are — and what it costs to hold them",
+            chapter:"findout", bucket:"reflection" },
+  wish:   { label:"Wish",   color:"#937ac6", band:3, focus:-0.7,
+            desc:"Wanting — what you chase, what you dropped, what keeps returning",
+            chapter:"findout", bucket:"reflection" },
+  connect:{ label:"Connect", color:"#65c9b0", band:4, focus:0.7,
+            desc:"How you reach people, and how you let them reach you",
+            chapter:"findout", bucket:"relationships" },
+  friends:{ label:"Friendship", color:"#6bb36e", band:3, focus:0.5,
+            desc:"The people you chose — and what you're like to have as a friend",
+            chapter:"findout", bucket:"relationships" },
+  date:   { label:"Romance", color:"#df7a91", band:5, focus:0.8,
+            desc:"Falling, staying, leaving — how you do love",
+            chapter:"findout", bucket:"relationships" },
+  attract:{ label:"Attract", color:"#e8997a", band:3, focus:0.7,
+            desc:"Desire before anything happens — what pulls you, and what you do with it",
+            chapter:"findout", bucket:"relationships" },
+  family: { label:"Family", color:"#ba8e58", band:5, focus:0.4,
+            desc:"The family you have now — roles, rules, and what you'd pass on",
+            chapter:"findout", bucket:"relationships" },
+  spirit: { label:"Spirit", color:"#ad7ac6", band:4, focus:-0.6,
+            desc:"Meaning, mortality, practice — and what you hope is true",
+            chapter:"findout", bucket:"viewpoints" },
+
+  past:   { label:"Past",   color:"#b79c66", band:6, focus:-0.5,
+            desc:"Turning points, survivals, and the stories you've earned",
+            chapter:"deeper", bucket:"vulnerability" },
+  roots:  { label:"Roots",  color:"#ad8d4c", band:6, focus:-0.3,
+            desc:"The house you grew up in, and what it's still doing",
+            chapter:"deeper", bucket:"vulnerability" },
+  deep:   { label:"Deep",   color:"#f3c33c", band:7, focus:0,
+            desc:"The harder questions, for when the room is ready",
+            chapter:"deeper", bucket:"vulnerability" },
+  raw:    { label:"Raw",    color:"#eb6d6d", band:7, focus:0.2,
+            desc:"Right now, in this room — no softening",
+            chapter:"deeper", bucket:"vulnerability" },
+  shadow: { label:"Shadow", color:"#75609c", band:7, focus:0,
+            desc:"The parts you don't advertise — and what they cost other people",
+            chapter:"deeper", bucket:"vulnerability" },
+  grief:  { label:"Grief",  color:"#7d7da0", band:7, focus:-0.2,
+            desc:"Loss, and the shape it left",
+            chapter:"deeper", bucket:"vulnerability" },
+
+  us:       { label:"Between Us",  color:"#e8af7a", band:4, focus:1,
+              desc:"About this specific moment, between the two of you",
+              chapter:"aboutus", bucket:"usb" },
+  usfriend: { label:"Us: Friends", color:"#bea466", band:4, focus:1,
+              desc:"About this friendship, directly",
+              chapter:"aboutus", bucket:"usb" },
+  uslove:   { label:"Us: Love",    color:"#df7777", band:4, focus:1,
+              desc:"About this relationship, directly",
+              chapter:"aboutus", bucket:"usb" },
+
+  usintimate: { label:"Us: Intimate ✦", color:"#e84a4a", band:4, focus:1, gate:true,
+                desc:"Physical and intimate — for the two of you only ✦",
+                chapter:"afterdark", bucket:"afterdarkb" },
+  flesh:      { label:"Flesh ✦",   color:"#8a305a", band:3, focus:0.6, gate:true,
+                desc:"The body in desire — before and around the act ✦",
+                chapter:"afterdark", bucket:"afterdarkb" },
+  carnal:     { label:"Carnal ✦",  color:"#c81f1f", band:4, focus:0.7, gate:true,
+                desc:"The act itself, from the inside ✦",
+                chapter:"afterdark", bucket:"afterdarkb" },
+  bare:       { label:"Bare ✦",    color:"#e2603c", band:3, focus:0.3, gate:true,
+                desc:"Direct to a fault — the questions your friends ask three drinks in ✦",
+                chapter:"afterdark", bucket:"afterdarkb" },
+  kinks:      { label:"Kink ✦",    color:"#a1247a", band:5, focus:0.4, gate:true,
+                desc:"Power, edge, and what you'd rather not explain ✦",
+                chapter:"afterdark", bucket:"afterdarkb" },
+  abyss:      { label:"Abyss ✦",   color:"#b00000", band:6, focus:0, gate:true, optIn:true,
+                desc:"The far room. For the ones who go further than most. Aftercare included. ✦",
+                bucket:"afterdarkb" },
+
+  colbert: { label:"Colbert", color:"#f3c33c", band:1, focus:0, ordered:true, optIn:true,
+             desc:"The Colbert Questionnaire — same 15 questions, asked in order" },
+  aron:    { label:"The 36",  color:"#e75783", band:4, focus:0, ordered:true, optIn:true,
+             desc:"Arthur Aron's 36 questions — the closeness study. Alone, they play in their original order" },
+  magic:   { label:"Magical", color:"#8066e1", band:1, focus:0, ordered:true, optIn:true,
+             desc:"Priya Parker's magical questions — light, surprising, proven",
+             bucket:"easein" },
+
+  backup:  { label:"Backup", color:"#5a5a6a", band:3, focus:0, bucket:"meta",
+             desc:"Overflow — questions with merit that did not make the top ten" },
 };
-function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 
-
-// ── Depth/exposure scale: 1 (icebreaker) to 7 (confrontational), by how much
-//    a category's actual cards ask you to reveal — not by topic, and not by
-//    the After Dark gate. The gate (✦, SPICY_LEVELS below) is a separate axis
-//    entirely: who's allowed to see the card, not how hard it is to answer.
-//    That's why After Dark categories land all over this scale instead of
-//    clustering at the top — flesh/bare are mostly descriptive (band 3),
-//    kinks asks you to name something you keep quiet (band 5), abyss reads
-//    the same as roots/past — "tell me about the time/place you found this
-//    out" — so it sits with them (band 6), not off on its own.
-//    One table drives both the round-summary line and Arc's hand-shaping
-//    (_arcHand below); LEVEL_DEPTH and LEVEL_INTENSITY are kept as two names
-//    for historical call-site reasons, but they're intentionally identical
-//    now — a category has one depth, not two disagreeing ones. ──
-const LEVEL_DEPTH = {
-  quick:1, warm:1, colbert:1, magic:1,
-  culture:2, life:2, home:2, work:2, unwind:2, world:2,
-  mind:3, wish:3, attract:3, flesh:3, bare:3, friends:3,
-  connect:4, us:4, usfriend:4, uslove:4, usintimate:4, spirit:4, carnal:4,
-  self:5, values:5, body:5, date:5, family:5, kinks:5,
-  past:6, roots:6, abyss:6,
-  deep:7, raw:7, shadow:7, grief:7,
-  aron:4,
-};
-function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
-
-
-/* ── Intent: two dials instead of thirty-eight switches ──────────────────
-   A gated bias, not a filter: each category's chance of being drawn is
-   weighted toward the dial position, steeply, but a floor under every
-   weight means nothing is ever truly excluded — a round set to Intense can
-   still turn up the odd Warm card, same as one set to Easy can surprise you
-   with something deeper. The same weighting runs under every shuffle mode,
-   Arc included — Arc's own warm/deep/cool shape does the rest from there.
-   Focus runs from a question about you to a question about the two of you. */
+// Derived views — every one of these used to be its own hand-maintained
+// table. Now they're all just projections of CATEGORIES, so they can't
+// drift out of sync with it or with each other.
+const LEVEL_COLORS   = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.color]));
+const LEVEL_DEPTH     = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.band]));
 const LEVEL_INTENSITY = LEVEL_DEPTH;
-const LEVEL_FOCUS = {
-  self:-1, mind:-0.9, body:-0.8, values:-0.7, wish:-0.7, spirit:-0.6, past:-0.5, roots:-0.3,
-  quick:0, warm:0, colbert:0, aron:0, magic:0,
-  culture:0, life:0, work:0, unwind:0, world:0, home:0.1,
-  family:0.4, friends:0.5, connect:0.7, attract:0.7, date:0.8,
-  us:1, usfriend:1, uslove:1, usintimate:1,
-  deep:0, raw:0.2, shadow:0, grief:-0.2,
-  flesh:0.6, carnal:0.7, bare:0.3, kinks:0.4, abyss:0,
-  backup:0,
-};
+const LEVEL_FOCUS     = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.focus]));
+const LEVEL_LABELS    = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.label]));
+const CATEGORY_DESCRIPTIONS = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.desc]));
+
+function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
+function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
 function levelIntensity(l){ return LEVEL_INTENSITY[l] != null ? LEVEL_INTENSITY[l] : 3; }
 function levelFocus(l){ return LEVEL_FOCUS[l] != null ? LEVEL_FOCUS[l] : 0; }
-
-
-const LEVEL_LABELS = {
-  warm:"Warm", deep:"Deep", life:"Life", home:"Home",
-  roots:"Roots", past:"Past", self:"Self", body:"Body", move:"Move",
-  connect:"Connect", friends:"Friendship", values:"Values",
-  world:"World", spirit:"Spirit", mind:"Mind",
-  culture:"Culture", unwind:"Unwind", raw:"Raw",
-  date:"Romance", attract:"Attract", flesh:"Flesh ✦", carnal:"Carnal ✦",
-  flesh:"Flesh ✦", kinks:"Kink ✦", work:"Work",
-  backup:"Backup", family:"Family", grief:"Grief",
-  us:"Between Us", usfriend:"Us: Friends", uslove:"Us: Love",
-  usintimate:"Us: Intimate ✦", shadow:"Shadow",
-  wish:"Wish", quick:"Quick", colbert:"Colbert",
-  lens:"Lens", ground:"Ground",
-  desire:"Desire ✦", threshold:"Threshold ✦", failure:"Failure", bare:"Bare ✦", abyss:"Abyss ✦", aron:"The 36", magic:"Magical"
-};
 
 const PRESETS = {
   open: {
@@ -281,20 +377,22 @@ const PRESETS = {
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 
-// SPICY_LEVELS is the actual After Dark gate set (✦ in LEVEL_LABELS) — used
-// by Wild's spice-mode weave and by Arc's hand-shaping. It used to list
-// `attract` (not gated) and miss `usintimate` (gated) — fixed to match the
-// real ✦ set.
-const SPICY_LEVELS  = ['usintimate','flesh','carnal','bare','kinks','abyss'];
+// SPICY_LEVELS (the actual After Dark gate set, ✦ in LEVEL_LABELS),
+// SAFE_BLOCKED_LEVELS, ORDERED_SOLO_LEVELS and OPT_IN_ONLY all just read
+// their flag off CATEGORIES now, so a category's gate/ordered/optIn status
+// is set in exactly one place. SPICY_LEVELS used to be its own hand-typed
+// list and had drifted (listed `attract`, which isn't gated; missed
+// `usintimate`, which is); SAFE_BLOCKED_LEVELS was a second hand-typed list
+// of the exact same six categories, just in a different order — same fact,
+// two places it could (and did) disagree.
+const SPICY_LEVELS = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].gate);
+const SAFE_BLOCKED_LEVELS = SPICY_LEVELS;
+const ORDERED_SOLO_LEVELS = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].ordered);
+const OPT_IN_ONLY = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].optIn);
 // COLBERT_OPTIONAL: questions present in the deck but not in the canonical 15.
 // When COLBERT_STRICT = true (HTML setting), these are filtered out during Colbert-solo play.
 const COLBERT_OPTIONAL = ['Window or aisle?','Earliest memory?','Cats or dogs?'];
 const COLBERT_STRICT = window.COLBERT_STRICT || false;
-
-// Sets that play in their canonical order when selected alone
-const ORDERED_SOLO_LEVELS = ['colbert', 'aron', 'magic'];
-// Opt-in-only: never swept up by Select All or auto-spice — a deliberate tap required.
-const OPT_IN_ONLY = ['colbert', 'aron', 'magic', 'abyss'];
 
 // Deep and Breadth dropped from the picker: Deep duplicated what the Depth
 // dial already does (and does more precisely, continuously); Breadth's
@@ -316,64 +414,21 @@ const SHUFFLE_DESCRIPTIONS = {
 
 
 // ═══════════════════════════════════════════════════════════
-// CATEGORY TOOLTIPS
+// EXPLORE BUCKETS — the only per-bucket data left; per-category bucket
+// membership lives on CATEGORIES itself (see the .bucket field above).
+// between-us.html no longer hand-authors the bucket grid — ui.js builds it
+// from this plus CATEGORIES at boot (see renderBucketGrid in ui.js).
 // ═══════════════════════════════════════════════════════════
-
-const CATEGORY_DESCRIPTIONS = {
-  quick:     "Small true things, answered before you can think",
-  colbert:   "The Colbert Questionnaire — same 15 questions, asked in order",
-  warm:      "The fond, the funny and the faintly ridiculous",
-  culture:   "What moves you, what leaves you cold, and the places that shaped your eye",
-  unwind:    "Rest, weather, small pleasures, and where you go to stop",
-  life:      "The shape of your ordinary days — and whether they're yours",
-  home:      "Rooms, objects, and the feeling of belonging somewhere",
-  roots:     "The house you grew up in, and what it's still doing",
-  past:      "Turning points, survivals, and the stories you've earned",
-  self:      "Who you are once the roles come off — and what keeps you standing",
-  body:      "Living in a body — pleasure, tension, failure and repair",
-  mind:      "How your head actually works — attention, memory, habit, doubt",
-  spirit:    "Meaning, mortality, practice — and what you hope is true",
-  connect:   "How you reach people, and how you let them reach you",
-  friends:   "The people you chose — and what you're like to have as a friend",
-  date:      "Falling, staying, leaving — how you do love",
-  attract:   "Desire before anything happens — what pulls you, and what you do with it",
-  values:    "Where your lines are — and what it costs to hold them",
-  world:     "Power, fairness, and the world you're actually living in",
-  work:      "What you do all day — and who you become doing it",
-  deep:      "The harder questions, for when the room is ready",
-  raw:       "Right now, in this room — no softening",
-  grief:     "Loss, and the shape it left",
-  family:    "The family you have now — roles, rules, and what you'd pass on",
-  failure:   "Mistakes and the patterns you keep repeating — what they cost, what they taught",
-  bare:     "Direct to a fault — the questions your friends ask three drinks in ✦",
-  abyss:     "The far room. For the ones who go further than most. Aftercare included. ✦",
-  aron:      "Arthur Aron's 36 questions — the closeness study. Alone, they play in their original order",
-  magic:     "Priya Parker's magical questions — light, surprising, proven",
-  shadow:    "The parts you don't advertise — and what they cost other people",
-  lens:      "How you see yourself — honestly",
-  wish:      "Wanting — what you chase, what you dropped, what keeps returning",
-  us:        "About this specific moment, between the two of you",
-  usfriend:  "About this friendship, directly",
-  uslove:    "About this relationship, directly",
-  usintimate:"Physical and intimate — for the two of you only ✦",
-  flesh:     "The body in desire — before and around the act ✦",
-  carnal:    "The act itself, from the inside ✦",
-  kinks:     "Power, edge, and what you'd rather not explain ✦",
-  desire:    "The feeling of wanting and being wanted ✦",
-  threshold: "Edges and limits — yours, and how you found them ✦",
-  backup:    "Overflow — questions with merit that did not make the top ten",
+const BUCKET_META = {
+  easein:        { label:"Ease In",       color:"#d9a441", desc:"Small talk that's actually good talk" },
+  everyday:      { label:"Your Days",     color:"#6bb36e", desc:"Days, rooms, and the ordinary made worth saying" },
+  viewpoints:    { label:"Viewpoints",    color:"#b79c66", desc:"What you make of things — taste, the world, and what you believe" },
+  reflection:    { label:"Reflection",    color:"#5082cd", desc:"Who you are once the roles come off" },
+  relationships: { label:"Relationships", color:"#e8997a", desc:"The people you choose, and the family you didn't" },
+  vulnerability: { label:"Vulnerability", color:"#8f74b8", desc:"Where you're from, and how far the room is willing to go" },
+  usb:           { label:"Us",            color:"#d97a92", desc:"About the two of you. Directly" },
+  afterdarkb:    { label:"After Dark",    color:"#ff2f2f", desc:"Desire, named — open to anyone at the table, not only lovers \u2726" },
+  meta:          { label:"Meta",          color:"#5a5a6a", desc:"Overflow — questions with merit that did not make the top ten" },
 };
-
-
-const BUCKET_DESCRIPTIONS = {
-  easein:        "Small talk that's actually good talk",
-  everyday:      "Days, rooms, and the ordinary made worth saying",
-  viewpoints:    "What you make of things — taste, the world, and what you believe",
-  reflection:    "Who you are once the roles come off",
-  relationships: "The people you choose, and the family you didn't",
-  vulnerability: "Where you're from, and how far the room is willing to go",
-  usb:           "About the two of you. Directly",
-  afterdarkb:    "Desire, named — open to anyone at the table, not only lovers \u2726",
-  meta:          "Overflow — questions with merit that did not make the top ten",
-};
+const BUCKET_DESCRIPTIONS = Object.fromEntries(Object.entries(BUCKET_META).map(([k,v]) => [k, v.desc]));
 
