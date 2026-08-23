@@ -35,7 +35,10 @@ body::before{
 .preset-row{display:inline-flex;min-width:100%;justify-content:center;}
 .mode-btn{
   flex:0 0 auto;background:transparent;border:none;
-  color:rgba(240,232,216,.62);font-family:'Jost',sans-serif;font-size:.62rem;font-weight:300;
+  /* a dimmed version of the mode's own colour at rest, not flat cream —
+     the dot alone wasn't enough presence to read as "colour-coded" */
+  color:color-mix(in srgb, var(--mc,var(--gold)) 42%, rgba(240,232,216,.5));
+  font-family:'Jost',sans-serif;font-size:.62rem;font-weight:300;
   letter-spacing:.13em;text-transform:uppercase;padding:9px 16px 9px 23px;cursor:pointer;
   transition:color .2s;white-space:nowrap;position:relative;
 }
@@ -55,7 +58,13 @@ body::before{
 /* Per-mode colour, reused from the exact category colours those modes draw
    from (levelColor in config.js) — not decorative, so "Friends" really is
    the same gold-tan as the Friendship category, "Dating" the same rose as
-   Romance, and so on. "Everything" stays neutral: it has no single lean. */
+   Romance, and so on. Everything/Balanced used to fall through to the
+   plain --gold default, which read as "the standard, undecorated one" —
+   wrong, since gold is the CTA/brand colour, not a mode. They get their
+   own real hues instead: an open indigo for the broadest option, a warm
+   amber for the steady middle one. */
+.mode-btn[data-mode="open"]{--mc:#6f8fd8;}
+.mode-btn[data-mode="balanced"]{--mc:#d1a53c;}
 .mode-btn[data-mode="newpeople"]{--mc:#c99765;}
 .mode-btn[data-mode="friends"]{--mc:#6bb36e;}
 .mode-btn[data-mode="dating"]{--mc:#df7a91;}
@@ -634,9 +643,6 @@ body::before{
 .sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
   text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
 
-/* caption inside the amount tray */
-.tray-cap{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:rgba(240,232,216,.68);text-align:center;}
-
 /* quick actions under the opener: After Dark · All · None */
 /* After Dark as a glyph riding the Categories line */
 
@@ -1017,8 +1023,6 @@ body::before{
   font-size:.68rem;letter-spacing:.14em;opacity:.75;}
 .limit-row--drawer .limit-btn.active{border-color:rgba(201,168,76,.45);background:rgba(201,168,76,.06);opacity:1;}
 .limit-row--drawer .limit-btn:hover{border-color:var(--border);opacity:.9;}
-.limit-row--drawer .limit-sep{display:none;}
-#handCapDrawer{padding:20px 0 4px;}
 
 /* "start" bar at the foot of the sheet — .cat-area is itself the flex column
    (the panes scroll internally, flex:1), so a plain flex child here just
@@ -1050,27 +1054,60 @@ body::before{
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 .chapter.ch-hidden{display:none;}
 
-/* ── the two dials ── */
-/* inset from the frame on purpose — full-width made "Easy" and "Intense"
-   read as pinned to opposite corners of the card rather than the two ends
-   of one control */
-.dials{padding:2px 26px 0;}
-.dial{padding:8px 0 0;}
-/* the name label ("Depth"/"Me <-> Us") was dead weight once the dial-desc
-   line already says what moving it does — cut, not just hidden */
-.dial-desc{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.82rem;line-height:1.35;color:rgba(240,232,216,.72);padding-bottom:8px;}
-.dial-ends{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:8px;
-  font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--muted);padding-bottom:7px;}
-.dial-ends>span:first-child{justify-self:start;}
-.dial-ends>span:last-child{justify-self:end;}
-/* grid (not flex+space-between) so the middle word sits on the row's true
-   centre — space-between divides remaining space by the OUTER labels'
-   widths, so "Balanced" drifted toward "Easy" (4 chars) away from
-   "Intense" (7 chars) instead of sitting equidistant from both. */
-.dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;justify-self:center;}
-.dial{position:relative;}
+/* ── the console: icon-led on purpose, so it never reads as a fourth list
+   of chapter-style choices — this is mechanics, not content. A muted
+   two-colour wash instead of a flat tint: each control's own hue bleeds
+   faintly into the plate behind it. ── */
+.console{margin-top:18px;position:relative;
+  background:
+    radial-gradient(ellipse 140% 60% at 22% 30%, rgba(201,168,76,.05), transparent 70%),
+    radial-gradient(ellipse 140% 60% at 78% 70%, rgba(101,201,176,.05), transparent 70%),
+    rgba(255,255,255,.012);
+  border:1px solid rgba(240,232,216,.1);
+  border-radius:10px;padding:18px 16px 16px;}
+.console-head{display:flex;align-items:center;gap:6px;justify-content:center;margin-bottom:18px;position:relative;}
+.console-head svg{width:12px;height:12px;color:#65c9b0;opacity:.8;}
+.console-head span{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,232,216,.45);}
+
+/* "what am I looking at" — a small info affordance, not baked-in explainer
+   text taking up permanent room */
+.info-btn{background:none;border:none;cursor:pointer;padding:2px;color:rgba(240,232,216,.32);
+  display:inline-flex;align-items:center;}
+.info-btn svg{width:12px;height:12px;}
+.info-btn:hover,.info-btn.open{color:var(--gold-l);}
+.tooltip{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:250px;
+  max-width:calc(100vw - 40px);background:#1d1915;border:1px solid rgba(240,232,216,.14);border-radius:8px;
+  padding:11px 13px;font-family:'Cormorant Garamond',serif;font-size:.82rem;line-height:1.45;
+  color:rgba(240,232,216,.8);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:5;
+  display:none;pointer-events:none;}
+.tooltip.open{display:block;}
+.tooltip::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:9px;height:9px;background:#1d1915;border-left:1px solid rgba(240,232,216,.14);border-top:1px solid rgba(240,232,216,.14);}
+
+.ctrl-row{display:flex;align-items:flex-start;gap:12px;position:relative;}
+.ctrl-row+.ctrl-row{margin-top:24px;}
+.ctrl-icon{width:26px;height:26px;border-radius:50%;background:rgba(240,232,216,.05);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ctrl-icon svg{width:13px;height:13px;color:var(--ic,var(--gold));}
+.ctrl-icon--sm{width:20px;height:20px;}
+.ctrl-icon--sm svg{width:10px;height:10px;}
+.ctrl-body{flex:1;min-width:0;}
+.ctrl-top{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.56rem;
+  letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.5);padding-bottom:7px;}
+.ctrl-val{color:var(--ic,var(--gold-l));}
+.ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.44rem;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.3);padding-bottom:3px;}
+
+.console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
+
+/* Shuffle and Cards, side by side, each led by the same icon-circle
+   language the dials use above them. */
+.seg-row{display:flex;gap:14px;}
+.seg{flex:1;}
+.seg-head{display:flex;align-items:center;justify-content:center;gap:6px;padding-bottom:8px;}
+.seg-head span:last-child{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(240,232,216,.45);}
+
 .dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;position:relative;z-index:1;}
 .dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
 .dial-range::-moz-range-track{height:1px;background:var(--border);}
