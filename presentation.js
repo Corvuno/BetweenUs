@@ -341,9 +341,6 @@ function renderShell() {
   // that the main-screen Shuffle token is gone.
   document.querySelectorAll('.shuffle-toggle-opt').forEach(b =>
     b.classList.toggle('active', b.dataset.mode === state.randomMode));
-  const shuffleNote = document.getElementById('shuffleToggleNote');
-  if (shuffleNote) shuffleNote.textContent =
-    (typeof SHUFFLE_DESCRIPTIONS !== 'undefined' && SHUFFLE_DESCRIPTIONS[state.randomMode]) || '';
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }

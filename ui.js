@@ -641,6 +641,36 @@ applyToggleUI();
   scrim.addEventListener('click', closeCats);
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
 
+  /* ── swipe the sheet down to dismiss it, same gesture a bottom sheet is
+     expected to have — dragging from the handle follows the finger live
+     and either snaps back or finishes the close, instead of only reading
+     a start/end delta like the card's swipe does (a sheet this tall needs
+     the live feedback to feel grabbed, not just gestured at). ── */
+  (function(){
+    const handle = document.querySelector('.cat-sheet-handle');
+    if (!handle) return;
+    let startY = 0, dragging = false;
+    const SNAP_THRESHOLD = 90;
+    handle.addEventListener('touchstart', e => {
+      startY = e.touches[0].clientY;
+      dragging = true;
+      catArea.style.transition = 'none';
+    }, {passive:true});
+    handle.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy > 0) catArea.style.transform = `translateY(${dy}px)`;
+    }, {passive:true});
+    handle.addEventListener('touchend', e => {
+      if (!dragging) return;
+      dragging = false;
+      catArea.style.transition = '';
+      const dy = e.changedTouches[0].clientY - startY;
+      catArea.style.transform = '';
+      if (dy > SNAP_THRESHOLD) closeCats();
+    });
+  })();
+
   // "Draw Cards" — closes the sheet and deals straight into the first hand
   // of whatever's now selected, the same reshuffle-then-deal the app already
   // does elsewhere (deck.js's end-of-hand hold) — so finishing the sheet
@@ -1018,9 +1048,13 @@ applyToggleUI();
     if (typeof updateTimeOfDayHeading === 'function') updateTimeOfDayHeading();  // sheet title tracks the pane
     if (name === 'explore' && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
-  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn');
+  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn'), catGoBackBtn = $('catGoBackBtn');
   if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
   if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
+  // Same "back to Shape" action, reachable from where a thumb already is
+  // at the bottom of a long Explore scroll — not just the small link
+  // pinned at the very top of the pane.
+  if (catGoBackBtn) catGoBackBtn.addEventListener('click', () => showPane('play'));
 
   /* ── "Tune the hand" info tooltip — a tap target, not a permanent
      explainer line eating space in the console. ── */
