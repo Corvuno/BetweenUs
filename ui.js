@@ -592,8 +592,8 @@ applyToggleUI();
   const presetHost=document.createElement('div');
   presetHost.className='preset-host';
   presetHost.innerHTML=
+    '<div class="preset-host-label">Preset</div>'+
     '<button type="button" class="preset-host-toggle" id="presetHostToggle">'+
-      '<span class="preset-host-lbl">Starting from</span>'+
       '<span class="preset-host-val" id="presetHostVal">Balanced</span>'+
       '<span class="preset-host-chev">&#8250;</span>'+
     '</button>';
