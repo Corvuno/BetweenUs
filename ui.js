@@ -8,6 +8,47 @@
 // logic (the double init sequence, the final default-selection deal) behaves
 // identically to before the split.
 
+// Explore's bucket grid used to be ~40 hand-typed buttons in between-us.html,
+// each carrying its own copy of a level/bucket/label that had to independently
+// agree with CATEGORIES/BUCKET_META in config.js — the source of the "Kink"
+// vs "Kinks" and stray-bucket-membership drift found this session. Built from
+// that single source instead, now. Runs first, before anything else in this
+// file (or any file that loads after it) can touch a .toggle-btn/.cat-bucket
+// element expecting it to already exist. Bucket order follows BUCKET_META's
+// own key order; category order within a bucket follows CATEGORIES' key
+// order — both already read top-to-bottom as the intended display order.
+(function renderBucketGrid(){
+  const wrap = document.getElementById('toggles');
+  if (!wrap) return;
+  const byBucket = {};
+  Object.keys(CATEGORIES).forEach(id => {
+    const b = CATEGORIES[id].bucket;
+    if (b) (byBucket[b] = byBucket[b] || []).push(id);
+  });
+  let html = '';
+  Object.keys(BUCKET_META).forEach(bid => {
+    const members = byBucket[bid] || [];
+    if (!members.length) return;
+    const meta = BUCKET_META[bid];
+    // The one bit of bucket-specific markup that isn't just "name + members":
+    // After Dark's inline spice-glyph toggle sits between its select button
+    // and its expand chevron.
+    const spiceGlyph = bid === 'afterdarkb'
+      ? ' <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn2" title="A little more, once After Dark is open">&#10022;</button>'
+      : '';
+    html += `<div class="cat-bucket" data-bucket="${bid}" style="--ch:${meta.color}"><button type="button" class="cbk-select"><span class="cbk-name">${esc(meta.label)}</span><span class="cbk-count"></span></button>${spiceGlyph}<button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>`;
+    members.forEach(id => {
+      const cat = CATEGORIES[id];
+      const listClass = cat.ordered ? ' toggle-btn--list' : '';
+      // Backup is the one dimmed/italic overflow chip — a single-category
+      // exception, not worth a registry field of its own.
+      const dimStyle = id === 'backup' ? ' style="opacity:.22;font-style:italic;"' : '';
+      html += `<button class="toggle-btn${listClass} chip-folded" data-level="${id}" data-bucket="${bid}"${dimStyle}>${esc(cat.label)}</button>`;
+    });
+  });
+  wrap.innerHTML = html;
+})();
+
 [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
   if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
 });
@@ -693,23 +734,21 @@ applyToggleUI();
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
-   Play asks what kind of evening this is: five chapters you can mix, and two
-   dials that weight the draw inside them. Explore is the same deck as eight
-   drawers, each opening onto the categories it is made of. One selection
-   underneath both, and one spice toggle and After Dark link shared above
-   both tabs, so neither view goes without them.                          */
+   Play asks what kind of evening this is: six chapters you can mix, and two
+   dials that weight the draw inside them. Explore is the same deck as a
+   handful of drawers, each opening onto the categories it is made of. One
+   selection underneath both, and one spice toggle and After Dark link
+   shared above both tabs, so neither view goes without them.            */
 (function(){
   const $ = id => document.getElementById(id);
 
-  const CHAPTERS = {
-    warmup:    ['quick','warm'],
-    surface:   ['culture','life','home','work','unwind','world'],
-    findout:   ['self','mind','body','values','wish',
-                'connect','friends','date','attract','family','spirit'],
-    deeper:    ['past','roots','deep','raw','shadow','grief'],
-    aboutus:   ['us','usfriend','uslove'],
-    afterdark: ['usintimate','flesh','carnal','bare','kinks'],
-  };
+  // Derived from CATEGORIES' own .chapter field (config.js) rather than
+  // hand-listed here — a category's chapter is set in exactly one place.
+  const CHAPTERS = {};
+  Object.keys(CATEGORIES).forEach(id => {
+    const ch = CATEGORIES[id].chapter;
+    if (ch) (CHAPTERS[ch] = CHAPTERS[ch] || []).push(id);
+  });
   const inDeck = l => DECK_LEVELS.has(l);
   const chapterLevels = id => (CHAPTERS[id] || []).filter(inDeck);
   const bucketLevels  = id => [...document.querySelectorAll('.toggle-btn[data-bucket="'+id+'"]')]
