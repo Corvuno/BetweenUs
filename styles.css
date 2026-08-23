@@ -35,7 +35,10 @@ body::before{
 .preset-row{display:inline-flex;min-width:100%;justify-content:center;}
 .mode-btn{
   flex:0 0 auto;background:transparent;border:none;
-  color:rgba(240,232,216,.62);font-family:'Jost',sans-serif;font-size:.62rem;font-weight:300;
+  /* a dimmed version of the mode's own colour at rest, not flat cream —
+     the dot alone wasn't enough presence to read as "colour-coded" */
+  color:color-mix(in srgb, var(--mc,var(--gold)) 42%, rgba(240,232,216,.5));
+  font-family:'Jost',sans-serif;font-size:.62rem;font-weight:300;
   letter-spacing:.13em;text-transform:uppercase;padding:9px 16px 9px 23px;cursor:pointer;
   transition:color .2s;white-space:nowrap;position:relative;
 }
@@ -55,7 +58,13 @@ body::before{
 /* Per-mode colour, reused from the exact category colours those modes draw
    from (levelColor in config.js) — not decorative, so "Friends" really is
    the same gold-tan as the Friendship category, "Dating" the same rose as
-   Romance, and so on. "Everything" stays neutral: it has no single lean. */
+   Romance, and so on. Everything/Balanced used to fall through to the
+   plain --gold default, which read as "the standard, undecorated one" —
+   wrong, since gold is the CTA/brand colour, not a mode. They get their
+   own real hues instead: an open indigo for the broadest option, a warm
+   amber for the steady middle one. */
+.mode-btn[data-mode="open"]{--mc:#6f8fd8;}
+.mode-btn[data-mode="balanced"]{--mc:#d1a53c;}
 .mode-btn[data-mode="newpeople"]{--mc:#c99765;}
 .mode-btn[data-mode="friends"]{--mc:#6bb36e;}
 .mode-btn[data-mode="dating"]{--mc:#df7a91;}
@@ -134,6 +143,10 @@ body::before{
 .cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
 .cat-grid-wrap.open{display:block;}
 .toggles{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;padding:8px 0 4px;}
+/* #bucketGrid holds the JS-generated bucket/category buttons; display:contents
+   keeps it invisible to .toggles' flex layout, so its children still wrap as
+   direct flex items — same as when they were direct children of .toggles. */
+#bucketGrid{display:contents;}
 .toggle-btn{
   flex:0 0 auto;background:none;border:none;cursor:pointer;
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;
@@ -258,10 +271,12 @@ body::before{
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid var(--dim);color:var(--muted);width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:var(--border);color:var(--gold);}
+.btn-sq svg{width:16px;height:16px;}
 .btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.57rem;letter-spacing:.23em;text-transform:uppercase;padding:10px 0;cursor:pointer;transition:all .2s;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 .btn-draw:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
 .btn-draw:active{transform:scale(.98);}
-.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:6px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:6px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-fullscreen svg{width:13px;height:13px;flex-shrink:0;}
 .btn-fullscreen:hover{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
 .btn-fullscreen--emphasis{color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:2px;padding:6px 16px;background:rgba(201,168,76,.06);}
 .btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
@@ -634,9 +649,6 @@ body::before{
 .sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
   text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
 
-/* caption inside the amount tray */
-.tray-cap{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;color:rgba(240,232,216,.68);text-align:center;}
-
 /* quick actions under the opener: After Dark · All · None */
 /* After Dark as a glyph riding the Categories line */
 
@@ -653,11 +665,19 @@ body::before{
 .cat-area.in{opacity:1;}
 .cat-area:not(.sheet-open){pointer-events:none;}
 .cat-area.sheet-open{transform:none;}
-.cat-sheet-handle{width:36px;height:3px;border-radius:2px;background:rgba(201,168,76,.3);margin:12px auto 6px;flex-shrink:0;}
+/* the visible bar stays a thin 3px line — background-clip keeps the
+   drag/tap target much bigger (24px tall) without fattening the bar itself */
+.cat-sheet-handle{width:56px;height:24px;padding:10.5px 10px;box-sizing:border-box;
+  background-color:rgba(201,168,76,.3);background-clip:content-box;border-radius:2px;
+  margin:2px auto 0;flex-shrink:0;touch-action:none;}
 .cat-sheet-title{text-align:center;font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.25em;
   text-transform:uppercase;color:var(--gold);padding:4px 0 14px;flex-shrink:0;}
-.cat-close{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--muted);
-  font-size:1rem;cursor:pointer;padding:4px;transition:color .2s;z-index:2;}
+/* padding carries the tap target up toward the ~44px minimum — the glyph
+   itself stays the same visual size, the invisible hit area just grows
+   around it instead of stopping a few px past the "x" */
+.cat-close{position:absolute;top:4px;right:6px;background:none;border:none;color:var(--muted);
+  font-size:1rem;cursor:pointer;padding:14px;transition:color .2s;z-index:2;
+  display:flex;align-items:center;justify-content:center;}
 .cat-close:hover{color:var(--cream);}
 #catLabel{display:none;}
 .cat-topbar{flex-shrink:0;justify-content:center;padding:0 0 6px;}
@@ -729,19 +749,27 @@ body::before{
   .cat-band.band-hidden,.band-lbl.band-hidden{display:none;}
 }
 
-/* presets (former modes) at the top of the categories drawer */
-/* Bottom margin carries most of the gap to "What kind of morning?" below —
-   it and "Who's at the table?" are meant to read as the same rank of
-   header, and a thin 8px hand-off read as one continuing list instead of
-   two sections. */
-.preset-host{flex-shrink:0;padding:2px 0 10px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
-/* Same family as the other section headers in this drawer (What kind of
-   [time]?, Tune the conversation, How does it play?) — all-caps, grey,
-   Jost — not the italic serif notes underneath them. Sized up a step from
-   the old tiny label for readability. */
-.preset-host-lbl{text-align:center;font-family:'Jost',sans-serif;font-size:.64rem;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(240,232,216,.55);padding-bottom:8px;}
-.preset-host .preset-outer{display:block;width:100%;opacity:1;}
+/* presets (former modes) at the top of the categories drawer — collapsed
+   behind one line by default ("Starting from Balanced"), expanding to the
+   wrapped grid below on tap. Never a permanent block, never a scrolling
+   bar either way. */
+.preset-host{flex-shrink:0;padding:2px 0 4px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
+.preset-host-toggle{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  background:none;border:none;cursor:pointer;padding:10px 18px;font-family:'Jost',sans-serif;}
+.preset-host-lbl{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,232,216,.4);}
+.preset-host-val{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-l);font-weight:400;}
+.preset-host-chev{font-size:.75rem;color:rgba(240,232,216,.35);transition:transform .2s;}
+.preset-host.open .preset-host-chev{transform:rotate(90deg);}
+/* slides open, same max-height technique the trays already use elsewhere
+   (see .tray) — not an instant display toggle */
+/* target close to the real content height (~97px measured), not a big
+   buffer — a much larger target than the actual box made opening reach
+   full height early and then keep "animating" invisibly past it, so open
+   read as a fast snap while closing (which travels the same real
+   distance) read as the properly-paced one. */
+.preset-host .preset-outer{max-height:0;overflow:hidden;width:100%;opacity:1;
+  padding:0 24px;transition:max-height .32s ease,padding .32s ease;}
+.preset-host.open .preset-outer{max-height:140px;padding:6px 24px 10px;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 .preset-host .mode-btn{font-size:.64rem;padding:8px 11px 8px 18px;}
@@ -817,8 +845,11 @@ body::before{
 .party-overlay.idle .party-hint{opacity:0;pointer-events:none;}
 .party-overlay.idle .party-number{opacity:.25;}
 
-/* menu drawer: de-boxed, text-first — same design language as the rest */
-.d-icon{width:auto;height:auto;border:none;border-radius:0;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;}
+/* menu drawer: de-boxed, text-first — same design language as the rest.
+   One consistent stroke-icon set now, not mismatched Unicode dingbats and
+   an emoji — same muted→gold rule, just SVG instead. */
+.d-icon{width:auto;height:auto;border:none;border-radius:0;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;align-items:center;display:flex;}
+.d-icon svg{width:16px;height:16px;}
 .d-item{padding:13px 26px;gap:16px;}
 .d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}
 .d-label{letter-spacing:.2em;}
@@ -935,14 +966,23 @@ body::before{
 .customize-btn::after,.fixed-seq-toggle::after{content:'\203A';font-size:.85rem;opacity:.6;
   transition:transform .2s;}
 
-/* Colbert/The 36 aren't tunable moods, but almost nobody needs them most
-   sessions — a permanent block for them outweighed the actual category
-   grid. Tucked behind the same kind of fold Customize/Back already use:
-   zero space until opened. */
-.fixed-seq{flex-shrink:0;border-top:1px solid var(--dim);margin-top:6px;padding:6px 4px 2px;}
-.fixed-seq-toggle{width:fit-content;margin:8px auto 0;}
-.fixed-seq-toggle.open::after{transform:rotate(90deg);}
-.fixed-seq-options{display:none;padding-top:4px;}
+/* Colbert/The 36 — one more row in the same category list, same bucket
+   look, same "+" reveal, instead of a separate whisper-link section
+   living below it. --ch keys it into the same colour system the other
+   buckets use, just neutral (it isn't tied to a category's own hue). */
+.fixed-seq-toggle--bucket{width:100%;display:flex;align-items:center;gap:0;
+  border-bottom:1px solid var(--dim);margin:0;padding:11px 4px 9px 4px;
+  font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(240,232,216,.6);--ch:var(--gold);}
+.fixed-seq-toggle--bucket:hover{background:rgba(255,255,255,.02);color:rgba(240,232,216,.6);}
+.fixed-seq-toggle--bucket::after{content:none;}
+.fixed-seq-toggle--bucket .cbk-name{flex:0 0 auto;}
+.fixed-seq-toggle--bucket .cbk-count{flex:1;font-size:.5rem;letter-spacing:.14em;
+  text-transform:none;color:var(--muted);opacity:.7;}
+.fixed-seq-toggle--bucket .cbk-chev{font-size:.85rem;}
+.fixed-seq-toggle--bucket.open .cbk-chev{transform:rotate(45deg);}
+.fixed-seq-toggle--bucket:hover .cbk-chev{color:var(--gold);}
+.fixed-seq-options{display:none;padding:10px 4px 14px;}
 .fixed-seq-options.open{display:block;}
 .fixed-seq-btn{display:flex;width:100%;justify-content:center;padding:9px 10px;margin-bottom:5px;
   border:1px solid rgba(240,232,216,.14);border-radius:3px;}
@@ -962,8 +1002,6 @@ body::before{
   background:linear-gradient(90deg,#d9a441,#b48c7c,#8f74b8,#6a8ab8,#45a0b8);
   color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);}
 .shuffle-toggle-opt[data-mode="wild"].active{background:rgba(232,160,64,.16);color:#e8a040;}
-.shuffle-toggle-note{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.78rem;color:rgba(240,232,216,.55);padding:8px 20px 2px;}
 
 .pane{display:none;}
 .pane.on{display:block;}
@@ -983,14 +1021,6 @@ body::before{
    .play-lead's own top padding now, so the two headers actually read as
    the same rank they're meant to be. */
 .play-lead--first{padding-top:14px;}
-/* each of the three controls in Shape (what/how far/how it plays) gets one
-   short line saying what it does in player terms — no "chapters" or
-   "categories", just what happens to the round. Upright, not italic —
-   italic Cormorant Garamond at this size read as too thin/faint to hold up
-   as an instruction line (unlike the bigger card-question text it's
-   normally reserved for). */
-.play-note{text-align:center;font-family:'Cormorant Garamond',serif;font-weight:400;
-  font-size:.94rem;line-height:1.5;color:var(--cream);padding:0 10px 12px;}
 
 /* Shape is three different KINDS of decision (what's in play, how it leans,
    how it's dealt out) — text only, no numbering (felt like a form, not part
@@ -1008,17 +1038,17 @@ body::before{
   font-size:.92rem;line-height:1.5;color:var(--gold-l);opacity:.9;
   padding:2px 12px 12px;border-bottom:1px solid var(--dim);margin-bottom:6px;}
 
-/* Card count inside the "Fine-tune the hand" fold — a ten-to-one size gap
-   for choices of equal weight would look wrong, so it gets the same tile
-   language as the shuffle toggle above it (no description text needed,
-   the numbers speak for themselves). */
-.limit-row--drawer{justify-content:center;padding-top:4px;gap:8px;}
-.limit-row--drawer .limit-btn{border:1px solid var(--dim);border-radius:4px;padding:12px 18px;
-  font-size:.68rem;letter-spacing:.14em;opacity:.75;}
-.limit-row--drawer .limit-btn.active{border-color:rgba(201,168,76,.45);background:rgba(201,168,76,.06);opacity:1;}
-.limit-row--drawer .limit-btn:hover{border-color:var(--border);opacity:.9;}
-.limit-row--drawer .limit-sep{display:none;}
-#handCapDrawer{padding:20px 0 4px;}
+/* Card count sits next to Shuffle now (same console row), so it gets the
+   exact same one-rail-not-four-boxes treatment: a single subtle border
+   around the whole group, buttons filling it evenly with no border or gap
+   of their own — four separate bordered boxes read far louder than one
+   quiet rail, and didn't leave Shuffle's two-button rail even width to
+   match against. */
+.limit-row--drawer{border:1px solid rgba(240,232,216,.12);border-radius:6px;overflow:hidden;padding:0;gap:0;}
+.limit-row--drawer .limit-btn{flex:1;border:none;border-radius:0;padding:7px 0;
+  font-size:.58rem;letter-spacing:.04em;opacity:.7;}
+.limit-row--drawer .limit-btn.active{background:rgba(101,201,176,.14);color:var(--gold-l);opacity:1;}
+.limit-row--drawer .limit-btn:hover{opacity:.9;}
 
 /* "start" bar at the foot of the sheet — .cat-area is itself the flex column
    (the panes scroll internally, flex:1), so a plain flex child here just
@@ -1032,6 +1062,15 @@ body::before{
   text-transform:uppercase;padding:13px 0;border-radius:3px;cursor:pointer;transition:filter .2s;}
 .cat-go-btn:hover{filter:brightness(1.06);}
 .cat-go-btn:active{transform:scale(.99);}
+
+/* the same "back to Shape" action as the small link pinned at the top of
+   Explore, repeated here so it's reachable without scrolling back up —
+   only shown while Explore is actually the open pane */
+.cat-go-back-btn{display:none;width:100%;background:none;border:none;cursor:pointer;
+  color:rgba(240,232,216,.5);font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:2px 0 10px;text-align:center;transition:color .2s;}
+.cat-go-back-btn:hover{color:var(--gold-l);}
+.pane-explore.on ~ .cat-go-bar .cat-go-back-btn{display:block;}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}
@@ -1050,27 +1089,69 @@ body::before{
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 .chapter.ch-hidden{display:none;}
 
-/* ── the two dials ── */
-/* inset from the frame on purpose — full-width made "Easy" and "Intense"
-   read as pinned to opposite corners of the card rather than the two ends
-   of one control */
-.dials{padding:2px 26px 0;}
-.dial{padding:8px 0 0;}
-/* the name label ("Depth"/"Me <-> Us") was dead weight once the dial-desc
-   line already says what moving it does — cut, not just hidden */
-.dial-desc{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.82rem;line-height:1.35;color:rgba(240,232,216,.72);padding-bottom:8px;}
-.dial-ends{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:8px;
-  font-family:'Jost',sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--muted);padding-bottom:7px;}
-.dial-ends>span:first-child{justify-self:start;}
-.dial-ends>span:last-child{justify-self:end;}
-/* grid (not flex+space-between) so the middle word sits on the row's true
-   centre — space-between divides remaining space by the OUTER labels'
-   widths, so "Balanced" drifted toward "Easy" (4 chars) away from
-   "Intense" (7 chars) instead of sitting equidistant from both. */
-.dial-val{color:var(--gold-l);opacity:.9;letter-spacing:.14em;justify-self:center;}
-.dial{position:relative;}
+/* ── the console: icon-led on purpose, so it never reads as a fourth list
+   of chapter-style choices — this is mechanics, not content. A muted
+   two-colour wash instead of a flat tint: each control's own hue bleeds
+   faintly into the plate behind it. ── */
+.console{margin-top:18px;position:relative;
+  background:
+    radial-gradient(ellipse 140% 60% at 22% 30%, rgba(201,168,76,.05), transparent 70%),
+    radial-gradient(ellipse 140% 60% at 78% 70%, rgba(101,201,176,.05), transparent 70%),
+    rgba(255,255,255,.012);
+  border:1px solid rgba(240,232,216,.1);
+  border-radius:10px;padding:18px 16px 16px;}
+.console-head{display:flex;align-items:center;gap:6px;justify-content:center;margin-bottom:18px;position:relative;}
+.console-head svg{width:12px;height:12px;color:#65c9b0;opacity:.8;}
+.console-head span{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,232,216,.45);}
+
+/* "what am I looking at" — a small info affordance, not baked-in explainer
+   text taking up permanent room */
+.info-btn{background:none;border:none;cursor:pointer;padding:2px;color:rgba(240,232,216,.32);
+  display:inline-flex;align-items:center;}
+.info-btn svg{width:12px;height:12px;}
+.info-btn:hover,.info-btn.open{color:var(--gold-l);}
+.tooltip{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:250px;
+  max-width:calc(100vw - 40px);background:#1d1915;border:1px solid rgba(240,232,216,.14);border-radius:8px;
+  padding:11px 13px;font-family:'Cormorant Garamond',serif;font-size:.82rem;line-height:1.45;
+  color:rgba(240,232,216,.8);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:5;
+  display:none;pointer-events:none;}
+.tooltip.open{display:block;}
+.tooltip::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:9px;height:9px;background:#1d1915;border-left:1px solid rgba(240,232,216,.14);border-top:1px solid rgba(240,232,216,.14);}
+
+.ctrl-row{display:flex;align-items:flex-start;gap:12px;position:relative;}
+.ctrl-row+.ctrl-row{margin-top:24px;}
+.ctrl-icon{width:26px;height:26px;border-radius:50%;background:rgba(240,232,216,.05);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ctrl-icon svg{width:13px;height:13px;color:var(--ic,var(--gold));}
+.ctrl-icon--sm{width:20px;height:20px;}
+.ctrl-icon--sm svg{width:10px;height:10px;}
+.ctrl-body{flex:1;min-width:0;}
+.ctrl-top{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.56rem;
+  letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.5);padding-bottom:7px;}
+.ctrl-val{color:var(--ic,var(--gold-l));}
+.ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.44rem;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.3);padding-bottom:3px;}
+
+.console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
+
+/* Shuffle and Cards, side by side, each led by the same icon-circle
+   language the dials use above them. min-width:0 overrides the flex item
+   default of min-width:auto — without it, Cards' 4-button row refused to
+   shrink below its content width and squeezed Shuffle's 2-button column
+   down to a third the space instead of the even split flex:1 implies. */
+.seg-row{display:flex;gap:14px;}
+.seg{flex:1;min-width:0;}
+.seg-head{display:flex;align-items:center;justify-content:center;gap:6px;padding-bottom:8px;}
+.seg-head span:last-child{font-family:'Jost',sans-serif;font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(240,232,216,.45);}
+/* Shuffle's rail was styled for standalone full-width use elsewhere (a
+   full pill) — flattened to the same 6px rail Cards uses right next to
+   it, and dropped the margin/max-width/padding it doesn't need sitting in
+   an already-sized column, so the two read as one matched pair. */
+.seg .shuffle-toggle{margin:0;max-width:none;padding:0;border-radius:6px;}
+.seg .shuffle-toggle-opt{border-radius:0;padding:7px 0;font-size:.58rem;letter-spacing:.04em;}
+
 .dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;position:relative;z-index:1;}
 .dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
 .dial-range::-moz-range-track{height:1px;background:var(--border);}

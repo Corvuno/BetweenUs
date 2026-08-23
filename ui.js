@@ -18,7 +18,10 @@
 // own key order; category order within a bucket follows CATEGORIES' key
 // order — both already read top-to-bottom as the intended display order.
 (function renderBucketGrid(){
-  const wrap = document.getElementById('toggles');
+  // #bucketGrid is a plain wrapper inside #toggles, sibling to the static
+  // Fixed Sets button/panel that also lives there — innerHTML-replacing
+  // #toggles itself would wipe those out along with the generated buckets.
+  const wrap = document.getElementById('bucketGrid');
   if (!wrap) return;
   const byBucket = {};
   Object.keys(CATEGORIES).forEach(id => {
@@ -624,11 +627,28 @@ applyToggleUI();
   const $=id=>document.getElementById(id);
 
   /* ── re-home existing controls into trays ── */
-  /* modes now live in the categories drawer as presets */
+  /* modes now live in the categories drawer as presets — collapsed behind
+     a single "Starting from X" line by default (never a permanent grid,
+     never a scrolling bar) and revealed as a wrapped grid on tap. The
+     value mirrors the same live preset name + colour the top token
+     already tracks (see presentation.js), so there's one source of truth
+     for "what preset is this," not two. */
   const presetHost=document.createElement('div');
   presetHost.className='preset-host';
-  presetHost.innerHTML='<div class="preset-host-lbl">Who\'s at the table?</div>';
+  presetHost.innerHTML=
+    '<button type="button" class="preset-host-toggle" id="presetHostToggle">'+
+      '<span class="preset-host-lbl">Starting from</span>'+
+      '<span class="preset-host-val" id="presetHostVal">Balanced</span>'+
+      '<span class="preset-host-chev">&#8250;</span>'+
+    '</button>';
   presetHost.appendChild($('preset-outer'));
+  // querySelector on presetHost itself, not document.getElementById — this
+  // node isn't attached to the document yet at this point in the wiring,
+  // so a document-wide lookup would silently find nothing.
+  const presetHostToggle=presetHost.querySelector('.preset-host-toggle');
+  if (presetHostToggle) presetHostToggle.addEventListener('click', () => {
+    presetHost.classList.toggle('open');
+  });
   const topbar=document.querySelector('.cat-area .cat-topbar');
   topbar.before(presetHost);            /* presets first … */
   presetHost.after(topbar);             /* … then After Dark · All · None */
@@ -664,6 +684,36 @@ applyToggleUI();
   $('catClose').addEventListener('click', closeCats);
   scrim.addEventListener('click', closeCats);
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
+
+  /* ── swipe the sheet down to dismiss it, same gesture a bottom sheet is
+     expected to have — dragging from the handle follows the finger live
+     and either snaps back or finishes the close, instead of only reading
+     a start/end delta like the card's swipe does (a sheet this tall needs
+     the live feedback to feel grabbed, not just gestured at). ── */
+  (function(){
+    const handle = document.querySelector('.cat-sheet-handle');
+    if (!handle) return;
+    let startY = 0, dragging = false;
+    const SNAP_THRESHOLD = 90;
+    handle.addEventListener('touchstart', e => {
+      startY = e.touches[0].clientY;
+      dragging = true;
+      catArea.style.transition = 'none';
+    }, {passive:true});
+    handle.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy > 0) catArea.style.transform = `translateY(${dy}px)`;
+    }, {passive:true});
+    handle.addEventListener('touchend', e => {
+      if (!dragging) return;
+      dragging = false;
+      catArea.style.transition = '';
+      const dy = e.changedTouches[0].clientY - startY;
+      catArea.style.transform = '';
+      if (dy > SNAP_THRESHOLD) closeCats();
+    });
+  })();
 
   // "Draw Cards" — closes the sheet and deals straight into the first hand
   // of whatever's now selected, the same reshuffle-then-deal the app already
@@ -1040,9 +1090,30 @@ applyToggleUI();
     if (typeof updateTimeOfDayHeading === 'function') updateTimeOfDayHeading();  // sheet title tracks the pane
     if (name === 'explore' && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
-  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn');
+  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn'), catGoBackBtn = $('catGoBackBtn');
   if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
   if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
+  // Same "back to Shape" action, reachable from where a thumb already is
+  // at the bottom of a long Explore scroll — not just the small link
+  // pinned at the very top of the pane.
+  if (catGoBackBtn) catGoBackBtn.addEventListener('click', () => showPane('play'));
+
+  /* ── "Tune the hand" info tooltip — a tap target, not a permanent
+     explainer line eating space in the console. ── */
+  const fineInfoBtn = $('fineInfoBtn'), fineInfoTip = $('fineInfoTip');
+  if (fineInfoBtn && fineInfoTip) {
+    fineInfoBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = fineInfoTip.classList.toggle('open');
+      fineInfoBtn.classList.toggle('open', open);
+    });
+    document.addEventListener('click', e => {
+      if (fineInfoTip.classList.contains('open') && !fineInfoBtn.contains(e.target) && !fineInfoTip.contains(e.target)) {
+        fineInfoTip.classList.remove('open');
+        fineInfoBtn.classList.remove('open');
+      }
+    });
+  }
 
   // Fixed sets (Colbert/The 36) stay collapsed until asked for — no
   // permanent space for something most sessions never touch.

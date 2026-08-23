@@ -194,17 +194,18 @@ function updateTimeOfDayHeading() {
   const word = timeOfDayWord();
   const heading = document.getElementById('playLeadFirst');
   if (heading) heading.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + word + '?';
+  // Static now, not time-of-day framed — it sits after the console as a
+  // plain "go deeper" link, not a headline, so it doesn't need the word.
   const customizeBtn = document.getElementById('customizeBtn');
-  if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? ('Pas je ' + word + ' aan') : ('Customize your ' + word);
-  // The sheet's own title tracks which pane is showing — "Categories" only
-  // actually describes Explore; Shape gets the same time-of-day framing as
-  // its heading and the Customize button, so all three read as one line.
+  if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? 'Verken elke categorie' : 'Explore every category';
+  // The sheet's own title only actually describes Explore ("Categories") —
+  // Play has its own heading + the console right there, so the title stays
+  // hidden while Play is showing instead of duplicating that framing.
   const title = document.getElementById('catSheetTitle');
   if (title) {
     const exploring = document.getElementById('paneExplore') && document.getElementById('paneExplore').classList.contains('on');
-    title.textContent = exploring
-      ? (state.lang === 'nl' ? 'Categorieën' : 'Categories')
-      : (state.lang === 'nl' ? ('Vorm je ' + word) : ('Shape your ' + word));
+    title.style.display = exploring ? '' : 'none';
+    title.textContent = state.lang === 'nl' ? 'Categorieën' : 'Categories';
   }
 }
 
@@ -314,7 +315,8 @@ function renderShell() {
   // gold via --tokc's own default.
   const vCats = document.getElementById('valCats');
   const tokCats = document.getElementById('tokCats');
-  if (vCats) {
+  const presetHostVal = document.getElementById('presetHostVal');
+  if (vCats || presetHostVal) {
     const presetBtn = document.querySelector('.mode-btn[data-mode="' + state.activePreset + '"]');
     // Toggling an individual category directly (outside a preset's own bulk
     // toggle) clears state.activePreset to '' — no button matches that, so
@@ -322,21 +324,23 @@ function renderShell() {
     // string itself, leaving just the dropdown chevron with nothing to
     // anchor to. "Custom" names what's actually true instead of showing
     // nothing at all.
-    vCats.textContent = state.activePreset === 'colbertmode' ? 'Colbert'
+    const label = state.activePreset === 'colbertmode' ? 'Colbert'
       : (presetBtn ? presetBtn.textContent.trim() : (state.activePreset || 'Custom'));
-    if (tokCats) {
-      const cs = presetBtn && getComputedStyle(presetBtn);
-      const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
-      col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
+    const cs = presetBtn && getComputedStyle(presetBtn);
+    const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
+    if (vCats) vCats.textContent = label;
+    if (tokCats) col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
+    // "Starting from" mirrors the same name + colour, in place, inside the
+    // sheet — one source of truth, not a second label that can drift.
+    if (presetHostVal) {
+      presetHostVal.textContent = label;
+      col ? presetHostVal.style.setProperty('color', col) : presetHostVal.style.removeProperty('color');
     }
   }
   // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
   // that the main-screen Shuffle token is gone.
   document.querySelectorAll('.shuffle-toggle-opt').forEach(b =>
     b.classList.toggle('active', b.dataset.mode === state.randomMode));
-  const shuffleNote = document.getElementById('shuffleToggleNote');
-  if (shuffleNote) shuffleNote.textContent =
-    (typeof SHUFFLE_DESCRIPTIONS !== 'undefined' && SHUFFLE_DESCRIPTIONS[state.randomMode]) || '';
   // Fullscreen mirror of the Draw-three toggle
   const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
