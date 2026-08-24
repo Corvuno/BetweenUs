@@ -60,6 +60,10 @@ function renderProgress(currentOverride) {
       if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
       container.appendChild(dot);
     }
+    // One extra dot past the last card, standing for the summary screen —
+    // without it the dot row looks like it just ends with the last card,
+    // and nothing hints that there's a stop after it.
+    container.appendChild(makeEndDot(cur >= deckLen));
   } else {
     // Large decks (e.g. 'All' in Everything, 300+ cards): a fixed-width
     // window of real per-card dots slides along the deck instead of
@@ -80,7 +84,19 @@ function renderProgress(currentOverride) {
       if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
       container.appendChild(dot);
     }
+    // Only tack the summary dot on once the sliding window has actually
+    // reached the last real card — otherwise it'd float at the end of an
+    // early window, looking like part of the deck rather than what's after it.
+    if (windowEnd >= deckLen) container.appendChild(makeEndDot(cur >= deckLen));
   }
+}
+
+// The summary dot isn't a card, so it doesn't take a category color — a
+// plain gold ring that fills solid once you're actually on the summary.
+function makeEndDot(isCurrent) {
+  const dot = document.createElement('div');
+  dot.className = 'progress-dot end-dot' + (isCurrent ? ' current' : '');
+  return dot;
 }
 
 // ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────
@@ -380,7 +396,12 @@ function updateDrawMore() {
     nextBtn.textContent = state.lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
   } else {
     nextBtn.classList.remove('hold-mode');
-    nextBtn.textContent = state.currentIndex >= 0 ? (state.lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (state.lang === 'nl' ? 'Trek kaart' : 'Draw Card');
+    // On the last card, the tap ahead lands on the summary, not another
+    // card — say so, instead of promising "Next Card" and surprising people.
+    const atLastCard = state.currentIndex >= 0 && state.currentIndex === state.visibleDeck.length - 1;
+    nextBtn.textContent = atLastCard
+      ? (state.lang === 'nl' ? 'Overzicht' : 'Summary')
+      : state.currentIndex >= 0 ? (state.lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (state.lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
 };
 

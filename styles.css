@@ -268,6 +268,10 @@ body::before{
 }
 .progress-dot.seen{opacity:.65;}
 .progress-dot.current{opacity:1;transform:scale(1.6);}
+/* the extra dot past the last card, standing for the summary screen — a
+   ring instead of a fill so it doesn't read as just another card */
+.progress-dot.end-dot{background:transparent;border:1px solid var(--gold);opacity:.45;}
+.progress-dot.end-dot.current{background:var(--gold-l);border-color:var(--gold-l);opacity:1;}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid var(--dim);color:var(--muted);width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:var(--border);color:var(--gold);}
