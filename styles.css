@@ -629,8 +629,14 @@ body::before{
 .tok.open .tok-val::after{transform:translateY(-50%) rotate(180deg);}
 
 /* the token row is down to one entry point — the active preset itself —
-   so it gets to read a size up from the old three-word row it replaced */
-.tok-preset{padding:8px 20px 10px;}
+   so it gets to read a size up from the old three-word row it replaced.
+   The underline-only cue above wasn't enough here: this is the very first
+   tappable thing on the screen and needs to read as a button on sight, not
+   just on hover — a faint border + fill instead of the bare underline. */
+.tok-preset{padding:8px 20px 10px;border:1px solid rgba(240,232,216,.14);
+  border-radius:10px;background:rgba(240,232,216,.04);}
+.tok-preset::after{display:none;}
+.tok-preset:active{background:rgba(240,232,216,.08);}
 .tok-preset .tok-val{font-size:.82rem;letter-spacing:.14em;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
@@ -754,12 +760,9 @@ body::before{
    wrapped grid below on tap. Never a permanent block, never a scrolling
    bar either way. */
 .preset-host{flex-shrink:0;padding:2px 0 4px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
-.preset-host-label{text-align:center;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(240,232,216,.35);margin-bottom:6px;}
-.preset-host-toggle{display:flex;align-items:center;justify-content:center;gap:6px;width:auto;
-  margin:0 auto;background:rgba(240,232,216,.04);border:1px solid rgba(240,232,216,.14);
-  border-radius:8px;cursor:pointer;padding:8px 16px;font-family:'Jost',sans-serif;}
-.preset-host-toggle:active{background:rgba(240,232,216,.08);}
+.preset-host-toggle{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  background:none;border:none;cursor:pointer;padding:10px 18px;font-family:'Jost',sans-serif;}
+.preset-host-lbl{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,232,216,.4);}
 .preset-host-val{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-l);font-weight:400;}
 .preset-host-chev{font-size:.75rem;color:rgba(240,232,216,.35);transition:transform .2s;}
 .preset-host.open .preset-host-chev{transform:rotate(90deg);}
