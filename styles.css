@@ -66,11 +66,13 @@ body::before{
    Romance, and so on. Everything/Balanced used to fall through to the
    plain --gold default, which read as "the standard, undecorated one" —
    wrong, since gold is the CTA/brand colour, not a mode. They get their
-   own real hues instead: an open indigo for the broadest option, a cyan
-   (World's own colour) for the steady middle one — amber sat too close to
-   the app's own gold accent to read as its own mode. */
+   own real hues instead: an open indigo for the broadest option, a muted
+   steel-blue (a toned-down World) for the steady middle one — amber sat
+   too close to the app's own gold accent to read as its own mode, and
+   World's own cyan full-strength was too loud for something meant to read
+   as the calm default. */
 .mode-btn[data-mode="open"]{--mc:#6f8fd8;}
-.mode-btn[data-mode="balanced"]{--mc:#3aabdd;}
+.mode-btn[data-mode="balanced"]{--mc:#4a95b8;}
 .mode-btn[data-mode="newpeople"]{--mc:#c99765;}
 .mode-btn[data-mode="friends"]{--mc:#6bb36e;}
 /* dating/partner nudged more saturated than their Romance/Us:Love twins
@@ -673,7 +675,11 @@ body.fixed-seq-mode .screen-row{display:none;}
 .tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
-.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
+/* the caret is absolutely positioned off .tok-val (left:100%, see .tok-val::after
+   above) — flex "gap" on .tok-val-row doesn't know about it, so without this
+   margin the caret floats straight into the right-hand hairline right next
+   to it instead of clearing it. */
+.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;margin-right:18px;}
 .tok-preset .tok-lbl{font-size:.42rem;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
