@@ -167,6 +167,7 @@ function openDrawer(id, triggerEl) {
   const el = document.getElementById(id);
   el.classList.add('open');
   el.scrollTop = 0;   // reopening shouldn't land wherever a previous scroll left it
+  if (typeof window.lockBodyScroll === 'function') window.lockBodyScroll();
   el.setAttribute('aria-hidden', 'false');
   if (triggerEl) triggerEl.setAttribute('aria-expanded', 'true');
   // preventScroll: these drawers are fixed-position overlays, not something
@@ -177,6 +178,7 @@ function openDrawer(id, triggerEl) {
 }
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
+  if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
   ['menuDrawer','logDrawer','favsDrawer','customDrawer','helpDrawer'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }

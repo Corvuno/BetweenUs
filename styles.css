@@ -987,8 +987,10 @@ body::before{
    the same content in place, so its own chevron gets the same "this
    opens downward" rotation the other folds in this sheet already use. */
 .customize-btn.open::after{transform:rotate(90deg);}
-.explore-fold{display:none;}
-.explore-fold.open{display:block;}
+/* height is animated from JS (measured against the real content, not a
+   guessed constant — see slideFold() in ui.js), so opening and closing
+   always travel the same real distance instead of one looking instant */
+.explore-fold{overflow:hidden;max-height:0;}
 
 /* Colbert/The 36 — one more row in the same category list, same bucket
    look, same "+" reveal, instead of a separate whisper-link section
@@ -1006,8 +1008,8 @@ body::before{
 .fixed-seq-toggle--bucket .cbk-chev{font-size:.85rem;}
 .fixed-seq-toggle--bucket.open .cbk-chev{transform:rotate(45deg);}
 .fixed-seq-toggle--bucket:hover .cbk-chev{color:var(--gold);}
-.fixed-seq-options{display:none;padding:10px 4px 14px;}
-.fixed-seq-options.open{display:block;}
+/* same JS-measured height animation as .explore-fold above */
+.fixed-seq-options{overflow:hidden;max-height:0;padding:10px 4px 14px;}
 .fixed-seq-btn{display:flex;width:100%;justify-content:center;padding:9px 10px;margin-bottom:5px;
   border:1px solid rgba(240,232,216,.14);border-radius:3px;}
 .fixed-seq-btn:last-child{margin-bottom:0;}
