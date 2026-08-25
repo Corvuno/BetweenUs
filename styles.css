@@ -66,14 +66,18 @@ body::before{
    Romance, and so on. Everything/Balanced used to fall through to the
    plain --gold default, which read as "the standard, undecorated one" —
    wrong, since gold is the CTA/brand colour, not a mode. They get their
-   own real hues instead: an open indigo for the broadest option, a warm
-   amber for the steady middle one. */
+   own real hues instead: an open indigo for the broadest option, a cyan
+   (World's own colour) for the steady middle one — amber sat too close to
+   the app's own gold accent to read as its own mode. */
 .mode-btn[data-mode="open"]{--mc:#6f8fd8;}
-.mode-btn[data-mode="balanced"]{--mc:#d1a53c;}
+.mode-btn[data-mode="balanced"]{--mc:#3aabdd;}
 .mode-btn[data-mode="newpeople"]{--mc:#c99765;}
 .mode-btn[data-mode="friends"]{--mc:#6bb36e;}
-.mode-btn[data-mode="dating"]{--mc:#df7a91;}
-.mode-btn[data-mode="partner"]{--mc:#df7777;}
+/* dating/partner nudged more saturated than their Romance/Us:Love twins
+   below — a "tad more intense", kept in sync with config.js so the preset
+   button and the actual card category still match exactly. */
+.mode-btn[data-mode="dating"]{--mc:#e35c82;}
+.mode-btn[data-mode="partner"]{--mc:#e35c5c;}
 .mode-btn[data-mode="latenight"]{--mc:#75609c;}
 .mode-btn[data-mode="solo"]{--mc:#669bbb;}
 .mode-btn[data-mode="work"]{--mc:#4dbebe;}
@@ -654,18 +658,19 @@ body.fixed-seq-mode .screen-row{display:none;}
 /* the flanking hairlines alone (below) still left it reading like just a
    label — a subtle version of the plain token's own underline restores the
    "this opens something" cue, understated enough not to compete with them.
-   A border instead of the base ::after bar since both pseudo-elements here
-   are already spoken for by the hairlines. */
-.tok-preset{padding:10px 32px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
-/* left/right both reset to auto on each side — .tok::after above already
-   claims left:16px;right:16px, and with width also set that over-constrains
-   the box, silently dropping whichever of left/right this rule doesn't
-   repeat and pinning the line to the wrong edge. */
-.tok-preset::before,.tok-preset::after{content:'';position:absolute;top:50%;left:auto;right:auto;width:20px;height:1px;
-  transform:translateY(-50%);opacity:.6;transition:opacity .2s;}
-.tok-preset::before{left:0;background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
-.tok-preset::after{right:0;background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
-.tok-preset:hover::before,.tok-preset:hover::after,.tok-preset.open::before,.tok-preset.open::after{opacity:.9;}
+   A border instead of the base ::after bar since ::before/::after are real
+   elements here (see .tok-rule below), not spare pseudo-elements. */
+.tok-preset{padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
+/* the hairlines used to be ::before/::after on the whole button, centred
+   against the full label+value stack — which put them roughly between the
+   two lines instead of level with "Balanced" itself. Real elements inside
+   a row wrapping just the value fixes that: centred against that row only,
+   whatever the label above happens to measure. */
+.tok-val-row{display:flex;align-items:center;gap:10px;}
+.tok-rule{width:20px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;}
+.tok-rule--l{background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
+.tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
+.tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}

@@ -201,7 +201,7 @@ const CATEGORIES = {
   friends:{ label:"Friendship", color:"#6bb36e", band:3, focus:0.5,
             desc:"The people you chose — and what you're like to have as a friend",
             chapter:"findout", bucket:"relationships" },
-  date:   { label:"Romance", color:"#df7a91", band:5, focus:0.8,
+  date:   { label:"Romance", color:"#e35c82", band:5, focus:0.8,
             desc:"Falling, staying, leaving — how you do love",
             chapter:"findout", bucket:"relationships" },
   attract:{ label:"Attract", color:"#e8997a", band:3, focus:0.7,
@@ -239,7 +239,7 @@ const CATEGORIES = {
   usfriend: { label:"Us: Friends", color:"#bea466", band:4, focus:1,
               desc:"About this friendship, directly",
               chapter:"aboutus", bucket:"usb" },
-  uslove:   { label:"Us: Love",    color:"#df7777", band:4, focus:1,
+  uslove:   { label:"Us: Love",    color:"#e35c5c", band:4, focus:1,
               desc:"About this relationship, directly",
               chapter:"aboutus", bucket:"usb" },
 
