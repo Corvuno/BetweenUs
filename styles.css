@@ -30,7 +30,7 @@ body::before{
 /* ── HEADER ── */
 .header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .5s .15s ease,transform .5s .15s ease;}
 .header.in{opacity:1;transform:none;}
-.title{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:300;letter-spacing:.14em;color:var(--gold-l);line-height:1;}
+.title{font-family:'Cinzel',serif;font-size:1.85rem;font-weight:600;letter-spacing:.09em;color:var(--gold-l);line-height:1;}
 .subtitle{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
 
 /* ── PRESET ROW ── */
@@ -1197,10 +1197,12 @@ body.fixed-seq-mode .screen-row{display:none;}
 .ctrl-top{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.56rem;
   letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.5);padding-bottom:7px;}
 .ctrl-val{color:var(--ic,var(--gold-l));}
-/* was .3, then .44 — still read as too dim both times. Past .ctrl-top's
-   own .5 this round rather than guessing at another halfway step. */
-.ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.44rem;
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.62);padding-bottom:3px;}
+/* .3, then .44, then .62 (still short of .ctrl-top's .5, once text this
+   small needs more contrast than bigger text to read the same — matching
+   the opacity number wasn't matching the legibility). Sized up too this
+   time, not just brightened again. */
+.ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.5rem;
+  letter-spacing:.09em;text-transform:uppercase;color:rgba(240,232,216,.85);padding-bottom:4px;}
 /* the value used to sit fixed at the top-right of the row, regardless of
    where the dot actually was — so "Balanced"/"Leaning us" always read as
    pinned to the right edge, which primed people to drag right *to reach*
