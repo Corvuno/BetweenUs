@@ -117,6 +117,16 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
     btn.classList.add('active');
     applyPreset(btn.dataset.mode);
     initDeck();
+    // Colbert/The 36 are a fixed start-to-finish sequence, not a hand to
+    // tune first — picking one should act like pressing Draw Cards: deal
+    // straight into question 1 instead of leaving the sheet open on the
+    // configuration screen.
+    if (btn.classList.contains('fixed-seq-btn')) {
+      if (typeof _nextCardBase === 'function') _nextCardBase();
+      if (typeof updateDeckInfo === 'function') updateDeckInfo();
+      if (typeof updateDrawMore === 'function') updateDrawMore();
+      if (typeof window.closeCats === 'function') window.closeCats();
+    }
   })
 );
 

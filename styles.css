@@ -8,6 +8,11 @@
   --sq-w:42px;
 }
 html,body{height:100%;}
+/* a near-miss swiping a sheet/drawer closed used to bounce past it onto the
+   page underneath and get read as a pull-to-refresh — this is the actual
+   fix (stops the browser's own refresh gesture from firing at the scroll
+   boundary); a bigger handle just makes a miss less likely, not impossible */
+html{overscroll-behavior-y:contain;}
 body{
   background:var(--bg);color:var(--cream);
   font-family:'Jost',sans-serif;font-weight:300;
@@ -315,9 +320,12 @@ body::before{
   max-height:80vh;overflow-y:auto;
 }
 .drawer.open{transform:translateY(0);}
-.drawer-handle{display:flex;justify-content:center;padding:12px 0 6px;}
+/* same enlarged-target treatment as the category sheet's handle — the
+   visible bar stays thin, the drag/tap box around it is much bigger */
+.drawer-handle{display:flex;justify-content:center;align-items:center;
+  padding:14px 0;touch-action:none;}
 .handle-bar{width:36px;height:3px;border-radius:2px;background:rgba(201,168,76,.25);}
-.drawer-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px;transition:color .2s;}
+.drawer-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:10px;transition:color .2s;}
 .drawer-close:hover{color:var(--cream);}
 .drawer-title{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);text-align:center;padding:4px 0 16px;}
 .drawer-body{padding:4px 0 max(20px,env(safe-area-inset-bottom));}
@@ -672,10 +680,13 @@ body::before{
 .cat-area:not(.sheet-open){pointer-events:none;}
 .cat-area.sheet-open{transform:none;}
 /* the visible bar stays a thin 3px line — background-clip keeps the
-   drag/tap target much bigger (24px tall) without fattening the bar itself */
-.cat-sheet-handle{width:56px;height:24px;padding:10.5px 10px;box-sizing:border-box;
+   drag/tap target much bigger without fattening the bar itself. Widened
+   again after testing showed the handle was still easy to miss — missing
+   it landed the touch on the sheet body instead, which the browser could
+   read as a pull-to-refresh drag (see the overscroll-behavior fix above). */
+.cat-sheet-handle{width:88px;height:36px;padding:16.5px 10px;box-sizing:border-box;
   background-color:rgba(201,168,76,.3);background-clip:content-box;border-radius:2px;
-  margin:2px auto 0;flex-shrink:0;touch-action:none;}
+  margin:0 auto;flex-shrink:0;touch-action:none;}
 .cat-sheet-title{text-align:center;font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.25em;
   text-transform:uppercase;color:var(--gold);padding:4px 0 14px;flex-shrink:0;}
 /* padding carries the tap target up toward the ~44px minimum — the glyph
@@ -711,8 +722,10 @@ body::before{
 .cbk-chev{font-size:.85rem;font-weight:300;color:var(--muted);transition:transform .22s ease,color .2s;}
 .cat-controls{flex-wrap:wrap;justify-content:center;row-gap:10px;gap:20px;}
 .cat-area .cat-desc{flex-shrink:0;}
-.cat-area .cat-grid-wrap{flex:1;max-height:none;min-height:0;border-top:1px solid var(--dim);}
-.cat-area.sheet-open .cat-grid-wrap{display:block;}
+/* Explore no longer scrolls in its own box — it's a fold inside the Shape
+   sheet's own scroll (.pane-play), so the grid just flows as a long list
+   instead of capping its own height and adding a second, nested scrollbar. */
+.explore-fold .cat-grid-wrap{max-height:none;border-top:1px solid var(--dim);}
 .cat-area .toggles{padding-bottom:max(24px,env(safe-area-inset-bottom));}
 
 /* fullscreen pick-3: sits inside the card, above the tap zones */
@@ -960,17 +973,22 @@ body::before{
    lets the dials shape it; Explore is the whole cabinet, drawer by drawer.
    The dials weight the draw — steep, but never to zero — they don't filter it. */
 
-/* One shared "whisper" link style — Customize (Shape -> Explore), Back
-   (Explore -> Shape), and the fixed-set fold all read as the same kind of
-   affordance: plain text, a glyph, nothing louder. */
-.customize-btn,.pane-back-btn,.fixed-seq-toggle{display:flex;align-items:center;gap:5px;
+/* One shared "whisper" link style — Customize and the fixed-set fold both
+   read as the same kind of affordance: plain text, a glyph, nothing louder. */
+.customize-btn,.fixed-seq-toggle{display:flex;align-items:center;gap:5px;
   background:none;border:none;cursor:pointer;color:rgba(240,232,216,.5);
   font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;
   padding:4px 0 8px;transition:color .2s;}
-.customize-btn:hover,.pane-back-btn:hover,.fixed-seq-toggle:hover{color:var(--gold);}
+.customize-btn:hover,.fixed-seq-toggle:hover{color:var(--gold);}
 .customize-btn{width:fit-content;margin:8px auto 0;}
 .customize-btn::after,.fixed-seq-toggle::after{content:'\203A';font-size:.85rem;opacity:.6;
-  transition:transform .2s;}
+  display:inline-block;transition:transform .2s;}
+/* Customize used to swap in a whole separate pane — now it just unfolds
+   the same content in place, so its own chevron gets the same "this
+   opens downward" rotation the other folds in this sheet already use. */
+.customize-btn.open::after{transform:rotate(90deg);}
+.explore-fold{display:none;}
+.explore-fold.open{display:block;}
 
 /* Colbert/The 36 — one more row in the same category list, same bucket
    look, same "+" reveal, instead of a separate whisper-link section
@@ -1011,12 +1029,11 @@ body::before{
 
 .pane{display:none;}
 .pane.on{display:block;}
-/* scrolls only as a fallback on very small phones — the bar itself never shows */
+/* the Shape sheet's one scroll surface — Explore unfolds inside it now
+   instead of swapping in as a separate pane with its own scroll */
 .pane-play{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;}
 .pane-play.on{display:block;}
 .pane-play::-webkit-scrollbar{display:none;width:0;height:0;}
-.pane-explore{flex:1;min-height:0;flex-direction:column;}
-.pane-explore.on{display:flex;}
 
 .play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;
   text-transform:uppercase;color:rgba(240,232,216,.6);opacity:1;padding:14px 0 9px;}
@@ -1068,15 +1085,6 @@ body::before{
   text-transform:uppercase;padding:13px 0;border-radius:3px;cursor:pointer;transition:filter .2s;}
 .cat-go-btn:hover{filter:brightness(1.06);}
 .cat-go-btn:active{transform:scale(.99);}
-
-/* the same "back to Shape" action as the small link pinned at the top of
-   Explore, repeated here so it's reachable without scrolling back up —
-   only shown while Explore is actually the open pane */
-.cat-go-back-btn{display:none;width:100%;background:none;border:none;cursor:pointer;
-  color:rgba(240,232,216,.5);font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.18em;
-  text-transform:uppercase;padding:2px 0 10px;text-align:center;transition:color .2s;}
-.cat-go-back-btn:hover{color:var(--gold-l);}
-.pane-explore.on ~ .cat-go-bar .cat-go-back-btn{display:block;}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}

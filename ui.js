@@ -627,14 +627,15 @@ applyToggleUI();
   const $=id=>document.getElementById(id);
 
   /* ── re-home existing controls into trays ── */
-  /* modes now live in the categories drawer as presets — collapsed behind
-     a single "Starting from X" line by default (never a permanent grid,
-     never a scrolling bar) and revealed as a wrapped grid on tap. The
-     value mirrors the same live preset name + colour the top token
-     already tracks (see presentation.js), so there's one source of truth
-     for "what preset is this," not two. */
+  /* modes now live in the categories drawer as presets — a "Starting from X"
+     line, opened by default so the picker itself is discoverable (testing
+     showed a collapsed-by-default row just read as inert text, not
+     something to tap), collapsible from there since it's still a long row
+     once it wraps. The value mirrors the same live preset name + colour the
+     top token already tracks (see presentation.js), so there's one source
+     of truth for "what preset is this," not two. */
   const presetHost=document.createElement('div');
-  presetHost.className='preset-host';
+  presetHost.className='preset-host open';
   presetHost.innerHTML=
     '<button type="button" class="preset-host-toggle" id="presetHostToggle">'+
       '<span class="preset-host-lbl">Starting from</span>'+
@@ -668,6 +669,10 @@ applyToggleUI();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
     catArea.removeAttribute('aria-hidden');
     $('d-cats').setAttribute('aria-expanded', 'true');
+    // Reopening used to leave the sheet scrolled wherever it was left last
+    // time (e.g. deep in Explore's list) — reset to the top on every open
+    // so it reads the same way each time it's reached.
+    const pp = $('panePlay'); if (pp) pp.scrollTop = 0;
     // preventScroll: catArea is position:fixed, covering the viewport — it
     // needs no scroll to be "in view," but browsers don't know that and will
     // scroll the page to it anyway without this.
@@ -719,6 +724,37 @@ applyToggleUI();
       const dy = e.changedTouches[0].clientY - startY;
       catArea.style.transform = '';
       if (dy > SNAP_THRESHOLD) closeCats();
+    });
+  })();
+
+  /* ── same swipe-down-to-dismiss on every other bottom-sheet drawer (the
+     hamburger menu, and Log/Favourites/Custom/Help underneath it) — they're
+     the same kind of sheet as Categories and deserve the same handle, not
+     just a small "x" in the corner. ── */
+  (function(){
+    const SNAP_THRESHOLD = 90;
+    document.querySelectorAll('.drawer, .sub-drawer').forEach(sheet => {
+      const handle = sheet.querySelector('.drawer-handle');
+      if (!handle) return;
+      let startY = 0, dragging = false;
+      handle.addEventListener('touchstart', e => {
+        startY = e.touches[0].clientY;
+        dragging = true;
+        sheet.style.transition = 'none';
+      }, {passive:true});
+      handle.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const dy = e.touches[0].clientY - startY;
+        if (dy > 0) sheet.style.transform = `translateY(${dy}px)`;
+      }, {passive:true});
+      handle.addEventListener('touchend', e => {
+        if (!dragging) return;
+        dragging = false;
+        sheet.style.transition = '';
+        const dy = e.changedTouches[0].clientY - startY;
+        sheet.style.transform = '';
+        if (dy > SNAP_THRESHOLD && typeof closeAllDrawers === 'function') closeAllDrawers();
+      });
     });
   })();
 
@@ -1087,23 +1123,20 @@ applyToggleUI();
     syncIntentUI();
   });
 
-  /* Shape is always what the sheet opens to; Customize (under the chapters)
-     is the only way down into Explore's category grid, and Back is the only
-     way up again — no tab strip to flip between the two any more. */
-  function showPane(name){
-    $('panePlay').classList.toggle('on', name === 'play');
-    $('paneExplore').classList.toggle('on', name === 'explore');
-    syncIntentUI();   // looking is not choosing — switching panes never re-deals the hand
-    if (typeof updateTimeOfDayHeading === 'function') updateTimeOfDayHeading();  // sheet title tracks the pane
-    if (name === 'explore' && typeof updateGridScrollHint === 'function') updateGridScrollHint();
+  /* Explore used to be a separate pane you navigated into and had to find
+     your way back out of. It's a fold now, appended right under the
+     console, in the same scroll as everything else — Customize just
+     toggles it open/closed in place. */
+  const customizeBtn = $('customizeBtn'), exploreFold = $('exploreFold');
+  function toggleExplore(forceOpen){
+    if (!exploreFold) return;
+    const open = typeof forceOpen === 'boolean' ? forceOpen : !exploreFold.classList.contains('open');
+    exploreFold.classList.toggle('open', open);
+    if (customizeBtn) customizeBtn.classList.toggle('open', open);
+    syncIntentUI();   // looking is not choosing — opening the fold never re-deals the hand
+    if (open && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
-  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn'), catGoBackBtn = $('catGoBackBtn');
-  if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
-  if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
-  // Same "back to Shape" action, reachable from where a thumb already is
-  // at the bottom of a long Explore scroll — not just the small link
-  // pinned at the very top of the pane.
-  if (catGoBackBtn) catGoBackBtn.addEventListener('click', () => showPane('play'));
+  if (customizeBtn) customizeBtn.addEventListener('click', () => toggleExplore());
 
   /* ── "Tune the hand" info tooltip — a tap target, not a permanent
      explainer line eating space in the console. ── */
