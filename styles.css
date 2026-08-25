@@ -261,15 +261,15 @@ body::before{
 .controls-wrap.in{opacity:1;transform:none;}
 .progress{display:flex;gap:var(--dot-gap,4px);align-items:center;flex-wrap:wrap;justify-content:center;}
 .progress-dot{
-  width:var(--dot-size,4px);height:var(--dot-size,4px);border-radius:50%;
+  width:max(2px, calc(var(--dot-size, 4px) * .3));height:var(--dot-size,4px);border-radius:1.5px;
   background:var(--dot-color,var(--gold));opacity:.28;
   transition:opacity .3s ease,transform .3s ease;
   flex-shrink:0;
 }
 .progress-dot.seen{opacity:.65;}
-.progress-dot.current{opacity:1;transform:scale(1.6);}
-/* the extra dot past the last card, standing for the summary screen — a
-   ring instead of a fill so it doesn't read as just another card */
+.progress-dot.current{opacity:1;transform:scaleY(1.4);}
+/* the extra dot past the last card, standing for the summary screen — an
+   outline instead of a fill so it doesn't read as just another card */
 .progress-dot.end-dot{background:transparent;border:1px solid var(--gold);opacity:.45;}
 .progress-dot.end-dot.current{background:var(--gold-l);border-color:var(--gold-l);opacity:1;}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
@@ -630,14 +630,25 @@ body::before{
 
 /* the token row is down to one entry point — the active preset itself —
    so it gets to read a size up from the old three-word row it replaced.
-   The underline-only cue above wasn't enough here: this is the very first
-   tappable thing on the screen and needs to read as a button on sight, not
-   just on hover — a faint border + fill instead of the bare underline. */
-.tok-preset{padding:8px 20px 10px;border:1px solid rgba(240,232,216,.14);
-  border-radius:10px;background:rgba(240,232,216,.04);}
-.tok-preset::after{display:none;}
-.tok-preset:active{background:rgba(240,232,216,.08);}
-.tok-preset .tok-val{font-size:.82rem;letter-spacing:.14em;}
+   That size-up used to come from a pill/box (border + fill) — exactly the
+   web-chrome look the plain underline treatment above was written to avoid,
+   and it read as out of place for it. Flanking hairlines instead: the same
+   "— end —" rule-and-word device the card itself uses, sized up and
+   colour-matched to the active preset via --tokc so it still reads as the
+   one primary entry point without borrowing chrome from anywhere else. */
+.tok-preset{padding:10px 32px;}
+/* left/right both reset to auto on each side — .tok::after above already
+   claims left:16px;right:16px, and with width also set that over-constrains
+   the box, silently dropping whichever of left/right this rule doesn't
+   repeat and pinning the line to the wrong edge. */
+.tok-preset::before,.tok-preset::after{content:'';position:absolute;top:50%;left:auto;right:auto;width:20px;height:1px;
+  transform:translateY(-50%);opacity:.6;transition:opacity .2s;}
+.tok-preset::before{left:0;background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
+.tok-preset::after{right:0;background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
+.tok-preset:hover::before,.tok-preset:hover::after,.tok-preset.open::before,.tok-preset.open::after{opacity:.9;}
+.tok-preset:active{opacity:.7;}
+.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
+.tok-preset .tok-lbl{font-size:.42rem;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
