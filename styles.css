@@ -1037,8 +1037,13 @@ body.fixed-seq-mode .screen-row{display:none;}
 .fixed-seq-toggle--bucket .cbk-chev{font-size:.85rem;}
 .fixed-seq-toggle--bucket.open .cbk-chev{transform:rotate(45deg);}
 .fixed-seq-toggle--bucket:hover .cbk-chev{color:var(--gold);}
-/* same JS-measured height animation as .explore-fold above */
-.fixed-seq-options{overflow:hidden;max-height:0;padding:10px 4px 14px;}
+/* same JS-measured height animation as .explore-fold above. Vertical
+   padding has to live on .open only, not the base rule — max-height:0
+   can't actually shrink a box below its own padding (padding is a fixed
+   length, not something the browser will squeeze), so a bare .padding
+   here left a permanent ~24px sliver visible even while "closed". */
+.fixed-seq-options{overflow:hidden;max-height:0;padding:0 4px;}
+.fixed-seq-options.open{padding:10px 4px 14px;}
 .fixed-seq-btn{display:flex;width:100%;justify-content:center;padding:9px 10px;margin-bottom:5px;
   border:1px solid rgba(240,232,216,.14);border-radius:3px;}
 .fixed-seq-btn:last-child{margin-bottom:0;}
