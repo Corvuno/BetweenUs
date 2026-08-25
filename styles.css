@@ -675,12 +675,17 @@ body.fixed-seq-mode .screen-row{display:none;}
 .tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
-/* the caret is absolutely positioned off .tok-val (left:100%, see .tok-val::after
-   above) — flex "gap" on .tok-val-row doesn't know about it, so without this
-   margin the caret floats straight into the right-hand hairline right next
-   to it instead of clearing it. */
-.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;margin-right:18px;}
+.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
 .tok-preset .tok-lbl{font-size:.42rem;}
+/* the caret is absolutely positioned off .tok-val everywhere else (left:100%,
+   see .tok-val::after above) — a deliberate trick so a long word doesn't drag
+   the plain token's centring off. Here the value already sits in its own
+   flanked row, so that trick instead pulled the caret out of flex flow and
+   left extra reserved space on the right only, which visibly shifted the
+   whole rule+text cluster left of the underline beneath it. Back into flow,
+   plain and static, keeps the row (and the underline under it) symmetric. */
+.tok-preset .tok-val::after{position:static;top:auto;left:auto;transform:none;margin-left:5px;}
+.tok-preset.open .tok-val::after{transform:rotate(180deg);}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
