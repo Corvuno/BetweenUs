@@ -663,6 +663,12 @@ body.fixed-seq-mode .screen-row{display:none;}
    A border instead of the base ::after bar since ::before/::after are real
    elements here (see .tok-rule below), not spare pseudo-elements. */
 .tok-preset{padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
+/* .tok::after above (the plain token's own 2px inset underline bar) was never
+   turned off once the hairlines moved from pseudo-elements to real ones —
+   it was still rendering, stacked right under the border-bottom above: a
+   thin line and a thicker one, at slightly different insets. Only one
+   underline is wanted here. */
+.tok-preset::after{content:none;}
 /* the hairlines used to be ::before/::after on the whole button, centred
    against the full label+value stack — which put them roughly between the
    two lines instead of level with "Balanced" itself. Real elements inside
@@ -1191,8 +1197,24 @@ body.fixed-seq-mode .screen-row{display:none;}
 .ctrl-top{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.56rem;
   letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.5);padding-bottom:7px;}
 .ctrl-val{color:var(--ic,var(--gold-l));}
+/* was .3 — noticeably harder to read than every other label on this screen,
+   not just quieter by design. Still the dimmest text in the row, just no
+   longer the only text someone has to squint at. */
 .ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.44rem;
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.3);padding-bottom:3px;}
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.44);padding-bottom:3px;}
+/* the value used to sit fixed at the top-right of the row, regardless of
+   where the dot actually was — so "Balanced"/"Leaning us" always read as
+   pinned to the right edge, which primed people to drag right *to reach*
+   what it said rather than reading it as "this is where you are now".
+   Floating it under the track at the dot's own position (--pos, a plain
+   0-100 number kept in sync with the input's value by syncIntentUI() in
+   ui.js) makes the label move with the dot instead of sitting still while
+   the dot moves independently of it. translateX by the same fraction keeps
+   it from overhanging the track at either extreme. */
+.track-wrap{position:relative;}
+.ctrl-val--float{position:absolute;top:100%;margin-top:3px;left:calc(var(--pos,50) * 1%);
+  transform:translateX(calc(var(--pos,50) * -1%));font-size:.5rem;letter-spacing:.08em;
+  text-transform:uppercase;white-space:nowrap;pointer-events:none;transition:left .15s ease;}
 
 .console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
 
@@ -1222,6 +1244,14 @@ body.fixed-seq-mode .screen-row{display:none;}
 .dial-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;border:none;
   background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.55);}
 .dial-range:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(201,168,76,.85);}
+/* Depth used to fall through to the base gold thumb even though its icon
+   was already tinted — the two just happened to look related since gold
+   and --gold-l read close together. Now it's Into the Deep's own purple, on
+   the icon, the value label, and the thumb alike, matching Focus's teal for
+   real instead of by coincidence. */
+.dial-range--int::-webkit-slider-thumb{background:#8f74b8;box-shadow:0 0 10px rgba(143,116,184,.55);}
+.dial-range--int::-moz-range-thumb{background:#8f74b8;box-shadow:0 0 10px rgba(143,116,184,.55);}
+.dial-range--int:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(143,116,184,.85);}
 .dial-range--foc::-webkit-slider-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
 .dial-range--foc::-moz-range-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
 .dial-range--foc:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(101,201,176,.85);}

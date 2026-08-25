@@ -1002,8 +1002,11 @@ applyToggleUI();
         : '';
     });
     const iv = $('dialIntVal'), fv = $('dialFocVal');
-    if (iv) iv.textContent = word(INT_WORDS, intentIntensity);
-    if (fv) fv.textContent = word(FOC_WORDS, (intentFocus + 1) / 2);
+    // --pos drives .ctrl-val--float's position (styles.css) so the label
+    // floats above wherever the dot actually is, instead of sitting fixed
+    // at the row's right edge regardless of the real value.
+    if (iv) { iv.textContent = word(INT_WORDS, intentIntensity); iv.style.setProperty('--pos', intentIntensity * 100); }
+    if (fv) { fv.textContent = word(FOC_WORDS, (intentFocus + 1) / 2); fv.style.setProperty('--pos', (intentFocus + 1) / 2 * 100); }
     const ii = $('dialIntensity'), fi = $('dialFocus');
     if (ii) ii.style.opacity = intentOn ? '1' : '.45';
     if (fi) fi.style.opacity = intentOn ? '1' : '.45';

@@ -102,22 +102,28 @@
             <div class="tooltip" id="fineInfoTip">How hard the questions lean, who they're about, how the deck shuffles, and how many cards you're dealt.</div>
           </div>
 
-          <div class="ctrl-row">
-            <div class="ctrl-icon" style="--ic:#c9a84c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18h4l3-14 4 16 3-10h4"/></svg></div>
+          <div class="ctrl-row" style="--ic:#8f74b8">
+            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18h4l3-14 4 16 3-10h4"/></svg></div>
             <div class="ctrl-body">
-              <div class="ctrl-top"><span>Depth</span><span class="ctrl-val" id="dialIntVal">Balanced</span></div>
+              <div class="ctrl-top"><span>Depth</span></div>
               <div class="ctrl-ends"><span>Easy</span><span>Intense</span></div>
-              <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
-                     aria-label="Depth: easy to intense">
+              <div class="track-wrap">
+                <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
+                       aria-label="Depth: easy to intense">
+                <span class="ctrl-val ctrl-val--float" id="dialIntVal" style="--pos:50">Balanced</span>
+              </div>
             </div>
           </div>
-          <div class="ctrl-row">
-            <div class="ctrl-icon" style="--ic:#65c9b0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
+          <div class="ctrl-row" style="--ic:#65c9b0">
+            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
             <div class="ctrl-body">
-              <div class="ctrl-top"><span>Focus</span><span class="ctrl-val" id="dialFocVal">Balanced</span></div>
+              <div class="ctrl-top"><span>Focus</span></div>
               <div class="ctrl-ends"><span>Me</span><span>Us</span></div>
-              <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
-                     aria-label="Me to Us: who it is about">
+              <div class="track-wrap">
+                <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
+                       aria-label="Me to Us: who it is about">
+                <span class="ctrl-val ctrl-val--float" id="dialFocVal" style="--pos:50">Balanced</span>
+              </div>
             </div>
           </div>
 
