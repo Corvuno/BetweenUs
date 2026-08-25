@@ -61,9 +61,10 @@ function renderProgress(currentOverride) {
       container.appendChild(dot);
     }
     // One extra dot past the last card, standing for the summary screen —
-    // without it the dot row looks like it just ends with the last card,
-    // and nothing hints that there's a stop after it.
-    container.appendChild(makeEndDot(cur >= deckLen));
+    // only from the last card onward, matching exactly when the next-card
+    // button itself switches to "Summary". Showing it the whole hand made
+    // a 5-card draw permanently look like 6 cards.
+    if (cur >= deckLen - 1) container.appendChild(makeEndDot(cur >= deckLen));
   } else {
     // Large decks (e.g. 'All' in Everything, 300+ cards): a fixed-width
     // window of real per-card dots slides along the deck instead of
@@ -85,9 +86,9 @@ function renderProgress(currentOverride) {
       container.appendChild(dot);
     }
     // Only tack the summary dot on once the sliding window has actually
-    // reached the last real card — otherwise it'd float at the end of an
-    // early window, looking like part of the deck rather than what's after it.
-    if (windowEnd >= deckLen) container.appendChild(makeEndDot(cur >= deckLen));
+    // reached the last real card, and only from the last card onward —
+    // same rule as the small-deck branch above.
+    if (windowEnd >= deckLen && cur >= deckLen - 1) container.appendChild(makeEndDot(cur >= deckLen));
   }
 }
 
