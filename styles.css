@@ -1197,11 +1197,10 @@ body.fixed-seq-mode .screen-row{display:none;}
 .ctrl-top{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.56rem;
   letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.5);padding-bottom:7px;}
 .ctrl-val{color:var(--ic,var(--gold-l));}
-/* was .3 — noticeably harder to read than every other label on this screen,
-   not just quieter by design. Still the dimmest text in the row, just no
-   longer the only text someone has to squint at. */
+/* was .3, then .44 — still read as too dim both times. Past .ctrl-top's
+   own .5 this round rather than guessing at another halfway step. */
 .ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.44rem;
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.44);padding-bottom:3px;}
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(240,232,216,.62);padding-bottom:3px;}
 /* the value used to sit fixed at the top-right of the row, regardless of
    where the dot actually was — so "Balanced"/"Leaning us" always read as
    pinned to the right edge, which primed people to drag right *to reach*
@@ -1212,9 +1211,12 @@ body.fixed-seq-mode .screen-row{display:none;}
    the dot moves independently of it. translateX by the same fraction keeps
    it from overhanging the track at either extreme. */
 .track-wrap{position:relative;}
-.ctrl-val--float{position:absolute;top:100%;margin-top:3px;left:calc(var(--pos,50) * 1%);
-  transform:translateX(calc(var(--pos,50) * -1%));font-size:.5rem;letter-spacing:.08em;
-  text-transform:uppercase;white-space:nowrap;pointer-events:none;transition:left .15s ease;}
+/* no transition on left/transform — this has to track the dot 1:1 during a
+   drag. Easing it, even briefly, reads as the label lagging a beat behind
+   a value that's actually already moved. */
+.ctrl-val--float{position:absolute;top:100%;margin-top:4px;left:calc(var(--pos,50) * 1%);
+  transform:translateX(calc(var(--pos,50) * -1%));font-size:.62rem;letter-spacing:.06em;
+  text-transform:uppercase;white-space:nowrap;pointer-events:none;}
 
 .console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
 
