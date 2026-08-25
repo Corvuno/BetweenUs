@@ -651,7 +651,12 @@ body.fixed-seq-mode .screen-row{display:none;}
    "— end —" rule-and-word device the card itself uses, sized up and
    colour-matched to the active preset via --tokc so it still reads as the
    one primary entry point without borrowing chrome from anywhere else. */
-.tok-preset{padding:10px 32px;}
+/* the flanking hairlines alone (below) still left it reading like just a
+   label — a subtle version of the plain token's own underline restores the
+   "this opens something" cue, understated enough not to compete with them.
+   A border instead of the base ::after bar since both pseudo-elements here
+   are already spoken for by the hairlines. */
+.tok-preset{padding:10px 32px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
 /* left/right both reset to auto on each side — .tok::after above already
    claims left:16px;right:16px, and with width also set that over-constrains
    the box, silently dropping whichever of left/right this rule doesn't
@@ -661,6 +666,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 .tok-preset::before{left:0;background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
 .tok-preset::after{right:0;background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
 .tok-preset:hover::before,.tok-preset:hover::after,.tok-preset.open::before,.tok-preset.open::after{opacity:.9;}
+.tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
 .tok-preset .tok-lbl{font-size:.42rem;}
