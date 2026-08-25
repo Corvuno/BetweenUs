@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260823f">
+<link rel="stylesheet" href="styles.css?v=20260823i">
 </head>
 <body>
 <div class="glow"></div>
@@ -148,38 +148,39 @@
             </div>
           </div>
         </div>
-        <button class="customize-btn" id="customizeBtn">Explore every category</button>
-      </div>
-    </div>
+        <!-- Explore used to be a separate full-screen pane, needing its own
+             "back to Shape" button just to get out of it. It's a subsection
+             of this same page now — unfolds in place, in the same scroll,
+             and there's nowhere else to be lost in. -->
+        <button type="button" class="customize-btn" id="customizeBtn">Explore every category</button>
+        <div class="explore-fold" id="exploreFold">
+          <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
+          <div class="allnone-row allnone-row--pane">
+            <button class="deselect-btn" id="selectAll">All</button>
+            <button class="deselect-btn" id="deselectAll">None</button>
+          </div>
+          <div class="cat-grid-wrap open" id="toggles-wrap">
+            <div class="toggles" id="toggles">
+            <div id="bucketGrid"></div>
 
-    <div class="pane pane-explore" id="paneExplore">
-      <button class="pane-back-btn" id="paneBackBtn">&#8249; Back</button>
-      <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
-      <div class="allnone-row allnone-row--pane">
-        <button class="deselect-btn" id="selectAll">All</button>
-        <button class="deselect-btn" id="deselectAll">None</button>
-      </div>
-      <div class="cat-grid-wrap" id="toggles-wrap">
-        <div class="toggles" id="toggles">
-        <div id="bucketGrid"></div>
-
-        <!-- Fixed sets — same bucket look as the categories above it, same
-             panel, same downward reveal — not a separate whisper-link
-             section living below the list. -->
-        <button class="fixed-seq-toggle fixed-seq-toggle--bucket" id="fixedSeqToggle" style="--ch:#8a8a9a">
-          <span class="cbk-name">Fixed Sets</span><span class="cbk-count">Start to finish</span>
-          <span class="cbk-chev">+</span>
-        </button>
-        <div class="fixed-seq-options" id="fixedSeqOptions">
-          <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert Questionnaire</button>
-          <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
-        </div>
+            <!-- Fixed sets — same bucket look as the categories above it, same
+                 panel, same downward reveal — not a separate whisper-link
+                 section living below the list. -->
+            <button class="fixed-seq-toggle fixed-seq-toggle--bucket" id="fixedSeqToggle" style="--ch:#8a8a9a">
+              <span class="cbk-name">Fixed Sets</span><span class="cbk-count">Start to finish</span>
+              <span class="cbk-chev">+</span>
+            </button>
+            <div class="fixed-seq-options" id="fixedSeqOptions">
+              <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert Questionnaire</button>
+              <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
+            </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="cat-go-bar">
-      <button class="cat-go-back-btn" id="catGoBackBtn">&#8249; Back to Shape</button>
       <button class="cat-go-btn" id="catGoBtn">Draw Cards</button>
     </div>
   </div>
@@ -276,6 +277,7 @@
 
 <!-- LOG DRAWER -->
 <div class="sub-drawer" id="logDrawer" role="dialog" aria-modal="true" aria-label="This session" tabindex="-1" aria-hidden="true">
+  <div class="drawer-handle"><div class="handle-bar"></div></div>
   <button class="drawer-close" id="closeLog">&#10005;</button>
   <div class="drawer-title">This session</div>
   <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;justify-content:center;">
@@ -288,6 +290,7 @@
 
 <!-- FAVOURITES DRAWER -->
 <div class="sub-drawer" id="favsDrawer" role="dialog" aria-modal="true" aria-label="Favourites" tabindex="-1" aria-hidden="true">
+  <div class="drawer-handle"><div class="handle-bar"></div></div>
   <button class="drawer-close" id="closeFavs">&#10005;</button>
   <div class="drawer-title">Favourites</div>
   <div id="favsList"><div class="drawer-empty">No favourites yet. Tap &#9733; on a card.</div></div>
@@ -295,6 +298,7 @@
 
 <!-- CUSTOM CARD DRAWER -->
 <div class="sub-drawer" id="customDrawer" role="dialog" aria-modal="true" aria-label="Add your own card" tabindex="-1" aria-hidden="true">
+  <div class="drawer-handle"><div class="handle-bar"></div></div>
   <button class="drawer-close" id="closeCustom">&#10005;</button>
   <div class="drawer-title">Add your own card</div>
   <div style="width:100%;max-width:380px;margin:0 auto;">
@@ -345,6 +349,7 @@
 
 <!-- HELP DRAWER -->
 <div class="sub-drawer" id="helpDrawer" role="dialog" aria-modal="true" aria-label="How to play" tabindex="-1" aria-hidden="true">
+  <div class="drawer-handle"><div class="handle-bar"></div></div>
   <button class="drawer-close" id="closeHelp">&#10005;</button>
   <div class="drawer-title">How to play</div>
   <div class="help-content">
@@ -607,15 +612,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260823f"></script>
-<script src="config.js?v=20260823f"></script>
-<script src="state.js?v=20260823f"></script>
-<script src="deck.js?v=20260823f"></script>
-<script src="card.js?v=20260823f"></script>
-<script src="library.js?v=20260823f"></script>
-<script src="session.js?v=20260823f"></script>
-<script src="selection.js?v=20260823f"></script>
-<script src="presentation.js?v=20260823f"></script>
-<script src="ui.js?v=20260823f"></script>
+<script src="questions.js?v=20260823i"></script>
+<script src="config.js?v=20260823i"></script>
+<script src="state.js?v=20260823i"></script>
+<script src="deck.js?v=20260823i"></script>
+<script src="card.js?v=20260823i"></script>
+<script src="library.js?v=20260823i"></script>
+<script src="session.js?v=20260823i"></script>
+<script src="selection.js?v=20260823i"></script>
+<script src="presentation.js?v=20260823i"></script>
+<script src="ui.js?v=20260823i"></script>
 </body>
 </html>

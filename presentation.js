@@ -166,6 +166,8 @@ function openDrawer(id, triggerEl) {
   document.getElementById('overlay').classList.add('open');
   const el = document.getElementById(id);
   el.classList.add('open');
+  el.scrollTop = 0;   // reopening shouldn't land wherever a previous scroll left it
+  if (typeof window.lockBodyScroll === 'function') window.lockBodyScroll();
   el.setAttribute('aria-hidden', 'false');
   if (triggerEl) triggerEl.setAttribute('aria-expanded', 'true');
   // preventScroll: these drawers are fixed-position overlays, not something
@@ -176,6 +178,7 @@ function openDrawer(id, triggerEl) {
 }
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
+  if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
   ['menuDrawer','logDrawer','favsDrawer','customDrawer','helpDrawer'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
@@ -219,13 +222,13 @@ function updateTimeOfDayHeading() {
   // plain "go deeper" link, not a headline, so it doesn't need the word.
   const customizeBtn = document.getElementById('customizeBtn');
   if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? 'Verken elke categorie' : 'Explore every category';
-  // The sheet's own title only actually describes Explore ("Categories") —
-  // Play has its own heading + the console right there, so the title stays
-  // hidden while Play is showing instead of duplicating that framing.
+  // The sheet's own title only ever described Explore, which was once a
+  // separate pane. Explore is a fold inside Play's own page now — Play
+  // already has its own heading + the console right there, so this title
+  // would just duplicate that framing. Stays hidden.
   const title = document.getElementById('catSheetTitle');
   if (title) {
-    const exploring = document.getElementById('paneExplore') && document.getElementById('paneExplore').classList.contains('on');
-    title.style.display = exploring ? '' : 'none';
+    title.style.display = 'none';
     title.textContent = state.lang === 'nl' ? 'Categorieën' : 'Categories';
   }
 }

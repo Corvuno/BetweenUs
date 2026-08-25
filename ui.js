@@ -626,15 +626,86 @@ applyToggleUI();
 (function(){
   const $=id=>document.getElementById(id);
 
+  /* ── slide a fold open/closed by animating max-height against its real,
+     measured content height — never a guessed constant. A guessed max
+     that's much bigger than the real content makes opening look near-
+     instant (the content reaches full height long before the transition's
+     nominal duration is up) while closing, which always travels the real
+     distance, reads as the properly-paced one — that mismatch is exactly
+     what made the preset picker's own open/close feel asymmetric earlier.
+     Once fully open the cap is released to "none" so anything that grows
+     inside the fold afterward (a bucket expanding inside Explore, say)
+     isn't clipped by a stale measurement; closing re-measures the real
+     height first so it always starts the animation from where the box
+     actually is, not from "none". ── */
+  function slideFold(el, opening){
+    if (!el) return;
+    el.style.transition = 'none';
+    if (opening) {
+      el.style.maxHeight = el.getBoundingClientRect().height + 'px';
+    } else {
+      el.style.maxHeight = 'none';
+      el.style.maxHeight = el.scrollHeight + 'px';   // re-measure, then snap the start point to it
+    }
+    el.offsetHeight; // force layout so the jump above doesn't itself animate
+    el.style.transition = 'max-height .32s ease';
+    requestAnimationFrame(() => {
+      el.style.maxHeight = opening ? el.scrollHeight + 'px' : '0px';
+    });
+    if (opening) {
+      const onEnd = e => {
+        if (e.target !== el || e.propertyName !== 'max-height') return;
+        el.removeEventListener('transitionend', onEnd);
+        el.style.maxHeight = 'none';
+      };
+      el.addEventListener('transitionend', onEnd);
+    }
+  }
+  window.slideFold = slideFold;   // used from the separate Play/Explore wiring IIFE below
+
+  /* ── lock the page's own scroll behind any open sheet/drawer ──
+     Every sheet/drawer is position:fixed, but the page underneath it was
+     never actually stopped from scrolling — a touch that landed on the
+     sliver of body still reachable around/behind the overlay (or a mouse
+     wheel over it on desktop) scrolled the page invisibly, so closing
+     often landed somewhere the player never scrolled to on purpose. Pins
+     the body in place at its exact current scroll position while anything
+     is open, and restores that exact position on close, instead of
+     leaving the page free to drift underneath. A count guards nested opens
+     (e.g. opening Categories from inside the menu drawer, which closes
+     the menu drawer first — two calls in a row, only the outer one should
+     actually restore scroll). */
+  let _scrollLockY = 0, _scrollLockDepth = 0;
+  function lockBodyScroll(){
+    if (_scrollLockDepth++ > 0) return;
+    _scrollLockY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${_scrollLockY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+  }
+  function unlockBodyScroll(){
+    if (_scrollLockDepth === 0) return;
+    if (--_scrollLockDepth > 0) return;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    window.scrollTo(0, _scrollLockY);
+  }
+  window.lockBodyScroll = lockBodyScroll;
+  window.unlockBodyScroll = unlockBodyScroll;
+
   /* ── re-home existing controls into trays ── */
-  /* modes now live in the categories drawer as presets — collapsed behind
-     a single "Starting from X" line by default (never a permanent grid,
-     never a scrolling bar) and revealed as a wrapped grid on tap. The
-     value mirrors the same live preset name + colour the top token
-     already tracks (see presentation.js), so there's one source of truth
-     for "what preset is this," not two. */
+  /* modes now live in the categories drawer as presets — a "Starting from X"
+     line, opened by default so the picker itself is discoverable (testing
+     showed a collapsed-by-default row just read as inert text, not
+     something to tap), collapsible from there since it's still a long row
+     once it wraps. The value mirrors the same live preset name + colour the
+     top token already tracks (see presentation.js), so there's one source
+     of truth for "what preset is this," not two. */
   const presetHost=document.createElement('div');
-  presetHost.className='preset-host';
+  presetHost.className='preset-host open';
   presetHost.innerHTML=
     '<button type="button" class="preset-host-toggle" id="presetHostToggle">'+
       '<span class="preset-host-lbl">Starting from</span>'+
@@ -665,9 +736,14 @@ applyToggleUI();
   function openCats(){
     if(!togglesWrap.classList.contains('open')) catLabel.click(); /* keep original state machine in sync */
     catArea.classList.add('sheet-open'); scrim.classList.add('on');
+    lockBodyScroll();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
     catArea.removeAttribute('aria-hidden');
     $('d-cats').setAttribute('aria-expanded', 'true');
+    // Reopening used to leave the sheet scrolled wherever it was left last
+    // time (e.g. deep in Explore's list) — reset to the top on every open
+    // so it reads the same way each time it's reached.
+    const pp = $('panePlay'); if (pp) pp.scrollTop = 0;
     // preventScroll: catArea is position:fixed, covering the viewport — it
     // needs no scroll to be "in view," but browsers don't know that and will
     // scroll the page to it anyway without this.
@@ -675,6 +751,7 @@ applyToggleUI();
   }
   function closeCats(){
     catArea.classList.remove('sheet-open'); scrim.classList.remove('on');
+    unlockBodyScroll();
     catArea.setAttribute('aria-hidden', 'true');
     $('d-cats').setAttribute('aria-expanded', 'false');
     // d-cats lives inside menuDrawer, already closed by the time this fires — a
@@ -719,6 +796,37 @@ applyToggleUI();
       const dy = e.changedTouches[0].clientY - startY;
       catArea.style.transform = '';
       if (dy > SNAP_THRESHOLD) closeCats();
+    });
+  })();
+
+  /* ── same swipe-down-to-dismiss on every other bottom-sheet drawer (the
+     hamburger menu, and Log/Favourites/Custom/Help underneath it) — they're
+     the same kind of sheet as Categories and deserve the same handle, not
+     just a small "x" in the corner. ── */
+  (function(){
+    const SNAP_THRESHOLD = 90;
+    document.querySelectorAll('.drawer, .sub-drawer').forEach(sheet => {
+      const handle = sheet.querySelector('.drawer-handle');
+      if (!handle) return;
+      let startY = 0, dragging = false;
+      handle.addEventListener('touchstart', e => {
+        startY = e.touches[0].clientY;
+        dragging = true;
+        sheet.style.transition = 'none';
+      }, {passive:true});
+      handle.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const dy = e.touches[0].clientY - startY;
+        if (dy > 0) sheet.style.transform = `translateY(${dy}px)`;
+      }, {passive:true});
+      handle.addEventListener('touchend', e => {
+        if (!dragging) return;
+        dragging = false;
+        sheet.style.transition = '';
+        const dy = e.changedTouches[0].clientY - startY;
+        sheet.style.transform = '';
+        if (dy > SNAP_THRESHOLD && typeof closeAllDrawers === 'function') closeAllDrawers();
+      });
     });
   })();
 
@@ -1087,23 +1195,21 @@ applyToggleUI();
     syncIntentUI();
   });
 
-  /* Shape is always what the sheet opens to; Customize (under the chapters)
-     is the only way down into Explore's category grid, and Back is the only
-     way up again — no tab strip to flip between the two any more. */
-  function showPane(name){
-    $('panePlay').classList.toggle('on', name === 'play');
-    $('paneExplore').classList.toggle('on', name === 'explore');
-    syncIntentUI();   // looking is not choosing — switching panes never re-deals the hand
-    if (typeof updateTimeOfDayHeading === 'function') updateTimeOfDayHeading();  // sheet title tracks the pane
-    if (name === 'explore' && typeof updateGridScrollHint === 'function') updateGridScrollHint();
+  /* Explore used to be a separate pane you navigated into and had to find
+     your way back out of. It's a fold now, appended right under the
+     console, in the same scroll as everything else — Customize just
+     toggles it open/closed in place. */
+  const customizeBtn = $('customizeBtn'), exploreFold = $('exploreFold');
+  function toggleExplore(forceOpen){
+    if (!exploreFold) return;
+    const open = typeof forceOpen === 'boolean' ? forceOpen : !exploreFold.classList.contains('open');
+    exploreFold.classList.toggle('open', open);
+    if (customizeBtn) customizeBtn.classList.toggle('open', open);
+    window.slideFold(exploreFold, open);
+    syncIntentUI();   // looking is not choosing — opening the fold never re-deals the hand
+    if (open && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
-  const customizeBtn = $('customizeBtn'), paneBackBtn = $('paneBackBtn'), catGoBackBtn = $('catGoBackBtn');
-  if (customizeBtn) customizeBtn.addEventListener('click', () => showPane('explore'));
-  if (paneBackBtn)  paneBackBtn.addEventListener('click', () => showPane('play'));
-  // Same "back to Shape" action, reachable from where a thumb already is
-  // at the bottom of a long Explore scroll — not just the small link
-  // pinned at the very top of the pane.
-  if (catGoBackBtn) catGoBackBtn.addEventListener('click', () => showPane('play'));
+  if (customizeBtn) customizeBtn.addEventListener('click', () => toggleExplore());
 
   /* ── "Tune the hand" info tooltip — a tap target, not a permanent
      explainer line eating space in the console. ── */
@@ -1128,6 +1234,7 @@ applyToggleUI();
   if (fixedSeqToggle && fixedSeqOptions) fixedSeqToggle.addEventListener('click', () => {
     const open = fixedSeqOptions.classList.toggle('open');
     fixedSeqToggle.classList.toggle('open', open);
+    window.slideFold(fixedSeqOptions, open);
   });
 
   /* ── move the re-homed presets into Play, where they belong ── */

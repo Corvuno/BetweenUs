@@ -244,8 +244,8 @@ async function run() {
       setTimeout(done, 500);
     }));
     // the sheet defaults to Shape — the category buckets live behind the
-    // Customize button, which swaps in Explore's pane
-    if (!(await page.locator('#paneExplore').evaluate(el => el.classList.contains('on')))) {
+    // Customize button, which unfolds Explore's grid in place
+    if (!(await page.locator('#exploreFold').evaluate(el => el.classList.contains('open')))) {
       await page.locator('#customizeBtn').click();
       await page.waitForTimeout(200);
     }
