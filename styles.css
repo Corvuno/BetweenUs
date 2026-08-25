@@ -478,6 +478,13 @@ body::before{
 
 
 
+/* Draw Three, Full Screen (which is also how Twist's party-mode double
+   normally gets reached) and Twist itself all assume a hand you're mixing
+   or drawing from at random — none of that applies to Colbert/The 36's
+   fixed, in-order sequence, so the whole row disappears rather than
+   leaving three now-meaningless buttons in place. */
+body.fixed-seq-mode .screen-row{display:none;}
+
 /* ── PICK-3 MODE ── */
 .screen-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%;}
 .screen-row .btn-fullscreen{justify-self:center;}

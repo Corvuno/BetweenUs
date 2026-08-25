@@ -37,11 +37,27 @@ function applyToggleUI() {
 }
 
 
+// Colbert/The 36 are a fixed, ordered sequence — Twist (a random lens on
+// whatever card is showing), Full Screen's party/pick-3 flow, and Draw
+// Three (discard two of a random trio) all assume a hand you're mixing
+// or drawing from at random, which an ordered sequence never is.
+const FIXED_SEQ_PRESETS = ['colbertmode', 'aronmode'];
+
 let _prevSafeModeHS = null;   // remembers your After Dark state across hard-safe modes
 function applyPreset(mode) {
   const preset = PRESETS[mode];
   if (!preset) return;
   state.activePreset = mode;
+  const isFixedSeq = FIXED_SEQ_PRESETS.includes(mode);
+  document.body.classList.toggle('fixed-seq-mode', isFixedSeq);
+  if (isFixedSeq) {
+    // back out cleanly if either happened to already be on, through the
+    // same toggles the buttons themselves use, instead of just hiding the
+    // controls out from under an active state
+    const pt = document.getElementById('pickToggle');
+    if (pt && pt.classList.contains('on')) pt.click();
+    if (typeof clearTwist === 'function') clearTwist();
+  }
   // Bring the active mode button into the centre of its own horizontal
   // strip — scrolling that strip's element directly (.preset-wrap's own
   // scrollLeft), not scrollIntoView(). scrollIntoView asks "make this
