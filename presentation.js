@@ -256,6 +256,48 @@ document.getElementById('d-reshuffle').addEventListener('click',()=>{
   closeAllDrawers();
 });
 
+// TEMP — title font tryout. See the matching HTML comment on the drawer
+// button; delete this block and the button once a font's settled on for
+// good. Cycles the .title element through candidates on tap, remembering
+// the choice in localStorage so a reload doesn't lose it mid-tryout —
+// that's the only reason this touches storage at all.
+const TITLE_FONTS = [
+  { name: 'Cinzel (live)', family: "'Cinzel',serif", weight: 600 },
+  { name: 'Italiana',      family: "'Italiana',serif", weight: 400 },
+  { name: 'Marcellus',     family: "'Marcellus',serif", weight: 400 },
+  { name: 'Poiret One',    family: "'Poiret One',cursive", weight: 400 },
+];
+// The three tryout fonts are only ever fetched if this toggle actually
+// gets used — a static <link> in <head> was adding real load-time weight
+// to every visit just to cover a feature only the owner uses.
+let tempFontsLoaded = false;
+function ensureTempFontsLoaded() {
+  if (tempFontsLoaded) return;
+  tempFontsLoaded = true;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=Italiana&family=Marcellus&family=Poiret+One&display=swap';
+  document.head.appendChild(link);
+}
+function applyTitleFont(idx) {
+  if (idx > 0) ensureTempFontsLoaded();
+  const f = TITLE_FONTS[idx];
+  const titleEl = document.querySelector('.title');
+  if (titleEl) { titleEl.style.fontFamily = f.family; titleEl.style.fontWeight = f.weight; }
+  const sub = document.getElementById('dTitleFontSub');
+  if (sub) sub.textContent = f.name + ' — tap for next';
+  try { localStorage.setItem('bu-titlefont-temp', idx); } catch(e) {}
+}
+(function initTitleFontTemp(){
+  let idx = 0;
+  try { idx = parseInt(localStorage.getItem('bu-titlefont-temp'), 10) || 0; } catch(e) {}
+  applyTitleFont(idx);
+  document.getElementById('d-titlefont').addEventListener('click', () => {
+    idx = (idx + 1) % TITLE_FONTS.length;
+    applyTitleFont(idx);
+  });
+})();
+
 // ── Menu drawer ──
 document.getElementById('btn-menu').addEventListener('click',(e)=>openDrawer('menuDrawer', e.currentTarget));
 document.getElementById('overlay').addEventListener('click',closeAllDrawers);

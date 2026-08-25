@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260825a">
+<link rel="stylesheet" href="styles.css?v=20260825b">
 </head>
 <body>
 <div class="glow"></div>
@@ -275,6 +275,16 @@
     <button class="d-item" id="d-reshuffle">
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg></div>
       <div class="d-text"><span class="d-label">Reshuffle</span><span class="d-sub">Shuffle again without changing the mode</span></div>
+    </button>
+    <!-- TEMP — title font tryout, remove once a font is picked for good.
+         Cycles the title through candidates on tap; choice persists via
+         localStorage so it survives a reload while testing. The three
+         extra fonts load lazily on first use (see ensureTempFontsLoaded
+         in presentation.js), not up front for every visit. -->
+    <div class="d-divider"></div>
+    <button class="d-item" id="d-titlefont">
+      <div class="d-icon" style="font-size:.6rem;">Aa</div>
+      <div class="d-text"><span class="d-label">Title font (temp)</span><span class="d-sub" id="dTitleFontSub">Tap to try another</span></div>
     </button>
   </div>
 </div>
@@ -618,15 +628,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260825a"></script>
-<script src="config.js?v=20260825a"></script>
-<script src="state.js?v=20260825a"></script>
-<script src="deck.js?v=20260825a"></script>
-<script src="card.js?v=20260825a"></script>
-<script src="library.js?v=20260825a"></script>
-<script src="session.js?v=20260825a"></script>
-<script src="selection.js?v=20260825a"></script>
-<script src="presentation.js?v=20260825a"></script>
-<script src="ui.js?v=20260825a"></script>
+<script src="questions.js?v=20260825b"></script>
+<script src="config.js?v=20260825b"></script>
+<script src="state.js?v=20260825b"></script>
+<script src="deck.js?v=20260825b"></script>
+<script src="card.js?v=20260825b"></script>
+<script src="library.js?v=20260825b"></script>
+<script src="session.js?v=20260825b"></script>
+<script src="selection.js?v=20260825b"></script>
+<script src="presentation.js?v=20260825b"></script>
+<script src="ui.js?v=20260825b"></script>
 </body>
 </html>

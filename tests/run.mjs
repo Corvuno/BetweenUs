@@ -326,7 +326,12 @@ async function run() {
     await page.waitForTimeout(300);
     const drawer = page.locator('#menuDrawer');
     assert(await drawer.evaluate(el => el.classList.contains('open')), 'menu drawer did not open');
-    await page.locator('#overlay').click({ force: true });
+    // #overlay spans the full viewport, so a default center-point click can
+    // land on drawer content instead of exposed backdrop once the drawer
+    // has enough rows to reach the middle of the screen — pinned to the
+    // top-left corner instead, which stays clear of the drawer regardless
+    // of how tall its content grows.
+    await page.locator('#overlay').click({ force: true, position: { x: 10, y: 10 } });
     await page.waitForTimeout(300);
     assert(!(await drawer.evaluate(el => el.classList.contains('open'))), 'menu drawer did not close on overlay click');
   });
