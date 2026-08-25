@@ -139,3 +139,21 @@ log) and the app's actual card data (`questions.js`) have to match exactly — s
 categories, same 12 cards each, same text, in the same order. Whenever a card changes in
 one, change it in the other in the same commit. If there's ever doubt they've drifted,
 diff them category by category before touching either.
+
+## Cognitive-mode and depth tags
+
+Every card in `questions.js` carries a `mode` tag (`reflect` / `story` / `observe` /
+`specific` / `light` / `provoke` — see the "50 weakest cards" and "sounds like a plan"
+review threads for what each means and why they exist: a category that's mostly `reflect`
+produces the "insight fatigue" the owner flagged, even when every individual card in it
+passes review) and a `depth` tag (1–7, same scale as a category's `band` in `config.js`,
+but per-card — lets one card in a heavy category read lighter than its category average,
+or vice versa, without having to move it between categories).
+
+Whenever a card is added, replaced, or reworded — including a swap approved through the
+normal sign-off process — set or update its `mode` and `depth` alongside the text change,
+in the same commit. If a reworded card's mode changed (e.g. a `reflect` card rewritten
+into a `story`), update the tag; don't leave it stale. These tags aren't used by the app
+yet (no shuffle mode reads them today) but they're the data a future variety-aware shuffle
+would need, so they need to stay accurate now rather than get backfilled later from
+memory.
