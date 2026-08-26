@@ -624,7 +624,7 @@ body.fixed-seq-mode .screen-row{display:none;}
    an equal gap look smaller than the same gap next to plain dim text.
    Padding-bottom sized up again so the token sits optically centred
    instead of just mathematically centred. */
-.tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:4px 0 16px;
+.tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:4px 0 11px;
   opacity:0;transform:translateY(-4px);transition:opacity .5s .12s ease,transform .5s .12s ease;}
 .tok-line.in{opacity:1;transform:none;}
 /* Visible at rest, not just on hover — a bare label with no border or fill
