@@ -8,12 +8,12 @@
 <title>Between Us</title>
 <meta name="description" content="Between Us — a deck of questions for the conversations that don't happen on their own.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0c0a'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23c9a84c'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@600&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <!-- ?v= busts GitHub Pages' / the browser's cache on CSS/JS — no build step
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260823k">
+<link rel="stylesheet" href="styles.css?v=20260825d">
 </head>
 <body>
 <div class="glow"></div>
@@ -28,7 +28,7 @@
 
   <!-- v6 TOKEN LINE — one entry point now: the active preset, in its own colour -->
   <div class="tok-line" id="tokLine">
-    <button class="tok tok-preset" id="tokCats"><span class="tok-lbl">Selected</span><span class="tok-val" id="valCats">Balanced</span></button>
+    <button class="tok tok-preset" id="tokCats"><span class="tok-lbl">Selected</span><span class="tok-val-row"><span class="tok-rule tok-rule--l"></span><span class="tok-val" id="valCats">Balanced</span><span class="tok-rule tok-rule--r"></span></span></button>
   </div>
 
   <!-- PRESET ROW -->
@@ -102,22 +102,28 @@
             <div class="tooltip" id="fineInfoTip">How hard the questions lean, who they're about, how the deck shuffles, and how many cards you're dealt.</div>
           </div>
 
-          <div class="ctrl-row">
-            <div class="ctrl-icon" style="--ic:#c9a84c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18h4l3-14 4 16 3-10h4"/></svg></div>
+          <div class="ctrl-row" style="--ic:#8f74b8">
+            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18h4l3-14 4 16 3-10h4"/></svg></div>
             <div class="ctrl-body">
-              <div class="ctrl-top"><span>Depth</span><span class="ctrl-val" id="dialIntVal">Balanced</span></div>
+              <div class="ctrl-top"><span>Depth</span></div>
               <div class="ctrl-ends"><span>Easy</span><span>Intense</span></div>
-              <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
-                     aria-label="Depth: easy to intense">
+              <div class="track-wrap">
+                <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
+                       aria-label="Depth: easy to intense">
+                <span class="ctrl-val ctrl-val--float" id="dialIntVal" style="--pos:50">Balanced</span>
+              </div>
             </div>
           </div>
-          <div class="ctrl-row">
-            <div class="ctrl-icon" style="--ic:#65c9b0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
+          <div class="ctrl-row" style="--ic:#65c9b0">
+            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
             <div class="ctrl-body">
-              <div class="ctrl-top"><span>Focus</span><span class="ctrl-val" id="dialFocVal">Balanced</span></div>
+              <div class="ctrl-top"><span>Focus</span></div>
               <div class="ctrl-ends"><span>Me</span><span>Us</span></div>
-              <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
-                     aria-label="Me to Us: who it is about">
+              <div class="track-wrap">
+                <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
+                       aria-label="Me to Us: who it is about">
+                <span class="ctrl-val ctrl-val--float" id="dialFocVal" style="--pos:50">Balanced</span>
+              </div>
             </div>
           </div>
 
@@ -131,7 +137,7 @@
               </div>
               <div class="shuffle-toggle" id="shuffleToggle">
                 <button class="shuffle-toggle-opt" data-mode="arc">Arc</button>
-                <button class="shuffle-toggle-opt" data-mode="wild">Wild</button>
+                <button class="shuffle-toggle-opt" data-mode="wild">Random</button>
               </div>
             </div>
             <div class="seg">
@@ -269,6 +275,16 @@
     <button class="d-item" id="d-reshuffle">
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg></div>
       <div class="d-text"><span class="d-label">Reshuffle</span><span class="d-sub">Shuffle again without changing the mode</span></div>
+    </button>
+    <!-- TEMP — title font tryout, remove once a font is picked for good.
+         Cycles the title through candidates on tap; choice persists via
+         localStorage so it survives a reload while testing. The three
+         extra fonts load lazily on first use (see ensureTempFontsLoaded
+         in presentation.js), not up front for every visit. -->
+    <div class="d-divider"></div>
+    <button class="d-item" id="d-titlefont">
+      <div class="d-icon" style="font-size:.6rem;">Aa</div>
+      <div class="d-text"><span class="d-label">Title font (temp)</span><span class="d-sub" id="dTitleFontSub">Tap to try another</span></div>
     </button>
   </div>
 </div>
@@ -540,13 +556,13 @@
 
     <h4>Shuffle</h4>
     <div class="hp-shuf">
-      <svg viewBox="0 0 96 30" role="img" aria-label="Wild: card depth scattered at random.">
+      <svg viewBox="0 0 96 30" role="img" aria-label="Random: card depth scattered at random.">
         <circle cx="6" cy="20" r="2.6" fill="currentColor"/><circle cx="18" cy="7" r="2.6" fill="currentColor"/>
         <circle cx="30" cy="23" r="2.6" fill="currentColor"/><circle cx="42" cy="11" r="2.6" fill="currentColor"/>
         <circle cx="54" cy="25" r="2.6" fill="currentColor"/><circle cx="66" cy="9" r="2.6" fill="currentColor"/>
         <circle cx="78" cy="19" r="2.6" fill="currentColor"/><circle cx="90" cy="13" r="2.6" fill="currentColor"/>
       </svg>
-      <div class="hp-shuf-t"><b>Wild</b>Fully random &mdash; anything goes.</div>
+      <div class="hp-shuf-t"><b>Random</b>Fully random &mdash; anything goes.</div>
     </div>
     <div class="hp-shuf">
       <svg viewBox="0 0 96 30" role="img" aria-label="Deep: cards trend steadily deeper.">
@@ -612,15 +628,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260823k"></script>
-<script src="config.js?v=20260823k"></script>
-<script src="state.js?v=20260823k"></script>
-<script src="deck.js?v=20260823k"></script>
-<script src="card.js?v=20260823k"></script>
-<script src="library.js?v=20260823k"></script>
-<script src="session.js?v=20260823k"></script>
-<script src="selection.js?v=20260823k"></script>
-<script src="presentation.js?v=20260823k"></script>
-<script src="ui.js?v=20260823k"></script>
+<script src="questions.js?v=20260825d"></script>
+<script src="config.js?v=20260825d"></script>
+<script src="state.js?v=20260825d"></script>
+<script src="deck.js?v=20260825d"></script>
+<script src="card.js?v=20260825d"></script>
+<script src="library.js?v=20260825d"></script>
+<script src="session.js?v=20260825d"></script>
+<script src="selection.js?v=20260825d"></script>
+<script src="presentation.js?v=20260825d"></script>
+<script src="ui.js?v=20260825d"></script>
 </body>
 </html>
