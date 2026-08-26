@@ -691,7 +691,12 @@ body.fixed-seq-mode .screen-row{display:none;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
-.tok-preset .tok-lbl{font-size:.62rem;}
+/* .62rem in the last pass made this land at almost the exact same size as
+   .subtitle (.56rem) — a page-level tagline and a small caption on one
+   button reading as the same visual weight, which flattens the hierarchy
+   between them. .5rem keeps the readability gain over the original .42rem
+   while sitting clearly under .subtitle again, not level with it. */
+.tok-preset .tok-lbl{font-size:.5rem;}
 /* the caret is absolutely positioned off .tok-val everywhere else (left:100%,
    see .tok-val::after above) — a deliberate trick so a long word doesn't drag
    the plain token's centring off. Here the value already sits in its own
