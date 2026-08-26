@@ -110,30 +110,6 @@ The rules that follow from that:
 The full version, with the lens list used to audit a category, is in
 [`questions/between-us-deck.md`](questions/between-us-deck.md#house-style--how-a-card-is-built).
 
-### Twist — a lens on the card, not written into it
-
-Some of the deck's best cards are modifiers in disguise — *"How would you have answered
-this five years ago?"* turns an ordinary answer into a comparison with an earlier self.
-Rather than writing more cards like that one by one, that mechanism is a feature of the
-app: a `Twist` control sits in the row under Draw Card, next to Full Screen. Tap it and
-the card itself doesn't change — the count already printed on the card ("1 / 5") swaps to
-one of four lenses instead: an earlier-self comparison, a future-self comparison, what
-someone close to you would notice first, or what you'd say if it cost nothing. Tap again
-to reroll, draw the next card and it's gone.
-
-Each lens has to work the instant the card is opened, before anyone has said a word — never
-a request to critique or reverse an answer that doesn't exist yet, and never an abstract
-argument-for/against move, because these are stories about a life, not positions to defend.
-That bar cut the original draft from ten modifiers to four; a "blurted, unfiltered" lens
-and a "the scene, not the summary" lens were both drafted and both cut — the first because
-this deck asks for considered answers, not reflexes, the second because a well-written card
-already does that on its own.
-
-The template set lives in `MODIFIERS` in `card.js`, not in `questions/` or `questions.js`,
-because it's a lens any card can wear rather than more editorial content to maintain per
-category. It carries the app's default palette only — Twist has nothing to do with which
-category is showing, so it never borrows a category's accent colour.
-
 ## Updating
 
 App and settings changes go in the 9 `*.js` app modules, `styles.css`, or `questions.js`
