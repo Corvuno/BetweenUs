@@ -30,7 +30,7 @@ body::before{
 /* ── HEADER ── */
 .header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .5s .15s ease,transform .5s .15s ease;}
 .header.in{opacity:1;transform:none;}
-.title{font-family:'Cinzel',serif;font-size:1.85rem;font-weight:600;letter-spacing:.09em;color:var(--gold-l);line-height:1;}
+.title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
 .subtitle{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
 
 /* ── PRESET ROW ── */
@@ -561,7 +561,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 /* ── RESPONSIVE ── */
 @media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.card-number.twist{font-size:.92rem;}}
 @media(min-width:768px){
-  .app{max-width:640px;}.title{font-size:2.3rem;}.card-question{font-size:1.8rem;}.card-level{font-size:.65rem;}.card-number{font-size:.6rem;}.card-number.twist{font-size:1.02rem;}
+  .app{max-width:640px;}.title{font-size:2.6rem;}.card-question{font-size:1.8rem;}.card-level{font-size:.65rem;}.card-number{font-size:.6rem;}.card-number.twist{font-size:1.02rem;}
   .btn-sq{width:48px;height:48px;font-size:1.1rem;}.btn-draw{font-size:.68rem;letter-spacing:.26em;padding:13px 0;}
   :root{--sq-w:48px;}
   .btn-fullscreen{font-size:.62rem;padding:8px 8px;}
@@ -569,7 +569,7 @@ body.fixed-seq-mode .screen-row{display:none;}
   .cat-toggle-lbl{font-size:.62rem;}.toggle-btn{font-size:.62rem;padding:8px 15px;}
 }
 @media(min-width:1024px){
-  .app{max-width:720px;}.title{font-size:2.6rem;}.card-question{font-size:2rem;}.card-number.twist{font-size:1.1rem;}
+  .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2rem;}.card-number.twist{font-size:1.1rem;}
   .limit-btn{font-size:.78rem;}.mode-btn{font-size:.7rem;padding:11px 20px;}.btn-sq{width:52px;height:52px;}.btn-draw{font-size:.72rem;padding:14px 0;}
   :root{--sq-w:52px;}
 }
@@ -641,7 +641,13 @@ body.fixed-seq-mode .screen-row{display:none;}
 /* the word itself stays centred in the token — the caret is taken out of
    the text's own box (not just appended after it) and floated just past
    its edge, so a longer word doesn't drag the whole label off-centre */
-.tok-val{position:relative;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
+/* line-height:1 tightens the line box to hug the glyphs — without it the
+   box size (and so how far cap-height sits from its centre) depends on the
+   browser's own font metrics for Jost, which can differ enough device to
+   device that a hand-tuned pixel nudge on .tok-rule (elsewhere) that looks
+   right in one browser doesn't in another. Shrinking the box itself is the
+   fix that doesn't depend on guessing a constant per renderer. */
+.tok-val{position:relative;font-size:.66rem;line-height:1;letter-spacing:.15em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
 .tok-val::after{content:'\25BE';position:absolute;left:100%;top:50%;transform:translateY(-50%);
   margin-left:4px;font-size:.85em;opacity:.55;transition:transform .2s;color:var(--tokc,var(--gold));}
 /* underline as its own inset bar instead of a full-width border — spanning
@@ -701,15 +707,10 @@ body.fixed-seq-mode .screen-row{display:none;}
    between them. .5rem keeps the readability gain over the original .42rem
    while sitting clearly under .subtitle again, not level with it. */
 .tok-preset .tok-lbl{font-size:.5rem;}
-/* the caret is absolutely positioned off .tok-val everywhere else (left:100%,
-   see .tok-val::after above) — a deliberate trick so a long word doesn't drag
-   the plain token's centring off. Here the value already sits in its own
-   flanked row, so that trick instead pulled the caret out of flex flow and
-   left extra reserved space on the right only, which visibly shifted the
-   whole rule+text cluster left of the underline beneath it. Back into flow,
-   plain and static, keeps the row (and the underline under it) symmetric. */
-.tok-preset .tok-val::after{position:static;top:auto;left:auto;transform:none;margin-left:5px;}
-.tok-preset.open .tok-val::after{transform:rotate(180deg);}
+/* the dropdown caret did little once the flanking hairlines and underline
+   already say "this opens something" on their own — dropped for this
+   token. */
+.tok-preset .tok-val::after{content:none;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
 .tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
@@ -1008,7 +1009,11 @@ body.fixed-seq-mode .screen-row{display:none;}
   .card{aspect-ratio:3/2;}
   .card-question{font-size:2.1rem;line-height:1.42;}
   .card-body-inner{padding:30px 64px 20px;}
-  .title{font-size:2.4rem;}
+  /* this and the earlier @media(min-width:1024px) block both set .title —
+     same condition, so whichever comes later in the file wins regardless
+     of the other's value. Kept equal to it instead of leaving a silent
+     conflict where editing one quietly does nothing. */
+  .title{font-size:3.2rem;}
   .card-question{font-size:2.2rem;}
   .card-number.twist{font-size:1.2rem;}
   .card-level{font-size:.7rem;}
