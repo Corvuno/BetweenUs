@@ -675,7 +675,12 @@ body.fixed-seq-mode .screen-row{display:none;}
    a row wrapping just the value fixes that: centred against that row only,
    whatever the label above happens to measure. */
 .tok-val-row{display:flex;align-items:center;gap:10px;}
-.tok-rule{width:20px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;}
+/* align-items:center lines the rule up with .tok-val's full line box, but
+   an all-caps word has no descenders — the glyphs sit in the top portion
+   of that box, empty space piles up underneath, and centring on the box
+   reads as centring above the letters. Nudged down to split the cap-height
+   itself instead of the box around it. */
+.tok-rule{width:20px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;transform:translateY(3px);}
 .tok-rule--l{background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
 .tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
 .tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
