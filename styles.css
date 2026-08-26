@@ -618,9 +618,13 @@ body.fixed-seq-mode .screen-row{display:none;}
 /* ── TOKEN LINE — three symmetric words, ember only when lit ── */
 /* padding was 10px 0 2px — measured the real gaps: 26px of whitespace
    between the subtitle and the token, only 14px between the token and the
-   card below it. That's what read as "too far down", not the hairline.
-   Swapped to balance the two sides instead of guessing at it again. */
-.tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:4px 0 8px;
+   card below it. Balancing them to equal pixel gaps (20px/20px) still read
+   as closer to the card, because the card's solid border and the token's
+   own colour underline are visually "heavy" — they pull the eye and make
+   an equal gap look smaller than the same gap next to plain dim text.
+   Padding-bottom sized up again so the token sits optically centred
+   instead of just mathematically centred. */
+.tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:4px 0 16px;
   opacity:0;transform:translateY(-4px);transition:opacity .5s .12s ease,transform .5s .12s ease;}
 .tok-line.in{opacity:1;transform:none;}
 /* Visible at rest, not just on hover — a bare label with no border or fill
