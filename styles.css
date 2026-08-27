@@ -1131,17 +1131,9 @@ body.fixed-seq-mode .screen-row{display:none;}
   font-size:.92rem;line-height:1.5;color:var(--gold-l);opacity:.9;
   padding:2px 12px 12px;border-bottom:1px solid var(--dim);margin-bottom:6px;}
 
-/* Card count sits next to Shuffle now (same console row), so it gets the
-   exact same one-rail-not-four-boxes treatment: a single subtle border
-   around the whole group, buttons filling it evenly with no border or gap
-   of their own — four separate bordered boxes read far louder than one
-   quiet rail, and didn't leave Shuffle's two-button rail even width to
-   match against. */
-.limit-row--drawer{border:1px solid rgba(240,232,216,.12);border-radius:6px;overflow:hidden;padding:0;gap:0;}
-.limit-row--drawer .limit-btn{flex:1;border:none;border-radius:0;padding:7px 0;
-  font-size:.58rem;letter-spacing:.04em;opacity:.7;}
-.limit-row--drawer .limit-btn.active{background:rgba(101,201,176,.14);color:var(--gold-l);opacity:1;}
-.limit-row--drawer .limit-btn:hover{opacity:.9;}
+/* Card count sits next to Shuffle now (same console row) — sizing and the
+   active-fill treatment are unified with Shuffle's own rail further down,
+   so the actual rule lives there as one shared selector. */
 
 /* "start" bar at the foot of the sheet — .cat-area is itself the flex column
    (the panes scroll internally, flex:1), so a plain flex child here just
@@ -1237,18 +1229,27 @@ body.fixed-seq-mode .screen-row{display:none;}
 
 .console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
 
-/* Shuffle and Cards, side by side, under the shared "Round" heading. */
-.seg-row{display:flex;gap:14px;}
+/* Shuffle and Cards, side by side, under the shared "Round" heading. Extra
+   margin below — the row used to be the console's last element before its
+   own box padding closed things out; with the box gone it needs its own
+   breathing room before Draw Cards, same as every other section break. */
+.seg-row{display:flex;gap:14px;margin-bottom:22px;}
 .seg{flex:1;min-width:0;}
 .seg-head{padding-bottom:8px;text-align:center;}
 .seg-head span{font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);}
-/* one quiet rail for both — a thin border, a soft flat fill on whichever
-   option is active, same treatment either side. Arc's rainbow gradient is
-   gone: it was the loudest thing in the whole panel for a plain on/off. */
-.seg .shuffle-toggle{margin:0;max-width:none;padding:0;border:1px solid rgba(240,232,216,.14);border-radius:6px;overflow:hidden;}
-.seg .shuffle-toggle-opt{border-radius:0;padding:8px 0;font-size:.62rem;letter-spacing:.04em;color:rgba(240,232,216,.5);}
-.seg .shuffle-toggle-opt.active{background:rgba(240,232,216,.06);color:var(--cream);}
+/* one quiet rail for both — same border, same button size, same soft flat
+   fill on whichever option is active, so the two rails read as a matched
+   pair instead of two different-sized controls sitting side by side.
+   Arc's rainbow gradient is gone: it was the loudest thing in the whole
+   panel for a plain on/off. */
+.seg .shuffle-toggle,
+.limit-row--drawer{margin:0;max-width:none;padding:0;border:1px solid rgba(240,232,216,.14);border-radius:6px;overflow:hidden;gap:0;}
+.seg .shuffle-toggle-opt,
+.limit-row--drawer .limit-btn{flex:1;border:none;border-radius:0;padding:8px 0;
+  font-size:.6rem;letter-spacing:.04em;color:rgba(240,232,216,.5);opacity:1;}
+.seg .shuffle-toggle-opt.active,
+.limit-row--drawer .limit-btn.active{background:rgba(240,232,216,.06);color:var(--cream);opacity:1;}
 
 .dial-range{-webkit-appearance:none;appearance:none;width:100%;height:16px;background:none;cursor:pointer;position:relative;z-index:1;}
 .dial-range::-webkit-slider-runnable-track{height:1px;background:rgba(240,232,216,.16);}
