@@ -697,29 +697,15 @@ applyToggleUI();
   window.unlockBodyScroll = unlockBodyScroll;
 
   /* ── re-home existing controls into trays ── */
-  /* modes now live in the categories drawer as presets — a "Starting from X"
-     line, opened by default so the picker itself is discoverable (testing
-     showed a collapsed-by-default row just read as inert text, not
-     something to tap), collapsible from there since it's still a long row
-     once it wraps. The value mirrors the same live preset name + colour the
-     top token already tracks (see presentation.js), so there's one source
-     of truth for "what preset is this," not two. */
+  /* modes now live in the categories drawer as presets — always visible
+     under a plain "Start from" label, the same section-heading language
+     Chapters/Tune/Round use. No collapse/toggle any more: testing showed a
+     collapsed-by-default row read as inert text, not something to tap, and
+     once open there was no reason left to be able to close it again. */
   const presetHost=document.createElement('div');
   presetHost.className='preset-host open';
-  presetHost.innerHTML=
-    '<button type="button" class="preset-host-toggle" id="presetHostToggle">'+
-      '<span class="preset-host-lbl">Starting from</span>'+
-      '<span class="preset-host-val" id="presetHostVal">Balanced</span>'+
-      '<span class="preset-host-chev">&#8250;</span>'+
-    '</button>';
+  presetHost.innerHTML='<div class="sect-lbl"><span>Start from</span></div>';
   presetHost.appendChild($('preset-outer'));
-  // querySelector on presetHost itself, not document.getElementById — this
-  // node isn't attached to the document yet at this point in the wiring,
-  // so a document-wide lookup would silently find nothing.
-  const presetHostToggle=presetHost.querySelector('.preset-host-toggle');
-  if (presetHostToggle) presetHostToggle.addEventListener('click', () => {
-    presetHost.classList.toggle('open');
-  });
   const topbar=document.querySelector('.cat-area .cat-topbar');
   topbar.before(presetHost);            /* presets first … */
   presetHost.after(topbar);             /* … then After Dark · All · None */
@@ -964,10 +950,6 @@ applyToggleUI();
     });
   }
 
-  const INT_WORDS = ['Easy','Gentle','Balanced','Deeper','Intense'];
-  const FOC_WORDS = ['About you','Leaning you','Balanced','Leaning us','About us'];
-  const word = (list, t) => list[Math.min(list.length - 1, Math.floor(t * list.length))];
-
   function syncIntentUI(){
     document.querySelectorAll('.chapter').forEach(btn => {
       const levels  = chapterLevels(btn.dataset.chapter);
@@ -1001,12 +983,19 @@ applyToggleUI();
         ? visible.filter(l => state.activeToggles.has(l)).length + ' / ' + visible.length
         : '';
     });
-    const iv = $('dialIntVal'), fv = $('dialFocVal');
-    // --pos drives .ctrl-val--float's position (styles.css) so the label
-    // floats above wherever the dot actually is, instead of sitting fixed
-    // at the row's right edge regardless of the real value.
-    if (iv) { iv.textContent = word(INT_WORDS, intentIntensity); iv.style.setProperty('--pos', intentIntensity * 100); }
-    if (fv) { fv.textContent = word(FOC_WORDS, (intentFocus + 1) / 2); fv.style.setProperty('--pos', (intentFocus + 1) / 2 * 100); }
+    // The track fills from its centre tick out to the dot, in the dial's
+    // own colour — "how far from balanced, and which way" reads at a
+    // glance from the fill alone, so the dot needs no value word next to
+    // or under it any more (Easy/Intense and Me/Us already say which way
+    // is which).
+    const setFill = (el, pos) => {
+      if (!el) return;
+      const left = Math.min(50, pos);
+      el.style.left = left + '%';
+      el.style.width = Math.abs(pos - 50) + '%';
+    };
+    setFill($('dialIntFill'), intentIntensity * 100);
+    setFill($('dialFocFill'), (intentFocus + 1) / 2 * 100);
     const ii = $('dialIntensity'), fi = $('dialFocus');
     if (ii) ii.style.opacity = intentOn ? '1' : '.45';
     if (fi) fi.style.opacity = intentOn ? '1' : '.45';

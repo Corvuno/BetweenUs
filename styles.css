@@ -752,8 +752,12 @@ body.fixed-seq-mode .screen-row{display:none;}
 .cat-sheet-handle{width:88px;height:36px;padding:16.5px 10px;box-sizing:border-box;
   background-color:rgba(201,168,76,.3);background-clip:content-box;border-radius:2px;
   margin:0 auto;flex-shrink:0;touch-action:none;}
-.cat-sheet-title{text-align:center;font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.25em;
-  text-transform:uppercase;color:var(--gold);padding:4px 0 14px;flex-shrink:0;}
+/* the sheet's own title — playLeadFirst, driven by updateTimeOfDayHeading()
+   — sits in this row next to Close now, instead of as a separate lead-in
+   line above the chapters. */
+.cat-sheet-head{position:relative;padding:4px 0 16px;flex-shrink:0;}
+.cat-sheet-head-title{text-align:center;font-family:'Jost',sans-serif;font-size:.62rem;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(240,232,216,.6);}
 /* padding carries the tap target up toward the ~44px minimum — the glyph
    itself stays the same visual size, the invisible hit area just grows
    around it instead of stopping a few px past the "x" */
@@ -963,7 +967,7 @@ body.fixed-seq-mode .screen-row{display:none;}
   .cat-area:not(.sheet-open){transform:translate(-50%,-46%);opacity:0!important;pointer-events:none;}
   .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
   .cat-sheet-handle{display:none;}
-  .cat-sheet-title{padding-top:16px;}
+  .cat-sheet-head{padding-top:16px;}
 }
 @media(min-width:768px){
   /* centre the whole composition in the viewport instead of hanging from the top */
@@ -983,7 +987,7 @@ body.fixed-seq-mode .screen-row{display:none;}
   .picker-hint{font-size:.66rem;letter-spacing:.2em;padding:14px 16px 10px;}
   .pick-opt-level{font-size:.66rem;}
   .pick-opt-q{font-size:1.35rem;line-height:1.45;}
-  .drawer-title,.cat-sheet-title{font-size:.72rem;}
+  .drawer-title,.cat-sheet-head-title{font-size:.72rem;}
   .d-label{font-size:.72rem;} .d-sub{font-size:.6rem;} .d-icon{font-size:.95rem;}
   .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.6rem;}
   .session-btn{font-size:.66rem;padding:9px 18px;}
@@ -1002,7 +1006,7 @@ body.fixed-seq-mode .screen-row{display:none;}
   .pick-opt{padding:14px 26px;gap:8px;}
   .drawer-item{font-size:1.2rem;padding:16px 0;}
   .drawer-item-meta{font-size:.6rem;}
-  .drawer-title,.cat-sheet-title{font-size:.72rem;}
+  .drawer-title,.cat-sheet-head-title{font-size:.72rem;}
   .d-label{font-size:.7rem;} .d-sub{font-size:.58rem;}
   .session-btn{font-size:.64rem;padding:9px 18px;}
   .help-content p{font-size:1.15rem;}
@@ -1111,16 +1115,6 @@ body.fixed-seq-mode .screen-row{display:none;}
 .pane-play.on{display:block;}
 .pane-play::-webkit-scrollbar{display:none;width:0;height:0;}
 
-.play-lead{text-align:center;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;
-  text-transform:uppercase;color:rgba(240,232,216,.6);opacity:1;padding:14px 0 9px;}
-/* Was trimmed to 6px on the assumption this sits right under other chrome
-   with its own spacing — but "Who's at the table?" above gets to read as a
-   clean section start (title, breathing room, then the label); this was
-   getting swallowed into the preset row it follows instead. Matches
-   .play-lead's own top padding now, so the two headers actually read as
-   the same rank they're meant to be. */
-.play-lead--first{padding-top:14px;}
-
 /* Shape is three different KINDS of decision (what's in play, how it leans,
    how it's dealt out) — text only, no numbering (felt like a form, not part
    of this deck) — a coloured rule is enough to tell them apart at a glance. */
@@ -1183,16 +1177,25 @@ body.fixed-seq-mode .screen-row{display:none;}
    of chapter-style choices — this is mechanics, not content. A muted
    two-colour wash instead of a flat tint: each control's own hue bleeds
    faintly into the plate behind it. ── */
-.console{margin-top:18px;position:relative;
-  background:
-    radial-gradient(ellipse 140% 60% at 22% 30%, rgba(201,168,76,.05), transparent 70%),
-    radial-gradient(ellipse 140% 60% at 78% 70%, rgba(101,201,176,.05), transparent 70%),
-    rgba(255,255,255,.012);
-  border:1px solid rgba(240,232,216,.1);
-  border-radius:10px;padding:18px 16px 16px;}
-.console-head{display:flex;align-items:center;gap:6px;justify-content:center;margin-bottom:18px;position:relative;}
-.console-head svg{width:12px;height:12px;color:#65c9b0;opacity:.8;}
-.console-head span{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,232,216,.5);}
+/* No bounding card any more — Tune reads as its own section the same way
+   Chapters/Round do (a .sect-lbl heading), not a separately-boxed panel. */
+.console{margin-top:20px;}
+
+/* section headings shared by Start from / Chapters / Tune / Round — one
+   small-caps label style used everywhere instead of each section
+   inventing its own header treatment. */
+.sect-lbl{display:flex;align-items:center;justify-content:space-between;position:relative;
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(240,232,216,.45);margin:0 0 12px;}
+.play-sect--2 .sect-lbl:first-child{margin-bottom:18px;}
+/* the inline "Explore categories" link next to the Chapters label — same
+   whisper-link weight the fixed-set fold already uses, not a button */
+.link-plain{background:none;border:none;cursor:pointer;color:rgba(240,232,216,.5);
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:0;transition:color .2s;}
+.link-plain:hover,.link-plain.open{color:var(--gold-l);}
+.link-plain::after{content:'\203A';margin-left:4px;display:inline-block;transition:transform .2s;}
+.link-plain.open::after{transform:rotate(90deg);}
 
 /* "what am I looking at" — a small info affordance, not baked-in explainer
    text taking up permanent room */
@@ -1210,88 +1213,68 @@ body.fixed-seq-mode .screen-row{display:none;}
   width:9px;height:9px;background:#1d1915;border-left:1px solid rgba(240,232,216,.14);border-top:1px solid rgba(240,232,216,.14);}
 
 .ctrl-row{display:flex;align-items:flex-start;gap:12px;position:relative;}
-.ctrl-row+.ctrl-row{margin-top:24px;}
+.ctrl-row+.ctrl-row{margin-top:26px;}
 .ctrl-icon{width:26px;height:26px;border-radius:50%;background:rgba(240,232,216,.05);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
 .ctrl-icon svg{width:13px;height:13px;color:var(--ic,var(--gold));}
-.ctrl-icon--sm{width:20px;height:20px;}
-.ctrl-icon--sm svg{width:10px;height:10px;}
 .ctrl-body{flex:1;min-width:0;}
-.ctrl-top{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.6rem;
-  letter-spacing:.06em;text-transform:uppercase;color:rgba(240,232,216,.5);padding-bottom:7px;}
-.ctrl-val{color:var(--ic,var(--gold-l));}
-/* .3, then .44, then .62 opacity, plus a size bump to .5rem — legible on
-   its own, but still one of the smallest labels on the screen once the
-   owner's wider "everything's too small" pass came through. Matched to
-   the same .6rem floor as the rest now instead of staying a special case. */
+.ctrl-top{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(240,232,216,.7);padding-bottom:14px;}
 .ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.6rem;
-  letter-spacing:.06em;text-transform:uppercase;color:rgba(240,232,216,.85);padding-bottom:4px;}
-/* the value used to sit fixed at the top-right of the row, regardless of
-   where the dot actually was — so "Balanced"/"Leaning us" always read as
-   pinned to the right edge, which primed people to drag right *to reach*
-   what it said rather than reading it as "this is where you are now".
-   Floating it under the track at the dot's own position (--pos, a plain
-   0-100 number kept in sync with the input's value by syncIntentUI() in
-   ui.js) makes the label move with the dot instead of sitting still while
-   the dot moves independently of it. translateX by the same fraction keeps
-   it from overhanging the track at either extreme. */
-.track-wrap{position:relative;}
-/* no transition on left/transform — this has to track the dot 1:1 during a
-   drag. Easing it, even briefly, reads as the label lagging a beat behind
-   a value that's actually already moved. */
-.ctrl-val--float{position:absolute;top:100%;margin-top:4px;left:calc(var(--pos,50) * 1%);
-  transform:translateX(calc(var(--pos,50) * -1%));font-size:.62rem;letter-spacing:.06em;
-  text-transform:uppercase;white-space:nowrap;pointer-events:none;}
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:9px;}
+/* the track's own tick marks + centre-out colour fill carry the reading
+   now — Easy/Intense and Me/Us already say which way is which, so a value
+   word ("Balanced") next to or under the dot was saying the same thing a
+   second time. Removed rather than relabelled. */
+.track-wrap{position:relative;height:16px;}
+.tick{position:absolute;top:50%;width:1px;height:6px;background:rgba(240,232,216,.22);
+  transform:translate(-50%,-50%);pointer-events:none;}
+/* the two end ticks read as the track's hard stop, not just another
+   position marker — taller and heavier than the three in between */
+.tick.end{width:1.5px;height:11px;background:rgba(240,232,216,.4);}
+.track-fill{position:absolute;top:50%;height:1px;background:var(--ic);
+  transform:translateY(-50%);pointer-events:none;}
 
 .console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
 
-/* Shuffle and Cards, side by side, each led by the same icon-circle
-   language the dials use above them. min-width:0 overrides the flex item
-   default of min-width:auto — without it, Cards' 4-button row refused to
-   shrink below its content width and squeezed Shuffle's 2-button column
-   down to a third the space instead of the even split flex:1 implies. */
+/* Shuffle and Cards, side by side, under the shared "Round" heading. */
 .seg-row{display:flex;gap:14px;}
 .seg{flex:1;min-width:0;}
-.seg-head{display:flex;align-items:center;justify-content:center;gap:6px;padding-bottom:8px;}
-.seg-head span:last-child{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.08em;
-  text-transform:uppercase;color:rgba(240,232,216,.5);}
-/* Shuffle's rail was styled for standalone full-width use elsewhere (a
-   full pill) — flattened to the same 6px rail Cards uses right next to
-   it, and dropped the margin/max-width/padding it doesn't need sitting in
-   an already-sized column, so the two read as one matched pair. */
-.seg .shuffle-toggle{margin:0;max-width:none;padding:0;border-radius:6px;}
-.seg .shuffle-toggle-opt{border-radius:0;padding:7px 0;font-size:.58rem;letter-spacing:.04em;}
+.seg-head{padding-bottom:8px;text-align:center;}
+.seg-head span{font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);}
+/* one quiet rail for both — a thin border, a soft flat fill on whichever
+   option is active, same treatment either side. Arc's rainbow gradient is
+   gone: it was the loudest thing in the whole panel for a plain on/off. */
+.seg .shuffle-toggle{margin:0;max-width:none;padding:0;border:1px solid rgba(240,232,216,.14);border-radius:6px;overflow:hidden;}
+.seg .shuffle-toggle-opt{border-radius:0;padding:8px 0;font-size:.62rem;letter-spacing:.04em;color:rgba(240,232,216,.5);}
+.seg .shuffle-toggle-opt.active{background:rgba(240,232,216,.06);color:var(--cream);}
 
-.dial-range{-webkit-appearance:none;appearance:none;width:100%;height:18px;background:none;cursor:pointer;position:relative;z-index:1;}
-.dial-range::-webkit-slider-runnable-track{height:1px;background:var(--border);}
-.dial-range::-moz-range-track{height:1px;background:var(--border);}
+.dial-range{-webkit-appearance:none;appearance:none;width:100%;height:16px;background:none;cursor:pointer;position:relative;z-index:1;}
+.dial-range::-webkit-slider-runnable-track{height:1px;background:rgba(240,232,216,.16);}
+.dial-range::-moz-range-track{height:1px;background:rgba(240,232,216,.16);}
 .dial-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
-  width:13px;height:13px;border-radius:50%;margin-top:-6px;border:none;
-  background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.55);transition:box-shadow .2s;}
-.dial-range::-moz-range-thumb{width:13px;height:13px;border-radius:50%;border:none;
-  background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.55);}
-.dial-range:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(201,168,76,.85);}
-/* Depth used to fall through to the base gold thumb even though its icon
-   was already tinted — the two just happened to look related since gold
-   and --gold-l read close together. Now it's Into the Deep's own purple, on
-   the icon, the value label, and the thumb alike, matching Focus's teal for
-   real instead of by coincidence. */
-.dial-range--int::-webkit-slider-thumb{background:#8f74b8;box-shadow:0 0 10px rgba(143,116,184,.55);}
-.dial-range--int::-moz-range-thumb{background:#8f74b8;box-shadow:0 0 10px rgba(143,116,184,.55);}
-.dial-range--int:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(143,116,184,.85);}
-.dial-range--foc::-webkit-slider-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
-.dial-range--foc::-moz-range-thumb{background:#65c9b0;box-shadow:0 0 10px rgba(101,201,176,.55);}
-.dial-range--foc:hover::-webkit-slider-thumb{box-shadow:0 0 14px rgba(101,201,176,.85);}
+  width:12px;height:12px;border-radius:50%;margin-top:-5.5px;border:none;background:var(--gold);}
+.dial-range::-moz-range-thumb{width:12px;height:12px;border-radius:50%;border:none;background:var(--gold);}
+/* Depth's icon, its track fill, and its thumb all share Into the Deep's
+   purple; Focus matches Focus's teal — one colour per control, no glow. */
+.dial-range--int::-webkit-slider-thumb{background:#8f74b8;}
+.dial-range--int::-moz-range-thumb{background:#8f74b8;}
+.dial-range--foc::-webkit-slider-thumb{background:#65c9b0;}
+.dial-range--foc::-moz-range-thumb{background:#65c9b0;}
 
-/* ── Explore: eight drawers, coloured to trace back to their chapter ── */
+/* Explore: buckets borrow Chapters' own row language (bordered, the
+   bucket's own colour always on its name) instead of a separate visual
+   style — one "how a group of things reads" rule for the whole sheet. */
 .cat-bucket{display:flex;align-items:stretch;gap:0;flex:0 0 100%;width:100%;
-  border-bottom:1px solid var(--dim);transition:background .2s;--ch:var(--gold);}
+  border:1px solid var(--dim);border-left:2px solid var(--ch);border-radius:2px;
+  margin-bottom:4px;transition:background .2s;--ch:var(--gold);}
 @media(min-width:760px),(min-height:900px){ .cat-bucket{display:flex;} }
 .cat-bucket:hover{background:rgba(255,255,255,.02);}
-.cbk-name{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(240,232,216,.6);transition:color .2s;white-space:nowrap;}
-.cat-bucket.on .cbk-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
-.cat-bucket.part .cbk-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
+.cbk-name{font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 30%, transparent);
+  transition:color .2s;white-space:nowrap;}
+.cat-bucket.part .cbk-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));text-shadow:none;}
 .cbk-count{flex:1;font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.1em;
   color:var(--muted);opacity:.75;}
 .cat-bucket:hover .cbk-chev{color:var(--gold);}

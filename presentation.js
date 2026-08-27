@@ -216,21 +216,14 @@ function timeOfDayWord() {
 }
 function updateTimeOfDayHeading() {
   const word = timeOfDayWord();
+  // playLeadFirst now lives in the sheet's own header row, next to Close —
+  // it's the sheet's title, not a lead-in line above the chapters any more.
   const heading = document.getElementById('playLeadFirst');
   if (heading) heading.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + word + '?';
-  // Static now, not time-of-day framed — it sits after the console as a
-  // plain "go deeper" link, not a headline, so it doesn't need the word.
+  // Static now, not time-of-day framed — it's a plain inline link next to
+  // the Chapters label, not a headline, so it doesn't need the word.
   const customizeBtn = document.getElementById('customizeBtn');
-  if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? 'Verken elke categorie' : 'Explore every category';
-  // The sheet's own title only ever described Explore, which was once a
-  // separate pane. Explore is a fold inside Play's own page now — Play
-  // already has its own heading + the console right there, so this title
-  // would just duplicate that framing. Stays hidden.
-  const title = document.getElementById('catSheetTitle');
-  if (title) {
-    title.style.display = 'none';
-    title.textContent = state.lang === 'nl' ? 'Categorieën' : 'Categories';
-  }
+  if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? 'Verken categorieën' : 'Explore categories';
 }
 
 function setLang(l, skipRefresh) {
@@ -339,8 +332,7 @@ function renderShell() {
   // gold via --tokc's own default.
   const vCats = document.getElementById('valCats');
   const tokCats = document.getElementById('tokCats');
-  const presetHostVal = document.getElementById('presetHostVal');
-  if (vCats || presetHostVal) {
+  if (vCats) {
     const presetBtn = document.querySelector('.mode-btn[data-mode="' + state.activePreset + '"]');
     // Toggling an individual category directly (outside a preset's own bulk
     // toggle) clears state.activePreset to '' — no button matches that, so
@@ -352,14 +344,8 @@ function renderShell() {
       : (presetBtn ? presetBtn.textContent.trim() : (state.activePreset || 'Custom'));
     const cs = presetBtn && getComputedStyle(presetBtn);
     const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
-    if (vCats) vCats.textContent = label;
+    vCats.textContent = label;
     if (tokCats) col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
-    // "Starting from" mirrors the same name + colour, in place, inside the
-    // sheet — one source of truth, not a second label that can drift.
-    if (presetHostVal) {
-      presetHostVal.textContent = label;
-      col ? presetHostVal.style.setProperty('color', col) : presetHostVal.style.removeProperty('color');
-    }
   }
   // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
   // that the main-screen Shuffle token is gone.

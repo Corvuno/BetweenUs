@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260825g">
+<link rel="stylesheet" href="styles.css?v=20260826a">
 </head>
 <body>
 <div class="glow"></div>
@@ -37,6 +37,7 @@
       <div class="preset-row" id="modeBar">
         <button class="mode-btn" data-mode="open">Everything</button>
         <button class="mode-btn active" data-mode="balanced">Balanced</button>
+        <span class="mode-group-lbl--break"></span>
         <span class="mode-group-lbl">Who's here</span>
         <button class="mode-btn mode-btn--group-start" data-mode="newpeople">Strangers</button>
         <button class="mode-btn" data-mode="work">Coworkers</button>
@@ -53,8 +54,10 @@
   <!-- CATEGORIES -->
   <div class="cat-area" id="cat-area" role="dialog" aria-modal="true" aria-label="Categories" tabindex="-1">
     <div class="cat-sheet-handle"></div>
-    <button class="cat-close" id="catClose">&#10005;</button>
-    <div class="cat-sheet-title" id="catSheetTitle">Categories</div>
+    <div class="cat-sheet-head">
+      <div class="cat-sheet-head-title" id="playLeadFirst">What kind of evening?</div>
+      <button class="cat-close" id="catClose">&#10005;</button>
+    </div>
 
     <!-- legacy controls: kept for existing preset / hard-safe-mode logic to
          read and toggle, but no longer a visible row of their own — the
@@ -72,7 +75,7 @@
 
     <div class="pane pane-play on" id="panePlay">
       <div class="play-sect play-sect--1">
-        <div class="play-lead play-lead--first" id="playLeadFirst">What kind of evening?</div>
+        <div class="sect-lbl"><span>Chapters</span><button type="button" class="link-plain" id="customizeBtn">Explore categories</button></div>
         <div class="chapters" id="chapters">
           <button class="chapter" data-chapter="warmup" style="--ch:#d9a441"><span class="ch-name">Arrive</span><span class="ch-desc">Get comfortable. Start talking.</span></button>
           <button class="chapter" data-chapter="surface" style="--ch:#6bb36e"><span class="ch-name">The Surface</span><span class="ch-desc">What's easy to see, easy to say.</span></button>
@@ -85,80 +88,10 @@
           </div>
         </div>
         <div class="list-mode-note" id="listModeNote"></div>
-      </div>
 
-      <div class="play-sect play-sect--2">
-        <!-- The mixing desk under "what kind of night" — always visible, not
-             a fold, since it isn't a rare path. Icon-led on purpose: it's a
-             different KIND of control than the chapters above it (mechanics,
-             not content), so it deliberately doesn't borrow their look. -->
-        <div class="console" id="fineConsole">
-          <div class="console-head">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21V14"/><path d="M4 10V3"/><path d="M12 21V12"/><path d="M12 8V3"/><path d="M20 21V16"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></svg>
-            <span>Tune the hand</span>
-            <button type="button" class="info-btn" id="fineInfoBtn" aria-label="What does this do?">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
-            </button>
-            <div class="tooltip" id="fineInfoTip">How hard the questions lean, who they're about, how the deck shuffles, and how many cards you're dealt.</div>
-          </div>
-
-          <div class="ctrl-row" style="--ic:#8f74b8">
-            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18h4l3-14 4 16 3-10h4"/></svg></div>
-            <div class="ctrl-body">
-              <div class="ctrl-top"><span>Depth</span></div>
-              <div class="ctrl-ends"><span>Easy</span><span>Intense</span></div>
-              <div class="track-wrap">
-                <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
-                       aria-label="Depth: easy to intense">
-                <span class="ctrl-val ctrl-val--float" id="dialIntVal" style="--pos:50">Balanced</span>
-              </div>
-            </div>
-          </div>
-          <div class="ctrl-row" style="--ic:#65c9b0">
-            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
-            <div class="ctrl-body">
-              <div class="ctrl-top"><span>Focus</span></div>
-              <div class="ctrl-ends"><span>Me</span><span>Us</span></div>
-              <div class="track-wrap">
-                <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
-                       aria-label="Me to Us: who it is about">
-                <span class="ctrl-val ctrl-val--float" id="dialFocVal" style="--pos:50">Balanced</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="console-divider"></div>
-
-          <div class="seg-row">
-            <div class="seg">
-              <div class="seg-head">
-                <span class="ctrl-icon ctrl-icon--sm" style="--ic:#8f74b8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg></span>
-                <span>Shuffle</span>
-              </div>
-              <div class="shuffle-toggle" id="shuffleToggle">
-                <button class="shuffle-toggle-opt" data-mode="arc">Arc</button>
-                <button class="shuffle-toggle-opt" data-mode="wild">Random</button>
-              </div>
-            </div>
-            <div class="seg">
-              <div class="seg-head">
-                <span class="ctrl-icon ctrl-icon--sm" style="--ic:#d97a92"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="1.5"/><path d="M9 3h11v16"/></svg></span>
-                <span>Cards</span>
-              </div>
-              <div class="limit-row limit-row--drawer" id="limitBtnsDrawer">
-                <button class="limit-btn" data-limit="5">5</button>
-                <button class="limit-btn" data-limit="10">10</button>
-                <button class="limit-btn" data-limit="20">20</button>
-                <button class="limit-btn" data-limit="all">All</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Explore used to be a separate full-screen pane, needing its own
-             "back to Shape" button just to get out of it. It's a subsection
-             of this same page now — unfolds in place, in the same scroll,
-             and there's nowhere else to be lost in. -->
-        <button type="button" class="customize-btn" id="customizeBtn">Explore every category</button>
+        <!-- Explore lives right under Chapters now — same subsection-in-
+             place pattern as before, just moved up next to the link that
+             opens it instead of sitting after the console. -->
         <div class="explore-fold" id="exploreFold">
           <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
           <div class="allnone-row allnone-row--pane">
@@ -180,6 +113,71 @@
               <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="colbertmode" style="--list-col:#f3c33c">Colbert Questionnaire</button>
               <button class="mode-btn mode-btn--list fixed-seq-btn" data-mode="aronmode" style="--list-col:#e75783">The 36</button>
             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="play-sect play-sect--2">
+        <!-- The mixing desk under "what kind of night" — always visible, not
+             a fold, since it isn't a rare path. No bounding card any more:
+             it reads as its own section (the "Tune" label) the same way
+             Chapters and Round do, instead of a separate boxed panel. -->
+        <div class="console" id="fineConsole">
+          <div class="sect-lbl">
+            <span>Tune</span>
+            <button type="button" class="info-btn" id="fineInfoBtn" aria-label="What does this do?">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+            </button>
+            <div class="tooltip" id="fineInfoTip">How hard the questions lean, who they're about, how the deck shuffles, and how many cards you're dealt.</div>
+          </div>
+
+          <div class="ctrl-row" style="--ic:#8f74b8">
+            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18h4l3-14 4 16 3-10h4"/></svg></div>
+            <div class="ctrl-body">
+              <div class="ctrl-top"><span>Depth</span></div>
+              <div class="track-wrap">
+                <span class="tick end" style="left:2%"></span><span class="tick" style="left:26%"></span><span class="tick" style="left:50%"></span><span class="tick" style="left:74%"></span><span class="tick end" style="left:98%"></span>
+                <span class="track-fill" id="dialIntFill"></span>
+                <input type="range" class="dial-range dial-range--int" id="dialIntensity" min="0" max="100" value="50"
+                       aria-label="Depth: easy to intense">
+              </div>
+              <div class="ctrl-ends"><span>Easy</span><span>Intense</span></div>
+            </div>
+          </div>
+          <div class="ctrl-row" style="--ic:#65c9b0">
+            <div class="ctrl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
+            <div class="ctrl-body">
+              <div class="ctrl-top"><span>Focus</span></div>
+              <div class="track-wrap">
+                <span class="tick end" style="left:2%"></span><span class="tick" style="left:26%"></span><span class="tick" style="left:50%"></span><span class="tick" style="left:74%"></span><span class="tick end" style="left:98%"></span>
+                <span class="track-fill" id="dialFocFill"></span>
+                <input type="range" class="dial-range dial-range--foc" id="dialFocus" min="0" max="100" value="50"
+                       aria-label="Me to Us: who it is about">
+              </div>
+              <div class="ctrl-ends"><span>Me</span><span>Us</span></div>
+            </div>
+          </div>
+
+          <div class="console-divider"></div>
+
+          <div class="sect-lbl"><span>Round</span></div>
+          <div class="seg-row">
+            <div class="seg">
+              <div class="seg-head"><span>Shuffle</span></div>
+              <div class="shuffle-toggle" id="shuffleToggle">
+                <button class="shuffle-toggle-opt" data-mode="arc">Arc</button>
+                <button class="shuffle-toggle-opt" data-mode="wild">Random</button>
+              </div>
+            </div>
+            <div class="seg">
+              <div class="seg-head"><span>Cards</span></div>
+              <div class="limit-row limit-row--drawer" id="limitBtnsDrawer">
+                <button class="limit-btn" data-limit="5">5</button>
+                <button class="limit-btn" data-limit="10">10</button>
+                <button class="limit-btn" data-limit="20">20</button>
+                <button class="limit-btn" data-limit="all">All</button>
+              </div>
             </div>
           </div>
         </div>
@@ -618,15 +616,15 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260825g"></script>
-<script src="config.js?v=20260825g"></script>
-<script src="state.js?v=20260825g"></script>
-<script src="deck.js?v=20260825g"></script>
-<script src="card.js?v=20260825g"></script>
-<script src="library.js?v=20260825g"></script>
-<script src="session.js?v=20260825g"></script>
-<script src="selection.js?v=20260825g"></script>
-<script src="presentation.js?v=20260825g"></script>
-<script src="ui.js?v=20260825g"></script>
+<script src="questions.js?v=20260826a"></script>
+<script src="config.js?v=20260826a"></script>
+<script src="state.js?v=20260826a"></script>
+<script src="deck.js?v=20260826a"></script>
+<script src="card.js?v=20260826a"></script>
+<script src="library.js?v=20260826a"></script>
+<script src="session.js?v=20260826a"></script>
+<script src="selection.js?v=20260826a"></script>
+<script src="presentation.js?v=20260826a"></script>
+<script src="ui.js?v=20260826a"></script>
 </body>
 </html>
