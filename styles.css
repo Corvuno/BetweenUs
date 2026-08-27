@@ -780,12 +780,14 @@ body.fixed-seq-mode .screen-row{display:none;}
 
 /* Explore buckets: select (name) and expand (chevron) are two real buttons
    now, not one button with a tiny closest()-matched hot corner — that was
-   why the drawer only opened some of the time. */
-.cbk-select{flex:1;display:flex;align-items:center;gap:9px;background:none;border:none;
-  cursor:pointer;text-align:left;padding:11px 4px 9px 4px;color:inherit;font:inherit;}
-.cbk-expand{flex:0 0 auto;min-width:46px;min-height:40px;display:flex;align-items:center;
-  justify-content:center;background:none;border:none;cursor:pointer;
-  border-left:1px solid var(--dim);margin-left:4px;}
+   why the drawer only opened some of the time. Padding matches Chapters'
+   own row padding (8px 13px) and drops the inner divider line, so the two
+   read as the same kind of row instead of a bucket looking like a
+   different, more boxed-up control. */
+.cbk-select{flex:1;display:flex;align-items:baseline;gap:9px;background:none;border:none;
+  cursor:pointer;text-align:left;padding:8px 4px 8px 13px;color:inherit;font:inherit;}
+.cbk-expand{flex:0 0 auto;min-width:44px;min-height:40px;display:flex;align-items:center;
+  justify-content:center;background:none;border:none;cursor:pointer;padding-right:9px;}
 .cbk-expand:hover{background:rgba(255,255,255,.02);}
 .cbk-expand:hover .cbk-chev{color:var(--gold);}
 .cbk-chev{font-size:.85rem;font-weight:300;color:var(--muted);transition:transform .22s ease,color .2s;}

@@ -1197,27 +1197,6 @@ applyToggleUI();
     const open = typeof forceOpen === 'boolean' ? forceOpen : !exploreFold.classList.contains('open');
     exploreFold.classList.toggle('open', open);
     if (customizeBtn) customizeBtn.classList.toggle('open', open);
-    // The fold grows downward, past the bottom of what's already on
-    // screen — nothing about the visible area changes on its own, so
-    // tapping Explore looked like it did nothing until you scrolled down
-    // and found it. Follow the growth with a scroll once the fold finishes
-    // opening, landing the sheet on its new bottom (Draw Cards).
-    // Deliberately not scrolled during the fold's own animation: a
-    // max-height transition only reaches its true final layout size at
-    // the moment it completes (mid-transition, panePlay.scrollHeight
-    // still reflects wherever the animation currently is, not the target)
-    // — a smooth scrollTo() issued before then gets clamped to whatever
-    // scroll range exists at that instant and doesn't extend further as
-    // the fold keeps growing, landing short of the real bottom.
-    const pp = $('panePlay');
-    if (open && pp) {
-      const onFoldOpened = e => {
-        if (e.target !== exploreFold || e.propertyName !== 'max-height') return;
-        exploreFold.removeEventListener('transitionend', onFoldOpened);
-        pp.scrollTo({ top: pp.scrollHeight - pp.clientHeight, behavior: 'smooth' });
-      };
-      exploreFold.addEventListener('transitionend', onFoldOpened);
-    }
     window.slideFold(exploreFold, open);
     syncIntentUI();   // looking is not choosing — opening the fold never re-deals the hand
     if (open && typeof updateGridScrollHint === 'function') updateGridScrollHint();
