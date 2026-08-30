@@ -826,7 +826,12 @@ body.fixed-seq-mode .screen-row{display:none;}
 .cat-band:first-child,.band-lbl:first-child{padding-top:4px;}
 .cat-band.band-hidden,.band-lbl.band-hidden{display:none;}
 
-.end-hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
+/* Not shown on screen — the draw button already reads "Hold to continue"
+   at the end of a hand, so this second copy at the bottom of the viewport
+   was redundant. Left in the DOM (display:none, not removed) because
+   updateDrawMore()/hint() still toggle its "visible" class as the explicit
+   end-of-hand signal the hold-to-continue tests check. */
+.end-hint{display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--gold);opacity:0;pointer-events:none;transition:opacity .3s ease;}
 .end-hint.visible{opacity:.75;}
