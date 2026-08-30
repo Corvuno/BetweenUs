@@ -4,7 +4,7 @@
 :root{
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
-  --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#ff2f2f;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.2);
+  --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.2);
   --sq-w:42px;
 }
 html,body{height:100%;}
@@ -196,10 +196,10 @@ body::before{
 .card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
 .card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
 .c-accent{
-  position:absolute;top:0;left:0;right:0;height:3px;z-index:3;
+  position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
   transition:background .5s ease;
-  -webkit-mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);
-  mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);
+  -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+  mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
 .accent-bloom{animation:accentReveal 1s ease forwards;}
 @keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.6;transform:scaleX(1);}}

@@ -114,11 +114,11 @@ function setCardDisplay(card) {
   }
   const color = levelColor(card.level);
   if (accent) {
-    accent.style.background = color;
+    accent.style.background = giltRail(color);
   }
   if (lvlEl) {
     lvlEl.textContent = LEVEL_LABELS[card.level] || '';
-    lvlEl.style.color = color;
+    lvlEl.style.color = labelColor(color);
   }
   if (qEl)   qEl.textContent = translateQ(card);
   if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
@@ -164,12 +164,12 @@ function flipToCard(card, isFirstDraw) {
   setTimeout(() => {
     const color = levelColor(card.level);
     if (accent) {
-      accent.style.background = color;
+      accent.style.background = giltRail(color);
       accent.classList.remove('accent-bloom');
       void accent.offsetWidth;
       accent.classList.add('accent-bloom');
     }
-    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[card.level] || ''; lvlEl.style.color = color; }
+    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[card.level] || ''; lvlEl.style.color = labelColor(color); }
     const qEl2 = document.getElementById('card-question');
     if (qEl2) qEl2.textContent = translateQ(card);
     const numEl = document.getElementById('card-number');
