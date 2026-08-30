@@ -1,5 +1,11 @@
 # Working conventions
 
+- The owner does not want to interact with code, ever. Don't hand them a
+  diff to review, ask them to run a command, or leave work sitting on a
+  branch waiting for them to merge it. Build the thing, verify it actually
+  works (run it, screenshot it, whatever the change calls for), and land it
+  on `main` yourself. "Fix it" means finish the job end-to-end, not produce
+  something for the owner to go finish.
 - Push finished work straight to `main`. Don't open a pull request unless
   explicitly asked to — the user doesn't want to be asked "should I open a
   PR?" each time.
