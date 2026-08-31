@@ -430,5 +430,23 @@ const BUCKET_META = {
   afterdarkb:    { label:"After Dark",    color:"#ff2f2f", desc:"Desire, named — open to anyone at the table, not only lovers \u2726" },
   meta:          { label:"Meta",          color:"#5a5a6a", desc:"Overflow — questions with merit that did not make the top ten" },
 };
+
+// ═══════════════════════════════════════════════════════════
+// CHAPTERS_META — the six chapters shown in Play (between-us.html's
+// .chapter buttons), in the app's canonical order. The single stored
+// source for a chapter's display name and colour — the chapter drawer's
+// rail (ui.js) and the end-of-set screen's sentence/hold-button colour
+// (presentation.js) both read this instead of each keeping their own copy.
+// A category's own membership in a chapter is CATEGORIES[key].chapter,
+// which points at these same keys.
+// ═══════════════════════════════════════════════════════════
+const CHAPTERS_META = {
+  warmup:    { label:"Arrive",              color:"#d0913c" },
+  surface:   { label:"The Surface",         color:"#4f9668" },
+  findout:   { label:"Beneath the Surface", color:"#5c8798" },
+  deeper:    { label:"Into the Deep",       color:"#9b83ae" },
+  aboutus:   { label:"Between Us",          color:"#cf9483" },
+  afterdark: { label:"After Dark",          color:"#8d1c22" },
+};
 const BUCKET_DESCRIPTIONS = Object.fromEntries(Object.entries(BUCKET_META).map(([k,v]) => [k, v.desc]));
 

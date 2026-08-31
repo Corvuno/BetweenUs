@@ -5,26 +5,6 @@
 // (language switch, drawer open/close buttons). (The app's boot sequence
 // lives in ui.js.)
 
-// The round as a line: one dot per card, in its category colour, placed by depth.
-// Above ~48 cards the dots stop being readable, so the summary keeps to words.
-function drawRoundTrace(cards) {
-  if (!cards || cards.length < 2 || cards.length > 48) return '';
-  const W = 240, H = 62, PAD = 10;
-  const step = (W - PAD * 2) / (cards.length - 1);
-  const pts = cards.map((c, i) => [
-    +(PAD + i * step).toFixed(1),
-    +(52 - (levelDepth(c.level) - 1) * 8).toFixed(1)
-  ]);
-  const line = pts.map(p => p.join(',')).join(' ');
-  const dots = pts.map((p, i) =>
-    `<circle cx="${p[0]}" cy="${p[1]}" r="${cards.length > 24 ? 2.2 : 3}" fill="${levelColor(cards[i].level)}"/>`
-  ).join('');
-  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The hand you drew: ${cards.length} cards, from light to deep.">`
-       + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
-       + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
-       + dots + `</svg>`;
-}
-
 // Roman numerals for the counter's static readout — falls back to arabic
 // past what reads cleanly as a numeral (beyond XXXIX).
 const ROMAN_MAX = 39;
@@ -34,6 +14,16 @@ function toRoman(n) {
   let out = '';
   for (const [v, sym] of vals) while (n >= v) { out += sym; n -= v; }
   return out || '0';
+}
+
+// Fullscreen's own count — "n / total" in roman rather than arabic, same
+// plain-slash separator it already used. Caps lower than the main counter
+// (twelve, not thirty-nine): at party size the numeral sits right next to
+// the question in the same reading line, so it has to stay short enough
+// not to compete with it — see FULLSCREEN.md.
+function partyRomanCount(n, total) {
+  const fmt = total > 12 ? String : toRoman;
+  return `${fmt(n)} / ${fmt(total)}`;
 }
 
 // `currentOverride`, when given, replaces state.currentIndex for this render
@@ -63,11 +53,12 @@ function renderProgress(currentOverride) {
     if (isSeen || isCurrent) tick.style.setProperty('--tick-color', levelColor(card.level));
     rule.appendChild(tick);
   }
-  // The terminal diamond stands for the summary screen past the last card —
-  // only from the last card onward, matching exactly when the next-card
-  // button itself switches to "Summary". Showing it the whole hand made a
-  // 5-card draw permanently look like 6 cards.
-  if (cur >= deckLen - 1) {
+  // The terminal diamond is a fixed cap on the line, not another card tick —
+  // always present (unlike the old dot row's end-dot, which only appeared
+  // near the end so an extra dot wasn't mistaken for a 6th card; a small
+  // rotated diamond doesn't read as a card either way, so it can just mark
+  // where the line ends from the first card on).
+  if (deckLen > 0) {
     const end = document.createElement('div');
     end.className = 'progress-tick end' + (cur >= deckLen ? ' current' : '');
     rule.appendChild(end);
@@ -112,10 +103,10 @@ function updatePartyDisplay(card) {
     return;
   }
   const color = levelColor(card.level);
-  if (pa) { pa.style.background=color; pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
+  if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
   if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=color; }
   if (pq) { pq.style.opacity='0'; setTimeout(()=>{ pq.textContent=translateQ(card); pq.style.opacity='1'; },120); }
-  if (pn) pn.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
+  if (pn) pn.textContent = partyRomanCount(state.currentIndex+1, state.visibleDeck.length);
 }
 
 function toggleCategories() {
@@ -243,12 +234,20 @@ document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 // ── Log ──
 document.getElementById('d-log').addEventListener('click',(e)=>{ closeAllDrawers(); renderLog(); openDrawer('logDrawer', e.currentTarget); });
 document.getElementById('closeLog').addEventListener('click',()=>closeAllDrawers());
-document.getElementById('btnExport').addEventListener('click', () => {
+// Shared by the log drawer's own Export button and the end-of-set screen's
+// "Export the log" action — one function, so the two can't drift into two
+// different file formats. No-op-safe on an empty session.
+function exportSessionLog() {
   if (!state.sessionLog.length) return;
-  const lines = state.sessionLog.map((c,i)=>`${i+1}. [${LEVEL_LABELS[c.level]||c.level}]\n   ${c.question}`).join('\n\n');
+  const favQ = new Set((state.favourites || []).map(f => f.question));
+  const lines = state.sessionLog.map((c,i) => {
+    const star = favQ.has(c.question) ? ' ★' : '';
+    return `${i+1}. [${LEVEL_LABELS[c.level]||c.level}]${star}\n   ${c.question}`;
+  }).join('\n\n');
   const blob = new Blob([`Between Us — ${new Date().toLocaleDateString()}\n${'─'.repeat(40)}\n\n${lines}`],{type:'text/plain'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
-});
+}
+document.getElementById('btnExport').addEventListener('click', exportSessionLog);
 document.getElementById('btnImport') && document.getElementById('btnImport').addEventListener('click',()=>{
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.txt';
   inp.onchange=async e=>{
@@ -382,80 +381,90 @@ function updateDrawMore() {
   }
 };
 
-function showSessionSummary() {
-  const isArc = state.randomMode === 'arc';
+// ── End of set — one shared model for both the full-bleed end screen and
+// its simplified fullscreen counterpart, so the sentence and the chip
+// cloud can never disagree between the two views. Tallies only THIS hand
+// (state.visibleDeck), not the whole multi-hand session log.
+function computeEndScreenModel() {
+  const drawn = {};
+  state.visibleDeck.forEach(c => { drawn[c.level] = (drawn[c.level] || 0) + 1; });
 
-  // Build arc progression — unique categories of THIS DRAW, in order
-  const seen = new Set(), cats = [];
-  state.visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
-  const arcLine = cats.map(l => LEVEL_LABELS[l] || l).join(' · ');
-  const drawCount = state.visibleDeck.length;
+  const chips = Object.keys(CATEGORIES)
+    .filter(key => drawn[key] > 0)
+    .map(key => ({ label: CATEGORIES[key].label, count: drawn[key], color: CATEGORIES[key].color }));
 
-  // Starred cards from this session
-  const logQ = new Set(state.sessionLog.map(c => c.question));
-  const starred = (state.favourites || []).filter(c => logQ.has(c.question)).slice(0, 3);
+  // Chapters that actually appeared, in CHAPTERS_META's canonical order —
+  // derived from CATEGORIES[key].chapter, the same field the chapter
+  // drawer itself groups by, so this can't drift from what's on screen there.
+  const visited = Object.keys(CHAPTERS_META)
+    .filter(chId => Object.keys(CATEGORIES).some(key => CATEGORIES[key].chapter === chId && drawn[key] > 0))
+    .map(chId => ({ label: CHAPTERS_META[chId].label, color: CHAPTERS_META[chId].color }));
+  const first = visited[0] || null;
+  const last = visited[visited.length - 1] || first;
 
-  // ── Update the card face ──
-  const accent = document.getElementById('c-accent');
-  if (accent) {
-    accent.style.background = 'var(--gold-l)';
-    accent.classList.remove('accent-bloom');
-    void accent.offsetWidth;
-    accent.classList.add('accent-bloom');
+  const favCount = state.visibleDeck.filter(c =>
+    (state.favourites || []).some(f => f.question === c.question)).length;
+
+  return { chips, moved: visited.length > 1, stayed: visited.length === 1, first, last, favCount };
+}
+
+const FAV_COUNT_WORDS = ['no','one','two','three','four','five','six','seven','eight','nine','ten',
+  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+
+// "You began at {first} and ended {last}" / "The whole set stayed in {only}"
+// — chapter names carry that chapter's own colour (lifted via labelColor()
+// the same way the chapter drawer lifts After Dark's near-black lacquer).
+function esSentenceHTML(model) {
+  if (!model.first) return '';
+  if (model.stayed) {
+    const c = labelColor(model.first.color);
+    return `The whole set stayed<br>in <span class="es-chapter" style="color:${c}">${esc(model.first.label)}</span>`;
   }
+  const cf = labelColor(model.first.color), cl = labelColor(model.last.color);
+  return `You began at <span class="es-chapter" style="color:${cf}">${esc(model.first.label)}</span><br>`
+       + `and ended <span class="es-chapter" style="color:${cl}">${esc(model.last.label)}</span>`;
+}
 
-  const lvlEl = document.getElementById('card-level');
-  if (lvlEl) {
-    lvlEl.classList.remove('in');
-    lvlEl.textContent = isArc
-      ? (state.lang === 'nl' ? 'Arc voltooid' : 'Arc complete')
-      : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete');
-    lvlEl.style.color = 'var(--gold-l)';
-    void lvlEl.offsetWidth;
-    lvlEl.classList.add('in');
-  }
+function esChipsHTML(model) {
+  return model.chips.map(c => {
+    const border = `color-mix(in srgb, ${c.color} 50%, transparent)`;
+    const fill   = `color-mix(in srgb, ${c.color} 12%, transparent)`;
+    const countColor = `color-mix(in srgb, ${c.color} 95%, transparent)`;
+    const count = c.count > 1 ? `<span class="es-chip-count" style="color:${countColor}">${c.count}</span>` : '';
+    return `<span class="es-chip" style="border-color:${border};background:${fill}">${esc(c.label)}${count}</span>`;
+  }).join('');
+}
 
-  const qEl = document.getElementById('card-question');
-  if (qEl) {
-    qEl.classList.remove('in');
-    let html = `<div class="sic-wrap">`;
-    if (arcLine) {
-      html += `<div class="sic-label">${isArc ? 'You went' : 'You covered'} — ${drawCount} ${state.lang==='nl' ? 'kaarten' : 'cards'}</div>`;
-      html += drawRoundTrace(state.visibleDeck);
-      html += `<div class="sic-arc">${arcLine}</div>`;
-    }
-    if (starred.length > 0) {
-      html += `<div class="sic-stars">`;
-      starred.forEach(c => { html += `<div class="sic-star">&#9733;&nbsp; ${esc(translateQ(c))}</div>`; });
-      html += `</div>`;
-    }
-    if (state.fullDeck.length - state.visibleDeck.length <= 0) {
-      html += `<div class="sic-note">${state.lang==='nl'
-        ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of houd vast om opnieuw te schudden.'
-        : 'That was the whole deck for this selection. Add categories to keep going — or hold to reshuffle it.'}</div>`;
-    }
-    html += `</div>`;
-    qEl.innerHTML = html;
-    void qEl.offsetWidth;
-    qEl.classList.add('in');
-    // Re-render the arc line with per-category colors (same `cats` computed above)
-    const arcEl = qEl.querySelector('.sic-arc');
-    if (arcEl) {
-      arcEl.innerHTML = cats.map(l =>
-        `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
-      ).join('<span style="opacity:.35"> · </span>');
-    }
-  }
+function esFavsHTML(model) {
+  if (!model.favCount) return '';
+  const word = FAV_COUNT_WORDS[model.favCount] !== undefined ? FAV_COUNT_WORDS[model.favCount] : String(model.favCount);
+  const line = model.favCount === 1 ? 'one card you starred' : `${word} cards you starred`;
+  return `<span class="es-star">&#9733;</span>${esc(line)}`;
+}
 
-  // A Twist held over from the last card doesn't belong on the summary —
-  // clear it before writing "— end —" so it can't get overwritten back to
-  // a modifier sentence, and so the button itself stops reading as active.
+// Replaces the card face with the full-bleed end-of-set screen (in-card
+// end message + old dot-based summary both retired). hideEndScreen() —
+// called from setCardDisplay()/flipToCard() — reverses this the moment a
+// real card is shown again, whatever path got there (another hand, a
+// settings change, Explore/a preset picked mid-summary).
+function showEndScreen() {
   clearTwist();
-  const numEl = document.getElementById('card-number');
-  if (numEl) numEl.textContent = '— end —';
-
-  // The round is over — every dot reads as passed, none as "current".
+  const model = computeEndScreenModel();
+  const sentence = document.getElementById('esSentence');
+  const chips    = document.getElementById('esChips');
+  const favs     = document.getElementById('esFavs');
+  const hold     = document.getElementById('esHold');
+  if (sentence) sentence.innerHTML = esSentenceHTML(model);
+  if (chips)    chips.innerHTML = esChipsHTML(model);
+  if (favs)     favs.innerHTML = esFavsHTML(model);
+  if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
+  document.body.classList.add('showing-end-screen');
+  // Every tick reads as passed on the (now hidden) counter, none current —
+  // keeps it correct for the instant hideEndScreen() reveals it again.
   renderProgress(state.visibleDeck.length);
+}
+function hideEndScreen() {
+  document.body.classList.remove('showing-end-screen');
 }
 
 // ── End-of-draw hold gate ──
@@ -479,22 +488,26 @@ function hint(on){
   if (el) el.classList.toggle('visible', !!on);
 }
 
+// Fullscreen's own end-of-set moment — same model/sentence/chip-cloud as
+// the full-bleed screen, simplified to fit inside the party card (no
+// wordmark, no actions row: the overlay's existing hold-to-continue and
+// exit chrome around the card keep doing that job unchanged).
 function runPartySummary() {
-  const isArc = state.randomMode === 'arc';
+  const model = computeEndScreenModel();
   const pl = document.getElementById('party-level');
   const pq = document.getElementById('party-question');
   const pn = document.getElementById('party-number');
   const pa = document.getElementById('party-accent');
-  if (pa) pa.style.background = 'var(--gold-l)';
-  if (pl) { pl.textContent = isArc ? (state.lang==='nl'?'Arc voltooid':'Arc complete') : (state.lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
+  const chColor = model.last ? model.last.color : 'var(--gold-l)';
+  if (pa) pa.style.background = chColor;
+  if (pl) { pl.textContent = state.lang==='nl' ? 'De set is afgerond' : 'The set is finished'; pl.style.color = chColor; }
   if (pn) pn.textContent = '— end —';
   if (pq) {
-    const seen2 = new Set(), cats2 = [];
-    state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
-    const arcHtml = cats2.map(l =>
-      `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
-    ).join('<span style="opacity:.35"> · </span>');
-    pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(state.visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
+    pq.innerHTML = `<div class="pes-wrap">`
+      + `<div class="pes-sentence">${esSentenceHTML(model)}</div>`
+      + `<div class="pes-chips">${esChipsHTML(model)}</div>`
+      + (model.favCount ? `<div class="pes-favs">${esFavsHTML(model)}</div>` : '')
+      + `</div>`;
   }
 }
 

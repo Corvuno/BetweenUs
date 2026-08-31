@@ -274,6 +274,32 @@ document.getElementById('d-save').addEventListener('click',()=>{
   });
 })();
 
+// ── Fullscreen phone orientation toggle ── mirrors actual device rotation
+// (resize/orientationchange) so it stays true even for someone who never
+// touches it, but tapping either rectangle sets it directly too — the
+// point is anyone whose phone is orientation-locked can still reach the
+// wide layout without physically rotating anything.
+(function(){
+  const orient = document.getElementById('partyOrient');
+  if (!orient) return;
+  const overlay = document.getElementById('partyOverlay');
+  const opts = [...orient.querySelectorAll('.party-orient-opt')];
+  function setPartyOrientation(mode){
+    overlay.classList.toggle('orient-landscape', mode === 'landscape');
+    opts.forEach(b => b.classList.toggle('live', b.dataset.orient === mode));
+  }
+  window.setPartyOrientation = setPartyOrientation;
+  opts.forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    setPartyOrientation(b.dataset.orient);
+  }));
+  const syncToDevice = () => setPartyOrientation(
+    matchMedia('(orientation: landscape)').matches ? 'landscape' : 'portrait');
+  syncToDevice();
+  window.addEventListener('resize', syncToDevice);
+  window.addEventListener('orientationchange', syncToDevice);
+})();
+
 
 // ── Keyboard ──
 document.addEventListener('keydown',e=>{
@@ -389,6 +415,50 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
         e.stopImmediatePropagation(); e.preventDefault();
       }
     }, true);
+  });
+})();
+
+// ── End-of-set screen actions ── its own self-contained hold (not routed
+// through the END_HOLD_TARGETS gate above, which exists for holding on the
+// card/Next-Card button — this button is the only thing on screen while
+// the end screen is up, so it needs none of that gate's tap-vs-hold
+// disambiguation, just its own timer and fill.
+(function(){
+  const btn = document.getElementById('esHold');
+  const fill = document.getElementById('esHoldFill');
+  if (!btn || !fill) return;
+  const HOLD = 600;
+  let timer = null;
+  function start(e){
+    e.preventDefault();
+    clearTimeout(timer);
+    fill.classList.remove('cancelling');
+    void fill.offsetWidth;   // restart the fill transition from 0 on a fresh press
+    fill.classList.add('filling');
+    timer = setTimeout(() => {
+      timer = null;
+      fill.classList.remove('filling');
+      fill.style.width = '';
+      if (typeof drawMore === 'function') drawMore();
+    }, HOLD);
+  }
+  function cancel(){
+    if (timer === null) return;   // already completed — nothing to retract
+    clearTimeout(timer); timer = null;
+    fill.classList.remove('filling');
+    fill.classList.add('cancelling');
+  }
+  btn.addEventListener('pointerdown', start);
+  ['pointerup','pointerleave','pointercancel'].forEach(ev => btn.addEventListener(ev, cancel));
+
+  const changeBtn = document.getElementById('esChange');
+  if (changeBtn) changeBtn.addEventListener('click', () => {
+    if (typeof openCats === 'function') openCats();
+  });
+
+  const exportBtn = document.getElementById('esExport');
+  if (exportBtn) exportBtn.addEventListener('click', () => {
+    if (typeof exportSessionLog === 'function') exportSessionLog();
   });
 })();
 
@@ -898,15 +968,19 @@ applyToggleUI();
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
 // Chapter rail: same gilt.js metal sweep as the card accent, run vertically
-// (190deg) off each chapter's own data-base hex — set once at boot since,
-// unlike a card's category, a chapter's colour never changes at runtime.
-// The label/glow colour reuses --ch (already read by .chapter.on/.part in
-// styles.css) via labelColor(), which lifts After Dark's near-black lacquer
-// to a readable tone while leaving every other chapter's --ch at its base.
-document.querySelectorAll('.chapter[data-base]').forEach(el => {
-  const base = el.dataset.base;
-  el.style.borderImageSource = giltRail(base, 190);
-  el.style.setProperty('--ch', labelColor(base));
+// (190deg) off CHAPTERS_META's colour for each chapter — set once at boot
+// since, unlike a card's category, a chapter's colour never changes at
+// runtime. CHAPTERS_META (config.js) is the one stored copy of these
+// colours — the end-of-set screen reads the same object rather than
+// keeping its own. The label/glow colour reuses --ch (already read by
+// .chapter.on/.part in styles.css) via labelColor(), which lifts After
+// Dark's near-black lacquer to a readable tone while leaving every other
+// chapter's --ch at its base.
+document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
+  const meta = CHAPTERS_META[el.dataset.chapter];
+  if (!meta) return;
+  el.style.borderImageSource = giltRail(meta.color, 190);
+  el.style.setProperty('--ch', labelColor(meta.color));
 });
 
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════

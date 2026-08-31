@@ -223,6 +223,12 @@ body::before{
 }
 .card-question.in{opacity:1;transform:none;}
 .card-number{
+  /* the plain "n / total" reading is retired now that the walking-line
+     counter below has its own roman-numeral readout — showing both was
+     two counters saying the same thing. This element stays in the DOM
+     (and un-hidden) only for its second job: Twist repurposes it in place
+     to show the modifier sentence — see .card-number.twist below. */
+  display:none;
   flex:0 0 auto;width:100%;text-align:center;
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;color:var(--muted-l);
   transition:color .2s ease;padding:0 28px 12px;
@@ -240,6 +246,7 @@ body::before{
    floating over it or the card's corner marks — see .card-body-inner's
    min-height:0, which is what lets it actually shrink. */
 .card-number.twist{
+  display:block;
   font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
@@ -329,6 +336,75 @@ body::before{
 .draw-more-btn.visible{display:block;}
 .draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
 .deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
+
+/* ── END OF SET ── full-bleed screen replacing card-wrap/controls-wrap once
+   a hand's last card has been held past — not a summary card in a framed
+   box, so it deliberately carries none of .card's chrome. Hidden/shown by
+   toggling body.showing-end-screen (see ui.js). */
+body.showing-end-screen .card-wrap,
+body.showing-end-screen .controls-wrap{display:none;}
+.end-screen{display:none;}
+body.showing-end-screen .end-screen{
+  display:flex;flex-direction:column;align-items:center;position:relative;
+  width:100%;min-height:60vh;overflow:hidden;
+  background:radial-gradient(120% 80% at 50% 0%,#161310 0%,#0e0c0a 55%,#0b0908 100%);
+}
+.es-texture{position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(201,168,76,.035) 0 1px,transparent 1px 9px);opacity:.5;}
+.es-corner{position:absolute;width:16px;height:16px;border:1px solid rgba(201,168,76,.3);pointer-events:none;}
+.es-corner--tl{top:16px;left:16px;border-width:1px 0 0 1px;}
+.es-corner--tr{top:16px;right:16px;border-width:1px 1px 0 0;}
+.es-corner--bl{bottom:16px;left:16px;border-width:0 0 1px 1px;}
+.es-corner--br{bottom:16px;right:16px;border-width:0 1px 1px 0;}
+.es-body{position:relative;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:0 30px;}
+.es-eyebrow{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;
+  color:color-mix(in srgb, var(--gold) 62%, transparent);margin-bottom:22px;}
+.es-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.15rem;
+  line-height:1.3;text-align:center;color:var(--cream);text-wrap:pretty;}
+.es-chapter{font-style:normal;font-weight:400;font-size:1.05rem;}
+.es-rule{display:flex;align-items:center;gap:10px;margin-top:20px;width:100%;}
+.es-rule-line{flex:1;height:1px;background:rgba(201,168,76,.18);}
+.es-rule-dot{width:4px;height:4px;background:rgba(201,168,76,.45);transform:rotate(45deg);flex-shrink:0;}
+.es-subhead{margin-top:18px;font-family:'Jost',sans-serif;font-size:.53rem;letter-spacing:.3em;
+  text-transform:uppercase;color:color-mix(in srgb, var(--gold) 50%, transparent);}
+.es-chips{margin-top:11px;width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
+.es-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid;border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cream);white-space:nowrap;}
+.es-chip-count{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.72rem;
+  letter-spacing:0;text-transform:none;}
+.es-favs{margin-top:16px;display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.94rem;color:color-mix(in srgb, var(--cream) 70%, transparent);}
+.es-star{color:var(--gold-l);font-size:.8rem;}
+.es-actions{position:relative;width:100%;padding:0 30px 34px;display:flex;flex-direction:column;
+  align-items:center;gap:11px;}
+.es-hold{--es-chapter:var(--gold);position:relative;overflow:hidden;width:100%;height:58px;
+  border:1px solid var(--es-chapter);border-radius:2px;
+  background:color-mix(in srgb, var(--es-chapter) 16%, transparent);
+  color:var(--cream);font-family:'Jost',sans-serif;font-size:.75rem;font-weight:400;letter-spacing:.2em;
+  text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.es-hold:active{transform:translateY(1px);}
+.es-diamond{width:4px;height:4px;background:var(--es-chapter);transform:rotate(45deg);flex-shrink:0;}
+/* the hold fill: a real element instead of a background-position trick, so
+   its width can transition left-to-right over the hold duration and retract
+   on an early release without fighting the button's own background colour */
+.es-hold-fill{position:absolute;inset:0;width:0;background:color-mix(in srgb, var(--es-chapter) 26%, transparent);
+  pointer-events:none;}
+.es-hold-fill.filling{transition:width .6s linear;width:100%;}
+.es-hold-fill.cancelling{transition:width .15s ease;width:0;}
+.es-change{width:100%;height:52px;background:transparent;border:1px solid rgba(201,168,76,.34);
+  border-radius:2px;color:var(--cream);font-family:'Jost',sans-serif;font-size:.72rem;font-weight:300;
+  letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+.es-change:active{transform:translateY(1px);background:rgba(201,168,76,.08);}
+.es-export{width:100%;height:44px;background:none;border:none;
+  color:color-mix(in srgb, var(--gold) 72%, transparent);font-family:'Jost',sans-serif;font-size:.66rem;
+  font-weight:300;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:9px;transition:color .2s;}
+.es-export:active{color:var(--gold-l);}
+.es-export-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;letter-spacing:0;
+  text-transform:none;color:color-mix(in srgb, var(--cream) 60%, transparent);}
 
 /* ── DRAWER SYSTEM ── */
 .overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
@@ -459,6 +535,17 @@ body::before{
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.75rem,1.4vw,.9rem);letter-spacing:.15em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
+/* fullscreen's own end-of-set moment — the same sentence/chip-cloud model
+   as the full-bleed screen (computeEndScreenModel/esSentenceHTML/
+   esChipsHTML/esFavsHTML in presentation.js), simplified to fit inside the
+   party card: no wordmark, no actions row, since the overlay's existing
+   hold-anywhere-to-continue and exit chrome keep doing that job unchanged. */
+.pes-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;}
+.pes-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.1rem,2.6vw,1.6rem);line-height:1.35;text-align:center;color:var(--cream);}
+.pes-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
+.pes-favs{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:clamp(.85rem,1.6vw,1rem);color:color-mix(in srgb, var(--cream) 70%, transparent);}
 /* min-height reserves the twist state's typical two-line height up front —
    without it, turning Twist on/off changes this element's height, and
    since .party-inner centers the whole column, the question above jumps
@@ -471,6 +558,11 @@ body::before{
 .party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.92rem,2.4vw,1.3rem);
   letter-spacing:.01em;line-height:1.5;color:var(--gold-l);opacity:.95;padding:6px 0 2px;max-width:640px;}
 .party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);opacity:.45;}
+.party-hint--phone{display:none;}
+.party-orient{display:none;}
+/* desktop-only corner hint ("TAP →", bottom-right) — see FULLSCREEN.md
+   section 3; hidden on phone, where .party-hint already covers this. */
+.party-corner-hint{display:none;}
 /* party card click zones — prev left 28%, next right 72% */
 .party-zone-prev,.party-zone-next{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
 .party-zone-prev{left:0;width:28%;}
@@ -486,15 +578,8 @@ body::before{
 }
 .party-zone-prev:hover::after{opacity:.4;}
 
-/* ── IN-CARD SESSION SUMMARY ── */
-.sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
-.sic-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
-.sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
-.sic-stars{display:flex;flex-direction:column;gap:6px;width:100%;padding-top:10px;border-top:1px solid var(--dim);}
-.sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
 .drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
 .drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
-.sic-star{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted);line-height:1.45;text-align:center;}
 
 
 
@@ -752,9 +837,6 @@ body.tok-taught .tok-hint{display:none;}
 .tray .limit-row{justify-content:center;}
 .tray .limit-btn{font-size:.8rem;padding:15px 12px;letter-spacing:.1em;}
 
-.sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
-  text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
-
 /* quick actions under the opener: After Dark · All · None */
 /* After Dark as a glyph riding the Categories line */
 
@@ -973,6 +1055,54 @@ body.tok-taught .tok-hint{display:none;}
 .party-overlay.idle .party-hint{opacity:0;pointer-events:none;}
 .party-overlay.idle .party-number{opacity:.25;}
 
+/* ── FULLSCREEN — PHONE: the screen becomes the card ──
+   A 12:7 card inside a 9:19.5 window can never be more than about a fifth
+   of the screen, so below this it drops the card-as-object entirely: no
+   box, no background of its own — .party-card just fills the window, so
+   its accent rail and corner brackets read as belonging to the screen.
+   Comes after the unconditional .party-card rule above (same selector,
+   same specificity) so it actually wins at narrow widths — a media query
+   earlier in the cascade would lose to a later unconditional rule. */
+@media(max-width:767px){
+  .party-card{width:100%;height:100%;max-width:none;min-height:0;
+    border:none;border-radius:0;box-shadow:none;background:transparent;}
+  .party-c-accent{height:4px;
+    -webkit-mask:linear-gradient(to right,transparent 0%,black 20% 80%,transparent 100%);
+    mask:linear-gradient(to right,transparent 0%,black 20% 80%,transparent 100%);}
+  /* clear of the Close/Draw-three row up top */
+  .party-card::before,.party-card::after{width:34px;height:34px;}
+  .party-card::before{top:56px;left:26px;}
+  .party-card::after{bottom:56px;right:26px;}
+  /* label/question/count: one left-aligned stack — centred text at this
+     size in a full-bleed field has no left edge for the eye to return to */
+  .party-inner{align-items:flex-start;text-align:left;padding:0 42px;gap:22px;}
+  .party-level{font-size:.625rem;font-weight:600;letter-spacing:.3em;}
+  .party-question{font-size:clamp(1.625rem,8vw,2.125rem);line-height:1.34;text-align:left;}
+  .party-number{font-size:.625rem;letter-spacing:.28em;color:#7a6e60;}
+  .party-hint--desktop{display:none;}
+  .party-hint--phone{display:inline;}
+  .party-hint{font-size:.5rem;letter-spacing:.1em;color:rgba(240,232,216,.3);}
+  /* orientation toggle: two small rectangles, bottom centre. 92px clears
+     the existing Twist button's own box (bottom:34px + its padding reaches
+     ~78px) — FULLSCREEN.md's mockup doesn't include Twist, so this is
+     placed to sit above it rather than overlapping. */
+  .party-orient{display:flex;align-items:center;gap:14px;position:fixed;left:50%;
+    bottom:92px;transform:translateX(-50%);z-index:2;transition:opacity .5s ease;}
+  .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
+  .party-orient-opt{width:15px;height:22px;padding:0;cursor:pointer;
+    background:none;border:1px solid rgba(240,232,216,.24);}
+  .party-orient-opt--landscape{width:26px;height:15px;}
+  .party-orient-opt.live{border-color:#c9a84c;background:rgba(201,168,76,.16);}
+  /* the toggle sets the SAME landscape composition an actual device
+     rotation would — a wider measure, not a literal 90° transform */
+  .party-overlay.orient-landscape .party-inner{padding:0 74px;}
+  .party-overlay.orient-landscape .party-question{font-size:clamp(1.5rem,4.4vw,1.875rem);}
+  .party-overlay.orient-landscape .party-card::before,
+  .party-overlay.orient-landscape .party-card::after{width:30px;height:30px;}
+  .party-overlay.orient-landscape .party-card::before{left:26px;}
+  .party-overlay.orient-landscape .party-card::after{right:26px;}
+}
+
 /* menu drawer: de-boxed, text-first — same design language as the rest.
    One consistent stroke-icon set now, not mismatched Unicode dingbats and
    an emoji — same muted→gold rule, just SVG instead. */
@@ -988,6 +1118,23 @@ body.tok-taught .tok-hint{display:none;}
   .tok-glyph{font-size:.88rem;}
   .tray.open{max-height:330px;}
   .app{max-width:680px;}
+
+  /* Fullscreen desktop: the card is big enough here, but its interior was
+     composed for a short centred stack, leaving the top/bottom thirds
+     empty and the corner brackets pointing at nothing. Move label/
+     question/count to the corners instead — every corner the brackets
+     mark now has something in it, no new mode or variable-height card.
+     .party-inner stays a static (non-positioned) wrapper, so these
+     children position absolute against .party-card, the nearest
+     positioned ancestor, skipping over it entirely. */
+  .party-inner{display:block;position:static;padding:0;}
+  .party-level{position:absolute;top:22px;left:44px;letter-spacing:.3em;}
+  .party-question{position:absolute;inset:0;display:flex;align-items:center;
+    text-align:left;padding:44px 44px 40px;font-size:clamp(1.6875rem,2.4vw,2.375rem);line-height:1.32;}
+  .party-number{position:absolute;bottom:20px;left:44px;letter-spacing:.24em;color:#7a6e60;}
+  .party-corner-hint{display:block;position:absolute;bottom:20px;right:44px;z-index:2;
+    font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+    color:rgba(240,232,216,.3);}
   /* drawers become centered panels */
   .drawer,.sub-drawer{
     left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
@@ -1050,7 +1197,12 @@ body.tok-taught .tok-hint{display:none;}
   .d-label{font-size:.9rem;} .d-sub{font-size:.9rem;}
   .session-btn{font-size:.9rem;padding:15px 18px;}
   .help-content p{font-size:1.15rem;}
-  .card{aspect-ratio:3/2;}
+  /* 3/2 made the card tall enough that, combined with the header/token/
+     preset chrome above it, most 1180-1600px-wide desktop windows had to
+     scroll to see the controls below — 2/1 (the same ratio the short-
+     window query below already uses for exactly this reason) keeps the
+     whole screen on one page without a window-height media query of its own. */
+  .card{aspect-ratio:2/1;}
   .card-question{font-size:2.5rem;line-height:1.42;}
   .card-body-inner{padding:30px 64px 20px;gap:22px;}
   /* this and the earlier @media(min-width:1024px) block both set .title —

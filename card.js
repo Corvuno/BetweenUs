@@ -37,7 +37,11 @@ function applyTwistToCounter(el) {
     el.classList.add('twist');
   } else {
     el.classList.remove('twist');
-    if (hasCurrentCard()) el.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
+    if (hasCurrentCard()) {
+      el.textContent = el.id === 'party-number'
+        ? partyRomanCount(state.currentIndex + 1, state.visibleDeck.length)
+        : `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
+    }
   }
 }
 function renderTwist() {
@@ -85,6 +89,11 @@ function updateStarUI() {
 }
 
 function setCardDisplay(card) {
+  // Whatever got us here — a fresh hand, a settings change, the initial
+  // boot placeholder — a real (or placeholder) card face is about to be
+  // shown, so the end-of-set screen from a previous hand can't still be
+  // covering it. hideEndScreen() is a no-op if it wasn't showing.
+  if (typeof hideEndScreen === 'function') hideEndScreen();
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const numEl  = document.getElementById('card-number');
@@ -134,6 +143,7 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
 function flipToCard(card, isFirstDraw) {
+  if (typeof hideEndScreen === 'function') hideEndScreen();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');
