@@ -101,9 +101,12 @@
     return { dark, mid, light };
   }
 
+  // The 34/50/66 stops are deliberate — a wider spread stretches the
+  // highlight until it reads as a soft wash on a long rail; this narrow
+  // band keeps a gleam at any card width. Don't widen it.
   function giltRail(baseHex) {
     const { dark, mid, light } = giltStops(baseHex);
-    return `linear-gradient(100deg, ${dark} 0%, ${mid} 22%, ${light} 48%, ${mid} 68%, ${dark} 100%)`;
+    return `linear-gradient(100deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
   }
 
   function labelColor(baseHex) {

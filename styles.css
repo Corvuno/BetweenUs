@@ -572,6 +572,14 @@ body.fixed-seq-mode .screen-row{display:none;}
   .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.card-number.twist{font-size:1.1rem;}
   .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;height:52px;}.btn-draw{font-size:.88rem;padding:16px 0;}
   :root{--sq-w:52px;}
+  /* chrome sized for a 364px mobile card reads as thin/empty at 720px —
+     scale the rail, corner brackets and star to match (see reference table
+     in the design log: mobile 3px/24px/20px/.9rem -> desktop 4px/30px/26px/1.05rem). */
+  .c-accent{height:4px;}
+  .card::before,.card::after{width:30px;height:30px;}
+  .card::before{top:26px;left:26px;}
+  .card::after{bottom:26px;right:26px;}
+  .card-star{font-size:1.05rem;top:12px;right:15px;}
 }
 /* ── LANG TOGGLE INLINE (screen-row) ── */
 .lang-toggle--inline{display:flex;border:none;flex-shrink:0;gap:2px;}
@@ -928,13 +936,19 @@ body.fixed-seq-mode .screen-row{display:none;}
 .lang-toggle--inline .lang-opt.active{color:var(--cream);border-bottom:1px solid rgba(201,168,76,.5);}
 
 /* ── FULLSCREEN — landscape card floating on a dark stage ── */
+/* Capped at 900px rather than growing to fill a wide window: past that the
+   card becomes a wide empty field with a small block of text in the middle
+   — the fix is the ratio, not more chrome. Keeps the card an object sitting
+   on the dark stage instead of becoming the stage. */
 .party-card{
-  width:min(94vw,1100px);height:min(74dvh,66vw);max-width:none;min-height:230px;
+  width:min(94vw,900px);height:min(74dvh,60vw);max-width:none;min-height:230px;
   border:1px solid var(--border);border-radius:0;
   box-shadow:0 12px 60px rgba(0,0,0,.65),0 2px 10px rgba(0,0,0,.5);
   background:var(--card-bg);}
-.party-card::before{top:20px;left:20px;width:26px;height:26px;}
-.party-card::after{bottom:20px;right:20px;width:26px;height:26px;}
+.party-c-accent{height:5px;}
+.party-card::before,.party-card::after{width:40px;height:40px;}
+.party-card::before{top:32px;left:32px;}
+.party-card::after{bottom:32px;right:32px;}
 .party-exit,.party-hint,.party-number{transition:opacity .5s ease;}
 .party-overlay.idle .party-exit,
 .party-overlay.idle .party-hint{opacity:0;pointer-events:none;}
