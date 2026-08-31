@@ -750,7 +750,20 @@ applyToggleUI();
     const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
   }
   window.openCats=openCats; window.closeCats=closeCats;
-  openRow.addEventListener('click', openCats);
+  // "· tap to change" teaches the preset token opens something, then
+  // retires for good once it's done its job — fade first (not an instant
+  // display:none) because the sheet covers the header on mobile, so the
+  // hint disappearing is only ever actually seen on desktop.
+  const TOK_TAUGHT_KEY = 'bu.tokTaught';
+  if (localStorage.getItem(TOK_TAUGHT_KEY)) document.body.classList.add('tok-taught');
+  openRow.addEventListener('click', () => {
+    if (!localStorage.getItem(TOK_TAUGHT_KEY)) {
+      localStorage.setItem(TOK_TAUGHT_KEY, '1');
+      const h = document.getElementById('tokHint');
+      if (h) { h.style.opacity = '0'; setTimeout(() => document.body.classList.add('tok-taught'), 350); }
+    }
+    openCats();
+  });
   $('catClose').addEventListener('click', closeCats);
   scrim.addEventListener('click', closeCats);
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });

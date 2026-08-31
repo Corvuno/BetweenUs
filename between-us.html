@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260826c">
+<link rel="stylesheet" href="styles.css?v=20260831a">
 </head>
 <body>
 <div class="glow"></div>
@@ -22,13 +22,16 @@
   <!-- HEADER -->
   <div class="header" id="hdr">
     <div class="title">Between Us</div>
+    <div class="title-rule" aria-hidden="true">
+      <span class="tr-line"></span><span class="tr-dot"></span><span class="tr-line"></span>
+    </div>
     <div class="subtitle" id="subtitle">Everything on the table</div>
   </div>
 
 
   <!-- v6 TOKEN LINE — one entry point now: the active preset, in its own colour -->
   <div class="tok-line" id="tokLine">
-    <button class="tok tok-preset" id="tokCats"><span class="tok-lbl">Selected</span><span class="tok-val-row"><span class="tok-rule tok-rule--l"></span><span class="tok-val" id="valCats">Balanced</span><span class="tok-rule tok-rule--r"></span></span></button>
+    <button class="tok tok-preset" id="tokCats"><span class="tok-lbl">Selected<span class="tok-hint" id="tokHint"> &middot; tap to change</span></span><span class="tok-val-row"><span class="tok-rule tok-rule--l"></span><span class="tok-chev tok-chev--l">&#8249;</span><span class="tok-val" id="valCats">Balanced</span><span class="tok-chev tok-chev--r">&#8250;</span><span class="tok-rule tok-rule--r"></span></span></button>
   </div>
 
   <!-- PRESET ROW -->
@@ -616,16 +619,16 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260826c"></script>
-<script src="config.js?v=20260826c"></script>
-<script src="gilt.js?v=20260826c"></script>
-<script src="state.js?v=20260826c"></script>
-<script src="deck.js?v=20260826c"></script>
-<script src="card.js?v=20260826c"></script>
-<script src="library.js?v=20260826c"></script>
-<script src="session.js?v=20260826c"></script>
-<script src="selection.js?v=20260826c"></script>
-<script src="presentation.js?v=20260826c"></script>
-<script src="ui.js?v=20260826c"></script>
+<script src="questions.js?v=20260831a"></script>
+<script src="config.js?v=20260831a"></script>
+<script src="gilt.js?v=20260831a"></script>
+<script src="state.js?v=20260831a"></script>
+<script src="deck.js?v=20260831a"></script>
+<script src="card.js?v=20260831a"></script>
+<script src="library.js?v=20260831a"></script>
+<script src="session.js?v=20260831a"></script>
+<script src="selection.js?v=20260831a"></script>
+<script src="presentation.js?v=20260831a"></script>
+<script src="ui.js?v=20260831a"></script>
 </body>
 </html>
