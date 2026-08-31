@@ -1175,8 +1175,9 @@ body.tok-taught .tok-hint{display:none;}
    here never dead-ends into "now what?" */
 .cat-go-bar{flex-shrink:0;padding:12px 0 max(14px,env(safe-area-inset-bottom));
   background:linear-gradient(to top, var(--surface) 60%, transparent);}
-.cat-go-btn{display:block;width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
-  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.12em;
+.cat-go-btn{display:block;width:100%;
+  background:linear-gradient(100deg,#7f6130 0%,#a37f42 34%,#e6c584 50%,#a37f42 66%,#7f6130 100%);
+  border:none;color:#221a09;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.12em;
   text-transform:uppercase;padding:15px 0;border-radius:3px;cursor:pointer;transition:filter .2s;}
 .cat-go-btn:hover{filter:brightness(1.06);}
 .cat-go-btn:active{transform:scale(.99);}
@@ -1185,16 +1186,20 @@ body.tok-taught .tok-hint{display:none;}
 .chapters{display:flex;flex-direction:column;gap:4px;}
 .chapter{--ch:var(--gold);
   display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
-  background:none;border:1px solid var(--dim);border-left:2px solid transparent;border-radius:2px;
-  padding:15px 13px;transition:all .2s;}
+  background:none;border:1px solid var(--dim);border-left:3px solid transparent;border-radius:2px;
+  padding:15px 13px;transition:background .2s,border-color .2s;}
+/* the left rail: a vertical metal sweep (same gilt.js gradient as the card
+   accent, at 190deg instead of 100deg) set per-chapter via border-image so
+   the other three sides keep their flat --dim border. border-image-source
+   is written inline by JS from each chapter's data-base hex — see ui.js. */
+.chapter{border-image-slice:1;border-image-width:0 0 0 3px;border-image-repeat:stretch;}
 .chapter:hover{border-color:var(--border);}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
   text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
 .chapter .ch-desc{flex:1;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
-.chapter.on{border-left-color:var(--ch);background:rgba(255,255,255,.028);}
+.chapter.on{background:rgba(255,255,255,.028);}
 .chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
-.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 .chapter.ch-hidden{display:none;}
 
@@ -1213,9 +1218,15 @@ body.tok-taught .tok-hint{display:none;}
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(240,232,216,.45);margin:0 0 12px;}
 .play-sect--2 .sect-lbl:first-child{margin-bottom:18px;}
+/* Chapters/Tune headers drop to the warm muted tone used across the card
+   set, rather than the neutral grey every other .sect-lbl (Start from,
+   Round) still uses. */
+#chaptersLbl,#tuneLbl{color:#7a6e60;}
 /* the inline "Explore categories" link next to the Chapters label — same
-   whisper-link weight the fixed-set fold already uses, not a button */
-.link-plain{background:none;border:none;cursor:pointer;color:rgba(240,232,216,.5);
+   whisper-link weight the fixed-set fold already uses, not a button. Its
+   own warm gold (rather than the header's muted tone) marks it as the one
+   live link on an otherwise static row. */
+.link-plain{background:none;border:none;cursor:pointer;color:#9a8259;
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
   padding:15px 0;transition:color .2s;}
 .link-plain:hover,.link-plain.open{color:var(--gold-l);}

@@ -53,10 +53,13 @@
   // highlight crosses the rail diagonally the way rolled metal does.
   // Stops are deliberately tight (34/50/66 — a 32-point spread, not 46). On a
   // wide card a broad highlight stretches until it reads as a soft wash; the
-  // narrow band keeps a visible gleam at any rail length.
-  function giltRail(baseHex) {
+  // narrow band keeps a visible gleam at any rail length. angle defaults to
+  // 100deg (horizontal card rails); the chapter drawer's vertical rail passes
+  // 190deg instead.
+  function giltRail(baseHex, angle) {
     const { dark, light, mid } = giltStops(baseHex);
-    return `linear-gradient(100deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
+    const a = angle == null ? 100 : angle;
+    return `linear-gradient(${a}deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
   }
 
   // Label colour. Deep lacquer categories cannot carry 11px text on #1a1612,

@@ -897,6 +897,18 @@ applyToggleUI();
     partyWasOpen=isOpen;
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
+// Chapter rail: same gilt.js metal sweep as the card accent, run vertically
+// (190deg) off each chapter's own data-base hex — set once at boot since,
+// unlike a card's category, a chapter's colour never changes at runtime.
+// The label/glow colour reuses --ch (already read by .chapter.on/.part in
+// styles.css) via labelColor(), which lifts After Dark's near-black lacquer
+// to a readable tone while leaving every other chapter's --ch at its base.
+document.querySelectorAll('.chapter[data-base]').forEach(el => {
+  const base = el.dataset.base;
+  el.style.borderImageSource = giltRail(base, 190);
+  el.style.setProperty('--ch', labelColor(base));
+});
+
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
    Play asks what kind of evening this is: six chapters you can mix, and two
    dials that weight the draw inside them. Explore is the same deck as a

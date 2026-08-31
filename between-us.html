@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260831a">
+<link rel="stylesheet" href="styles.css?v=20260831b">
 </head>
 <body>
 <div class="glow"></div>
@@ -78,14 +78,14 @@
 
     <div class="pane pane-play on" id="panePlay">
       <div class="play-sect play-sect--1">
-        <div class="sect-lbl"><span>Chapters</span><button type="button" class="link-plain" id="customizeBtn">Explore categories</button></div>
+        <div class="sect-lbl" id="chaptersLbl"><span>Chapters</span><button type="button" class="link-plain" id="customizeBtn">Explore categories</button></div>
         <div class="chapters" id="chapters">
-          <button class="chapter" data-chapter="warmup" style="--ch:#d9a441"><span class="ch-name">Arrive</span><span class="ch-desc">Get comfortable. Start talking.</span></button>
-          <button class="chapter" data-chapter="surface" style="--ch:#6bb36e"><span class="ch-name">The Surface</span><span class="ch-desc">What's easy to see, easy to say.</span></button>
-          <button class="chapter" data-chapter="findout" style="--ch:#45a0b8"><span class="ch-name">Beneath the Surface</span><span class="ch-desc">Where curiosity becomes connection.</span></button>
-          <button class="chapter" data-chapter="deeper" style="--ch:#8f74b8"><span class="ch-name">Into the Deep</span><span class="ch-desc">When the conversation asks something of you.</span></button>
-          <button class="chapter" data-chapter="aboutus" style="--ch:#d97a92"><span class="ch-name">Between Us</span><span class="ch-desc">What's true only between the people at the table.</span></button>
-          <div class="chapter chapter--afterdark" data-chapter="afterdark" style="--ch:#ff2f2f">
+          <button class="chapter" data-chapter="warmup" data-base="#d0913c"><span class="ch-name">Arrive</span><span class="ch-desc">Get comfortable. Start talking.</span></button>
+          <button class="chapter" data-chapter="surface" data-base="#4f9668"><span class="ch-name">The Surface</span><span class="ch-desc">What's easy to see, easy to say.</span></button>
+          <button class="chapter" data-chapter="findout" data-base="#5c8798"><span class="ch-name">Beneath the Surface</span><span class="ch-desc">Where curiosity becomes connection.</span></button>
+          <button class="chapter" data-chapter="deeper" data-base="#9b83ae"><span class="ch-name">Into the Deep</span><span class="ch-desc">When the conversation asks something of you.</span></button>
+          <button class="chapter" data-chapter="aboutus" data-base="#cf9483"><span class="ch-name">Between Us</span><span class="ch-desc">What's true only between the people at the table.</span></button>
+          <div class="chapter chapter--afterdark" data-chapter="afterdark" data-base="#8d1c22">
             <button type="button" class="ch-hit"><span class="ch-name">After Dark</span><span class="ch-desc">When desire enters the conversation.</span></button>
             <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn" title="A little more, once After Dark is open">&#10022;</button>
           </div>
@@ -127,7 +127,7 @@
              it reads as its own section (the "Tune" label) the same way
              Chapters and Round do, instead of a separate boxed panel. -->
         <div class="console" id="fineConsole">
-          <div class="sect-lbl">
+          <div class="sect-lbl" id="tuneLbl">
             <span>Tune</span>
             <button type="button" class="info-btn" id="fineInfoBtn" aria-label="What does this do?">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
@@ -619,16 +619,16 @@
   <div class="party-hint">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</div>
 </div>
 
-<script src="questions.js?v=20260831a"></script>
-<script src="config.js?v=20260831a"></script>
-<script src="gilt.js?v=20260831a"></script>
-<script src="state.js?v=20260831a"></script>
-<script src="deck.js?v=20260831a"></script>
-<script src="card.js?v=20260831a"></script>
-<script src="library.js?v=20260831a"></script>
-<script src="session.js?v=20260831a"></script>
-<script src="selection.js?v=20260831a"></script>
-<script src="presentation.js?v=20260831a"></script>
-<script src="ui.js?v=20260831a"></script>
+<script src="questions.js?v=20260831b"></script>
+<script src="config.js?v=20260831b"></script>
+<script src="gilt.js?v=20260831b"></script>
+<script src="state.js?v=20260831b"></script>
+<script src="deck.js?v=20260831b"></script>
+<script src="card.js?v=20260831b"></script>
+<script src="library.js?v=20260831b"></script>
+<script src="session.js?v=20260831b"></script>
+<script src="selection.js?v=20260831b"></script>
+<script src="presentation.js?v=20260831b"></script>
+<script src="ui.js?v=20260831b"></script>
 </body>
 </html>
