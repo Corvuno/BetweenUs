@@ -25,79 +25,66 @@ function drawRoundTrace(cards) {
        + dots + `</svg>`;
 }
 
-// Dot size steps down as the deck grows, so a 5- or 10-card arc gets big,
-// colorful dots while a 40-card round still fits on one line.
-const DOT_SIZE_STEPS = [
-  [8,  10, 8],
-  [14, 8,  6],
-  [24, 6,  5],
-  [36, 5,  4],
-  [Infinity, 4, 3],
-];
+// Roman numerals for the counter's static readout — falls back to arabic
+// past what reads cleanly as a numeral (beyond XXXIX).
+const ROMAN_MAX = 39;
+function toRoman(n) {
+  const vals = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],
+                [50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+  let out = '';
+  for (const [v, sym] of vals) while (n >= v) { out += sym; n -= v; }
+  return out || '0';
+}
+
 // `currentOverride`, when given, replaces state.currentIndex for this render
 // only — used by the end-of-round summary to show every card as passed
-// without a "current" dot, without touching real session position.
-
+// without a "current" tick, without touching real session position.
+//
+// The rule is one flex tick per card, full stop — no dot-count scaling or
+// sliding window for huge decks the way the old dot row needed. A hairline
+// degrades gracefully at any density (unlike discrete dots, which stop
+// being individually readable past a few dozen), so "All" in Everything
+// (300+ cards) just renders as a very fine line with a spike at the
+// current position — the numeral underneath is what actually reads at
+// that size, same job it does at 5 or 10.
 function renderProgress(currentOverride) {
   const container = document.getElementById('progress');
   const deckLen = state.visibleDeck.length;
-  container.innerHTML = '';
-  const MAX_DOTS = 60;
   const cur = currentOverride === undefined ? state.currentIndex : currentOverride;
-  if (deckLen <= MAX_DOTS) {
-    // One dot per card. Passed and current cards reveal their category
-    // colour; cards still ahead stay neutral gold so the shape of what's
-    // coming isn't spoiled.
-    const [, size, gap] = DOT_SIZE_STEPS.find(([max]) => deckLen <= max);
-    container.style.setProperty('--dot-size', size + 'px');
-    container.style.setProperty('--dot-gap', gap + 'px');
-    for (let i = 0; i < deckLen; i++) {
-      const card = state.visibleDeck[i];
-      const dot = document.createElement('div');
-      const isSeen    = i < cur;
-      const isCurrent = i === cur;
-      dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
-      if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
-      container.appendChild(dot);
-    }
-    // One extra dot past the last card, standing for the summary screen —
-    // only from the last card onward, matching exactly when the next-card
-    // button itself switches to "Summary". Showing it the whole hand made
-    // a 5-card draw permanently look like 6 cards.
-    if (cur >= deckLen - 1) container.appendChild(makeEndDot(cur >= deckLen));
-  } else {
-    // Large decks (e.g. 'All' in Everything, 300+ cards): a fixed-width
-    // window of real per-card dots slides along the deck instead of
-    // collapsing everything into averaged buckets. It always keeps one
-    // neutral "next" dot in view, and drops the oldest passed dot off the
-    // left edge as you advance — a continuous band, not a dulled-down summary.
-    const WINDOW = 20;
-    container.style.setProperty('--dot-size', '7px');
-    container.style.setProperty('--dot-gap', '6px');
-    const windowStart = Math.max(0, Math.min(cur - (WINDOW - 2), deckLen - WINDOW));
-    const windowEnd = Math.min(deckLen, windowStart + WINDOW);
-    for (let i = windowStart; i < windowEnd; i++) {
-      const card = state.visibleDeck[i];
-      const dot = document.createElement('div');
-      const isSeen    = i < cur;
-      const isCurrent = i === cur;
-      dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
-      if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
-      container.appendChild(dot);
-    }
-    // Only tack the summary dot on once the sliding window has actually
-    // reached the last real card, and only from the last card onward —
-    // same rule as the small-deck branch above.
-    if (windowEnd >= deckLen && cur >= deckLen - 1) container.appendChild(makeEndDot(cur >= deckLen));
-  }
-}
 
-// The summary dot isn't a card, so it doesn't take a category color — a
-// plain gold ring that fills solid once you're actually on the summary.
-function makeEndDot(isCurrent) {
-  const dot = document.createElement('div');
-  dot.className = 'progress-dot end-dot' + (isCurrent ? ' current' : '');
-  return dot;
+  const rule = document.createElement('div');
+  rule.className = 'progress-rule' + (deckLen > 10 ? ' many' : '');
+  for (let i = 0; i < deckLen; i++) {
+    const card = state.visibleDeck[i];
+    const tick = document.createElement('div');
+    const isSeen    = i < cur;
+    const isCurrent = i === cur;
+    tick.className = 'progress-tick' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
+    if (isSeen || isCurrent) tick.style.setProperty('--tick-color', levelColor(card.level));
+    rule.appendChild(tick);
+  }
+  // The terminal diamond stands for the summary screen past the last card —
+  // only from the last card onward, matching exactly when the next-card
+  // button itself switches to "Summary". Showing it the whole hand made a
+  // 5-card draw permanently look like 6 cards.
+  if (cur >= deckLen - 1) {
+    const end = document.createElement('div');
+    end.className = 'progress-tick end' + (cur >= deckLen ? ' current' : '');
+    rule.appendChild(end);
+  }
+
+  const num = document.createElement('div');
+  num.className = 'progress-num';
+  if (deckLen > 0) {
+    const fmt = deckLen > ROMAN_MAX ? String : toRoman;
+    const shown = Math.min(cur + 1, deckLen);
+    num.innerHTML = `${fmt(shown)}<span class="progress-num-sep"> &middot; </span>`
+                  + `<span class="progress-num-total">${fmt(deckLen)}</span>`;
+  }
+
+  container.innerHTML = '';
+  container.appendChild(rule);
+  container.appendChild(num);
 }
 
 // ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────

@@ -275,19 +275,28 @@ body::before{
 /* ── CONTROLS ── */
 .controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
 .controls-wrap.in{opacity:1;transform:none;}
-.progress{display:flex;gap:var(--dot-gap,4px);align-items:center;flex-wrap:wrap;justify-content:center;}
-.progress-dot{
-  width:max(2px, calc(var(--dot-size, 4px) * .3));height:var(--dot-size,4px);border-radius:1.5px;
-  background:var(--dot-color,var(--gold));opacity:.28;
-  transition:opacity .3s ease,transform .3s ease;
-  flex-shrink:0;
-}
-.progress-dot.seen{opacity:.65;}
-.progress-dot.current{opacity:1;transform:scaleY(1.4);}
-/* the extra dot past the last card, standing for the summary screen — an
-   outline instead of a fill so it doesn't read as just another card */
-.progress-dot.end-dot{background:transparent;border:1px solid var(--gold);opacity:.45;}
-.progress-dot.end-dot.current{background:var(--gold-l);border-color:var(--gold-l);opacity:1;}
+/* the "walking line" counter: one flex tick per card plus a terminal end
+   diamond, sized purely by flex weight — a 5-card hand and a 40-card hand
+   both fill the same row width, only the composition inside changes as
+   you advance. No dot-count scaling to maintain any more; the numeral
+   underneath is what actually reads at any hand size. */
+.progress{display:flex;flex-direction:column;gap:7px;width:100%;}
+.progress-rule{display:flex;align-items:center;height:9px;gap:3px;}
+.progress-rule.many{gap:2px;}
+.progress-tick{flex-grow:1;flex-shrink:1;flex-basis:0%;height:1px;
+  background:color-mix(in srgb, var(--gold) 22%, transparent);
+  transition:flex-grow .22s ease,height .22s ease,opacity .22s ease,background-color .22s ease;}
+.progress-tick.seen{height:3px;opacity:.55;background:var(--tick-color,var(--gold));}
+.progress-tick.current{flex-grow:1.5;height:9px;opacity:1;background:var(--tick-color,var(--gold));}
+/* the extra tick past the last card, standing for the summary screen — an
+   outline diamond instead of a fill so it doesn't read as just another card */
+.progress-tick.end{flex:0 0 auto;width:8px;height:8px;border:1px solid var(--gold);
+  background:transparent;transform:rotate(45deg);margin-left:6px;}
+.progress-tick.end.current{background:var(--gold-l);border-color:var(--gold-l);}
+@media (prefers-reduced-motion:reduce){.progress-tick{transition:none;}}
+.progress-num{font-family:'Poiret One',cursive;font-size:.85rem;letter-spacing:.18em;color:var(--cream);}
+.progress-num-sep{color:color-mix(in srgb, var(--gold) 50%, transparent);}
+.progress-num-total{color:color-mix(in srgb, var(--cream) 45%, transparent);}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid var(--dim);color:var(--muted);width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:var(--border);color:var(--gold);}
