@@ -1,120 +1,74 @@
-// ── GILT — turns a category's base hex into a metal-sweep rail gradient and
-// a label colour. The base hex (CATEGORIES[level].color) stays the only
-// stored colour value; everything else here is derived from it.
+// gilt.js — derives the metallic rail sweep from a category's base hex.
+// The base hex is the ONLY stored value per category (config.js CATEGORIES).
+// Metal appears on the accent RAIL only; chips, dots and labels stay flat.
 //
-// Two sweep strengths: the jade/lapis/amethyst families (Your Days,
-// Reflection, Vulnerability) get a softer dark/light spread and keep their
-// mid stop at the base colour, because those hues read as harsh plastic at
-// full metallic strength. Everything else gets the full sweep. Which hex
-// belongs to which family isn't something you can derive from the hue
-// alone (Kink's magenta and Raw's mauve sit at similar hues but opposite
-// families), so membership is listed explicitly below, keyed by the base
-// hex itself — giltRail/labelColor still take just the one hex argument.
-//
-// A handful of the darkest lacquer/oxblood categories (After Dark) can't
-// carry 11px label text at their base colour — their *label* lifts to a
-// lighter tint while their *rail* keeps the deep base colour.
+// Plain script, not a module (between-us.html loads it via a bare <script
+// src>, same as every other app file) — so giltStops/giltRail/labelColor
+// attach to window instead of using `export`.
 
 (function () {
 
-  const COOL_GENTLE = new Set([
-    // Your Days — jade
-    '#4f9668', '#6ba471', '#3d8a83', '#55a68f',
-    // Reflection — lapis
-    '#3f5e97', '#5c8798', '#476d95', '#697bab', '#786cae',
-    // Vulnerability — amethyst
-    '#8b779f', '#79688d', '#9b83ae', '#9d6682', '#736d8b', '#63537c',
-  ]);
+  const hex2hsl = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    const r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2;
+    const d = mx - mn;
+    if (!d) return [0, 0, l];
+    const s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+    const h = mx === r ? ((g - b) / d + (g < b ? 6 : 0))
+            : mx === g ? (b - r) / d + 2
+            :            (r - g) / d + 4;
+    return [h * 60, s, l];
+  };
 
-  // Us: Intimate, Flesh, Carnal, Kink, Abyss
-  const LIFTED_LABEL = new Set([
-    '#a13039', '#832f4d', '#8d1c22', '#742055', '#5c1016',
-  ]);
+  const hsl2hex = (h, s, l) => {
+    const a = s * Math.min(l, 1 - l);
+    const f = (n) => {
+      const k = (n + h / 30) % 12;
+      const v = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+      return Math.round(v * 255).toString(16).padStart(2, '0');
+    };
+    return '#' + f(0) + f(8) + f(4);
+  };
 
-  function hexToRgb(hex) {
-    hex = hex.replace('#', '');
-    return [
-      parseInt(hex.slice(0, 2), 16),
-      parseInt(hex.slice(2, 4), 16),
-      parseInt(hex.slice(4, 6), 16),
-    ];
-  }
-
-  function rgbToHsl(r, g, b) {
-    r /= 255; g /= 255; b /= 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h, s;
-    const l = (max + min) / 2;
-    if (max === min) {
-      h = s = 0;
-    } else {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch (max) {
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        default: h = (r - g) / d + 4; break;
-      }
-      h /= 6;
-    }
-    return [h * 360, s * 100, l * 100];
-  }
-
-  function hslToHex(h, s, l) {
-    h = ((h % 360) + 360) % 360;
-    s = Math.max(0, Math.min(100, s)) / 100;
-    l = Math.max(0, Math.min(100, l)) / 100;
-    const c = (1 - Math.abs(2 * l - 1)) * s;
-    const x = c * (1 - Math.abs((h / 60) % 2 - 1));
-    const m = l - c / 2;
-    let r, g, b;
-    if (h < 60)       { r = c; g = x; b = 0; }
-    else if (h < 120) { r = x; g = c; b = 0; }
-    else if (h < 180) { r = 0; g = c; b = x; }
-    else if (h < 240) { r = 0; g = x; b = c; }
-    else if (h < 300) { r = x; g = 0; b = c; }
-    else              { r = c; g = 0; b = x; }
-    const toHex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
-    return '#' + toHex(r) + toHex(g) + toHex(b);
-  }
-
-  function hexToHsl(hex) {
-    const [r, g, b] = hexToRgb(hex);
-    return rgbToHsl(r, g, b);
-  }
+  // Cold hues (blue → violet) get a gentler sweep — a full-strength sweep on
+  // lapis or amethyst reads as harsh plastic, not metal. Warm hues (brass,
+  // amber, coral, rose gold, lacquer) take the full sweep.
+  const isCold = (h) => h >= 190 && h <= 300;
 
   function giltStops(baseHex) {
-    const [h, s, l] = hexToHsl(baseHex);
-    const gentle = COOL_GENTLE.has(baseHex.toLowerCase());
+    const [h, s, l] = hex2hsl(baseHex);
+    const cold  = isCold(h);
+    const down  = cold ? 0.78 : 0.66;   // dark stop  — L multiplier
+    const up    = cold ? 1.42 : 1.62;   // light stop — L multiplier
+    const chrom = cold ? 0.90 : 1.00;   // light stop desaturates slightly on cold
 
-    if (gentle) {
-      const dark  = hslToHex(h, s, l * 0.79);
-      const mid   = baseHex;
-      const light = hslToHex(h, s + 4, l + (100 - l) * 0.26);
-      return { dark, mid, light };
-    }
-
-    const darkBoost = l < 35 ? 0.10 : 0;
-    const dark  = hslToHex(h, s + 7, l * 0.585);
-    const mid   = hslToHex(h, s + 3, l * 0.82);
-    const light = hslToHex(h, Math.min(s + 22, 65), l + (100 - l) * (0.30 + darkBoost));
-    return { dark, mid, light };
+    const dark  = hsl2hex(h, Math.min(1, s * 1.05), Math.max(0.06, l * down));
+    const light = hsl2hex(h, s * chrom,             Math.min(0.86, l * up));
+    const mid   = baseHex;
+    return { dark, light, mid };
   }
 
-  // The 34/50/66 stops are deliberate — a wider spread stretches the
-  // highlight until it reads as a soft wash on a long rail; this narrow
-  // band keeps a gleam at any card width. Don't widen it.
+  // Five-stop sweep: dark → mid → light → mid → dark, off-axis at 100deg so the
+  // highlight crosses the rail diagonally the way rolled metal does.
+  // Stops are deliberately tight (34/50/66 — a 32-point spread, not 46). On a
+  // wide card a broad highlight stretches until it reads as a soft wash; the
+  // narrow band keeps a visible gleam at any rail length.
   function giltRail(baseHex) {
-    const { dark, mid, light } = giltStops(baseHex);
+    const { dark, light, mid } = giltStops(baseHex);
     return `linear-gradient(100deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
   }
 
+  // Label colour. Deep lacquer categories cannot carry 11px text on #1a1612,
+  // so any base below this luminance lifts to a lighter tone of the SAME hue.
+  // (Carnal #8d1c22 -> #c2453f.) Everything else uses its base hex flat.
   function labelColor(baseHex) {
-    if (!LIFTED_LABEL.has(baseHex.toLowerCase())) return baseHex;
-    const [h, s, l] = hexToHsl(baseHex);
-    return hslToHex(h + 4, s * 0.775, l + (100 - l) * 0.26);
+    const [h, s, l] = hex2hsl(baseHex);
+    if (l >= 0.34) return baseHex;
+    return hsl2hex(h, Math.max(0.35, s * 0.72), 0.51);
   }
 
+  window.giltStops = giltStops;
   window.giltRail = giltRail;
   window.labelColor = labelColor;
 })();
