@@ -9,6 +9,14 @@
 - Push finished work straight to `main`. Don't open a pull request unless
   explicitly asked to — the user doesn't want to be asked "should I open a
   PR?" each time.
+- This applies even when the session itself was launched with instructions to
+  develop on a named feature branch and never push elsewhere (this happens —
+  some invocations of Claude Code on the web are pre-configured that way).
+  Those instructions cover where to commit *while working*; they are not
+  permission to leave the result stranded on a branch or an open PR waiting
+  on the owner. Finish on that branch, then merge/fast-forward it into
+  `main` and push `main` yourself, the same session, without being asked
+  again — that's what "land it on `main` yourself" above means in practice.
 - Once a change is actually decided — the owner approved a specific card, gave a
   correction to fix, or otherwise made the call — make it, commit it, and push it.
   Don't stop to confirm first; that's a separate failure mode from editing without
