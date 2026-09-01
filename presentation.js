@@ -462,12 +462,15 @@ function showEndScreen() {
   if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
   document.body.classList.add('showing-end-screen');
   // The display:none->flex swap happens the instant the class above is
-  // added, with .in not yet present — opacity:0 (see styles.css) — so the
-  // fade-in has a real starting point to animate from once .in lands a
-  // frame later, instead of both landing in the same paint and skipping
-  // the transition entirely.
+  // added, landing at opacity:0 (see styles.css) with .in not yet present.
+  // A bare requestAnimationFrame here isn't enough — the browser can (and
+  // in testing, did) coalesce the display change and the .in class into
+  // the same first paint, skipping the transition entirely. Forcing a
+  // synchronous reflow (void es.offsetHeight) between the two commits the
+  // opacity:0 state as an actual rendered frame first, the same trick
+  // flipToCard() already uses to restart the accent-bloom animation.
   const es = document.getElementById('endScreen');
-  if (es) { es.classList.remove('in'); requestAnimationFrame(() => es.classList.add('in')); }
+  if (es) { es.classList.remove('in'); void es.offsetHeight; es.classList.add('in'); }
   // Every tick reads as passed on the (now hidden) counter, none current —
   // keeps it correct for the instant hideEndScreen() reveals it again.
   renderProgress(state.visibleDeck.length);
