@@ -202,7 +202,7 @@ body::before{
 .card:active{transform:scale(.997);}
 .card::before,.card::after{
   content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;
-  border-color:var(--gold);opacity:.35;filter:blur(.4px);pointer-events:none;
+  border-color:var(--gold);opacity:.35;pointer-events:none;
 }
 .card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
 .card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
@@ -213,7 +213,7 @@ body::before{
   mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
 .accent-bloom{animation:accentReveal 1s ease forwards;}
-@keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.6;transform:scaleX(1);}}
+@keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
 .card-star{
   position:absolute;top:9px;right:11px;z-index:4;
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
@@ -573,7 +573,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   box-shadow:0 12px 60px rgba(0,0,0,.6);
   display:flex;flex-direction:column;align-items:center;overflow:hidden;
 }
-.party-card::before,.party-card::after{content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;border-color:var(--gold);opacity:.32;filter:blur(.4px);pointer-events:none;}
+.party-card::before,.party-card::after{content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;border-color:var(--gold);opacity:.32;pointer-events:none;}
 .party-card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
 .party-card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
 .party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;transition:background .5s ease;-webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);}

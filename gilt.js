@@ -8,6 +8,10 @@
 
 (function () {
 
+  // Kept for labelColor() only — the rail derivation below moved to OKLCH
+  // (hex2oklch/ok), but labelColor's job (lift a very dark base like Carnal
+  // to a readable tone) is a small, harmless lift where HSL is fine; not
+  // worth porting until it actually needs to change.
   const hex2hsl = (hex) => {
     const n = parseInt(hex.slice(1), 16);
     const r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
@@ -31,41 +35,52 @@
     return '#' + f(0) + f(8) + f(4);
   };
 
-  // Cold hues (blue → violet) get a gentler sweep — a full-strength sweep on
-  // lapis or amethyst reads as harsh plastic, not metal. Warm hues (brass,
-  // amber, coral, rose gold, lacquer) take the full sweep. This is the
-  // ORIGINAL soft derivation, and stays the only one below 1024px — two
-  // earlier passes here pushed it toward absolute lightness targets (45%,
-  // then 15%) chasing a "muddy on phone" complaint that turned out to be
-  // the wrong fix: the soft sweep was correct on phone all along. A hard
-  // high-contrast strip that narrow just reads as a warning bar. See
-  // giltRail() below for where the two derivations actually split.
-  const isCold = (h) => h >= 190 && h <= 300;
+  // sRGB hex -> OKLCH [L, C, h]. Perceptual lightness and real chroma —
+  // holding C while moving L is what stops a lifted highlight going grey,
+  // which plain HSL's L multiplier couldn't avoid (raising HSL lightness
+  // drags saturation down with it for most hues).
+  const hex2oklch = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    const lin = (c) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+    const r = lin((n >> 16) / 255), g = lin(((n >> 8) & 255) / 255), b = lin((n & 255) / 255);
+    const l_ = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+    const m_ = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+    const s_ = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+    const L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_;
+    const a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;
+    const bb = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;
+    let h = Math.atan2(bb, a) * 180 / Math.PI;
+    if (h < 0) h += 360;
+    return [L, Math.sqrt(a * a + bb * bb), h];
+  };
+
+  const ok = (L, C, h) =>
+    `oklch(${(Math.max(0, Math.min(1, L)) * 100).toFixed(1)}% ${C.toFixed(4)} ${h.toFixed(1)})`;
+
+  // Cold hues get a gentler sweep — full strength on lapis or amethyst
+  // reads as plastic. Hue is OKLCH hue now, not HSL hue, so the cold band
+  // shifts: blue sits around 240-280 here, not 190-300.
+  const isCold = (h) => h >= 225 && h <= 320;
 
   function giltStopsSoft(baseHex) {
-    const [h, s, l] = hex2hsl(baseHex);
-    const cold  = isCold(h);
-    const down  = cold ? 0.78 : 0.66;   // dark stop  — L multiplier
-    const up    = cold ? 1.42 : 1.62;   // light stop — L multiplier
-    const chrom = cold ? 0.90 : 1.00;   // light stop desaturates slightly on cold
-
-    const dark  = hsl2hex(h, Math.min(1, s * 1.05), Math.max(0.06, l * down));
-    const light = hsl2hex(h, s * chrom,             Math.min(0.86, l * up));
-    const mid   = baseHex;
-    return { dark, light, mid };
+    const [L, C, h] = hex2oklch(baseHex);
+    const cold = isCold(h);
+    return {
+      dark:  ok(L * (cold ? 0.78 : 0.66), C, h),
+      light: ok(Math.min(cold ? 0.78 : 0.82, L * (cold ? 1.42 : 1.62)),
+                C * (cold ? 0.90 : 1.00), h),
+      mid:   baseHex,
+    };
   }
 
   // Absolute lightness targets, not multipliers of the base's own L — at
   // 1024px+ (desktop) the card and its rail are wide enough to carry a real
   // hard-edged metal sweep: dark end at 45% L with chroma held, highlight
-  // at 82% L with chroma cut by a third (full saturation at that lightness
+  // at 82% L with chroma cut by a third (full chroma at that lightness
   // reads as a bright version of the hue, not as light catching metal).
   function giltStopsIntense(baseHex) {
-    const [h, s] = hex2hsl(baseHex);
-    const dark  = hsl2hex(h, s,           0.45);
-    const light = hsl2hex(h, s * (2 / 3), 0.82);
-    const mid   = baseHex;
-    return { dark, light, mid };
+    const [, C, h] = hex2oklch(baseHex);
+    return { dark: ok(0.45, C, h), light: ok(0.82, C * (2 / 3), h), mid: baseHex };
   }
 
   function giltStops(baseHex, intense) {
@@ -85,11 +100,13 @@
   // rail in the app — the main card, the chapter drawer, fullscreen's
   // party accent — switches together the moment the window crosses the
   // breakpoint, matching the corresponding CSS breakpoint on .c-accent.
+  // Interpolating "in oklab" (not the gradient's default sRGB space) keeps
+  // the sweep perceptually even instead of dipping through a muddy mid-mix.
   function giltRail(baseHex, angle) {
     const intense = typeof matchMedia === 'function' && matchMedia('(min-width: 1024px)').matches;
     const { dark, light, mid } = giltStops(baseHex, intense);
     const a = angle == null ? 100 : angle;
-    return `linear-gradient(${a}deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
+    return `linear-gradient(in oklab ${a}deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
   }
 
   // Label colour. Deep lacquer categories cannot carry 11px text on #1a1612,
