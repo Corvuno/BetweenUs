@@ -568,7 +568,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-card::before,.party-card::after{content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;border-color:var(--gold);opacity:.32;filter:blur(.4px);pointer-events:none;}
 .party-card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
 .party-card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
-.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:3;transition:background .5s ease;-webkit-mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);}
+.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;transition:background .5s ease;-webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);}
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.75rem,1.4vw,.9rem);letter-spacing:.15em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}

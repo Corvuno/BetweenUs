@@ -104,7 +104,7 @@ function updatePartyDisplay(card) {
   }
   const color = levelColor(card.level);
   if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
-  if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=color; }
+  if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
   if (pq) { pq.style.opacity='0'; setTimeout(()=>{ pq.textContent=translateQ(card); pq.style.opacity='1'; },120); }
   if (pn) pn.textContent = partyRomanCount(state.currentIndex+1, state.visibleDeck.length);
 }
@@ -513,8 +513,8 @@ function runPartySummary() {
   const pn = document.getElementById('party-number');
   const pa = document.getElementById('party-accent');
   const chColor = model.last ? model.last.color : 'var(--gold-l)';
-  if (pa) pa.style.background = chColor;
-  if (pl) { pl.textContent = state.lang==='nl' ? 'De set is afgerond' : 'The set is finished'; pl.style.color = chColor; }
+  if (pa) pa.style.background = model.last ? giltRail(chColor) : chColor;
+  if (pl) { pl.textContent = state.lang==='nl' ? 'De set is afgerond' : 'The set is finished'; pl.style.color = model.last ? labelColor(chColor) : chColor; }
   if (pn) pn.textContent = '— end —';
   if (pq) {
     pq.innerHTML = `<div class="pes-wrap">`
