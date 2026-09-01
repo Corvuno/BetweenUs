@@ -6,7 +6,13 @@
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.2);
   --sq-w:42px;
+  /* one height for every primary/secondary control (Next Card/Summary, the
+     back arrow, menu, the end screen's Hold/Change buttons) — each used to
+     be sized by its own padding, so font size and label length pushed the
+     two screens' bars out of alignment with each other. */
+  --control-h:56px;
 }
+@media(min-width:1024px){:root{--control-h:64px;}}
 html,body{height:100%;}
 /* a near-miss swiping a sheet/drawer closed used to bounce past it onto the
    page underneath and get read as a pull-to-refresh — this is the actual
@@ -305,16 +311,16 @@ body::before{
 .progress-num-sep{color:color-mix(in srgb, var(--gold) 50%, transparent);}
 .progress-num-total{color:color-mix(in srgb, var(--cream) 45%, transparent);}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
-.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
+.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:var(--control-h);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:rgba(201,168,76,.4);color:var(--cream);}
 .btn-sq svg{width:15px;height:15px;}
 /* deco primary: a faint warm-gold wash rather than a flat fill, with a
    fleuron (U+2726) either side of the label instead of an icon */
-.btn-draw{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;
+.btn-draw{flex:1;height:var(--control-h);display:flex;align-items:center;justify-content:center;gap:12px;
   background:linear-gradient(180deg,rgba(221,164,116,.14),rgba(201,168,76,.03));
   border:1px solid rgba(201,168,76,.5);color:#e8c97a;
   font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
-  padding:13px 0;cursor:pointer;transition:all .2s;text-align:center;
+  cursor:pointer;transition:all .2s;text-align:center;
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 .btn-draw:hover{background:rgba(221,164,116,.2);border-color:rgba(232,201,122,.85);color:var(--cream);}
 .btn-draw:active{transform:scale(.98);}
@@ -341,7 +347,7 @@ body::before{
    after a settings change reset the deck. Sized up (no glow — see change
    log) to make this the obvious "start" tap instead of looking like every
    other "next" tap. */
-.btn-draw--start{padding-top:15px;padding-bottom:15px;font-size:.82rem;letter-spacing:.16em;}
+.btn-draw--start{font-size:.82rem;letter-spacing:.16em;}
 /* pressed-and-holding feedback on the end-of-draw button */
 .btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
@@ -409,15 +415,16 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .es-star{color:var(--gold-l);font-size:.8rem;}
 .es-actions{position:relative;width:100%;padding:0 30px 34px;display:flex;flex-direction:column;
   align-items:center;gap:11px;}
-/* Same box model as .btn-draw (Next Card) — 13px 0 padding, not a fixed
-   height — so the two bars read as the same control in different states
-   instead of two different heights. font-size/letter-spacing match too;
-   only the colour (--es-chapter instead of the fixed gold) differs. */
-.es-hold{--es-chapter:var(--gold);position:relative;overflow:hidden;width:100%;
+/* Same box model as .btn-draw (Next Card) — var(--control-h), not each
+   sized by its own padding — so the two bars read as the same control in
+   different states instead of two different heights. font-size/letter-
+   spacing match too; only the colour (--es-chapter instead of the fixed
+   gold) differs. */
+.es-hold{--es-chapter:var(--gold);position:relative;overflow:hidden;width:100%;height:var(--control-h);
   border:1px solid var(--es-chapter);border-radius:2px;
   background:color-mix(in srgb, var(--es-chapter) 16%, transparent);
   color:var(--cream);font-family:'Jost',sans-serif;font-size:.78rem;font-weight:400;letter-spacing:.15em;
-  text-transform:uppercase;padding:13px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;
+  text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;
   -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;
   -webkit-touch-callout:none;touch-action:manipulation;}
 .es-hold:active{transform:translateY(1px);}
@@ -429,9 +436,10 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   pointer-events:none;}
 .es-hold-fill.filling{transition:width .6s linear;width:100%;}
 .es-hold-fill.cancelling{transition:width .15s ease;width:0;}
-.es-change{width:100%;height:52px;background:transparent;border:1px solid rgba(201,168,76,.34);
+.es-change{width:100%;height:var(--control-h);background:transparent;border:1px solid rgba(201,168,76,.34);
   border-radius:2px;color:var(--cream);font-family:'Jost',sans-serif;font-size:.72rem;font-weight:300;
   letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:background .2s;
+  display:flex;align-items:center;justify-content:center;
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 .es-change:active{transform:translateY(1px);background:rgba(201,168,76,.08);}
 .es-export{width:100%;height:44px;background:none;border:none;
@@ -587,7 +595,11 @@ body.showing-end-screen .end-screen.in{opacity:1;}
    without it, turning Twist on/off changes this element's height, and
    since .party-inner centers the whole column, the question above jumps
    to re-center. Reserving the space means nothing above ever has to move. */
-.party-number{font-family:'Jost',sans-serif;font-size:clamp(.6875rem,1vw,.78rem);letter-spacing:.14em;color:var(--muted);opacity:.38;
+/* roman numerals in a thin sans at heavy tracking turn I/II/III into bare
+   pipes — the serif's own letterforms do the separating that tracking was
+   trying (and failing) to do, so this needs Cormorant Garamond, not Jost,
+   and much lighter tracking. */
+.party-number{font-family:'Cormorant Garamond',serif;font-size:clamp(.8125rem,1.1vw,.9rem);letter-spacing:.14em;color:var(--muted);opacity:.38;
   padding-bottom:2px;order:2;transition:color .2s ease;min-height:2.9rem;display:flex;align-items:center;justify-content:center;}
 /* the actual illegibility problem: this wraps to two lines for most
    modifiers and had no line-height of its own, inheriting the browser
@@ -698,7 +710,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 @media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.card-number.twist{font-size:.92rem;}}
 @media(min-width:768px){
   .app{max-width:640px;}.title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.card-number{font-size:.8rem;}.card-number.twist{font-size:1.02rem;}
-  .btn-sq{width:48px;height:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;padding:16px 0;}
+  .btn-sq{width:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;}
   :root{--sq-w:48px;}
   .btn-fullscreen{font-size:.8rem;padding:15px 8px;}
   .limit-btn{font-size:.8rem;padding:15px 10px;}.mode-btn{font-size:.82rem;padding:15px 18px;}
@@ -706,7 +718,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 }
 @media(min-width:1024px){
   .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.card-number.twist{font-size:1.1rem;}
-  .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;height:52px;}.btn-draw{font-size:.88rem;padding:16px 0;}
+  .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
   :root{--sq-w:52px;}
   /* chrome sized for a 364px mobile card reads as thin/empty at 720px —
      scale the rail, corner brackets and star to match (see reference table
@@ -1100,7 +1112,7 @@ body.tok-taught .tok-hint{display:none;}
   .party-inner{align-items:flex-start;text-align:left;padding:0 42px;gap:22px;}
   .party-level{font-size:.625rem;font-weight:600;letter-spacing:.3em;}
   .party-question{font-size:clamp(1.625rem,8vw,2.125rem);line-height:1.34;text-align:left;}
-  .party-number{font-size:.625rem;letter-spacing:.28em;color:#7a6e60;}
+  .party-number{color:#7a6e60;}
   .party-hint--desktop{display:none;}
   .party-hint--phone{display:inline;}
   .party-hint{font-size:.5rem;letter-spacing:.1em;color:rgba(240,232,216,.3);}
@@ -1157,7 +1169,7 @@ body.tok-taught .tok-hint{display:none;}
   .party-level{position:absolute;top:44px;left:44px;letter-spacing:.3em;}
   .party-question{position:absolute;inset:0;display:flex;align-items:center;
     text-align:left;padding:44px 44px 40px;font-size:clamp(1.6875rem,2.4vw,2.375rem);line-height:1.32;}
-  .party-number{position:absolute;bottom:20px;left:44px;letter-spacing:.24em;color:#7a6e60;}
+  .party-number{position:absolute;bottom:20px;left:44px;color:#7a6e60;}
   .party-corner-hint{display:block;position:absolute;bottom:44px;right:44px;z-index:2;
     font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
     color:rgba(240,232,216,.3);}
@@ -1240,8 +1252,8 @@ body.tok-taught .tok-hint{display:none;}
   .card-number.twist{font-size:1.2rem;}
   .card-level{font-size:1.05rem;letter-spacing:.2em;}
   .tok{font-size:.85rem;}
-  .btn-draw{font-size:.9rem;padding:16px 0;}
-  .btn-sq{width:54px;height:54px;}
+  .btn-draw{font-size:.9rem;}
+  .btn-sq{width:54px;}
   :root{--sq-w:54px;}
   .pick-toggle,.btn-fullscreen,.lang-toggle--inline .lang-opt{font-size:.85rem;}
   .toggle-btn{font-size:.88rem;padding:15px 15px;}

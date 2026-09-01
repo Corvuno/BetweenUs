@@ -31,20 +31,18 @@
     return '#' + f(0) + f(8) + f(4);
   };
 
-  // Cold hues (blue → violet) get a gentler sweep — a full-strength sweep on
-  // lapis or amethyst reads as harsh plastic, not metal. Warm hues (brass,
-  // amber, coral, rose gold, lacquer) take the full sweep.
-  const isCold = (h) => h >= 190 && h <= 300;
-
+  // Absolute lightness targets rather than multipliers of the base's own
+  // L: a metal edge needs its dark end to actually read as shadow and its
+  // highlight to actually read as light catching metal, regardless of
+  // whether the base hue itself happens to be dark or pale. Chroma is
+  // held on the dark end (a shadow is a darker version of the same
+  // colour) and cut by a third on the highlight (a light hitting metal
+  // desaturates, it doesn't just get brighter — full-chroma at 82%
+  // lightness reads as a bright version of the hue, not as light).
   function giltStops(baseHex) {
-    const [h, s, l] = hex2hsl(baseHex);
-    const cold  = isCold(h);
-    const down  = cold ? 0.78 : 0.66;   // dark stop  — L multiplier
-    const up    = cold ? 1.42 : 1.62;   // light stop — L multiplier
-    const chrom = cold ? 0.90 : 1.00;   // light stop desaturates slightly on cold
-
-    const dark  = hsl2hex(h, Math.min(1, s * 1.05), Math.max(0.06, l * down));
-    const light = hsl2hex(h, s * chrom,             Math.min(0.86, l * up));
+    const [h, s] = hex2hsl(baseHex);
+    const dark  = hsl2hex(h, s,           0.45);
+    const light = hsl2hex(h, s * (2 / 3), 0.82);
     const mid   = baseHex;
     return { dark, light, mid };
   }

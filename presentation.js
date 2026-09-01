@@ -23,7 +23,9 @@ function toRoman(n) {
 // not to compete with it — see FULLSCREEN.md.
 function partyRomanCount(n, total) {
   const fmt = total > 12 ? String : toRoman;
-  return `${fmt(n)} / ${fmt(total)}`;
+  // hair spaces (U+200A), not full spaces — a plain slash still separates
+  // cleanly once the numerals themselves are in a serif (see .party-number).
+  return `${fmt(n)} / ${fmt(total)}`;
 }
 
 // `currentOverride`, when given, replaces state.currentIndex for this render
