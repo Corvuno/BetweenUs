@@ -34,14 +34,19 @@
   // Absolute lightness targets rather than multipliers of the base's own
   // L: a metal edge needs its dark end to actually read as shadow and its
   // highlight to actually read as light catching metal, regardless of
-  // whether the base hue itself happens to be dark or pale. Chroma is
-  // held on the dark end (a shadow is a darker version of the same
-  // colour) and cut by a third on the highlight (a light hitting metal
-  // desaturates, it doesn't just get brighter — full-chroma at 82%
-  // lightness reads as a bright version of the hue, not as light).
+  // whether the base hue itself happens to be dark or pale.
+  //
+  // 0.45 for the dark stop (an earlier pass here) still read as a visible
+  // mid-tone film against the card face (--card-bg is ~0.09 L) — nowhere
+  // near "disappearing into the card". 0.15 sits close enough to the card
+  // background that the dark end genuinely blends into it, with chroma
+  // cut too (a near-black shadow reads as neutral, not as a dark version
+  // of the hue). The highlight keeps its own chroma cut by a third — full
+  // saturation at 82% L reads as a bright version of the colour, not as
+  // light catching metal.
   function giltStops(baseHex) {
     const [h, s] = hex2hsl(baseHex);
-    const dark  = hsl2hex(h, s,           0.45);
+    const dark  = hsl2hex(h, s * 0.55,    0.15);
     const light = hsl2hex(h, s * (2 / 3), 0.82);
     const mid   = baseHex;
     return { dark, light, mid };

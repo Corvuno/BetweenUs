@@ -462,6 +462,14 @@ function showEndScreen() {
   if (chips)    chips.innerHTML = esChipsHTML(model);
   if (favs)     favs.innerHTML = esFavsHTML(model);
   if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
+  // Next Card's own position is fixed (header/token/preset/card/counter
+  // are all fixed-height above it), but the end screen's body content
+  // (sentence + chip cloud + favourites line) varies with what got drawn,
+  // so .es-actions landed at a different height each time — sometimes
+  // above Next Card's spot, sometimes below. Record where Next Card sits
+  // now, before it's hidden, so it can be reproduced exactly below.
+  const nextBtn = document.getElementById('btn-next');
+  const nextTop = nextBtn ? nextBtn.getBoundingClientRect().top : null;
   document.body.classList.add('showing-end-screen');
   // The display:none->flex swap happens the instant the class above is
   // added, landing at opacity:0 (see styles.css) with .in not yet present.
@@ -473,6 +481,19 @@ function showEndScreen() {
   // flipToCard() already uses to restart the accent-bloom animation.
   const es = document.getElementById('endScreen');
   if (es) { es.classList.remove('in'); void es.offsetHeight; es.classList.add('in'); }
+  // Now that the end screen has laid out with its actual content, pad
+  // .es-body up to whatever height puts .es-actions exactly where Next
+  // Card was recorded above — never shrinks it (a long chip cloud is
+  // allowed to push the actions down further; it just can't land higher
+  // than Next Card's spot).
+  const esBody = document.querySelector('.es-body');
+  const esActions = document.querySelector('.es-actions');
+  if (esBody && esActions && nextTop != null) {
+    esBody.style.minHeight = '';
+    const actionsTop = esActions.getBoundingClientRect().top;
+    const delta = nextTop - actionsTop;
+    if (delta > 0) esBody.style.minHeight = (esBody.getBoundingClientRect().height + delta) + 'px';
+  }
   // Every tick reads as passed on the (now hidden) counter, none current —
   // keeps it correct for the instant hideEndScreen() reveals it again.
   renderProgress(state.visibleDeck.length);
@@ -480,6 +501,8 @@ function showEndScreen() {
 function hideEndScreen() {
   const es = document.getElementById('endScreen');
   if (es) es.classList.remove('in');
+  const esBody = document.querySelector('.es-body');
+  if (esBody) esBody.style.minHeight = '';
   document.body.classList.remove('showing-end-screen');
 }
 
