@@ -1128,11 +1128,15 @@ body.tok-taught .tok-hint{display:none;}
      children position absolute against .party-card, the nearest
      positioned ancestor, skipping over it entirely. */
   .party-inner{display:block;position:static;padding:0;}
-  .party-level{position:absolute;top:22px;left:44px;letter-spacing:.3em;}
+  /* 44px clears the top-left/bottom-right corner brackets (40px square,
+     32px inset — their lines sit at exactly 32px from each edge), rather
+     than the 22/20px this shipped with, which put the label's and hint's
+     own line-height right on top of the bracket's stroke. */
+  .party-level{position:absolute;top:44px;left:44px;letter-spacing:.3em;}
   .party-question{position:absolute;inset:0;display:flex;align-items:center;
     text-align:left;padding:44px 44px 40px;font-size:clamp(1.6875rem,2.4vw,2.375rem);line-height:1.32;}
   .party-number{position:absolute;bottom:20px;left:44px;letter-spacing:.24em;color:#7a6e60;}
-  .party-corner-hint{display:block;position:absolute;bottom:20px;right:44px;z-index:2;
+  .party-corner-hint{display:block;position:absolute;bottom:44px;right:44px;z-index:2;
     font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
     color:rgba(240,232,216,.3);}
   /* drawers become centered panels */
