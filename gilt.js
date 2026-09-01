@@ -31,25 +31,45 @@
     return '#' + f(0) + f(8) + f(4);
   };
 
-  // Absolute lightness targets rather than multipliers of the base's own
-  // L: a metal edge needs its dark end to actually read as shadow and its
-  // highlight to actually read as light catching metal, regardless of
-  // whether the base hue itself happens to be dark or pale.
-  //
-  // 0.45 for the dark stop (an earlier pass here) still read as a visible
-  // mid-tone film against the card face (--card-bg is ~0.09 L) — nowhere
-  // near "disappearing into the card". 0.15 sits close enough to the card
-  // background that the dark end genuinely blends into it, with chroma
-  // cut too (a near-black shadow reads as neutral, not as a dark version
-  // of the hue). The highlight keeps its own chroma cut by a third — full
-  // saturation at 82% L reads as a bright version of the colour, not as
-  // light catching metal.
-  function giltStops(baseHex) {
+  // Cold hues (blue → violet) get a gentler sweep — a full-strength sweep on
+  // lapis or amethyst reads as harsh plastic, not metal. Warm hues (brass,
+  // amber, coral, rose gold, lacquer) take the full sweep. This is the
+  // ORIGINAL soft derivation, and stays the only one below 1024px — two
+  // earlier passes here pushed it toward absolute lightness targets (45%,
+  // then 15%) chasing a "muddy on phone" complaint that turned out to be
+  // the wrong fix: the soft sweep was correct on phone all along. A hard
+  // high-contrast strip that narrow just reads as a warning bar. See
+  // giltRail() below for where the two derivations actually split.
+  const isCold = (h) => h >= 190 && h <= 300;
+
+  function giltStopsSoft(baseHex) {
+    const [h, s, l] = hex2hsl(baseHex);
+    const cold  = isCold(h);
+    const down  = cold ? 0.78 : 0.66;   // dark stop  — L multiplier
+    const up    = cold ? 1.42 : 1.62;   // light stop — L multiplier
+    const chrom = cold ? 0.90 : 1.00;   // light stop desaturates slightly on cold
+
+    const dark  = hsl2hex(h, Math.min(1, s * 1.05), Math.max(0.06, l * down));
+    const light = hsl2hex(h, s * chrom,             Math.min(0.86, l * up));
+    const mid   = baseHex;
+    return { dark, light, mid };
+  }
+
+  // Absolute lightness targets, not multipliers of the base's own L — at
+  // 1024px+ (desktop) the card and its rail are wide enough to carry a real
+  // hard-edged metal sweep: dark end at 45% L with chroma held, highlight
+  // at 82% L with chroma cut by a third (full saturation at that lightness
+  // reads as a bright version of the hue, not as light catching metal).
+  function giltStopsIntense(baseHex) {
     const [h, s] = hex2hsl(baseHex);
-    const dark  = hsl2hex(h, s * 0.55,    0.15);
+    const dark  = hsl2hex(h, s,           0.45);
     const light = hsl2hex(h, s * (2 / 3), 0.82);
     const mid   = baseHex;
     return { dark, light, mid };
+  }
+
+  function giltStops(baseHex, intense) {
+    return intense ? giltStopsIntense(baseHex) : giltStopsSoft(baseHex);
   }
 
   // Five-stop sweep: dark → mid → light → mid → dark, off-axis at 100deg so the
@@ -59,8 +79,15 @@
   // narrow band keeps a visible gleam at any rail length. angle defaults to
   // 100deg (horizontal card rails); the chapter drawer's vertical rail passes
   // 190deg instead.
+  //
+  // Same colour, different confidence: soft below 1024px, hard-edged
+  // intense above it, decided here rather than by each caller so every
+  // rail in the app — the main card, the chapter drawer, fullscreen's
+  // party accent — switches together the moment the window crosses the
+  // breakpoint, matching the corresponding CSS breakpoint on .c-accent.
   function giltRail(baseHex, angle) {
-    const { dark, light, mid } = giltStops(baseHex);
+    const intense = typeof matchMedia === 'function' && matchMedia('(min-width: 1024px)').matches;
+    const { dark, light, mid } = giltStops(baseHex, intense);
     const a = angle == null ? 100 : angle;
     return `linear-gradient(${a}deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
   }

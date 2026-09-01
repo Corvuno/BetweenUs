@@ -726,8 +726,15 @@ body.fixed-seq-mode .screen-row{display:none;}
   :root{--sq-w:52px;}
   /* chrome sized for a 364px mobile card reads as thin/empty at 720px —
      scale the rail, corner brackets and star to match (see reference table
-     in the design log: mobile 3px/24px/20px/.9rem -> desktop 4px/30px/26px/1.05rem). */
-  .c-accent{height:4px;}
+     in the design log: mobile 3px/24px/20px/.9rem -> desktop 4px/30px/26px/1.05rem).
+     Rail height is 5px, not 4 — desktop also switches to the "intense"
+     hard-edged gilt.js derivation (see giltRail()), which reads as a
+     warning bar at anything thinner. filter:none is explicit, not
+     defensive: nothing sets a filter on .c-accent, but the previous
+     "muddy" back-and-forth was chasing a phantom blur that was never
+     really there — spelling it out here so a future pass doesn't add one
+     by mistake while debugging the same complaint again. */
+  .c-accent{height:5px;filter:none;}
   .card::before,.card::after{width:30px;height:30px;}
   .card::before{top:26px;left:26px;}
   .card::after{bottom:26px;right:26px;}
