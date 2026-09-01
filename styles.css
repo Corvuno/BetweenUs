@@ -647,7 +647,11 @@ body.fixed-seq-mode .screen-row{display:none;}
 .screen-row{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;
   width:calc(100% - 108px);align-self:center;}
 .pick-toggle{
-  background:transparent;border:none;
+  /* border-top is NOT reset here — .screen-tab/.screen-tab--three (above)
+     set it to that tab's own hairline colour, and this rule sits later in
+     the file at equal specificity, so a bare "border:none" here silently
+     erased it. Only reset to the sides that don't carry the rule. */
+  background:transparent;border-right:none;border-bottom:none;border-left:none;
   font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
   padding:11px 0 13px;cursor:pointer;transition:all .2s;white-space:nowrap;
   display:inline-flex;align-items:center;justify-content:center;gap:4px;width:100%;
