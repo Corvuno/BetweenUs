@@ -110,7 +110,8 @@ function setCardDisplay(card) {
     }
     if (numEl)    numEl.textContent = '— — —';
     if (nextBtn) {
-      nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
+      const lbl = nextBtn.querySelector('.btn-draw-label');
+      if (lbl) lbl.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
       // nothing's been dealt yet (fresh load, or a settings change just
       // reset the hand) — make this the obvious "start" tap, not just
       // another "next" tap.
@@ -132,7 +133,8 @@ function setCardDisplay(card) {
   if (qEl)   qEl.textContent = translateQ(card);
   if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   if (nextBtn) {
-    nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    const lbl = nextBtn.querySelector('.btn-draw-label');
+    if (lbl) lbl.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
   }
   // Update party display

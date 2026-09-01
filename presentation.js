@@ -361,6 +361,8 @@ function updateDrawMore() {
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
+  const nextLbl = nextBtn.querySelector('.btn-draw-label');
+  if (!nextLbl) return;
 
   if (atSummary) {
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
@@ -369,13 +371,13 @@ function updateDrawMore() {
     // needs the hold gesture — the last card of a hand still goes through this
     // screen first, never a one-tap shortcut around it.
     nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
-    nextBtn.textContent = state.lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
+    nextLbl.textContent = state.lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
   } else {
     nextBtn.classList.remove('hold-mode');
     // On the last card, the tap ahead lands on the summary, not another
     // card — say so, instead of promising "Next Card" and surprising people.
     const atLastCard = state.currentIndex >= 0 && state.currentIndex === state.visibleDeck.length - 1;
-    nextBtn.textContent = atLastCard
+    nextLbl.textContent = atLastCard
       ? (state.lang === 'nl' ? 'Overzicht' : 'Summary')
       : state.currentIndex >= 0 ? (state.lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (state.lang === 'nl' ? 'Trek kaart' : 'Draw Card');
   }
@@ -459,11 +461,20 @@ function showEndScreen() {
   if (favs)     favs.innerHTML = esFavsHTML(model);
   if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
   document.body.classList.add('showing-end-screen');
+  // The display:none->flex swap happens the instant the class above is
+  // added, with .in not yet present — opacity:0 (see styles.css) — so the
+  // fade-in has a real starting point to animate from once .in lands a
+  // frame later, instead of both landing in the same paint and skipping
+  // the transition entirely.
+  const es = document.getElementById('endScreen');
+  if (es) { es.classList.remove('in'); requestAnimationFrame(() => es.classList.add('in')); }
   // Every tick reads as passed on the (now hidden) counter, none current —
   // keeps it correct for the instant hideEndScreen() reveals it again.
   renderProgress(state.visibleDeck.length);
 }
 function hideEndScreen() {
+  const es = document.getElementById('endScreen');
+  if (es) es.classList.remove('in');
   document.body.classList.remove('showing-end-screen');
 }
 
