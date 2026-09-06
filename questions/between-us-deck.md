@@ -172,7 +172,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Is there a philosophy or teaching you've borrowed from, without signing up to all of it?
 5. When did you last feel part of something larger — and what triggered it?
 6. How near has death actually come to you?
-7. Who are you overdue to thank — and what for?
+7. Who did something special for you in your recent past that you did not properly thank them for yet.
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
 10. Have you ever tried to reach something through your body — breath, fasting, dance, stillness?

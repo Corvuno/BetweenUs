@@ -185,7 +185,7 @@ const NEWDECK_CARDS = [
   { level: "spirit", question: "Is there a philosophy or teaching you've borrowed from, without signing up to all of it?", nl: "Is er een filosofie of leer waar je uit put, zonder je er helemaal aan te verbinden?" },
   { level: "spirit", question: "When did you last feel part of something larger — and what triggered it?", nl: "Wanneer voelde jij je voor het laatst onderdeel van iets dat groter was dan jezelf?" },
   { level: "spirit", question: "How near has death actually come to you?", nl: "De dood kwam dichterbij dan je lief was. Wanneer?" },
-  { level: "spirit", question: "Who are you overdue to thank — and what for?", nl: "Wie zou je allang bedankt moeten hebben — en waarvoor?" },
+  { level: "spirit", question: "Who did something special for you in your recent past that you did not properly thank them for yet.", nl: "Wie deed onlangs iets bijzonders voor je waar je diegene nog niet goed voor hebt bedankt?" },
   { level: "spirit", question: "What do you hope is true, even if you doubt it?", nl: "Wat hoop je dat waar is, ook al twijfel je eraan?" },
   { level: "spirit", question: "When were you last completely present — nothing to fix, nothing to plan?", nl: "Wanneer was je voor het laatst volledig aanwezig — niets op te lossen, niets te plannen?" },
   { level: "spirit", question: "Have you ever tried to reach something through your body — breath, fasting, dance, stillness?", nl: "Heb je ooit iets proberen te bereiken via je lichaam — ademhaling, vasten, dans, stilte?" },
