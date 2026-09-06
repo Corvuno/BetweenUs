@@ -129,7 +129,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What did someone once point out about you that you now see everywhere?
 5. Who decided they didn't like you — and did you let it go?
 6. When has having power over someone made you kinder, not crueler?
-7. What's something you used to associate with being "old" that you now just call Tuesday?
+7. What's something that used to take courage that's now just routine for you?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
@@ -244,7 +244,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Quote the sentence your parents repeated — that you now live by, or against.
 6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
 7. When did you stay silent and shouldn't have?
-8. What does money let you avoid — a conversation, a choice, a person?
+8. What can having money make disappear that not having it can't?
 9. What are the outer limits of your compassion?
 10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
