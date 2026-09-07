@@ -64,7 +64,7 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "Does great art excuse a terrible artist — got an example?", nl: "Pleit grote kunst een slecht mens vrij — heb je een voorbeeld?" },
   { level: "culture", question: "When did beauty catch you completely unprepared?" },
   { level: "culture", question: "Take us to the moment a story last made you cry." },
-  { level: "culture", question: "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?", nl: "Is er iets — een boek, serie, nummer — dat je expres niet hebt afgemaakt, omdat je niet wilt dat het voorbij is?" },
+  { level: "culture", question: "What's a story you've stretched out on purpose, just to keep it going a little longer?", nl: "Welk verhaal heb je expres uitgerekt, gewoon om het nog even te laten duren?" },
 
   // ─── LIFE ───
   { level: "life", question: "Walk me through your first thirty minutes after waking — the real version.", nl: "Je ochtend begint meestal met..." },

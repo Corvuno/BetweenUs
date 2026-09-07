@@ -50,7 +50,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Does great art excuse a terrible artist — got an example?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
-12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
+12. What's a story you've stretched out on purpose, just to keep it going a little longer?
 
 ## Life
 1. Walk me through your first thirty minutes after waking — the real version.
