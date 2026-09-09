@@ -188,7 +188,7 @@ const NEWDECK_CARDS = [
   { level: "spirit", question: "Who did something special for you in your recent past that you did not properly thank them for yet.", nl: "Wie deed onlangs iets bijzonders voor je waar je diegene nog niet goed voor hebt bedankt?" },
   { level: "spirit", question: "What do you hope is true, even if you doubt it?", nl: "Wat hoop je dat waar is, ook al twijfel je eraan?" },
   { level: "spirit", question: "When were you last completely present — nothing to fix, nothing to plan?", nl: "Wanneer was je voor het laatst volledig aanwezig — niets op te lossen, niets te plannen?" },
-  { level: "spirit", question: "Have you ever tried to reach something through your body — breath, fasting, dance, stillness?", nl: "Heb je ooit iets proberen te bereiken via je lichaam — ademhaling, vasten, dans, stilte?" },
+  { level: "spirit", question: "What physical practice has brought you closest to something spiritual?", nl: "Welke fysieke praktijk heeft je het dichtst bij iets spiritueels gebracht?" },
   { level: "spirit", question: "A place that's sacred to you..." },
   { level: "spirit", question: "The closest thing I have to a ritual is...", nl: "Een ritueel dat ongemerkt belangrijk voor je werd..." },
 
@@ -442,7 +442,7 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
   { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
   { level: "flesh", question: "What makes you feel completely safe with someone sexually?" },
-  { level: "flesh", question: "In the moment, how do you make what you want known — words, hands, or just taking it?" },
+  { level: "flesh", question: "What's something you've learned about a person just from the way they touch you?" },
   { level: "flesh", question: "How much do you enjoy making someone wait before you touch them?" },
 
   // ─── CARNAL ───

@@ -175,7 +175,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Who did something special for you in your recent past that you did not properly thank them for yet.
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
-10. Have you ever tried to reach something through your body — breath, fasting, dance, stillness?
+10. What physical practice has brought you closest to something spiritual?
 11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
@@ -429,7 +429,7 @@ The questions come first, category by category. The full change log is at the bo
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. What makes you feel completely safe with someone sexually?
-11. In the moment, how do you make what you want known — words, hands, or just taking it?
+11. What's something you've learned about a person just from the way they touch you?
 12. How much do you enjoy making someone wait before you touch them?
 
 ## Carnal 🔞
@@ -503,6 +503,13 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Flesh** — "Tell me about the best pickup line — good or bad — that's ever actually worked on you." (proposed for Flesh 11 in place of the "how do you make what you want known" mechanics card in v6.86; owner kept it in reserve, held for a future slot rather than used here)
+- **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
+- **Self** — "What's something you used to associate with being \"old\" that you now just call Tuesday?" (displaced from Self 7 in v6.86, owner-approved; too close to Life 9, and the negative "avoid old age" framing undersold it)
+- **Values** — "What does money let you avoid — a conversation, a choice, a person?" (displaced from Values 8 in v6.86, owner-approved; the emdash list narrowed the answer before the player got there)
+- **Culture** — "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?" (displaced from Culture 12 in v6.86, owner-approved; "song" doesn't have an unfinished state the way a book or show does, so the premise only half-worked)
+- **Spirit** — "Have you ever tried to reach something through your body — breath, fasting, dance, stillness?" (displaced from Spirit 10 in v6.86, owner-approved; the emdash list of practices narrowed the answer)
+- **Flesh** — "In the moment, how do you make what you want known — words, hands, or just taking it?" (displaced from Flesh 11 in v6.86, owner-rejected; wanted insight-into-a-person/story/theory leads instead of a mechanics-of-communication question)
 - **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.83, owner-approved; kept the dichotomy, added a concrete-example clause rather than replacing it outright)
 - **Home** — "Where would you live if nothing was stopping you — and what would you live in?" (displaced from Home 10 in v6.83, owner-approved; too close to Home 8's kitchen-window card, both purely aspirational)
 - **Attract** — "You tell yourself you have a type. Who do you actually keep ending up with?" (displaced from Attract 4 in v6.83, owner-approved; reworded to a single question with the "does that correspond" turn instead of two sentences)
@@ -672,6 +679,39 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.86 — six owner-decided swaps from the wording-refinement pass
+- **Spirit 7** → *"Who did something special for you in your recent past that you did not
+  properly thank them for yet."* Replaces *"Who are you overdue to thank — and what
+  for?"* — owner's own rewrite.
+- **Self 7** → *"What's something that used to take courage that's now just routine for
+  you?"* Replaces *"What's something you used to associate with being 'old' that you now
+  just call Tuesday?"* — near-duplicate of Life 9, and the negative "avoid old age"
+  framing undersold it; positive-spin alternative picked by the owner.
+- **Values 8** → *"What can having money make disappear that not having it can't?"*
+  Replaces *"What does money let you avoid — a conversation, a choice, a person?"* — the
+  emdash list narrowed the answer to three named categories before the player got there.
+- **Culture 12** → *"What's a story you've stretched out on purpose, just to keep it going
+  a little longer?"* Replaces *"Is there a piece of culture — book, show, song — you've
+  deliberately not finished, because you don't want it to be over?"* — "song" doesn't
+  have an unfinished state the way a book or show does, so the premise only half-worked.
+- **Spirit 10** → *"What physical practice has brought you closest to something
+  spiritual?"* Replaces *"Have you ever tried to reach something through your body —
+  breath, fasting, dance, stillness?"* — same emdash-list narrowing problem as Values 8.
+- **Flesh 11** → *"What's something you've learned about a person just from the way they
+  touch you?"* Replaces *"In the moment, how do you make what you want known — words,
+  hands, or just taking it?"* — owner wanted Flesh 11 to lead with insight into a person,
+  a story, or a theory, not a mechanics-of-communication question. The pickup-line
+  alternative from the same round was kept on the bench for a future slot rather than
+  used here.
+
+A pass flagged every card in the deck with an emdash followed by a short list of options
+(book/show/song, breath/fasting/dance/stillness, words/hands/taking it, and similar).
+Culture 12 and Spirit 10 above came out of that pass; Culture, 12's sibling issue
+("book, show, song") and Flesh 11 were addressed the same round. Carnal 12's list
+("written, told, or visual") was judged to be doing real scope-setting rather than
+narrowing, and Bare 6's list ("relationships, flings, one-night stands") is definitional
+rather than narrowing — both left as-is, owner-confirmed.
 
 ## Patch v6.85 — third batch from the "version one" review: eight owner-approved swaps
 Owner picked donor slots for eight of the Tier-1 candidates from the ranked list, each
