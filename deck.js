@@ -184,6 +184,7 @@ function initDeck(isContinuation) {
   state.skipDealAnim = !!isContinuation;
   state.skippedCards.clear();
   state.loggedQuestions.clear();
+  state.handStarred.clear();
   if (orderedSoloLevel()) {
     if (state.colbertPrevLimit === null) state.colbertPrevLimit = state.cardLimit;   // remember to restore later
     state.cardLimit = null;

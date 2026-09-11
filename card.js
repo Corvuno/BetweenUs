@@ -75,8 +75,8 @@ async function toggleFavourite() {
   const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
   if (!card) return;
   const idx = state.favourites.findIndex(f => f.question === card.question);
-  if (idx >= 0) state.favourites.splice(idx, 1);
-  else state.favourites.push({ question: card.question, level: card.level });
+  if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
+  else { state.favourites.push({ question: card.question, level: card.level }); state.handStarred.add(card.question); }
   try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); } catch(e) {}
   updateStarUI();
   renderFavourites();

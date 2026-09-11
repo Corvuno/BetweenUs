@@ -418,8 +418,10 @@ function computeEndScreenModel() {
   const first = visited[0] || null;
   const last = visited[visited.length - 1] || first;
 
-  const favCount = state.visibleDeck.filter(c =>
-    (state.favourites || []).some(f => f.question === c.question)).length;
+  // Only cards actually starred THIS hand — a card that was already a
+  // favourite from an earlier session shouldn't show up here just because
+  // it happened to get redrawn without anyone tapping its star this time.
+  const favCount = state.visibleDeck.filter(c => state.handStarred.has(c.question)).length;
 
   return { chips, moved: visited.length > 1, stayed: visited.length === 1, first, last, favCount };
 }
