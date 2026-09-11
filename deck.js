@@ -475,7 +475,7 @@ function nextCard() {
       _nextCardBase();
       if (action.wasAtEnd) {
         if (state.partyMode) setTimeout(runPartySummary, 250);
-        else                 setTimeout(showSessionSummary, 500);
+        else                 setTimeout(showEndScreen, 500);
       }
       return;
   }

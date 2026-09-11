@@ -383,59 +383,9 @@ function updateDrawMore() {
   }
 };
 
-// ── SESSION SUMMARY ── the in-card end-of-hand message: replaces the card
-// face itself (no separate screen) with the categories touched, a small
-// SVG trace of depth across the hand, and up to three starred cards from it.
-function showSessionSummary() {
-  const isArc = state.randomMode === 'arc';
-  const seen = new Set(), cats = [];
-  state.visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
-  const arcLine = cats.map(l => LEVEL_LABELS[l] || l).join(' · ');
-  const logQ = new Set(state.sessionLog.map(c => c.question));
-  const starred = (state.favourites || []).filter(c => logQ.has(c.question)).slice(0, 3);
-  const accent = document.getElementById('c-accent');
-  if (accent) { accent.style.background = 'var(--gold-l)'; accent.classList.remove('accent-bloom'); void accent.offsetWidth; accent.classList.add('accent-bloom'); }
-  const lvlEl = document.getElementById('card-level');
-  if (lvlEl) {
-    lvlEl.classList.remove('in');
-    lvlEl.textContent = isArc ? (state.lang === 'nl' ? 'Arc afgerond' : 'Arc complete') : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete');
-    lvlEl.style.color = 'var(--gold-l)';
-    void lvlEl.offsetWidth; lvlEl.classList.add('in');
-  }
-  const qEl = document.getElementById('card-question');
-  if (qEl) {
-    qEl.classList.remove('in');
-    let html = `<div class="sic-wrap">`;
-    if (arcLine) {
-      html += `<div class="sic-label">${state.lang === 'nl' ? 'Deze ronde' : 'This round'}</div>`;
-      html += drawRoundTrace(state.visibleDeck);
-      html += `<div class="sic-arc">${arcLine}</div>`;
-    }
-    if (starred.length > 0) {
-      html += `<div class="sic-stars">`;
-      starred.forEach(c => { html += `<div class="sic-star">★ ${esc(translateQ(c))}</div>`; });
-      html += `</div>`;
-    }
-    if (state.fullDeck.length - state.visibleDeck.length <= 0) {
-      html += `<div class="sic-note">${state.lang === 'nl' ? 'Dat waren alle kaarten in deze selectie.' : "That's every card in this selection."}</div>`;
-    }
-    html += `</div>`;
-    qEl.innerHTML = html;
-    void qEl.offsetWidth;
-    qEl.classList.add('in');
-    const arcEl = qEl.querySelector('.sic-arc');
-    if (arcEl) {
-      arcEl.innerHTML = cats.map(l => `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`).join('<span style="opacity:.35"> · </span>');
-    }
-  }
-  clearTwist();
-  const numEl = document.getElementById('card-number');
-  if (numEl) numEl.textContent = '— end —';
-  renderProgress(state.visibleDeck.length);
-}
-
 // Small SVG trace of category depth across the hand — a quick visual read
-// of whether the round stayed shallow, dove deep, or moved around.
+// of whether the round stayed shallow, dove deep, or moved around. Used by
+// fullscreen's runPartySummary() below.
 function drawRoundTrace(cards) {
   if (!cards || cards.length < 2 || cards.length > 48) return '';
   const W = 240, H = 62, PAD = 10;
@@ -447,6 +397,124 @@ function drawRoundTrace(cards) {
        + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
        + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
        + dots + `</svg>`;
+}
+
+// ── End of set — the full-bleed end screen's model. Tallies only THIS
+// hand (state.visibleDeck), not the whole multi-hand session log.
+function computeEndScreenModel() {
+  const drawn = {};
+  state.visibleDeck.forEach(c => { drawn[c.level] = (drawn[c.level] || 0) + 1; });
+
+  const chips = Object.keys(CATEGORIES)
+    .filter(key => drawn[key] > 0)
+    .map(key => ({ label: CATEGORIES[key].label, count: drawn[key], color: CATEGORIES[key].color }));
+
+  // Chapters that actually appeared, in CHAPTERS_META's canonical order —
+  // derived from CATEGORIES[key].chapter, the same field the chapter
+  // drawer itself groups by, so this can't drift from what's on screen there.
+  const visited = Object.keys(CHAPTERS_META)
+    .filter(chId => Object.keys(CATEGORIES).some(key => CATEGORIES[key].chapter === chId && drawn[key] > 0))
+    .map(chId => ({ label: CHAPTERS_META[chId].label, color: CHAPTERS_META[chId].color }));
+  const first = visited[0] || null;
+  const last = visited[visited.length - 1] || first;
+
+  const favCount = state.visibleDeck.filter(c =>
+    (state.favourites || []).some(f => f.question === c.question)).length;
+
+  return { chips, moved: visited.length > 1, stayed: visited.length === 1, first, last, favCount };
+}
+
+const FAV_COUNT_WORDS = ['no','one','two','three','four','five','six','seven','eight','nine','ten',
+  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+
+// "You began at {first} and ended {last}" / "The whole set stayed in {only}"
+// — chapter names carry that chapter's own colour (lifted via labelColor()
+// the same way the chapter drawer lifts After Dark's near-black lacquer).
+function esSentenceHTML(model) {
+  if (!model.first) return '';
+  if (model.stayed) {
+    const c = labelColor(model.first.color);
+    return `The whole set stayed<br>in <span class="es-chapter" style="color:${c}">${esc(model.first.label)}</span>`;
+  }
+  const cf = labelColor(model.first.color), cl = labelColor(model.last.color);
+  return `You began at <span class="es-chapter" style="color:${cf}">${esc(model.first.label)}</span><br>`
+       + `and ended <span class="es-chapter" style="color:${cl}">${esc(model.last.label)}</span>`;
+}
+
+function esChipsHTML(model) {
+  return model.chips.map(c => {
+    const border = `color-mix(in srgb, ${c.color} 50%, transparent)`;
+    const fill   = `color-mix(in srgb, ${c.color} 12%, transparent)`;
+    const countColor = `color-mix(in srgb, ${c.color} 95%, transparent)`;
+    const count = c.count > 1 ? `<span class="es-chip-count" style="color:${countColor}">${c.count}</span>` : '';
+    return `<span class="es-chip" style="border-color:${border};background:${fill}">${esc(c.label)}${count}</span>`;
+  }).join('');
+}
+
+function esFavsHTML(model) {
+  if (!model.favCount) return '';
+  const word = FAV_COUNT_WORDS[model.favCount] !== undefined ? FAV_COUNT_WORDS[model.favCount] : String(model.favCount);
+  const line = model.favCount === 1 ? 'one card you starred' : `${word} cards you starred`;
+  return `<span class="es-star">&#9733;</span>${esc(line)}`;
+}
+
+// Replaces the card face with the full-bleed end-of-set screen. hideEndScreen()
+// — called from setCardDisplay()/flipToCard() — reverses this the moment a
+// real card is shown again, whatever path got there (another hand, a
+// settings change, Explore/a preset picked mid-summary).
+function showEndScreen() {
+  clearTwist();
+  const model = computeEndScreenModel();
+  const sentence = document.getElementById('esSentence');
+  const chips    = document.getElementById('esChips');
+  const favs     = document.getElementById('esFavs');
+  const hold     = document.getElementById('esHold');
+  if (sentence) sentence.innerHTML = esSentenceHTML(model);
+  if (chips)    chips.innerHTML = esChipsHTML(model);
+  if (favs)     favs.innerHTML = esFavsHTML(model);
+  if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
+  // Next Card's own position is fixed (header/token/preset/card/counter
+  // are all fixed-height above it), but the end screen's body content
+  // (sentence + chip cloud + favourites line) varies with what got drawn,
+  // so .es-actions landed at a different height each time — sometimes
+  // above Next Card's spot, sometimes below. Record where Next Card sits
+  // now, before it's hidden, so it can be reproduced exactly below.
+  const nextBtn = document.getElementById('btn-next');
+  const nextTop = nextBtn ? nextBtn.getBoundingClientRect().top : null;
+  document.body.classList.add('showing-end-screen');
+  // The display:none->flex swap happens the instant the class above is
+  // added, landing at opacity:0 (see styles.css) with .in not yet present.
+  // A bare requestAnimationFrame here isn't enough — the browser can (and
+  // in testing, did) coalesce the display change and the .in class into
+  // the same first paint, skipping the transition entirely. Forcing a
+  // synchronous reflow (void es.offsetHeight) between the two commits the
+  // opacity:0 state as an actual rendered frame first, the same trick
+  // flipToCard() already uses to restart the accent-bloom animation.
+  const es = document.getElementById('endScreen');
+  if (es) { es.classList.remove('in'); void es.offsetHeight; es.classList.add('in'); }
+  // Now that the end screen has laid out with its actual content, pad
+  // .es-body up to whatever height puts .es-actions exactly where Next
+  // Card was recorded above — never shrinks it (a long chip cloud is
+  // allowed to push the actions down further; it just can't land higher
+  // than Next Card's spot).
+  const esBody = document.querySelector('.es-body');
+  const esActions = document.querySelector('.es-actions');
+  if (esBody && esActions && nextTop != null) {
+    esBody.style.minHeight = '';
+    const actionsTop = esActions.getBoundingClientRect().top;
+    const delta = nextTop - actionsTop;
+    if (delta > 0) esBody.style.minHeight = (esBody.getBoundingClientRect().height + delta) + 'px';
+  }
+  // Every tick reads as passed on the (now hidden) counter, none current —
+  // keeps it correct for the instant hideEndScreen() reveals it again.
+  renderProgress(state.visibleDeck.length);
+}
+function hideEndScreen() {
+  const es = document.getElementById('endScreen');
+  if (es) es.classList.remove('in');
+  const esBody = document.querySelector('.es-body');
+  if (esBody) esBody.style.minHeight = '';
+  document.body.classList.remove('showing-end-screen');
 }
 
 // ── End-of-draw hold gate ──
@@ -470,8 +538,9 @@ function hint(on){
   if (el) el.classList.toggle('visible', !!on);
 }
 
-// Fullscreen's own end-of-set moment — same in-card summary treatment as
-// showSessionSummary(), inside the party card.
+// Fullscreen's own end-of-set moment — the same in-card sic-wrap/arc-trace
+// treatment the full-bleed end screen used before it existed, inside the
+// party card (the party overlay doesn't use the full-bleed end screen).
 function runPartySummary() {
   const isArc = state.randomMode === 'arc';
   const pl = document.getElementById('party-level');
