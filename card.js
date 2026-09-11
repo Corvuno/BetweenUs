@@ -89,11 +89,6 @@ function updateStarUI() {
 }
 
 function setCardDisplay(card) {
-  // Whatever got us here — a fresh hand, a settings change, the initial
-  // boot placeholder — a real (or placeholder) card face is about to be
-  // shown, so the end-of-set screen from a previous hand can't still be
-  // covering it. hideEndScreen() is a no-op if it wasn't showing.
-  if (typeof hideEndScreen === 'function') hideEndScreen();
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const numEl  = document.getElementById('card-number');
@@ -110,8 +105,7 @@ function setCardDisplay(card) {
     }
     if (numEl)    numEl.textContent = '— — —';
     if (nextBtn) {
-      const lbl = nextBtn.querySelector('.btn-draw-label');
-      if (lbl) lbl.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
+      nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
       // nothing's been dealt yet (fresh load, or a settings change just
       // reset the hand) — make this the obvious "start" tap, not just
       // another "next" tap.
@@ -133,8 +127,7 @@ function setCardDisplay(card) {
   if (qEl)   qEl.textContent = translateQ(card);
   if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   if (nextBtn) {
-    const lbl = nextBtn.querySelector('.btn-draw-label');
-    if (lbl) lbl.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
   }
   // Update party display
@@ -145,7 +138,6 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
 function flipToCard(card, isFirstDraw) {
-  if (typeof hideEndScreen === 'function') hideEndScreen();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');

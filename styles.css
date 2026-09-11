@@ -6,13 +6,7 @@
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.2);
   --sq-w:42px;
-  /* one height for every primary/secondary control (Next Card/Summary, the
-     back arrow, menu, the end screen's Hold/Change buttons) — each used to
-     be sized by its own padding, so font size and label length pushed the
-     two screens' bars out of alignment with each other. */
-  --control-h:56px;
 }
-@media(min-width:1024px){:root{--control-h:64px;}}
 html,body{height:100%;}
 /* a near-miss swiping a sheet/drawer closed used to bounce past it onto the
    page underneath and get read as a pull-to-refresh — this is the actual
@@ -311,38 +305,21 @@ body::before{
 .progress-num-sep{color:color-mix(in srgb, var(--gold) 50%, transparent);}
 .progress-num-total{color:color-mix(in srgb, var(--cream) 45%, transparent);}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
-.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:var(--control-h);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
+.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:rgba(201,168,76,.4);color:var(--cream);}
 .btn-sq svg{width:15px;height:15px;}
-/* deco primary: a faint warm-gold wash rather than a flat fill, with a
-   fleuron (U+2726) either side of the label instead of an icon */
-.btn-draw{flex:1;height:var(--control-h);display:flex;align-items:center;justify-content:center;gap:12px;
-  background:linear-gradient(180deg,rgba(221,164,116,.14),rgba(201,168,76,.03));
-  border:1px solid rgba(201,168,76,.5);color:#e8c97a;
-  font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
-  cursor:pointer;transition:all .2s;text-align:center;
-  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-.btn-draw:hover{background:rgba(221,164,116,.2);border-color:rgba(232,201,122,.85);color:var(--cream);}
+.btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+.btn-draw:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
 .btn-draw:active{transform:scale(.98);}
-.btn-draw-fleuron{color:#dda474;font-size:.58rem;}
-/* secondary tabs: hairline segments hanging off a broken rule, each in its
-   own colour, rather than a uniform muted row — see .screen-row below for
-   the inset that makes the rule "belong" to the primary button above it. */
-.btn-fullscreen{background:transparent;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:11px 0 13px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:4px;}
-.btn-fullscreen svg{width:12px;height:12px;flex-shrink:0;}
-.screen-tab{border-top:1px solid transparent;}
-.screen-tab--three{color:rgba(208,145,60,.85);border-top-color:rgba(208,145,60,.3);}
-.screen-tab--three:hover{color:#e8b478;border-top-color:rgba(208,145,60,.7);}
-.screen-tab--full{color:rgba(111,143,216,.85);border-top-color:rgba(111,143,216,.3);}
-.screen-tab--full:hover{color:#9db6ea;border-top-color:rgba(111,143,216,.7);}
-.screen-tab--twist{color:rgba(155,131,174,.85);border-top-color:rgba(155,131,174,.3);}
-.screen-tab--twist:hover{color:#c0a9d6;border-top-color:rgba(155,131,174,.7);}
+.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-fullscreen svg{width:13px;height:13px;flex-shrink:0;}
+.btn-fullscreen:hover{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
+.btn-fullscreen--emphasis{color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:2px;padding:15px 16px;background:rgba(201,168,76,.06);}
+.btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
 
 /* ── LIMIT ── */
-/* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold —
-   vestigial now that the end screen replaces this button entirely once
-   the hand actually ends, but harmless to leave set on the hidden button. */
-.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);border-color:transparent;color:var(--cream);letter-spacing:.1em;}
+/* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
+.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.1em;}
 /* the very first draw of a hand — before any card has been dealt, or right
    after a settings change reset the deck. Sized up (no glow — see change
    log) to make this the obvious "start" tap instead of looking like every
@@ -360,96 +337,15 @@ body::before{
 .draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
 .deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
 
-/* ── END OF SET ── full-bleed screen replacing card-wrap/controls-wrap once
-   a hand's last card has been held past — not a summary card in a framed
-   box, so it deliberately carries none of .card's chrome. Hidden/shown by
-   toggling body.showing-end-screen (see ui.js). */
-body.showing-end-screen .card-wrap,
-body.showing-end-screen .controls-wrap{display:none;}
-.end-screen{display:none;}
-body.showing-end-screen .end-screen{
-  display:flex;flex-direction:column;align-items:center;position:relative;
-  width:100%;overflow:hidden;opacity:0;transition:opacity .32s ease;
-  background:radial-gradient(120% 80% at 50% 0%,#161310 0%,#0e0c0a 55%,#0b0908 100%);
-}
-/* the display:none<->flex swap itself can't transition, so it fades in via
-   a separate .in class ui.js adds a frame after showing-end-screen — the
-   outgoing card/controls just disappear, but the incoming full-bleed
-   screen (a real state change, not a card flip) gets a beat to register.
-   Needs the same body.showing-end-screen qualifier to out-specificity the
-   rule above (equal class count, but that one also carries the body
-   element, so a bare .end-screen.in would otherwise lose the tie). */
-body.showing-end-screen .end-screen.in{opacity:1;}
-@media(prefers-reduced-motion:reduce){body.showing-end-screen .end-screen{transition:none;}}
-.es-texture{position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(90deg,rgba(201,168,76,.035) 0 1px,transparent 1px 9px);opacity:.5;}
-.es-corner{position:absolute;width:16px;height:16px;border:1px solid rgba(201,168,76,.3);pointer-events:none;}
-.es-corner--tl{top:16px;left:16px;border-width:1px 0 0 1px;}
-.es-corner--tr{top:16px;right:16px;border-width:1px 1px 0 0;}
-.es-corner--bl{bottom:16px;left:16px;border-width:0 0 1px 1px;}
-.es-corner--br{bottom:16px;right:16px;border-width:0 1px 1px 0;}
-/* Content-sized, not stretched to fill a tall flexible box — the hold
-   button in .es-actions needs to land at roughly the same screen position
-   Next Card normally does (right after the counter, driven by the card's
-   own height), not pushed to the bottom of an artificially tall column. */
-.es-body{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;
-  padding:36px 30px 0;}
-.es-eyebrow{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;
-  color:color-mix(in srgb, var(--gold) 62%, transparent);margin-bottom:22px;}
-.es-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.15rem;
-  line-height:1.3;text-align:center;color:var(--cream);text-wrap:pretty;}
-.es-chapter{font-style:normal;font-weight:400;font-size:1.05rem;}
-.es-rule{display:flex;align-items:center;gap:10px;margin-top:20px;width:100%;}
-.es-rule-line{flex:1;height:1px;background:rgba(201,168,76,.18);}
-.es-rule-dot{width:4px;height:4px;background:rgba(201,168,76,.45);transform:rotate(45deg);flex-shrink:0;}
-.es-subhead{margin-top:18px;font-family:'Jost',sans-serif;font-size:.53rem;letter-spacing:.3em;
-  text-transform:uppercase;color:color-mix(in srgb, var(--gold) 50%, transparent);}
-.es-chips{margin-top:11px;width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
-.es-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid;border-radius:2px;
-  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--cream);white-space:nowrap;}
-.es-chip-count{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.72rem;
-  letter-spacing:0;text-transform:none;}
-.es-favs{margin-top:16px;display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
-  font-style:italic;font-size:.94rem;color:color-mix(in srgb, var(--cream) 70%, transparent);}
-.es-star{color:var(--gold-l);font-size:.8rem;}
-.es-actions{position:relative;width:100%;padding:0 30px 34px;display:flex;flex-direction:column;
-  align-items:center;gap:11px;}
-/* Same box model as .btn-draw (Next Card) — var(--control-h), not each
-   sized by its own padding — so the two bars read as the same control in
-   different states instead of two different heights. font-size/letter-
-   spacing match too; only the colour (--es-chapter instead of the fixed
-   gold) differs. */
-.es-hold{--es-chapter:var(--gold);position:relative;overflow:hidden;width:100%;height:var(--control-h);
-  border:1px solid var(--es-chapter);border-radius:2px;
-  background:color-mix(in srgb, var(--es-chapter) 16%, transparent);
-  color:var(--cream);font-family:'Jost',sans-serif;font-size:.78rem;font-weight:400;letter-spacing:.15em;
-  text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;
-  -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;
-  -webkit-touch-callout:none;touch-action:manipulation;}
-.es-hold:active{transform:translateY(1px);}
-.es-diamond{width:4px;height:4px;background:var(--es-chapter);transform:rotate(45deg);flex-shrink:0;}
-/* the hold fill: a real element instead of a background-position trick, so
-   its width can transition left-to-right over the hold duration and retract
-   on an early release without fighting the button's own background colour */
-.es-hold-fill{position:absolute;inset:0;width:0;background:color-mix(in srgb, var(--es-chapter) 26%, transparent);
-  pointer-events:none;}
-.es-hold-fill.filling{transition:width .6s linear;width:100%;}
-.es-hold-fill.cancelling{transition:width .15s ease;width:0;}
-.es-change{width:100%;height:var(--control-h);background:transparent;border:1px solid rgba(201,168,76,.34);
-  border-radius:2px;color:var(--cream);font-family:'Jost',sans-serif;font-size:.72rem;font-weight:300;
-  letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:background .2s;
-  display:flex;align-items:center;justify-content:center;
-  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-.es-change:active{transform:translateY(1px);background:rgba(201,168,76,.08);}
-.es-export{width:100%;height:44px;background:none;border:none;
-  color:color-mix(in srgb, var(--gold) 72%, transparent);font-family:'Jost',sans-serif;font-size:.66rem;
-  font-weight:300;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:9px;transition:color .2s;
-  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-.es-export:active{color:var(--gold-l);}
-.es-export-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;letter-spacing:0;
-  text-transform:none;color:color-mix(in srgb, var(--cream) 60%, transparent);}
+/* ── IN-CARD SESSION SUMMARY ── */
+.sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
+.sic-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
+.sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
+.sic-stars{display:flex;flex-direction:column;gap:6px;width:100%;padding-top:10px;border-top:1px solid var(--dim);}
+.sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
+.sic-star{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted);line-height:1.45;text-align:center;}
+.sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
+  text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
 
 /* ── DRAWER SYSTEM ── */
 .overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
@@ -580,17 +476,6 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
 .party-level{font-family:'Jost',sans-serif;font-size:clamp(.75rem,1.4vw,.9rem);letter-spacing:.15em;text-transform:uppercase;opacity:.75;order:0;}
 .party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-/* fullscreen's own end-of-set moment — the same sentence/chip-cloud model
-   as the full-bleed screen (computeEndScreenModel/esSentenceHTML/
-   esChipsHTML/esFavsHTML in presentation.js), simplified to fit inside the
-   party card: no wordmark, no actions row, since the overlay's existing
-   hold-anywhere-to-continue and exit chrome keep doing that job unchanged. */
-.pes-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;}
-.pes-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:clamp(1.1rem,2.6vw,1.6rem);line-height:1.35;text-align:center;color:var(--cream);}
-.pes-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
-.pes-favs{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
-  font-style:italic;font-size:clamp(.85rem,1.6vw,1rem);color:color-mix(in srgb, var(--cream) 70%, transparent);}
 /* min-height reserves the twist state's typical two-line height up front —
    without it, turning Twist on/off changes this element's height, and
    since .party-inner centers the whole column, the question above jumps
@@ -640,24 +525,20 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 body.fixed-seq-mode .screen-row{display:none;}
 
 /* ── PICK-3 MODE ── */
-/* inset to the primary (Next Card) button's width — (44px square + 10px
-   gap) either side, same 108px the desktop breakpoint already computes
-   via --sq-w — so the tabs hang under it as a broken rule, not under the
-   square Prev/Menu buttons flanking it. */
-.screen-row{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;
-  width:calc(100% - 108px);align-self:center;}
+.screen-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%;}
+.screen-row .btn-fullscreen{justify-self:center;}
+.screen-row > *:first-child{justify-self:start;}
+.screen-row > *:last-child{justify-self:end;}
 .pick-toggle{
-  /* border-top is NOT reset here — .screen-tab/.screen-tab--three (above)
-     set it to that tab's own hairline colour, and this rule sits later in
-     the file at equal specificity, so a bare "border:none" here silently
-     erased it. Only reset to the sides that don't carry the rule. */
-  background:transparent;border-right:none;border-bottom:none;border-left:none;
-  font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
-  padding:11px 0 13px;cursor:pointer;transition:all .2s;white-space:nowrap;
-  display:inline-flex;align-items:center;justify-content:center;gap:4px;width:100%;
+  background:transparent;border:none;border-bottom:1px solid transparent;
+  color:rgba(240,232,216,.45);
+  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:15px 8px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:5px;
 }
-.pick-toggle.on{color:var(--gold);}
-.pick-toggle .pt-card{width:9px;height:12px;flex-shrink:0;}
+.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:rgba(201,168,76,.4);}
+.pick-toggle.on{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
+.pick-toggle .pt-card{width:10px;height:14px;flex-shrink:0;}
 
 /* card-area is the positioning context for the picker */
 .card-area{position:relative;}

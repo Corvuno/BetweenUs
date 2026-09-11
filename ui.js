@@ -418,50 +418,6 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
   });
 })();
 
-// ── End-of-set screen actions ── its own self-contained hold (not routed
-// through the END_HOLD_TARGETS gate above, which exists for holding on the
-// card/Next-Card button — this button is the only thing on screen while
-// the end screen is up, so it needs none of that gate's tap-vs-hold
-// disambiguation, just its own timer and fill.
-(function(){
-  const btn = document.getElementById('esHold');
-  const fill = document.getElementById('esHoldFill');
-  if (!btn || !fill) return;
-  const HOLD = 600;
-  let timer = null;
-  function start(e){
-    e.preventDefault();
-    clearTimeout(timer);
-    fill.classList.remove('cancelling');
-    void fill.offsetWidth;   // restart the fill transition from 0 on a fresh press
-    fill.classList.add('filling');
-    timer = setTimeout(() => {
-      timer = null;
-      fill.classList.remove('filling');
-      fill.style.width = '';
-      if (typeof drawMore === 'function') drawMore();
-    }, HOLD);
-  }
-  function cancel(){
-    if (timer === null) return;   // already completed — nothing to retract
-    clearTimeout(timer); timer = null;
-    fill.classList.remove('filling');
-    fill.classList.add('cancelling');
-  }
-  btn.addEventListener('pointerdown', start);
-  ['pointerup','pointerleave','pointercancel'].forEach(ev => btn.addEventListener(ev, cancel));
-
-  const changeBtn = document.getElementById('esChange');
-  if (changeBtn) changeBtn.addEventListener('click', () => {
-    if (typeof openCats === 'function') openCats();
-  });
-
-  const exportBtn = document.getElementById('esExport');
-  if (exportBtn) exportBtn.addEventListener('click', () => {
-    if (typeof exportSessionLog === 'function') exportSessionLog();
-  });
-})();
-
 // ── Spice glyph buttons (one inline on the After Dark chapter in Play,
 //    one inline on the After Dark drawer in Explore) — same state, kept in sync ──
 (function(){
