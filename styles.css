@@ -347,10 +347,21 @@ body::before{
 .sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
   text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
 
-/* ── END OF SET ── full-bleed screen replacing card-wrap/controls-wrap once
-   a hand's last card has been held past — not a summary card in a framed
-   box, so it deliberately carries none of .card's chrome. Hidden/shown by
-   toggling body.showing-end-screen (see ui.js). */
+/* ── HAND SUMMARY ── the end-of-hand content, inside the normal card face
+   (see presentation.js showHandSummary()) — the sentence/chip-cloud/
+   favourites model from computeEndScreenModel(), same content the
+   full-bleed end screen below used, just fitted into the card instead. */
+.hs-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;}
+.hs-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:1.05rem;line-height:1.35;text-align:center;color:var(--cream);}
+.hs-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
+.hs-favs{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.85rem;color:color-mix(in srgb, var(--cream) 70%, transparent);}
+
+/* ── END OF SET (dormant) ── the full-bleed takeover this replaced with the
+   in-card treatment above — left here, unused, for a reshaped version to
+   come back to later. Nothing currently adds body.showing-end-screen or
+   renders an #endScreen element, so none of this paints. */
 body.showing-end-screen .card-wrap,
 body.showing-end-screen .controls-wrap{display:none;}
 .end-screen{display:none;}
@@ -621,6 +632,14 @@ body.fixed-seq-mode .screen-row{display:none;}
 .screen-row .btn-fullscreen{justify-self:center;}
 .screen-row > *:first-child{justify-self:start;}
 .screen-row > *:last-child{justify-self:end;}
+
+/* ── HAND SUMMARY ── the row under Next Card (now Hold) at the end of a
+   hand: same slot .screen-row occupies while a card is showing, swapped
+   in via body.showing-hand-summary instead of stacked on top of it, so
+   only one of the two is ever in the layout at once. */
+.screen-row--hand{display:none;}
+body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
+body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
 .pick-toggle{
   background:transparent;border:none;border-bottom:1px solid transparent;
   color:rgba(240,232,216,.45);

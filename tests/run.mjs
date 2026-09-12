@@ -382,44 +382,45 @@ async function run() {
   });
 
   // ── K. End-of-hand hold-to-continue gate ────────────────────────────────
-  await check('end-of-hand: the end screen appears, and its own hold starts a fresh hand', async () => {
+  await check('end-of-hand: the hand summary appears in-card, and Next Card\'s own hold starts a fresh hand', async () => {
     // Run the current hand out to its end (tap through, waiting out the
     // 175ms flip animation each time so we don't race the DOM update),
-    // then the 500ms showEndScreen() delay past the last card.
-    const atEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-end-screen'));
+    // then the 500ms showHandSummary() delay past the last card.
+    const atEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-hand-summary'));
     for (let i = 0; i < 20 && !(await atEnd()); i++) {
       await page.locator('#card').click();
       await page.waitForTimeout(300);
     }
     await page.waitForTimeout(600);
-    assert(await atEnd(), `did not reach the end-of-set screen after 20 taps (${await questionText(page)})`);
-    // card-wrap/controls-wrap hide while the end screen is up (styles.css
-    // body.showing-end-screen), and the end screen's own hold button is
-    // what starts the next hand now, not #btn-next.
-    assert(!(await page.locator('#card-wrap').isVisible()), 'card-wrap stayed visible under the end screen');
-    assert(await page.locator('#esHold').isVisible(), 'the end screen\'s hold-to-draw-another-set button did not appear');
+    assert(await atEnd(), `did not reach the end-of-hand summary after 20 taps (${await questionText(page)})`);
+    // card-wrap/controls-wrap stay visible (this is the same layout as any
+    // other draw, not a takeover screen) — only the screen-row content and
+    // the card face change (styles.css body.showing-hand-summary).
+    assert(await page.locator('#card-wrap').isVisible(), 'card-wrap disappeared during the hand summary');
+    assert(await page.locator('#handActionsRow').isVisible(), 'the Change/Save row did not appear');
+    assert(!(await page.locator('#screenRow').isVisible()), 'three/Full Screen/Twist stayed visible during the hand summary');
 
-    // Quick tap: pointerdown+up well under the 600ms hold threshold must NOT advance.
+    // Quick tap: pointerdown+up well under the hold threshold must NOT advance.
     await page.evaluate(() => {
-      document.getElementById('esHold').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+      document.getElementById('btn-next').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     });
     await page.waitForTimeout(80);
     await page.evaluate(() => {
-      const el = document.getElementById('esHold');
+      const el = document.getElementById('btn-next');
       el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     });
     await page.waitForTimeout(300);
-    assert(await atEnd(), 'a quick tap on the hold button advanced past the end-of-set gate');
+    assert(await atEnd(), 'a quick tap on Next Card advanced past the end-of-hand gate');
 
     // Full hold: must advance into a fresh hand — wait for the actual reveal
     // rather than a guessed duration (works whether this replays the deal
     // animation or not; the deal animation only plays once per session).
-    await pointerHold(page, '#esHold', 650);
+    await pointerHold(page, '#btn-next', 650);
     await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
-    assert(!(await atEnd()), 'still showing the end screen after the hold started a fresh hand');
+    assert(!(await atEnd()), 'still showing the hand summary after the hold started a fresh hand');
   });
 
   await check('no uncaught page errors were raised during the run', async () => {

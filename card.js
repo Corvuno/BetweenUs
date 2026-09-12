@@ -91,9 +91,9 @@ function updateStarUI() {
 function setCardDisplay(card) {
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
-  // shown, so the end-of-set screen from a previous hand can't still be
-  // covering it. hideEndScreen() is a no-op if it wasn't showing.
-  if (typeof hideEndScreen === 'function') hideEndScreen();
+  // shown, so the previous hand's end-of-hand summary can't still be
+  // showing. hideHandSummary() is a no-op if it wasn't showing.
+  if (typeof hideHandSummary === 'function') hideHandSummary();
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const numEl  = document.getElementById('card-number');
@@ -143,7 +143,7 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
 function flipToCard(card, isFirstDraw) {
-  if (typeof hideEndScreen === 'function') hideEndScreen();
+  if (typeof hideHandSummary === 'function') hideHandSummary();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');

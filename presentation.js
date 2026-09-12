@@ -460,10 +460,53 @@ function esFavsHTML(model) {
   return `<span class="es-star">&#9733;</span>${esc(line)}`;
 }
 
-// Replaces the card face with the full-bleed end-of-set screen. hideEndScreen()
+// ── HAND SUMMARY ── the end-of-hand message: same card-wrap/controls-wrap
+// layout as any other draw, not a separate screen — the card face carries
+// the sentence/chip-cloud/favourites content from computeEndScreenModel(),
+// Next Card becomes Hold (already handled by updateDrawMore()'s atEnd()
+// branch, unchanged), and screen-row's three/Full Screen/Twist swap to
+// Change/Save via body.showing-hand-summary (see styles.css). hideHandSummary()
 // — called from setCardDisplay()/flipToCard() — reverses this the moment a
 // real card is shown again, whatever path got there (another hand, a
 // settings change, Explore/a preset picked mid-summary).
+function showHandSummary() {
+  clearTwist();
+  const model = computeEndScreenModel();
+  const chColor = model.last ? model.last.color : 'var(--gold-l)';
+  const accent = document.getElementById('c-accent');
+  if (accent) {
+    accent.style.background = giltRail(chColor);
+    accent.classList.remove('accent-bloom'); void accent.offsetWidth; accent.classList.add('accent-bloom');
+  }
+  const lvlEl = document.getElementById('card-level');
+  if (lvlEl) {
+    lvlEl.classList.remove('in');
+    lvlEl.textContent = state.lang === 'nl' ? 'De set is afgerond' : 'The set is finished';
+    lvlEl.style.color = model.last ? labelColor(chColor) : chColor;
+    void lvlEl.offsetWidth; lvlEl.classList.add('in');
+  }
+  const qEl = document.getElementById('card-question');
+  if (qEl) {
+    qEl.classList.remove('in');
+    let html = `<div class="hs-wrap"><div class="hs-sentence">${esSentenceHTML(model)}</div>`;
+    if (model.chips.length)  html += `<div class="hs-chips">${esChipsHTML(model)}</div>`;
+    if (model.favCount)      html += `<div class="hs-favs">${esFavsHTML(model)}</div>`;
+    html += `</div>`;
+    qEl.innerHTML = html;
+    void qEl.offsetWidth; qEl.classList.add('in');
+  }
+  const numEl = document.getElementById('card-number');
+  if (numEl) numEl.textContent = '— end —';
+  document.body.classList.add('showing-hand-summary');
+  renderProgress(state.visibleDeck.length);
+}
+function hideHandSummary() {
+  document.body.classList.remove('showing-hand-summary');
+}
+
+// ── END OF SET (dormant) ── the full-bleed takeover showHandSummary() above
+// replaced — kept, unused, for a reshaped version to come back to later.
+// Nothing calls showEndScreen()/hideEndScreen() any more.
 function showEndScreen() {
   clearTwist();
   const model = computeEndScreenModel();

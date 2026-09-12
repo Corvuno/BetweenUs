@@ -418,11 +418,23 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
   });
 })();
 
-// ── End-of-set screen actions ── its own self-contained hold (not routed
-// through the END_HOLD_TARGETS gate above, which exists for holding on the
-// card/Next-Card button — this button is the only thing on screen while
-// the end screen is up, so it needs none of that gate's tap-vs-hold
-// disambiguation, just its own timer and fill.
+// ── Hand summary actions ── Change/Save, the screen-row's end-of-hand
+// content (see styles.css body.showing-hand-summary, presentation.js
+// showHandSummary()). Plain taps — the hold-to-draw-a-fresh-hand gesture
+// is Next Card itself (now in hold-mode), handled by the END_HOLD_TARGETS
+// gate above like any other end-of-hand state, so these need nothing of
+// their own beyond a click handler.
+document.getElementById('btnChange') && document.getElementById('btnChange').addEventListener('click', () => {
+  if (typeof openCats === 'function') openCats();
+});
+document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
+  if (typeof exportSessionLog === 'function') exportSessionLog();
+});
+
+// ── End-of-set screen actions (dormant) ── wiring for the full-bleed
+// #endScreen's own hold/Change/Export, kept for when a reshaped version of
+// that screen comes back — #esHold no longer exists in the DOM, so this
+// IIFE no-ops below.
 (function(){
   const btn = document.getElementById('esHold');
   const fill = document.getElementById('esHoldFill');
