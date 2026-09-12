@@ -314,8 +314,8 @@ body::before{
 .btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-fullscreen svg{width:13px;height:13px;flex-shrink:0;}
 .btn-fullscreen:hover{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
-.btn-fullscreen--emphasis{color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:2px;padding:15px 16px;background:rgba(201,168,76,.06);}
-.btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
+.btn-fullscreen--emphasis{color:var(--gold);}
+.btn-fullscreen--emphasis:hover{color:var(--gold-l);}
 
 /* ── LIMIT ── */
 /* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
@@ -628,10 +628,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 body.fixed-seq-mode .screen-row{display:none;}
 
 /* ── PICK-3 MODE ── */
-.screen-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%;}
-.screen-row .btn-fullscreen{justify-self:center;}
-.screen-row > *:first-child{justify-self:start;}
-.screen-row > *:last-child{justify-self:end;}
+.screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
 
 /* ── HAND SUMMARY ── the row under Next Card (now Hold) at the end of a
    hand: same slot .screen-row occupies while a card is showing, swapped
