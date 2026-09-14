@@ -602,12 +602,19 @@ The subject matter is not what makes a card recognisable — every deck asks abo
 5. **Every card must be answerable by someone who has no story.** A card that only works if you've lived the specific thing is a dead card for half the table.
 6. **Twelve per category, always.** There is no adding a card, only swapping one. A new card names the card it displaces, and the displaced card goes to the BENCH rather than being deleted.
 7. **Spaced em dash — like this.** House punctuation throughout.
-8. **Concrete over abstract, always.** A card names one specific real thing — a moment,
-   a body part, a text message, a mishap, an object, a fantasy — and asks the player to
-   produce their own instance of it. It never asks the player to characterize or
-   theorize a feeling in the abstract. *"Tell about the moment sex went most
-   embarrassingly wrong"* is concrete; *"What does sexual fulfilment feel like"* is not
-   — the second invites a definition, not a story.
+8. **Concrete over abstract, always — with one exception.** A card names one specific
+   real thing — a moment, a body part, a text message, a mishap, an object, a fantasy —
+   and asks the player to produce their own instance of it. It never asks the player to
+   characterize or theorize a feeling in the abstract. *"Tell about the moment sex went
+   most embarrassingly wrong"* is concrete; *"What does sexual fulfilment feel like"* is
+   not — the second invites a definition, not a story. The exception: a meaning or
+   theory question is fine, even good, when it produces real insight into who someone
+   is — preferably still reached through a story or example rather than pure abstraction
+   (Attract 8's celebrity-crush card gets at type and taste through named examples).
+   Purely theoretical cards are also fair game when they're just genuinely fun to argue
+   — World 10, *"Is progress real?"*, is the model: nothing concrete in it at all, and it
+   works anyway. The rule against abstraction is really a rule against vague
+   *feeling-talk* standing in for a real answer, not a ban on ideas.
 9. **Confession over analysis.** The strongest move invites disclosure of a real thing
    that happened or is true, not reflection on a pattern. *"Tell about X"* beats *"What
    does X mean to you."*
