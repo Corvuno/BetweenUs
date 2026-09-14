@@ -75,8 +75,8 @@ async function toggleFavourite() {
   const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
   if (!card) return;
   const idx = state.favourites.findIndex(f => f.question === card.question);
-  if (idx >= 0) state.favourites.splice(idx, 1);
-  else state.favourites.push({ question: card.question, level: card.level });
+  if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
+  else { state.favourites.push({ question: card.question, level: card.level }); state.handStarred.add(card.question); }
   try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); } catch(e) {}
   updateStarUI();
   renderFavourites();
@@ -91,9 +91,9 @@ function updateStarUI() {
 function setCardDisplay(card) {
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
-  // shown, so the end-of-set screen from a previous hand can't still be
-  // covering it. hideEndScreen() is a no-op if it wasn't showing.
-  if (typeof hideEndScreen === 'function') hideEndScreen();
+  // shown, so the previous hand's end-of-hand summary can't still be
+  // showing. hideHandSummary() is a no-op if it wasn't showing.
+  if (typeof hideHandSummary === 'function') hideHandSummary();
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const numEl  = document.getElementById('card-number');
@@ -110,8 +110,7 @@ function setCardDisplay(card) {
     }
     if (numEl)    numEl.textContent = '— — —';
     if (nextBtn) {
-      const lbl = nextBtn.querySelector('.btn-draw-label');
-      if (lbl) lbl.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
+      nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
       // nothing's been dealt yet (fresh load, or a settings change just
       // reset the hand) — make this the obvious "start" tap, not just
       // another "next" tap.
@@ -133,8 +132,7 @@ function setCardDisplay(card) {
   if (qEl)   qEl.textContent = translateQ(card);
   if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   if (nextBtn) {
-    const lbl = nextBtn.querySelector('.btn-draw-label');
-    if (lbl) lbl.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
   }
   // Update party display
@@ -145,7 +143,7 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
 function flipToCard(card, isFirstDraw) {
-  if (typeof hideEndScreen === 'function') hideEndScreen();
+  if (typeof hideHandSummary === 'function') hideHandSummary();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');

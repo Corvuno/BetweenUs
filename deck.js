@@ -184,6 +184,7 @@ function initDeck(isContinuation) {
   state.skipDealAnim = !!isContinuation;
   state.skippedCards.clear();
   state.loggedQuestions.clear();
+  state.handStarred.clear();
   if (orderedSoloLevel()) {
     if (state.colbertPrevLimit === null) state.colbertPrevLimit = state.cardLimit;   // remember to restore later
     state.cardLimit = null;
@@ -475,7 +476,7 @@ function nextCard() {
       _nextCardBase();
       if (action.wasAtEnd) {
         if (state.partyMode) setTimeout(runPartySummary, 250);
-        else                 setTimeout(showEndScreen, 500);
+        else                 setTimeout(showHandSummary, 500);
       }
       return;
   }

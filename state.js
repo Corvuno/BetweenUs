@@ -30,6 +30,11 @@ const state = {
   loggedQuestions: new Set(),   // per-round guard against duplicate log entries
   colbertPrevLimit: null,       // limit to restore after Colbert-solo play
   favourites: [],
+  handStarred: new Set(),   // questions actually starred during THIS hand, via the star
+                            // button — cleared by initDeck(). A card that was already a
+                            // favourite from an earlier session doesn't count as "starred"
+                            // for this hand's end-of-set summary unless the star was
+                            // actually tapped this time.
   customCards: [],
   categoriesCollapsed: DEFAULT_COLLAPSED,
   skipDealAnim: false,   // set by initDeck(isContinuation) — true while dealing a fresh
