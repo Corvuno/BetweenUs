@@ -503,6 +503,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Attract** — "Tell me about a moment of chemistry with a total stranger that went absolutely nowhere." (proposed for Flesh 11 during the v6.86 Flesh-11 search; owner called it a strong Attract card, not Flesh — pre-attraction chemistry belongs to Attract's territory, not Flesh's prelude-to-sex one. No Attract slot open yet.)
 - **Flesh** — "Tell me about the best pickup line — good or bad — that's ever actually worked on you." (proposed for Flesh 11 in place of the "how do you make what you want known" mechanics card in v6.86; owner kept it in reserve, held for a future slot rather than used here)
 - **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
 - **Self** — "What's something you used to associate with being \"old\" that you now just call Tuesday?" (displaced from Self 7 in v6.86, owner-approved; too close to Life 9, and the negative "avoid old age" framing undersold it)
