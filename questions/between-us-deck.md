@@ -602,6 +602,27 @@ The subject matter is not what makes a card recognisable — every deck asks abo
 5. **Every card must be answerable by someone who has no story.** A card that only works if you've lived the specific thing is a dead card for half the table.
 6. **Twelve per category, always.** There is no adding a card, only swapping one. A new card names the card it displaces, and the displaced card goes to the BENCH rather than being deleted.
 7. **Spaced em dash — like this.** House punctuation throughout.
+8. **Concrete over abstract, always.** A card names one specific real thing — a moment,
+   a body part, a text message, a mishap, an object, a fantasy — and asks the player to
+   produce their own instance of it. It never asks the player to characterize or
+   theorize a feeling in the abstract. *"Tell about the moment sex went most
+   embarrassingly wrong"* is concrete; *"What does sexual fulfilment feel like"* is not
+   — the second invites a definition, not a story.
+9. **Confession over analysis.** The strongest move invites disclosure of a real thing
+   that happened or is true, not reflection on a pattern. *"Tell about X"* beats *"What
+   does X mean to you."*
+10. **Never fixate on one narrow subject while hunting for a card.** If an angle isn't
+    landing after one or two tries, the fix is a genuinely different angle on the
+    category — not a prettier rephrasing of the same one. Rewording "the pull" as "the
+    edge" as "your body's instinct" is the same failed attempt three times, not three
+    attempts.
+11. **A category is as broad as it can be before it collides with its neighbor — and
+    should be pushed that broad, or it goes stale fast.** Flesh isn't "about touch," it's
+    sex-light in full: prelude, teasing, undressing, kissing, mishaps,
+    body-consciousness, fantasies — anything sexual lighter than Carnal/Bare's explicit
+    register. Unwind isn't just relaxation, it's holidays, free time, hobbies, fun. Name
+    the category's actual outer edge before writing toward it, not the first association
+    the category name brings to mind.
 
 ## Lenses
 
