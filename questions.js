@@ -460,7 +460,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?" },
 
   // ─── BLUNT ───
-  { level: "bare", question: "Sex — how important is it, honestly, in the whole of your life?" },
+  { level: "bare", question: "Where does sex actually land on the list of things that matter to you?" },
   { level: "bare", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
   { level: "bare", question: "When has your body not done what you wanted in bed — and what did you do?" },
   { level: "bare", question: "What do people consistently get wrong about your sexuality?" },

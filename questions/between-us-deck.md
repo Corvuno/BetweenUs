@@ -447,7 +447,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
 ## Bare 🔞
-1. Sex — how important is it, honestly, in the whole of your life?
+1. Where does sex actually land on the list of things that matter to you?
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. When has your body not done what you wanted in bed — and what did you do?
 4. What do people consistently get wrong about your sexuality?
