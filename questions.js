@@ -468,7 +468,7 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands." },
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
   { level: "bare", question: "What does sexual fulfilment feel like — and do you have it now?" },
-  { level: "bare", question: "Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?" },
+  { level: "bare", question: "What's the age difference where your own gut starts to hesitate, regardless of what anyone else would say?" },
   { level: "bare", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
   { level: "bare", question: "The most memorable places sex has happened — the most beautiful, and the strangest?" },
   { level: "bare", question: "What's the longest you've gone without sex — and how was that?" },

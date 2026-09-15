@@ -455,7 +455,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?
+9. What's the age difference where your own gut starts to hesitate, regardless of what anyone else would say?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
 12. What's the longest you've gone without sex — and how was that?
