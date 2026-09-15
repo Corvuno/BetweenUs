@@ -428,7 +428,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What does a hand around your throat — or on the back of your neck — do to you?
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
-10. What makes you feel completely safe with someone sexually?
+10. What's something trust unlocks in bed that nothing else can?
 11. What's something you've learned about a person just from the way they touch you?
 12. How much do you enjoy making someone wait before you touch them?
 

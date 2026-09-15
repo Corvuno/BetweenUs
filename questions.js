@@ -441,7 +441,7 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "What does a hand around your throat — or on the back of your neck — do to you?" },
   { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
   { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
-  { level: "flesh", question: "What makes you feel completely safe with someone sexually?" },
+  { level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
   { level: "flesh", question: "What's something you've learned about a person just from the way they touch you?" },
   { level: "flesh", question: "How much do you enjoy making someone wait before you touch them?" },
 
