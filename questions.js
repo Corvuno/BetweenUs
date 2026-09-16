@@ -442,7 +442,7 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
   { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
   { level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
-  { level: "flesh", question: "What's something you've learned about a person just from the way they touch you?" },
+  { level: "flesh", question: "The first time you sleep with someone, do you want to take your time with them, or do you want them right then and there?" },
   { level: "flesh", question: "How much do you enjoy making someone wait before you touch them?" },
 
   // ─── CARNAL ───
