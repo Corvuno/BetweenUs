@@ -91,6 +91,12 @@ One issue card per proposed change, three alternatives each — never pick a sin
 winner yourself. Only write a swap into the deck files after the owner has replied
 picking (or rewriting) one of the alternatives for that specific slot.
 
+Every alternative is a complete, finished question — full sentence, exactly as it
+would read on the card. No shorthand, no slash-separated fragments, no "trimmed for
+space" versions standing in for the real text. If several directions are being shown
+at once, each one still gets its own fully written-out alternative — never a
+compressed list of half-phrases the owner has to mentally finish.
+
 **NEVER PUSH A QUESTION WITHOUT CONSULTING THE OWNER FIRST. NEVER.** There used to be an
 exception here for when the owner names a specific card and says what's wrong with it —
 that exception is revoked. It was used to justify picking replacement text unilaterally
