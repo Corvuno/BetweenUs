@@ -450,7 +450,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Where does sex actually land on the list of things that matter to you?
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. When has your body not done what you wanted in bed — and what did you do?
-4. What do people consistently get wrong about your sexuality?
+4. What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?
 5. What did you believe about sex that turned out to be nonsense?
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.

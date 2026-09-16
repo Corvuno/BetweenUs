@@ -463,7 +463,7 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "Where does sex actually land on the list of things that matter to you?" },
   { level: "bare", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
   { level: "bare", question: "When has your body not done what you wanted in bed — and what did you do?" },
-  { level: "bare", question: "What do people consistently get wrong about your sexuality?" },
+  { level: "bare", question: "What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?" },
   { level: "bare", question: "What did you believe about sex that turned out to be nonsense?" },
   { level: "bare", question: "Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands." },
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
