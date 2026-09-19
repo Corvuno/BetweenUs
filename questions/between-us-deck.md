@@ -420,7 +420,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Flesh 🔞
 1. Some touch undoes you. Describe it.
-2. What's something you thought you'd never enjoy until you actually experienced it?
+2. What's a sexual experience that surprised you by how much you actually liked it?
 3. Afterwards, still tangled up — how do you like to come down?
 4. Walk me through undressing someone — the order, the pace, what you notice.
 5. Reconstruct your smoothest pickup ever.
@@ -442,7 +442,7 @@ The questions come first, category by category. The full change log is at the bo
 7. Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?
 8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 9. When does sex stop being about you — and is that a good thing?
-10. What have you never asked for because it's better getting it without asking?
+10. What's something sexual you've never asked for because it's better when it's offered?
 11. Which of your turn-ons did you find through porn instead of real life?
 12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
@@ -455,7 +455,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. What's the age difference where your own gut starts to hesitate, regardless of what anyone else would say?
+9. In a relationship, what age difference is where your gut starts to hesitate, no matter what anyone else would think?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
 12. What's the longest you've gone without sex — and how was that?

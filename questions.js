@@ -433,7 +433,7 @@ const NEWDECK_CARDS = [
 
   // ─── SKIN ───
   { level: "flesh", question: "Some touch undoes you. Describe it." },
-  { level: "flesh", question: "What's something you thought you'd never enjoy until you actually experienced it?" },
+  { level: "flesh", question: "What's a sexual experience that surprised you by how much you actually liked it?" },
   { level: "flesh", question: "Afterwards, still tangled up — how do you like to come down?" },
   { level: "flesh", question: "Walk me through undressing someone — the order, the pace, what you notice." },
   { level: "flesh", question: "Reconstruct your smoothest pickup ever." },
@@ -455,7 +455,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?" },
   { level: "carnal", question: "Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?" },
   { level: "carnal", question: "When does sex stop being about you — and is that a good thing?" },
-  { level: "carnal", question: "What have you never asked for because it's better getting it without asking?" },
+  { level: "carnal", question: "What's something sexual you've never asked for because it's better when it's offered?" },
   { level: "carnal", question: "Which of your turn-ons did you find through porn instead of real life?" },
   { level: "carnal", question: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?" },
 
@@ -468,7 +468,7 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands." },
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
   { level: "bare", question: "What does sexual fulfilment feel like — and do you have it now?" },
-  { level: "bare", question: "What's the age difference where your own gut starts to hesitate, regardless of what anyone else would say?" },
+  { level: "bare", question: "In a relationship, what age difference is where your gut starts to hesitate, no matter what anyone else would think?" },
   { level: "bare", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
   { level: "bare", question: "The most memorable places sex has happened — the most beautiful, and the strangest?" },
   { level: "bare", question: "What's the longest you've gone without sex — and how was that?" },
