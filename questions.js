@@ -489,7 +489,7 @@ const NEWDECK_CARDS = [
 
   // ─── ABYSS ───
   { level: "abyss", question: "What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?" },
-  { level: "abyss", question: "What does a room full of people doing this know that nobody outside it does?" },
+  { level: "abyss", question: "What do people who play at the extreme end of kink understand that outsiders never will?" },
   { level: "abyss", question: "What does going to the extreme give you that gentle never could?" },
   { level: "abyss", question: "Tell about a scene that changed you." },
   { level: "abyss", question: "Has your body ever said yes while something deeper said no — and how did you find out?" },

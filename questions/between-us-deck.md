@@ -477,7 +477,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
 1. What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?
-2. What does a room full of people doing this know that nobody outside it does?
+2. What do people who play at the extreme end of kink understand that outsiders never will?
 3. What does going to the extreme give you that gentle never could?
 4. Tell about a scene that changed you.
 5. Has your body ever said yes while something deeper said no — and how did you find out?
