@@ -488,7 +488,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "More than two — does it appeal, and what's the pull?" },
 
   // ─── ABYSS ───
-  { level: "abyss", question: "What did you once think was extreme that's now a Tuesday, and what still gives you pause on a Saturday night?" },
+  { level: "abyss", question: "What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?" },
   { level: "abyss", question: "What does a room full of people doing this know that nobody outside it does?" },
   { level: "abyss", question: "What does going to the extreme give you that gentle never could?" },
   { level: "abyss", question: "Tell about a scene that changed you." },
