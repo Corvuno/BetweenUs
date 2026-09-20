@@ -33,8 +33,16 @@ body::before{
 .title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
 .title-rule{display:flex;align-items:center;justify-content:center;gap:9px;
   width:min(100%,320px);margin:12px auto 0;}
-.tr-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.45));}
-.tr-line:last-child{background:linear-gradient(90deg,rgba(201,168,76,.45),transparent);}
+.tr-line{flex:1;height:1px;background:linear-gradient(90deg,
+  transparent 0%,
+  color-mix(in srgb,var(--gold) 45%, transparent) 46%,
+  color-mix(in srgb,var(--gold-l) 70%, transparent) 78%,
+  color-mix(in srgb,var(--gold) 55%, transparent) 100%);}
+.tr-line:last-child{background:linear-gradient(90deg,
+  color-mix(in srgb,var(--gold) 55%, transparent) 0%,
+  color-mix(in srgb,var(--gold-l) 70%, transparent) 22%,
+  color-mix(in srgb,var(--gold) 45%, transparent) 54%,
+  transparent 100%);}
 .tr-dot{width:4px;height:4px;transform:rotate(45deg);background:var(--gold);opacity:.85;}
 .subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
 
