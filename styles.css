@@ -1375,8 +1375,8 @@ body.tok-taught .tok-hint{display:none;}
 .cat-go-bar{flex-shrink:0;padding:12px 0 max(14px,env(safe-area-inset-bottom));
   background:linear-gradient(to top, var(--surface) 60%, transparent);}
 .cat-go-btn{display:block;width:100%;
-  background:linear-gradient(100deg,#7f6130 0%,#a37f42 34%,#e6c584 50%,#a37f42 66%,#7f6130 100%);
-  border:none;color:#221a09;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.12em;
+  background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
+  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.12em;
   text-transform:uppercase;padding:15px 0;border-radius:3px;cursor:pointer;transition:filter .2s;}
 .cat-go-btn:hover{filter:brightness(1.06);}
 .cat-go-btn:active{transform:scale(.99);}
