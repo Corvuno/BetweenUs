@@ -111,6 +111,33 @@ the exact final words before they're pushed.
 This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
 only the deck's own card content.
 
+## Writing a card: the actual method
+
+Before proposing any alternative, work out what you want to know — the specific story or
+insight you're aiming for — and check it's something close to everyone has an answer to.
+Only then reverse-engineer the question that gets there. A phrasing that merely sounds
+plausible for the category, without a clear target in mind first, is how weak cards keep
+getting proposed round after round.
+
+A card has to produce a concrete memory, not an abstract theory about oneself. "What's the
+difference between a day you needed and a day you let slip by" invites reflection, not
+recall — nobody has a ready example. If a candidate's most likely answer is a definition
+or a philosophy rather than a specific instance, it hasn't earned its slot, regardless of
+category (the open, position-inviting exception below is a different, deliberate card
+type, not this failure mode).
+
+Know what a category is actually for, not just its label. "Unwind" is the experience/why
+of leisure, not a list of specific media or hobbies — that's Culture's job, the what,
+something tangible. Mixing up a category's real subject with a neighboring category's is
+how a proposal ends up rejected for territory it never should have entered.
+
+When a direction gets rejected, change the actual subject or angle — not just the wording
+around the same idea. Three different phrasings of one rejected concept are not three
+alternatives.
+
+Check a candidate against the whole deck, not just its own category, before proposing it —
+a collision with a different category's card is a real rejection reason, not a lesser one.
+
 ## Open, position-inviting questions are not a flaw
 
 Don't cite "reads like a debate" or "asks for a position instead of a story" as a reason to
