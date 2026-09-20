@@ -278,7 +278,7 @@ const NEWDECK_CARDS = [
   { level: "world", question: "Which common belief about how the world works do you think is simply wrong?" },
 
   // ─── WORK ───
-  { level: "work", question: "If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?", nl: "Als je je vervanger precies één dag mocht inwerken, wat zou je zeker vertellen dat in geen enkel handboek staat?" },
+  { level: "work", question: "What's the best piece of office drama you've ever witnessed, whatever your part in it was?" },
   { level: "work", question: "What would you do professionally if status played no role at all?", nl: "Welk werk zou je doen als status niet bestond?" },
   { level: "work", question: "What's the piece of work you're most proud of that nobody applauded?", nl: "Iets waar je trots op bent, maar waar niemand voor klapte..." },
   { level: "work", question: "What's the strangest job you've ever had?", nl: "Wat is de vreemdste baan die je ooit hebt gehad?" },

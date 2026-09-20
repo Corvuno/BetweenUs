@@ -265,7 +265,7 @@ The questions come first, category by category. The full change log is at the bo
 12. Which common belief about how the world works do you think is simply wrong?
 
 ## Work
-1. If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?
+1. What's the best piece of office drama you've ever witnessed, whatever your part in it was?
 2. What would you do professionally if status played no role at all?
 3. What's the piece of work you're most proud of that nobody applauded?
 4. What's the strangest job you've ever had?
@@ -673,6 +673,15 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.87 — Work 1, boring premise swapped for a fun one
+- **Work 1** → *"What's the best piece of office drama you've ever witnessed, whatever your
+  part in it was?"* Replaces "If you had to train your replacement for exactly one day,
+  what would you make sure they knew that's not in any manual?" — owner: the premise
+  itself (inside info/tacit training knowledge) is dry regardless of phrasing, not
+  something people enjoy telling. First rewrite attempt just simplified the same premise
+  and was rejected for the same reason; this version targets a genuinely fun work story
+  instead.
 
 ## Patch v6.86 — Unwind redesign (five slots) plus one Culture swap
 Owner called Unwind too narrow — built as "everything that makes life worthwhile," but
