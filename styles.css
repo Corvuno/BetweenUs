@@ -1385,21 +1385,26 @@ body.tok-taught .tok-hint{display:none;}
 .chapters{display:flex;flex-direction:column;gap:4px;}
 .chapter{--ch:var(--gold);
   display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
-  background:none;border:1px solid var(--dim);border-left:3px solid transparent;border-radius:2px;
+  background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
   padding:15px 13px;transition:background .2s,border-color .2s;}
 /* the left rail: a vertical metal sweep (same gilt.js gradient as the card
-   accent, at 190deg instead of 100deg) set per-chapter via border-image so
-   the other three sides keep their flat --dim border. border-image-source
-   is written inline by JS from each chapter's data-base hex — see ui.js. */
-.chapter{border-image-slice:1;border-image-width:0 0 0 3px;border-image-repeat:stretch;}
+   accent, at 190deg instead of 100deg), only painted once a chapter is
+   fully on — .part gets a flat, muted line instead and .off (the base
+   rule below) gets the same plain --dim edge as the rest of the box, so
+   the rail itself is now part of the on/part/off read rather than a
+   constant per-chapter identity mark. The gradient is written by JS into
+   --ch-rail from each chapter's data-base hex — see ui.js. */
+.chapter{border-image-slice:1;border-image-width:0 0 0 3px;border-image-repeat:stretch;border-image-source:none;}
 .chapter:hover{border-color:var(--border);}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
   text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
 .chapter .ch-desc{flex:1;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
-.chapter.on{background:rgba(255,255,255,.028);}
-.chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);
+  background:color-mix(in srgb, var(--ch) 5%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
+.chapter.on{background:rgba(255,255,255,.028);border-image-source:var(--ch-rail);}
+.chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
 .chapter.ch-hidden{display:none;}
 
 /* ── the console: icon-led on purpose, so it never reads as a fourth list

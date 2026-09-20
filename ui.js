@@ -980,18 +980,21 @@ applyToggleUI();
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
 // Chapter rail: same gilt.js metal sweep as the card accent, run vertically
-// (190deg) off CHAPTERS_META's colour for each chapter — set once at boot
-// since, unlike a card's category, a chapter's colour never changes at
-// runtime. CHAPTERS_META (config.js) is the one stored copy of these
-// colours — the end-of-set screen reads the same object rather than
-// keeping its own. The label/glow colour reuses --ch (already read by
-// .chapter.on/.part in styles.css) via labelColor(), which lifts After
-// Dark's near-black lacquer to a readable tone while leaving every other
-// chapter's --ch at its base.
+// (190deg) off CHAPTERS_META's colour for each chapter — computed once at
+// boot since, unlike a card's category, a chapter's colour never changes
+// at runtime. Stored in --ch-rail rather than written straight to
+// border-image-source, since styles.css now only paints it on .on (see
+// the on/part/off rule there) — .part and the base/off state use a flat
+// --ch-derived colour instead. CHAPTERS_META (config.js) is the one
+// stored copy of these colours — the end-of-set screen reads the same
+// object rather than keeping its own. The label/glow colour reuses --ch
+// (already read by .chapter.on/.part in styles.css) via labelColor(),
+// which lifts After Dark's near-black lacquer to a readable tone while
+// leaving every other chapter's --ch at its base.
 document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   const meta = CHAPTERS_META[el.dataset.chapter];
   if (!meta) return;
-  el.style.borderImageSource = giltRail(meta.color, 190);
+  el.style.setProperty('--ch-rail', giltRail(meta.color, 190));
   el.style.setProperty('--ch', labelColor(meta.color));
 });
 
