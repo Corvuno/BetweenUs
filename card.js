@@ -48,7 +48,14 @@ function renderTwist() {
   applyTwistToCounter(document.getElementById('card-number'));
   applyTwistToCounter(document.getElementById('party-number'));
   [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-    if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
+    if (!btn) return;
+    // btnTwist carries an SVG icon alongside its label — overwriting the
+    // button's full textContent would wipe the icon out along with it, so
+    // only the label span (or the whole button, for icon-less partyBtnTwist)
+    // gets the text update.
+    const label = btn.querySelector('.tt-label') || btn;
+    label.textContent = twistLabel();
+    btn.classList.toggle('active', !!currentTwist);
   });
 }
 // Twist is a lens on a drawn card, so it only makes sense while one is
