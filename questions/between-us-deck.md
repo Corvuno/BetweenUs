@@ -45,7 +45,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What's something you used to think was sophisticated that now makes you laugh?
 5. What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?
 6. Do you use music to feel more, or to feel less?
-7. What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?
+7. Is there an artist or song you can't explain loving — it just doesn't fit, and you don't care?
 8. What's something you appreciate far more now that you understand how it actually works?
 9. Does great art excuse a terrible artist — got an example?
 10. When did beauty catch you completely unprepared?
@@ -109,16 +109,16 @@ The questions come first, category by category. The full change log is at the bo
 12. If your younger self could see your life right now, what would surprise them most?
 
 ## Unwind
-1. When did you last stay outside longer than you meant to — and where were you?
+1. What have you built, cooked, or fixed that you're still a little proud of?
 2. What's something you do now for fun that would've bored you stiff ten years ago?
 3. What reliably gets you out of your own head?
 4. The hour of the week that's entirely yours...
-5. What's the difference between a day you needed and a day you just let slip by?
-6. There was a moment you felt completely free. Where were you?
+5. What's something you practice that you'll probably never master — and keep doing anyway?
+6. Is there a place or moment you feel free enough to actually dance, even badly?
 7. What does travel give you that staying home never could?
 8. The most unexpected beauty a trip ever handed you...
-9. Describe a moment recently when life felt uncomplicated.
-10. A place you keep going back to — not because it's the best, but because it's yours...
+9. Which game would you drop everything for, even now?
+10. What did you used to do for fun that life quietly pushed out?
 11. What's the smallest thing that makes a day better — and where do you find it?
 12. What does the first warm day of the year do to you?
 
@@ -503,6 +503,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
 - **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.83, owner-approved; kept the dichotomy, added a concrete-example clause rather than replacing it outright)
 - **Home** — "Where would you live if nothing was stopping you — and what would you live in?" (displaced from Home 10 in v6.83, owner-approved; too close to Home 8's kitchen-window card, both purely aspirational)
 - **Attract** — "You tell yourself you have a type. Who do you actually keep ending up with?" (displaced from Attract 4 in v6.83, owner-approved; reworded to a single question with the "does that correspond" turn instead of two sentences)
@@ -672,6 +673,48 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.86 — Unwind redesign (five slots) plus one Culture swap
+Owner called Unwind too narrow — built as "everything that makes life worthwhile," but
+nine of its twelve cards had drifted into pure rest/decompression, several converging on
+the same "where were you" shape. Five slots redone one at a time, each through several
+rejected directions before landing:
+
+- **Unwind 1** → *"What have you built, cooked, or fixed that you're still a little proud
+  of?"* Replaces "When did you last stay outside longer than you meant to — and where
+  were you?" — thin, and one of three cards fishing for the same "where were you" answer
+  (see 6 and 10 below).
+- **Unwind 5** → *"What's something you practice that you'll probably never master — and
+  keep doing anyway?"* Replaces "What's the difference between a day you needed and a day
+  you just let slip by?" — too abstract to produce a memory rather than a theory.
+- **Unwind 6** → *"Is there a place or moment you feel free enough to actually dance, even
+  badly?"* Replaces "There was a moment you felt completely free. Where were you?" A music
+  angle was tried and rejected twice: first as guilty-pleasure trope (too close to
+  Culture's own "embarrassed to admit you liked" card), then as a taste/surprise angle
+  that owner judged as still Culture's lane — Culture owns the *what* (media, something
+  tangible); Unwind owns the *why*, the experience. Dancing kept the experiential framing
+  the owner asked for.
+- **Unwind 9** → *"Which game would you drop everything for, even now?"* Replaces
+  "Describe a moment recently when life felt uncomplicated." The card with the most
+  rejected drafts this patch: vague "uncomplicated" framing, then a media/rewatch angle
+  (crossed into Culture's "haven't finished it" card), then a physical-challenge angle
+  (owner: people don't choose challenges, things just turn out harder than expected —
+  benched below for Body instead), then games-as-competitive-seriousness and
+  games-as-skill-satisfaction (both still about difficulty, not leisure). Landed on games
+  as leisure for its own sake — no money, no productive purpose, happiness only.
+- **Unwind 10** → *"What did you used to do for fun that life quietly pushed out?"*
+  Replaces "A place you keep going back to — not because it's the best, but because it's
+  yours..." — bland, and the third "place/where" card once counted against 1 and 6 above.
+  A performing/being-seen angle and an object/gear angle were both tried and rejected as
+  not landing.
+
+Also, **Culture 7** → *"Is there an artist or song you can't explain loving — it just
+doesn't fit, and you don't care?"* Replaces "What's something about yourself you were
+embarrassed to admit you liked, before you felt allowed to?" — owner flagged the original
+as reading like guilty-pleasure rather than its intended self-permission/self-discovery
+angle; this was the music-taste-mismatch card benched during the Unwind 6 search above,
+redirected here instead since it's genuinely Culture's register (the *what* — a specific
+song/artist), not Unwind's.
 
 ## Patch v6.85 — third batch from the "version one" review: eight owner-approved swaps
 Owner picked donor slots for eight of the Tier-1 candidates from the ranked list, each
