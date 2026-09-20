@@ -441,12 +441,12 @@ const BUCKET_META = {
 // which points at these same keys.
 // ═══════════════════════════════════════════════════════════
 const CHAPTERS_META = {
-  warmup:    { label:"Arrive",              color:"#d0913c" },
-  surface:   { label:"The Surface",         color:"#4f9668" },
-  findout:   { label:"Beneath the Surface", color:"#4a8fa3" },
-  deeper:    { label:"Into the Deep",       color:"#9b83ae" },
-  aboutus:   { label:"Between Us",          color:"#cf9483" },
-  afterdark: { label:"After Dark",          color:"#8d1c22" },
+  warmup:    { label:"Arrive",              color:"#d9a441" },
+  surface:   { label:"The Surface",         color:"#6bb36e" },
+  findout:   { label:"Beneath the Surface", color:"#45a0b8" },
+  deeper:    { label:"Into the Deep",       color:"#8f74b8" },
+  aboutus:   { label:"Between Us",          color:"#d97a92" },
+  afterdark: { label:"After Dark",          color:"#ff2f2f" },
 };
 const BUCKET_DESCRIPTIONS = Object.fromEntries(Object.entries(BUCKET_META).map(([k,v]) => [k, v.desc]));
 
