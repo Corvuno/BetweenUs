@@ -1409,9 +1409,13 @@ body.tok-taught .tok-hint{display:none;}
 .chapter .ch-desc{flex:1;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
 .chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);
-  background:color-mix(in srgb, var(--ch) 5%, transparent);}
+  background:color-mix(in srgb, var(--ch) 7%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
-.chapter.on{background:rgba(255,255,255,.028);border-image-source:var(--ch-rail);}
+/* a real per-chapter tint, not the ~3% white wash this used to be — same
+   language as the end-of-set screen's .es-hold-fill (color-mix at 16%
+   off --es-chapter), so "on" reads as that chapter's colour, not just a
+   lighter box. */
+.chapter.on{background:color-mix(in srgb, var(--ch) 16%, transparent);border-image-source:var(--ch-rail);}
 .chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
 .chapter.ch-hidden{display:none;}
 
