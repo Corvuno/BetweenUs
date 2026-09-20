@@ -1408,8 +1408,10 @@ body.tok-taught .tok-hint{display:none;}
   text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
 .chapter .ch-desc{flex:1;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
-.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);
-  background:color-mix(in srgb, var(--ch) 4%, transparent);}
+/* one signal, not two: no background wash here — carrying both a faint
+   tint and a muted line made "part" read muddier than plain "off",
+   instead of clearly between it and "on". The line alone does the job. */
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 /* a real per-chapter tint, not the ~3% white wash this used to be — same
    language as the end-of-set screen's .es-hold-fill (color-mix off
