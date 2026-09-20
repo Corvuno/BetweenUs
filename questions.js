@@ -432,9 +432,9 @@ const NEWDECK_CARDS = [
   { level: "wish", question: "What did you want last year that you've already stopped wanting?", nl: "Waar verlangde je vorig jaar nog naar?" },
 
   // ─── SKIN ───
-  { level: "flesh", question: "Some touch undoes you. Describe it." },
+  { level: "flesh", question: "Some sexual touch undoes you completely. Describe it." },
   { level: "flesh", question: "What's a sexual experience that surprised you by how much you actually liked it?" },
-  { level: "flesh", question: "Afterwards, still tangled up — how do you like to come down?" },
+  { level: "flesh", question: "After sex, still tangled up together — how do you like to come down?" },
   { level: "flesh", question: "Walk me through undressing someone — the order, the pace, what you notice." },
   { level: "flesh", question: "Reconstruct your smoothest pickup ever." },
   { level: "flesh", question: "A kiss you can still feel when you think of it — take me there." },
@@ -451,8 +451,8 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What makes you laugh in bed?" },
   { level: "carnal", question: "What's your sexual superpower — and the night it proved you right?" },
   { level: "carnal", question: "When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?" },
-  { level: "carnal", question: "What sound — yours or theirs — tips you over the edge?" },
-  { level: "carnal", question: "Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?" },
+  { level: "carnal", question: "What's a sound someone's made in bed that you still think about?" },
+  { level: "carnal", question: "Describe a moment when you lost track of whose pleasure you were even chasing." },
   { level: "carnal", question: "Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?" },
   { level: "carnal", question: "When does sex stop being about you — and is that a good thing?" },
   { level: "carnal", question: "What's something sexual you've never asked for because it's better when it's offered?" },

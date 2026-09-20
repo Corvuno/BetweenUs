@@ -419,9 +419,9 @@ The questions come first, category by category. The full change log is at the bo
 12. What did you want last year that you've already stopped wanting?
 
 ## Flesh 🔞
-1. Some touch undoes you. Describe it.
+1. Some sexual touch undoes you completely. Describe it.
 2. What's a sexual experience that surprised you by how much you actually liked it?
-3. Afterwards, still tangled up — how do you like to come down?
+3. After sex, still tangled up together — how do you like to come down?
 4. Walk me through undressing someone — the order, the pace, what you notice.
 5. Reconstruct your smoothest pickup ever.
 6. A kiss you can still feel when you think of it — take me there.
@@ -438,8 +438,8 @@ The questions come first, category by category. The full change log is at the bo
 3. What makes you laugh in bed?
 4. What's your sexual superpower — and the night it proved you right?
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
-6. What sound — yours or theirs — tips you over the edge?
-7. Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?
+6. What's a sound someone's made in bed that you still think about?
+7. Describe a moment when you lost track of whose pleasure you were even chasing.
 8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 9. When does sex stop being about you — and is that a good thing?
 10. What's something sexual you've never asked for because it's better when it's offered?
