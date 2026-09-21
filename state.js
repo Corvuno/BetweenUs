@@ -41,6 +41,10 @@ const state = {
                           // hand under unchanged settings (Draw more, hold-to-continue),
                           // so only a hand that starts from an actual settings change
                           // gets the "thrown onto the table" animation
+  queryDeckActive: false, // set by applyQueryDeck() (?Q=Work1,Life7,...) — a hand pinned
+                           // to specific cards by URL, for testing/demoing. Blocks
+                           // autoSaveSession() so opening a test link never overwrites a
+                           // real in-progress saved session.
 };
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);

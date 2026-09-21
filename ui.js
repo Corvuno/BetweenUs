@@ -1354,3 +1354,5 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   syncIntentUI();
 })();
 
+applyQueryDeck();   // ?Q=Work1,Life7,... overrides the dealt default hand, if present
+

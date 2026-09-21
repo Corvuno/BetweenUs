@@ -304,6 +304,54 @@ function applyLimit() {
 }
 
 
+// ── ?Q= TEST DECK ─────────────────────────────────────────────────────────
+// Debug/demo shortcut: ?Q=Work1,Life7,Carnal4 renders exactly those cards, in
+// that order, as the whole hand — instead of the normal random deal — so a
+// specific card can be pulled up or shown to someone without clicking
+// through category selection. Id = a CATEGORIES key (case-insensitive) plus
+// a 1-based index counted in questions.js order for that category, e.g.
+// "Work1" is the first Work card as currently written; inserting a card
+// earlier in a category shifts every later number in it, so these are
+// throwaway test addresses, not stable ones. An id that doesn't parse or
+// doesn't resolve is skipped rather than breaking the whole link. Sets
+// state.queryDeckActive so autoSaveSession() (session.js) leaves the real
+// saved session alone.
+function applyQueryDeck() {
+  const raw = new URLSearchParams(location.search).get('Q');
+  if (!raw) return false;
+  const byLevel = {};
+  ALL_CARDS.forEach(c => { (byLevel[c.level] = byLevel[c.level] || []).push(c); });
+  const cards = raw.split(',').map(s => s.trim()).filter(Boolean).map(id => {
+    const m = id.match(/^([a-zA-Z]+)(\d+)$/);
+    if (!m) return null;
+    const pool = byLevel[m[1].toLowerCase()];
+    return pool ? (pool[parseInt(m[2], 10) - 1] || null) : null;
+  }).filter(Boolean);
+  if (!cards.length) return false;
+
+  state.queryDeckActive = true;
+  state.skipDealAnim = false;
+  state.loggedQuestions.clear();
+  state.fullDeck = cards;
+  state.drawUnseen = cards.length;
+  state.cardLimit = cards.length;
+  state.visibleDeck = cards;
+  state.currentIndex = -1;
+  syncLimitButtons();
+  renderProgress();
+  setCardDisplay(null);
+  updateDeckInfo();
+  updateDrawMore();
+  state.categoriesCollapsed = true;
+  document.getElementById('toggles')?.classList.add('collapsed');
+  const ca = document.getElementById('catArrow');
+  if (ca) ca.textContent = '▶';
+  renderShell();
+  _nextCardBase();
+  return true;
+}
+
+
 function drawMore() {
   /* Deal a FRESH hand at the chosen limit rather than growing the current one.
      The hand is always the size you picked (5) — it never becomes 10 or 15.
