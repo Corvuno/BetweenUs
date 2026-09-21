@@ -10,9 +10,10 @@
 // request to critique or reverse an answer already given, and never an
 // abstract argument-for/against move (this deck is stories, not positions).
 // The trigger lives in the control row (Twist/partyBtnTwist) and in the
-// party header; tapping it doesn't add anything to the card — #twistSentence
-// (main mode) or #party-number (party mode) shows the modifier in place of
-// the count. Never survives a new card; flipToCard/clearTwist reset it every
+// party header; tapping it doesn't replace anything on the card — it just
+// shows the modifier at the bottom of the card, underneath the question
+// (#twistSentence, main mode) or in the party header (#party-number, party
+// mode). Never survives a new card; flipToCard/clearTwist reset it every
 // draw.
 const MODIFIERS = [
   { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },

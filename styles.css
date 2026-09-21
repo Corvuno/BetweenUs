@@ -231,19 +231,21 @@ body::before{
 }
 .card-question.in{opacity:1;transform:none;}
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
-   The trigger lives in the control row (screen-row); tapping it doesn't
-   add anything to the card. The modifier sentence used to swap in over the
-   on-card counter (retired — the count itself moved to #progCount under
-   the bar, see .prog-count below); its new home is this element, in the
-   control row next to the Twist trigger that opens it. Default palette
+   The trigger lives in the control row (same slot the language switch used
+   to hold — language moved to the menu only). Tapping it doesn't add
+   anything to the card: this element, at the bottom of the card underneath
+   the question (where the old on-card counter used to swap it in), shows
+   the modifier — nothing else on the card is replaced. Default palette
    only — this has nothing to do with which category is showing, so it
    never borrows the category accent. Never survives a new card;
-   flipToCard resets it every draw. Hidden (no height) until a twist is
-   actually active. */
-.twist-sentence{display:none;width:100%;text-align:center;padding:2px 28px 0;}
+   flipToCard resets it every draw. In-flow (not position:absolute) like
+   .party-number, so a long modifier sentence pushes the question's flex
+   area to make room instead of floating over it or the card's corner
+   marks. */
+.twist-sentence{display:none;flex:0 0 auto;width:100%;text-align:center;padding:0 28px 12px;}
 .twist-sentence.twist{
   display:block;
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;line-height:1.42;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
