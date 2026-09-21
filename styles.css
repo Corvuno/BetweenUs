@@ -321,7 +321,7 @@ body::before{
   width:300px;max-width:100%;
   gap:var(--dot-gap,4px);
 }
-.progress-tick{flex:0 0 auto;height:6px;
+.progress-tick{flex:0 0 auto;height:6px;border-radius:1.5px;
   background:#5c4f37;opacity:.5;
   transition:opacity .22s ease,background-color .22s ease,transform .22s ease;}
 /* seen/current carry the card's own category colour — everything still
