@@ -39,7 +39,7 @@ const NEWDECK_CARDS = [
   { level: "quick", question: "What do you quietly fix or straighten in other people's houses?" },
 
   // ─── WARM ───
-  { level: "warm", question: "Some small thing you do properly, though nobody would ever check...", nl: "Iets waar jij meer zorg aan besteedt dan nodig is..." },
+  { level: "warm", question: "Which chore do you secretly not mind?" },
   { level: "warm", question: "One small thing can ruin your entire morning. Which?", nl: "Wat kan je stemming in tien seconden verpesten?" },
   { level: "warm", question: "Whose cooking do you miss?", nl: "Naar welk gerecht verlang je soms terug?" },
   { level: "warm", question: "Point to something you're wearing that has a story.", nl: "Iets dat je vandaag draagt en waar een verhaal aan vastzit..." },

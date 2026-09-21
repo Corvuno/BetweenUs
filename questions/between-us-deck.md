@@ -25,7 +25,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Warm
 *Light and personal — the fond, the funny, the telling. (Absorbed Playful in v6.17.)*
-1. Some small thing you do properly, though nobody would ever check...
+1. Which chore do you secretly not mind?
 2. One small thing can ruin your entire morning. Which?
 3. Whose cooking do you miss?
 4. Point to something you're wearing that has a story.
@@ -503,6 +503,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Warm** — "Some small thing you do properly, though nobody would ever check..." (displaced from Warm 1 in v6.88 by "Which chore do you secretly not mind?", moved in from Life 3 — owner's call, both cards occupied the same "quiet care nobody checks on" ground and the Life version was the stronger fit for Warm's register)
 - **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
 - **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.83, owner-approved; kept the dichotomy, added a concrete-example clause rather than replacing it outright)
 - **Home** — "Where would you live if nothing was stopping you — and what would you live in?" (displaced from Home 10 in v6.83, owner-approved; too close to Home 8's kitchen-window card, both purely aspirational)
@@ -673,6 +674,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.88 — Warm 1 ← Life 3 (chore card relocated)
+- **Warm 1** → *"Which chore do you secretly not mind?"* Replaces "Some small thing you
+  do properly, though nobody would ever check..." — both were the same "quiet care
+  nobody checks on" idea; owner moved the Life 3 version in as the stronger fit for
+  Warm, freeing Life 3 for a genuine Life-register replacement (redesign in progress,
+  see next patch).
 
 ## Patch v6.87 — Work 1, boring premise swapped for a fun one
 - **Work 1** → *"What's the best piece of office drama you've ever witnessed, whatever your
