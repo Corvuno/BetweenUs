@@ -6,6 +6,11 @@
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.2);
   --sq-w:42px;
+  /* the drawn card's own deck-identity marking (corners/border, After Dark's
+     also a wash + watermark) — separate from --ad-red above, which the
+     existing mode-toggle button already owns; kept apart so this doesn't
+     change that button's colour. */
+  --mark-afterdark:#c1272d;
 }
 html,body{height:100%;}
 /* a near-miss swiping a sheet/drawer closed used to bounce past it onto the
@@ -208,6 +213,30 @@ body::before{
 }
 .card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
 .card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
+/* Deck-identity marking, set via --mark and a class from card.js:
+   .mark-full  — After Dark cards: corners + border tint + radial wash + watermark
+   .mark-border — Colbert / The 36: corners + border tint only, no wash/watermark */
+.card.mark-full::before,.card.mark-full::after,
+.card.mark-border::before,.card.mark-border::after{
+  border-color:var(--mark);
+  opacity:.55;
+}
+.card.mark-full,.card.mark-border{
+  border-color:color-mix(in srgb, var(--mark) 40%, transparent);
+}
+.card.mark-full{
+  background:
+    radial-gradient(120% 100% at 50% 0%, color-mix(in srgb, var(--mark) 9%, transparent), transparent 62%),
+    var(--card-bg);
+}
+.card-ad-mark{
+  display:none;
+  position:absolute;inset:0;z-index:0;
+  align-items:center;justify-content:center;
+  font-size:9rem;color:var(--mark);opacity:.055;
+  line-height:1;pointer-events:none;
+}
+.card.mark-full .card-ad-mark{display:flex;}
 .c-accent{
   position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
   transition:background .5s ease;
@@ -221,7 +250,7 @@ body::before{
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
 }
 .card-star:hover{opacity:.65;}.card-star.active{opacity:1;}
-.card-body-inner{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
+.card-body-inner{position:relative;z-index:1;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
 .card-level{font-family:'Jost',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:0;transition:color .5s ease,opacity .35s ease;}
 .card-level.in{opacity:.95;}
 .card-question{

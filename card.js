@@ -101,18 +101,42 @@ function updateStarUI() {
   if (star) star.classList.toggle('active', !!card && state.favourites.some(f => f.question === card.question));
 }
 
+// Deck-identity marking on the card face itself: After Dark categories get
+// the full treatment (corners + border tint + radial wash + watermark, in
+// the decided Alarm Red); Colbert and The 36 get corners + border tint only,
+// each in its own existing CATEGORIES colour, no wash or watermark. Every
+// other category is untouched. One place so setCardDisplay and flipToCard
+// (the two card-render paths) can't drift apart on this.
+function applyCardMark(el, card) {
+  if (!el) return;
+  el.classList.remove('mark-full', 'mark-border');
+  el.style.removeProperty('--mark');
+  if (!card) return;
+  const meta = CATEGORIES[card.level];
+  if (!meta) return;
+  if (meta.bucket === 'afterdarkb') {
+    el.style.setProperty('--mark', 'var(--mark-afterdark)');
+    el.classList.add('mark-full');
+  } else if (card.level === 'colbert' || card.level === 'aron') {
+    el.style.setProperty('--mark', meta.color);
+    el.classList.add('mark-border');
+  }
+}
+
 function setCardDisplay(card) {
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
   // shown, so the previous hand's end-of-hand summary can't still be
   // showing. hideHandSummary() is a no-op if it wasn't showing.
   if (typeof hideHandSummary === 'function') hideHandSummary();
+  const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
   const nextBtn= document.getElementById('btn-next');
   const accent = document.getElementById('c-accent');
 
   if (!card) {
+    applyCardMark(el, null);
     if (lvlEl)    { lvlEl.textContent=''; lvlEl.classList.remove('in'); }
     if (accent)   { accent.style.background=''; }
     if (qEl)      { qEl.textContent = state.visibleDeck.length===0
@@ -132,6 +156,7 @@ function setCardDisplay(card) {
     clearTwist();
     return;
   }
+  applyCardMark(el, card);
   const color = levelColor(card.level);
   if (accent) {
     accent.style.background = giltRail(color);
@@ -182,6 +207,7 @@ function flipToCard(card, isFirstDraw) {
     });
   }
   setTimeout(() => {
+    applyCardMark(el, card);
     const color = levelColor(card.level);
     if (accent) {
       accent.style.background = giltRail(color);
