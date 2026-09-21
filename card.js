@@ -10,9 +10,10 @@
 // request to critique or reverse an answer already given, and never an
 // abstract argument-for/against move (this deck is stories, not positions).
 // The trigger lives in the control row (Twist/partyBtnTwist) and in the
-// party header; tapping it doesn't add anything to the card — the counter
-// that's already printed there ("1 / 5") swaps to the modifier in place.
-// Never survives a new card; flipToCard/clearTwist reset it every draw.
+// party header; tapping it doesn't add anything to the card — #twistSentence
+// (main mode) or #party-number (party mode) shows the modifier in place of
+// the count. Never survives a new card; flipToCard/clearTwist reset it every
+// draw.
 const MODIFIERS = [
   { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },
   { en: "What do you suspect you'll answer differently five years from now?", nl: "Wat denk je dat je hier over vijf jaar anders op zou antwoorden?" },
@@ -27,9 +28,13 @@ function pickTwist() {
 function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
 // Applies (or clears) the twist text on a counter element. Clearing used to
 // just leave the element alone, on the assumption a fresh flipToCard() had
-// always just written the real "x / y" text a moment earlier — true when a
+// always just written the real count text a moment earlier — true when a
 // twist only ever cleared on a new card, false now that tapping Twist a
 // second time clears it in place, so this restores the count itself.
+// party-number is the one element that still shows a plain count when
+// untwisted (its own roman "n / total" reading); twistSentence has no such
+// job any more (the real count moved to #progCount under the bar), so it
+// just goes empty again.
 function applyTwistToCounter(el) {
   if (!el) return;
   if (currentTwist) {
@@ -37,15 +42,15 @@ function applyTwistToCounter(el) {
     el.classList.add('twist');
   } else {
     el.classList.remove('twist');
-    if (hasCurrentCard()) {
-      el.textContent = el.id === 'party-number'
-        ? partyRomanCount(state.currentIndex + 1, state.visibleDeck.length)
-        : `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
+    if (el.id === 'party-number') {
+      if (hasCurrentCard()) el.textContent = partyRomanCount(state.currentIndex + 1, state.visibleDeck.length);
+    } else {
+      el.textContent = '';
     }
   }
 }
 function renderTwist() {
-  applyTwistToCounter(document.getElementById('card-number'));
+  applyTwistToCounter(document.getElementById('twistSentence'));
   applyTwistToCounter(document.getElementById('party-number'));
   [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
     if (!btn) return;
@@ -103,7 +108,6 @@ function setCardDisplay(card) {
   if (typeof hideHandSummary === 'function') hideHandSummary();
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
-  const numEl  = document.getElementById('card-number');
   const nextBtn= document.getElementById('btn-next');
   const accent = document.getElementById('c-accent');
 
@@ -115,7 +119,6 @@ function setCardDisplay(card) {
       : (state.lang==='nl' ? 'Een plek om te beginnen…'   : 'A place to begin…');
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
-    if (numEl)    numEl.textContent = '— — —';
     if (nextBtn) {
       nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
       // nothing's been dealt yet (fresh load, or a settings change just
@@ -137,7 +140,6 @@ function setCardDisplay(card) {
     lvlEl.style.color = labelColor(color);
   }
   if (qEl)   qEl.textContent = translateQ(card);
-  if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   if (nextBtn) {
     nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
@@ -189,8 +191,6 @@ function flipToCard(card, isFirstDraw) {
     if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[card.level] || ''; lvlEl.style.color = labelColor(color); }
     const qEl2 = document.getElementById('card-question');
     if (qEl2) qEl2.textContent = translateQ(card);
-    const numEl = document.getElementById('card-number');
-    if (numEl) numEl.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
     /* let updateDrawMore own the button label — hard-coding "Next Card" here
        ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
     updateDrawMore();

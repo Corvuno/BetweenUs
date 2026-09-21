@@ -378,7 +378,6 @@ function renderEndMessage(html) {
     document.getElementById('card-level').className   = 'card-level';
     document.getElementById('card-level').textContent = '';
     document.getElementById('card-question').innerHTML = html;
-    document.getElementById('card-number').textContent = '— end —';
     el.classList.remove('flipping');
     updateDrawMore();
   }, 175);

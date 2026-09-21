@@ -230,32 +230,20 @@ body::before{
   opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
 }
 .card-question.in{opacity:1;transform:none;}
-.card-number{
-  /* the plain "n / total" reading is retired now that the walking-line
-     counter below has its own roman-numeral readout — showing both was
-     two counters saying the same thing. This element stays in the DOM
-     (and un-hidden) only for its second job: Twist repurposes it in place
-     to show the modifier sentence — see .card-number.twist below. */
-  display:none;
-  flex:0 0 auto;width:100%;text-align:center;
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;color:var(--muted-l);
-  transition:color .2s ease;padding:0 28px 12px;
-}
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
-   The trigger lives in the control row (same slot the language switch used
-   to hold — language moved to the menu only). Tapping it doesn't add
-   anything to the card: the counter that's already printed there ("1 / 5")
-   swaps to the modifier instead, in the same spot, same size family, no new
-   element anywhere. Default palette only — this has nothing to do with
-   which category is showing, so it never borrows the category accent.
-   Never survives a new card; flipToCard resets it every draw.
-   In-flow (not position:absolute) like .party-number, so a long modifier
-   sentence pushes the question's flex area to make room instead of
-   floating over it or the card's corner marks — see .card-body-inner's
-   min-height:0, which is what lets it actually shrink. */
-.card-number.twist{
+   The trigger lives in the control row (screen-row); tapping it doesn't
+   add anything to the card. The modifier sentence used to swap in over the
+   on-card counter (retired — the count itself moved to #progCount under
+   the bar, see .prog-count below); its new home is this element, in the
+   control row next to the Twist trigger that opens it. Default palette
+   only — this has nothing to do with which category is showing, so it
+   never borrows the category accent. Never survives a new card;
+   flipToCard resets it every draw. Hidden (no height) until a twist is
+   actually active. */
+.twist-sentence{display:none;width:100%;text-align:center;padding:2px 28px 0;}
+.twist-sentence.twist{
   display:block;
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;line-height:1.42;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
@@ -290,28 +278,52 @@ body::before{
 /* ── CONTROLS ── */
 .controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
 .controls-wrap.in{opacity:1;transform:none;}
-/* the "walking line" counter: one flex tick per card plus a terminal end
-   diamond, sized purely by flex weight — a 5-card hand and a 40-card hand
-   both fill the same row width, only the composition inside changes as
-   you advance. No dot-count scaling to maintain any more; the numeral
-   underneath is what actually reads at any hand size. */
-.progress{display:flex;flex-direction:column;gap:7px;width:100%;}
-.progress-rule{display:flex;align-items:center;height:9px;gap:3px;}
-.progress-rule.many{gap:2px;}
-.progress-tick{flex-grow:1;flex-shrink:1;flex-basis:0%;height:1px;
-  background:color-mix(in srgb, var(--gold) 22%, transparent);
-  transition:flex-grow .22s ease,height .22s ease,opacity .22s ease,background-color .22s ease;}
-.progress-tick.seen{height:3px;opacity:.55;background:var(--tick-color,var(--gold));}
-.progress-tick.current{flex-grow:1.5;height:9px;opacity:1;background:var(--tick-color,var(--gold));}
+/* the progress dots: one per card, up to 20 on screen at once — past that
+   the window slides to keep the current card visible, everything scrolled
+   out of frame simply isn't drawn (not compressed or shown differently).
+   Real shape/size/colour never changes based on position in that window;
+   only which dots are shown does. width per dot is computed in JS
+   (renderProgress) and applied inline; --dot-gap likewise. */
+.progress{
+  display:flex;align-items:center;justify-content:center;
+  flex-wrap:nowrap;height:6px;overflow:visible;
+  width:300px;max-width:100%;
+  gap:var(--dot-gap,4px);
+}
+.progress-tick{flex:0 0 auto;height:6px;
+  background:#5c4f37;opacity:.5;
+  transition:opacity .22s ease,background-color .22s ease,transform .22s ease;}
+/* seen/current carry the card's own category colour — everything still
+   ahead (i > cur) stays the flat, deliberately uninformative #5c4f37 above
+   so the bar never spoils what's coming up. */
+.progress-tick.seen{opacity:.42;background:var(--tick-color,var(--gold));}
+.progress-tick.current{opacity:1;background:var(--tick-color,var(--gold));transform:scaleY(1.4);}
 /* the extra tick past the last card, standing for the summary screen — an
-   outline diamond instead of a fill so it doesn't read as just another card */
+   outline diamond instead of a fill so it doesn't read as just another
+   card. Only rendered when the real last card is inside the visible
+   window (see renderProgress) — a slid-away window has nothing to cap yet. */
 .progress-tick.end{flex:0 0 auto;width:8px;height:8px;border:1px solid var(--gold);
   background:transparent;transform:rotate(45deg);margin-left:6px;}
 .progress-tick.end.current{background:var(--gold-l);border-color:var(--gold-l);}
 @media (prefers-reduced-motion:reduce){.progress-tick{transition:none;}}
-.progress-num{font-family:'Poiret One',cursive;font-size:.85rem;letter-spacing:.18em;color:var(--cream);}
-.progress-num-sep{color:color-mix(in srgb, var(--gold) 50%, transparent);}
-.progress-num-total{color:color-mix(in srgb, var(--cream) 45%, transparent);}
+
+/* ── Count line, under the bar — separate from the dot row above so the
+   two can never say conflicting things: always Roman numerals, no arabic
+   fallback at any count (a 420-card "All" selection reads as CDXX / CDXX,
+   not a squeezed-in "420 / 420"). Fixed-width flanking rules (not flex)
+   so a long numeral pushes them outward instead of squeezing the numeral. */
+.prog-count{display:flex;align-items:center;justify-content:center;gap:9px;}
+.prog-count-rule{
+  width:44px;height:1px;flex:0 0 auto;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 30%,transparent));
+}
+.prog-count-rule:last-child{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 30%,transparent),transparent);
+}
+.prog-count-num{
+  font-family:'Poiret One',cursive;font-size:13px;letter-spacing:.22em;
+  line-height:1;color:#8a7f70;white-space:nowrap;
+}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:rgba(201,168,76,.4);color:var(--cream);}
@@ -708,9 +720,9 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 }
 
 /* ── RESPONSIVE ── */
-@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.card-number.twist{font-size:.92rem;}}
+@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:.88rem;}}
 @media(min-width:768px){
-  .app{max-width:640px;}.title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.card-number{font-size:.8rem;}.card-number.twist{font-size:1.02rem;}
+  .app{max-width:640px;}.title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.twist-sentence.twist{font-size:.98rem;}
   .btn-sq{width:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;}
   :root{--sq-w:48px;}
   .btn-fullscreen{font-size:.8rem;padding:15px 8px;}
@@ -718,7 +730,7 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
   .cat-toggle-lbl{font-size:.8rem;}.toggle-btn{font-size:.8rem;padding:15px 15px;}
 }
 @media(min-width:1024px){
-  .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.card-number.twist{font-size:1.1rem;}
+  .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.twist-sentence.twist{font-size:1.05rem;}
   .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
   :root{--sq-w:52px;}
   /* chrome sized for a 364px mobile card reads as thin/empty at 720px —
@@ -1257,7 +1269,7 @@ body.tok-taught .tok-hint{display:none;}
      conflict where editing one quietly does nothing. */
   .title{font-size:3.2rem;}
   .card-question{font-size:2.6rem;}
-  .card-number.twist{font-size:1.2rem;}
+  .twist-sentence.twist{font-size:1.15rem;}
   .card-level{font-size:1.05rem;letter-spacing:.2em;}
   .tok{font-size:.85rem;}
   .btn-draw{font-size:.9rem;}
@@ -1269,7 +1281,7 @@ body.tok-taught .tok-hint{display:none;}
 @media(min-width:1600px){
   .app{max-width:1000px;}
   .card-question{font-size:2.85rem;}
-  .card-number.twist{font-size:1.25rem;}
+  .twist-sentence.twist{font-size:1.2rem;}
   .card-level{font-size:1.1rem;}
 }
 /* short desktop windows: keep everything on one screen */
@@ -1278,7 +1290,7 @@ body.tok-taught .tok-hint{display:none;}
   .card{aspect-ratio:2/1;}
   .card-question{font-size:2.1rem;}
   .card-level{font-size:1rem;}
-  .card-number.twist{font-size:1.02rem;}
+  .twist-sentence.twist{font-size:.98rem;}
 }
 
 /* ══ PLAY · EXPLORE ══════════════════════════════════════════════════════

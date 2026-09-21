@@ -52,11 +52,12 @@ async function check(name, fn) {
 function assert(cond, msg) { if (!cond) throw new Error(msg || 'assertion failed'); }
 
 // ── in-page helpers ─────────────────────────────────────────────────────────
-async function cardNumberText(page) { return page.locator('#card-number').textContent(); }
+// The on-card "n / total" reading was retired (moved under the bar as
+// #progCountNum, in Roman numerals) — read the real state instead of
+// parsing rendered text, which is more robust and works before that
+// element exists at all (index -1, no card drawn yet).
 async function cardParts(page) {
-  const t = (await cardNumberText(page)).trim();
-  const m = t.match(/^(\d+)\s*\/\s*(\d+)$/);
-  return m ? { index: +m[1], total: +m[2] } : { raw: t };
+  return page.evaluate(() => ({ index: state.currentIndex + 1, total: state.visibleDeck.length }));
 }
 async function questionText(page) { return (await page.locator('#card-question').textContent()).trim(); }
 // Polls real DOM state instead of sleeping a fixed duration — the deal
@@ -64,15 +65,7 @@ async function questionText(page) { return (await page.locator('#card-question')
 // waits for it to *finish* (rather than guessing how long it takes) doesn't
 // need re-tuning every time that duration changes.
 async function waitForCardIndex(page, n, timeout = 3000) {
-  await page.waitForFunction(
-    (expected) => {
-      const t = (document.getElementById('card-number').textContent || '').trim();
-      const m = t.match(/^(\d+)\s*\/\s*(\d+)$/);
-      return !!m && +m[1] === expected;
-    },
-    n,
-    { timeout }
-  );
+  await page.waitForFunction((expected) => state.currentIndex + 1 === expected, n, { timeout });
 }
 
 // Dispatch a synthetic touch swipe on an element, optionally followed by the
@@ -140,8 +133,8 @@ async function run() {
   await check('initial load shows the "draw a card" placeholder, not a card', async () => {
     const q = await questionText(page);
     assert(/draw a card|trek een kaart|place to begin|plek om te beginnen/i.test(q), `expected the draw-to-begin placeholder, got "${q}"`);
-    const numTxt = (await cardNumberText(page)).trim();
-    assert(numTxt === '— — —', `expected the empty card-number placeholder, got "${numTxt}"`);
+    const { index } = await cardParts(page);
+    assert(index === 0, `expected no card drawn yet (index 0, i.e. currentIndex -1), got index ${index}`);
   });
 
   await check('first tap on the card draws card 1 of the hand', async () => {
@@ -287,8 +280,8 @@ async function run() {
       assert(after !== before, `active category count did not change (${before})`);
       // A toggle change calls initDeck(), which resets to the "draw a card"
       // placeholder (no auto-drawn first card — see the NO INTRO note up top).
-      const numTxt = (await cardNumberText(page)).trim();
-      assert(numTxt === '— — —', `deck did not reset to the draw-to-begin placeholder, got "${numTxt}"`);
+      const { index: resetIndex } = await cardParts(page);
+      assert(resetIndex === 0, `deck did not reset to the draw-to-begin placeholder, currentIndex+1 was ${resetIndex}`);
       // restore for later tests
       await bucket.locator('.cbk-select').click();
       await page.waitForTimeout(300);
