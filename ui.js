@@ -147,9 +147,27 @@ document.getElementById('cardStar').addEventListener('click', e => {
 // swipe gesture and calls preventDefault() when it acts, so the browser
 // never synthesizes a click after a swipe — this handler only ever sees
 // genuine taps and needs no "was that just a swipe?" flag to guard against.
+//
+// Mouse only: dragging to select the question text (card-question is the
+// one part of the card with user-select re-enabled — see styles.css) also
+// ends in a click on mouseup, same as a tap does. Distinguish them by
+// actual pointer movement rather than by reading the selection in the
+// click handler — selection state isn't reliably settled by the time
+// click fires (e.g. the first click of a double-click-to-select-a-word
+// hasn't selected anything yet), but "did the mouse move" always has.
+let cardMouseDownAt = null;
+document.getElementById('card').addEventListener('mousedown', e => {
+  cardMouseDownAt = { x: e.clientX, y: e.clientY };
+});
 document.getElementById('card').addEventListener('click', e => {
   if (state.partyMode) return;
   if (e.target.closest('#cardStar')) return;
+  if (cardMouseDownAt) {
+    const dragged = Math.abs(e.clientX - cardMouseDownAt.x) > 6 || Math.abs(e.clientY - cardMouseDownAt.y) > 6;
+    cardMouseDownAt = null;
+    if (dragged) return; // was a drag-select, not a tap
+  }
+  if (window.getSelection && String(window.getSelection()).length > 0) return;
   nextCard();
   updateDeckInfo();
 });
