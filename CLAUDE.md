@@ -1,3 +1,28 @@
+# DO NOT GUESS. EVER. ASK.
+
+**This is the first rule. It overrides nothing below and nothing below overrides it.**
+
+If any detail of a request is unclear, unspecified, or could reasonably go more than
+one way — placement, wording, which element something replaces, what happens to a
+feature when another one changes, anything — **stop and ask before writing a single
+line of code.** Not after. Not "I'll implement it and flag the judgment call in my
+summary." Before.
+
+Producing *something* that technically matches the words of a request is not the
+same as doing what the owner asked for, and shipping a guess is not a smaller
+mistake because it's easy to revert. Every guess costs the owner a round trip of
+noticing it's wrong, explaining what actually should have happened, and waiting for
+it to be redone — that cost is the same whether the guess was about a button's
+color or where a whole feature lives. This has already happened repeatedly in this
+project. It stops now.
+
+This is not "ask before big architectural decisions" — it's ask before *any*
+unstated detail, no matter how small it looks from the inside. If a spec doc, a
+message, or an earlier instruction leaves a gap, the gap gets asked about, not
+filled in with whatever seems reasonable. "All decisions made" in a doc means the
+decisions the doc actually states — it does not license filling in the ones it
+doesn't. When in real doubt whether something counts as decided or not: ask.
+
 # Working conventions
 
 - The owner does not want to interact with code, ever. Don't hand them a
