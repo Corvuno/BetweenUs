@@ -155,8 +155,8 @@ The questions come first, category by category. The full change log is at the bo
 1. How easily does a new habit stick for you — and which one actually did?
 2. What do you consistently resist — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
-4. When has a gut feeling known more than you did?
-5. Silence, no phone, nothing to do — how long before you actually start enjoying it?
+4. Which of your memories do you suspect you've quietly rewritten over the years?
+5. Silence, nothing to do — how long before you actually start enjoying it?
 6. What does your inner voice sound like — and whose is it?
 7. What's the most useful thing you've ever unlearned?
 8. What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?
@@ -708,6 +708,14 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.87 — Mind 4 swap, Mind 5 trim (from the depth-scoring pilot)
+- **Mind 4** → *"Which of your memories do you suspect you've quietly rewritten over the
+  years?"* Replaces *"When has a gut feeling known more than you did?"* — flagged as a
+  stock "trust your gut" line with no angle specific to Mind; owner picked this
+  alternative over two others.
+- **Mind 5** → *"Silence, nothing to do — how long before you actually start enjoying
+  it?"* Drops "no phone," at the owner's request.
 
 ## Patch v6.86 — six owner-decided swaps from the wording-refinement pass
 - **Spirit 7** → *"Who did something special for you in your recent past that you did not
