@@ -275,6 +275,18 @@ body::before{
 body.showing-hand-summary .card-question{
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;
 }
+/* Phones: the card is a real playing card laid on its side (the owner's reference
+   card, 556×360) and never grows. Text is 20% up from the old .8/1.38rem — sized
+   so every normal card fits; anything longer (The 36) scrolls inside the
+   card instead of stretching it. overflow:hidden on .card is what stops
+   aspect-ratio's automatic min-height from growing it past the ratio;
+   "safe center" keeps an overflowing question scrollable from its top. */
+@media(max-width:559px){
+  .card{aspect-ratio:556/360;overflow:hidden;}
+  .card-body-inner{min-height:0;overflow-y:auto;justify-content:safe center;overscroll-behavior:contain;}
+  .card-level{font-size:.96rem;}
+  .card-question{font-size:1.656rem;}
+}
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
    to hold — language moved to the menu only). Tapping it doesn't add
