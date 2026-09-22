@@ -138,6 +138,26 @@ alternatives.
 Check a candidate against the whole deck, not just its own category, before proposing it —
 a collision with a different category's card is a real rejection reason, not a lesser one.
 
+## Alternatives must differ in substance, not just phrasing
+
+This is a hard rule, not a preference: the three alternatives in any one proposal must
+come at the target through genuinely different angles or mechanisms — a different object,
+act, person, or frame doing the work — never the same sentence reworded three times. It
+also applies across turns: a rejected idea doesn't get to resurface a slot or two later
+wearing new words. Default to this on every proposal, without being asked.
+
+The one exception: if the owner explicitly asks for the same question in different
+phrasing, that's the one time reworded phrasing alone is the right thing to deliver —
+don't apply this rule against an explicit request for it.
+
+## Verify before advising — don't assume
+
+Don't assert that a candidate is distinct from another card, free of collisions, or
+otherwise fine, from memory or impression. Check the actual files first — grep the deck,
+read the category, whatever it takes. If a claim can be verified in under a minute and
+wasn't, it doesn't get stated as fact; flag it as unverified instead, or go verify it
+before saying anything.
+
 ## Open, position-inviting questions are not a flaw
 
 Don't cite "reads like a debate" or "asks for a position instead of a story" as a reason to

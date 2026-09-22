@@ -55,7 +55,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Life
 1. What do you let people assume about your life that isn't quite accurate?
 2. What would have to change for your life to feel more like your own?
-3. Which chore do you secretly not mind?
+3. Who would know it was you from just one small habit, without ever seeing your face?
 4. If you had to name what's getting the least of you lately, what would it be?
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
@@ -674,6 +674,19 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.91 — Life 3 settled, Life redesign complete
+- **Life 3** → *"Who would know it was you from just one small habit, without ever seeing
+  your face?"* Replaces "Which chore do you secretly not mind?" (that text is now
+  Warm 1's — no longer duplicated). Two earlier target attempts for this slot were
+  rejected (an abstract "load-bearing structure" framing, then a still-too-similar set of
+  reworded alternatives) before landing on this one, offered alongside two other genuinely
+  different mechanisms (an object, a repeated behavior) for the same "ordinary thing that
+  reveals who you specifically are" target.
+
+This closes the Life redesign: slots 1, 3, 4, and 10 all replaced (see v6.89 and v6.90
+above), 2, 5, 6, 7, 8, 9, 11, 12 kept as they already fit the category's real register —
+ownership, structure, choices, and the specific, ordinary texture of being this person.
 
 ## Patch v6.90 — Life 10 settled
 - **Life 10** → *"Out of everything filling your days right now, what actually matters to

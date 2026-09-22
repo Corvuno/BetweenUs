@@ -69,7 +69,7 @@ const NEWDECK_CARDS = [
   // ─── LIFE ───
   { level: "life", question: "What do you let people assume about your life that isn't quite accurate?" },
   { level: "life", question: "What would have to change for your life to feel more like your own?", nl: "Wat zou er moeten veranderen om je leven meer als het jouwe te laten voelen?" },
-  { level: "life", question: "Which chore do you secretly not mind?", nl: "Welke klus vind jij minder vervelend dan de meeste mensen?" },
+  { level: "life", question: "Who would know it was you from just one small habit, without ever seeing your face?" },
   { level: "life", question: "If you had to name what's getting the least of you lately, what would it be?" },
   { level: "life", question: "What takes up far more of your life than anyone would guess?" },
   { level: "life", question: "What's something you've done that cost you something — and that you'd do exactly the same again?", nl: "Wat heb je gedaan dat je iets kostte — en wat je precies zo weer zou doen?" },
