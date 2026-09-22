@@ -476,7 +476,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
-1. What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?
+1. What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?
 2. What do people who play at the extreme end of kink understand that outsiders never will?
 3. What does going to the extreme give you that gentle never could?
 4. Tell about a scene that changed you.
@@ -708,6 +708,9 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.88 — Abyss 1 trim
+- **Abyss 1** → *"What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?"* Replaces *"What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?"* — the longest normal card, capping how large card text can be; trimmed keeping the Tuesday / Saturday-night line, owner picked this alternative over two others.
 
 ## Patch v6.87 — Mind 4 swap, Mind 5 trim (from the depth-scoring pilot)
 - **Mind 4** → *"Which of your memories do you suspect you've quietly rewritten over the
