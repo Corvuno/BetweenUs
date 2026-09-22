@@ -265,7 +265,7 @@ The questions come first, category by category. The full change log is at the bo
 12. Which common belief about how the world works do you think is simply wrong?
 
 ## Work
-1. If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?
+1. Which colleague taught you the most without ever meaning to?
 2. What would you do professionally if status played no role at all?
 3. What's the piece of work you're most proud of that nobody applauded?
 4. What's the strangest job you've ever had?
@@ -450,7 +450,7 @@ The questions come first, category by category. The full change log is at the bo
 1. Where does sex actually land on the list of things that matter to you?
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. When has your body not done what you wanted in bed — and what did you do?
-4. What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?
+4. The most sexually bold text you've sent that landed exactly right — care to repeat it?
 5. What did you believe about sex that turned out to be nonsense?
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
@@ -708,6 +708,10 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.90 — Work 1 swap, Bare 4 trim
+- **Work 1** → *"Which colleague taught you the most without ever meaning to?"* Replaces *"If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?"* — owner asked for a replacement; it was also the longest normal card, overflowing the new fixed-size phone card. Dutch left as is for now. Owner picked this alternative over two others.
+- **Bare 4** → *"The most sexually bold text you've sent that landed exactly right — care to repeat it?"* Replaces *"What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?"* — trimmed to fit the new fixed-size phone card. Owner picked this alternative over two others.
 
 ## Patch v6.89 — Friends 9, Flesh 11 trims
 - **Friends 9** → *"Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?"* Replaces *"Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?"* — tied longest normal card, capping card text size; the either/or already asks it; owner picked this alternative over two others. Dutch left as is for now.
