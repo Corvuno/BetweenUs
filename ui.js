@@ -147,9 +147,27 @@ document.getElementById('cardStar').addEventListener('click', e => {
 // swipe gesture and calls preventDefault() when it acts, so the browser
 // never synthesizes a click after a swipe — this handler only ever sees
 // genuine taps and needs no "was that just a swipe?" flag to guard against.
+//
+// Mouse only: dragging to select the question text (card-question is the
+// one part of the card with user-select re-enabled — see styles.css) also
+// ends in a click on mouseup, same as a tap does. Distinguish them by
+// actual pointer movement rather than by reading the selection in the
+// click handler — selection state isn't reliably settled by the time
+// click fires (e.g. the first click of a double-click-to-select-a-word
+// hasn't selected anything yet), but "did the mouse move" always has.
+let cardMouseDownAt = null;
+document.getElementById('card').addEventListener('mousedown', e => {
+  cardMouseDownAt = { x: e.clientX, y: e.clientY };
+});
 document.getElementById('card').addEventListener('click', e => {
   if (state.partyMode) return;
   if (e.target.closest('#cardStar')) return;
+  if (cardMouseDownAt) {
+    const dragged = Math.abs(e.clientX - cardMouseDownAt.x) > 6 || Math.abs(e.clientY - cardMouseDownAt.y) > 6;
+    cardMouseDownAt = null;
+    if (dragged) return; // was a drag-select, not a tap
+  }
+  if (window.getSelection && String(window.getSelection()).length > 0) return;
   nextCard();
   updateDeckInfo();
 });
@@ -980,18 +998,21 @@ applyToggleUI();
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
 // Chapter rail: same gilt.js metal sweep as the card accent, run vertically
-// (190deg) off CHAPTERS_META's colour for each chapter — set once at boot
-// since, unlike a card's category, a chapter's colour never changes at
-// runtime. CHAPTERS_META (config.js) is the one stored copy of these
-// colours — the end-of-set screen reads the same object rather than
-// keeping its own. The label/glow colour reuses --ch (already read by
-// .chapter.on/.part in styles.css) via labelColor(), which lifts After
-// Dark's near-black lacquer to a readable tone while leaving every other
-// chapter's --ch at its base.
+// (190deg) off CHAPTERS_META's colour for each chapter — computed once at
+// boot since, unlike a card's category, a chapter's colour never changes
+// at runtime. Stored in --ch-rail rather than written straight to
+// border-image-source, since styles.css now only paints it on .on (see
+// the on/part/off rule there) — .part and the base/off state use a flat
+// --ch-derived colour instead. CHAPTERS_META (config.js) is the one
+// stored copy of these colours — the end-of-set screen reads the same
+// object rather than keeping its own. The label/glow colour reuses --ch
+// (already read by .chapter.on/.part in styles.css) via labelColor(),
+// which lifts After Dark's near-black lacquer to a readable tone while
+// leaving every other chapter's --ch at its base.
 document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   const meta = CHAPTERS_META[el.dataset.chapter];
   if (!meta) return;
-  el.style.borderImageSource = giltRail(meta.color, 190);
+  el.style.setProperty('--ch-rail', giltRail(meta.color, 190));
   el.style.setProperty('--ch', labelColor(meta.color));
 });
 
@@ -1350,4 +1371,6 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
 
   syncIntentUI();
 })();
+
+applyQueryDeck();   // ?Q=Work1,Life7,... overrides the dealt default hand, if present
 

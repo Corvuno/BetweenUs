@@ -95,6 +95,7 @@ function continueSession() {
 // AUTO-SAVE — called from flipToCard on every card advance
 // ═══════════════════════════════════════════════════════════
 function autoSaveSession() {
+  if (state.queryDeckActive) return;   // a ?Q= test deck never touches the real saved session
   if (!state.visibleDeck.length) return;
   try {
     localStorage.setItem('bu-session', JSON.stringify(serializeSession()));

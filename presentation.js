@@ -39,45 +39,57 @@ function partyRomanCount(n, total) {
 // (300+ cards) just renders as a very fine line with a spike at the
 // current position — the numeral underneath is what actually reads at
 // that size, same job it does at 5 or 10.
+// Dots keep their real shape/size/colour throughout — only which ones are
+// on screen changes. Up to 20, every card gets a dot; past that the window
+// slides to keep the current card (plus one ahead) in view, and everything
+// before it has simply scrolled out of frame, not compressed or restyled.
+const PROGRESS_CAP = 20;
 function renderProgress(currentOverride) {
   const container = document.getElementById('progress');
+  const countEl = document.getElementById('progCountNum');
   const deckLen = state.visibleDeck.length;
   const cur = currentOverride === undefined ? state.currentIndex : currentOverride;
 
-  const rule = document.createElement('div');
-  rule.className = 'progress-rule' + (deckLen > 10 ? ' many' : '');
-  for (let i = 0; i < deckLen; i++) {
+  let start = 0, end = deckLen - 1;
+  if (deckLen > PROGRESS_CAP) {
+    end = Math.min(deckLen - 1, cur + 1);         // current + one ahead, if it exists
+    start = Math.max(0, end - (PROGRESS_CAP - 1)); // 20 dots ending there
+  }
+  const shown = Math.max(0, end - start + 1);
+
+  const W = 300, gapDefault = 4;
+  let dotW = shown > 0 ? (W - (shown - 1) * gapDefault) / shown : 0;
+  let gap = gapDefault;
+  if (dotW < 3) { dotW = 3; gap = shown > 1 ? Math.max(1.5, (W - shown * 3) / (shown - 1)) : 0; }
+
+  container.innerHTML = '';
+  container.style.setProperty('--dot-gap', gap + 'px');
+  for (let i = start; i <= end; i++) {
     const card = state.visibleDeck[i];
     const tick = document.createElement('div');
     const isSeen    = i < cur;
     const isCurrent = i === cur;
     tick.className = 'progress-tick' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
+    tick.style.width = dotW + 'px';
     if (isSeen || isCurrent) tick.style.setProperty('--tick-color', levelColor(card.level));
-    rule.appendChild(tick);
+    container.appendChild(tick);
   }
-  // The terminal diamond is a fixed cap on the line, not another card tick —
-  // always present (unlike the old dot row's end-dot, which only appeared
-  // near the end so an extra dot wasn't mistaken for a 6th card; a small
-  // rotated diamond doesn't read as a card either way, so it can just mark
-  // where the line ends from the first card on).
-  if (deckLen > 0) {
-    const end = document.createElement('div');
-    end.className = 'progress-tick end' + (cur >= deckLen ? ' current' : '');
-    rule.appendChild(end);
+  // The terminal diamond only appears once the real last card is inside the
+  // visible window — a window that's slid away from the end has nothing to
+  // cap yet.
+  if (deckLen > 0 && end === deckLen - 1) {
+    const endDot = document.createElement('div');
+    endDot.className = 'progress-tick end' + (cur >= deckLen ? ' current' : '');
+    container.appendChild(endDot);
   }
 
-  const num = document.createElement('div');
-  num.className = 'progress-num';
-  if (deckLen > 0) {
-    const fmt = deckLen > ROMAN_MAX ? String : toRoman;
-    const shown = Math.min(cur + 1, deckLen);
-    num.innerHTML = `${fmt(shown)}<span class="progress-num-sep"> &middot; </span>`
-                  + `<span class="progress-num-total">${fmt(deckLen)}</span>`;
+  // Always Roman, at any count — no arabic fallback past ROMAN_MAX the way
+  // the dot numeral used to have.
+  if (countEl) {
+    countEl.innerHTML = deckLen > 0
+      ? `${toRoman(Math.min(cur + 1, deckLen))} &nbsp;&middot;&nbsp; ${toRoman(deckLen)}`
+      : '';
   }
-
-  container.innerHTML = '';
-  container.appendChild(rule);
-  container.appendChild(num);
 }
 
 // ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────
@@ -495,8 +507,6 @@ function showHandSummary() {
     qEl.innerHTML = html;
     void qEl.offsetWidth; qEl.classList.add('in');
   }
-  const numEl = document.getElementById('card-number');
-  if (numEl) numEl.textContent = '— end —';
   document.body.classList.add('showing-hand-summary');
   renderProgress(state.visibleDeck.length);
 }
