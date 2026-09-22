@@ -257,8 +257,24 @@ body::before{
   font-family:'Cormorant Garamond',serif;font-size:1.38rem;font-weight:300;font-style:italic;
   line-height:1.52;text-align:center;color:var(--cream);
   opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
+  /* .card locks selection down so the whole surface can be tapped/swiped
+     without text catching a drag — but that lock isn't all-or-nothing:
+     re-enabling it here, on just the question itself, doesn't reopen it
+     anywhere else on the card. touch-callout back to default too, or
+     iOS suppresses the long-press selection bubble even with select:text. */
+  user-select:text;-webkit-user-select:text;-webkit-touch-callout:default;
+  cursor:text;
 }
 .card-question.in{opacity:1;transform:none;}
+/* The one place that selectable text is a problem, not a feature: the
+   end-of-hand summary reuses this same element (showHandSummary() in
+   presentation.js writes its sentence/chips/favourites into #card-question),
+   and that screen's whole interaction is holding the card to continue —
+   a hold that starts on selectable text tries to select it instead. Locked
+   back down for exactly this one screen, same as the rest of the card. */
+body.showing-hand-summary .card-question{
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;
+}
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
    to hold — language moved to the menu only). Tapping it doesn't add
@@ -321,7 +337,7 @@ body::before{
   width:300px;max-width:100%;
   gap:var(--dot-gap,4px);
 }
-.progress-tick{flex:0 0 auto;height:6px;
+.progress-tick{flex:0 0 auto;height:6px;border-radius:1.5px;
   background:#5c4f37;opacity:.5;
   transition:opacity .22s ease,background-color .22s ease,transform .22s ease;}
 /* seen/current carry the card's own category colour — everything still
