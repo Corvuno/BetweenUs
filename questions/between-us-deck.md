@@ -62,7 +62,7 @@ The questions come first, category by category. The full change log is at the bo
 7. What's something you're doing right now without knowing if it'll actually work out?
 8. What's a rule you've quietly made for yourself that nobody else knows about?
 9. What does getting older take from you that you didn't expect, and what does it give?
-10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
+10. Out of everything filling your days right now, what actually matters to you?
 11. What's different about your life this year?
 12. If you stopped explaining why you can't, what would change about how you live?
 
@@ -674,6 +674,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.90 — Life 10 settled
+- **Life 10** → *"Out of everything filling your days right now, what actually matters to
+  you?"* Replaces "What's something completely ordinary in your life right now that you'd
+  genuinely miss if it vanished tomorrow?" — routine-description; new target is signal vs.
+  noise inside the ordinary shape of a life. Owner cut the original alternative's
+  em-dash clause ("— and what's just noise?") as unneeded. Life 3 still open.
 
 ## Patch v6.89 — Life redesign begins: slots 1 and 4 settled
 Life was drifting into "describe an ordinary day" (four cards) instead of its real

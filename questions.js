@@ -76,7 +76,7 @@ const NEWDECK_CARDS = [
   { level: "life", question: "What's something you're doing right now without knowing if it'll actually work out?", nl: "Wat doe je nu, zonder te weten of het gaat lukken?" },
   { level: "life", question: "What's a rule you've quietly made for yourself that nobody else knows about?", nl: "Welke ongeschreven regel heb jij stiekem voor jezelf gemaakt, die niemand anders kent?" },
   { level: "life", question: "What does getting older take from you that you didn't expect, and what does it give?", nl: "Wat neemt ouder worden je af dat je niet had verwacht — en wat geeft het?" },
-  { level: "life", question: "What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?", nl: "Wat is iets heel gewoons in je leven dat je echt zou missen als het morgen verdween?" },
+  { level: "life", question: "Out of everything filling your days right now, what actually matters to you?" },
   { level: "life", question: "What's different about your life this year?", nl: "Wat is er dit jaar anders aan je leven?" },
   { level: "life", question: "If you stopped explaining why you can't, what would change about how you live?", nl: "Als je stopte met uitleggen waarom iets niet kan, wat zou er dan veranderen aan hoe je leeft?" },
 
