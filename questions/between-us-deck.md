@@ -203,7 +203,7 @@ The questions come first, category by category. The full change log is at the bo
 6. One friend deserves a better version of you...
 7. How do you make friends now — and is it harder than it used to be?
 8. Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?
-9. Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?
+9. Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?
 10. The friend I'd call when I'm in real trouble is...
 11. Who can make you laugh when you really don't want to?
 12. Are you a better friend now than ten years ago — by whose measure?
@@ -429,7 +429,7 @@ The questions come first, category by category. The full change log is at the bo
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. What's something trust unlocks in bed that nothing else can?
-11. The first time you sleep with someone, do you want to take your time with them, or do you want them right then and there?
+11. First night with someone: do you want to take your time, or have them right then and there?
 12. How much do you enjoy making someone wait before you touch them?
 
 ## Carnal 🔞
@@ -708,6 +708,10 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.89 — Friends 9, Flesh 11 trims
+- **Friends 9** → *"Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?"* Replaces *"Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?"* — tied longest normal card, capping card text size; the either/or already asks it; owner picked this alternative over two others. Dutch left as is for now.
+- **Flesh 11** → *"First night with someone: do you want to take your time, or have them right then and there?"* Replaces *"The first time you sleep with someone, do you want to take your time with them, or do you want them right then and there?"* — tied longest normal card, capping card text size; "do you want" appeared twice; owner picked this alternative over two others.
 
 ## Patch v6.88 — Abyss 1 trim
 - **Abyss 1** → *"What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?"* Replaces *"What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?"* — the longest normal card, capping how large card text can be; trimmed keeping the Tuesday / Saturday-night line, owner picked this alternative over two others.

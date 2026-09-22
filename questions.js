@@ -216,7 +216,7 @@ const NEWDECK_CARDS = [
   { level: "friends", question: "One friend deserves a better version of you...", nl: "Welke vriend verdient meer van jou dan hij krijgt?" },
   { level: "friends", question: "How do you make friends now — and is it harder than it used to be?", nl: "Hoe maak je nu vrienden — en is dat moeilijker dan vroeger?" },
   { level: "friends", question: "Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?", nl: "Met welke vriend heb je nooit echt ruzie gehad — en denk je dat dat gezond is, of gewoon geluk?" },
-  { level: "friends", question: "Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?", nl: "Vertrouw je mensen standaard en word je af en toe bedrogen, of vertrouw je langzaam en verras je zelden — wie ben jij?" },
+  { level: "friends", question: "Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?", nl: "Vertrouw je mensen standaard en word je af en toe bedrogen, of vertrouw je langzaam en verras je zelden — wie ben jij?" },
   { level: "friends", question: "The friend I'd call when I'm in real trouble is...", nl: "Wie bel je als het echt misgaat?" },
   { level: "friends", question: "Who can make you laugh when you really don't want to?" },
   { level: "friends", question: "Are you a better friend now than ten years ago — by whose measure?", nl: "Ben je een betere vriend geworden?" },
@@ -442,7 +442,7 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
   { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
   { level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
-  { level: "flesh", question: "The first time you sleep with someone, do you want to take your time with them, or do you want them right then and there?" },
+  { level: "flesh", question: "First night with someone: do you want to take your time, or have them right then and there?" },
   { level: "flesh", question: "How much do you enjoy making someone wait before you touch them?" },
 
   // ─── CARNAL ───
