@@ -266,6 +266,15 @@ body::before{
   cursor:text;
 }
 .card-question.in{opacity:1;transform:none;}
+/* The one place that selectable text is a problem, not a feature: the
+   end-of-hand summary reuses this same element (showHandSummary() in
+   presentation.js writes its sentence/chips/favourites into #card-question),
+   and that screen's whole interaction is holding the card to continue —
+   a hold that starts on selectable text tries to select it instead. Locked
+   back down for exactly this one screen, same as the rest of the card. */
+body.showing-hand-summary .card-question{
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;
+}
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
    to hold — language moved to the menu only). Tapping it doesn't add
