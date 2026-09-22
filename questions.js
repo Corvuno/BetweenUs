@@ -278,7 +278,7 @@ const NEWDECK_CARDS = [
   { level: "world", question: "Which common belief about how the world works do you think is simply wrong?" },
 
   // ─── WORK ───
-  { level: "work", question: "If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?", nl: "Als je je vervanger precies één dag mocht inwerken, wat zou je zeker vertellen dat in geen enkel handboek staat?" },
+  { level: "work", question: "Which colleague taught you the most without ever meaning to?", nl: "Als je je vervanger precies één dag mocht inwerken, wat zou je zeker vertellen dat in geen enkel handboek staat?" },
   { level: "work", question: "What would you do professionally if status played no role at all?", nl: "Welk werk zou je doen als status niet bestond?" },
   { level: "work", question: "What's the piece of work you're most proud of that nobody applauded?", nl: "Iets waar je trots op bent, maar waar niemand voor klapte..." },
   { level: "work", question: "What's the strangest job you've ever had?", nl: "Wat is de vreemdste baan die je ooit hebt gehad?" },
@@ -463,7 +463,7 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "Where does sex actually land on the list of things that matter to you?" },
   { level: "bare", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
   { level: "bare", question: "When has your body not done what you wanted in bed — and what did you do?" },
-  { level: "bare", question: "What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?" },
+  { level: "bare", question: "The most sexually bold text you've sent that landed exactly right — care to repeat it?" },
   { level: "bare", question: "What did you believe about sex that turned out to be nonsense?" },
   { level: "bare", question: "Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands." },
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
