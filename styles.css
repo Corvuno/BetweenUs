@@ -226,7 +226,7 @@ body::before{
 }
 .card.mark-full{
   background:
-    radial-gradient(120% 100% at 50% 0%, color-mix(in srgb, var(--mark) 9%, transparent), transparent 62%),
+    radial-gradient(120% 100% at 50% 100%, color-mix(in srgb, var(--mark) 9%, transparent), transparent 62%),
     var(--card-bg);
 }
 .card-ad-mark{
