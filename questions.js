@@ -67,10 +67,10 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?", nl: "Is er iets — een boek, serie, nummer — dat je expres niet hebt afgemaakt, omdat je niet wilt dat het voorbij is?" },
 
   // ─── LIFE ───
-  { level: "life", question: "Walk me through your first thirty minutes after waking — the real version.", nl: "Je ochtend begint meestal met..." },
+  { level: "life", question: "What do you let people assume about your life that isn't quite accurate?" },
   { level: "life", question: "What would have to change for your life to feel more like your own?", nl: "Wat zou er moeten veranderen om je leven meer als het jouwe te laten voelen?" },
   { level: "life", question: "Which chore do you secretly not mind?", nl: "Welke klus vind jij minder vervelend dan de meeste mensen?" },
-  { level: "life", question: "Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.", nl: "Beschrijf je ideale gewone dag — geen vakantie, gewoon een dinsdag die goed voelde." },
+  { level: "life", question: "If you had to name what's getting the least of you lately, what would it be?" },
   { level: "life", question: "What takes up far more of your life than anyone would guess?" },
   { level: "life", question: "What's something you've done that cost you something — and that you'd do exactly the same again?", nl: "Wat heb je gedaan dat je iets kostte — en wat je precies zo weer zou doen?" },
   { level: "life", question: "What's something you're doing right now without knowing if it'll actually work out?", nl: "Wat doe je nu, zonder te weten of het gaat lukken?" },

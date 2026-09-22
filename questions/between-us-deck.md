@@ -53,10 +53,10 @@ The questions come first, category by category. The full change log is at the bo
 12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
 
 ## Life
-1. Walk me through your first thirty minutes after waking — the real version.
+1. What do you let people assume about your life that isn't quite accurate?
 2. What would have to change for your life to feel more like your own?
 3. Which chore do you secretly not mind?
-4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
+4. If you had to name what's getting the least of you lately, what would it be?
 5. What takes up far more of your life than anyone would guess?
 6. What's something you've done that cost you something — and that you'd do exactly the same again?
 7. What's something you're doing right now without knowing if it'll actually work out?
@@ -674,6 +674,26 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.89 — Life redesign begins: slots 1 and 4 settled
+Life was drifting into "describe an ordinary day" (four cards) instead of its real
+register — ownership, structure, choices, what it's like to actually be this specific
+person. Two of the four open slots settled so far (3 and 10 still open, see BENCH-style
+note below — first-pass targets rejected by the owner as still too close to kept cards or
+to each other):
+
+- **Life 1** → *"What do you let people assume about your life that isn't quite
+  accurate?"* Replaces "Walk me through your first thirty minutes after waking — the real
+  version." — routine-description; new target is the gap between the life you present and
+  the one you're actually living.
+- **Life 4** → *"If you had to name what's getting the least of you lately, what would it
+  be?"* Replaces "Describe your ideal ordinary day — not a holiday, just a Tuesday that
+  felt right." — routine-description; new target is what's currently losing out to what,
+  inside your own life.
+
+Life 3 and Life 10 remain open — Life 3 currently still shows its old text (now also
+duplicated at Warm 1, see previous patch) pending a genuinely new target; Life 10 still
+shows its original text pending the same.
 
 ## Patch v6.88 — Warm 1 ← Life 3 (chore card relocated)
 - **Warm 1** → *"Which chore do you secretly not mind?"* Replaces "Some small thing you
