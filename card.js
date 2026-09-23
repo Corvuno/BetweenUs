@@ -10,9 +10,11 @@
 // request to critique or reverse an answer already given, and never an
 // abstract argument-for/against move (this deck is stories, not positions).
 // The trigger lives in the control row (Twist/partyBtnTwist) and in the
-// party header; tapping it doesn't add anything to the card — the counter
-// that's already printed there ("1 / 5") swaps to the modifier in place.
-// Never survives a new card; flipToCard/clearTwist reset it every draw.
+// party header; tapping it doesn't replace anything on the card — it just
+// shows the modifier at the bottom of the card, underneath the question
+// (#twistSentence, main mode) or in the party header (#party-number, party
+// mode). Never survives a new card; flipToCard/clearTwist reset it every
+// draw.
 const MODIFIERS = [
   { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },
   { en: "What do you suspect you'll answer differently five years from now?", nl: "Wat denk je dat je hier over vijf jaar anders op zou antwoorden?" },
@@ -25,26 +27,31 @@ function pickTwist() {
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
 function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
-// Applies (or clears) the twist text on a counter element. Clearing used to
-// just leave the element alone, on the assumption a fresh flipToCard() had
-// always just written the real "x / y" text a moment earlier — true when a
-// twist only ever cleared on a new card, false now that tapping Twist a
-// second time clears it in place, so this restores the count itself.
+// Applies (or clears) the twist text on a counter element. party-number now
+// shows only the Twist sentence (the count lives in #party-count instead),
+// so clearing it just empties it out, same as twistSentence.
 function applyTwistToCounter(el) {
   if (!el) return;
   if (currentTwist) {
     el.textContent = state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en;
     el.classList.add('twist');
   } else {
+    el.textContent = '';
     el.classList.remove('twist');
-    if (hasCurrentCard()) el.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   }
 }
 function renderTwist() {
-  applyTwistToCounter(document.getElementById('card-number'));
+  applyTwistToCounter(document.getElementById('twistSentence'));
   applyTwistToCounter(document.getElementById('party-number'));
   [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-    if (btn) { btn.textContent = twistLabel(); btn.classList.toggle('active', !!currentTwist); }
+    if (!btn) return;
+    // btnTwist carries an SVG icon alongside its label — overwriting the
+    // button's full textContent would wipe the icon out along with it, so
+    // only the label span (or the whole button, for icon-less partyBtnTwist)
+    // gets the text update.
+    const label = btn.querySelector('.tt-label') || btn;
+    label.textContent = twistLabel();
+    btn.classList.toggle('active', !!currentTwist);
   });
 }
 // Twist is a lens on a drawn card, so it only makes sense while one is
@@ -71,8 +78,8 @@ async function toggleFavourite() {
   const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
   if (!card) return;
   const idx = state.favourites.findIndex(f => f.question === card.question);
-  if (idx >= 0) state.favourites.splice(idx, 1);
-  else state.favourites.push({ question: card.question, level: card.level });
+  if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
+  else { state.favourites.push({ question: card.question, level: card.level }); state.handStarred.add(card.question); }
   try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); } catch(e) {}
   updateStarUI();
   renderFavourites();
@@ -84,14 +91,42 @@ function updateStarUI() {
   if (star) star.classList.toggle('active', !!card && state.favourites.some(f => f.question === card.question));
 }
 
+// Deck-identity marking on the card face itself: After Dark categories get
+// the full treatment (corners + border tint + radial wash + watermark, in
+// the decided Alarm Red); Colbert and The 36 get corners + border tint only,
+// each in its own existing CATEGORIES colour, no wash or watermark. Every
+// other category is untouched. One place so setCardDisplay and flipToCard
+// (the two card-render paths) can't drift apart on this.
+function applyCardMark(el, card) {
+  if (!el) return;
+  el.classList.remove('mark-full', 'mark-border');
+  el.style.removeProperty('--mark');
+  if (!card) return;
+  const meta = CATEGORIES[card.level];
+  if (!meta) return;
+  if (meta.bucket === 'afterdarkb') {
+    el.style.setProperty('--mark', 'var(--mark-afterdark)');
+    el.classList.add('mark-full');
+  } else if (card.level === 'colbert' || card.level === 'aron') {
+    el.style.setProperty('--mark', meta.color);
+    el.classList.add('mark-border');
+  }
+}
+
 function setCardDisplay(card) {
+  // Whatever got us here — a fresh hand, a settings change, the initial
+  // boot placeholder — a real (or placeholder) card face is about to be
+  // shown, so the previous hand's end-of-hand summary can't still be
+  // showing. hideHandSummary() is a no-op if it wasn't showing.
+  if (typeof hideHandSummary === 'function') hideHandSummary();
+  const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
-  const numEl  = document.getElementById('card-number');
   const nextBtn= document.getElementById('btn-next');
   const accent = document.getElementById('c-accent');
 
   if (!card) {
+    applyCardMark(el, null);
     if (lvlEl)    { lvlEl.textContent=''; lvlEl.classList.remove('in'); }
     if (accent)   { accent.style.background=''; }
     if (qEl)      { qEl.textContent = state.visibleDeck.length===0
@@ -99,7 +134,6 @@ function setCardDisplay(card) {
       : (state.lang==='nl' ? 'Een plek om te beginnen…'   : 'A place to begin…');
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
-    if (numEl)    numEl.textContent = '— — —';
     if (nextBtn) {
       nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
       // nothing's been dealt yet (fresh load, or a settings change just
@@ -112,16 +146,16 @@ function setCardDisplay(card) {
     clearTwist();
     return;
   }
+  applyCardMark(el, card);
   const color = levelColor(card.level);
   if (accent) {
-    accent.style.background = color;
+    accent.style.background = giltRail(color);
   }
   if (lvlEl) {
     lvlEl.textContent = LEVEL_LABELS[card.level] || '';
-    lvlEl.style.color = color;
+    lvlEl.style.color = labelColor(color);
   }
   if (qEl)   qEl.textContent = translateQ(card);
-  if (numEl) numEl.textContent = `${state.currentIndex + 1} / ${state.visibleDeck.length}`;
   if (nextBtn) {
     nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
@@ -134,6 +168,7 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
 function flipToCard(card, isFirstDraw) {
+  if (typeof hideHandSummary === 'function') hideHandSummary();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');
@@ -162,18 +197,17 @@ function flipToCard(card, isFirstDraw) {
     });
   }
   setTimeout(() => {
+    applyCardMark(el, card);
     const color = levelColor(card.level);
     if (accent) {
-      accent.style.background = color;
+      accent.style.background = giltRail(color);
       accent.classList.remove('accent-bloom');
       void accent.offsetWidth;
       accent.classList.add('accent-bloom');
     }
-    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[card.level] || ''; lvlEl.style.color = color; }
+    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[card.level] || ''; lvlEl.style.color = labelColor(color); }
     const qEl2 = document.getElementById('card-question');
     if (qEl2) qEl2.textContent = translateQ(card);
-    const numEl = document.getElementById('card-number');
-    if (numEl) numEl.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
     /* let updateDrawMore own the button label — hard-coding "Next Card" here
        ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
     updateDrawMore();
@@ -203,11 +237,14 @@ function openPicker(options) {
     const div = document.createElement('div');
     div.className = 'pick-opt';
     const color = levelColor(card.level);
+    const { light } = giltStops(color);
+    div.style.setProperty('--pc', `linear-gradient(180deg,${color},${light} 50%,${color})`);
     div.innerHTML = `
-      <div class="pick-opt-accent" style="background:${color}"></div>
-      <span class="pick-opt-level" style="color:${color}">${LEVEL_LABELS[card.level]||''}</span>
-      <span class="pick-opt-q">${esc(translateQ(card))}</span>
-    `;
+      <div class="pick-opt-accent" style="background:linear-gradient(90deg,${color},${light} 50%,${color})"></div>
+      <div class="pick-opt-text">
+        <span class="pick-opt-level" style="color:${color}">${LEVEL_LABELS[card.level]||''}</span>
+        <span class="pick-opt-q">${esc(translateQ(card))}</span>
+      </div>`;
     // stopPropagation prevents the card's own click handler from also firing
     div.addEventListener('click', e => { e.stopPropagation(); choosePick(card, options); });
     optsEl.appendChild(div);
@@ -215,6 +252,7 @@ function openPicker(options) {
 
   picker.classList.add('open');
   state.pickerOpen = true;
+  if (!inParty) fitPicker(optsEl);
 }
 
 function closePicker() {
@@ -223,5 +261,16 @@ function closePicker() {
   });
   state.pickerOpen = false;
 }
+
+// Normal screen only: if a question needs a 3rd line, step the text down (max 20%).
+function fitPicker(el) {
+  el.style.removeProperty('--pq');
+  const base = parseFloat(getComputedStyle(el).fontSize);
+  const over = () => [...el.children].some(o => o.scrollHeight > o.clientHeight + 1);
+  for (let px = base; over() && px > base * 0.8; px -= 0.5) el.style.setProperty('--pq', px + 'px');
+}
+window.addEventListener('resize', () => {
+  if (state.pickerOpen && !state.partyMode) fitPicker(document.getElementById('pickerOptions'));
+});
 
 

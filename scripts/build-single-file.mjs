@@ -33,7 +33,7 @@ const PROFILES = {
 
 // Load order matters (each depends on globals the previous ones declare) —
 // keep this in sync with the <script> tags in between-us.html.
-const APP_MODULES = ['config', 'state', 'deck', 'card', 'library', 'session', 'selection', 'presentation', 'ui'];
+const APP_MODULES = ['config', 'gilt', 'state', 'deck', 'card', 'library', 'session', 'selection', 'presentation', 'ui'];
 
 function buildOne(profile) {
   const [outFile, profileKey] = PROFILES[profile];

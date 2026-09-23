@@ -50,7 +50,7 @@ The questions come first, category by category. The full change log is at the bo
 9. Does great art excuse a terrible artist — got an example?
 10. When did beauty catch you completely unprepared?
 11. Take us to the moment a story last made you cry.
-12. Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?
+12. What's a story you've stretched out on purpose, just to keep it going a little longer?
 
 ## Life
 1. What do you let people assume about your life that isn't quite accurate?
@@ -129,7 +129,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What did someone once point out about you that you now see everywhere?
 5. Who decided they didn't like you — and did you let it go?
 6. When has having power over someone made you kinder, not crueler?
-7. What's something you used to associate with being "old" that you now just call Tuesday?
+7. What's something that used to take courage that's now just routine for you?
 8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
 9. What have you had to accept that you never chose?
 10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
@@ -155,8 +155,8 @@ The questions come first, category by category. The full change log is at the bo
 1. How easily does a new habit stick for you — and which one actually did?
 2. What do you consistently resist — and when does that break down?
 3. Which thought loop do you know is a loop and still can't exit?
-4. When has a gut feeling known more than you did?
-5. Silence, no phone, nothing to do — how long before you actually start enjoying it?
+4. Which of your memories do you suspect you've quietly rewritten over the years?
+5. Silence, nothing to do — how long before you actually start enjoying it?
 6. What does your inner voice sound like — and whose is it?
 7. What's the most useful thing you've ever unlearned?
 8. What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?
@@ -172,10 +172,10 @@ The questions come first, category by category. The full change log is at the bo
 4. Is there a philosophy or teaching you've borrowed from, without signing up to all of it?
 5. When did you last feel part of something larger — and what triggered it?
 6. How near has death actually come to you?
-7. Who are you overdue to thank — and what for?
+7. Who did something special for you in your recent past that you did not properly thank them for yet.
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
-10. Have you ever tried to reach something through your body — breath, fasting, dance, stillness?
+10. What physical practice has brought you closest to something spiritual?
 11. A place that's sacred to you...
 12. The closest thing I have to a ritual is...
 
@@ -203,7 +203,7 @@ The questions come first, category by category. The full change log is at the bo
 6. One friend deserves a better version of you...
 7. How do you make friends now — and is it harder than it used to be?
 8. Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?
-9. Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?
+9. Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?
 10. The friend I'd call when I'm in real trouble is...
 11. Who can make you laugh when you really don't want to?
 12. Are you a better friend now than ten years ago — by whose measure?
@@ -244,7 +244,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Quote the sentence your parents repeated — that you now live by, or against.
 6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
 7. When did you stay silent and shouldn't have?
-8. What does money let you avoid — a conversation, a choice, a person?
+8. What can having money make disappear that not having it can't?
 9. What are the outer limits of your compassion?
 10. What's a rule you break on purpose, every time, without a shred of guilt?
 11. What do you defend in public and doubt in private?
@@ -419,17 +419,17 @@ The questions come first, category by category. The full change log is at the bo
 12. What did you want last year that you've already stopped wanting?
 
 ## Flesh 🔞
-1. Some touch undoes you. Describe it.
-2. What's something you thought you'd never enjoy until you actually experienced it?
-3. Afterwards, still tangled up — how do you like to come down?
+1. Some sexual touch undoes you completely. Describe it.
+2. What's a sexual experience that surprised you by how much you actually liked it?
+3. After sex, still tangled up together — how do you like to come down?
 4. Walk me through undressing someone — the order, the pace, what you notice.
 5. Reconstruct your smoothest pickup ever.
 6. A kiss you can still feel when you think of it — take me there.
 7. What does a hand around your throat — or on the back of your neck — do to you?
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
-10. What makes you feel completely safe with someone sexually?
-11. In the moment, how do you make what you want known — words, hands, or just taking it?
+10. What's something trust unlocks in bed that nothing else can?
+11. First night with someone: do you want to take your time, or have them right then and there?
 12. How much do you enjoy making someone wait before you touch them?
 
 ## Carnal 🔞
@@ -438,24 +438,24 @@ The questions come first, category by category. The full change log is at the bo
 3. What makes you laugh in bed?
 4. What's your sexual superpower — and the night it proved you right?
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
-6. What sound — yours or theirs — tips you over the edge?
-7. Do you enjoy giving pleasure more, receiving it more, or does the split not matter to you?
+6. What's a sound someone's made in bed that you still think about?
+7. Describe a moment when you lost track of whose pleasure you were even chasing.
 8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 9. When does sex stop being about you — and is that a good thing?
-10. What have you never asked for because it's better getting it without asking?
+10. What's something sexual you've never asked for because it's better when it's offered?
 11. Which of your turn-ons did you find through porn instead of real life?
 12. What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?
 
 ## Bare 🔞
-1. Sex — how important is it, honestly, in the whole of your life?
+1. Where does sex actually land on the list of things that matter to you?
 2. Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?
 3. When has your body not done what you wanted in bed — and what did you do?
-4. What do people consistently get wrong about your sexuality?
+4. The most sexually bold text you've sent that landed exactly right — care to repeat it?
 5. What did you believe about sex that turned out to be nonsense?
 6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. Is an age gap something that would actually get to you, or just something you'd expect to have to explain to other people?
+9. In a relationship, what age difference is where your gut starts to hesitate, no matter what anyone else would think?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
 12. What's the longest you've gone without sex — and how was that?
@@ -476,8 +476,8 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
-1. What did you once think was extreme that's now a Tuesday, and what still gives you pause on a Saturday night?
-2. What does a room full of people doing this know that nobody outside it does?
+1. What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?
+2. What do people who play at the extreme end of kink understand that outsiders never will?
 3. What does going to the extreme give you that gentle never could?
 4. Tell about a scene that changed you.
 5. Has your body ever said yes while something deeper said no — and how did you find out?
@@ -503,8 +503,17 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Work** — "Which colleague taught you the most without ever meaning to?" (independently approved for Work 1 in a different session while this branch was still open; owner resolved the collision by keeping this session's "office drama" card instead — see the merge note in the change log)
 - **Warm** — "Some small thing you do properly, though nobody would ever check..." (displaced from Warm 1 in v6.88 by "Which chore do you secretly not mind?", moved in from Life 3 — owner's call, both cards occupied the same "quiet care nobody checks on" ground and the Life version was the stronger fit for Warm's register)
 - **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
+- **Attract** — "Tell me about a moment of chemistry with a total stranger that went absolutely nowhere." (proposed for Flesh 11 during the v6.86 Flesh-11 search; owner called it a strong Attract card, not Flesh — pre-attraction chemistry belongs to Attract's territory, not Flesh's prelude-to-sex one. No Attract slot open yet.)
+- **Flesh** — "Tell me about the best pickup line — good or bad — that's ever actually worked on you." (proposed for Flesh 11 in place of the "how do you make what you want known" mechanics card in v6.86; owner kept it in reserve, held for a future slot rather than used here)
+- **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
+- **Self** — "What's something you used to associate with being \"old\" that you now just call Tuesday?" (displaced from Self 7 in v6.86, owner-approved; too close to Life 9, and the negative "avoid old age" framing undersold it)
+- **Values** — "What does money let you avoid — a conversation, a choice, a person?" (displaced from Values 8 in v6.86, owner-approved; the emdash list narrowed the answer before the player got there)
+- **Culture** — "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?" (displaced from Culture 12 in v6.86, owner-approved; "song" doesn't have an unfinished state the way a book or show does, so the premise only half-worked)
+- **Spirit** — "Have you ever tried to reach something through your body — breath, fasting, dance, stillness?" (displaced from Spirit 10 in v6.86, owner-approved; the emdash list of practices narrowed the answer)
+- **Flesh** — "In the moment, how do you make what you want known — words, hands, or just taking it?" (displaced from Flesh 11 in v6.86, owner-rejected; wanted insight-into-a-person/story/theory leads instead of a mechanics-of-communication question)
 - **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.83, owner-approved; kept the dichotomy, added a concrete-example clause rather than replacing it outright)
 - **Home** — "Where would you live if nothing was stopping you — and what would you live in?" (displaced from Home 10 in v6.83, owner-approved; too close to Home 8's kitchen-window card, both purely aspirational)
 - **Attract** — "You tell yourself you have a type. Who do you actually keep ending up with?" (displaced from Attract 4 in v6.83, owner-approved; reworded to a single question with the "does that correspond" turn instead of two sentences)
@@ -596,6 +605,34 @@ The subject matter is not what makes a card recognisable — every deck asks abo
 5. **Every card must be answerable by someone who has no story.** A card that only works if you've lived the specific thing is a dead card for half the table.
 6. **Twelve per category, always.** There is no adding a card, only swapping one. A new card names the card it displaces, and the displaced card goes to the BENCH rather than being deleted.
 7. **Spaced em dash — like this.** House punctuation throughout.
+8. **Concrete over abstract, always — with one exception.** A card names one specific
+   real thing — a moment, a body part, a text message, a mishap, an object, a fantasy —
+   and asks the player to produce their own instance of it. It never asks the player to
+   characterize or theorize a feeling in the abstract. *"Tell about the moment sex went
+   most embarrassingly wrong"* is concrete; *"What does sexual fulfilment feel like"* is
+   not — the second invites a definition, not a story. The exception: a meaning or
+   theory question is fine, even good, when it produces real insight into who someone
+   is — preferably still reached through a story or example rather than pure abstraction
+   (Attract 8's celebrity-crush card gets at type and taste through named examples).
+   Purely theoretical cards are also fair game when they're just genuinely fun to argue
+   — World 10, *"Is progress real?"*, is the model: nothing concrete in it at all, and it
+   works anyway. The rule against abstraction is really a rule against vague
+   *feeling-talk* standing in for a real answer, not a ban on ideas.
+9. **Confession over analysis.** The strongest move invites disclosure of a real thing
+   that happened or is true, not reflection on a pattern. *"Tell about X"* beats *"What
+   does X mean to you."*
+10. **Never fixate on one narrow subject while hunting for a card.** If an angle isn't
+    landing after one or two tries, the fix is a genuinely different angle on the
+    category — not a prettier rephrasing of the same one. Rewording "the pull" as "the
+    edge" as "your body's instinct" is the same failed attempt three times, not three
+    attempts.
+11. **A category is as broad as it can be before it collides with its neighbor — and
+    should be pushed that broad, or it goes stale fast.** Flesh isn't "about touch," it's
+    sex-light in full: prelude, teasing, undressing, kissing, mishaps,
+    body-consciousness, fantasies — anything sexual lighter than Carnal/Bare's explicit
+    register. Unwind isn't just relaxation, it's holidays, free time, hobbies, fun. Name
+    the category's actual outer edge before writing toward it, not the first association
+    the category name brings to mind.
 
 ## Lenses
 
@@ -772,6 +809,64 @@ as reading like guilty-pleasure rather than its intended self-permission/self-di
 angle; this was the music-taste-mismatch card benched during the Unwind 6 search above,
 redirected here instead since it's genuinely Culture's register (the *what* — a specific
 song/artist), not Unwind's.
+
+*The following five patches (v6.92–v6.96) landed on `main` from a separate, concurrent
+session while this branch was still open, and are merged in here chronologically —
+renumbered from that session's own v6.86–v6.90 to avoid colliding with the numbers above.
+Only real conflict: that session's own Work 1 swap, resolved in this branch's favour (see
+v6.92 and the Work bench entry above) at the owner's explicit call.*
+
+## Patch v6.92 — Work 1 swap (superseded), Bare 4 trim
+- **Work 1** → *"Which colleague taught you the most without ever meaning to?"* Replaces *"If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?"* — owner asked for a replacement; it was also the longest normal card, overflowing the new fixed-size phone card. Dutch left as is for now. Owner picked this alternative over two others. **Superseded**: this collided at merge time with this branch's own Work 1 swap (v6.87 above, approved independently in this session before the two branches were reconciled); owner kept this branch's "office drama" version and benched this one instead.
+- **Bare 4** → *"The most sexually bold text you've sent that landed exactly right — care to repeat it?"* Replaces *"What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?"* — trimmed to fit the new fixed-size phone card. Owner picked this alternative over two others.
+
+## Patch v6.93 — Friends 9, Flesh 11 trims
+- **Friends 9** → *"Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?"* Replaces *"Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?"* — tied longest normal card, capping card text size; the either/or already asks it; owner picked this alternative over two others. Dutch left as is for now.
+- **Flesh 11** → *"First night with someone: do you want to take your time, or have them right then and there?"* Replaces *"The first time you sleep with someone, do you want to take your time with them, or do you want them right then and there?"* — tied longest normal card, capping card text size; "do you want" appeared twice; owner picked this alternative over two others.
+
+## Patch v6.94 — Abyss 1 trim
+- **Abyss 1** → *"What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?"* Replaces *"What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?"* — the longest normal card, capping how large card text can be; trimmed keeping the Tuesday / Saturday-night line, owner picked this alternative over two others.
+
+## Patch v6.95 — Mind 4 swap, Mind 5 trim (from the depth-scoring pilot)
+- **Mind 4** → *"Which of your memories do you suspect you've quietly rewritten over the
+  years?"* Replaces *"When has a gut feeling known more than you did?"* — flagged as a
+  stock "trust your gut" line with no angle specific to Mind; owner picked this
+  alternative over two others.
+- **Mind 5** → *"Silence, nothing to do — how long before you actually start enjoying
+  it?"* Drops "no phone," at the owner's request.
+
+## Patch v6.96 — six owner-decided swaps from the wording-refinement pass
+- **Spirit 7** → *"Who did something special for you in your recent past that you did not
+  properly thank them for yet."* Replaces *"Who are you overdue to thank — and what
+  for?"* — owner's own rewrite.
+- **Self 7** → *"What's something that used to take courage that's now just routine for
+  you?"* Replaces *"What's something you used to associate with being 'old' that you now
+  just call Tuesday?"* — near-duplicate of Life 9, and the negative "avoid old age"
+  framing undersold it; positive-spin alternative picked by the owner.
+- **Values 8** → *"What can having money make disappear that not having it can't?"*
+  Replaces *"What does money let you avoid — a conversation, a choice, a person?"* — the
+  emdash list narrowed the answer to three named categories before the player got there.
+- **Culture 12** → *"What's a story you've stretched out on purpose, just to keep it going
+  a little longer?"* Replaces *"Is there a piece of culture — book, show, song — you've
+  deliberately not finished, because you don't want it to be over?"* — "song" doesn't
+  have an unfinished state the way a book or show does, so the premise only half-worked.
+- **Spirit 10** → *"What physical practice has brought you closest to something
+  spiritual?"* Replaces *"Have you ever tried to reach something through your body —
+  breath, fasting, dance, stillness?"* — same emdash-list narrowing problem as Values 8.
+- **Flesh 11** → *"What's something you've learned about a person just from the way they
+  touch you?"* Replaces *"In the moment, how do you make what you want known — words,
+  hands, or just taking it?"* — owner wanted Flesh 11 to lead with insight into a person,
+  a story, or a theory, not a mechanics-of-communication question. The pickup-line
+  alternative from the same round was kept on the bench for a future slot rather than
+  used here.
+
+A pass flagged every card in the deck with an emdash followed by a short list of options
+(book/show/song, breath/fasting/dance/stillness, words/hands/taking it, and similar).
+Culture 12 and Spirit 10 above came out of that pass; Culture, 12's sibling issue
+("book, show, song") and Flesh 11 were addressed the same round. Carnal 12's list
+("written, told, or visual") was judged to be doing real scope-setting rather than
+narrowing, and Bare 6's list ("relationships, flings, one-night stands") is definitional
+rather than narrowing — both left as-is, owner-confirmed.
 
 ## Patch v6.85 — third batch from the "version one" review: eight owner-approved swaps
 Owner picked donor slots for eight of the Tier-1 candidates from the ranked list, each

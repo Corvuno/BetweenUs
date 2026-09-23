@@ -5,99 +5,91 @@
 // (language switch, drawer open/close buttons). (The app's boot sequence
 // lives in ui.js.)
 
-// The round as a line: one dot per card, in its category colour, placed by depth.
-// Above ~48 cards the dots stop being readable, so the summary keeps to words.
-function drawRoundTrace(cards) {
-  if (!cards || cards.length < 2 || cards.length > 48) return '';
-  const W = 240, H = 62, PAD = 10;
-  const step = (W - PAD * 2) / (cards.length - 1);
-  const pts = cards.map((c, i) => [
-    +(PAD + i * step).toFixed(1),
-    +(52 - (levelDepth(c.level) - 1) * 8).toFixed(1)
-  ]);
-  const line = pts.map(p => p.join(',')).join(' ');
-  const dots = pts.map((p, i) =>
-    `<circle cx="${p[0]}" cy="${p[1]}" r="${cards.length > 24 ? 2.2 : 3}" fill="${levelColor(cards[i].level)}"/>`
-  ).join('');
-  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The hand you drew: ${cards.length} cards, from light to deep.">`
-       + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
-       + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
-       + dots + `</svg>`;
+// Roman numerals for the counter's static readout — falls back to arabic
+// past what reads cleanly as a numeral (beyond XXXIX).
+const ROMAN_MAX = 39;
+function toRoman(n) {
+  const vals = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],
+                [50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+  let out = '';
+  for (const [v, sym] of vals) while (n >= v) { out += sym; n -= v; }
+  return out || '0';
 }
 
-// Dot size steps down as the deck grows, so a 5- or 10-card arc gets big,
-// colorful dots while a 40-card round still fits on one line.
-const DOT_SIZE_STEPS = [
-  [8,  10, 8],
-  [14, 8,  6],
-  [24, 6,  5],
-  [36, 5,  4],
-  [Infinity, 4, 3],
-];
+// Fullscreen's own count — "n / total" in roman rather than arabic, same
+// plain-slash separator it already used. Caps lower than the main counter
+// (twelve, not thirty-nine): at party size the numeral sits right next to
+// the question in the same reading line, so it has to stay short enough
+// not to compete with it — see FULLSCREEN.md.
+function partyRomanCount(n, total) {
+  const fmt = total > 12 ? String : toRoman;
+  // hair spaces (U+200A), not full spaces — a plain slash still separates
+  // cleanly once the numerals themselves are in a serif (see .party-number).
+  return `${fmt(n)} / ${fmt(total)}`;
+}
+
 // `currentOverride`, when given, replaces state.currentIndex for this render
 // only — used by the end-of-round summary to show every card as passed
-// without a "current" dot, without touching real session position.
-
+// without a "current" tick, without touching real session position.
+//
+// The rule is one flex tick per card, full stop — no dot-count scaling or
+// sliding window for huge decks the way the old dot row needed. A hairline
+// degrades gracefully at any density (unlike discrete dots, which stop
+// being individually readable past a few dozen), so "All" in Everything
+// (300+ cards) just renders as a very fine line with a spike at the
+// current position — the numeral underneath is what actually reads at
+// that size, same job it does at 5 or 10.
+// Dots keep their real shape/size/colour throughout — only which ones are
+// on screen changes. Up to 20, every card gets a dot; past that the window
+// slides to keep the current card (plus one ahead) in view, and everything
+// before it has simply scrolled out of frame, not compressed or restyled.
+const PROGRESS_CAP = 20;
 function renderProgress(currentOverride) {
   const container = document.getElementById('progress');
+  const countEl = document.getElementById('progCountNum');
   const deckLen = state.visibleDeck.length;
-  container.innerHTML = '';
-  const MAX_DOTS = 60;
   const cur = currentOverride === undefined ? state.currentIndex : currentOverride;
-  if (deckLen <= MAX_DOTS) {
-    // One dot per card. Passed and current cards reveal their category
-    // colour; cards still ahead stay neutral gold so the shape of what's
-    // coming isn't spoiled.
-    const [, size, gap] = DOT_SIZE_STEPS.find(([max]) => deckLen <= max);
-    container.style.setProperty('--dot-size', size + 'px');
-    container.style.setProperty('--dot-gap', gap + 'px');
-    for (let i = 0; i < deckLen; i++) {
-      const card = state.visibleDeck[i];
-      const dot = document.createElement('div');
-      const isSeen    = i < cur;
-      const isCurrent = i === cur;
-      dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
-      if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
-      container.appendChild(dot);
-    }
-    // One extra dot past the last card, standing for the summary screen —
-    // only from the last card onward, matching exactly when the next-card
-    // button itself switches to "Summary". Showing it the whole hand made
-    // a 5-card draw permanently look like 6 cards.
-    if (cur >= deckLen - 1) container.appendChild(makeEndDot(cur >= deckLen));
-  } else {
-    // Large decks (e.g. 'All' in Everything, 300+ cards): a fixed-width
-    // window of real per-card dots slides along the deck instead of
-    // collapsing everything into averaged buckets. It always keeps one
-    // neutral "next" dot in view, and drops the oldest passed dot off the
-    // left edge as you advance — a continuous band, not a dulled-down summary.
-    const WINDOW = 20;
-    container.style.setProperty('--dot-size', '7px');
-    container.style.setProperty('--dot-gap', '6px');
-    const windowStart = Math.max(0, Math.min(cur - (WINDOW - 2), deckLen - WINDOW));
-    const windowEnd = Math.min(deckLen, windowStart + WINDOW);
-    for (let i = windowStart; i < windowEnd; i++) {
-      const card = state.visibleDeck[i];
-      const dot = document.createElement('div');
-      const isSeen    = i < cur;
-      const isCurrent = i === cur;
-      dot.className = 'progress-dot' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
-      if (isSeen || isCurrent) dot.style.setProperty('--dot-color', levelColor(card.level));
-      container.appendChild(dot);
-    }
-    // Only tack the summary dot on once the sliding window has actually
-    // reached the last real card, and only from the last card onward —
-    // same rule as the small-deck branch above.
-    if (windowEnd >= deckLen && cur >= deckLen - 1) container.appendChild(makeEndDot(cur >= deckLen));
-  }
-}
 
-// The summary dot isn't a card, so it doesn't take a category color — a
-// plain gold ring that fills solid once you're actually on the summary.
-function makeEndDot(isCurrent) {
-  const dot = document.createElement('div');
-  dot.className = 'progress-dot end-dot' + (isCurrent ? ' current' : '');
-  return dot;
+  let start = 0, end = deckLen - 1;
+  if (deckLen > PROGRESS_CAP) {
+    end = Math.min(deckLen - 1, cur + 1);         // current + one ahead, if it exists
+    start = Math.max(0, end - (PROGRESS_CAP - 1)); // 20 dots ending there
+  }
+  const shown = Math.max(0, end - start + 1);
+
+  const W = 300, gapDefault = 4;
+  let dotW = shown > 0 ? (W - (shown - 1) * gapDefault) / shown : 0;
+  let gap = gapDefault;
+  if (dotW < 3) { dotW = 3; gap = shown > 1 ? Math.max(1.5, (W - shown * 3) / (shown - 1)) : 0; }
+
+  container.innerHTML = '';
+  container.style.setProperty('--dot-gap', gap + 'px');
+  for (let i = start; i <= end; i++) {
+    const card = state.visibleDeck[i];
+    const tick = document.createElement('div');
+    const isSeen    = i < cur;
+    const isCurrent = i === cur;
+    tick.className = 'progress-tick' + (isSeen ? ' seen' : '') + (isCurrent ? ' current' : '');
+    tick.style.width = dotW + 'px';
+    if (isSeen || isCurrent) tick.style.setProperty('--tick-color', levelColor(card.level));
+    container.appendChild(tick);
+  }
+  // The terminal diamond only appears once the real last card is inside the
+  // visible window — a window that's slid away from the end has nothing to
+  // cap yet.
+  if (deckLen > 0 && end === deckLen - 1) {
+    const endDot = document.createElement('div');
+    endDot.className = 'progress-tick end' + (cur >= deckLen ? ' current' : '');
+    container.appendChild(endDot);
+  }
+
+  // Always Roman, at any count — no arabic fallback past ROMAN_MAX the way
+  // the dot numeral used to have.
+  if (countEl) {
+    countEl.innerHTML = deckLen > 0
+      ? `${toRoman(Math.min(cur + 1, deckLen))} &nbsp;&middot;&nbsp; ${toRoman(deckLen)}`
+      : '';
+  }
 }
 
 // ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────
@@ -115,20 +107,29 @@ function updateShuffleDisplay() {
 function updatePartyDisplay(card) {
   const pq  = document.getElementById('party-question');
   const pl  = document.getElementById('party-level');
-  const pn  = document.getElementById('party-number');
+  const pc  = document.getElementById('party-count');
   const pa  = document.getElementById('party-accent');
+  const ps  = document.getElementById('partyStar');
+  const pv  = document.getElementById('partyPrevBtn');
+  if (pv) pv.disabled = state.currentIndex <= 0;
   if (!card) {
     if (pq) pq.textContent = 'Draw a card to begin.';
     if (pl) { pl.textContent=''; pl.style.color=''; }
-    if (pn) pn.textContent = '';
+    if (pc) pc.textContent = '';
     if (pa) pa.style.background = '';
+    if (ps) ps.classList.remove('on');
     return;
   }
   const color = levelColor(card.level);
-  if (pa) { pa.style.background=color; pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
-  if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=color; }
-  if (pq) { pq.style.opacity='0'; setTimeout(()=>{ pq.textContent=translateQ(card); pq.style.opacity='1'; },120); }
-  if (pn) pn.textContent = `${state.currentIndex+1} / ${state.visibleDeck.length}`;
+  if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
+  if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
+  if (pq) {
+    pq.textContent = translateQ(card);
+    pq.classList.add('entering');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>pq.classList.remove('entering')));
+  }
+  if (pc) pc.textContent = partyRomanCount(state.currentIndex+1, state.visibleDeck.length);
+  if (ps) ps.classList.toggle('on', state.favourites.some(f => f.question === card.question));
 }
 
 function toggleCategories() {
@@ -256,12 +257,20 @@ document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 // ── Log ──
 document.getElementById('d-log').addEventListener('click',(e)=>{ closeAllDrawers(); renderLog(); openDrawer('logDrawer', e.currentTarget); });
 document.getElementById('closeLog').addEventListener('click',()=>closeAllDrawers());
-document.getElementById('btnExport').addEventListener('click', () => {
+// Shared by the log drawer's own Export button and the end-of-set screen's
+// "Export the log" action — one function, so the two can't drift into two
+// different file formats. No-op-safe on an empty session.
+function exportSessionLog() {
   if (!state.sessionLog.length) return;
-  const lines = state.sessionLog.map((c,i)=>`${i+1}. [${LEVEL_LABELS[c.level]||c.level}]\n   ${c.question}`).join('\n\n');
+  const favQ = new Set((state.favourites || []).map(f => f.question));
+  const lines = state.sessionLog.map((c,i) => {
+    const star = favQ.has(c.question) ? ' ★' : '';
+    return `${i+1}. [${LEVEL_LABELS[c.level]||c.level}]${star}\n   ${c.question}`;
+  }).join('\n\n');
   const blob = new Blob([`Between Us — ${new Date().toLocaleDateString()}\n${'─'.repeat(40)}\n\n${lines}`],{type:'text/plain'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
-});
+}
+document.getElementById('btnExport').addEventListener('click', exportSessionLog);
 document.getElementById('btnImport') && document.getElementById('btnImport').addEventListener('click',()=>{
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.txt';
   inp.onchange=async e=>{
@@ -395,80 +404,181 @@ function updateDrawMore() {
   }
 };
 
-function showSessionSummary() {
-  const isArc = state.randomMode === 'arc';
+// Small SVG trace of category depth across the hand — a quick visual read
+// of whether the round stayed shallow, dove deep, or moved around. Used by
+// fullscreen's runPartySummary() below.
+function drawRoundTrace(cards) {
+  if (!cards || cards.length < 2 || cards.length > 48) return '';
+  const W = 240, H = 62, PAD = 10;
+  const step = (W - PAD * 2) / (cards.length - 1);
+  const pts = cards.map((c, i) => [+(PAD + i * step).toFixed(1), +(52 - (levelDepth(c.level) - 1) * 8).toFixed(1)]);
+  const line = pts.map(p => p.join(',')).join(' ');
+  const dots = pts.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="${cards.length > 24 ? 2.2 : 3}" fill="${levelColor(cards[i].level)}"/>`).join('');
+  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The hand you drew: ${cards.length} cards, from light to deep.">`
+       + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
+       + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
+       + dots + `</svg>`;
+}
 
-  // Build arc progression — unique categories of THIS DRAW, in order
-  const seen = new Set(), cats = [];
-  state.visibleDeck.forEach(c => { if (!seen.has(c.level)) { seen.add(c.level); cats.push(c.level); } });
-  const arcLine = cats.map(l => LEVEL_LABELS[l] || l).join(' · ');
-  const drawCount = state.visibleDeck.length;
+// ── End of set — the full-bleed end screen's model. Tallies only THIS
+// hand (state.visibleDeck), not the whole multi-hand session log.
+function computeEndScreenModel() {
+  const drawn = {};
+  state.visibleDeck.forEach(c => { drawn[c.level] = (drawn[c.level] || 0) + 1; });
 
-  // Starred cards from this session
-  const logQ = new Set(state.sessionLog.map(c => c.question));
-  const starred = (state.favourites || []).filter(c => logQ.has(c.question)).slice(0, 3);
+  const chips = Object.keys(CATEGORIES)
+    .filter(key => drawn[key] > 0)
+    .map(key => ({ label: CATEGORIES[key].label, count: drawn[key], color: CATEGORIES[key].color }));
 
-  // ── Update the card face ──
+  // Chapters that actually appeared, in CHAPTERS_META's canonical order —
+  // derived from CATEGORIES[key].chapter, the same field the chapter
+  // drawer itself groups by, so this can't drift from what's on screen there.
+  const visited = Object.keys(CHAPTERS_META)
+    .filter(chId => Object.keys(CATEGORIES).some(key => CATEGORIES[key].chapter === chId && drawn[key] > 0))
+    .map(chId => ({ label: CHAPTERS_META[chId].label, color: CHAPTERS_META[chId].color }));
+  const first = visited[0] || null;
+  const last = visited[visited.length - 1] || first;
+
+  // Only cards actually starred THIS hand — a card that was already a
+  // favourite from an earlier session shouldn't show up here just because
+  // it happened to get redrawn without anyone tapping its star this time.
+  const favCount = state.visibleDeck.filter(c => state.handStarred.has(c.question)).length;
+
+  return { chips, moved: visited.length > 1, stayed: visited.length === 1, first, last, favCount };
+}
+
+const FAV_COUNT_WORDS = ['no','one','two','three','four','five','six','seven','eight','nine','ten',
+  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+
+// "You began at {first} and ended {last}" / "The whole set stayed in {only}"
+// — chapter names carry that chapter's own colour (lifted via labelColor()
+// the same way the chapter drawer lifts After Dark's near-black lacquer).
+function esSentenceHTML(model) {
+  if (!model.first) return '';
+  if (model.stayed) {
+    const c = labelColor(model.first.color);
+    return `The whole set stayed<br>in <span class="es-chapter" style="color:${c}">${esc(model.first.label)}</span>`;
+  }
+  const cf = labelColor(model.first.color), cl = labelColor(model.last.color);
+  return `You began at <span class="es-chapter" style="color:${cf}">${esc(model.first.label)}</span><br>`
+       + `and ended <span class="es-chapter" style="color:${cl}">${esc(model.last.label)}</span>`;
+}
+
+function esChipsHTML(model) {
+  return model.chips.map(c => {
+    const border = `color-mix(in srgb, ${c.color} 50%, transparent)`;
+    const fill   = `color-mix(in srgb, ${c.color} 12%, transparent)`;
+    const countColor = `color-mix(in srgb, ${c.color} 95%, transparent)`;
+    const count = c.count > 1 ? `<span class="es-chip-count" style="color:${countColor}">${c.count}</span>` : '';
+    return `<span class="es-chip" style="border-color:${border};background:${fill}">${esc(c.label)}${count}</span>`;
+  }).join('');
+}
+
+function esFavsHTML(model) {
+  if (!model.favCount) return '';
+  const word = FAV_COUNT_WORDS[model.favCount] !== undefined ? FAV_COUNT_WORDS[model.favCount] : String(model.favCount);
+  const line = model.favCount === 1 ? 'one card you starred' : `${word} cards you starred`;
+  return `<span class="es-star">&#9733;</span>${esc(line)}`;
+}
+
+// ── HAND SUMMARY ── the end-of-hand message: same card-wrap/controls-wrap
+// layout as any other draw, not a separate screen — the card face carries
+// the sentence/chip-cloud/favourites content from computeEndScreenModel(),
+// Next Card becomes Hold (already handled by updateDrawMore()'s atEnd()
+// branch, unchanged), and screen-row's three/Full Screen/Twist swap to
+// Change/Save via body.showing-hand-summary (see styles.css). hideHandSummary()
+// — called from setCardDisplay()/flipToCard() — reverses this the moment a
+// real card is shown again, whatever path got there (another hand, a
+// settings change, Explore/a preset picked mid-summary).
+function showHandSummary() {
+  clearTwist();
+  const model = computeEndScreenModel();
+  const chColor = model.last ? model.last.color : 'var(--gold-l)';
   const accent = document.getElementById('c-accent');
   if (accent) {
-    accent.style.background = 'var(--gold-l)';
-    accent.classList.remove('accent-bloom');
-    void accent.offsetWidth;
-    accent.classList.add('accent-bloom');
+    accent.style.background = giltRail(chColor);
+    accent.classList.remove('accent-bloom'); void accent.offsetWidth; accent.classList.add('accent-bloom');
   }
-
   const lvlEl = document.getElementById('card-level');
   if (lvlEl) {
     lvlEl.classList.remove('in');
-    lvlEl.textContent = isArc
-      ? (state.lang === 'nl' ? 'Arc voltooid' : 'Arc complete')
-      : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete');
-    lvlEl.style.color = 'var(--gold-l)';
-    void lvlEl.offsetWidth;
-    lvlEl.classList.add('in');
+    lvlEl.textContent = state.lang === 'nl' ? 'De set is afgerond' : 'The set is finished';
+    lvlEl.style.color = model.last ? labelColor(chColor) : chColor;
+    void lvlEl.offsetWidth; lvlEl.classList.add('in');
   }
-
   const qEl = document.getElementById('card-question');
   if (qEl) {
     qEl.classList.remove('in');
-    let html = `<div class="sic-wrap">`;
-    if (arcLine) {
-      html += `<div class="sic-label">${isArc ? 'You went' : 'You covered'} — ${drawCount} ${state.lang==='nl' ? 'kaarten' : 'cards'}</div>`;
-      html += drawRoundTrace(state.visibleDeck);
-      html += `<div class="sic-arc">${arcLine}</div>`;
-    }
-    if (starred.length > 0) {
-      html += `<div class="sic-stars">`;
-      starred.forEach(c => { html += `<div class="sic-star">&#9733;&nbsp; ${esc(translateQ(c))}</div>`; });
-      html += `</div>`;
-    }
-    if (state.fullDeck.length - state.visibleDeck.length <= 0) {
-      html += `<div class="sic-note">${state.lang==='nl'
-        ? 'Dat was dit hele deck. Kies meer categorieën om door te gaan — of houd vast om opnieuw te schudden.'
-        : 'That was the whole deck for this selection. Add categories to keep going — or hold to reshuffle it.'}</div>`;
-    }
+    let html = `<div class="hs-wrap"><div class="hs-sentence">${esSentenceHTML(model)}</div>`;
+    if (model.chips.length)  html += `<div class="hs-chips">${esChipsHTML(model)}</div>`;
+    if (model.favCount)      html += `<div class="hs-favs">${esFavsHTML(model)}</div>`;
     html += `</div>`;
     qEl.innerHTML = html;
-    void qEl.offsetWidth;
-    qEl.classList.add('in');
-    // Re-render the arc line with per-category colors (same `cats` computed above)
-    const arcEl = qEl.querySelector('.sic-arc');
-    if (arcEl) {
-      arcEl.innerHTML = cats.map(l =>
-        `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
-      ).join('<span style="opacity:.35"> · </span>');
-    }
+    void qEl.offsetWidth; qEl.classList.add('in');
   }
-
-  // A Twist held over from the last card doesn't belong on the summary —
-  // clear it before writing "— end —" so it can't get overwritten back to
-  // a modifier sentence, and so the button itself stops reading as active.
-  clearTwist();
-  const numEl = document.getElementById('card-number');
-  if (numEl) numEl.textContent = '— end —';
-
-  // The round is over — every dot reads as passed, none as "current".
+  document.body.classList.add('showing-hand-summary');
   renderProgress(state.visibleDeck.length);
+}
+function hideHandSummary() {
+  document.body.classList.remove('showing-hand-summary');
+}
+
+// ── END OF SET (dormant) ── the full-bleed takeover showHandSummary() above
+// replaced — kept, unused, for a reshaped version to come back to later.
+// Nothing calls showEndScreen()/hideEndScreen() any more.
+function showEndScreen() {
+  clearTwist();
+  const model = computeEndScreenModel();
+  const sentence = document.getElementById('esSentence');
+  const chips    = document.getElementById('esChips');
+  const favs     = document.getElementById('esFavs');
+  const hold     = document.getElementById('esHold');
+  if (sentence) sentence.innerHTML = esSentenceHTML(model);
+  if (chips)    chips.innerHTML = esChipsHTML(model);
+  if (favs)     favs.innerHTML = esFavsHTML(model);
+  if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
+  // Next Card's own position is fixed (header/token/preset/card/counter
+  // are all fixed-height above it), but the end screen's body content
+  // (sentence + chip cloud + favourites line) varies with what got drawn,
+  // so .es-actions landed at a different height each time — sometimes
+  // above Next Card's spot, sometimes below. Record where Next Card sits
+  // now, before it's hidden, so it can be reproduced exactly below.
+  const nextBtn = document.getElementById('btn-next');
+  const nextTop = nextBtn ? nextBtn.getBoundingClientRect().top : null;
+  document.body.classList.add('showing-end-screen');
+  // The display:none->flex swap happens the instant the class above is
+  // added, landing at opacity:0 (see styles.css) with .in not yet present.
+  // A bare requestAnimationFrame here isn't enough — the browser can (and
+  // in testing, did) coalesce the display change and the .in class into
+  // the same first paint, skipping the transition entirely. Forcing a
+  // synchronous reflow (void es.offsetHeight) between the two commits the
+  // opacity:0 state as an actual rendered frame first, the same trick
+  // flipToCard() already uses to restart the accent-bloom animation.
+  const es = document.getElementById('endScreen');
+  if (es) { es.classList.remove('in'); void es.offsetHeight; es.classList.add('in'); }
+  // Now that the end screen has laid out with its actual content, pad
+  // .es-body up to whatever height puts .es-actions exactly where Next
+  // Card was recorded above — never shrinks it (a long chip cloud is
+  // allowed to push the actions down further; it just can't land higher
+  // than Next Card's spot).
+  const esBody = document.querySelector('.es-body');
+  const esActions = document.querySelector('.es-actions');
+  if (esBody && esActions && nextTop != null) {
+    esBody.style.minHeight = '';
+    const actionsTop = esActions.getBoundingClientRect().top;
+    const delta = nextTop - actionsTop;
+    if (delta > 0) esBody.style.minHeight = (esBody.getBoundingClientRect().height + delta) + 'px';
+  }
+  // Every tick reads as passed on the (now hidden) counter, none current —
+  // keeps it correct for the instant hideEndScreen() reveals it again.
+  renderProgress(state.visibleDeck.length);
+}
+function hideEndScreen() {
+  const es = document.getElementById('endScreen');
+  if (es) es.classList.remove('in');
+  const esBody = document.querySelector('.es-body');
+  if (esBody) esBody.style.minHeight = '';
+  document.body.classList.remove('showing-end-screen');
 }
 
 // ── End-of-draw hold gate ──
@@ -492,21 +602,22 @@ function hint(on){
   if (el) el.classList.toggle('visible', !!on);
 }
 
+// Fullscreen's own end-of-set moment — the same in-card sic-wrap/arc-trace
+// treatment the full-bleed end screen used before it existed, inside the
+// party card (the party overlay doesn't use the full-bleed end screen).
 function runPartySummary() {
   const isArc = state.randomMode === 'arc';
   const pl = document.getElementById('party-level');
   const pq = document.getElementById('party-question');
-  const pn = document.getElementById('party-number');
+  const pc = document.getElementById('party-count');
   const pa = document.getElementById('party-accent');
   if (pa) pa.style.background = 'var(--gold-l)';
-  if (pl) { pl.textContent = isArc ? (state.lang==='nl'?'Arc voltooid':'Arc complete') : (state.lang==='nl'?'Ronde afgerond':'Draw complete'); pl.style.color = 'var(--gold-l)'; }
-  if (pn) pn.textContent = '— end —';
+  if (pl) { pl.textContent = isArc ? (state.lang === 'nl' ? 'Arc afgerond' : 'Arc complete') : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete'); pl.style.color = 'var(--gold-l)'; }
+  if (pc) pc.textContent = '— end —';
   if (pq) {
     const seen2 = new Set(), cats2 = [];
     state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
-    const arcHtml = cats2.map(l =>
-      `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`
-    ).join('<span style="opacity:.35"> · </span>');
+    const arcHtml = cats2.map(l => `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`).join('<span style="opacity:.35"> · </span>');
     pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(state.visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
   }
 }

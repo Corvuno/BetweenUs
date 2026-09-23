@@ -52,11 +52,12 @@ async function check(name, fn) {
 function assert(cond, msg) { if (!cond) throw new Error(msg || 'assertion failed'); }
 
 // ── in-page helpers ─────────────────────────────────────────────────────────
-async function cardNumberText(page) { return page.locator('#card-number').textContent(); }
+// The on-card "n / total" reading was retired (moved under the bar as
+// #progCountNum, in Roman numerals) — read the real state instead of
+// parsing rendered text, which is more robust and works before that
+// element exists at all (index -1, no card drawn yet).
 async function cardParts(page) {
-  const t = (await cardNumberText(page)).trim();
-  const m = t.match(/^(\d+)\s*\/\s*(\d+)$/);
-  return m ? { index: +m[1], total: +m[2] } : { raw: t };
+  return page.evaluate(() => ({ index: state.currentIndex + 1, total: state.visibleDeck.length }));
 }
 async function questionText(page) { return (await page.locator('#card-question').textContent()).trim(); }
 // Polls real DOM state instead of sleeping a fixed duration — the deal
@@ -64,15 +65,7 @@ async function questionText(page) { return (await page.locator('#card-question')
 // waits for it to *finish* (rather than guessing how long it takes) doesn't
 // need re-tuning every time that duration changes.
 async function waitForCardIndex(page, n, timeout = 3000) {
-  await page.waitForFunction(
-    (expected) => {
-      const t = (document.getElementById('card-number').textContent || '').trim();
-      const m = t.match(/^(\d+)\s*\/\s*(\d+)$/);
-      return !!m && +m[1] === expected;
-    },
-    n,
-    { timeout }
-  );
+  await page.waitForFunction((expected) => state.currentIndex + 1 === expected, n, { timeout });
 }
 
 // Dispatch a synthetic touch swipe on an element, optionally followed by the
@@ -140,8 +133,8 @@ async function run() {
   await check('initial load shows the "draw a card" placeholder, not a card', async () => {
     const q = await questionText(page);
     assert(/draw a card|trek een kaart|place to begin|plek om te beginnen/i.test(q), `expected the draw-to-begin placeholder, got "${q}"`);
-    const numTxt = (await cardNumberText(page)).trim();
-    assert(numTxt === '— — —', `expected the empty card-number placeholder, got "${numTxt}"`);
+    const { index } = await cardParts(page);
+    assert(index === 0, `expected no card drawn yet (index 0, i.e. currentIndex -1), got index ${index}`);
   });
 
   await check('first tap on the card draws card 1 of the hand', async () => {
@@ -287,8 +280,8 @@ async function run() {
       assert(after !== before, `active category count did not change (${before})`);
       // A toggle change calls initDeck(), which resets to the "draw a card"
       // placeholder (no auto-drawn first card — see the NO INTRO note up top).
-      const numTxt = (await cardNumberText(page)).trim();
-      assert(numTxt === '— — —', `deck did not reset to the draw-to-begin placeholder, got "${numTxt}"`);
+      const { index: resetIndex } = await cardParts(page);
+      assert(resetIndex === 0, `deck did not reset to the draw-to-begin placeholder, currentIndex+1 was ${resetIndex}`);
       // restore for later tests
       await bucket.locator('.cbk-select').click();
       await page.waitForTimeout(300);
@@ -372,29 +365,36 @@ async function run() {
     const overlay = page.locator('#partyOverlay');
     assert(await overlay.evaluate(el => el.classList.contains('open')), 'party overlay did not open');
     const before = await cardParts(page);
+    const countBefore = await page.locator('#party-count').textContent();
     await page.locator('#partyOverlay .party-card').click();
     await page.waitForTimeout(300);
     const after = await cardParts(page);
     assert(after.index === before.index + 1, `party tap did not advance: ${before.index} -> ${after.index}`);
+    const countAfter = await page.locator('#party-count').textContent();
+    assert(countAfter !== countBefore, `#party-count did not update on advance: "${countBefore}" -> "${countAfter}"`);
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
     assert(!(await overlay.evaluate(el => el.classList.contains('open'))), 'party overlay did not close');
   });
 
   // ── K. End-of-hand hold-to-continue gate ────────────────────────────────
-  await check('end-of-hand: a quick tap does not advance, a full hold does', async () => {
+  await check('end-of-hand: the hand summary appears in-card, and Next Card\'s own hold starts a fresh hand', async () => {
     // Run the current hand out to its end (tap through, waiting out the
-    // 175ms flip animation each time so we don't race the DOM update).
-    const atEnd = async () => /sic-wrap|Draw complete|Ronde afgerond/.test(await page.locator('#card-question').innerHTML());
+    // 175ms flip animation each time so we don't race the DOM update),
+    // then the 500ms showHandSummary() delay past the last card.
+    const atEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-hand-summary'));
     for (let i = 0; i < 20 && !(await atEnd()); i++) {
       await page.locator('#card').click();
       await page.waitForTimeout(300);
     }
-    assert(await atEnd(), `did not reach the end-of-hand screen after 20 taps (${await questionText(page)})`);
-    // The end-hint indicator is now set explicitly (from updateDrawMore(),
-    // via hint(atEnd())) rather than by a MutationObserver watching
-    // #card-question — check it actually turned on.
-    assert(await page.locator('#endHint').evaluate(el => el.classList.contains('visible')), 'end-hint did not appear at the end of the hand');
+    await page.waitForTimeout(600);
+    assert(await atEnd(), `did not reach the end-of-hand summary after 20 taps (${await questionText(page)})`);
+    // card-wrap/controls-wrap stay visible (this is the same layout as any
+    // other draw, not a takeover screen) — only the screen-row content and
+    // the card face change (styles.css body.showing-hand-summary).
+    assert(await page.locator('#card-wrap').isVisible(), 'card-wrap disappeared during the hand summary');
+    assert(await page.locator('#handActionsRow').isVisible(), 'the Change/Save row did not appear');
+    assert(!(await page.locator('#screenRow').isVisible()), 'three/Full Screen/Twist stayed visible during the hand summary');
 
     // Quick tap: pointerdown+up well under the hold threshold must NOT advance.
     await page.evaluate(() => {
@@ -407,8 +407,7 @@ async function run() {
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     });
     await page.waitForTimeout(300);
-    const stillEnd = await page.locator('#card-question').innerHTML();
-    assert(/sic-wrap|Draw complete|Ronde afgerond/.test(stillEnd), 'a quick tap advanced past the end-of-hand gate');
+    assert(await atEnd(), 'a quick tap on Next Card advanced past the end-of-hand gate');
 
     // Full hold: must advance into a fresh hand — wait for the actual reveal
     // rather than a guessed duration (works whether this replays the deal
@@ -417,7 +416,7 @@ async function run() {
     await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
-    assert(!(await page.locator('#endHint').evaluate(el => el.classList.contains('visible'))), 'end-hint stayed visible into the fresh hand');
+    assert(!(await atEnd()), 'still showing the hand summary after the hold started a fresh hand');
   });
 
   await check('no uncaught page errors were raised during the run', async () => {

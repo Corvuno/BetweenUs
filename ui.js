@@ -147,9 +147,27 @@ document.getElementById('cardStar').addEventListener('click', e => {
 // swipe gesture and calls preventDefault() when it acts, so the browser
 // never synthesizes a click after a swipe — this handler only ever sees
 // genuine taps and needs no "was that just a swipe?" flag to guard against.
+//
+// Mouse only: dragging to select the question text (card-question is the
+// one part of the card with user-select re-enabled — see styles.css) also
+// ends in a click on mouseup, same as a tap does. Distinguish them by
+// actual pointer movement rather than by reading the selection in the
+// click handler — selection state isn't reliably settled by the time
+// click fires (e.g. the first click of a double-click-to-select-a-word
+// hasn't selected anything yet), but "did the mouse move" always has.
+let cardMouseDownAt = null;
+document.getElementById('card').addEventListener('mousedown', e => {
+  cardMouseDownAt = { x: e.clientX, y: e.clientY };
+});
 document.getElementById('card').addEventListener('click', e => {
   if (state.partyMode) return;
   if (e.target.closest('#cardStar')) return;
+  if (cardMouseDownAt) {
+    const dragged = Math.abs(e.clientX - cardMouseDownAt.x) > 6 || Math.abs(e.clientY - cardMouseDownAt.y) > 6;
+    cardMouseDownAt = null;
+    if (dragged) return; // was a drag-select, not a tap
+  }
+  if (window.getSelection && String(window.getSelection()).length > 0) return;
   nextCard();
   updateDeckInfo();
 });
@@ -223,6 +241,33 @@ document.getElementById('d-save').addEventListener('click',()=>{
     newOv.classList.remove('open');
   });
 
+  // Next/prev — chrome buttons forward to the same nav the tap zones use
+  const partyNextBtn = newOv.querySelector('#partyNext');
+  if (partyNextBtn) partyNextBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    nextCard(); updateDeckInfo(); updateDrawMore();
+  });
+  const partyPrevBtn = newOv.querySelector('#partyPrevBtn');
+  if (partyPrevBtn) partyPrevBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (partyPrevBtn.disabled) return;
+    prevCard(); updateDeckInfo();
+  });
+
+  // Star — same handler as the main star
+  const partyStarBtn = newOv.querySelector('#partyStar');
+  if (partyStarBtn) partyStarBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleFavourite();
+  });
+
+  // Draw-three picker's back button just closes the picker
+  const partyPickerBack = newOv.querySelector('#partyPickerBack');
+  if (partyPickerBack) partyPickerBack.addEventListener('click', e => {
+    e.stopPropagation();
+    closePicker();
+  });
+
   // Touch: single handler, always prevents click so mobile never double-fires
   let ptsx = 0, ptsy = 0, partyBusy = false;
   const partyThrottle = (fn) => {
@@ -238,8 +283,7 @@ document.getElementById('d-save').addEventListener('click',()=>{
   }, { passive: true });
 
   newOv.addEventListener('touchend', e => {
-    if (e.target.closest('#partyExit')) return;
-    if (e.target.closest('#partyBtnTwist')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -265,13 +309,38 @@ document.getElementById('d-save').addEventListener('click',()=>{
   // Click — desktop only (mobile click is suppressed by touchend's preventDefault above)
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
-    if (e.target.closest('#partyExit')) return;
-    if (e.target.closest('#partyBtnTwist')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
   });
+})();
+
+// ── Fullscreen phone orientation toggle ── mirrors actual device rotation
+// (resize/orientationchange) so it stays true even for someone who never
+// touches it, but tapping either rectangle sets it directly too — the
+// point is anyone whose phone is orientation-locked can still reach the
+// wide layout without physically rotating anything.
+(function(){
+  const orient = document.getElementById('partyOrient');
+  if (!orient) return;
+  const overlay = document.getElementById('partyOverlay');
+  const opts = [...orient.querySelectorAll('.party-orient-opt')];
+  function setPartyOrientation(mode){
+    overlay.classList.toggle('orient-landscape', mode === 'landscape');
+    opts.forEach(b => b.classList.toggle('live', b.dataset.orient === mode));
+  }
+  window.setPartyOrientation = setPartyOrientation;
+  opts.forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    setPartyOrientation(b.dataset.orient);
+  }));
+  const syncToDevice = () => setPartyOrientation(
+    matchMedia('(orientation: landscape)').matches ? 'landscape' : 'portrait');
+  syncToDevice();
+  window.addEventListener('resize', syncToDevice);
+  window.addEventListener('orientationchange', syncToDevice);
 })();
 
 
@@ -291,6 +360,8 @@ document.addEventListener('keydown',e=>{
     if(e.key==='Escape')     exitParty();
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); updateDrawMore(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
+    if(e.key==='t'||e.key==='T') toggleTwist();
+    if(e.key==='3') document.getElementById('pickToggle').click();
   } else {
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
@@ -389,6 +460,62 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
         e.stopImmediatePropagation(); e.preventDefault();
       }
     }, true);
+  });
+})();
+
+// ── Hand summary actions ── Change/Save, the screen-row's end-of-hand
+// content (see styles.css body.showing-hand-summary, presentation.js
+// showHandSummary()). Plain taps — the hold-to-draw-a-fresh-hand gesture
+// is Next Card itself (now in hold-mode), handled by the END_HOLD_TARGETS
+// gate above like any other end-of-hand state, so these need nothing of
+// their own beyond a click handler.
+document.getElementById('btnChange') && document.getElementById('btnChange').addEventListener('click', () => {
+  if (typeof openCats === 'function') openCats();
+});
+document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
+  if (typeof exportSessionLog === 'function') exportSessionLog();
+});
+
+// ── End-of-set screen actions (dormant) ── wiring for the full-bleed
+// #endScreen's own hold/Change/Export, kept for when a reshaped version of
+// that screen comes back — #esHold no longer exists in the DOM, so this
+// IIFE no-ops below.
+(function(){
+  const btn = document.getElementById('esHold');
+  const fill = document.getElementById('esHoldFill');
+  if (!btn || !fill) return;
+  const HOLD = 600;
+  let timer = null;
+  function start(e){
+    e.preventDefault();
+    clearTimeout(timer);
+    fill.classList.remove('cancelling');
+    void fill.offsetWidth;   // restart the fill transition from 0 on a fresh press
+    fill.classList.add('filling');
+    timer = setTimeout(() => {
+      timer = null;
+      fill.classList.remove('filling');
+      fill.style.width = '';
+      if (typeof drawMore === 'function') drawMore();
+    }, HOLD);
+  }
+  function cancel(){
+    if (timer === null) return;   // already completed — nothing to retract
+    clearTimeout(timer); timer = null;
+    fill.classList.remove('filling');
+    fill.classList.add('cancelling');
+  }
+  btn.addEventListener('pointerdown', start);
+  ['pointerup','pointerleave','pointercancel'].forEach(ev => btn.addEventListener(ev, cancel));
+
+  const changeBtn = document.getElementById('esChange');
+  if (changeBtn) changeBtn.addEventListener('click', () => {
+    if (typeof openCats === 'function') openCats();
+  });
+
+  const exportBtn = document.getElementById('esExport');
+  if (exportBtn) exportBtn.addEventListener('click', () => {
+    if (typeof exportSessionLog === 'function') exportSessionLog();
   });
 })();
 
@@ -750,7 +877,20 @@ applyToggleUI();
     const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
   }
   window.openCats=openCats; window.closeCats=closeCats;
-  openRow.addEventListener('click', openCats);
+  // "· tap to change" teaches the preset token opens something, then
+  // retires for good once it's done its job — fade first (not an instant
+  // display:none) because the sheet covers the header on mobile, so the
+  // hint disappearing is only ever actually seen on desktop.
+  const TOK_TAUGHT_KEY = 'bu.tokTaught';
+  if (localStorage.getItem(TOK_TAUGHT_KEY)) document.body.classList.add('tok-taught');
+  openRow.addEventListener('click', () => {
+    if (!localStorage.getItem(TOK_TAUGHT_KEY)) {
+      localStorage.setItem(TOK_TAUGHT_KEY, '1');
+      const h = document.getElementById('tokHint');
+      if (h) { h.style.opacity = '0'; setTimeout(() => document.body.classList.add('tok-taught'), 350); }
+    }
+    openCats();
+  });
   $('catClose').addEventListener('click', closeCats);
   scrim.addEventListener('click', closeCats);
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
@@ -884,6 +1024,25 @@ applyToggleUI();
     partyWasOpen=isOpen;
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
+// Chapter rail: same gilt.js metal sweep as the card accent, run vertically
+// (190deg) off CHAPTERS_META's colour for each chapter — computed once at
+// boot since, unlike a card's category, a chapter's colour never changes
+// at runtime. Stored in --ch-rail rather than written straight to
+// border-image-source, since styles.css now only paints it on .on (see
+// the on/part/off rule there) — .part and the base/off state use a flat
+// --ch-derived colour instead. CHAPTERS_META (config.js) is the one
+// stored copy of these colours — the end-of-set screen reads the same
+// object rather than keeping its own. The label/glow colour reuses --ch
+// (already read by .chapter.on/.part in styles.css) via labelColor(),
+// which lifts After Dark's near-black lacquer to a readable tone while
+// leaving every other chapter's --ch at its base.
+document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
+  const meta = CHAPTERS_META[el.dataset.chapter];
+  if (!meta) return;
+  el.style.setProperty('--ch-rail', giltRail(meta.color, 190));
+  el.style.setProperty('--ch', labelColor(meta.color));
+});
+
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
    Play asks what kind of evening this is: six chapters you can mix, and two
    dials that weight the draw inside them. Explore is the same deck as a
@@ -1239,4 +1398,6 @@ applyToggleUI();
 
   syncIntentUI();
 })();
+
+applyQueryDeck();   // ?Q=Work1,Life7,... overrides the dealt default hand, if present
 

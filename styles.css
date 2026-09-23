@@ -4,8 +4,31 @@
 :root{
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
-  --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#ff2f2f;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.2);
+  --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
+  --border-strong:rgba(201,168,76,0.38);
   --sq-w:42px;
+  /* the drawn card's own deck-identity marking (corners/border, After Dark's
+     also a wash + watermark) — separate from --ad-red above, which the
+     existing mode-toggle button already owns; kept apart so this doesn't
+     change that button's colour. */
+  --mark-afterdark:#c1272d;
+
+  /* ── design-system tokens (style audit, 2026-09-23) ──
+     --dim / --border / --border-strong above are the 3-tier line system —
+     every hairline, card edge and divider in the app now reads off one of
+     these three, gold only (three formerly-cream borders folded in at the
+     matching tier). --btn-quiet is the one resting colour for every plain
+     text-button (Three, Full Screen, Twist, Change, Save, After Dark,
+     All/None, Explore categories…) — they still go to --gold on
+     hover/active, same as before.
+     A first pass also tried folding every "quieter than --cream" text
+     value into 2 shared steps (--text-dim/--text-faint) and folding
+     --muted-l into --muted — both read visibly darker/lower-contrast on a
+     real device than in preview and were reverted the same day (see
+     DESIGN-SYSTEM.md). --muted-l stays its own, lighter tone; the cream-
+     alpha text values stay per-element. See DESIGN-SYSTEM.md for the full
+     before/after reference. */
+  --btn-quiet:#8f8171;
 }
 html,body{height:100%;}
 /* a near-miss swiping a sheet/drawer closed used to bounce past it onto the
@@ -31,7 +54,20 @@ body::before{
 .header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .5s .15s ease,transform .5s .15s ease;}
 .header.in{opacity:1;transform:none;}
 .title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
-.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.title-rule{display:flex;align-items:center;justify-content:center;gap:9px;
+  width:min(100%,320px);margin:12px auto 0;}
+.tr-line{flex:1;height:1px;background:linear-gradient(90deg,
+  transparent 0%,
+  color-mix(in srgb,var(--gold) 45%, transparent) 46%,
+  color-mix(in srgb,var(--gold-l) 70%, transparent) 78%,
+  color-mix(in srgb,var(--gold) 55%, transparent) 100%);}
+.tr-line:last-child{background:linear-gradient(90deg,
+  color-mix(in srgb,var(--gold) 55%, transparent) 0%,
+  color-mix(in srgb,var(--gold-l) 70%, transparent) 22%,
+  color-mix(in srgb,var(--gold) 45%, transparent) 54%,
+  transparent 100%);}
+.tr-dot{width:4px;height:4px;transform:rotate(45deg);background:var(--gold);opacity:.85;}
+.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
 
 /* ── PRESET ROW ── */
 .preset-outer{width:100%;display:flex;align-items:stretch;opacity:0;transition:opacity .4s .08s ease;}
@@ -106,7 +142,7 @@ body::before{
 .cat-area{width:100%;margin-top:8px;opacity:0;transition:opacity .4s .12s ease;}
 .cat-area.in{opacity:1;}
 .cat-topbar{display:flex;align-items:center;justify-content:space-between;padding:2px 0 7px;gap:8px;}
-.cat-toggle-lbl{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:rgba(240,232,216,.55);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;padding:15px 0;outline:none;}
+.cat-toggle-lbl{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;padding:15px 0;outline:none;}
 .cat-toggle-lbl:hover,.cat-toggle-lbl.open{color:var(--gold);}
 .cat-chevron{display:inline-block;font-size:.5rem;transition:none;}
 .cat-controls{display:flex;align-items:center;gap:10px;flex-shrink:0;}
@@ -125,20 +161,20 @@ body::before{
 /* After Dark — text link, no border */
 .after-dark-btn{
   background:none;border:none;border-bottom:1px solid transparent;
-  color:rgba(240,232,216,.45);
+  color:var(--btn-quiet);
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
   padding:15px 0;cursor:pointer;transition:all .2s;
   display:flex;align-items:center;gap:5px;white-space:nowrap;
 }
 .after-dark-btn:hover{color:rgba(240,232,216,.85);}
-.after-dark-btn.on{color:var(--ad-red);border-bottom-color:rgba(255,47,47,.5);text-shadow:0 0 10px rgba(255,47,47,.55);}
+.after-dark-btn.on{color:var(--ad-red);border-bottom-color:rgba(193,39,45,.5);text-shadow:0 0 10px rgba(193,39,45,.55);}
 .after-dark-btn.hidden{display:none;}
 
 /* All / None — minimal text links, centered */
 .allnone-row{display:flex;align-items:center;gap:1px;}
 .deselect-btn{
   background:none;border:none;
-  color:rgba(240,232,216,.45);
+  color:var(--btn-quiet);
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
   padding:15px 7px;cursor:pointer;transition:color .2s;
   display:flex;align-items:center;justify-content:center;text-align:center;
@@ -191,50 +227,109 @@ body::before{
 .card:active{transform:scale(.997);}
 .card::before,.card::after{
   content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;
-  border-color:var(--gold);opacity:.35;filter:blur(.4px);pointer-events:none;
+  border-color:var(--gold);opacity:.35;pointer-events:none;
 }
 .card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
 .card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
+/* Deck-identity marking, set via --mark and a class from card.js:
+   .mark-full  — After Dark cards: corners + border tint + radial wash + watermark
+   .mark-border — Colbert / The 36: corners + border tint only, no wash/watermark */
+.card.mark-full::before,.card.mark-full::after,
+.card.mark-border::before,.card.mark-border::after{
+  border-color:var(--mark);
+  opacity:.55;
+}
+.card.mark-full,.card.mark-border{
+  border-color:color-mix(in srgb, var(--mark) 40%, transparent);
+}
+.card.mark-full{
+  background:
+    radial-gradient(120% 100% at 50% 100%, color-mix(in srgb, var(--mark) 9%, transparent), transparent 62%),
+    var(--card-bg);
+}
+.card-ad-mark{
+  display:none;
+  position:absolute;inset:0;z-index:0;
+  align-items:center;justify-content:center;
+  font-size:9rem;color:var(--mark);opacity:.055;
+  line-height:1;pointer-events:none;
+}
+.card.mark-full .card-ad-mark{display:flex;}
 .c-accent{
-  position:absolute;top:0;left:0;right:0;height:3px;z-index:3;
+  position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
   transition:background .5s ease;
-  -webkit-mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);
-  mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);
+  -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+  mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
 .accent-bloom{animation:accentReveal 1s ease forwards;}
-@keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.6;transform:scaleX(1);}}
+@keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
 .card-star{
   position:absolute;top:9px;right:11px;z-index:4;
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
 }
 .card-star:hover{opacity:.65;}.card-star.active{opacity:1;}
-.card-body-inner{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
+.card-body-inner{position:relative;z-index:1;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
 .card-level{font-family:'Jost',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:0;transition:color .5s ease,opacity .35s ease;}
 .card-level.in{opacity:.95;}
 .card-question{
   font-family:'Cormorant Garamond',serif;font-size:1.38rem;font-weight:300;font-style:italic;
   line-height:1.52;text-align:center;color:var(--cream);
   opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
+  /* .card locks selection down so the whole surface can be tapped/swiped
+     without text catching a drag — but that lock isn't all-or-nothing:
+     re-enabling it here, on just the question itself, doesn't reopen it
+     anywhere else on the card. touch-callout back to default too, or
+     iOS suppresses the long-press selection bubble even with select:text. */
+  user-select:text;-webkit-user-select:text;-webkit-touch-callout:default;
+  cursor:text;
 }
 .card-question.in{opacity:1;transform:none;}
-.card-number{
-  flex:0 0 auto;width:100%;text-align:center;
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;color:var(--muted-l);
-  transition:color .2s ease;padding:0 28px 12px;
+/* The one place that selectable text is a problem, not a feature: the
+   end-of-hand summary reuses this same element (showHandSummary() in
+   presentation.js writes its sentence/chips/favourites into #card-question),
+   and that screen's whole interaction is holding the card to continue —
+   a hold that starts on selectable text tries to select it instead. Locked
+   back down for exactly this one screen, same as the rest of the card. */
+body.showing-hand-summary .card-question{
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;
+}
+/* Phones: the card is a real playing card laid on its side (the owner's reference
+   card, 556×360) and never grows. Text is 20% up from the old .8/1.38rem — sized
+   so every normal card fits; anything longer (The 36) scrolls inside the
+   card instead of stretching it. overflow:hidden on .card is what stops
+   aspect-ratio's automatic min-height from growing it past the ratio;
+   "safe center" keeps an overflowing question scrollable from its top. */
+@media(max-width:559px){
+  .card{aspect-ratio:556/360;overflow:hidden;}
+  .card-body-inner{min-height:0;overflow-y:auto;justify-content:safe center;overscroll-behavior:contain;}
+  .card-level{font-size:1rem;}
+  .card-question{font-size:1.656rem;}
+}
+/* PC: the same King of Clubs shape. The desktop card is much wider than
+   the phone one, so on a short window that shape alone would push the
+   controls below the fold — max-width caps the card by window height
+   (380px ≈ everything on screen that isn't the card), which only kicks in
+   when the window is too short; on a normal full-HD or larger window the
+   card is its full width. The 640px floor stops a very short window (e.g. a
+   laptop at 150% scaling) shrinking it to a sliver — that one scrolls. */
+@media(min-width:768px){
+  .card{aspect-ratio:556/360;max-width:max(640px, calc((100dvh - 380px) * 556 / 360));margin-left:auto;margin-right:auto;}
 }
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
    to hold — language moved to the menu only). Tapping it doesn't add
-   anything to the card: the counter that's already printed there ("1 / 5")
-   swaps to the modifier instead, in the same spot, same size family, no new
-   element anywhere. Default palette only — this has nothing to do with
-   which category is showing, so it never borrows the category accent.
-   Never survives a new card; flipToCard resets it every draw.
-   In-flow (not position:absolute) like .party-number, so a long modifier
-   sentence pushes the question's flex area to make room instead of
-   floating over it or the card's corner marks — see .card-body-inner's
-   min-height:0, which is what lets it actually shrink. */
-.card-number.twist{
+   anything to the card: this element, at the bottom of the card underneath
+   the question (where the old on-card counter used to swap it in), shows
+   the modifier — nothing else on the card is replaced. Default palette
+   only — this has nothing to do with which category is showing, so it
+   never borrows the category accent. Never survives a new card;
+   flipToCard resets it every draw. In-flow (not position:absolute) like
+   .party-number, so a long modifier sentence pushes the question's flex
+   area to make room instead of floating over it or the card's corner
+   marks. */
+.twist-sentence{display:none;flex:0 0 auto;width:100%;text-align:center;padding:0 28px 12px;}
+.twist-sentence.twist{
+  display:block;
   font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
   letter-spacing:.01em;color:var(--gold-l);opacity:1;
 }
@@ -270,31 +365,64 @@ body::before{
 /* ── CONTROLS ── */
 .controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
 .controls-wrap.in{opacity:1;transform:none;}
-.progress{display:flex;gap:var(--dot-gap,4px);align-items:center;flex-wrap:wrap;justify-content:center;}
-.progress-dot{
-  width:max(2px, calc(var(--dot-size, 4px) * .3));height:var(--dot-size,4px);border-radius:1.5px;
-  background:var(--dot-color,var(--gold));opacity:.28;
-  transition:opacity .3s ease,transform .3s ease;
-  flex-shrink:0;
+/* the progress dots: one per card, up to 20 on screen at once — past that
+   the window slides to keep the current card visible, everything scrolled
+   out of frame simply isn't drawn (not compressed or shown differently).
+   Real shape/size/colour never changes based on position in that window;
+   only which dots are shown does. width per dot is computed in JS
+   (renderProgress) and applied inline; --dot-gap likewise. */
+.progress{
+  display:flex;align-items:center;justify-content:center;
+  flex-wrap:nowrap;height:6px;overflow:visible;
+  width:300px;max-width:100%;
+  gap:var(--dot-gap,4px);
 }
-.progress-dot.seen{opacity:.65;}
-.progress-dot.current{opacity:1;transform:scaleY(1.4);}
-/* the extra dot past the last card, standing for the summary screen — an
-   outline instead of a fill so it doesn't read as just another card */
-.progress-dot.end-dot{background:transparent;border:1px solid var(--gold);opacity:.45;}
-.progress-dot.end-dot.current{background:var(--gold-l);border-color:var(--gold-l);opacity:1;}
+.progress-tick{flex:0 0 auto;height:6px;border-radius:1.5px;
+  background:#5c4f37;opacity:.5;
+  transition:opacity .22s ease,background-color .22s ease,transform .22s ease;}
+/* seen/current carry the card's own category colour — everything still
+   ahead (i > cur) stays the flat, deliberately uninformative #5c4f37 above
+   so the bar never spoils what's coming up. */
+.progress-tick.seen{opacity:.42;background:var(--tick-color,var(--gold));}
+.progress-tick.current{opacity:1;background:var(--tick-color,var(--gold));transform:scaleY(1.4);}
+/* the extra tick past the last card, standing for the summary screen — an
+   outline diamond instead of a fill so it doesn't read as just another
+   card. Only rendered when the real last card is inside the visible
+   window (see renderProgress) — a slid-away window has nothing to cap yet. */
+.progress-tick.end{flex:0 0 auto;width:8px;height:8px;border:1px solid var(--gold);
+  background:transparent;transform:rotate(45deg);margin-left:6px;}
+.progress-tick.end.current{background:var(--gold-l);border-color:var(--gold-l);}
+@media (prefers-reduced-motion:reduce){.progress-tick{transition:none;}}
+
+/* ── Count line, under the bar — separate from the dot row above so the
+   two can never say conflicting things: always Roman numerals, no arabic
+   fallback at any count (a 420-card "All" selection reads as CDXX / CDXX,
+   not a squeezed-in "420 / 420"). Fixed-width flanking rules (not flex)
+   so a long numeral pushes them outward instead of squeezing the numeral. */
+.prog-count{display:flex;align-items:center;justify-content:center;gap:9px;}
+.prog-count-rule{
+  width:44px;height:1px;flex:0 0 auto;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 30%,transparent));
+}
+.prog-count-rule:last-child{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 30%,transparent),transparent);
+}
+.prog-count-num{
+  font-family:'Poiret One',cursive;font-size:14px;letter-spacing:.22em;
+  line-height:1;color:var(--muted);white-space:nowrap;
+}
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
-.btn-sq{flex-shrink:0;background:transparent;border:1px solid var(--dim);color:var(--muted);width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
-.btn-sq:hover{border-color:var(--border);color:var(--gold);}
-.btn-sq svg{width:16px;height:16px;}
+.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
+.btn-sq:hover{border-color:var(--border-strong);color:var(--cream);}
+.btn-sq svg{width:15px;height:15px;}
 .btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 .btn-draw:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
 .btn-draw:active{transform:scale(.98);}
-.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-fullscreen svg{width:13px;height:13px;flex-shrink:0;}
-.btn-fullscreen:hover{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
-.btn-fullscreen--emphasis{color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:2px;padding:15px 16px;background:rgba(201,168,76,.06);}
-.btn-fullscreen--emphasis:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.6);}
+.btn-fullscreen:hover{color:var(--gold);border-bottom-color:var(--border-strong);}
+.btn-fullscreen--emphasis{color:var(--gold);}
+.btn-fullscreen--emphasis:hover{color:var(--gold-l);}
 
 /* ── LIMIT ── */
 /* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
@@ -303,11 +431,11 @@ body::before{
    after a settings change reset the deck. Sized up (no glow — see change
    log) to make this the obvious "start" tap instead of looking like every
    other "next" tap. */
-.btn-draw--start{padding-top:15px;padding-bottom:15px;font-size:.82rem;letter-spacing:.16em;}
+.btn-draw--start{font-size:.82rem;letter-spacing:.16em;}
 /* pressed-and-holding feedback on the end-of-draw button */
 .btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
-.limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;color:var(--muted);cursor:pointer;padding:15px 10px;transition:all .2s;opacity:.55;}
+.limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;color:var(--btn-quiet);cursor:pointer;padding:15px 10px;transition:all .2s;opacity:.55;}
 .limit-btn.active{color:var(--gold);opacity:1;}
 .limit-btn:hover{color:var(--gold);opacity:.85;}
 .limit-sep{color:var(--muted);opacity:.25;font-size:.5rem;}
@@ -315,6 +443,119 @@ body::before{
 .draw-more-btn.visible{display:block;}
 .draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
 .deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
+
+/* ── IN-CARD SESSION SUMMARY ── */
+.sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
+.sic-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
+.sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
+.sic-stars{display:flex;flex-direction:column;gap:6px;width:100%;padding-top:10px;border-top:1px solid var(--dim);}
+.sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
+.sic-star{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted);line-height:1.45;text-align:center;}
+.sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
+  text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
+
+/* ── HAND SUMMARY ── the end-of-hand content, inside the normal card face
+   (see presentation.js showHandSummary()) — the sentence/chip-cloud/
+   favourites model from computeEndScreenModel(), same content the
+   full-bleed end screen below used, just fitted into the card instead. */
+.hs-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;}
+.hs-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:1.05rem;line-height:1.35;text-align:center;color:var(--cream);}
+.hs-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
+.hs-favs{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.85rem;color:color-mix(in srgb, var(--cream) 70%, transparent);}
+
+/* ── END OF SET (dormant) ── the full-bleed takeover this replaced with the
+   in-card treatment above — left here, unused, for a reshaped version to
+   come back to later. Nothing currently adds body.showing-end-screen or
+   renders an #endScreen element, so none of this paints. */
+body.showing-end-screen .card-wrap,
+body.showing-end-screen .controls-wrap{display:none;}
+.end-screen{display:none;}
+body.showing-end-screen .end-screen{
+  display:flex;flex-direction:column;align-items:center;position:relative;
+  width:100%;overflow:hidden;opacity:0;transition:opacity .32s ease;
+  background:radial-gradient(120% 80% at 50% 0%,#161310 0%,#0e0c0a 55%,#0b0908 100%);
+}
+/* the display:none<->flex swap itself can't transition, so it fades in via
+   a separate .in class ui.js adds a frame after showing-end-screen — the
+   outgoing card/controls just disappear, but the incoming full-bleed
+   screen (a real state change, not a card flip) gets a beat to register.
+   Needs the same body.showing-end-screen qualifier to out-specificity the
+   rule above (equal class count, but that one also carries the body
+   element, so a bare .end-screen.in would otherwise lose the tie). */
+body.showing-end-screen .end-screen.in{opacity:1;}
+@media(prefers-reduced-motion:reduce){body.showing-end-screen .end-screen{transition:none;}}
+.es-texture{position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(201,168,76,.035) 0 1px,transparent 1px 9px);opacity:.5;}
+.es-corner{position:absolute;width:16px;height:16px;border:1px solid rgba(201,168,76,.3);pointer-events:none;}
+.es-corner--tl{top:16px;left:16px;border-width:1px 0 0 1px;}
+.es-corner--tr{top:16px;right:16px;border-width:1px 1px 0 0;}
+.es-corner--bl{bottom:16px;left:16px;border-width:0 0 1px 1px;}
+.es-corner--br{bottom:16px;right:16px;border-width:0 1px 1px 0;}
+/* Content-sized, not stretched to fill a tall flexible box — the hold
+   button in .es-actions needs to land at roughly the same screen position
+   Next Card normally does (right after the counter, driven by the card's
+   own height), not pushed to the bottom of an artificially tall column. */
+.es-body{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;
+  padding:36px 30px 0;}
+.es-eyebrow{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;
+  color:color-mix(in srgb, var(--gold) 62%, transparent);margin-bottom:22px;}
+.es-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:1.15rem;
+  line-height:1.3;text-align:center;color:var(--cream);text-wrap:pretty;}
+.es-chapter{font-style:normal;font-weight:400;font-size:1.05rem;}
+.es-rule{display:flex;align-items:center;gap:10px;margin-top:20px;width:100%;}
+.es-rule-line{flex:1;height:1px;background:rgba(201,168,76,.18);}
+.es-rule-dot{width:4px;height:4px;background:rgba(201,168,76,.45);transform:rotate(45deg);flex-shrink:0;}
+.es-subhead{margin-top:18px;font-family:'Jost',sans-serif;font-size:.53rem;letter-spacing:.3em;
+  text-transform:uppercase;color:color-mix(in srgb, var(--gold) 50%, transparent);}
+.es-chips{margin-top:11px;width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
+.es-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid;border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cream);white-space:nowrap;}
+.es-chip-count{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.72rem;
+  letter-spacing:0;text-transform:none;}
+.es-favs{margin-top:16px;display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.94rem;color:color-mix(in srgb, var(--cream) 70%, transparent);}
+.es-star{color:var(--gold-l);font-size:.8rem;}
+.es-actions{position:relative;width:100%;padding:0 30px 34px;display:flex;flex-direction:column;
+  align-items:center;gap:11px;}
+/* Same box model as .btn-draw (Next Card) — fixed height, not sized by its
+   own padding — so the two bars read as the same control in different
+   states instead of two different heights. Colour is the one thing that
+   differs (--es-chapter instead of the fixed gold): it's set per-render in
+   showEndScreen() to the last-drawn chapter's colour, so the button reads
+   in whatever hue the set ended on instead of always gold. */
+.es-hold{--es-chapter:var(--gold);position:relative;overflow:hidden;width:100%;height:58px;
+  border:1px solid var(--es-chapter);border-radius:2px;
+  background:color-mix(in srgb, var(--es-chapter) 16%, transparent);
+  color:var(--cream);font-family:'Jost',sans-serif;font-size:.78rem;font-weight:400;letter-spacing:.15em;
+  text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;
+  -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;
+  -webkit-touch-callout:none;touch-action:manipulation;}
+.es-hold:active{transform:translateY(1px);}
+.es-diamond{width:4px;height:4px;background:var(--es-chapter);transform:rotate(45deg);flex-shrink:0;}
+/* the hold fill: a real element instead of a background-position trick, so
+   its width can transition left-to-right over the hold duration and retract
+   on an early release without fighting the button's own background colour */
+.es-hold-fill{position:absolute;inset:0;width:0;background:color-mix(in srgb, var(--es-chapter) 26%, transparent);
+  pointer-events:none;}
+.es-hold-fill.filling{transition:width .6s linear;width:100%;}
+.es-hold-fill.cancelling{transition:width .15s ease;width:0;}
+.es-change{width:100%;height:52px;background:transparent;border:1px solid rgba(201,168,76,.34);
+  border-radius:2px;color:var(--cream);font-family:'Jost',sans-serif;font-size:.72rem;font-weight:300;
+  letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:background .2s;
+  display:flex;align-items:center;justify-content:center;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+.es-change:active{transform:translateY(1px);background:rgba(201,168,76,.08);}
+.es-export{width:100%;height:44px;background:none;border:none;
+  color:color-mix(in srgb, var(--gold) 72%, transparent);font-family:'Jost',sans-serif;font-size:.66rem;
+  font-weight:300;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:9px;transition:color .2s;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+.es-export:active{color:var(--gold-l);}
+.es-export-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;letter-spacing:0;
+  text-transform:none;color:color-mix(in srgb, var(--cream) 60%, transparent);}
 
 /* ── DRAWER SYSTEM ── */
 .overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
@@ -357,8 +598,9 @@ body::before{
 .session-btn:hover{border-color:var(--border);color:var(--gold);}
 .custom-input{width:100%;background:var(--card-bg);border:1px solid var(--border);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;padding:12px;resize:none;min-height:80px;outline:none;}
 .custom-select{width:100%;background:var(--card-bg);border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;padding:15px 8px;outline:none;cursor:pointer;margin-top:8px;}
-.custom-add-btn{width:100%;background:linear-gradient(135deg,#c9a84c,#a07830);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;padding:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
+.custom-add-btn{width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;margin-top:8px;transition:all .2s;text-align:center;}
 .custom-add-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+.custom-add-btn:active{transform:scale(.98);}
 .help-content p{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:rgba(240,232,216,.8);margin-bottom:12px;}
 .help-content h4{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:20px 0 8px;}
 .help-content strong{color:var(--cream);}
@@ -396,91 +638,119 @@ body::before{
 @media(min-width:560px){.help-content .hp-ways{grid-template-columns:1fr 1fr;}}
 .lang-toggle{display:flex;border:1px solid var(--dim);flex-shrink:0;margin-left:auto;}
 .lang-opt{background:none;border:none;border-bottom:1px solid transparent;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:15px 8px;cursor:pointer;transition:all .2s;}
-.lang-opt.active{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
+.lang-opt.active{color:var(--gold);border-bottom-color:var(--border-strong);}
 .lang-opt:hover{color:rgba(240,232,216,.85);}
 
-/* ── FULLSCREEN ── */
-.party-overlay{
-  display:flex;position:fixed;inset:0;z-index:200;
-  background:var(--bg);align-items:center;justify-content:center;cursor:pointer;
-  opacity:0;pointer-events:none;transition:opacity .25s ease;
-  user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
-}
+/* ── FULLSCREEN · Poster ── */
+.party-overlay{position:fixed;inset:0;z-index:900;background:#0e0c0a;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 .party-overlay.open{opacity:1;pointer-events:all;}
-.party-overlay::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");opacity:.7;}
-.party-exit{position:fixed;top:18px;left:22px;z-index:2;background:none;border:none;color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:15px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
-.party-exit:hover{color:var(--cream);}
-.party-pick{position:fixed;top:18px;right:22px;z-index:2;background:none;border:none;color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:15px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
-.party-pick:hover{color:var(--cream);}
-.party-pick.on{color:var(--gold);}
-.party-overlay.idle .party-pick{opacity:0;pointer-events:none;}
-/* Lower, not top-center-alone: up there it read as a fourth, disconnected
-   corner control, easy to miss entirely. Sits down in the same cluster as
-   the hint line, its own space near the bottom chrome rather than crowding
-   the card. The label itself is back to matching Close/Draw three exactly
-   (same size, same muted color, no border) — the legibility problem was
-   never the button word, it was the twist question text once chosen; see
-   .party-number.twist below. */
-.party-twist{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;
-  background:none;border:none;color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:15px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
-.party-twist:hover{color:var(--cream);}
-.party-twist.active{color:var(--gold);}
-.party-overlay.idle .party-twist{opacity:0;pointer-events:none;}
-.party-card{
-  position:relative;z-index:1;width:min(92vw,820px);min-height:55vh;
-  background:var(--card-bg);border:1px solid var(--border);
-  box-shadow:0 12px 60px rgba(0,0,0,.6);
-  display:flex;flex-direction:column;align-items:center;overflow:hidden;
-}
-.party-card::before,.party-card::after{content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;border-color:var(--gold);opacity:.32;filter:blur(.4px);pointer-events:none;}
-.party-card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
-.party-card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
-.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:3;transition:background .5s ease;-webkit-mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);mask:linear-gradient(to right,transparent 0%,black 14%,black 86%,transparent 100%);}
-.party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
-.party-level{font-family:'Jost',sans-serif;font-size:clamp(.75rem,1.4vw,.9rem);letter-spacing:.15em;text-transform:uppercase;opacity:.75;order:0;}
-.party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-/* min-height reserves the twist state's typical two-line height up front —
-   without it, turning Twist on/off changes this element's height, and
-   since .party-inner centers the whole column, the question above jumps
-   to re-center. Reserving the space means nothing above ever has to move. */
-.party-number{font-family:'Jost',sans-serif;font-size:clamp(.6875rem,1vw,.78rem);letter-spacing:.14em;color:var(--muted);opacity:.38;
-  padding-bottom:2px;order:2;transition:color .2s ease;min-height:2.9rem;display:flex;align-items:center;justify-content:center;}
-/* the actual illegibility problem: this wraps to two lines for most
-   modifiers and had no line-height of its own, inheriting the browser
-   default — cramped for italic serif at this size. */
-.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.92rem,2.4vw,1.3rem);
-  letter-spacing:.01em;line-height:1.5;color:var(--gold-l);opacity:.95;padding:6px 0 2px;max-width:640px;}
-.party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);opacity:.45;}
-/* party card click zones — prev left 28%, next right 72% */
-.party-zone-prev,.party-zone-next{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
-.party-zone-prev{left:0;width:28%;}
-.party-zone-next{right:0;width:72%;}
-/* ‹ › affordances — visible chrome, fade with idle */
-.party-overlay.idle .party-zone-prev::after{opacity:0;}
-.party-zone-prev::after{
-  content:'‹';
-  position:absolute;bottom:22px;left:22px;
-  font-family:'Jost',sans-serif;font-size:1.3rem;
-  color:var(--gold);opacity:.28;
-  transition:opacity .2s ease;
-}
-.party-zone-prev:hover::after{opacity:.4;}
+.party-card{position:absolute;inset:0;display:flex;flex-direction:column;}
+.party-card::before,.party-card::after{content:none;}           /* no corner brackets */
+.party-c-accent{height:3px;flex-shrink:0;opacity:1;transition:background .5s ease;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);}
 
-/* ── IN-CARD SESSION SUMMARY ── */
-.sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
-.sic-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:-2px;}
-.sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
-.sic-stars{display:flex;flex-direction:column;gap:6px;width:100%;padding-top:10px;border-top:1px solid var(--dim);}
-.sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
+/* chrome */
+.party-chrome{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;transition:opacity .5s ease;}
+.party-overlay.idle .party-chrome{opacity:.28;}                  /* dim, never gone */
+.party-top{padding:max(28px,env(safe-area-inset-top)) 16px 0 20px;}
+.party-bottom{padding:12px 16px max(34px,env(safe-area-inset-bottom));gap:8px;}
+.party-chrome button{height:44px;min-width:44px;background:none;border:none;padding:0 14px;cursor:pointer;
+  color:#9c8f7e;font:400 12px/1 'Jost',sans-serif;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;}
+.party-chrome button:hover{color:#f0e8d8;}
+.party-exit{padding-left:0 !important;letter-spacing:.22em !important;}
+.party-prev-btn,.party-next-btn,.party-star{font-size:18px !important;padding:0 !important;}
+.party-prev-btn:disabled{opacity:.3;pointer-events:none;}
+.party-star.on,.party-twist.active,.party-pick.on{color:#e8c97a !important;}
+.party-twist svg{width:15px;height:15px;}
+.party-actions{display:flex;gap:4px;}
+.party-count{font:400 15px/1 'Cormorant Garamond',serif;letter-spacing:.14em;color:#9c8f7e;}
+.party-key{display:none;color:#7a6e60;margin-left:6px;}
+.pp-long{display:none;}
+
+/* tap zones sit between the bars */
+.party-zone-prev,.party-zone-next{position:absolute;top:80px;bottom:90px;z-index:4;cursor:pointer;}
+.party-zone-prev{left:0;width:28%;} .party-zone-next{right:0;width:72%;}
+
+/* the question */
+.party-inner{flex:1;min-height:0;position:relative;z-index:3;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:center;gap:26px;padding:0 26px;text-align:left;}
+.party-level{display:flex;align-items:center;gap:12px;font:600 13px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.party-level::before{content:'';width:30px;height:3px;background:currentColor;flex-shrink:0;}
+.party-question{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(2.375rem,12.8vw,3.125rem);line-height:1.12;color:#f0e8d8;text-wrap:pretty;max-width:20ch;
+  transition:opacity .22s ease,transform .32s cubic-bezier(.2,.7,.2,1);}
+.party-question.entering{opacity:0;transform:translateY(10px);}
+
+/* Twist: below the question in portrait */
+.party-number{display:none;}
+.party-number.twist{display:flex;flex-direction:column;gap:10px;margin-top:14px;padding-top:20px;border-top:1px solid rgba(201,168,76,.25);
+  font:italic 400 27px/1.28 'Cormorant Garamond',serif;color:#e8c97a;text-wrap:pretty;max-width:26ch;}
+.party-number.twist::before{content:'TWIST';font:600 12px/1 'Jost',sans-serif;font-style:normal;letter-spacing:.3em;color:#c9a84c;}
+
+/* Draw three: fullscreen */
+.party-picker{position:absolute;inset:0;z-index:30;background:#0e0c0a;display:none;flex-direction:column;
+  padding:max(28px,env(safe-area-inset-top)) 0 max(34px,env(safe-area-inset-bottom));}
+.party-picker.open{display:flex;}
+.party-picker-top{display:flex;flex-direction:column;gap:10px;padding:0 20px;}
+.party-picker-back{align-self:flex-start;height:44px;background:none;border:none;padding:0;color:#9c8f7e;
+  font:400 12px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;}
+.party-picker .picker-hint{font:400 11px/1 'Jost',sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#9c8f7e;}
+.party-picker .picker-options{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;
+  margin-top:20px;border-top:1px solid rgba(201,168,76,.12);}
+.party-picker .pick-opt{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;
+  padding:20px 26px;border-bottom:1px solid rgba(201,168,76,.12);cursor:pointer;transition:background .15s;}
+.party-picker .pick-opt:last-child{border-bottom:none;}
+.party-picker .pick-opt:hover{background:#15120f;}
+.party-picker .pick-opt-accent{display:none;}
+/* the line sits beside the text, exactly as tall as label + question, faded ends */
+.party-picker .pick-opt-text{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:22px;}
+.party-picker .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
+.party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.party-picker .pick-opt-q{font:italic 300 26px/1.18 'Cormorant Garamond',serif;color:#f0e8d8;text-wrap:pretty;}
+
+/* ── phone landscape ── */
+@media (orientation:landscape) and (max-height:500px){
+  .party-top{padding:8px 40px 0 44px;}
+  .party-bottom{padding:0 40px 14px 44px;}
+  .party-inner{padding:0 40px 0 44px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+    grid-template-areas:"level twist" "q twist";align-content:center;column-gap:32px;row-gap:16px;}
+  .party-inner:not(:has(.party-number.twist)){grid-template-columns:minmax(0,1fr);grid-template-areas:"level" "q";}
+  .party-level{grid-area:level;} .party-question{grid-area:q;font-size:clamp(2.125rem,5.6vw,2.875rem);line-height:1.08;max-width:none;}
+  .party-number.twist{grid-area:twist;align-self:center;margin:0;padding:0 0 0 28px;border-top:none;border-left:1px solid rgba(201,168,76,.25);font-size:25px;}
+  .party-picker{padding:10px 40px 24px 44px;}
+  .party-picker-top{flex-direction:row;justify-content:space-between;align-items:center;padding:0;}
+  .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;
+    border-top:none;margin-top:10px;}
+  .party-picker .pick-opt{padding:12px 20px 12px 0;justify-content:flex-start;border-bottom:none;}
+  .party-picker .pick-opt-text{gap:12px;padding-left:18px;}
+  .party-picker .pick-opt-level{font-size:11px;}
+  .party-picker .pick-opt-q{font-size:22px;line-height:1.2;}
+}
+
+/* ── desktop ── */
+@media (min-width:900px) and (min-height:501px){
+  .party-top{padding:24px 36px 0 40px;} .party-bottom{padding:16px 36px 24px 40px;}
+  .party-count{font-size:16px;}
+  .party-key,.pp-long{display:inline;} .pp-short{display:none;}
+  .party-prev-btn,.party-next-btn{font-size:12px !important;}
+  .party-inner{padding:0 clamp(56px,8.5vw,96px);gap:32px;}
+  .party-level{font-size:16px;gap:14px;} .party-level::before{width:40px;}
+  .party-question{font-size:clamp(3.5rem,8.2vw,5.75rem);line-height:1.06;max-width:960px;}
+  .party-number.twist{font-size:30px;max-width:720px;}
+  .party-picker{padding:24px 40px 40px;}
+  .party-picker-top{flex-direction:row;justify-content:space-between;align-items:center;padding:0;}
+  .party-picker .picker-hint{font-size:12px;}
+  .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;
+    border-top:none;padding:0 56px;}
+  .party-picker .pick-opt{padding:40px;justify-content:flex-start;border-bottom:none;}
+  .party-picker .pick-opt-text{gap:22px;padding-left:28px;}
+  .party-picker .pick-opt-level{font-size:13px;}
+  .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
+}
+
 .drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
 .drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
-.sic-star{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted);line-height:1.45;text-align:center;}
 
 
 
@@ -492,86 +762,94 @@ body::before{
 body.fixed-seq-mode .screen-row{display:none;}
 
 /* ── PICK-3 MODE ── */
-.screen-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:100%;}
-.screen-row .btn-fullscreen{justify-self:center;}
-.screen-row > *:first-child{justify-self:start;}
-.screen-row > *:last-child{justify-self:end;}
+.screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
+
+/* ── HAND SUMMARY ── the row under Next Card (now Hold) at the end of a
+   hand: same slot .screen-row occupies while a card is showing, swapped
+   in via body.showing-hand-summary instead of stacked on top of it, so
+   only one of the two is ever in the layout at once. */
+.screen-row--hand{display:none;}
+body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
+body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
 .pick-toggle{
   background:transparent;border:none;border-bottom:1px solid transparent;
-  color:rgba(240,232,216,.45);
+  color:var(--btn-quiet);
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
   padding:15px 8px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
   display:inline-flex;align-items:center;gap:5px;
 }
-.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:rgba(201,168,76,.4);}
-.pick-toggle.on{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
+.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:var(--border-strong);}
+.pick-toggle.on{color:var(--gold);border-bottom-color:var(--border-strong);}
 .pick-toggle .pt-card{width:10px;height:14px;flex-shrink:0;}
 
-/* card-area is the positioning context for the picker */
+/* ── DRAW THREE · normal screen: three slim cards in the card's own space ── */
 .card-area{position:relative;}
+.card-area .card-picker{display:none;position:absolute;inset:0;z-index:20;background:var(--bg);}
+.card-area .card-picker.open{display:flex;}
+.card-area .picker-options{flex:1;min-height:0;display:flex;flex-direction:column;gap:2px;
+  font-size:1.12rem;}                                   /* question size; fitPicker overrides via --pq */
+.card-area .pick-opt{flex:1 1 auto;min-height:0;position:relative;
+  background:var(--card-bg);border:1px solid var(--border);box-shadow:0 4px 18px rgba(0,0,0,.45);
+  display:flex;align-items:center;justify-content:center;padding:4px 18px;text-align:center;
+  cursor:pointer;transition:border-color .2s;}
+.card-area .pick-opt:nth-child(1){margin:0 10px 0 0;}   /* stepped like a hand laid down */
+.card-area .pick-opt:nth-child(2){margin:0 5px;}
+.card-area .pick-opt:nth-child(3){margin:0 0 0 10px;}
+.card-area .pick-opt:hover{border-color:rgba(201,168,76,.45);}
+.card-area .pick-opt:active{transform:scale(.995);}
+.card-area .pick-opt::before,.card-area .pick-opt::after{content:'';position:absolute;width:6px;height:6px;
+  border:solid var(--gold);opacity:.35;pointer-events:none;}
+.card-area .pick-opt::before{top:4px;left:4px;border-width:1px 0 0 1px;}
+.card-area .pick-opt::after{bottom:4px;right:4px;border-width:0 1px 1px 0;}
+.card-area .pick-opt-accent{position:absolute;top:0;left:0;right:0;height:2px;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);}
+.card-area .pick-opt-text{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.card-area .pick-opt-level{font:600 .64rem/1 'Jost',sans-serif;letter-spacing:.16em;text-transform:uppercase;}
+.card-area .pick-opt-q{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:var(--pq,1em);line-height:1.16;color:var(--cream);text-wrap:balance;}
 
-.card-picker{
-  display:none;
-  position:absolute;inset:0;z-index:20;
-  background:var(--card-bg);
-  flex-direction:column;
-  border:1px solid var(--border);
-  box-shadow:0 12px 60px rgba(0,0,0,.6);
-}
-.card-picker.open{display:flex;}
-
-.picker-hint{
-  padding:10px 16px 6px;
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--muted);text-align:center;border-bottom:1px solid var(--dim);flex-shrink:0;
-}
-
-.picker-options{
-  display:flex;flex-direction:column;flex:1;overflow-y:auto;
-  scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.35) transparent;
-}
-.picker-options::-webkit-scrollbar{width:5px;}
-.picker-options::-webkit-scrollbar-thumb{background:rgba(201,168,76,.35);border-radius:3px;}
-
-.pick-opt{
-  flex:1 1 0;min-height:0;box-sizing:border-box;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:10px 18px;cursor:pointer;gap:5px;
-  border-bottom:1px solid var(--dim);
-  transition:background .15s;
-  position:relative;
-}
-.pick-opt:last-child{border-bottom:none;}
-.pick-opt:hover{background:rgba(201,168,76,.04);}
-.pick-opt:active{background:rgba(201,168,76,.08);}
-.pick-opt-accent{
-  position:absolute;left:0;top:0;bottom:0;width:2px;
-}
-.pick-opt-level{
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
-}
-.pick-opt-q{
-  font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.86rem;text-align:center;line-height:1.35;
-  color:var(--cream);opacity:.85;
-  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;
-  overflow:hidden;max-width:100%;
+@media(min-width:768px){
+  .card-area .picker-options{gap:4px;font-size:1.75rem;}
+  .card-area .pick-opt{padding:14px 56px;}
+  .card-area .pick-opt:nth-child(1){margin:0 28px 0 0;}
+  .card-area .pick-opt:nth-child(2){margin:0 14px;}
+  .card-area .pick-opt:nth-child(3){margin:0 0 0 28px;}
+  .card-area .pick-opt::before,.card-area .pick-opt::after{width:16px;height:16px;}
+  .card-area .pick-opt::before{top:12px;left:12px;} .card-area .pick-opt::after{bottom:12px;right:12px;}
+  .card-area .pick-opt-text{gap:8px;}
+  .card-area .pick-opt-level{font-size:.82rem;}
+  .card-area .pick-opt-q{line-height:1.22;max-width:34ch;}
 }
 
 /* ── RESPONSIVE ── */
-@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.card-number.twist{font-size:.92rem;}}
+@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:.88rem;}}
 @media(min-width:768px){
-  .app{max-width:640px;}.title{font-size:2.6rem;}.card-question{font-size:1.8rem;}.card-level{font-size:.85rem;}.card-number{font-size:.8rem;}.card-number.twist{font-size:1.02rem;}
-  .btn-sq{width:48px;height:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;padding:16px 0;}
+  .app{max-width:640px;}.title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.twist-sentence.twist{font-size:.98rem;}
+  .btn-sq{width:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;}
   :root{--sq-w:48px;}
   .btn-fullscreen{font-size:.8rem;padding:15px 8px;}
   .limit-btn{font-size:.8rem;padding:15px 10px;}.mode-btn{font-size:.82rem;padding:15px 18px;}
   .cat-toggle-lbl{font-size:.8rem;}.toggle-btn{font-size:.8rem;padding:15px 15px;}
 }
 @media(min-width:1024px){
-  .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2rem;}.card-number.twist{font-size:1.1rem;}
-  .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;height:52px;}.btn-draw{font-size:.88rem;padding:16px 0;}
+  .app{max-width:720px;}.title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.twist-sentence.twist{font-size:1.05rem;}
+  .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
   :root{--sq-w:52px;}
+  /* chrome sized for a 364px mobile card reads as thin/empty at 720px —
+     scale the rail, corner brackets and star to match (see reference table
+     in the design log: mobile 3px/24px/20px/.9rem -> desktop 4px/30px/26px/1.05rem).
+     Rail height is 5px, not 4 — desktop also switches to the "intense"
+     hard-edged gilt.js derivation (see giltRail()), which reads as a
+     warning bar at anything thinner. filter:none is explicit, not
+     defensive: nothing sets a filter on .c-accent, but the previous
+     "muddy" back-and-forth was chasing a phantom blur that was never
+     really there — spelling it out here so a future pass doesn't add one
+     by mistake while debugging the same complaint again. */
+  .c-accent{height:5px;filter:none;}
+  .card::before,.card::after{width:30px;height:30px;}
+  .card::before{top:26px;left:26px;}
+  .card::after{bottom:26px;right:26px;}
+  .card-star{font-size:1.05rem;top:12px;right:15px;}
 }
 /* ── LANG TOGGLE INLINE (screen-row) ── */
 .lang-toggle--inline{display:flex;border:none;flex-shrink:0;gap:2px;}
@@ -688,16 +966,21 @@ body.fixed-seq-mode .screen-row{display:none;}
    two lines instead of level with "Balanced" itself. Real elements inside
    a row wrapping just the value fixes that: centred against that row only,
    whatever the label above happens to measure. */
-.tok-val-row{display:flex;align-items:center;gap:10px;}
+.tok-val-row{display:flex;align-items:center;gap:7px;}
 /* align-items:center lines the rule up with .tok-val's full line box, but
    an all-caps word has no descenders — the glyphs sit in the top portion
    of that box, empty space piles up underneath, and centring on the box
    reads as centring above the letters. Nudged down to split the cap-height
    itself instead of the box around it. */
-.tok-rule{width:20px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;transform:translateY(3px);}
+.tok-rule{width:18px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;transform:translateY(3px);}
 .tok-rule--l{background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
 .tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
 .tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
+.tok-chev{font-size:.72rem;line-height:1;color:var(--tokc,var(--gold));opacity:.75;
+  transform:translateY(1px);transition:opacity .2s;}
+.tok-preset:hover .tok-chev,.tok-preset.open .tok-chev{opacity:1;}
+.tok-hint{color:var(--muted);transition:opacity .35s ease;}
+body.tok-taught .tok-hint{display:none;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
@@ -724,9 +1007,6 @@ body.fixed-seq-mode .screen-row{display:none;}
 .tray .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 .tray .limit-row{justify-content:center;}
 .tray .limit-btn{font-size:.8rem;padding:15px 12px;letter-spacing:.1em;}
-
-.sic-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;color:var(--muted);
-  text-align:center;padding-top:10px;margin-top:2px;border-top:1px solid var(--dim);line-height:1.5;}
 
 /* quick actions under the opener: After Dark · All · None */
 /* After Dark as a glyph riding the Categories line */
@@ -790,7 +1070,7 @@ body.fixed-seq-mode .screen-row{display:none;}
   justify-content:center;background:none;border:none;cursor:pointer;padding-right:9px;}
 .cbk-expand:hover{background:rgba(255,255,255,.02);}
 .cbk-expand:hover .cbk-chev{color:var(--gold);}
-.cbk-chev{font-size:.85rem;font-weight:300;color:var(--muted);transition:transform .22s ease,color .2s;}
+.cbk-chev{font-family:'Jost',sans-serif;font-size:.85rem;font-weight:300;color:var(--muted);transition:transform .22s ease,color .2s;}
 .cat-controls{flex-wrap:wrap;justify-content:center;row-gap:10px;gap:20px;}
 .cat-area .cat-desc{flex-shrink:0;}
 /* Explore no longer scrolls in its own box — it's a fold inside the Shape
@@ -798,14 +1078,6 @@ body.fixed-seq-mode .screen-row{display:none;}
    instead of capping its own height and adding a second, nested scrollbar. */
 .explore-fold .cat-grid-wrap{max-height:none;border-top:1px solid var(--dim);}
 .cat-area .toggles{padding-bottom:max(24px,env(safe-area-inset-bottom));}
-
-/* fullscreen pick-3: sits inside the card, above the tap zones */
-.party-picker{position:absolute;inset:0;z-index:30;border-radius:0;box-shadow:none;
-  background:var(--card-bg);}
-.party-picker .picker-hint{font-size:.8rem;letter-spacing:.13em;padding:16px 18px 12px;}
-.party-picker .pick-opt{padding:18px 40px;}
-.party-picker .pick-opt-q{font-size:clamp(1rem,2.1vw,1.6rem);-webkit-line-clamp:4;}
-.party-picker .pick-opt-level{font-size:clamp(.8rem,1vw,.9rem);}
 
 /* band dividers: what each group is for */
 .band-lbl{flex-basis:100%;text-align:center;font-family:'Jost',sans-serif;font-size:.75rem;
@@ -826,7 +1098,12 @@ body.fixed-seq-mode .screen-row{display:none;}
 .cat-band:first-child,.band-lbl:first-child{padding-top:4px;}
 .cat-band.band-hidden,.band-lbl.band-hidden{display:none;}
 
-.end-hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
+/* Not shown on screen — the draw button already reads "Hold to continue"
+   at the end of a hand, so this second copy at the bottom of the viewport
+   was redundant. Left in the DOM (display:none, not removed) because
+   updateDrawMore()/hint() still toggle its "visible" class as the explicit
+   end-of-hand signal the hold-to-continue tests check. */
+.end-hint{display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--gold);opacity:0;pointer-events:none;transition:opacity .3s ease;}
 .end-hint.visible{opacity:.75;}
@@ -900,45 +1177,54 @@ body.fixed-seq-mode .screen-row{display:none;}
 /* ── MAIN COLUMN ── */
 .card-wrap{margin-top:12px;}
 
-/* bottom cluster — matched to the approved mock */
-.nav-row{gap:10px;}
-.btn-sq{width:44px;height:44px;border:1px solid var(--dim);border-radius:0;color:var(--muted);font-size:.9rem;}
-.btn-sq:hover{border-color:var(--border);color:var(--cream);}
-.btn-draw{background:linear-gradient(135deg,#c9a84c,#a07830);border:none;border-radius:0;color:var(--bg);
-  font-size:.8rem;font-weight:500;letter-spacing:.14em;padding:15px 0;}
-.btn-draw:hover{filter:brightness(1.06);}
+/* Next Card's little shimmy when a hold-gated tap needs nudging into view */
 .btn-draw.nudge{animation:drawNudge .3s ease;}
 @keyframes drawNudge{0%,100%{transform:none;}30%{transform:translateX(-3px);}60%{transform:translateX(3px);}}
-.screen-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:26px;margin:-4px auto 0;width:calc(100% - (var(--sq-w) + 10px)*2);}
-.screen-row > *:first-child{justify-self:start;}
-.screen-row .btn-fullscreen{justify-self:center;}
-.screen-row > *:last-child{justify-self:end;}
-.pick-toggle,.btn-fullscreen,.lang-toggle--inline .lang-opt{
-  font-size:.75rem;letter-spacing:.09em;color:var(--muted);border:none;padding:15px 6px;}
-.pick-toggle:hover,.btn-fullscreen:hover{color:var(--gold);border:none;}
-.pick-toggle.on{color:var(--gold);border:none;}
-.btn-fullscreen--emphasis{background:none;border:none;padding:15px 6px;color:var(--muted);}
-.btn-fullscreen--emphasis:hover{background:none;}
+.lang-toggle--inline .lang-opt{font-size:.75rem;letter-spacing:.09em;padding:15px 6px;}
 .lang-toggle--inline{margin-left:0;}
 .lang-toggle--inline .lang-opt.active{color:var(--cream);border-bottom:1px solid rgba(201,168,76,.5);}
 
-/* ── FULLSCREEN — landscape card floating on a dark stage ── */
-.party-card{
-  width:min(94vw,1100px);height:min(74dvh,66vw);max-width:none;min-height:230px;
-  border:1px solid var(--border);border-radius:0;
-  box-shadow:0 12px 60px rgba(0,0,0,.65),0 2px 10px rgba(0,0,0,.5);
-  background:var(--card-bg);}
-.party-card::before{top:20px;left:20px;width:26px;height:26px;}
-.party-card::after{bottom:20px;right:20px;width:26px;height:26px;}
-.party-exit,.party-hint,.party-number{transition:opacity .5s ease;}
-.party-overlay.idle .party-exit,
-.party-overlay.idle .party-hint{opacity:0;pointer-events:none;}
-.party-overlay.idle .party-number{opacity:.25;}
+/* ── FULLSCREEN — phone orientation toggle ──
+   For anyone whose phone is orientation-locked: mirrors the CSS landscape
+   layout above via a class instead of an actual media query, so the
+   composition matches what a real rotation would produce. */
+@media(max-width:899px){
+  .party-orient{display:flex;align-items:center;gap:14px;position:fixed;left:50%;
+    bottom:100px;transform:translateX(-50%);z-index:6;transition:opacity .5s ease;}
+  .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
+  .party-orient-opt{width:15px;height:22px;padding:0;cursor:pointer;
+    background:none;border:1px solid var(--border-strong);}
+  .party-orient-opt--landscape{width:26px;height:15px;}
+  .party-orient-opt.live{border-color:#c9a84c;background:rgba(201,168,76,.16);}
+
+  .party-overlay.orient-landscape .party-top{padding:8px 40px 0 44px;}
+  .party-overlay.orient-landscape .party-bottom{padding:0 40px 14px 44px;}
+  .party-overlay.orient-landscape .party-inner{padding:0 40px 0 44px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+    grid-template-areas:"level twist" "q twist";align-content:center;column-gap:32px;row-gap:16px;}
+  .party-overlay.orient-landscape .party-inner:not(:has(.party-number.twist)){grid-template-columns:minmax(0,1fr);grid-template-areas:"level" "q";}
+  .party-overlay.orient-landscape .party-level{grid-area:level;}
+  .party-overlay.orient-landscape .party-question{grid-area:q;font-size:clamp(2.125rem,5.6vw,2.875rem);line-height:1.08;max-width:none;}
+  .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;margin:0;padding:0 0 0 28px;border-top:none;border-left:1px solid rgba(201,168,76,.25);font-size:25px;}
+  .party-overlay.orient-landscape .party-picker{padding:10px 40px 24px 44px;}
+  .party-overlay.orient-landscape .party-picker-top{flex-direction:row;justify-content:space-between;align-items:center;padding:0;}
+  .party-overlay.orient-landscape .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;
+    border-top:none;margin-top:10px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt{padding:12px 20px 12px 0;justify-content:flex-start;border-bottom:none;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-text{gap:12px;padding-left:18px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:11px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:22px;line-height:1.2;}
+}
+/* real landscape already gets the layout above from its own media query;
+   the toggle only matters for a portrait-locked phone, so hide it once the
+   viewport is genuinely landscape instead of leaving redundant chrome. */
+@media (max-width:899px) and (orientation:landscape) and (max-height:500px){
+  .party-orient{display:none;}
+}
 
 /* menu drawer: de-boxed, text-first — same design language as the rest.
    One consistent stroke-icon set now, not mismatched Unicode dingbats and
    an emoji — same muted→gold rule, just SVG instead. */
-.d-icon{width:auto;height:auto;border:none;border-radius:0;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;align-items:center;display:flex;}
+.d-icon{width:auto;height:auto;border:none;border-radius:0;font-family:'Jost',sans-serif;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;align-items:center;display:flex;}
 .d-icon svg{width:16px;height:16px;}
 .d-item{padding:15px 26px;gap:16px;}
 .d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}
@@ -950,6 +1236,7 @@ body.fixed-seq-mode .screen-row{display:none;}
   .tok-glyph{font-size:.88rem;}
   .tray.open{max-height:330px;}
   .app{max-width:680px;}
+
   /* drawers become centered panels */
   .drawer,.sub-drawer{
     left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
@@ -979,16 +1266,10 @@ body.fixed-seq-mode .screen-row{display:none;}
   .tok-line{padding:4px 0 2px;}
   .card-wrap{margin-top:18px;}
   .controls-wrap{margin-top:18px;gap:14px;}
-  .pick-opt-q{font-size:1.1rem;line-height:1.45;}
-  .pick-opt-level{font-size:.8rem;letter-spacing:.12em;}
-  .picker-hint{font-size:.8rem;}
 }
 @media(min-width:1024px){
   /* small surfaces were phone-sized on a monitor */
   .pick-toggle,.btn-fullscreen,.lang-toggle--inline .lang-opt{font-size:.82rem;letter-spacing:.12em;padding:15px 6px;}
-  .picker-hint{font-size:.85rem;letter-spacing:.12em;padding:14px 16px 10px;}
-  .pick-opt-level{font-size:.85rem;}
-  .pick-opt-q{font-size:1.35rem;line-height:1.45;}
   .drawer-title,.cat-sheet-head-title{font-size:.85rem;}
   .d-label{font-size:.85rem;} .d-sub{font-size:.85rem;} .d-icon{font-size:.95rem;}
   .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.85rem;}
@@ -1002,45 +1283,41 @@ body.fixed-seq-mode .screen-row{display:none;}
 @media(min-width:1180px){
   .app{max-width:900px;}
   /* readable at arm's length on a monitor */
-  .pick-opt-q{font-size:1.45rem;line-height:1.4;}
-  .pick-opt-level{font-size:.88rem;letter-spacing:.13em;}
-  .picker-hint{font-size:.88rem;letter-spacing:.13em;padding:14px 16px 10px;}
-  .pick-opt{padding:14px 26px;gap:8px;}
   .drawer-item{font-size:1.2rem;padding:16px 0;}
   .drawer-item-meta{font-size:.88rem;}
   .drawer-title,.cat-sheet-head-title{font-size:.9rem;}
   .d-label{font-size:.9rem;} .d-sub{font-size:.9rem;}
   .session-btn{font-size:.9rem;padding:15px 18px;}
   .help-content p{font-size:1.15rem;}
-  .card{aspect-ratio:3/2;}
-  .card-question{font-size:2.1rem;line-height:1.42;}
-  .card-body-inner{padding:30px 64px 20px;}
+  .card-question{font-size:2.5rem;line-height:1.42;}
+  .card-body-inner{padding:30px 64px 20px;gap:22px;}
   /* this and the earlier @media(min-width:1024px) block both set .title —
      same condition, so whichever comes later in the file wins regardless
      of the other's value. Kept equal to it instead of leaving a silent
      conflict where editing one quietly does nothing. */
   .title{font-size:3.2rem;}
-  .card-question{font-size:2.2rem;}
-  .card-number.twist{font-size:1.2rem;}
-  .card-level{font-size:.9rem;}
+  .card-question{font-size:2.6rem;}
+  .twist-sentence.twist{font-size:1.15rem;}
+  .card-level{font-size:1.05rem;letter-spacing:.2em;}
   .tok{font-size:.85rem;}
-  .btn-draw{font-size:.9rem;padding:16px 0;}
-  .btn-sq{width:54px;height:54px;}
+  .btn-draw{font-size:.9rem;}
+  .btn-sq{width:54px;}
   :root{--sq-w:54px;}
   .pick-toggle,.btn-fullscreen,.lang-toggle--inline .lang-opt{font-size:.85rem;}
   .toggle-btn{font-size:.88rem;padding:15px 15px;}
 }
 @media(min-width:1600px){
   .app{max-width:1000px;}
-  .card-question{font-size:2.3rem;}
-  .card-number.twist{font-size:1.25rem;}
+  .card-question{font-size:2.85rem;}
+  .twist-sentence.twist{font-size:1.2rem;}
+  .card-level{font-size:1.1rem;}
 }
 /* short desktop windows: keep everything on one screen */
 @media(min-width:768px) and (max-height:820px){
   .app{max-width:820px;}
-  .card{aspect-ratio:2/1;}
-  .card-question{font-size:1.8rem;}
-  .card-number.twist{font-size:1.02rem;}
+  .card-question{font-size:2.1rem;}
+  .card-level{font-size:1rem;}
+  .twist-sentence.twist{font-size:.98rem;}
 }
 
 /* ══ PLAY · EXPLORE ══════════════════════════════════════════════════════
@@ -1051,7 +1328,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 /* One shared "whisper" link style — Customize and the fixed-set fold both
    read as the same kind of affordance: plain text, a glyph, nothing louder. */
 .customize-btn,.fixed-seq-toggle{display:flex;align-items:center;gap:5px;
-  background:none;border:none;cursor:pointer;color:rgba(240,232,216,.5);
+  background:none;border:none;cursor:pointer;color:var(--btn-quiet);
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
   padding:15px 0;transition:color .2s;}
 .customize-btn:hover,.fixed-seq-toggle:hover{color:var(--gold);}
@@ -1079,7 +1356,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 .fixed-seq-toggle--bucket::after{content:none;}
 .fixed-seq-toggle--bucket .cbk-name{flex:0 0 auto;}
 .fixed-seq-toggle--bucket .cbk-count{flex:1;font-size:.75rem;letter-spacing:.06em;
-  text-transform:none;color:var(--muted-l);}
+  text-transform:none;color:var(--muted);}
 .fixed-seq-toggle--bucket .cbk-chev{font-size:.85rem;}
 .fixed-seq-toggle--bucket.open .cbk-chev{transform:rotate(45deg);}
 .fixed-seq-toggle--bucket:hover .cbk-chev{color:var(--gold);}
@@ -1091,7 +1368,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 .fixed-seq-options{overflow:hidden;max-height:0;padding:0 4px;}
 .fixed-seq-options.open{padding:10px 4px 14px;}
 .fixed-seq-btn{display:flex;width:100%;justify-content:center;padding:9px 10px;margin-bottom:5px;
-  border:1px solid rgba(240,232,216,.14);border-radius:3px;}
+  border:1px solid var(--border);border-radius:3px;}
 .fixed-seq-btn:last-child{margin-bottom:0;}
 .fixed-seq-btn::after{display:none;}
 
@@ -1121,7 +1398,7 @@ body.fixed-seq-mode .screen-row{display:none;}
    how it's dealt out) — text only, no numbering (felt like a form, not part
    of this deck) — a coloured rule is enough to tell them apart at a glance. */
 .play-sect{border-left:2px solid transparent;padding-left:12px;margin-left:-12px;}
-.play-sect--1{border-left-color:rgba(201,168,76,.35);}
+.play-sect--1{border-left-color:var(--border-strong);}
 .play-sect--2{border-left-color:rgba(101,201,176,.35);}
 .play-sect--3{border-left-color:rgba(180,170,150,.3);}
 .play-sect+.play-sect{margin-top:8px;padding-top:2px;}
@@ -1144,27 +1421,44 @@ body.fixed-seq-mode .screen-row{display:none;}
    here never dead-ends into "now what?" */
 .cat-go-bar{flex-shrink:0;padding:12px 0 max(14px,env(safe-area-inset-bottom));
   background:linear-gradient(to top, var(--surface) 60%, transparent);}
-.cat-go-btn{display:block;width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
-  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.12em;
-  text-transform:uppercase;padding:15px 0;border-radius:3px;cursor:pointer;transition:filter .2s;}
-.cat-go-btn:hover{filter:brightness(1.06);}
-.cat-go-btn:active{transform:scale(.99);}
+.cat-go-btn{display:block;width:100%;
+  background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
+  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:14px 0;text-align:center;cursor:pointer;transition:all .2s;}
+.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+.cat-go-btn:active{transform:scale(.98);}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}
 .chapter{--ch:var(--gold);
   display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
-  background:none;border:1px solid var(--dim);border-left:2px solid transparent;border-radius:2px;
-  padding:15px 13px;transition:all .2s;}
+  background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
+  padding:15px 13px;transition:background .2s,border-color .2s;}
+/* the left rail: a vertical metal sweep (same gilt.js gradient as the card
+   accent, at 190deg instead of 100deg), only painted once a chapter is
+   fully on — .part gets a flat, muted line instead and .off (the base
+   rule below) gets the same plain --dim edge as the rest of the box, so
+   the rail itself is now part of the on/part/off read rather than a
+   constant per-chapter identity mark. The gradient is written by JS into
+   --ch-rail from each chapter's data-base hex — see ui.js. */
+.chapter{border-image-slice:1;border-image-width:0 0 0 3px;border-image-repeat:stretch;border-image-source:none;}
 .chapter:hover{border-color:var(--border);}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
   text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
-.chapter .ch-desc{flex:1;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
+.chapter .ch-desc{flex:1;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
-.chapter.on{border-left-color:var(--ch);background:rgba(255,255,255,.028);}
-.chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
-.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, transparent);}
+/* one signal, not two: no background wash here — carrying both a faint
+   tint and a muted line made "part" read muddier than plain "off",
+   instead of clearly between it and "on". The line alone does the job. */
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
+/* a real per-chapter tint, not the ~3% white wash this used to be — same
+   language as the end-of-set screen's .es-hold-fill (color-mix off
+   --es-chapter), just toned down from that screen's 16% since a whole
+   list of these sitting on-screen at once reads louder than one hold
+   button. */
+.chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);border-image-source:var(--ch-rail);}
+.chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
 .chapter.ch-hidden{display:none;}
 
 /* ── the console: icon-led on purpose, so it never reads as a fourth list
@@ -1182,9 +1476,15 @@ body.fixed-seq-mode .screen-row{display:none;}
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(240,232,216,.45);margin:0 0 12px;}
 .play-sect--2 .sect-lbl:first-child{margin-bottom:18px;}
+/* Chapters/Tune headers drop to the warm muted tone used across the card
+   set, rather than the neutral grey every other .sect-lbl (Start from,
+   Round) still uses. */
+#chaptersLbl,#tuneLbl{color:#7a6e60;}
 /* the inline "Explore categories" link next to the Chapters label — same
-   whisper-link weight the fixed-set fold already uses, not a button */
-.link-plain{background:none;border:none;cursor:pointer;color:rgba(240,232,216,.5);
+   whisper-link weight the fixed-set fold already uses, not a button. Its
+   own warm gold (rather than the header's muted tone) marks it as the one
+   live link on an otherwise static row. */
+.link-plain{background:none;border:none;cursor:pointer;color:var(--btn-quiet);
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
   padding:15px 0;transition:color .2s;}
 .link-plain:hover,.link-plain.open{color:var(--gold-l);}
@@ -1193,18 +1493,18 @@ body.fixed-seq-mode .screen-row{display:none;}
 
 /* "what am I looking at" — a small info affordance, not baked-in explainer
    text taking up permanent room */
-.info-btn{background:none;border:none;cursor:pointer;padding:16px;color:rgba(240,232,216,.32);
+.info-btn{background:none;border:none;cursor:pointer;padding:16px;color:var(--btn-quiet);
   display:inline-flex;align-items:center;}
 .info-btn svg{width:12px;height:12px;}
 .info-btn:hover,.info-btn.open{color:var(--gold-l);}
 .tooltip{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:250px;
-  max-width:calc(100vw - 40px);background:#1d1915;border:1px solid rgba(240,232,216,.14);border-radius:8px;
+  max-width:calc(100vw - 40px);background:#1d1915;border:1px solid var(--border);border-radius:8px;
   padding:11px 13px;font-family:'Cormorant Garamond',serif;font-size:.82rem;line-height:1.45;
   color:rgba(240,232,216,.8);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:5;
   display:none;pointer-events:none;}
 .tooltip.open{display:block;}
 .tooltip::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(45deg);
-  width:9px;height:9px;background:#1d1915;border-left:1px solid rgba(240,232,216,.14);border-top:1px solid rgba(240,232,216,.14);}
+  width:9px;height:9px;background:#1d1915;border-left:1px solid var(--border);border-top:1px solid var(--border);}
 
 .ctrl-row{display:flex;align-items:flex-start;gap:12px;position:relative;}
 .ctrl-row+.ctrl-row{margin-top:26px;}
@@ -1229,7 +1529,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 .track-fill{position:absolute;top:50%;height:1px;background:var(--ic);
   transform:translateY(-50%);pointer-events:none;}
 
-.console-divider{border-top:1px solid rgba(240,232,216,.08);margin:22px 0 18px;}
+.console-divider{border-top:1px solid var(--dim);margin:22px 0 18px;}
 
 /* Shuffle and Cards, side by side, under the shared "Round" heading. Extra
    margin below — the row used to be the console's last element before its
@@ -1246,7 +1546,7 @@ body.fixed-seq-mode .screen-row{display:none;}
    Arc's rainbow gradient is gone: it was the loudest thing in the whole
    panel for a plain on/off. */
 .seg .shuffle-toggle,
-.limit-row--drawer{margin:0;max-width:none;padding:0;border:1px solid rgba(240,232,216,.14);border-radius:6px;overflow:hidden;gap:0;}
+.limit-row--drawer{margin:0;max-width:none;padding:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;gap:0;}
 .seg .shuffle-toggle-opt,
 .limit-row--drawer .limit-btn{flex:1;border:none;border-radius:0;padding:15px 0;
   font-size:.75rem;letter-spacing:.04em;color:rgba(240,232,216,.5);opacity:1;}

@@ -30,12 +30,21 @@ const state = {
   loggedQuestions: new Set(),   // per-round guard against duplicate log entries
   colbertPrevLimit: null,       // limit to restore after Colbert-solo play
   favourites: [],
+  handStarred: new Set(),   // questions actually starred during THIS hand, via the star
+                            // button — cleared by initDeck(). A card that was already a
+                            // favourite from an earlier session doesn't count as "starred"
+                            // for this hand's end-of-set summary unless the star was
+                            // actually tapped this time.
   customCards: [],
   categoriesCollapsed: DEFAULT_COLLAPSED,
   skipDealAnim: false,   // set by initDeck(isContinuation) — true while dealing a fresh
                           // hand under unchanged settings (Draw more, hold-to-continue),
                           // so only a hand that starts from an actual settings change
                           // gets the "thrown onto the table" animation
+  queryDeckActive: false, // set by applyQueryDeck() (?Q=Work1,Life7,...) — a hand pinned
+                           // to specific cards by URL, for testing/demoing. Blocks
+                           // autoSaveSession() so opening a test link never overwrites a
+                           // real in-progress saved session.
 };
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
