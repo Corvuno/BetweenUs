@@ -24,15 +24,25 @@ the Shuffle/Cards rail, the fullscreen orientation toggle, plus a handful of
 smaller ones found in the same sweep — tooltip, fixed-set option box) now
 use these same three tokens. One line colour, three volumes, everywhere.
 
-### Text — 4 tiers
+### Text — reverted, not consolidated
+The first pass here folded every "quieter than `--cream`" cream-alpha value
+into two shared steps (`--text-dim`/`--text-faint`), and folded `--muted-l`
+(`#9c8f7e`, a genuinely *lighter* warm tone) into `--muted` (`#7a6e60`,
+darker) as a supposed near-duplicate. Both read visibly darker and lower-
+contrast on a real device than they had any right to from the numbers alone
+— caught the same day from two independent screenshots ("Selected" and
+"Start from" both going close to unreadable) — and were reverted in full.
+
 ```
---cream:      #f0e8d8                  /* primary — card questions, full-strength labels */
---text-dim:   rgba(240,232,216,.72)    /* secondary — body copy, headings */
---text-faint: rgba(240,232,216,.4)     /* captions, hints */
---muted:      #7a6e60                  /* quiet warm-brown label, disabled state */
+--cream:   #f0e8d8   /* primary — card questions, full-strength labels */
+--muted:   #7a6e60   /* quiet warm-brown label, disabled state */
+--muted-l: #9c8f7e   /* a step lighter than --muted — its own tone, not --muted's duplicate */
 ```
-`--muted-l` (`#9c8f7e`) and a one-off `#8a7f70` (the card counter) are gone —
-both folded into `--muted`.
+Every other cream-alpha text value (help body copy, the sheet heading,
+section labels, chapter names off-state, etc.) is back to its original
+per-element literal — still not tidied, and that's deliberate now: this
+family doesn't get touched again without checking the *rendered* result on
+a real screen first, not just a mockup.
 
 ### Quiet text-buttons — 1 resting tone
 ```
@@ -81,13 +91,13 @@ chapter row (was `#6e1719`) needed to move onto them.
 
 ## What's fixed everywhere vs. what's scoped
 
-**Fixed file-wide:** the line/border tokens (§ Lines & borders), the text
-tokens (§ Text) on every static-label usage that used the cream-alpha or
-`--muted-l` family, the quiet-button tone, the gold button unification, the
-corner-radius rule, the After Dark red mapping, and three labels that were
-silently rendering in Arial instead of Jost (`.ch-desc`, `.cbk-chev`,
-`#dLangIcon` — they're `<span>`s inside a `<button>`, and browsers don't let
-form controls inherit page font by default).
+**Fixed file-wide:** the line/border tokens (§ Lines & borders), the quiet-
+button tone, the gold button unification, the corner-radius rule, the After
+Dark red mapping, and three labels that were silently rendering in Arial
+instead of Jost (`.ch-desc`, `.cbk-chev`, `#dLangIcon` — they're `<span>`s
+inside a `<button>`, and browsers don't let form controls inherit page font
+by default). The text-colour consolidation (§ Text) was attempted, found to
+regress contrast, and reverted the same day — see that section.
 
 **Scoped to what was actually reviewed, not swept file-wide:** font sizes and
 letter-spacing. The audit page showed a *sample* — 11 sans sizes, 9 serif
