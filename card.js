@@ -238,11 +238,13 @@ function openPicker(options) {
     div.className = 'pick-opt';
     const color = levelColor(card.level);
     const { light } = giltStops(color);
+    div.style.setProperty('--pc', `linear-gradient(180deg,${color},${light} 50%,${color})`);
     div.innerHTML = `
-      <div class="pick-opt-accent" style="background:linear-gradient(180deg,${color},${light} 50%,${color})"></div>
-      <span class="pick-opt-level" style="color:${color}">${LEVEL_LABELS[card.level]||''}</span>
-      <span class="pick-opt-q">${esc(translateQ(card))}</span>
-    `;
+      <div class="pick-opt-accent" style="background:linear-gradient(90deg,${color},${light} 50%,${color})"></div>
+      <div class="pick-opt-text">
+        <span class="pick-opt-level" style="color:${color}">${LEVEL_LABELS[card.level]||''}</span>
+        <span class="pick-opt-q">${esc(translateQ(card))}</span>
+      </div>`;
     // stopPropagation prevents the card's own click handler from also firing
     div.addEventListener('click', e => { e.stopPropagation(); choosePick(card, options); });
     optsEl.appendChild(div);
@@ -250,6 +252,7 @@ function openPicker(options) {
 
   picker.classList.add('open');
   state.pickerOpen = true;
+  if (!inParty) fitPicker(optsEl);
 }
 
 function closePicker() {
@@ -258,5 +261,16 @@ function closePicker() {
   });
   state.pickerOpen = false;
 }
+
+// Normal screen only: if a question needs a 3rd line, step the text down (max 20%).
+function fitPicker(el) {
+  el.style.removeProperty('--pq');
+  const base = parseFloat(getComputedStyle(el).fontSize);
+  const over = () => [...el.children].some(o => o.scrollHeight > o.clientHeight + 1);
+  for (let px = base; over() && px > base * 0.8; px -= 0.5) el.style.setProperty('--pq', px + 'px');
+}
+window.addEventListener('resize', () => {
+  if (state.pickerOpen && !state.partyMode) fitPicker(document.getElementById('pickerOptions'));
+});
 
 
