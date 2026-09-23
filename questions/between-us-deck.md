@@ -58,7 +58,7 @@ The questions come first, category by category. The full change log is at the bo
 3. Who would know it was you from just one small habit, without ever seeing your face?
 4. If you had to name what's getting the least of you lately, what would it be?
 5. What takes up far more of your life than anyone would guess?
-6. What's something you've done that cost you something — and that you'd do exactly the same again?
+6. What's something that cost you, that you'd do exactly the same again?
 7. What's something you're doing right now without knowing if it'll actually work out?
 8. What's a rule you've quietly made for yourself that nobody else knows about?
 9. What does getting older take from you that you didn't expect, and what does it give?
@@ -130,9 +130,9 @@ The questions come first, category by category. The full change log is at the bo
 5. Who decided they didn't like you — and did you let it go?
 6. When has having power over someone made you kinder, not crueler?
 7. What's something that used to take courage that's now just routine for you?
-8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
+8. A time you completely lost your footing — what held, and what did you rebuild first?
 9. What have you had to accept that you never chose?
-10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
+10. What's a part of your character you hope never changes, even when it makes life harder?
 11. What's something true about you that took far too long to notice?
 12. What do you come back to after everything else falls away?
 
@@ -172,7 +172,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Is there a philosophy or teaching you've borrowed from, without signing up to all of it?
 5. When did you last feel part of something larger — and what triggered it?
 6. How near has death actually come to you?
-7. Who did something special for you in your recent past that you did not properly thank them for yet.
+7. Who did something special for you recently that you never properly thanked them for?
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
 10. What physical practice has brought you closest to something spiritual?
@@ -202,7 +202,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
 6. One friend deserves a better version of you...
 7. How do you make friends now — and is it harder than it used to be?
-8. Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?
+8. Which friend have you never really had a conflict with — healthy, or just luck?
 9. Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?
 10. The friend I'd call when I'm in real trouble is...
 11. Who can make you laugh when you really don't want to?
@@ -233,7 +233,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
-11. What do you think the person across from you finds attractive about you — then ask if you're right.
+11. Guess what the person across from you finds attractive about you — then ask if you're right.
 12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
 
 ## Values
@@ -242,7 +242,7 @@ The questions come first, category by category. The full change log is at the bo
 3. If you had to guess, what percentage of your life is choice, and what percentage is circumstance?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
-6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
+6. What's something you pretend to have a strong opinion on, but don't care about at all?
 7. When did you stay silent and shouldn't have?
 8. What can having money make disappear that not having it can't?
 9. What are the outer limits of your compassion?
@@ -255,10 +255,10 @@ The questions come first, category by category. The full change log is at the bo
 2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
-5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
+5. Which political position of yours is genuinely hard to defend to people who disagree?
 6. What's something you wish people understood about your culture?
 7. Do people actually change — or just get better at managing what doesn't?
-8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
+8. What topic have you stopped following entirely, because the news did you no good?
 9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
 11. What would you defend about your country to a foreigner — and what not?
@@ -270,16 +270,16 @@ The questions come first, category by category. The full change log is at the bo
 3. What's the piece of work you're most proud of that nobody applauded?
 4. What's the strangest job you've ever had?
 5. Has your idea of success survived contact with reality?
-6. Would you rather be seen as reliable or brilliant — and which one do people actually see you as?
+6. Reliable or brilliant — which would you rather be seen as, and which do people actually see?
 7. Is ambition something you have or something that has you?
 8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
-11. Would you rather stop working today or never be allowed to stop — which one actually scares you more?
+11. Stop working today, or never be allowed to stop — which scares you more?
 12. What do colleagues learn about you in the first week — and what only after a year?
 
 ## Deep
-1. What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?
+1. What would you tell someone if they asked the right question, but never bring up yourself?
 2. What do you do differently the moment you know you're being watched?
 3. When did you last cry, and what was underneath it?
 4. Who left your life better than they found it?
@@ -452,7 +452,7 @@ The questions come first, category by category. The full change log is at the bo
 3. When has your body not done what you wanted in bed — and what did you do?
 4. The most sexually bold text you've sent that landed exactly right — care to repeat it?
 5. What did you believe about sex that turned out to be nonsense?
-6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
+6. Your count — do you know it? Break it down: relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
 9. In a relationship, what age difference is where your gut starts to hesitate, no matter what anyone else would think?
@@ -461,7 +461,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What's the longest you've gone without sex — and how was that?
 
 ## Kink 🔞
-1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
+1. What's it feel like to be completely at someone's mercy — or to have them at yours?
 2. Watching, or being watched — which does more for you?
 3. Can pain — given or taken — carry pleasure for you, and what's the pull?
 4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
@@ -1447,6 +1447,7 @@ Cut: the edited-story card (about your life, not now — a Past card in Raw clot
 **Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
 **Warm 7** → *"Is there something you're genuinely bad at that you still refuse to stop doing?"* — replaces the pettiest-grudge card, which was the third of a disproportion cluster with 8 and 10.
 **Owner sweep, batch 1.** Connect 6 → the misunderstood card and Connect 7 → the listening card; the two yes/no cards they replace were kept against review in v5.8, now deliberately reversed. Attract 3 → the being-wanted card (restores the *"Being desired does what to you?"* orphan benched when Desire was deleted in v5.5); Attract 4 rephrased to the claimed-type/actual-pattern construction. Values 3 → the luck card, which also clears the defend-what-you-can't-justify twin with the reworked Spirit 8. World 5 → the hard-to-defend political position; World 9 → the worry card, with the action clause dropped so it does not repeat World 2. Work 8 → why you chose this field.
+**Length pass.** 14 cards over 95 characters trimmed for wording only, same content, owner-approved per card: Life 6, Self 8, Self 10, Spirit 7, Friends 8, Attract 11, Values 6, World 5, World 8, Work 6, Work 11, Deep 1, Bare/Blunt 6, Kinks 1. Five others flagged as over-length were held back because trimming would cost real nuance (Culture 5, Body 7, Values 3, Abyss 1, Abyss 11), and five more (Attract 4, Attract 6, Values 12, Carnal 12, Bare/Blunt 9) were held back for a fuller set of rewrite options — both pending owner sign-off on specific replacement text.
 ## Patch v6.17 — After Dark rebuilt from the ground up
 Skin restored as its own category and redefined: **erotic-sensory, the gateway** — touch, scent, temperature, texture, hands, wordless signalling, public charge. Seven gated categories, each with one clear job:
 Attract ✦ (the pull, before anything happens) · Skin (the erotic senses) · Carnal (the act, from the inside) · Bare (the honest truths and history) · Kinks (fantasy, power, turn-ons) · Abyss (the far end) · Us: Intimate (the person across from you).
