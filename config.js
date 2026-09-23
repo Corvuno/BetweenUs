@@ -427,7 +427,7 @@ const BUCKET_META = {
   relationships: { label:"Relationships", color:"#e8997a", desc:"The people you choose, and the family you didn't" },
   vulnerability: { label:"Vulnerability", color:"#8f74b8", desc:"Where you're from, and how far the room is willing to go" },
   usb:           { label:"Us",            color:"#d97a92", desc:"About the two of you. Directly" },
-  afterdarkb:    { label:"After Dark",    color:"#ff2f2f", desc:"Desire, named — open to anyone at the table, not only lovers \u2726" },
+  afterdarkb:    { label:"After Dark",    color:"#c1272d", desc:"Desire, named — open to anyone at the table, not only lovers \u2726" },
   meta:          { label:"Meta",          color:"#5a5a6a", desc:"Overflow — questions with merit that did not make the top ten" },
 };
 
@@ -446,7 +446,7 @@ const CHAPTERS_META = {
   findout:   { label:"Beneath the Surface", color:"#3a89a6" },
   deeper:    { label:"Into the Deep",       color:"#723bba" },
   aboutus:   { label:"Between Us",          color:"#c6396d" },
-  afterdark: { label:"After Dark",          color:"#6e1719" },
+  afterdark: { label:"After Dark",          color:"#7a1620" },
 };
 const BUCKET_DESCRIPTIONS = Object.fromEntries(Object.entries(BUCKET_META).map(([k,v]) => [k, v.desc]));
 

@@ -178,3 +178,14 @@ log) and the app's actual card data (`questions.js`) have to match exactly — s
 categories, same 12 cards each, same text, in the same order. Whenever a card changes in
 one, change it in the other in the same commit. If there's ever doubt they've drifted,
 diff them category by category before touching either.
+
+## Follow `DESIGN-SYSTEM.md` for chrome/visual work
+
+`DESIGN-SYSTEM.md` is the extracted reference for the app's own chrome — line/border
+strengths, quiet-text tone, the gold button, corner rounding, the After Dark red pair.
+Any new element or visual change reaches for the tokens it documents (`--dim`/`--border`/
+`--border-strong`, `--text-dim`/`--text-faint`/`--muted`, `--btn-quiet`, the shared gold-
+button spec) instead of writing a new one-off value. It does not cover category, chapter,
+or mode colours (those stay content colour, tuned separately) or the full font-size/
+letter-spacing scale (that file says exactly how far the 2026-09-23 pass went and why it
+stopped short of a blind file-wide sweep — read that section before extending it).
