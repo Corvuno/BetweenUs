@@ -107,20 +107,29 @@ function updateShuffleDisplay() {
 function updatePartyDisplay(card) {
   const pq  = document.getElementById('party-question');
   const pl  = document.getElementById('party-level');
-  const pn  = document.getElementById('party-number');
+  const pc  = document.getElementById('party-count');
   const pa  = document.getElementById('party-accent');
+  const ps  = document.getElementById('partyStar');
+  const pv  = document.getElementById('partyPrevBtn');
+  if (pv) pv.disabled = state.currentIndex <= 0;
   if (!card) {
     if (pq) pq.textContent = 'Draw a card to begin.';
     if (pl) { pl.textContent=''; pl.style.color=''; }
-    if (pn) pn.textContent = '';
+    if (pc) pc.textContent = '';
     if (pa) pa.style.background = '';
+    if (ps) ps.classList.remove('on');
     return;
   }
   const color = levelColor(card.level);
   if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
   if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
-  if (pq) { pq.style.opacity='0'; setTimeout(()=>{ pq.textContent=translateQ(card); pq.style.opacity='1'; },120); }
-  if (pn) pn.textContent = partyRomanCount(state.currentIndex+1, state.visibleDeck.length);
+  if (pq) {
+    pq.textContent = translateQ(card);
+    pq.classList.add('entering');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>pq.classList.remove('entering')));
+  }
+  if (pc) pc.textContent = partyRomanCount(state.currentIndex+1, state.visibleDeck.length);
+  if (ps) ps.classList.toggle('on', state.favourites.some(f => f.question === card.question));
 }
 
 function toggleCategories() {
@@ -600,11 +609,11 @@ function runPartySummary() {
   const isArc = state.randomMode === 'arc';
   const pl = document.getElementById('party-level');
   const pq = document.getElementById('party-question');
-  const pn = document.getElementById('party-number');
+  const pc = document.getElementById('party-count');
   const pa = document.getElementById('party-accent');
   if (pa) pa.style.background = 'var(--gold-l)';
   if (pl) { pl.textContent = isArc ? (state.lang === 'nl' ? 'Arc afgerond' : 'Arc complete') : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete'); pl.style.color = 'var(--gold-l)'; }
-  if (pn) pn.textContent = '— end —';
+  if (pc) pc.textContent = '— end —';
   if (pq) {
     const seen2 = new Set(), cats2 = [];
     state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });

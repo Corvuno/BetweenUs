@@ -622,87 +622,96 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .lang-opt.active{color:var(--gold);border-bottom-color:rgba(201,168,76,.4);}
 .lang-opt:hover{color:rgba(240,232,216,.85);}
 
-/* ── FULLSCREEN ── */
-.party-overlay{
-  display:flex;position:fixed;inset:0;z-index:200;
-  background:var(--bg);align-items:center;justify-content:center;cursor:pointer;
-  opacity:0;pointer-events:none;transition:opacity .25s ease;
-  user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
-}
+/* ── FULLSCREEN · Poster ── */
+.party-overlay{position:fixed;inset:0;z-index:900;background:#0e0c0a;opacity:0;pointer-events:none;transition:opacity .35s ease;}
 .party-overlay.open{opacity:1;pointer-events:all;}
-.party-overlay::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");opacity:.7;}
-.party-exit{position:fixed;top:18px;left:22px;z-index:2;background:none;border:none;color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:15px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
-.party-exit:hover{color:var(--cream);}
-.party-pick{position:fixed;top:18px;right:22px;z-index:2;background:none;border:none;color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:15px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
-.party-pick:hover{color:var(--cream);}
-.party-pick.on{color:var(--gold);}
-.party-overlay.idle .party-pick{opacity:0;pointer-events:none;}
-/* Lower, not top-center-alone: up there it read as a fourth, disconnected
-   corner control, easy to miss entirely. Sits down in the same cluster as
-   the hint line, its own space near the bottom chrome rather than crowding
-   the card. The label itself is back to matching Close/Draw three exactly
-   (same size, same muted color, no border) — the legibility problem was
-   never the button word, it was the twist question text once chosen; see
-   .party-number.twist below. */
-.party-twist{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;
-  background:none;border:none;color:var(--muted);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:15px 6px;cursor:pointer;transition:color .2s,opacity .5s ease;}
-.party-twist:hover{color:var(--cream);}
-.party-twist.active{color:var(--gold);}
-.party-overlay.idle .party-twist{opacity:0;pointer-events:none;}
-.party-card{
-  position:relative;z-index:1;width:min(92vw,820px);min-height:55vh;
-  background:var(--card-bg);border:1px solid var(--border);
-  box-shadow:0 12px 60px rgba(0,0,0,.6);
-  display:flex;flex-direction:column;align-items:center;overflow:hidden;
+.party-card{position:absolute;inset:0;display:flex;flex-direction:column;}
+.party-card::before,.party-card::after{content:none;}           /* no corner brackets */
+.party-c-accent{height:3px;flex-shrink:0;opacity:1;transition:background .5s ease;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);}
+
+/* chrome */
+.party-chrome{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;transition:opacity .5s ease;}
+.party-overlay.idle .party-chrome{opacity:.28;}                  /* dim, never gone */
+.party-top{padding:max(28px,env(safe-area-inset-top)) 16px 0 20px;}
+.party-bottom{padding:12px 16px max(34px,env(safe-area-inset-bottom));gap:8px;}
+.party-chrome button{height:44px;min-width:44px;background:none;border:none;padding:0 14px;cursor:pointer;
+  color:#9c8f7e;font:400 12px/1 'Jost',sans-serif;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;}
+.party-chrome button:hover{color:#f0e8d8;}
+.party-exit{padding-left:0 !important;letter-spacing:.22em !important;}
+.party-prev-btn,.party-next-btn,.party-star{font-size:18px !important;padding:0 !important;}
+.party-prev-btn:disabled{opacity:.3;pointer-events:none;}
+.party-star.on,.party-twist.active,.party-pick.on{color:#e8c97a !important;}
+.party-twist svg{width:15px;height:15px;}
+.party-actions{display:flex;gap:4px;}
+.party-count{font:400 15px/1 'Cormorant Garamond',serif;letter-spacing:.14em;color:#9c8f7e;}
+.party-key{display:none;color:#7a6e60;margin-left:6px;}
+.pp-long{display:none;}
+
+/* tap zones sit between the bars */
+.party-zone-prev,.party-zone-next{position:absolute;top:80px;bottom:90px;z-index:4;cursor:pointer;}
+.party-zone-prev{left:0;width:28%;} .party-zone-next{right:0;width:72%;}
+
+/* the question */
+.party-inner{flex:1;min-height:0;position:relative;z-index:3;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:center;gap:26px;padding:0 26px;text-align:left;}
+.party-level{display:flex;align-items:center;gap:12px;font:600 13px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.party-level::before{content:'';width:30px;height:3px;background:currentColor;flex-shrink:0;}
+.party-question{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(2.375rem,12.8vw,3.125rem);line-height:1.12;color:#f0e8d8;text-wrap:pretty;max-width:20ch;
+  transition:opacity .22s ease,transform .32s cubic-bezier(.2,.7,.2,1);}
+.party-question.entering{opacity:0;transform:translateY(10px);}
+
+/* Twist: below the question in portrait */
+.party-number{display:none;}
+.party-number.twist{display:flex;flex-direction:column;gap:10px;margin-top:14px;padding-top:20px;border-top:1px solid rgba(201,168,76,.25);
+  font:italic 400 27px/1.28 'Cormorant Garamond',serif;color:#e8c97a;text-wrap:pretty;max-width:26ch;}
+.party-number.twist::before{content:'TWIST';font:600 12px/1 'Jost',sans-serif;font-style:normal;letter-spacing:.3em;color:#c9a84c;}
+
+/* Draw three: equal options, category line on the left */
+.party-picker{position:absolute;inset:0;z-index:30;background:#0e0c0a;display:none;flex-direction:column;
+  padding:max(28px,env(safe-area-inset-top)) 0 max(34px,env(safe-area-inset-bottom));}
+.party-picker.open{display:flex;}
+.party-picker-top{display:flex;flex-direction:column;gap:10px;padding:0 20px;}
+.party-picker-back{align-self:flex-start;height:44px;background:none;border:none;padding:0;color:#9c8f7e;font:400 12px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;}
+.party-picker .picker-hint{padding:0 10px;font:400 11px/1 'Jost',sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#9c8f7e;}
+.party-picker .picker-options{flex:1;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:1px;background:rgba(201,168,76,.12);margin-top:20px;overflow:visible;}
+.party-picker .pick-opt{position:relative;background:#0e0c0a;border:none;padding:0 24px 0 28px;display:flex;flex-direction:column;justify-content:center;gap:14px;cursor:pointer;}
+.party-picker .pick-opt:hover{background:#15120f;}
+.party-picker .pick-opt-accent{position:absolute;left:0;top:14%;bottom:14%;width:3px;height:auto;
+  -webkit-mask:linear-gradient(180deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(180deg,transparent,#000 14% 86%,transparent);}
+.party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.party-picker .pick-opt-q{font:italic 300 32px/1.14 'Cormorant Garamond',serif;color:#f0e8d8;text-wrap:pretty;-webkit-line-clamp:unset;display:block;}
+
+/* ── phone landscape ── */
+@media (orientation:landscape) and (max-height:500px){
+  .party-top{padding:8px 40px 0 44px;}
+  .party-bottom{padding:0 40px 14px 44px;}
+  .party-inner{padding:0 40px 0 44px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+    grid-template-areas:"level twist" "q twist";align-content:center;column-gap:32px;row-gap:16px;}
+  .party-inner:not(:has(.party-number.twist)){grid-template-columns:minmax(0,1fr);grid-template-areas:"level" "q";}
+  .party-level{grid-area:level;} .party-question{grid-area:q;font-size:clamp(2.125rem,5.6vw,2.875rem);line-height:1.08;max-width:none;}
+  .party-number.twist{grid-area:twist;align-self:center;margin:0;padding:0 0 0 28px;border-top:none;border-left:1px solid rgba(201,168,76,.25);font-size:25px;}
+  .party-picker{padding:10px 40px 28px 44px;}
+  .party-picker-top{flex-direction:row;justify-content:space-between;align-items:center;padding:0;}
+  .party-picker .picker-options{grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:10px;}
+  .party-picker .pick-opt{padding:20px 20px 20px 24px;justify-content:flex-start;}
+  .party-picker .pick-opt-accent{top:10%;bottom:10%;}
+  .party-picker .pick-opt-q{font-size:27px;line-height:1.2;}
 }
-.party-card::before,.party-card::after{content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;border-color:var(--gold);opacity:.32;pointer-events:none;}
-.party-card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
-.party-card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
-.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;transition:background .5s ease;-webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);}
-.party-inner{flex:1;padding:clamp(28px,5vw,70px) clamp(32px,6vw,80px) clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:100%;}
-.party-level{font-family:'Jost',sans-serif;font-size:clamp(.75rem,1.4vw,.9rem);letter-spacing:.15em;text-transform:uppercase;opacity:.75;order:0;}
-.party-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1.55rem,4.5vw,3rem);font-weight:300;font-style:italic;line-height:1.42;text-align:center;color:var(--cream);transition:opacity .22s ease;order:1;}
-/* min-height reserves the twist state's typical two-line height up front —
-   without it, turning Twist on/off changes this element's height, and
-   since .party-inner centers the whole column, the question above jumps
-   to re-center. Reserving the space means nothing above ever has to move. */
-/* roman numerals in a thin sans at heavy tracking turn I/II/III into bare
-   pipes — the serif's own letterforms do the separating that tracking was
-   trying (and failing) to do, so this needs Cormorant Garamond, not Jost,
-   and much lighter tracking. */
-.party-number{font-family:'Cormorant Garamond',serif;font-size:clamp(.8125rem,1.1vw,.9rem);letter-spacing:.14em;color:var(--muted);opacity:.38;
-  padding-bottom:2px;order:2;transition:color .2s ease;min-height:2.9rem;display:flex;align-items:center;justify-content:center;}
-/* the actual illegibility problem: this wraps to two lines for most
-   modifiers and had no line-height of its own, inheriting the browser
-   default — cramped for italic serif at this size. */
-.party-number.twist{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.92rem,2.4vw,1.3rem);
-  letter-spacing:.01em;line-height:1.5;color:var(--gold-l);opacity:.95;padding:6px 0 2px;max-width:640px;}
-.party-hint{position:fixed;bottom:20px;left:0;right:0;z-index:2;text-align:center;pointer-events:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);opacity:.45;}
-.party-hint--phone{display:none;}
-.party-orient{display:none;}
-/* desktop-only corner hint ("TAP →", bottom-right) — see FULLSCREEN.md
-   section 3; hidden on phone, where .party-hint already covers this. */
-.party-corner-hint{display:none;}
-/* party card click zones — prev left 28%, next right 72% */
-.party-zone-prev,.party-zone-next{position:absolute;top:0;bottom:0;z-index:4;cursor:pointer;}
-.party-zone-prev{left:0;width:28%;}
-.party-zone-next{right:0;width:72%;}
-/* ‹ › affordances — visible chrome, fade with idle */
-.party-overlay.idle .party-zone-prev::after{opacity:0;}
-.party-zone-prev::after{
-  content:'‹';
-  position:absolute;bottom:22px;left:22px;
-  font-family:'Jost',sans-serif;font-size:1.3rem;
-  color:var(--gold);opacity:.28;
-  transition:opacity .2s ease;
+
+/* ── desktop ── */
+@media (min-width:900px) and (min-height:501px){
+  .party-top{padding:24px 36px 0 40px;} .party-bottom{padding:16px 36px 24px 40px;}
+  .party-count{font-size:16px;}
+  .party-key,.pp-long{display:inline;} .pp-short{display:none;}
+  .party-prev-btn,.party-next-btn{font-size:12px !important;}
+  .party-inner{padding:0 clamp(56px,8.5vw,96px);gap:32px;}
+  .party-level{font-size:16px;gap:14px;} .party-level::before{width:40px;}
+  .party-question{font-size:clamp(3.5rem,8.2vw,5.75rem);line-height:1.06;max-width:960px;}
+  .party-number.twist{font-size:30px;max-width:720px;}
+  .party-picker .pick-opt-q{font-size:clamp(1.5rem,2.2vw,2rem);}
 }
-.party-zone-prev:hover::after{opacity:.4;}
 
 .drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
 .drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
@@ -1046,14 +1055,6 @@ body.tok-taught .tok-hint{display:none;}
 .explore-fold .cat-grid-wrap{max-height:none;border-top:1px solid var(--dim);}
 .cat-area .toggles{padding-bottom:max(24px,env(safe-area-inset-bottom));}
 
-/* fullscreen pick-3: sits inside the card, above the tap zones */
-.party-picker{position:absolute;inset:0;z-index:30;border-radius:0;box-shadow:none;
-  background:var(--card-bg);}
-.party-picker .picker-hint{font-size:.8rem;letter-spacing:.13em;padding:16px 18px 12px;}
-.party-picker .pick-opt{padding:18px 40px;}
-.party-picker .pick-opt-q{font-size:clamp(1rem,2.1vw,1.6rem);-webkit-line-clamp:4;}
-.party-picker .pick-opt-level{font-size:clamp(.8rem,1vw,.9rem);}
-
 /* band dividers: what each group is for */
 .band-lbl{flex-basis:100%;text-align:center;font-family:'Jost',sans-serif;font-size:.75rem;
   letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.6;
@@ -1159,71 +1160,39 @@ body.tok-taught .tok-hint{display:none;}
 .lang-toggle--inline{margin-left:0;}
 .lang-toggle--inline .lang-opt.active{color:var(--cream);border-bottom:1px solid rgba(201,168,76,.5);}
 
-/* ── FULLSCREEN — landscape card floating on a dark stage ── */
-/* Capped at 900px rather than growing to fill a wide window: past that the
-   card becomes a wide empty field with a small block of text in the middle
-   — the fix is the ratio, not more chrome. Keeps the card an object sitting
-   on the dark stage instead of becoming the stage. */
-.party-card{
-  width:min(94vw,900px);height:min(74dvh,60vw);max-width:none;min-height:230px;
-  border:1px solid var(--border);border-radius:0;
-  box-shadow:0 12px 60px rgba(0,0,0,.65),0 2px 10px rgba(0,0,0,.5);
-  background:var(--card-bg);}
-.party-c-accent{height:5px;}
-.party-card::before,.party-card::after{width:40px;height:40px;}
-.party-card::before{top:32px;left:32px;}
-.party-card::after{bottom:32px;right:32px;}
-.party-exit,.party-hint,.party-number{transition:opacity .5s ease;}
-.party-overlay.idle .party-exit,
-.party-overlay.idle .party-hint{opacity:0;pointer-events:none;}
-.party-overlay.idle .party-number{opacity:.25;}
-
-/* ── FULLSCREEN — PHONE: the screen becomes the card ──
-   A 12:7 card inside a 9:19.5 window can never be more than about a fifth
-   of the screen, so below this it drops the card-as-object entirely: no
-   box, no background of its own — .party-card just fills the window, so
-   its accent rail and corner brackets read as belonging to the screen.
-   Comes after the unconditional .party-card rule above (same selector,
-   same specificity) so it actually wins at narrow widths — a media query
-   earlier in the cascade would lose to a later unconditional rule. */
-@media(max-width:767px){
-  .party-card{width:100%;height:100%;max-width:none;min-height:0;
-    border:none;border-radius:0;box-shadow:none;background:transparent;}
-  .party-c-accent{height:4px;
-    -webkit-mask:linear-gradient(to right,transparent 0%,black 20% 80%,transparent 100%);
-    mask:linear-gradient(to right,transparent 0%,black 20% 80%,transparent 100%);}
-  /* clear of the Close/Draw-three row up top */
-  .party-card::before,.party-card::after{width:34px;height:34px;}
-  .party-card::before{top:56px;left:26px;}
-  .party-card::after{bottom:56px;right:26px;}
-  /* label/question/count: one left-aligned stack — centred text at this
-     size in a full-bleed field has no left edge for the eye to return to */
-  .party-inner{align-items:flex-start;text-align:left;padding:0 42px;gap:22px;}
-  .party-level{font-size:.625rem;font-weight:600;letter-spacing:.3em;}
-  .party-question{font-size:clamp(1.625rem,8vw,2.125rem);line-height:1.34;text-align:left;}
-  .party-number{color:#7a6e60;}
-  .party-hint--desktop{display:none;}
-  .party-hint--phone{display:inline;}
-  .party-hint{font-size:.5rem;letter-spacing:.1em;color:rgba(240,232,216,.3);}
-  /* orientation toggle: two small rectangles, bottom centre. 92px clears
-     the existing Twist button's own box (bottom:34px + its padding reaches
-     ~78px) — FULLSCREEN.md's mockup doesn't include Twist, so this is
-     placed to sit above it rather than overlapping. */
+/* ── FULLSCREEN — phone orientation toggle ──
+   For anyone whose phone is orientation-locked: mirrors the CSS landscape
+   layout above via a class instead of an actual media query, so the
+   composition matches what a real rotation would produce. */
+@media(max-width:899px){
   .party-orient{display:flex;align-items:center;gap:14px;position:fixed;left:50%;
-    bottom:92px;transform:translateX(-50%);z-index:2;transition:opacity .5s ease;}
+    bottom:100px;transform:translateX(-50%);z-index:6;transition:opacity .5s ease;}
   .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
   .party-orient-opt{width:15px;height:22px;padding:0;cursor:pointer;
     background:none;border:1px solid rgba(240,232,216,.24);}
   .party-orient-opt--landscape{width:26px;height:15px;}
   .party-orient-opt.live{border-color:#c9a84c;background:rgba(201,168,76,.16);}
-  /* the toggle sets the SAME landscape composition an actual device
-     rotation would — a wider measure, not a literal 90° transform */
-  .party-overlay.orient-landscape .party-inner{padding:0 74px;}
-  .party-overlay.orient-landscape .party-question{font-size:clamp(1.5rem,4.4vw,1.875rem);}
-  .party-overlay.orient-landscape .party-card::before,
-  .party-overlay.orient-landscape .party-card::after{width:30px;height:30px;}
-  .party-overlay.orient-landscape .party-card::before{left:26px;}
-  .party-overlay.orient-landscape .party-card::after{right:26px;}
+
+  .party-overlay.orient-landscape .party-top{padding:8px 40px 0 44px;}
+  .party-overlay.orient-landscape .party-bottom{padding:0 40px 14px 44px;}
+  .party-overlay.orient-landscape .party-inner{padding:0 40px 0 44px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);
+    grid-template-areas:"level twist" "q twist";align-content:center;column-gap:32px;row-gap:16px;}
+  .party-overlay.orient-landscape .party-inner:not(:has(.party-number.twist)){grid-template-columns:minmax(0,1fr);grid-template-areas:"level" "q";}
+  .party-overlay.orient-landscape .party-level{grid-area:level;}
+  .party-overlay.orient-landscape .party-question{grid-area:q;font-size:clamp(2.125rem,5.6vw,2.875rem);line-height:1.08;max-width:none;}
+  .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;margin:0;padding:0 0 0 28px;border-top:none;border-left:1px solid rgba(201,168,76,.25);font-size:25px;}
+  .party-overlay.orient-landscape .party-picker{padding:10px 40px 28px 44px;}
+  .party-overlay.orient-landscape .party-picker-top{flex-direction:row;justify-content:space-between;align-items:center;padding:0;}
+  .party-overlay.orient-landscape .party-picker .picker-options{grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:10px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt{padding:20px 20px 20px 24px;justify-content:flex-start;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-accent{top:10%;bottom:10%;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:27px;line-height:1.2;}
+}
+/* real landscape already gets the layout above from its own media query;
+   the toggle only matters for a portrait-locked phone, so hide it once the
+   viewport is genuinely landscape instead of leaving redundant chrome. */
+@media (max-width:899px) and (orientation:landscape) and (max-height:500px){
+  .party-orient{display:none;}
 }
 
 /* menu drawer: de-boxed, text-first — same design language as the rest.
@@ -1242,26 +1211,6 @@ body.tok-taught .tok-hint{display:none;}
   .tray.open{max-height:330px;}
   .app{max-width:680px;}
 
-  /* Fullscreen desktop: the card is big enough here, but its interior was
-     composed for a short centred stack, leaving the top/bottom thirds
-     empty and the corner brackets pointing at nothing. Move label/
-     question/count to the corners instead — every corner the brackets
-     mark now has something in it, no new mode or variable-height card.
-     .party-inner stays a static (non-positioned) wrapper, so these
-     children position absolute against .party-card, the nearest
-     positioned ancestor, skipping over it entirely. */
-  .party-inner{display:block;position:static;padding:0;}
-  /* 44px clears the top-left/bottom-right corner brackets (40px square,
-     32px inset — their lines sit at exactly 32px from each edge), rather
-     than the 22/20px this shipped with, which put the label's and hint's
-     own line-height right on top of the bracket's stroke. */
-  .party-level{position:absolute;top:44px;left:44px;letter-spacing:.3em;}
-  .party-question{position:absolute;inset:0;display:flex;align-items:center;
-    text-align:left;padding:44px 44px 40px;font-size:clamp(1.6875rem,2.4vw,2.375rem);line-height:1.32;}
-  .party-number{position:absolute;bottom:20px;left:44px;color:#7a6e60;}
-  .party-corner-hint{display:block;position:absolute;bottom:44px;right:44px;z-index:2;
-    font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
-    color:rgba(240,232,216,.3);}
   /* drawers become centered panels */
   .drawer,.sub-drawer{
     left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
