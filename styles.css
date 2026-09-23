@@ -287,6 +287,16 @@ body.showing-hand-summary .card-question{
   .card-level{font-size:.96rem;}
   .card-question{font-size:1.656rem;}
 }
+/* PC: the same King of Clubs shape. The desktop card is much wider than
+   the phone one, so on a short window that shape alone would push the
+   controls below the fold — max-width caps the card by window height
+   (380px ≈ everything on screen that isn't the card), which only kicks in
+   when the window is too short; on a normal full-HD or larger window the
+   card is its full width. The 640px floor stops a very short window (e.g. a
+   laptop at 150% scaling) shrinking it to a sliver — that one scrolls. */
+@media(min-width:768px){
+  .card{aspect-ratio:556/360;max-width:max(640px, calc((100dvh - 380px) * 556 / 360));margin-left:auto;margin-right:auto;}
+}
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row (same slot the language switch used
    to hold — language moved to the menu only). Tapping it doesn't add
@@ -1314,12 +1324,6 @@ body.tok-taught .tok-hint{display:none;}
   .d-label{font-size:.9rem;} .d-sub{font-size:.9rem;}
   .session-btn{font-size:.9rem;padding:15px 18px;}
   .help-content p{font-size:1.15rem;}
-  /* 3/2 made the card tall enough that, combined with the header/token/
-     preset chrome above it, most 1180-1600px-wide desktop windows had to
-     scroll to see the controls below — 2/1 (the same ratio the short-
-     window query below already uses for exactly this reason) keeps the
-     whole screen on one page without a window-height media query of its own. */
-  .card{aspect-ratio:2/1;}
   .card-question{font-size:2.5rem;line-height:1.42;}
   .card-body-inner{padding:30px 64px 20px;gap:22px;}
   /* this and the earlier @media(min-width:1024px) block both set .title —
@@ -1346,7 +1350,6 @@ body.tok-taught .tok-hint{display:none;}
 /* short desktop windows: keep everything on one screen */
 @media(min-width:768px) and (max-height:820px){
   .app{max-width:820px;}
-  .card{aspect-ratio:2/1;}
   .card-question{font-size:2.1rem;}
   .card-level{font-size:1rem;}
   .twist-sentence.twist{font-size:.98rem;}
