@@ -27,27 +27,17 @@ function pickTwist() {
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
 function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
-// Applies (or clears) the twist text on a counter element. Clearing used to
-// just leave the element alone, on the assumption a fresh flipToCard() had
-// always just written the real count text a moment earlier — true when a
-// twist only ever cleared on a new card, false now that tapping Twist a
-// second time clears it in place, so this restores the count itself.
-// party-number is the one element that still shows a plain count when
-// untwisted (its own roman "n / total" reading); twistSentence has no such
-// job any more (the real count moved to #progCount under the bar), so it
-// just goes empty again.
+// Applies (or clears) the twist text on a counter element. party-number now
+// shows only the Twist sentence (the count lives in #party-count instead),
+// so clearing it just empties it out, same as twistSentence.
 function applyTwistToCounter(el) {
   if (!el) return;
   if (currentTwist) {
     el.textContent = state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en;
     el.classList.add('twist');
   } else {
+    el.textContent = '';
     el.classList.remove('twist');
-    if (el.id === 'party-number') {
-      if (hasCurrentCard()) el.textContent = partyRomanCount(state.currentIndex + 1, state.visibleDeck.length);
-    } else {
-      el.textContent = '';
-    }
   }
 }
 function renderTwist() {
@@ -247,8 +237,9 @@ function openPicker(options) {
     const div = document.createElement('div');
     div.className = 'pick-opt';
     const color = levelColor(card.level);
+    const { light } = giltStops(color);
     div.innerHTML = `
-      <div class="pick-opt-accent" style="background:${color}"></div>
+      <div class="pick-opt-accent" style="background:linear-gradient(180deg,${color},${light} 50%,${color})"></div>
       <span class="pick-opt-level" style="color:${color}">${LEVEL_LABELS[card.level]||''}</span>
       <span class="pick-opt-q">${esc(translateQ(card))}</span>
     `;

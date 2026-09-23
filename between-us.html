@@ -611,26 +611,45 @@
 
 <!-- FULLSCREEN OVERLAY -->
 <div class="party-overlay" id="partyOverlay">
-  <button class="party-exit" id="partyExit">&#8249;&nbsp;&nbsp;Close</button>
-    <button class="party-twist" id="partyBtnTwist" type="button">Twist</button>
-    <button class="party-pick" id="partyPick">Draw three</button>
-  <button class="party-prev-btn" id="partyPrevBtn" style="display:none;"></button>
-  <button class="party-more-btn" id="partyMoreBtn" style="display:none;"></button>
   <div class="party-card">
     <div class="party-c-accent" id="party-accent"></div>
-    <div class="card-picker party-picker" id="partyPicker">
-      <div class="picker-hint" id="partyPickerHint">Pick one &mdash; the other two are gone</div>
-      <div class="picker-options" id="partyPickerOptions"></div>
+
+    <div class="party-top party-chrome">
+      <button class="party-exit" id="partyExit">&#8249; Close<span class="party-key">Esc</span></button>
+      <span class="party-count" id="party-count"></span>
+      <button class="party-star" id="partyStar" aria-label="Star">&#9733;</button>
     </div>
+
     <div class="party-zone-prev" id="party-zone-prev"></div>
     <div class="party-zone-next" id="party-zone-next"></div>
+
     <div class="party-inner">
       <div class="party-level" id="party-level"></div>
       <div class="party-question" id="party-question">Tap to begin.</div>
-      <div class="party-number" id="party-number"></div>
+      <div class="party-number" id="party-number"></div><!-- now: Twist only -->
     </div>
-    <div class="party-corner-hint" aria-hidden="true">TAP &#8594;</div>
+
+    <div class="party-bottom party-chrome">
+      <button class="party-prev-btn" id="partyPrevBtn" aria-label="Previous">&#8592;</button>
+      <div class="party-actions">
+        <button class="party-twist" id="partyBtnTwist" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><path d="M10 7h4a3 3 0 0 1 3 3v4"/><path d="M14 17H10a3 3 0 0 1-3-3V10"/></svg>
+          Twist<span class="party-key">T</span>
+        </button>
+        <button class="party-pick" id="partyPick"><span class="pp-long">Draw three</span><span class="pp-short">Three</span><span class="party-key">3</span></button>
+      </div>
+      <button class="party-next-btn" id="partyNext" aria-label="Next">&#8594;</button>
+    </div>
+
+    <div class="card-picker party-picker" id="partyPicker">
+      <div class="party-picker-top">
+        <button class="party-picker-back" id="partyPickerBack">&#8249; One card</button>
+        <div class="picker-hint" id="partyPickerHint">Pick one &mdash; the other two are gone</div>
+      </div>
+      <div class="picker-options" id="partyPickerOptions"></div>
+    </div>
   </div>
+
   <!-- Phone only (see styles.css's "FULLSCREEN — PHONE" block): a manual
        mirror of device orientation, for anyone whose phone is orientation-
        locked and can't just turn it. Reports the live state as much as it
@@ -638,10 +657,6 @@
   <div class="party-orient" id="partyOrient" aria-hidden="true">
     <button type="button" class="party-orient-opt party-orient-opt--portrait" data-orient="portrait" aria-label="Portrait"></button>
     <button type="button" class="party-orient-opt party-orient-opt--landscape" data-orient="landscape" aria-label="Landscape"></button>
-  </div>
-  <div class="party-hint" id="partyHint">
-    <span class="party-hint--desktop">&#8592; &nbsp;&#183;&nbsp; tap &nbsp;&#183;&nbsp; &#10005; to exit</span>
-    <span class="party-hint--phone">TAP &nbsp;&#183;&nbsp; NEXT CARD</span>
   </div>
 </div>
 

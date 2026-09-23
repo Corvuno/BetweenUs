@@ -365,10 +365,13 @@ async function run() {
     const overlay = page.locator('#partyOverlay');
     assert(await overlay.evaluate(el => el.classList.contains('open')), 'party overlay did not open');
     const before = await cardParts(page);
+    const countBefore = await page.locator('#party-count').textContent();
     await page.locator('#partyOverlay .party-card').click();
     await page.waitForTimeout(300);
     const after = await cardParts(page);
     assert(after.index === before.index + 1, `party tap did not advance: ${before.index} -> ${after.index}`);
+    const countAfter = await page.locator('#party-count').textContent();
+    assert(countAfter !== countBefore, `#party-count did not update on advance: "${countBefore}" -> "${countAfter}"`);
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
     assert(!(await overlay.evaluate(el => el.classList.contains('open'))), 'party overlay did not close');

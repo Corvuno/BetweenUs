@@ -241,6 +241,33 @@ document.getElementById('d-save').addEventListener('click',()=>{
     newOv.classList.remove('open');
   });
 
+  // Next/prev — chrome buttons forward to the same nav the tap zones use
+  const partyNextBtn = newOv.querySelector('#partyNext');
+  if (partyNextBtn) partyNextBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    nextCard(); updateDeckInfo(); updateDrawMore();
+  });
+  const partyPrevBtn = newOv.querySelector('#partyPrevBtn');
+  if (partyPrevBtn) partyPrevBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (partyPrevBtn.disabled) return;
+    prevCard(); updateDeckInfo();
+  });
+
+  // Star — same handler as the main star
+  const partyStarBtn = newOv.querySelector('#partyStar');
+  if (partyStarBtn) partyStarBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleFavourite();
+  });
+
+  // Draw-three picker's back button just closes the picker
+  const partyPickerBack = newOv.querySelector('#partyPickerBack');
+  if (partyPickerBack) partyPickerBack.addEventListener('click', e => {
+    e.stopPropagation();
+    closePicker();
+  });
+
   // Touch: single handler, always prevents click so mobile never double-fires
   let ptsx = 0, ptsy = 0, partyBusy = false;
   const partyThrottle = (fn) => {
@@ -256,8 +283,7 @@ document.getElementById('d-save').addEventListener('click',()=>{
   }, { passive: true });
 
   newOv.addEventListener('touchend', e => {
-    if (e.target.closest('#partyExit')) return;
-    if (e.target.closest('#partyBtnTwist')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -283,8 +309,7 @@ document.getElementById('d-save').addEventListener('click',()=>{
   // Click — desktop only (mobile click is suppressed by touchend's preventDefault above)
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
-    if (e.target.closest('#partyExit')) return;
-    if (e.target.closest('#partyBtnTwist')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
@@ -335,6 +360,8 @@ document.addEventListener('keydown',e=>{
     if(e.key==='Escape')     exitParty();
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); updateDrawMore(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
+    if(e.key==='t'||e.key==='T') toggleTwist();
+    if(e.key==='3') document.getElementById('pickToggle').click();
   } else {
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
