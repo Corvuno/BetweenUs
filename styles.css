@@ -1116,10 +1116,13 @@ body.tok-taught .tok-hint{display:none;}
 .cat-topbar{flex-shrink:0;justify-content:center;padding:0 0 6px;}
 .cat-topbar--legacy{display:none!important;}   /* logic kept, row no longer shown */
 
-/* the After Dark chapter row carries its own inline spice toggle */
+/* the After Dark chapter row carries its own inline spice toggle. Same
+   padding as every other .chapter row (15px 13px, see below) so this one
+   isn't visibly shorter just because it's built from a nested .ch-hit
+   instead of being the button itself. */
 .chapter.chapter--afterdark{display:flex;align-items:stretch;padding:0;gap:0;}
-.chapter.chapter--afterdark .ch-hit{flex:1;display:flex;align-items:baseline;gap:10px;
-  background:none;border:none;cursor:pointer;text-align:left;padding:8px 8px 8px 13px;color:inherit;font:inherit;}
+.chapter.chapter--afterdark .ch-hit{flex:1;display:flex;align-items:center;gap:10px;
+  background:none;border:none;cursor:pointer;text-align:left;padding:15px 8px 15px 13px;color:inherit;font:inherit;}
 .spice-glyph--inline{flex-shrink:0;margin-right:8px;align-self:center;}
 
 /* All/None: one small pair per pane, not a shared floating bar */
@@ -1513,8 +1516,15 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── the five chapters ── */
 .chapters{display:flex;flex-direction:column;gap:4px;}
+/* min-height keeps every row the same size whether its description wraps
+   to one line or two — the wrap point depends on how long each chapter's
+   own name is (name + desc share one row), so without this the rows were
+   visibly different heights from chapter to chapter. Sized to fit two
+   lines of .ch-desc at its current font-size/line-height plus the row's
+   own 15px top/bottom padding; align-items:center (not baseline) so a
+   one-line row centers inside that height instead of sitting at the top. */
 .chapter{--ch:var(--gold);
-  display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:10px;width:100%;min-height:65px;text-align:left;cursor:pointer;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
   padding:15px 13px;transition:background .2s,border-color .2s;}
 /* the left rail: a vertical metal sweep (same gilt.js gradient as the card
