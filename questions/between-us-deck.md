@@ -25,7 +25,7 @@ The questions come first, category by category. The full change log is at the bo
 
 ## Warm
 *Light and personal — the fond, the funny, the telling. (Absorbed Playful in v6.17.)*
-1. Some small thing you do properly, though nobody would ever check...
+1. Which chore do you secretly not mind?
 2. One small thing can ruin your entire morning. Which?
 3. Whose cooking do you miss?
 4. Point to something you're wearing that has a story.
@@ -45,7 +45,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What's something you used to think was sophisticated that now makes you laugh?
 5. What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?
 6. Do you use music to feel more, or to feel less?
-7. What's something about yourself you were embarrassed to admit you liked, before you felt allowed to?
+7. Is there an artist or song you can't explain loving — it just doesn't fit, and you don't care?
 8. What's something you appreciate far more now that you understand how it actually works?
 9. Does great art excuse a terrible artist — got an example?
 10. When did beauty catch you completely unprepared?
@@ -53,16 +53,16 @@ The questions come first, category by category. The full change log is at the bo
 12. What's a story you've stretched out on purpose, just to keep it going a little longer?
 
 ## Life
-1. Walk me through your first thirty minutes after waking — the real version.
+1. What do you let people assume about your life that isn't quite accurate?
 2. What would have to change for your life to feel more like your own?
-3. Which chore do you secretly not mind?
-4. Describe your ideal ordinary day — not a holiday, just a Tuesday that felt right.
+3. Who would know it was you from just one small habit, without ever seeing your face?
+4. If you had to name what's getting the least of you lately, what would it be?
 5. What takes up far more of your life than anyone would guess?
-6. What's something you've done that cost you something — and that you'd do exactly the same again?
+6. What's something that cost you, that you'd do exactly the same again?
 7. What's something you're doing right now without knowing if it'll actually work out?
 8. What's a rule you've quietly made for yourself that nobody else knows about?
 9. What does getting older take from you that you didn't expect, and what does it give?
-10. What's something completely ordinary in your life right now that you'd genuinely miss if it vanished tomorrow?
+10. Out of everything filling your days right now, what actually matters to you?
 11. What's different about your life this year?
 12. If you stopped explaining why you can't, what would change about how you live?
 
@@ -109,16 +109,16 @@ The questions come first, category by category. The full change log is at the bo
 12. If your younger self could see your life right now, what would surprise them most?
 
 ## Unwind
-1. When did you last stay outside longer than you meant to — and where were you?
+1. What have you built, cooked, or fixed that you're still a little proud of?
 2. What's something you do now for fun that would've bored you stiff ten years ago?
 3. What reliably gets you out of your own head?
 4. The hour of the week that's entirely yours...
-5. What's the difference between a day you needed and a day you just let slip by?
-6. There was a moment you felt completely free. Where were you?
+5. What's something you practice that you'll probably never master — and keep doing anyway?
+6. Is there a place or moment you feel free enough to actually dance, even badly?
 7. What does travel give you that staying home never could?
 8. The most unexpected beauty a trip ever handed you...
-9. Describe a moment recently when life felt uncomplicated.
-10. A place you keep going back to — not because it's the best, but because it's yours...
+9. Which game would you drop everything for, even now?
+10. What did you used to do for fun that life quietly pushed out?
 11. What's the smallest thing that makes a day better — and where do you find it?
 12. What does the first warm day of the year do to you?
 
@@ -130,9 +130,9 @@ The questions come first, category by category. The full change log is at the bo
 5. Who decided they didn't like you — and did you let it go?
 6. When has having power over someone made you kinder, not crueler?
 7. What's something that used to take courage that's now just routine for you?
-8. There was a time you completely lost your footing. What held — and what did you rebuild first after?
+8. A time you completely lost your footing — what held, and what did you rebuild first?
 9. What have you had to accept that you never chose?
-10. What's a part of your character you hope never changes — even if it makes life just a bit harder?
+10. What's a part of your character you hope never changes, even when it makes life harder?
 11. What's something true about you that took far too long to notice?
 12. What do you come back to after everything else falls away?
 
@@ -172,7 +172,7 @@ The questions come first, category by category. The full change log is at the bo
 4. Is there a philosophy or teaching you've borrowed from, without signing up to all of it?
 5. When did you last feel part of something larger — and what triggered it?
 6. How near has death actually come to you?
-7. Who did something special for you in your recent past that you did not properly thank them for yet.
+7. Who did something special for you recently that you never properly thanked them for?
 8. What do you hope is true, even if you doubt it?
 9. When were you last completely present — nothing to fix, nothing to plan?
 10. What physical practice has brought you closest to something spiritual?
@@ -202,7 +202,7 @@ The questions come first, category by category. The full change log is at the bo
 5. Tell about a moment a friend showed up for you in a way you didn't expect.
 6. One friend deserves a better version of you...
 7. How do you make friends now — and is it harder than it used to be?
-8. Who's a friend you've never had a real conflict with — and do you think that's healthy, or just luck?
+8. Which friend have you never really had a conflict with — healthy, or just luck?
 9. Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?
 10. The friend I'd call when I'm in real trouble is...
 11. Who can make you laugh when you really don't want to?
@@ -233,7 +233,7 @@ The questions come first, category by category. The full change log is at the bo
 8. Who is your celebrity crush — and does that line up with your actual type?
 9. How much does a voice do for you?
 10. Are you a different person when you're attracted to someone — and who shows up?
-11. What do you think the person across from you finds attractive about you — then ask if you're right.
+11. Guess what the person across from you finds attractive about you — then ask if you're right.
 12. Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?
 
 ## Values
@@ -242,7 +242,7 @@ The questions come first, category by category. The full change log is at the bo
 3. If you had to guess, what percentage of your life is choice, and what percentage is circumstance?
 4. What line have you watched someone cross that told you everything?
 5. Quote the sentence your parents repeated — that you now live by, or against.
-6. What's something you pretend to have a strong opinion about, but actually don't care about at all?
+6. What's something you pretend to have a strong opinion on, but don't care about at all?
 7. When did you stay silent and shouldn't have?
 8. What can having money make disappear that not having it can't?
 9. What are the outer limits of your compassion?
@@ -255,31 +255,31 @@ The questions come first, category by category. The full change log is at the bo
 2. When did you last actually do something about a problem bigger than you — and did it matter?
 3. What's something you benefit from that you know isn't fair?
 4. What change in your lifetime still amazes you?
-5. Is there a political position you hold that you find genuinely hard to defend to people who disagree?
+5. Which political position of yours is genuinely hard to defend to people who disagree?
 6. What's something you wish people understood about your culture?
 7. Do people actually change — or just get better at managing what doesn't?
-8. Is there a topic you've just stopped following entirely, because the news stopped doing you any good?
+8. What topic have you stopped following entirely, because the news did you no good?
 9. Is there something happening in the world that genuinely worries you?
 10. Is progress real?
 11. What would you defend about your country to a foreigner — and what not?
 12. Which common belief about how the world works do you think is simply wrong?
 
 ## Work
-1. Which colleague taught you the most without ever meaning to?
+1. What's the best piece of office drama you've ever witnessed, whatever your part in it was?
 2. What would you do professionally if status played no role at all?
 3. What's the piece of work you're most proud of that nobody applauded?
 4. What's the strangest job you've ever had?
 5. Has your idea of success survived contact with reality?
-6. Would you rather be seen as reliable or brilliant — and which one do people actually see you as?
+6. Reliable or brilliant — which would you rather be seen as, and which do people actually see?
 7. Is ambition something you have or something that has you?
 8. What made you choose this field — and is it still the reason you stay?
 9. You're genuinely talented at something you'd never turn into a profession...
 10. Something would make you walk out tomorrow. What?
-11. Would you rather stop working today or never be allowed to stop — which one actually scares you more?
+11. Stop working today, or never be allowed to stop — which scares you more?
 12. What do colleagues learn about you in the first week — and what only after a year?
 
 ## Deep
-1. What's something you'd tell someone if they asked the right question — but you'd never bring up yourself?
+1. What would you tell someone if they asked the right question, but never bring up yourself?
 2. What do you do differently the moment you know you're being watched?
 3. When did you last cry, and what was underneath it?
 4. Who left your life better than they found it?
@@ -452,16 +452,16 @@ The questions come first, category by category. The full change log is at the bo
 3. When has your body not done what you wanted in bed — and what did you do?
 4. The most sexually bold text you've sent that landed exactly right — care to repeat it?
 5. What did you believe about sex that turned out to be nonsense?
-6. Your count: do you know it? Break it down if you dare — relationships, flings, one-night stands.
+6. Your count — do you know it? Break it down: relationships, flings, one-night stands.
 7. Tell about the moment sex went most embarrassingly wrong.
 8. What does sexual fulfilment feel like — and do you have it now?
-9. In a relationship, what age difference is where your gut starts to hesitate, no matter what anyone else would think?
+9. In a relationship, what age difference makes you hesitate, no matter what anyone else would think?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
 12. What's the longest you've gone without sex — and how was that?
 
 ## Kink 🔞
-1. What does it feel like to be completely at someone's mercy — or to have someone completely at yours?
+1. What's it feel like to be completely at someone's mercy — or to have them at yours?
 2. Watching, or being watched — which does more for you?
 3. Can pain — given or taken — carry pleasure for you, and what's the pull?
 4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
@@ -503,6 +503,9 @@ The questions come first, category by category. The full change log is at the bo
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Work** — "Which colleague taught you the most without ever meaning to?" (independently approved for Work 1 in a different session while this branch was still open; owner resolved the collision by keeping this session's "office drama" card instead — see the merge note in the change log)
+- **Warm** — "Some small thing you do properly, though nobody would ever check..." (displaced from Warm 1 in v6.88 by "Which chore do you secretly not mind?", moved in from Life 3 — owner's call, both cards occupied the same "quiet care nobody checks on" ground and the Life version was the stronger fit for Warm's register)
+- **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
 - **Attract** — "Tell me about a moment of chemistry with a total stranger that went absolutely nowhere." (proposed for Flesh 11 during the v6.86 Flesh-11 search; owner called it a strong Attract card, not Flesh — pre-attraction chemistry belongs to Attract's territory, not Flesh's prelude-to-sex one. No Attract slot open yet.)
 - **Flesh** — "Tell me about the best pickup line — good or bad — that's ever actually worked on you." (proposed for Flesh 11 in place of the "how do you make what you want known" mechanics card in v6.86; owner kept it in reserve, held for a future slot rather than used here)
 - **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
@@ -709,18 +712,122 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
-## Patch v6.90 — Work 1 swap, Bare 4 trim
-- **Work 1** → *"Which colleague taught you the most without ever meaning to?"* Replaces *"If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?"* — owner asked for a replacement; it was also the longest normal card, overflowing the new fixed-size phone card. Dutch left as is for now. Owner picked this alternative over two others.
+## Patch v6.91 — Life 3 settled, Life redesign complete
+- **Life 3** → *"Who would know it was you from just one small habit, without ever seeing
+  your face?"* Replaces "Which chore do you secretly not mind?" (that text is now
+  Warm 1's — no longer duplicated). Two earlier target attempts for this slot were
+  rejected (an abstract "load-bearing structure" framing, then a still-too-similar set of
+  reworded alternatives) before landing on this one, offered alongside two other genuinely
+  different mechanisms (an object, a repeated behavior) for the same "ordinary thing that
+  reveals who you specifically are" target.
+
+This closes the Life redesign: slots 1, 3, 4, and 10 all replaced (see v6.89 and v6.90
+above), 2, 5, 6, 7, 8, 9, 11, 12 kept as they already fit the category's real register —
+ownership, structure, choices, and the specific, ordinary texture of being this person.
+
+## Patch v6.90 — Life 10 settled
+- **Life 10** → *"Out of everything filling your days right now, what actually matters to
+  you?"* Replaces "What's something completely ordinary in your life right now that you'd
+  genuinely miss if it vanished tomorrow?" — routine-description; new target is signal vs.
+  noise inside the ordinary shape of a life. Owner cut the original alternative's
+  em-dash clause ("— and what's just noise?") as unneeded. Life 3 still open.
+
+## Patch v6.89 — Life redesign begins: slots 1 and 4 settled
+Life was drifting into "describe an ordinary day" (four cards) instead of its real
+register — ownership, structure, choices, what it's like to actually be this specific
+person. Two of the four open slots settled so far (3 and 10 still open, see BENCH-style
+note below — first-pass targets rejected by the owner as still too close to kept cards or
+to each other):
+
+- **Life 1** → *"What do you let people assume about your life that isn't quite
+  accurate?"* Replaces "Walk me through your first thirty minutes after waking — the real
+  version." — routine-description; new target is the gap between the life you present and
+  the one you're actually living.
+- **Life 4** → *"If you had to name what's getting the least of you lately, what would it
+  be?"* Replaces "Describe your ideal ordinary day — not a holiday, just a Tuesday that
+  felt right." — routine-description; new target is what's currently losing out to what,
+  inside your own life.
+
+Life 3 and Life 10 remain open — Life 3 currently still shows its old text (now also
+duplicated at Warm 1, see previous patch) pending a genuinely new target; Life 10 still
+shows its original text pending the same.
+
+## Patch v6.88 — Warm 1 ← Life 3 (chore card relocated)
+- **Warm 1** → *"Which chore do you secretly not mind?"* Replaces "Some small thing you
+  do properly, though nobody would ever check..." — both were the same "quiet care
+  nobody checks on" idea; owner moved the Life 3 version in as the stronger fit for
+  Warm, freeing Life 3 for a genuine Life-register replacement (redesign in progress,
+  see next patch).
+
+## Patch v6.87 — Work 1, boring premise swapped for a fun one
+- **Work 1** → *"What's the best piece of office drama you've ever witnessed, whatever your
+  part in it was?"* Replaces "If you had to train your replacement for exactly one day,
+  what would you make sure they knew that's not in any manual?" — owner: the premise
+  itself (inside info/tacit training knowledge) is dry regardless of phrasing, not
+  something people enjoy telling. First rewrite attempt just simplified the same premise
+  and was rejected for the same reason; this version targets a genuinely fun work story
+  instead.
+
+## Patch v6.86 — Unwind redesign (five slots) plus one Culture swap
+Owner called Unwind too narrow — built as "everything that makes life worthwhile," but
+nine of its twelve cards had drifted into pure rest/decompression, several converging on
+the same "where were you" shape. Five slots redone one at a time, each through several
+rejected directions before landing:
+
+- **Unwind 1** → *"What have you built, cooked, or fixed that you're still a little proud
+  of?"* Replaces "When did you last stay outside longer than you meant to — and where
+  were you?" — thin, and one of three cards fishing for the same "where were you" answer
+  (see 6 and 10 below).
+- **Unwind 5** → *"What's something you practice that you'll probably never master — and
+  keep doing anyway?"* Replaces "What's the difference between a day you needed and a day
+  you just let slip by?" — too abstract to produce a memory rather than a theory.
+- **Unwind 6** → *"Is there a place or moment you feel free enough to actually dance, even
+  badly?"* Replaces "There was a moment you felt completely free. Where were you?" A music
+  angle was tried and rejected twice: first as guilty-pleasure trope (too close to
+  Culture's own "embarrassed to admit you liked" card), then as a taste/surprise angle
+  that owner judged as still Culture's lane — Culture owns the *what* (media, something
+  tangible); Unwind owns the *why*, the experience. Dancing kept the experiential framing
+  the owner asked for.
+- **Unwind 9** → *"Which game would you drop everything for, even now?"* Replaces
+  "Describe a moment recently when life felt uncomplicated." The card with the most
+  rejected drafts this patch: vague "uncomplicated" framing, then a media/rewatch angle
+  (crossed into Culture's "haven't finished it" card), then a physical-challenge angle
+  (owner: people don't choose challenges, things just turn out harder than expected —
+  benched below for Body instead), then games-as-competitive-seriousness and
+  games-as-skill-satisfaction (both still about difficulty, not leisure). Landed on games
+  as leisure for its own sake — no money, no productive purpose, happiness only.
+- **Unwind 10** → *"What did you used to do for fun that life quietly pushed out?"*
+  Replaces "A place you keep going back to — not because it's the best, but because it's
+  yours..." — bland, and the third "place/where" card once counted against 1 and 6 above.
+  A performing/being-seen angle and an object/gear angle were both tried and rejected as
+  not landing.
+
+Also, **Culture 7** → *"Is there an artist or song you can't explain loving — it just
+doesn't fit, and you don't care?"* Replaces "What's something about yourself you were
+embarrassed to admit you liked, before you felt allowed to?" — owner flagged the original
+as reading like guilty-pleasure rather than its intended self-permission/self-discovery
+angle; this was the music-taste-mismatch card benched during the Unwind 6 search above,
+redirected here instead since it's genuinely Culture's register (the *what* — a specific
+song/artist), not Unwind's.
+
+*The following five patches (v6.92–v6.96) landed on `main` from a separate, concurrent
+session while this branch was still open, and are merged in here chronologically —
+renumbered from that session's own v6.86–v6.90 to avoid colliding with the numbers above.
+Only real conflict: that session's own Work 1 swap, resolved in this branch's favour (see
+v6.92 and the Work bench entry above) at the owner's explicit call.*
+
+## Patch v6.92 — Work 1 swap (superseded), Bare 4 trim
+- **Work 1** → *"Which colleague taught you the most without ever meaning to?"* Replaces *"If you had to train your replacement for exactly one day, what would you make sure they knew that's not in any manual?"* — owner asked for a replacement; it was also the longest normal card, overflowing the new fixed-size phone card. Dutch left as is for now. Owner picked this alternative over two others. **Superseded**: this collided at merge time with this branch's own Work 1 swap (v6.87 above, approved independently in this session before the two branches were reconciled); owner kept this branch's "office drama" version and benched this one instead.
 - **Bare 4** → *"The most sexually bold text you've sent that landed exactly right — care to repeat it?"* Replaces *"What's a sexually bold text you've sent and gotten exactly the response you wanted — care to repeat it, word for word?"* — trimmed to fit the new fixed-size phone card. Owner picked this alternative over two others.
 
-## Patch v6.89 — Friends 9, Flesh 11 trims
+## Patch v6.93 — Friends 9, Flesh 11 trims
 - **Friends 9** → *"Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?"* Replaces *"Do you trust people by default and get burned occasionally, or trust slowly and rarely get surprised — which one are you?"* — tied longest normal card, capping card text size; the either/or already asks it; owner picked this alternative over two others. Dutch left as is for now.
 - **Flesh 11** → *"First night with someone: do you want to take your time, or have them right then and there?"* Replaces *"The first time you sleep with someone, do you want to take your time with them, or do you want them right then and there?"* — tied longest normal card, capping card text size; "do you want" appeared twice; owner picked this alternative over two others.
 
-## Patch v6.88 — Abyss 1 trim
+## Patch v6.94 — Abyss 1 trim
 - **Abyss 1** → *"What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?"* Replaces *"What did you once think was too extreme, sexually, that's now just a Tuesday, and what still gives you pause on a Saturday night?"* — the longest normal card, capping how large card text can be; trimmed keeping the Tuesday / Saturday-night line, owner picked this alternative over two others.
 
-## Patch v6.87 — Mind 4 swap, Mind 5 trim (from the depth-scoring pilot)
+## Patch v6.95 — Mind 4 swap, Mind 5 trim (from the depth-scoring pilot)
 - **Mind 4** → *"Which of your memories do you suspect you've quietly rewritten over the
   years?"* Replaces *"When has a gut feeling known more than you did?"* — flagged as a
   stock "trust your gut" line with no angle specific to Mind; owner picked this
@@ -728,7 +835,7 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - **Mind 5** → *"Silence, nothing to do — how long before you actually start enjoying
   it?"* Drops "no phone," at the owner's request.
 
-## Patch v6.86 — six owner-decided swaps from the wording-refinement pass
+## Patch v6.96 — six owner-decided swaps from the wording-refinement pass
 - **Spirit 7** → *"Who did something special for you in your recent past that you did not
   properly thank them for yet."* Replaces *"Who are you overdue to thank — and what
   for?"* — owner's own rewrite.
@@ -1340,6 +1447,7 @@ Cut: the edited-story card (about your life, not now — a Past card in Raw clot
 **Mind de-ruminated.** Five of twelve cards were the same card — an unwanted recurring thought (old 1, 3, 6, 8, and adjacent 11) — which is what made the category read as trauma-focused. Card 3 kept as the sole survivor of that family; old 1, 6, 8, 11 cut, plus old 7 (unclear premise). Mind is now about thinking itself: habit formation (1), attention (5), the inner voice (6), inherited opinion (7), decision style (8), reading people (11), alongside the retained intuition, recurring-question and idea-that-changed-you cards. Old 10 retained rather than replaced — it is one of the few genuinely intellectual cards in the category.
 **Warm 7** → *"Is there something you're genuinely bad at that you still refuse to stop doing?"* — replaces the pettiest-grudge card, which was the third of a disproportion cluster with 8 and 10.
 **Owner sweep, batch 1.** Connect 6 → the misunderstood card and Connect 7 → the listening card; the two yes/no cards they replace were kept against review in v5.8, now deliberately reversed. Attract 3 → the being-wanted card (restores the *"Being desired does what to you?"* orphan benched when Desire was deleted in v5.5); Attract 4 rephrased to the claimed-type/actual-pattern construction. Values 3 → the luck card, which also clears the defend-what-you-can't-justify twin with the reworked Spirit 8. World 5 → the hard-to-defend political position; World 9 → the worry card, with the action clause dropped so it does not repeat World 2. Work 8 → why you chose this field.
+**Length pass.** 15 cards over 95 characters trimmed for wording only, same content, owner-approved per card: Life 6, Self 8, Self 10, Spirit 7, Friends 8, Attract 11, Values 6, World 5, World 8, Work 6, Work 11, Deep 1, Bare 6, Bare 9, Kinks 1. Bare 9 dropped "gut" at the owner's request; final wording *"In a relationship, what age difference makes you hesitate, no matter what anyone else would think?"* Owner reviewed the remaining nine over-length cards (Attract 4, Attract 6, Values 12, Carnal 12, Culture 5, Body 7, Values 3, Abyss 1, Abyss 11) and chose to keep each as-is over any of the shortened options offered.
 ## Patch v6.17 — After Dark rebuilt from the ground up
 Skin restored as its own category and redefined: **erotic-sensory, the gateway** — touch, scent, temperature, texture, hands, wordless signalling, public charge. Seven gated categories, each with one clear job:
 Attract ✦ (the pull, before anything happens) · Skin (the erotic senses) · Carnal (the act, from the inside) · Bare (the honest truths and history) · Kinks (fantasy, power, turn-ons) · Abyss (the far end) · Us: Intimate (the person across from you).

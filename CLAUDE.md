@@ -130,6 +130,12 @@ One issue card per proposed change, three alternatives each — never pick a sin
 winner yourself. Only write a swap into the deck files after the owner has replied
 picking (or rewriting) one of the alternatives for that specific slot.
 
+Every alternative is a complete, finished question — full sentence, exactly as it
+would read on the card. No shorthand, no slash-separated fragments, no "trimmed for
+space" versions standing in for the real text. If several directions are being shown
+at once, each one still gets its own fully written-out alternative — never a
+compressed list of half-phrases the owner has to mentally finish.
+
 **NEVER PUSH A QUESTION WITHOUT CONSULTING THE OWNER FIRST. NEVER.** There used to be an
 exception here for when the owner names a specific card and says what's wrong with it —
 that exception is revoked. It was used to justify picking replacement text unilaterally
@@ -143,6 +149,53 @@ the exact final words before they're pushed.
 
 This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
 only the deck's own card content.
+
+## Writing a card: the actual method
+
+Before proposing any alternative, work out what you want to know — the specific story or
+insight you're aiming for — and check it's something close to everyone has an answer to.
+Only then reverse-engineer the question that gets there. A phrasing that merely sounds
+plausible for the category, without a clear target in mind first, is how weak cards keep
+getting proposed round after round.
+
+A card has to produce a concrete memory, not an abstract theory about oneself. "What's the
+difference between a day you needed and a day you let slip by" invites reflection, not
+recall — nobody has a ready example. If a candidate's most likely answer is a definition
+or a philosophy rather than a specific instance, it hasn't earned its slot, regardless of
+category (the open, position-inviting exception below is a different, deliberate card
+type, not this failure mode).
+
+Know what a category is actually for, not just its label. "Unwind" is the experience/why
+of leisure, not a list of specific media or hobbies — that's Culture's job, the what,
+something tangible. Mixing up a category's real subject with a neighboring category's is
+how a proposal ends up rejected for territory it never should have entered.
+
+When a direction gets rejected, change the actual subject or angle — not just the wording
+around the same idea. Three different phrasings of one rejected concept are not three
+alternatives.
+
+Check a candidate against the whole deck, not just its own category, before proposing it —
+a collision with a different category's card is a real rejection reason, not a lesser one.
+
+## Alternatives must differ in substance, not just phrasing
+
+This is a hard rule, not a preference: the three alternatives in any one proposal must
+come at the target through genuinely different angles or mechanisms — a different object,
+act, person, or frame doing the work — never the same sentence reworded three times. It
+also applies across turns: a rejected idea doesn't get to resurface a slot or two later
+wearing new words. Default to this on every proposal, without being asked.
+
+The one exception: if the owner explicitly asks for the same question in different
+phrasing, that's the one time reworded phrasing alone is the right thing to deliver —
+don't apply this rule against an explicit request for it.
+
+## Verify before advising — don't assume
+
+Don't assert that a candidate is distinct from another card, free of collisions, or
+otherwise fine, from memory or impression. Check the actual files first — grep the deck,
+read the category, whatever it takes. If a claim can be verified in under a minute and
+wasn't, it doesn't get stated as fact; flag it as unverified instead, or go verify it
+before saying anything.
 
 ## Open, position-inviting questions are not a flaw
 
