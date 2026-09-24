@@ -41,6 +41,14 @@ body{
   font-family:'Jost',sans-serif;font-weight:300;
   display:flex;flex-direction:column;align-items:center;
   min-height:100%;padding-bottom:60px;overflow-x:hidden;
+  /* thin (weight 300), light-on-near-black text — exactly what this whole
+     app is set in — is the case where a browser's default subpixel/ClearType
+     anti-aliasing shows up as visible red/cyan fringing on letter edges
+     instead of clean strokes. Forcing grayscale AA fixes it everywhere at
+     once instead of per-element. text-rendering nudges the same browsers
+     toward better letter-spacing/kerning at these small sizes too. */
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
 }
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
