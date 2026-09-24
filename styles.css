@@ -664,7 +664,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-top .party-star{justify-self:end;}
 .party-bottom{justify-content:center;gap:16px;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
 .party-chrome button{height:44px;min-width:44px;background:none;border:none;padding:0 6px;cursor:pointer;
-  color:var(--muted-l);font:400 12px/1 'Poiret One',sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted-l);font:400 12px/1 'Jost',sans-serif;letter-spacing:.2em;text-transform:uppercase;
   display:flex;align-items:center;justify-content:center;gap:6px;}
 .party-chrome button:hover{color:var(--cream);}
 .party-exit{justify-self:start;padding-left:0 !important;}
@@ -692,8 +692,8 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 /* the question: left-aligned, vertically centred */
 .party-inner{flex:1;min-height:0;position:relative;z-index:3;pointer-events:none;
   display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:24px;padding:0 26px;text-align:left;}
-.party-level{display:flex;align-items:center;gap:10px;font:400 14px/1 'Poiret One',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
-.party-level::before{content:'';width:20px;height:1px;background:currentColor;flex-shrink:0;} /* leading rule only */
+.party-level{display:flex;align-items:center;gap:12px;font:600 13px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;} /* unchanged app label */
+.party-level::before{content:'';width:30px;height:3px;background:currentColor;flex-shrink:0;} /* the app's category bar, keep */
 .party-level:empty{display:none;}
 .party-question{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
   font-size:clamp(2.375rem,10.8vw,2.625rem);line-height:1.12;color:var(--cream);text-wrap:balance;
@@ -710,7 +710,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-number{display:none;}
 .party-number.twist{display:flex;flex-direction:column;align-items:flex-start;gap:12px;
   font:italic 400 24px/1.28 'Cormorant Garamond',serif;color:var(--gold-l);text-wrap:balance;max-width:26ch;}
-.party-number.twist::before{content:'TWIST';font:400 12px/1 'Poiret One',sans-serif;font-style:normal;letter-spacing:.3em;color:var(--gold);}
+.party-number.twist::before{content:'TWIST';font:600 12px/1 'Jost',sans-serif;font-style:normal;letter-spacing:.3em;color:var(--gold);}
 
 /* Draw three */
 .party-picker{position:absolute;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;
@@ -721,7 +721,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-picker::before{top:12px;left:12px;border-width:1px 0 0 1px;}
 .party-picker::after{bottom:12px;right:12px;border-width:0 1px 1px 0;}
 .party-picker-top{display:flex;justify-content:center;}
-.party-picker-back{height:44px;background:none;border:none;padding:0;color:var(--muted-l);font:400 12px/1 'Poiret One',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;}
+.party-picker-back{height:44px;background:none;border:none;padding:0;color:var(--muted-l);font:400 12px/1 'Jost',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;}
 .party-picker .picker-hint{display:none;}
 .party-picker .picker-options{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
 .party-picker .pick-opt{flex:1 0 auto;position:relative;display:flex;flex-direction:column;justify-content:center;
@@ -737,7 +737,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-picker .pick-opt-text{position:relative;display:flex;flex-direction:column;gap:12px;padding-left:20px;text-align:left;}
 .party-picker .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
   -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
-.party-picker .pick-opt-level{font:400 13px/1 'Poiret One',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;} /* same as category */
 .party-picker .pick-opt-q{font:italic 300 25px/1.18 'Cormorant Garamond',serif;color:var(--cream);text-wrap:pretty;}
 
 /* ── phone landscape ── */
@@ -787,13 +787,13 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .party-bottom{padding:16px 88px 40px;gap:22px;}
   .party-bottom::before,.party-bottom::after{content:'';width:24px;height:1px;background:rgba(201,168,76,.45);}
   .party-prev-btn{order:-1;} .party-next-btn{order:1;}
-  .party-chrome button{font-size:13px;}
+  .party-chrome button,.party-picker-back{font-size:15px;} /* readable on desktop */
   .party-actions{gap:22px;}
   .party-key,.pp-long{display:inline;} .pp-short{display:none;}
   .party-prev-btn,.party-next-btn{font-size:18px !important;}
 
   .party-inner{padding:0 88px;gap:34px;}
-  .party-level{font-size:18px;gap:16px;letter-spacing:.32em;}
+  .party-level{font-size:16px;gap:16px;}
   .party-level::before{width:36px;}
   .party-question{font-size:clamp(3.5rem,5.6vw,5rem);line-height:1.08;max-width:18ch;}
   .party-ornament{display:none;}
@@ -805,7 +805,6 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .party-picker{padding:44px 88px 56px;}
   .party-picker::before,.party-picker::after{width:40px;height:40px;}
   .party-picker::before{top:24px;left:24px;} .party-picker::after{bottom:24px;right:24px;}
-  .party-picker-back{font-size:13px;}
   .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:80px;overflow:visible;}
   .party-picker .pick-opt{padding:0;}
   .party-picker .pick-opt+.pick-opt::before{top:0;bottom:0;left:-40px;width:1px;height:auto;transform:none;
