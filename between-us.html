@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260923d">
+<link rel="stylesheet" href="styles.css?v=20260924a">
 </head>
 <body>
 <div class="glow"></div>
@@ -612,10 +612,11 @@
 <div class="party-overlay" id="partyOverlay">
   <div class="party-card">
     <div class="party-c-accent" id="party-accent"></div>
+    <div class="party-frame" aria-hidden="true"><i></i><i></i></div>
 
     <div class="party-top party-chrome">
       <button class="party-exit" id="partyExit">&#8249; Close<span class="party-key">Esc</span></button>
-      <span class="party-count" id="party-count"></span>
+      <span class="party-count-wrap"><i class="pc-rule"></i><span class="party-count" id="party-count"></span><i class="pc-rule pc-rule--r"></i></span>
       <button class="party-star" id="partyStar" aria-label="Star">&#9733;</button>
     </div>
 
@@ -625,6 +626,7 @@
     <div class="party-inner">
       <div class="party-level" id="party-level"></div>
       <div class="party-question" id="party-question">Tap to begin.</div>
+      <div class="party-ornament" aria-hidden="true"><i></i><b></b><i></i></div>
       <div class="party-number" id="party-number"></div><!-- now: Twist only -->
     </div>
 
