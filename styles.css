@@ -700,11 +700,11 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 /* the question: left-aligned, vertically centred */
 .party-inner{flex:1;min-height:0;position:relative;z-index:3;pointer-events:none;
   display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:24px;padding:0 26px;text-align:left;}
-.party-level{display:flex;align-items:center;gap:12px;font:600 13px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;} /* unchanged app label */
+.party-level{display:flex;align-items:center;gap:12px;font:600 17px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;} /* unchanged app label */
 .party-level::before{content:'';width:30px;height:3px;background:currentColor;flex-shrink:0;} /* the app's category bar, keep */
 .party-level:empty{display:none;}
 .party-question{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:clamp(2.375rem,10.8vw,2.625rem);line-height:1.12;color:var(--cream);text-wrap:balance;
+  font-size:clamp(2.75rem,12.8vw,3.125rem);line-height:1.12;color:var(--cream);text-wrap:balance;
   transition:opacity .22s ease,transform .32s cubic-bezier(.2,.7,.2,1);}
 .party-question.entering{opacity:0;transform:translateY(10px);}
 
@@ -759,14 +759,15 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .pp-long{display:inline;} .pp-short{display:none;}
 
   .party-inner{padding:0 48px;gap:18px;}
-  .party-question{font-size:36px;line-height:1.1;max-width:24ch;}
+  .party-level{font-size:15px;}
+  .party-question{font-size:46px;line-height:1.1;max-width:none;}
   .party-ornament{display:none;}
 
   /* with Twist: question | vertical rule | Twist */
   .party-inner:has(.party-number.twist){display:grid;grid-template-columns:minmax(0,1.35fr) auto minmax(0,1fr);
     grid-template-areas:"level orn twist" "q orn twist";align-content:center;column-gap:30px;row-gap:16px;}
   .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
-  .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:31px;max-width:none;align-self:start;}
+  .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
   .party-inner:has(.party-number.twist) .party-ornament{grid-area:orn;display:flex;flex-direction:column;align-self:stretch;padding:16px 0;}
   .party-inner:has(.party-number.twist) .party-ornament i{flex:1;width:1px;height:auto;background:linear-gradient(180deg,transparent,rgba(201,168,76,.5));}
   .party-inner:has(.party-number.twist) .party-ornament i:last-child{background:linear-gradient(180deg,rgba(201,168,76,.5),transparent);}
@@ -803,11 +804,11 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .party-inner{padding:0 88px;gap:34px;}
   .party-level{font-size:16px;gap:16px;}
   .party-level::before{width:36px;}
-  .party-question{font-size:clamp(3.5rem,5.6vw,5rem);line-height:1.08;max-width:18ch;}
+  .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
   .party-ornament{display:none;}
   .party-inner:has(.party-number.twist) .party-ornament{display:flex;margin-top:6px;}
   .party-ornament i{width:110px;} .party-ornament b{width:6px;height:6px;}
-  .party-number.twist{font-size:30px;max-width:28ch;gap:14px;}
+  .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
   .party-number.twist::before{font-size:13px;}
 
   .party-picker{padding:44px 88px 56px;}
@@ -819,7 +820,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
     background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 44%,transparent 44% 56%,rgba(201,168,76,.5) 56%,transparent);}
   .party-picker .pick-opt+.pick-opt::after{top:50%;left:-42px;width:5px;height:5px;transform:translateY(-50%) rotate(45deg);}
   .party-picker .pick-opt-text{gap:22px;padding-left:28px;}
-  .party-picker .pick-opt-level{font-size:14px;}
+  .party-picker .pick-opt-level{font-size:13px;}
   .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
 }
 
@@ -1283,13 +1284,14 @@ body.tok-taught .tok-hint{display:none;}
   .party-overlay.orient-landscape .pp-long{display:inline;} .party-overlay.orient-landscape .pp-short{display:none;}
 
   .party-overlay.orient-landscape .party-inner{padding:0 48px;gap:18px;}
-  .party-overlay.orient-landscape .party-question{font-size:36px;line-height:1.1;max-width:24ch;}
+  .party-overlay.orient-landscape .party-level{font-size:15px;}
+  .party-overlay.orient-landscape .party-question{font-size:46px;line-height:1.1;max-width:none;}
   .party-overlay.orient-landscape .party-ornament{display:none;}
 
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist){display:grid;grid-template-columns:minmax(0,1.35fr) auto minmax(0,1fr);
     grid-template-areas:"level orn twist" "q orn twist";align-content:center;column-gap:30px;row-gap:16px;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
-  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:31px;max-width:none;align-self:start;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament{grid-area:orn;display:flex;flex-direction:column;align-self:stretch;padding:16px 0;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament i{flex:1;width:1px;height:auto;background:linear-gradient(180deg,transparent,rgba(201,168,76,.5));}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament i:last-child{background:linear-gradient(180deg,rgba(201,168,76,.5),transparent);}
