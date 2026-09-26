@@ -420,13 +420,13 @@ const SHUFFLE_DESCRIPTIONS = {
 // from this plus CATEGORIES at boot (see renderBucketGrid in ui.js).
 // ═══════════════════════════════════════════════════════════
 const BUCKET_META = {
-  easein:        { label:"Ease In",       color:"#ecbd3a", desc:"Small talk that's actually good talk" },
-  everyday:      { label:"Your Days",     color:"#5bbe62", desc:"Days, rooms, and the ordinary made worth saying" },
-  viewpoints:    { label:"Viewpoints",    color:"#cda124", desc:"What you make of things — taste, the world, and what you believe" },
-  reflection:    { label:"Reflection",    color:"#6277d9", desc:"Who you are once the roles come off" },
-  relationships: { label:"Relationships", color:"#ea856b", desc:"The people you choose, and the family you didn't" },
-  vulnerability: { label:"Vulnerability", color:"#4e60b8", desc:"Where you're from, and how far the room is willing to go" },
-  usb:           { label:"Us",            color:"#f5b9bc", desc:"About the two of you. Directly" },
+  easein:        { label:"Ease In",       color:"#d9a441", desc:"Small talk that's actually good talk" },
+  everyday:      { label:"Your Days",     color:"#6bb36e", desc:"Days, rooms, and the ordinary made worth saying" },
+  viewpoints:    { label:"Viewpoints",    color:"#b79c66", desc:"What you make of things — taste, the world, and what you believe" },
+  reflection:    { label:"Reflection",    color:"#5082cd", desc:"Who you are once the roles come off" },
+  relationships: { label:"Relationships", color:"#e8997a", desc:"The people you choose, and the family you didn't" },
+  vulnerability: { label:"Vulnerability", color:"#8f74b8", desc:"Where you're from, and how far the room is willing to go" },
+  usb:           { label:"Us",            color:"#d97a92", desc:"About the two of you. Directly" },
   afterdarkb:    { label:"After Dark",    color:"#c1272d", desc:"Desire, named — open to anyone at the table, not only lovers \u2726" },
   meta:          { label:"Meta",          color:"#5a5a6a", desc:"Overflow — questions with merit that did not make the top ten" },
 };
