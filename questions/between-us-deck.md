@@ -429,7 +429,7 @@ The questions come first, category by category. The full change log is at the bo
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. What's something trust unlocks in bed that nothing else can?
-11. First night with someone: do you want to take your time, or have them right then and there?
+11. Ever woken someone up, or been woken up, in a way that was unmistakably sexual?
 12. Out of every first time you've had with someone, which one has stuck with you the most?
 
 ## Carnal 🔞
@@ -469,7 +469,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Is there a kink or fantasy you have that you've never fully acted on?
 7. What kind of words instantly turn you on?
 8. Who do you turn into in bed — and what does someone do to bring them out?
-9. Undressed and having to wait — what does anticipation do to you?
+9. Is there a material — on you, or on someone else — that just does something to you?
 10. When did "yes" turn into "actually, no" while it was already happening?
 11. Who introduced you to something you'd never have found or tried alone?
 12. More than two — does it appeal, and what's the pull?
@@ -711,6 +711,17 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.93 — Flesh 11 and Kink 9 replaced
+- **Flesh 11** → *"Ever woken someone up, or been woken up, in a way that was unmistakably
+  sexual?"* Replaces "First night with someone: do you want to take your time, or have
+  them right then and there?" — a binary preference toggle, not a story, and one of
+  three tempo-flavored cards in the category (Flesh 4 keeps that ground on its own).
+- **Kink 9** → *"Is there a material — on you, or on someone else — that just does
+  something to you?"* Replaces "Undressed and having to wait — what does anticipation
+  do to you?", which duplicated the ground Flesh 12 now covers. New subject: material/
+  texture (leather, latex, lace), untouched territory anywhere else in the deck, framed
+  to cover both wearing it and seeing it on someone else.
 
 ## Patch v6.92 — Flesh 7 and Flesh 12 replaced
 - **Flesh 7** → *"Still fully dressed, nothing removed yet — what's the most charged
