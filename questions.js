@@ -432,7 +432,7 @@ const NEWDECK_CARDS = [
   { level: "wish", question: "What did you want last year that you've already stopped wanting?", nl: "Waar verlangde je vorig jaar nog naar?" },
 
   // ─── SKIN ───
-  { level: "flesh", question: "Some sexual touch undoes you completely. Describe it." },
+  { level: "flesh", question: "When has a touch changed the whole feeling of a moment for you — what was it, and what shifted?" },
   { level: "flesh", question: "What's a sexual experience that surprised you by how much you actually liked it?" },
   { level: "flesh", question: "After sex, still tangled up together — how do you like to come down?" },
   { level: "flesh", question: "Walk me through undressing someone — the order, the pace, what you notice." },
