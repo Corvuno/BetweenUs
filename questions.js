@@ -442,7 +442,7 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
   { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
   { level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
-  { level: "flesh", question: "First night with someone: do you want to take your time, or have them right then and there?" },
+  { level: "flesh", question: "Ever woken someone up, or been woken up, in a way that was unmistakably sexual?" },
   { level: "flesh", question: "Out of every first time you've had with someone, which one has stuck with you the most?" },
 
   // ─── CARNAL ───
@@ -482,7 +482,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
   { level: "kinks", question: "What kind of words instantly turn you on?" },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },
-  { level: "kinks", question: "Undressed and having to wait — what does anticipation do to you?" },
+  { level: "kinks", question: "Is there a material — on you, or on someone else — that just does something to you?" },
   { level: "kinks", question: "When did \"yes\" turn into \"actually, no\" while it was already happening?" },
   { level: "kinks", question: "Who introduced you to something you'd never have found or tried alone?" },
   { level: "kinks", question: "More than two — does it appeal, and what's the pull?" },
