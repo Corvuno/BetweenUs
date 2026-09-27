@@ -13,7 +13,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the 9 app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20260924c">
+<link rel="stylesheet" href="styles.css?v=20260926a">
 </head>
 <body>
 <div class="glow"></div>
@@ -273,9 +273,9 @@
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.9 6.3.7-4.7 4.4 1.2 6.3L12 17.2 6.5 20.3l1.2-6.3-4.7-4.4 6.3-.7Z"/></svg></div>
       <div class="d-text"><span class="d-label">Favourites</span><span class="d-sub">Cards you've starred</span></div>
     </button>
-    <button class="d-item" id="d-save">
+    <button class="d-item" id="d-sessions" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 19h14"/></svg></div>
-      <div class="d-text"><span class="d-label" id="saveBtnLabel">Save session</span><span class="d-sub">Resume where you left off</span></div>
+      <div class="d-text"><span class="d-label">Sessions</span><span class="d-sub">Keep separate sessions going</span></div>
     </button>
     <button class="d-item" id="d-custom" aria-haspopup="dialog" aria-expanded="false">
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="14" height="18" rx="1.5"/><path d="M8 12h6"/><path d="M11 9v6"/></svg></div>
@@ -314,6 +314,17 @@
   <button class="drawer-close" id="closeFavs">&#10005;</button>
   <div class="drawer-title">Favourites</div>
   <div id="favsList"><div class="drawer-empty">No favourites yet. Tap &#9733; on a card.</div></div>
+</div>
+
+<!-- SESSIONS DRAWER -->
+<div class="sub-drawer" id="sessionsDrawer" role="dialog" aria-modal="true" aria-label="Sessions" tabindex="-1" aria-hidden="true">
+  <div class="drawer-handle"><div class="handle-bar"></div></div>
+  <button class="drawer-close" id="closeSessions">&#10005;</button>
+  <div class="drawer-title">Sessions</div>
+  <div style="display:flex;margin-bottom:16px;justify-content:center;">
+    <button class="session-btn" id="storeSessionBtn">Store current session</button>
+  </div>
+  <div id="sessionsList"><div class="drawer-empty">No stored sessions yet.</div></div>
 </div>
 
 <!-- CUSTOM CARD DRAWER -->
@@ -664,13 +675,13 @@
 <script src="questions.js?v=20260922b"></script>
 <script src="config.js?v=20260923b"></script>
 <script src="gilt.js?v=20260920g"></script>
-<script src="state.js?v=20260920g"></script>
+<script src="state.js?v=20260926a"></script>
 <script src="deck.js?v=20260920g"></script>
 <script src="card.js?v=20260921a"></script>
 <script src="library.js?v=20260920g"></script>
-<script src="session.js?v=20260920g"></script>
+<script src="session.js?v=20260926a"></script>
 <script src="selection.js?v=20260920g"></script>
-<script src="presentation.js?v=20260920g"></script>
-<script src="ui.js?v=20260921c"></script>
+<script src="presentation.js?v=20260926a"></script>
+<script src="ui.js?v=20260926a"></script>
 </body>
 </html>

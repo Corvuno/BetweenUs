@@ -1,7 +1,7 @@
 // ── STATE ────────────────────────────────────────────────────────────────────
 // The app's mutable, cross-cutting variables: the `state` object plus the few
 // loose globals read/written from more than one other file (the intent-dial
-// trio, saveMode, shuffleModeIdx, the skip-undo bookkeeping). Feature-local
+// trio, shuffleModeIdx, the skip-undo bookkeeping). Feature-local
 // mutable variables (currentTwist, pickMode, lastMoodWord, …) stay declared
 // next to the feature that owns them, in that feature's own file.
 
@@ -14,6 +14,10 @@ let intentOn        = false; /* Explore hands the deck back untouched */
 const state = {
   activeToggles: new Set(),
   activePreset: '',       // tracks current preset so we avoid DOM queries
+  activeSessionId: '',    // id of the stored session (bu-sessions) currently bound
+                          // as "live" — autoSaveSession() mirrors into it on every
+                          // card if set; '' means only the ephemeral bu-session slot
+                          // is being written to.
   pickerOpen: false,      // tracks the pick-3 picker so nextCard() avoids a DOM query
   safeMode: false,
   spiceMode: false,
@@ -48,8 +52,6 @@ const state = {
 };
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
-
-let saveMode = '';
 
 let _undoCard = null, _undoIndex = null, _undoTimer = null;
 

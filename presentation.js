@@ -162,7 +162,7 @@ function exitParty() {
 // is already closed by the time a sub-drawer closes, so focusing them back
 // would land focus inside a hidden dialog.
 
-const DRAWER_TRIGGER_IDS = ['btn-menu', 'd-log', 'd-favs', 'd-custom', 'd-help'];
+const DRAWER_TRIGGER_IDS = ['btn-menu', 'd-log', 'd-favs', 'd-custom', 'd-help', 'd-sessions'];
 function openDrawer(id, triggerEl) {
   document.getElementById('overlay').classList.add('open');
   const el = document.getElementById(id);
@@ -180,7 +180,7 @@ function openDrawer(id, triggerEl) {
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
   if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
-  ['menuDrawer','logDrawer','favsDrawer','customDrawer','helpDrawer'].forEach(id=>{
+  ['menuDrawer','logDrawer','favsDrawer','customDrawer','helpDrawer','sessionsDrawer'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
   });
@@ -291,7 +291,31 @@ document.getElementById('btnClearLog').addEventListener('click', () => {
 document.getElementById('d-favs').addEventListener('click',(e)=>{ closeAllDrawers(); renderFavourites(); openDrawer('favsDrawer', e.currentTarget); });
 document.getElementById('closeFavs').addEventListener('click',()=>closeAllDrawers());
 
-// ── Save / Continue ──
+// ── Sessions (multi-slot store) ──
+document.getElementById('d-sessions').addEventListener('click',(e)=>{ closeAllDrawers(); renderSessionsList(); openDrawer('sessionsDrawer', e.currentTarget); });
+document.getElementById('closeSessions').addEventListener('click',()=>closeAllDrawers());
+document.getElementById('storeSessionBtn').addEventListener('click', ()=>{ storeCurrentSession(); });
+// Delegated: the list re-renders on every store/rename/delete/open, so a
+// direct per-row listener would need re-attaching each time — one listener
+// on the container reads which row and which action (open the row itself,
+// or one of its two icon buttons) from the click target instead.
+document.getElementById('sessionsList').addEventListener('click', e => {
+  const row = e.target.closest('[data-id]');
+  if (!row) return;
+  const id = row.dataset.id;
+  const actionBtn = e.target.closest('[data-action]');
+  const action = actionBtn ? actionBtn.dataset.action : 'open';
+  if (action === 'delete') {
+    deleteStoredSession(id);
+  } else if (action === 'rename') {
+    const entry = getStoredSessions().find(s => s.id === id);
+    const name = window.prompt('Rename session', entry ? entry.name : '');
+    if (name) renameStoredSession(id, name);
+  } else {
+    openStoredSession(id);
+    closeAllDrawers();
+  }
+});
 
 
 // ── Custom cards ──

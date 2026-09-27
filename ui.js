@@ -113,7 +113,6 @@ if (DEFAULT_COLLAPSED) {
 
 loadFavourites();
 loadCustomCards();
-checkSavedSession();
 
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 
@@ -201,15 +200,6 @@ document.getElementById('card').addEventListener('click', e => {
     }
   }, { passive: false });
 })();
-
-document.getElementById('d-save').addEventListener('click',()=>{
-  closeAllDrawers();
-  if (saveMode==='continue') { continueSession(); }
-  else { saveSession(); }
-});
-/* Snapshot of everything continueSession() needs to rehydrate a session.
-   Pure function of state: reads state, writes nothing. Shared by the manual
-   Save button and the after-every-card autosave so the two never drift. */
 
 // ── Fullscreen party ──
 (function(){
@@ -706,8 +696,6 @@ updateCatCounts();
 // Apply initial language to all language UI (incl. html lang attribute)
 setLang(state.lang, true);
 
-checkSavedSession();
-
 
 // ── Category grid: make it obvious that it scrolls ──
 (function(){
@@ -962,10 +950,17 @@ applyToggleUI();
   // never leaves the placeholder card sitting there waiting for one more tap.
   const goBtn = $('catGoBtn');
   if (goBtn) goBtn.addEventListener('click', () => {
+    // Dealing a brand-new hand from the sheet is the "starting over" moment —
+    // if a stored session was live, detach from it so these new cards land
+    // only in the ephemeral autosave slot, never silently overwriting it.
+    // Ordinary continued play (next/prev/skip/draw more/reshuffle/toggling a
+    // category) never goes through here, so it never unbinds.
+    if (typeof setActiveSessionId === 'function') setActiveSessionId('');
     initDeck();
     _nextCardBase();
     updateDeckInfo(); updateDrawMore();
     closeCats();
+    if (typeof renderSessionsList === 'function') renderSessionsList();
   });
 
   /* ── shuffle toggle: Arc vs Wild, a straight two-way switch ──
@@ -1400,4 +1395,11 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
 })();
 
 applyQueryDeck();   // ?Q=Work1,Life7,... overrides the dealt default hand, if present
+
+// Silently resume whatever was last live (the ephemeral autosave slot, and
+// the stored session it may be bound to) — after the default deal and the
+// ?Q= override, so it's the last word on what's actually on screen. A ?Q=
+// test link must stay exactly what it says, never quietly swapped for a
+// saved session.
+if (!state.queryDeckActive) autoResumeSession();
 
