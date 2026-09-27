@@ -425,12 +425,12 @@ The questions come first, category by category. The full change log is at the bo
 4. Walk me through undressing someone — the order, the pace, what you notice.
 5. Reconstruct your smoothest pickup ever.
 6. A kiss you can still feel when you think of it — take me there.
-7. What does a hand around your throat — or on the back of your neck — do to you?
+7. Still fully dressed, nothing removed yet — what's the most charged that moment has ever gotten for you?
 8. How far do you go in public — what are you okay with people seeing?
 9. Your hands on someone's body — where do they go first, and where do they linger?
 10. What's something trust unlocks in bed that nothing else can?
 11. First night with someone: do you want to take your time, or have them right then and there?
-12. How much do you enjoy making someone wait before you touch them?
+12. Out of every first time you've had with someone, which one has stuck with you the most?
 
 ## Carnal 🔞
 1. What pulls you out of your body during sex, when it happens?
@@ -711,6 +711,20 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.92 — Flesh 7 and Flesh 12 replaced
+- **Flesh 7** → *"Still fully dressed, nothing removed yet — what's the most charged
+  that moment has ever gotten for you?"* Replaces "What does a hand around your throat —
+  or on the back of your neck — do to you?", which was power/control territory (Kink's
+  job, not Flesh's) and too narrow to pull a story rather than a single fixed image.
+- **Flesh 12** → *"Out of every first time you've had with someone, which one has stuck
+  with you the most?"* Replaces "How much do you enjoy making someone wait before you
+  touch them?", which duplicated Kink 9's anticipation ground and asked for a rating
+  rather than a memory.
+
+Both changes follow from redefining Flesh's own territory: sensual, playful, doesn't
+have to be soft, any subject short of pornographic — not hardcore, and not power/control
+(that stays Kink's). Kink 9 and remaining Flesh slots (1, 11) are still being worked.
 
 ## Patch v6.91 — Life 3 settled, Life redesign complete
 - **Life 3** → *"Who would know it was you from just one small habit, without ever seeing

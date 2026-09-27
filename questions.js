@@ -438,12 +438,12 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "Walk me through undressing someone — the order, the pace, what you notice." },
   { level: "flesh", question: "Reconstruct your smoothest pickup ever." },
   { level: "flesh", question: "A kiss you can still feel when you think of it — take me there." },
-  { level: "flesh", question: "What does a hand around your throat — or on the back of your neck — do to you?" },
+  { level: "flesh", question: "Still fully dressed, nothing removed yet — what's the most charged that moment has ever gotten for you?" },
   { level: "flesh", question: "How far do you go in public — what are you okay with people seeing?" },
   { level: "flesh", question: "Your hands on someone's body — where do they go first, and where do they linger?" },
   { level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
   { level: "flesh", question: "First night with someone: do you want to take your time, or have them right then and there?" },
-  { level: "flesh", question: "How much do you enjoy making someone wait before you touch them?" },
+  { level: "flesh", question: "Out of every first time you've had with someone, which one has stuck with you the most?" },
 
   // ─── CARNAL ───
   { level: "carnal", question: "What pulls you out of your body during sex, when it happens?" },
