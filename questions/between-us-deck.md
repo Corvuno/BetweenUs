@@ -419,7 +419,7 @@ The questions come first, category by category. The full change log is at the bo
 12. What did you want last year that you've already stopped wanting?
 
 ## Flesh 🔞
-1. Some sexual touch undoes you completely. Describe it.
+1. When has a touch changed the whole feeling of a moment for you — what was it, and what shifted?
 2. What's a sexual experience that surprised you by how much you actually liked it?
 3. After sex, still tangled up together — how do you like to come down?
 4. Walk me through undressing someone — the order, the pace, what you notice.
@@ -711,6 +711,15 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.94 — Flesh 1 replaced
+- **Flesh 1** → *"When has a touch changed the whole feeling of a moment for you — what
+  was it, and what shifted?"* Replaces "Some sexual touch undoes you completely.
+  Describe it." — "undoes you completely" set the bar too high (rarely happens, so
+  mostly nothing comes to mind); the target was always a touch that shifts the feeling
+  of a moment, not a total collapse. Distinct from Flesh 2's "sexual experience that
+  surprised you by how much you liked it" — this is one specific touch, not a whole
+  experience.
 
 ## Patch v6.93 — Flesh 11 and Kink 9 replaced
 - **Flesh 11** → *"Ever woken someone up, or been woken up, in a way that was unmistakably
