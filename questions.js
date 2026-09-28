@@ -482,7 +482,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
   { level: "kinks", question: "What kind of words instantly turn you on?" },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },
-  { level: "kinks", question: "Is there a material — on you, or on someone else — that just does something to you?" },
+  { level: "kinks", question: "Is there a situation where a material did more for you than just dress yourself or someone else?" },
   { level: "kinks", question: "When did \"yes\" turn into \"actually, no\" while it was already happening?" },
   { level: "kinks", question: "Who introduced you to something you'd never have found or tried alone?" },
   { level: "kinks", question: "More than two — does it appeal, and what's the pull?" },
