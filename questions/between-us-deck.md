@@ -477,7 +477,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Abyss 🔞
 *For the ones who go further than most. Aftercare included.*
 1. What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?
-2. What do people who play at the extreme end of kink understand that outsiders never will?
+2. What's a specific moment, going as far as you have, that surprised you with how safe it felt?
 3. What does going to the extreme give you that gentle never could?
 4. Tell about a scene that changed you.
 5. Has your body ever said yes while something deeper said no — and how did you find out?
@@ -711,6 +711,14 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.96 — Abyss 2 replaced
+- **Abyss 2** → *"What's a specific moment, going as far as you have, that surprised you
+  with how safe it felt?"* Replaces "What do people who play at the extreme end of kink
+  understand that outsiders never will?" — the old wording wasn't even about the player,
+  it made a claim about a group they may or may not belong to. Part of an after-dark
+  audit for cards that invite a category/thought answer instead of a memory; capped at
+  four such cards per category, worst offenders fixed first.
 
 ## Patch v6.95 — Kink 9 wording settled
 - **Kink 9** → *"Is there a situation where a material did more for you than just dress
