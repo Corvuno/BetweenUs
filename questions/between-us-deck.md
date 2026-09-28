@@ -469,7 +469,7 @@ The questions come first, category by category. The full change log is at the bo
 6. Is there a kink or fantasy you have that you've never fully acted on?
 7. What kind of words instantly turn you on?
 8. Who do you turn into in bed — and what does someone do to bring them out?
-9. Is there a material — on you, or on someone else — that just does something to you?
+9. Is there a situation where a material did more for you than just dress yourself or someone else?
 10. When did "yes" turn into "actually, no" while it was already happening?
 11. Who introduced you to something you'd never have found or tried alone?
 12. More than two — does it appeal, and what's the pull?
@@ -711,6 +711,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.95 — Kink 9 wording settled
+- **Kink 9** → *"Is there a situation where a material did more for you than just dress
+  yourself or someone else?"* Settles the wording from v6.93's swap — the first version
+  ("Is there a material... that just does something to you?") invited a category answer
+  rather than a memory; "situation" anchors it to a specific instance. Owner's own
+  phrasing, chosen over drafted alternatives.
 
 ## Patch v6.94 — Flesh 1 replaced
 - **Flesh 1** → *"When has a touch changed the whole feeling of a moment for you — what
