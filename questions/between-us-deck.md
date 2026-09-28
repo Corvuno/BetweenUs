@@ -633,6 +633,11 @@ The subject matter is not what makes a card recognisable — every deck asks abo
     register. Unwind isn't just relaxation, it's holidays, free time, hobbies, fun. Name
     the category's actual outer edge before writing toward it, not the first association
     the category name brings to mind.
+12. **No "me."** Nobody hands the player a card and asks it aloud — there is no fixed
+    narrator to be the "me" in the sentence, and "me" could stand for one person, a
+    group, or two people depending on the table. *"Tell about the moment..."* is house
+    style; *"Tell me about the moment..."* invents an asker that doesn't exist. The
+    question is pulled from the player, not given to them by a "me."
 
 ## Lenses
 
