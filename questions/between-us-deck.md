@@ -458,12 +458,12 @@ The questions come first, category by category. The full change log is at the bo
 9. In a relationship, what age difference makes you hesitate, no matter what anyone else would think?
 10. Tell the story of the most outrageous sexual situation you've found yourself in.
 11. The most memorable places sex has happened — the most beautiful, and the strangest?
-12. What's the longest you've gone without sex — and how was that?
+12. Have you ever faked something in bed — what, and why?
 
 ## Kink 🔞
 1. What's it feel like to be completely at someone's mercy — or to have them at yours?
 2. Watching, or being watched — which does more for you?
-3. Can pain — given or taken — carry pleasure for you, and what's the pull?
+3. What's a specific time pain, given or taken, brought pleasure along with it?
 4. Alone or with someone — what does a toy give you that you otherwise wouldn't get?
 5. What do you still keep quiet about in bed, and what makes you keep it that way?
 6. Is there a kink or fantasy you have that you've never fully acted on?
@@ -716,6 +716,16 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.97 — Kink 3 and Bare 12 replaced
+- **Kink 3** → *"What's a specific time pain, given or taken, brought pleasure along with
+  it?"* Replaces "Can pain — given or taken — carry pleasure for you, and what's the
+  pull?" — definitional ("what's the pull"), not a memory. An earlier draft framed it as
+  pleasure "instead of just pain," which read as judging plain pain as a lesser outcome;
+  dropped that framing entirely.
+- **Bare 12** → *"Have you ever faked something in bed — what, and why?"* Replaces
+  "What's the longest you've gone without sex — and how was that?", which duplicated
+  Bare 6's "your count" as a second quantity/frequency question in the same category.
 
 ## Patch v6.96 — Abyss 2 replaced
 - **Abyss 2** → *"What's a specific moment, going as far as you have, that surprised you

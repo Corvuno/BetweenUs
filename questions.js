@@ -471,12 +471,12 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?" },
   { level: "bare", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
   { level: "bare", question: "The most memorable places sex has happened — the most beautiful, and the strangest?" },
-  { level: "bare", question: "What's the longest you've gone without sex — and how was that?" },
+  { level: "bare", question: "Have you ever faked something in bed — what, and why?" },
 
   // ─── KINKS ───
   { level: "kinks", question: "What's it feel like to be completely at someone's mercy — or to have them at yours?" },
   { level: "kinks", question: "Watching, or being watched — which does more for you?" },
-  { level: "kinks", question: "Can pain — given or taken — carry pleasure for you, and what's the pull?" },
+  { level: "kinks", question: "What's a specific time pain, given or taken, brought pleasure along with it?" },
   { level: "kinks", question: "Alone or with someone — what does a toy give you that you otherwise wouldn't get?" },
   { level: "kinks", question: "What do you still keep quiet about in bed, and what makes you keep it that way?" },
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
