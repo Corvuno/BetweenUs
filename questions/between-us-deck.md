@@ -435,7 +435,7 @@ The questions come first, category by category. The full change log is at the bo
 ## Carnal 🔞
 1. What pulls you out of your body during sex, when it happens?
 2. What do you want more of in bed that you rarely get?
-3. What makes you laugh in bed?
+3. What's a moment in bed you felt truly desired — not just touched?
 4. What's your sexual superpower — and the night it proved you right?
 5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
 6. What's a sound someone's made in bed that you still think about?
@@ -716,6 +716,16 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.98 — Carnal 3 replaced
+- **Carnal 3** → *"What's a moment in bed you felt truly desired — not just touched?"*
+  Replaces "What makes you laugh in bed?" (itself a v6.45 swap) — too soft a register for
+  Carnal, and part of a wider coverage gap: nothing in the category touched
+  self-perception during the act (how you feel about yourself, not how your body feels
+  physically or what a partner does). Found via a full facet map of the category against
+  its real job — "what sex is, how you experience it, how it feels" — which showed six of
+  twelve slots doubled on only three facets (mental state, desire, porn/erotica taste)
+  while self-perception and arousal mechanics had zero cards.
 
 ## Patch v6.97 — Kink 3 and Bare 12 replaced
 - **Kink 3** → *"What's a specific time pain, given or taken, brought pleasure along with
