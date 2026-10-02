@@ -448,7 +448,7 @@ const NEWDECK_CARDS = [
   // ─── CARNAL ───
   { level: "carnal", question: "What pulls you out of your body during sex, when it happens?" },
   { level: "carnal", question: "What do you want more of in bed that you rarely get?" },
-  { level: "carnal", question: "What makes you laugh in bed?" },
+  { level: "carnal", question: "What's a moment in bed you felt truly desired — not just touched?" },
   { level: "carnal", question: "What's your sexual superpower — and the night it proved you right?" },
   { level: "carnal", question: "When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?" },
   { level: "carnal", question: "What's a sound someone's made in bed that you still think about?" },
