@@ -439,7 +439,7 @@ The questions come first, category by category. The full change log is at the bo
 4. What's your sexual superpower — and the night it proved you right?
 5. When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?
 6. What's a sound someone's made in bed that you still think about?
-7. Describe a moment when you lost track of whose pleasure you were even chasing.
+7. What's something a partner's done in bed that turned you on in a way you didn't expect — and how did you respond?
 8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
 9. When does sex stop being about you — and is that a good thing?
 10. What's something sexual you've never asked for because it's better when it's offered?
@@ -716,6 +716,22 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.00 — Carnal 7 replaced, coverage pass on Carnal complete
+- **Carnal 7** → *"What's something a partner's done in bed that turned you on in a way
+  you didn't expect — and how did you respond?"* Replaces "Describe a moment when you
+  lost track of whose pleasure you were even chasing," which was two questions stapled
+  together (whose-pleasure territory already belongs to Carnal 9 / Bare 8). New card
+  fills the last open facet from the coverage map: an unexpected arousal trigger from a
+  partner, not self-generated and not media-driven (distinct from Carnal 11/12's
+  porn/erotica lane) — three beats in one line: the unexpected thing, the realization,
+  and the response.
+
+This closes the Carnal coverage pass started at v6.98: six of twelve cards replaced
+(3, 5, 7, plus 11/12's earlier wording and 9's earlier trim) after a full facet audit
+found the category doubled up on mental state, desire, and porn/erotica taste while
+self-perception, arousal mechanics, and unexpected-trigger-from-a-partner had zero
+representation.
 
 ## Patch v6.99 — Carnal 5 replaced
 - **Carnal 5** → *"When did you last do something in bed on pure instinct, without
