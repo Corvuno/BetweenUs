@@ -437,7 +437,7 @@ The questions come first, category by category. The full change log is at the bo
 2. What do you want more of in bed that you rarely get?
 3. What's a moment in bed you felt truly desired — not just touched?
 4. What's your sexual superpower — and the night it proved you right?
-5. When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?
+5. When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?
 6. What's a sound someone's made in bed that you still think about?
 7. Describe a moment when you lost track of whose pleasure you were even chasing.
 8. Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?
@@ -716,6 +716,15 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v6.99 — Carnal 5 replaced
+- **Carnal 5** → *"When did you last do something in bed on pure instinct, without
+  thinking it through — and how did it turn out?"* Replaces "When did sex last turn you
+  into pure body — no thoughts, just flow — and what do you remember?" Same "no
+  thoughts" engine, sharpened from a passive state (drifting into flow) to an active
+  moment (a specific instinctive choice and its payoff) — closer to what the no-thoughts
+  feeling actually produces. Still Carnal 1's complementary pair (1 = pulled out, 5 =
+  gone fully in), just a tighter version of the "in" side.
 
 ## Patch v6.98 — Carnal 3 replaced
 - **Carnal 3** → *"What's a moment in bed you felt truly desired — not just touched?"*

@@ -450,7 +450,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What do you want more of in bed that you rarely get?" },
   { level: "carnal", question: "What's a moment in bed you felt truly desired — not just touched?" },
   { level: "carnal", question: "What's your sexual superpower — and the night it proved you right?" },
-  { level: "carnal", question: "When did sex last turn you into pure body — no thoughts, just flow — and what do you remember?" },
+  { level: "carnal", question: "When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?" },
   { level: "carnal", question: "What's a sound someone's made in bed that you still think about?" },
   { level: "carnal", question: "Describe a moment when you lost track of whose pleasure you were even chasing." },
   { level: "carnal", question: "Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?" },
