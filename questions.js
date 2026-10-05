@@ -452,7 +452,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What's your sexual superpower — and the night it proved you right?" },
   { level: "carnal", question: "When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?" },
   { level: "carnal", question: "What's a sound someone's made in bed that you still think about?" },
-  { level: "carnal", question: "Describe a moment when you lost track of whose pleasure you were even chasing." },
+  { level: "carnal", question: "What's something a partner's done in bed that turned you on in a way you didn't expect — and how did you respond?" },
   { level: "carnal", question: "Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?" },
   { level: "carnal", question: "When does sex stop being about you — and is that a good thing?" },
   { level: "carnal", question: "What's something sexual you've never asked for because it's better when it's offered?" },
