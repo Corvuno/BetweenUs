@@ -1,0 +1,74 @@
+name: Automatic release
+
+# Every third night (Amsterdam time) this checks whether anything that
+# matters changed since the last release. If so it picks the version from how
+# big the changes were, writes short release notes, and hands over to
+# release.yml to build and publish. If nothing changed it does nothing.
+#
+# How the size is decided, and what counts, is documented at the top of
+# scripts/release-plan.mjs. Commits say how big they are with a "Change:"
+# and "Blurb:" line (see CLAUDE.md).
+#
+# GitHub schedules in UTC, and Amsterdam moves between UTC+1 and UTC+2, so
+# it wakes up at two UTC times and the script only proceeds when it is
+# actually night in Amsterdam. Whichever wake-up is right does the work; the
+# other finds the release already made and stops.
+#
+# Run it by hand from the Actions tab to preview: "Run workflow" with
+# "Actually publish" off prints the plan without releasing anything.
+
+on:
+  schedule:
+    - cron: "10 1 * * *"
+    - cron: "10 2 * * *"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Actually publish (off = just show the plan, ignoring the 3-night wait)"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{ steps.plan.outputs.release }}
+      version: ${{ steps.plan.outputs.version }}
+      notes: ${{ steps.plan.outputs.notes }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history + tags, to diff against the last release
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Decide
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          # The last release's real publish date (the tag's commit date can be older).
+          LAST_TAG=$(node scripts/release-plan.mjs --print-last-tag)
+          LAST_DATE=$(gh release view "$LAST_TAG" --json publishedAt -q .publishedAt 2>/dev/null || true)
+          ARGS=""
+          [ -n "$LAST_DATE" ] && ARGS="--last-date $LAST_DATE"
+          [ "$MANUAL" = "true" ] && ARGS="$ARGS --force"
+          node scripts/release-plan.mjs $ARGS
+
+  publish:
+    needs: plan
+    # A manual run only publishes when "Actually publish" is ticked.
+    if: needs.plan.outputs.release == 'true' && (github.event_name == 'schedule' || inputs.publish)
+    uses: ./.github/workflows/release.yml
+    with:
+      version: ${{ needs.plan.outputs.version }}
+      notes: ${{ needs.plan.outputs.notes }}
+    permissions:
+      contents: write

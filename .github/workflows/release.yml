@@ -13,11 +13,25 @@ name: Cut a release
 # Workflow permissions -> "Read and write permissions". Without that, the
 # default GITHUB_TOKEN can't create releases and this workflow 403s.
 
+# Also callable by auto-release.yml (the every-three-nights automatic release),
+# which fills in the version and notes itself.
 on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      notes:
+        required: true
+        type: string
+      prerelease:
+        required: false
+        default: false
+        type: boolean
   workflow_dispatch:
     inputs:
       version:
-        description: "Tag for this release, e.g. v1.1.0"
+        description: "Tag for this release, e.g. 1.2.0"
         required: true
         type: string
       notes:

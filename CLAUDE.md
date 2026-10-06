@@ -47,6 +47,31 @@ doesn't. When in real doubt whether something counts as decided or not: ask.
   Don't stop to confirm first; that's a separate failure mode from editing without
   permission in the first place, and the owner has said explicitly not to do it.
 
+## Every commit says how big it is (feeds the automatic release)
+
+Every three nights (Amsterdam time) a GitHub workflow cuts a release if anything
+user-facing changed, using these commit lines to pick the version and write the
+release notes. So every commit that touches the app or the deck ends its message
+(above the Co-Authored-By lines) with:
+
+```
+Change: small | medium | large
+Blurb: one short plain-language line for the release notes
+```
+
+- **small** — a fix, tweak, or a card swap or two. Next release bumps the patch (1.1.8 → 1.1.9).
+- **medium** — a new or reworked feature or screen. Bumps the minor (1.1.8 → 1.2.0).
+- **large** — changes how the app works overall, or breaks old behaviour. Bumps the major. Rare.
+- Three or more cards changed across a release counts as medium on its own; the script counts that itself.
+- The blurb is what the owner and players read: what changed, not how. "Fixed the Fullscreen
+  button overlapping the card," not "adjust z-index in styles.css."
+- Commits touching only docs, `questions/` notes, tests or `.github/` don't count and need no label.
+- No label is not an error — the release script sizes it from the diff — but the blurb will
+  then be the raw commit subject, so label everything.
+- Don't edit version numbers or release notes by hand. Tags are created by the release workflow
+  (`.github/workflows/auto-release.yml`; `scripts/release-plan.mjs` has the rules). Run
+  `node scripts/release-plan.mjs --force` to preview the next release.
+
 ## Talk to me, don't just execute
 
 A request isn't only a ticket to close. Before or while building: say if something
