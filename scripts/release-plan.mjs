@@ -10,7 +10,7 @@
 //     trigger or shape a release.
 //   - A commit can say how big it is with two lines in its message:
 //         Change: small | medium | large
-//         Blurb: one short line for the release notes
+//         Note: one short line for the release notes
 //     Commits without a Change line are sized and described by the script
 //     itself (see classifyUnlabelled and cleanSubject): clear "small" signals
 //     (fix/tweak/nudge/bump/revert/trim/swap...) stay small, clear feature
@@ -79,11 +79,12 @@ export function bump(tag, size) {
 
 export const maxSize = (a, b) => (SIZES.indexOf(a) >= SIZES.indexOf(b) ? a : b);
 
-// Pull "Change:" and "Blurb:" out of a commit message body.
+// Pull "Change:" and "Note:" out of a commit message body. "Blurb:" is the
+// old name for "Note:" and is still read, so earlier commits keep working.
 export function parseTrailers(body) {
   const change = /^Change:\s*(small|medium|large)\s*$/im.exec(body)?.[1]?.toLowerCase();
-  const blurb = /^Blurb:\s*(.+?)\s*$/im.exec(body)?.[1];
-  return { change, blurb };
+  const note = /^(?:Note|Blurb):\s*(.+?)\s*$/im.exec(body)?.[1];
+  return { change, blurb: note };
 }
 
 // Size an unlabelled commit. Small only on a clear small signal; big diffs,
@@ -160,7 +161,7 @@ function changedCardCount(tag) {
   return diff.split('\n').filter((l) => l.startsWith('+') && !l.startsWith('+++') && l.includes('question:')).length;
 }
 
-// Labelled commits always get their blurb. Unlabelled ones use a cleaned-up
+// Labelled commits always get their note. Unlabelled ones use a cleaned-up
 // subject (plumbing like merges/reverts/cache-busts is left out), at most
 // MAX_UNLABELLED per area. Unlabelled card edits aren't listed one by one;
 // the Cards section ends with a single total instead.

@@ -7,7 +7,7 @@ name: Automatic release
 #
 # How the size is decided, and what counts, is documented at the top of
 # scripts/release-plan.mjs. Commits say how big they are with a "Change:"
-# and "Blurb:" line (see CLAUDE.md).
+# and "Note:" line (see CLAUDE.md).
 #
 # GitHub schedules in UTC, and Amsterdam moves between UTC+1 and UTC+2, so
 # it wakes up at two UTC times and the script only proceeds when it is
