@@ -108,8 +108,7 @@ than finding out at push time.
 
 ## Card changes require explicit owner sign-off, every time
 
-Never edit, swap, or add a deck card's question text (in `questions/between-us-deck.md`
-or in `questions.js`) without the owner's explicit permission for that specific change.
+Never edit, swap, or add a deck card's question text (in `questions.js`) without the owner's explicit permission for that specific change.
 This applies even when the owner has asked in general terms for "more light," "a light
 pass," or similar — a general request to improve the deck is not permission to write
 specific cards into it.
@@ -127,7 +126,7 @@ Alternative 3: [candidate replacement question]
 ```
 
 One issue card per proposed change, three alternatives each — never pick a single
-winner yourself. Only write a swap into the deck files after the owner has replied
+winner yourself. Only write a swap into `questions.js` after the owner has replied
 picking (or rewriting) one of the alternatives for that specific slot.
 
 Every alternative is a complete, finished question — full sentence, exactly as it
@@ -143,7 +142,7 @@ and shipping it, twice in a row, on the same slot, without the owner ever having
 actual words before they went live. The owner naming a bad card and saying so is
 permission to remove it — it is not permission to also pick what replaces it. Even then,
 show the proposed replacement text and get it approved before it's written into
-`questions.js` or the deck file. No exception, no "this one's obviously fine," no
+`questions.js`. No exception, no "this one's obviously fine," no
 "they'll probably like this one." Every single card, every single time, the owner sees
 the exact final words before they're pushed.
 
@@ -224,13 +223,15 @@ it as `Category, number, "question text"`, every time, not just category+number 
 just the text. The owner has no lookup table and isn't expected to build one; the full
 citation is what makes a reply readable without cross-referencing the deck file.
 
-## Keeping `questions/between-us-deck.md` and `questions.js` in sync
+## Where the cards live
 
-The deck's editorial source (`questions/between-us-deck.md`, with the BENCH and change
-log) and the app's actual card data (`questions.js`) have to match exactly — same 34
-categories, same 12 cards each, same text, in the same order. Whenever a card changes in
-one, change it in the other in the same commit. If there's ever doubt they've drifted,
-diff them category by category before touching either.
+`questions.js` is the only copy of the card text — 34 categories, 12 cards each. The deck
+file no longer repeats them (retired 2026-10-06; the two had been verified identical).
+`questions/between-us-deck.md` now holds only what the app doesn't: the ARCHIVE of retired
+category names, the BENCH of parked cards, HOUSE STYLE, and the change log. When a card
+changes, edit `questions.js`, and in the same commit add the change-log entry and move
+any displaced card to the BENCH with the reason — git shows that a card changed, the log
+and bench keep why.
 
 ## Follow `DESIGN-SYSTEM.md` for chrome/visual work
 

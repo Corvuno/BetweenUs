@@ -1,9 +1,7 @@
-# Between Us — question deck (development)
+# Between Us — deck notes
 
-`between-us-deck.md` is the working source for the question deck: every category, every
-card, and the patch log explaining why each card is what it is. It's kept separate from
-the app (`between-us*.html`) so the questions — and future translations — can be edited
-without touching app code.
+The card text lives only in `../questions.js` — one copy, loaded by every build.
 
-This file is documentation/source material, not (yet) wired into the app build. The app's
-own copy of the deck currently lives inline in its JS.
+`between-us-deck.md` is the editorial record around it: the archive of retired category
+names, the bench of parked cards, the house style, and the change log explaining why each
+card is what it is. It holds no card lists. It's documentation, not wired into the app.

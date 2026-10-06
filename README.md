@@ -83,8 +83,8 @@ the finished run.
 
 ## Questions
 
-The question deck is developed separately from the app, in [`questions/`](questions/), to
-make editing and translating the card text easier without touching app code. See
+The card text lives in [`questions.js`](questions.js). The editorial record around it —
+bench, house style, change log — is in [`questions/`](questions/); see
 [`questions/between-us-deck.md`](questions/between-us-deck.md).
 
 ### What makes a card a Between Us card
