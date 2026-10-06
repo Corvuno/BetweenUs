@@ -11,8 +11,11 @@
 //   - A commit can say how big it is with two lines in its message:
 //         Change: small | medium | large
 //         Blurb: one short line for the release notes
-//     Commits without a Change line are sized from their diff instead
-//     (see classifyByDiff), and use their subject line as the blurb.
+//     Commits without a Change line are sized and described by the script
+//     itself (see classifyUnlabelled and cleanSubject): clear "small" signals
+//     (fix/tweak/nudge/bump/revert/trim/swap...) stay small, clear feature
+//     signals (new files, big diffs, add/rebuild/redesign...) are medium,
+//     and anything it can't read with confidence defaults to medium.
 //   - The release size is the biggest commit size, and also at least
 //     "medium" once CARD_MEDIUM_THRESHOLD or more cards changed in total.
 //   - small -> patch, medium -> minor, large -> major.
@@ -83,11 +86,31 @@ export function parseTrailers(body) {
   return { change, blurb };
 }
 
-// Size an unlabelled commit from its diff. Changed cards are counted
-// separately across the whole release, so card edits alone stay small here.
-export function classifyByDiff(codeLines) {
-  return codeLines >= CODE_MEDIUM_LINES ? 'medium' : 'small';
+// Size an unlabelled commit. Small only on a clear small signal; big diffs,
+// new app files and feature words are medium; anything the rules can't place
+// confidently defaults to medium rather than being quietly under-counted.
+// Card edits are also counted across the whole release (3+ cards -> medium).
+const SMALL_WORDS = /^(fix|fixes|fixed|nudge|tweak|bump|revert|trim|settle|replace|swap|polish|align|rename|relocate|pull|mute|remove|hide|move|make|force|drop|add a (subtle|temp))\b/i;
+const MEDIUM_WORDS = /^(add|rebuild|redesign|extract|rework|introduce|new|implement|create|overhaul)\b/i;
+
+export function classifyUnlabelled({ subject, codeLines, addedAppFile, cardLines, otherFiles }) {
+  if (codeLines >= CODE_MEDIUM_LINES || addedAppFile) return 'medium';
+  if (cardLines && !otherFiles) return 'small'; // card-only commit; the release-wide card count decides medium
+  if (MEDIUM_WORDS.test(subject)) return 'medium';
+  if (SMALL_WORDS.test(subject)) return 'small';
+  return 'medium';
 }
+
+// Turn a developer commit subject into a release-note line: drop the
+// "(owner-approved)"-style parentheticals and process words, capitalise.
+export function cleanSubject(subject) {
+  let t = subject.replace(/\s*\((?:owner[^)]*|no-loss[^)]*|[^)]*round \d[^)]*)\)/gi, '')
+    .replace(/,?\s*(?:for real this time|closing the .*)$/i, '').trim();
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+// Subjects that are plumbing, not news: still counted, never listed.
+export const isNoise = (subject) => /^(merge|revert)\b/i.test(subject) || /cache[- ]?bust/i.test(subject);
 
 export function amsterdamParts(date) {
   const parts = Object.fromEntries(
@@ -115,10 +138,18 @@ function collectCommits(tag) {
       .filter((s) => !isIgnored(s.file));
     if (!stats.length) continue;
     const t = parseTrailers(body);
-    const codeLines = stats.filter((s) => s.file !== 'questions.js').reduce((n, s) => n + s.lines, 0);
+    const nonCard = stats.filter((s) => s.file !== 'questions.js');
+    const codeLines = nonCard.reduce((n, s) => n + s.lines, 0);
+    const added = git('show', '--diff-filter=A', '--name-only', '--format=', sha).split('\n').filter(Boolean);
+    const addedAppFile = added.some((f) => !isIgnored(f) && f !== 'questions.js');
+    const cardLines = stats.some((s) => s.file === 'questions.js')
+      ? git('show', '-U0', '--format=', sha, '--', 'questions.js').split('\n')
+        .filter((l) => l.startsWith('+') && !l.startsWith('+++') && l.includes('question:')).length
+      : 0;
     commits.push({
       sha, subject, area: AREAS.map((a) => a.name).find((n) => stats.some((s) => areaOf(s.file) === n)),
-      size: t.change || classifyByDiff(codeLines), labelled: Boolean(t.change), blurb: t.blurb || subject,
+      size: t.change || classifyUnlabelled({ subject, codeLines, addedAppFile, cardLines, otherFiles: nonCard.length }),
+      labelled: Boolean(t.change), blurb: t.blurb || cleanSubject(subject),
     });
   }
   return commits;
@@ -129,9 +160,10 @@ function changedCardCount(tag) {
   return diff.split('\n').filter((l) => l.startsWith('+') && !l.startsWith('+++') && l.includes('question:')).length;
 }
 
-// Labelled commits always get a line (their blurb is written for this).
-// Unlabelled ones fall back to the commit subject, which is developer-speak,
-// so merge commits are dropped and each area shows at most MAX_UNLABELLED.
+// Labelled commits always get their blurb. Unlabelled ones use a cleaned-up
+// subject (plumbing like merges/reverts/cache-busts is left out), at most
+// MAX_UNLABELLED per area. Unlabelled card edits aren't listed one by one;
+// the Cards section ends with a single total instead.
 const MAX_UNLABELLED = 6;
 
 export function renderNotes(commits, size, cards) {
@@ -140,14 +172,14 @@ export function renderNotes(commits, size, cards) {
   for (const area of AREAS.map((a) => a.name)) {
     const mine = commits.filter((c) => c.area === area);
     const labelled = [...new Set(mine.filter((c) => c.labelled).map((c) => c.blurb))];
-    const rest = [...new Set(mine.filter((c) => !c.labelled && !/^merge\b/i.test(c.subject)).map((c) => c.blurb))];
+    const rest = area === 'Cards' ? [] : [...new Set(mine.filter((c) => !c.labelled && !isNoise(c.subject)).map((c) => c.blurb))];
     const shown = rest.slice(-MAX_UNLABELLED);
     const lines = [...labelled, ...shown];
     if (rest.length > shown.length) lines.push(`…and ${rest.length - shown.length} smaller changes`);
+    if (area === 'Cards' && cards) lines.push(`${cards} card${cards === 1 ? '' : 's'} replaced or reworded`);
     if (!lines.length) continue;
     out.push(`### ${area}`, ...lines.map((i) => `- ${i}`), '');
   }
-  if (cards) out.push(`_${cards} card${cards === 1 ? '' : 's'} changed in total._`, '');
   return out.join('\n').trim();
 }
 
