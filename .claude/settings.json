@@ -1,4 +1,5 @@
 {
   "promptSuggestionEnabled": false,
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "showThinkingSummaries": true
 }
