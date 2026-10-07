@@ -117,6 +117,30 @@ canned reply templates, and don't end a message with a checklist of questions to
 answer in a set format. If something is genuinely unclear, ask it once, in
 plain words, and stop.
 
+**Never use the multiple-choice question tool** (`AskUserQuestion`, the "A or B"
+picker). Ask in plain sentences in the message itself. The owner answers in their
+own words.
+
+## Say what happened
+
+The owner wants to know what actually happened, as it happens, because it helps
+them give better input. When something is blocked, fails, gets retried, or turns
+out different from what was expected, say so plainly: what was tried, what the
+result was, what was and wasn't changed. No smoothing over, no silent
+workarounds.
+
+## Use subagents when it's more efficient
+
+The owner has authorised this as a standing permission: use subagents (the Agent
+tool) when they make the work more efficient, without asking each time. Good
+fits: broad searches across the repo, the design projects and old artifacts;
+reading very large files and reporting back only what matters; independent jobs
+that can run side by side, such as rendering several mockups. Brief each one
+fully, since it starts with no memory of the conversation, and have it report
+findings, not file dumps. Do not run two agents that edit the same files at once
+(see the two-sessions section below). The "never choose for the owner" rule
+applies to whatever they report back.
+
 ## Running more than one Claude Code session at once
 
 **What's actually going on:** every Claude Code session works on this project by
