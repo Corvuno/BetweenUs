@@ -40,7 +40,7 @@ const CARD_MEDIUM_THRESHOLD = 3; // this many changed cards -> at least medium
 const CODE_MEDIUM_LINES = 300; // this many changed non-card lines -> medium
 
 // Paths that never count towards a release.
-const IGNORED = [/\.md$/i, /^questions\//, /^tests\//, /^\.github\//, /^\.gitignore$/];
+const IGNORED = [/\.md$/i, /^questions\//, /^tests\//, /^\.github\//, /^\.claude\//, /^\.gitignore$/];
 
 const AREAS = [
   { name: 'Cards', test: (f) => f === 'questions.js' },
