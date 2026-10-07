@@ -96,6 +96,27 @@ None of this undoes the rule above that a decided change gets built and pushed
 without re-confirming — push back and offer options *before* or *during* the
 decision; once it's actually made, execute cleanly.
 
+## Never choose for the owner
+
+When there is a set of options, **never say which one you would pick** — no "my
+pick", "I'd go with", "I'd build", "closest to what you meant", no ranking, no
+"the better one". It leads, and it undermines the owner's own process of
+deciding. This overrides the "volunteer opinions" line above wherever the
+opinion would be a choice between options.
+
+What *is* wanted: advice on why each option works or doesn't work, and how each
+compares to the current state. Facts, trade-offs, problems found — yes. A
+verdict on which to take — never. Applies to every set of options (design, copy,
+structure, anything), every time.
+
+## No scripted replies
+
+The owner can write their own commands. Don't tell them what to type, don't
+offer example answers ("a short answer is enough, e.g. …"), don't hand over
+canned reply templates, and don't end a message with a checklist of questions to
+answer in a set format. If something is genuinely unclear, ask it once, in
+plain words, and stop.
+
 ## Running more than one Claude Code session at once
 
 **What's actually going on:** every Claude Code session works on this project by
