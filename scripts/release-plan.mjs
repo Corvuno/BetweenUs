@@ -20,8 +20,10 @@
 //     "medium" once CARD_MEDIUM_THRESHOLD or more cards changed in total.
 //   - small -> patch, medium -> minor, large -> major.
 //   - A release is only cut when 3+ nights (Amsterdam calendar days) have
-//     passed since the last release, it's night-time in Amsterdam, and there
-//     is at least one counting change. --force skips the timing checks.
+//     passed since the last release and there is at least one counting
+//     change. The workflow wakes up at night, but GitHub often starts
+//     scheduled jobs hours late, so the time of day is not checked: the first
+//     run after the 3rd night does the release. --force skips the wait.
 //
 // Usage:
 //   node scripts/release-plan.mjs [--force] [--now ISO] [--last-date ISO]
@@ -35,7 +37,6 @@ import { fileURLToPath } from 'node:url';
 
 const TIME_ZONE = 'Europe/Amsterdam';
 const NIGHTS_BETWEEN_RELEASES = 3;
-const NIGHT_HOURS = [3, 6]; // local hour >= 3 and < 6
 const CARD_MEDIUM_THRESHOLD = 3; // this many changed cards -> at least medium
 const CODE_MEDIUM_LINES = 300; // this many changed non-card lines -> medium
 
@@ -199,9 +200,7 @@ export function plan({ now = new Date(), lastDate, force = false } = {}) {
   if (!force) {
     const last = lastDate ? new Date(lastDate) : new Date(git('log', '-1', '--format=%cI', tag).trim());
     const nights = nightsBetween(last, now);
-    const { hour } = amsterdamParts(now);
     if (nights < NIGHTS_BETWEEN_RELEASES) { result.reason = `Only ${nights} night(s) since the last release; waiting for ${NIGHTS_BETWEEN_RELEASES}.`; return result; }
-    if (hour < NIGHT_HOURS[0] || hour >= NIGHT_HOURS[1]) { result.reason = `Not night-time in Amsterdam yet/anymore (hour ${hour}).`; return result; }
   }
 
   return { ...result, release: true, version: bump(tag, size), notes: renderNotes(commits, size, cards) };

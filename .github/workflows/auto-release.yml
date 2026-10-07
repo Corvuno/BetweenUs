@@ -9,10 +9,9 @@ name: Automatic release
 # scripts/release-plan.mjs. Commits say how big they are with a "Change:"
 # and "Note:" line (see CLAUDE.md).
 #
-# GitHub schedules in UTC, and Amsterdam moves between UTC+1 and UTC+2, so
-# it wakes up at two UTC times and the script only proceeds when it is
-# actually night in Amsterdam. Whichever wake-up is right does the work; the
-# other finds the release already made and stops.
+# It wakes up at 01:10 UTC (02:10 or 03:10 in Amsterdam). GitHub often starts
+# scheduled jobs hours late, so the time of day isn't checked: the first run
+# after the third night does the release.
 #
 # Run it by hand from the Actions tab to preview: "Run workflow" with
 # "Actually publish" off prints the plan without releasing anything.
@@ -20,7 +19,6 @@ name: Automatic release
 on:
   schedule:
     - cron: "10 1 * * *"
-    - cron: "10 2 * * *"
   workflow_dispatch:
     inputs:
       publish:
