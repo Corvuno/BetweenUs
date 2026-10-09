@@ -1445,6 +1445,7 @@ body.tok-taught .tok-hint{display:none;}
    guessed constant — see slideFold() in ui.js), so opening and closing
    always travel the same real distance instead of one looking instant */
 .explore-fold{overflow:hidden;max-height:0;}
+.explore-fold.open{max-height:none;}   /* starts unfolded; slideFold() takes over inline once toggled */
 
 /* Colbert/The 36 — one more row in the same category list, same bucket
    look, same "+" reveal, instead of a separate whisper-link section

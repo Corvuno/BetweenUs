@@ -39,14 +39,14 @@
     const spiceGlyph = bid === 'afterdarkb'
       ? ' <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn2" title="A little more, once After Dark is open">&#10022;</button>'
       : '';
-    html += `<div class="cat-bucket" data-bucket="${bid}" style="--ch:${meta.color}"><button type="button" class="cbk-select"><span class="cbk-name">${esc(meta.label)}</span><span class="cbk-count"></span></button>${spiceGlyph}<button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>`;
+    html += `<div class="cat-bucket open" data-bucket="${bid}" style="--ch:${meta.color}"><button type="button" class="cbk-select"><span class="cbk-name">${esc(meta.label)}</span><span class="cbk-count"></span></button>${spiceGlyph}<button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>`;
     members.forEach(id => {
       const cat = CATEGORIES[id];
       const listClass = cat.ordered ? ' toggle-btn--list' : '';
       // Backup is the one dimmed/italic overflow chip — a single-category
       // exception, not worth a registry field of its own.
       const dimStyle = id === 'backup' ? ' style="opacity:.22;font-style:italic;"' : '';
-      html += `<button class="toggle-btn${listClass} chip-folded" data-level="${id}" data-bucket="${bid}"${dimStyle}>${esc(cat.label)}</button>`;
+      html += `<button class="toggle-btn${listClass}" data-level="${id}" data-bucket="${bid}"${dimStyle}>${esc(cat.label)}</button>`;
     });
   });
   wrap.innerHTML = html;
