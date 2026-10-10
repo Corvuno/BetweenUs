@@ -20,6 +20,16 @@ Hand out whichever URL you want — each one still always opens the same version
 to pick anything. `between-us-work.html`/`between-us-dev.html` are only kept around as
 one-line redirects, for anyone with the old link bookmarked.
 
+### Install it as an app
+
+Open the main **Play** link in Chrome/Edge (Android or PC) and choose **Install** (or **Add to
+Home screen**); on iPhone use Safari's Share → **Add to Home Screen**. It then opens full-window,
+with no browser around it, and works offline. Whenever there's a connection it loads the newest
+version from the site, so a change that lands on `main` shows up on the next open — no release
+needed. The pieces: `manifest.webmanifest` (name, colours, icons), `sw.js` (the offline copy and
+the always-fresh loading), `icons/` ("The spark, kept" — a standing card with the spark in it).
+The downloadable single-file builds skip all of this; they're plain offline files.
+
 **A note on the work profile's safety lock:** it's a courtesy default, not a security
 boundary. Since the profile now comes from `?profile=` in the URL, anyone who edits the
 address bar can switch away from the workplace-safe version themselves. If that matters for

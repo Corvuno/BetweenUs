@@ -8,6 +8,13 @@
 <title>Between Us</title>
 <meta name="description" content="Between Us — a deck of questions for the conversations that don't happen on their own.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0c0a'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23c9a84c'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e0c0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Between Us">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Poiret+One&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <!-- ?v= busts GitHub Pages' / the browser's cache on CSS/JS — no build step
      rewrites these, so bump the date+letter by hand whenever styles.css,
@@ -684,5 +691,12 @@
 <script src="selection.js?v=20260920g"></script>
 <script src="presentation.js?v=20260926a"></script>
 <script src="ui.js?v=20260926a"></script>
+<script>
+// Installable + offline (see sw.js). Only on http(s): the downloaded single-file
+// copies open from file:// and skip this.
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+</script>
 </body>
 </html>
