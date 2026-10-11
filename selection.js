@@ -4,16 +4,6 @@
 // all/none — the event wiring that's directly part of this domain. (Cross-
 // cutting wiring and the app's boot sequence live in ui.js.)
 
-function syncBandLabels(){
-  document.querySelectorAll('.band-lbl,.cat-band').forEach(band=>{
-    let any=false;
-    for(let n=band.nextElementSibling; n && !(n.classList.contains('band-lbl')||n.classList.contains('cat-band')); n=n.nextElementSibling){
-      if(n.classList.contains('toggle-btn') && n.style.display!=='none'){ any=true; break; }
-    }
-    band.classList.toggle('band-hidden', !any);
-  });
-}
-
 function applyToggleUI() {
   const preset = PRESETS[state.activePreset];
   document.querySelectorAll('.toggle-btn').forEach(btn => {
@@ -25,7 +15,6 @@ function applyToggleUI() {
                       && preset.available.includes(lvl);
     btn.classList.toggle('suggested', suggested);
   });
-  syncBandLabels();
   // category colors
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
@@ -56,7 +45,7 @@ function applyPreset(mode) {
     // controls out from under an active state
     const pt = document.getElementById('pickToggle');
     if (pt && pt.classList.contains('on')) pt.click();
-    if (typeof clearTwist === 'function') clearTwist();
+    clearTwist();
   }
   // Bring the active mode button into the centre of its own horizontal
   // strip — scrolling that strip's element directly (.preset-wrap's own
@@ -77,9 +66,7 @@ function applyPreset(mode) {
     } catch(e) {}
   });
   // A mode is hard-safe when none of its categories — on or merely available —
-  // ever reach adult territory. That used to be hardcoded to Work and Family;
-  // it now covers any mode built that way, so a mode with nothing under
-  // After Dark locks it away the same as Work and Family always did.
+  // ever reach adult territory; such a mode locks After Dark away.
   const hasAfterDark = SAFE_BLOCKED_LEVELS.some(l => DECK_LEVELS.has(l) &&
                         (preset.on.includes(l) || preset.available.includes(l)));
   if (!hasAfterDark) {
@@ -138,10 +125,10 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
     // straight into question 1 instead of leaving the sheet open on the
     // configuration screen.
     if (btn.classList.contains('fixed-seq-btn')) {
-      if (typeof _nextCardBase === 'function') _nextCardBase();
-      if (typeof updateDeckInfo === 'function') updateDeckInfo();
-      if (typeof updateDrawMore === 'function') updateDrawMore();
-      if (typeof window.closeCats === 'function') window.closeCats();
+      _nextCardBase();
+      updateDeckInfo();
+      updateDrawMore();
+      window.closeCats();
     }
   })
 );
@@ -193,9 +180,7 @@ function updateCatCounts() {
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
     if (!lvl) return;
-    const span = btn.querySelector('.tb-count');
-    if (span) span.remove();                       // buttons stay clean
-    btn.dataset.count = counts[lvl] || 0;          // count lives in the tooltip instead
+    btn.dataset.count = counts[lvl] || 0;          // count lives in the tooltip
   });
 }
 

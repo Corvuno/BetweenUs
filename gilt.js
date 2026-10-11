@@ -8,10 +8,9 @@
 
 (function () {
 
-  // Kept for labelColor() only — the rail derivation below moved to OKLCH
+  // Used by labelColor() only — the rail derivation below is OKLCH
   // (hex2oklch/ok), but labelColor's job (lift a very dark base like Carnal
-  // to a readable tone) is a small, harmless lift where HSL is fine; not
-  // worth porting until it actually needs to change.
+  // to a readable tone) is a small lift where HSL is fine.
   const hex2hsl = (hex) => {
     const n = parseInt(hex.slice(1), 16);
     const r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
@@ -58,8 +57,7 @@
     `oklch(${(Math.max(0, Math.min(1, L)) * 100).toFixed(1)}% ${C.toFixed(4)} ${h.toFixed(1)})`;
 
   // Cold hues get a gentler sweep — full strength on lapis or amethyst
-  // reads as plastic. Hue is OKLCH hue now, not HSL hue, so the cold band
-  // shifts: blue sits around 240-280 here, not 190-300.
+  // reads as plastic. Hue is OKLCH hue: blue sits around 240-280.
   const isCold = (h) => h >= 225 && h <= 320;
 
   function giltStopsSoft(baseHex) {

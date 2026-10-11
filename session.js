@@ -6,7 +6,7 @@
 // single source of truth for what a saved session captures and how it's put
 // back, shared by the ephemeral autosave and every named slot.
 
-// ── LOG & FAVOURITES ──────────────────────────────────────────────────────────
+// ── LOG ───────────────────────────────────────────────────────────────────────
 function addToLog(card) {
   if (!card) return;
   if (state.loggedQuestions.has(card.question)) return;   // re-visiting via prev/next must not re-log

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Merge the split source (styles.css + questions.js + the 9 app modules) into
+// Merge the split source (styles.css + questions.js + the app modules) into
 // a single, self-contained HTML file per build profile — for handing someone
 // one file to double-click and play offline. The split files in the repo
 // root stay the source of truth; this script's output is disposable and

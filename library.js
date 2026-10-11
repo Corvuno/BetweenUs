@@ -24,8 +24,6 @@ function renderFavourites() {
 }
 
 
-// ── SESSION SAVE ──────────────────────────────────────────────────────────────
-// ── PARTY MODE ────────────────────────────────────────────────────────────────
 // ── CUSTOM CARDS ──────────────────────────────────────────────────────────────
 function loadCustomCards() {
   try {
@@ -47,7 +45,7 @@ function loadCustomCards() {
 function persistCustomCards() {
   try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
   renderCustomList();
-  if (typeof updateCatCounts === 'function') updateCatCounts();
+  updateCatCounts();
   initDeck();
 }
 
