@@ -199,6 +199,10 @@ function flipToCard(card, isFirstDraw) {
   // elements (not a pure-CSS trick) — removed once the animation is done.
   const animClass = isFirstDraw ? 'dealing' : 'flipping';
   el.classList.add(animClass);
+  // The start card's back dissolves instead of cutting: on the first deal it
+  // starts fading as the card lands (~55% of the 1050ms drop) and is gone
+  // exactly when the face arrives; on a plain flip it fades straight away.
+  if (el.classList.contains('is-start')) setTimeout(() => setStartBack(''), isFirstDraw ? 600 : 0);
   let ghosts = [];
   if (isFirstDraw) {
     const area = el.parentElement;

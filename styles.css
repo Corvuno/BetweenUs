@@ -270,10 +270,12 @@ body{
    owner's spec values, not the shared border tokens, on purpose.
    Decorative only — clicks pass through to the card. */
 .card-back{
-  display:none;position:absolute;inset:0;z-index:5;overflow:hidden;
+  position:absolute;inset:0;z-index:5;overflow:hidden;
   container-type:size;background:var(--bg);color:var(--gold);pointer-events:none;
+  opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s;
 }
-.card.is-start .card-back{display:block;}
+/* dissolves in and out (opacity), so the first draw doesn't cut from the back to the face */
+.card.is-start .card-back{opacity:1;visibility:visible;transition:opacity .45s ease;}
 .card.is-start .card-body-inner,.card.is-start .card-star{visibility:hidden;}
 .cb-lattice{
   position:absolute;inset:3.5cqh;
