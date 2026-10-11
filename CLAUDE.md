@@ -96,6 +96,18 @@ None of this undoes the rule above that a decided change gets built and pushed
 without re-confirming — push back and offer options *before* or *during* the
 decision; once it's actually made, execute cleanly.
 
+## Always show the original next to the alternatives
+
+Whenever the owner asks for alternatives, options, or a redo of something — card
+text, a design, a layout, anything — print the thing the alternatives are based on
+in the same message, in full, right above them: the version currently in the app,
+and, if the owner has already named a direction, that direction's text too. The
+owner reads on a phone and has no way to hold the old version in their head while
+reading new ones; the original on screen is what makes the comparison possible.
+For cards this is in addition to the issue-card format (which already quotes the
+current question); for designs, describe or show the current state first, then the
+options.
+
 ## Never choose for the owner
 
 When there is a set of options, **never say which one you would pick** — no "my
