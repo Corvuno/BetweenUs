@@ -295,10 +295,10 @@ body{
   box-shadow:0 0 0 1px rgba(201,168,76,.34),0 0 calc(var(--d)*.127) calc(var(--d)*.11) var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--d)*.05);
 }
-.cb-star{width:calc(var(--d)*.1);height:calc(var(--d)*.1);color:var(--gold);}
+.cb-mark{display:block;width:calc(var(--d)*.5);height:auto;overflow:visible;color:var(--gold);}
 .cb-rule{width:calc(var(--d)*.53);height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.8),transparent);}
 .cb-text{
-  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.44;
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;
   font-size:calc(var(--d)*.115);line-height:1.25;text-align:center;color:var(--cream);
   padding:0 calc(var(--d)*.09);text-wrap:balance;
 }
@@ -442,18 +442,18 @@ body.showing-hand-summary .card-question{
   background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 30%,transparent),transparent);
 }
 .prog-count-num{
-  font-family:'Poiret One',cursive;font-size:14px;letter-spacing:.22em;
-  line-height:1;color:var(--muted);white-space:nowrap;
+  font-family:'Poiret One',cursive;font-size:15px;letter-spacing:.22em;
+  line-height:1;color:var(--gold);white-space:nowrap;
 }
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
 .btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
 .btn-sq:hover{border-color:var(--border-strong);color:var(--cream);}
-.btn-sq svg{width:15px;height:15px;}
+.btn-sq svg{width:19px;height:19px;}
 .btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 .btn-draw:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
 .btn-draw:active{transform:scale(.98);}
 .btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
-.btn-fullscreen svg{width:13px;height:13px;flex-shrink:0;}
+.btn-fullscreen svg{width:16px;height:16px;flex-shrink:0;}
 .btn-fullscreen:hover{color:var(--gold);border-bottom-color:var(--border-strong);}
 .btn-fullscreen--emphasis{color:var(--gold);}
 .btn-fullscreen--emphasis:hover{color:var(--gold-l);}
@@ -712,7 +712,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 .party-prev-btn,.party-next-btn,.party-star{font:400 17px/1 'Jost',sans-serif !important;letter-spacing:0 !important;padding:0 !important;}
 .party-prev-btn:disabled{opacity:.3;pointer-events:none;}
 .party-star.on,.party-twist.active,.party-pick.on{color:var(--gold-l) !important;}
-.party-twist svg{width:14px;height:14px;}
+.party-twist svg{width:16px;height:16px;}
 .party-actions{display:flex;align-items:center;gap:16px;}
 .party-pick::before{content:'';width:4px;height:4px;background:var(--gold);opacity:.8;transform:rotate(45deg);margin-right:10px;} /* ◆ between Twist and Three */
 .party-key{display:none;color:var(--muted);margin-left:6px;}
@@ -896,7 +896,7 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 }
 .pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:var(--border-strong);}
 .pick-toggle.on{color:var(--gold);border-bottom-color:var(--border-strong);}
-.pick-toggle .pt-card{width:10px;height:14px;flex-shrink:0;}
+.pick-toggle .pt-card{width:16px;height:16px;flex-shrink:0;}
 
 /* ── DRAW THREE · normal screen: three slim cards in the card's own space ── */
 .card-area{position:relative;}
@@ -1070,7 +1070,7 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
    "this opens something" cue, understated enough not to compete with them.
    A border instead of the base ::after bar since ::before/::after are real
    elements here (see .tok-rule below), not spare pseudo-elements. */
-.tok-preset{padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
+.tok-preset{gap:5px;padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
 /* .tok::after above (the plain token's own 2px inset underline bar) was never
    turned off once the hairlines moved from pseudo-elements to real ones —
    it was still rendering, stacked right under the border-bottom above: a
@@ -1751,13 +1751,15 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── Type: Bodoni Moda for the questions, Federo for the sentence-case labels (2026-10-12) ──
    Owner-picked from side-by-side renders. font-size-adjust sizes Bodoni by its
-   lowercase height (0.44 against Cormorant's 0.40, so a little under the old
-   size, not the 0.40 match) and carries through every breakpoint's font-size
-   without touching them. Only the question itself changes: the card, the full-
+   lowercase height and carries through every breakpoint's font-size without
+   touching them. 0.36 is the largest value where no card, in English or Dutch,
+   that fitted in Cormorant stops fitting (card, full screen, both Draw-three
+   views, 320-480px wide); Bodoni is wider than Cormorant, so 0.40 or above
+   pushes the longest questions out of the fixed-shape card. Only the question itself changes: the card, the full-
    screen view and both Draw-three pickers. Twist sentences, drawers, the hand
    summary and help copy stay Cormorant. Federo has the same lowercase height
    as Jost (0.46), so labels keep their size; caps names stay Jost. */
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
-  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.44;}
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
 .tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain,.pick-toggle,.pick-toggle span,.btn-fullscreen{
   font-family:'Federo','Jost',sans-serif;}

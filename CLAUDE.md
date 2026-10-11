@@ -141,6 +141,24 @@ out different from what was expected, say so plainly: what was tried, what the
 result was, what was and wasn't changed. No smoothing over, no silent
 workarounds.
 
+## Never overwrite what the owner has already seen
+
+Anything the owner has looked at stays exactly as it was. This holds for mockup
+pages, published artifacts, screenshots, files and written text alike: the
+owner compares round against round, and an overwritten earlier round can't be
+compared or recovered by them.
+
+- A new round of mockups or options goes to a **new artifact with its own link**
+  (and its own file), never republished over the previous round's link. Say in
+  the message which link holds which round.
+- Edit existing files by adding to them. Don't replace or delete text the owner
+  has seen unless they asked for exactly that change, and then say what was
+  removed.
+- If something was overwritten by mistake, say so plainly and put the previous
+  version back (as its own link or file), in the same turn.
+- Updating a page in place is fine only when the owner asked for that very page
+  to change (e.g. "fix the layout of that page").
+
 ## Use subagents when it's more efficient
 
 The owner has authorised this as a standing permission: use subagents (the Agent

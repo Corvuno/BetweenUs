@@ -7,6 +7,13 @@
 
 // Roman numerals for the counter's static readout — falls back to arabic
 // past what reads cleanly as a numeral (beyond XXXIX).
+// 2026-10-13: the counters (main screen and full screen) no longer use roman
+// numerals at any hand size: toRoman/partyRomanCount below are kept but unused.
+// Both screens read "n / total" in digits, in the same thin numeral font.
+function countLabel(n, total) {
+  return `${n} / ${total}`;
+}
+
 const ROMAN_MAX = 39;
 function toRoman(n) {
   const vals = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],
@@ -87,7 +94,7 @@ function renderProgress(currentOverride) {
   // the dot numeral used to have.
   if (countEl) {
     countEl.innerHTML = deckLen > 0
-      ? `${toRoman(Math.min(cur + 1, deckLen))} &nbsp;&middot;&nbsp; ${toRoman(deckLen)}`
+      ? countLabel(Math.min(cur + 1, deckLen), deckLen)
       : '';
   }
 }
@@ -130,7 +137,7 @@ function updatePartyDisplay(card) {
     pq.classList.add('entering');
     requestAnimationFrame(()=>requestAnimationFrame(()=>pq.classList.remove('entering')));
   }
-  if (pc) pc.textContent = partyRomanCount(state.currentIndex+1, state.visibleDeck.length);
+  if (pc) pc.textContent = countLabel(state.currentIndex+1, state.visibleDeck.length);
   if (ps) ps.classList.toggle('on', state.favourites.some(f => f.question === card.question));
 }
 
