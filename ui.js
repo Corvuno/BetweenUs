@@ -753,7 +753,7 @@ applyToggleUI();
      isn't clipped by a stale measurement; closing re-measures the real
      height first so it always starts the animation from where the box
      actually is, not from "none". ── */
-  function slideFold(el, opening){
+  function slideFold(el, opening, ms, ease){
     if (!el) return;
     el.style.transition = 'none';
     if (opening) {
@@ -763,7 +763,7 @@ applyToggleUI();
       el.style.maxHeight = el.scrollHeight + 'px';   // re-measure, then snap the start point to it
     }
     el.offsetHeight; // force layout so the jump above doesn't itself animate
-    el.style.transition = 'max-height .32s ease';
+    el.style.transition = 'max-height ' + (ms || 320) + 'ms ' + (ease || 'ease');
     requestAnimationFrame(() => {
       el.style.maxHeight = opening ? el.scrollHeight + 'px' : '0px';
     });
@@ -1346,12 +1346,48 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
      console, in the same scroll as everything else — Customize just
      toggles it open/closed in place. */
   const customizeBtn = $('customizeBtn'), exploreFold = $('exploreFold');
+  /* Opening the list scrolls the sheet so the Explore link rides up to the
+     top and the first groups are in view while it unfolds — otherwise it
+     grows below the visible part of the sheet and nothing seems to happen.
+     Same duration and easing as the fold, so the pane always has room to
+     scroll into. Any touch or wheel from the player cancels it. */
+  let exploreScrollRaf = 0;
+  function scrollExploreIntoView(ms, calm){
+    const pane = $('panePlay');
+    if (!pane || !customizeBtn) return;
+    cancelAnimationFrame(exploreScrollRaf);
+    const delta = customizeBtn.getBoundingClientRect().top - pane.getBoundingClientRect().top - 12;
+    if (delta <= 0) return;
+    const from = pane.scrollTop, t0 = performance.now();
+    if (calm) { pane.scrollTop = from + delta; return; }
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    const stop = () => cancelAnimationFrame(exploreScrollRaf);
+    pane.addEventListener('wheel', stop, { once:true, passive:true });
+    pane.addEventListener('touchstart', stop, { once:true, passive:true });
+    const step = now => {
+      const k = Math.min(1, (now - t0) / ms);
+      pane.scrollTop = from + delta * ease(k);
+      if (k < 1) exploreScrollRaf = requestAnimationFrame(step);
+    };
+    exploreScrollRaf = requestAnimationFrame(step);
+  }
   function toggleExplore(forceOpen){
     if (!exploreFold) return;
     const open = typeof forceOpen === 'boolean' ? forceOpen : !exploreFold.classList.contains('open');
     exploreFold.classList.toggle('open', open);
     if (customizeBtn) customizeBtn.classList.toggle('open', open);
-    window.slideFold(exploreFold, open);
+    const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // The list is ~1250px tall — the fold's usual 0.32s made that a jump, so it
+    // gets a longer, softer ease, and its rows fade in one after another.
+    const ms = calm ? 1 : (open ? 700 : 450);
+    window.slideFold(exploreFold, open, ms, 'cubic-bezier(.22,.61,.36,1)');
+    if (open && !calm) {
+      exploreFold.querySelectorAll('#bucketGrid > *, .fixed-seq-toggle').forEach((el, i) =>
+        el.style.setProperty('--i', Math.min(i, 22)));
+      exploreFold.classList.remove('revealing'); exploreFold.offsetHeight;
+      exploreFold.classList.add('revealing');
+    }
+    if (open) scrollExploreIntoView(ms, calm);
     syncIntentUI();   // looking is not choosing — opening the fold never re-deals the hand
     if (open && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
