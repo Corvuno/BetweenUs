@@ -27,9 +27,9 @@ function pickTwist() {
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
 function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
-// Applies (or clears) the twist text on a counter element. party-number now
-// shows only the Twist sentence (the count lives in #party-count instead),
-// so clearing it just empties it out, same as twistSentence.
+// Applies (or clears) the twist text on a counter element. party-number shows
+// only the Twist sentence (the count lives in #party-count), so clearing it
+// just empties it out, same as twistSentence.
 function applyTwistToCounter(el) {
   if (!el) return;
   if (currentTwist) {
@@ -62,7 +62,7 @@ function renderTwist() {
 // has loaded.
 function toggleTwist() {
   if (!hasCurrentCard()) return;
-  if (currentTwist) { clearTwist(); return; }   // tap again to untwist — was previously a one-way door
+  if (currentTwist) { clearTwist(); return; }   // tap again to untwist
   currentTwist = pickTwist();
   renderTwist();
 }
@@ -128,7 +128,7 @@ function setCardDisplay(card) {
   // boot placeholder — a real (or placeholder) card face is about to be
   // shown, so the previous hand's end-of-hand summary can't still be
   // showing. hideHandSummary() is a no-op if it wasn't showing.
-  if (typeof hideHandSummary === 'function') hideHandSummary();
+  hideHandSummary();
   const el     = document.getElementById('card');
   const lvlEl  = document.getElementById('card-level');
   const qEl    = document.getElementById('card-question');
@@ -182,7 +182,7 @@ function setCardDisplay(card) {
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
 function flipToCard(card, isFirstDraw) {
-  if (typeof hideHandSummary === 'function') hideHandSummary();
+  hideHandSummary();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');
@@ -243,10 +243,8 @@ function flipToCard(card, isFirstDraw) {
   }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.dealing animation-duration in styles.css
 };
 
-// ── Party display sync ──
-
 function openPicker(options) {
-  const inParty = typeof state.partyMode !== 'undefined' && state.partyMode;
+  const inParty = state.partyMode;
   const picker = document.getElementById(inParty ? 'partyPicker' : 'cardPicker');
   const optsEl = document.getElementById(inParty ? 'partyPickerOptions' : 'pickerOptions');
   if (!picker || !optsEl) return;

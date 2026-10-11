@@ -1,7 +1,7 @@
 // ── DECK ─────────────────────────────────────────────────────────────────────
 // Building, filtering, shuffling and advancing through the deck: from the
 // intent dial's weighting and getFilteredCards() through applyRandomMode's
-// four shuffle modes, initDeck/applyLimit, and the nextCard/skipCard/prevCard
+// shuffle modes, initDeck/applyLimit, and the nextCard/skipCard/prevCard
 // advance logic. No rendering beyond the couple of DOM calls advancing a card
 // inherently needs (renderEndMessage, flipToCard calls) — the actual card-face
 // rendering lives in card.js.
@@ -17,7 +17,7 @@ function intentWeight(lvl, lo, hi){
 
 /* One weighted pass, no replacement, no bias in the ordering it leaves
    behind (Efraimidis–Spirakis). The shuffle mode then shapes what survives,
-   so Arc still arcs and Breadth still cycles — over a pool the dials chose. */
+   so Arc still arcs — over a pool the dials chose. */
 function applyIntent(cards){
   if (!intentOn || cards.length < 8) return cards;
   const ints = [...new Set(cards.map(c => c.level))].map(levelIntensity);
@@ -418,18 +418,11 @@ function prevCard() {
   }
 }
 
-// ── PROGRESS & INFO ───────────────────────────────────────────────────────────
-
-
 // ═══════════════════════════════════════════════════════════
-// FEATURE 3: SKIP CARD — swipe down (the touch handler that recognizes the
-// gesture lives with the card's other touch handling, above)
+// SKIP CARD — swipe down (the touch handler that recognizes the gesture
+// lives in ui.js). The undo bookkeeping (_undoCard/_undoIndex/_undoTimer,
+// declared in state.js) is shared with the undo button listener in ui.js.
 // ═══════════════════════════════════════════════════════════
-// skippedCards declared at top with state variables
-
-// Skip-undo bookkeeping lives alongside skipCard itself (not in a wrapper —
-// see the undo button listener below, which shares these three).
-
 
 function skipCard() {
   // Captured before the guard below, and the "show undo button" step at the
@@ -461,13 +454,8 @@ function skipCard() {
   }
 }
 
-// The swipe-down gesture that calls skipCard() is recognized by the card's
-// touch handler, above — skip is downward-swipe-only; a hold always means
-// "continue" (see the end-of-draw hold gate below).
-
-// ═══════════════════════════════════════════════════════════
-// FEATURE 5: SESSION SUMMARY
-// ═══════════════════════════════════════════════════════════
+// Skip is downward-swipe-only; a hold always means "continue" (see the
+// end-of-draw hold gate below).
 
 // ═══════════════════════════════════════════════════════════
 // nextCard — advances the deck and runs post-advance hooks (party/session summary)
@@ -501,7 +489,7 @@ function decideNextCardAction() {
 }
 
 // Everything below is the execution side: run the DOM/side-effect step the
-// decision calls for. nextCard() itself is now just a dispatcher.
+// decision calls for. nextCard() itself is just a dispatcher.
 
 function nextCard() {
   const action = decideNextCardAction();
@@ -543,7 +531,7 @@ function choosePick(chosen, allOptions) {
   if (newIdx >= 0) state.currentIndex = newIdx;
   closePicker();
   flipToCard(chosen);
-  if (typeof state.partyMode !== 'undefined' && state.partyMode && typeof updatePartyDisplay === 'function') updatePartyDisplay(chosen);
+  if (state.partyMode) updatePartyDisplay(chosen);
   addToLog(chosen);
   updateStarUI();
   updateDeckInfo();

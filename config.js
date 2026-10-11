@@ -22,8 +22,7 @@
   const BUILD_PROFILE = new URLSearchParams(location.search).get('profile') || window.BUILD_PROFILE || "public";   // "public" · "work" · "editor"
 
   // ── PROFILE DEFINITIONS ──────────────────────────────────────────────────
-  // Shared, identical in every build. Fine-tune a version by editing its block
-  // (these are the settings you already had — just organised per version).
+  // Shared, identical in every build. Fine-tune a version by editing its block.
   const PROFILES = {
 
     // PUBLIC — the copy you hand someone by default.
@@ -46,9 +45,7 @@
       // to be on by default; people can switch it on themselves once they
       // know what they're choosing. mode:'preset' routes through the same
       // applyPreset() every mode button uses (PRESETS.balanced, below) so
-      // the matching button is correctly shown active on load, instead of
-      // a bespoke chapters-only selection no button could ever honestly
-      // claim.
+      // the matching button is shown active on load.
       DEFAULT_SELECTION: { mode:'preset', preset:'balanced', intensity:50, focus:50 },
     },
 
@@ -67,10 +64,8 @@
       COLBERT_STRICT:   true,
       // narrower room, and a touch softer than balanced — still a real conversation,
       // just not one that needs Between Us or the far end of the intensity dial.
-      // 'surface' added alongside the split: 'findout' used to carry the light
-      // everyday categories itself, so leaving it out here would have quietly
-      // dropped Work straight into personal/reflective territory with no easy
-      // on-ramp left in front of it.
+      // 'surface' carries the light everyday categories, giving Work an easy
+      // on-ramp before the personal/reflective chapters.
       DEFAULT_SELECTION: { mode:'chapters', chapters:['surface','findout','deeper'], intensity:35, focus:50 },
     },
 
@@ -110,26 +105,17 @@ const SPICE_MODE        = window.SPICE_MODE || false;
 const NL_DEFAULT        = window.NL_DEFAULT || false;
 
 
-// ── CATEGORIES — one record per category, one place that knows anything
-//    about it. Everything below this block (LEVEL_COLORS, LEVEL_DEPTH,
-//    LEVEL_LABELS, CATEGORY_DESCRIPTIONS, CHAPTERS, the Explore bucket grid
-//    in between-us.html, SPICY_LEVELS, OPT_IN_ONLY, ORDERED_SOLO_LEVELS...)
-//    used to each carry their own copy of some subset of this — color in
-//    one table, depth in another, gate membership in a third, chapter
-//    membership in ui.js, bucket membership only in hand-typed HTML
-//    attributes nowhere near any of it. Four separate real bugs came out of
-//    that shape this session alone (SPICY_LEVELS missing usintimate and
-//    wrongly including attract; LEVEL_COLORS and LEVEL_LABELS each silently
-//    shadowing an earlier `flesh` entry with a later duplicate key; presets
-//    quietly holding onto categories that had moved chapters). A duplicate
-//    fact is a fact that can disagree with itself — this is the fix.
+// ── CATEGORIES — one record per category, the single place that knows
+//    anything about it. LEVEL_COLORS, LEVEL_DEPTH, LEVEL_LABELS,
+//    CATEGORY_DESCRIPTIONS, SPICY_LEVELS, OPT_IN_ONLY, ORDERED_SOLO_LEVELS
+//    and ui.js's chapter/bucket groupings are all projections of it, so a
+//    fact lives in exactly one place and can't disagree with itself.
 //
 //    label       — display name (✦ embedded for gated categories)
 //    color       — accent color
 //    band        — 1 (icebreaker) to 7 (confrontational): how much the
 //                  actual cards ask you to reveal. Not the same axis as
-//                  `gate` — see the note that used to live on LEVEL_DEPTH,
-//                  preserved below.
+//                  `gate` — see the note below.
 //    focus       — -1 (about you) to 1 (about the two of you)
 //    desc        — the tooltip
 //    chapter     — which Play chapter it belongs to, or omitted (Colbert/
@@ -142,7 +128,7 @@ const NL_DEFAULT        = window.NL_DEFAULT || false;
 //                  deliberate tap (the ordered sets, plus Abyss)
 //    ordered     — plays in a fixed, canonical order when selected alone
 //
-//    Depth/exposure note, preserved from the old LEVEL_DEPTH comment: band
+//    Depth/exposure note: band
 //    is scored by how much the actual cards ask you to reveal, not by
 //    topic and not by the After Dark gate — they're deliberately different
 //    axes. That's why After Dark categories land all over the band scale
@@ -274,9 +260,8 @@ const CATEGORIES = {
              desc:"Overflow — questions with merit that did not make the top ten" },
 };
 
-// Derived views — every one of these used to be its own hand-maintained
-// table. Now they're all just projections of CATEGORIES, so they can't
-// drift out of sync with it or with each other.
+// Derived views — projections of CATEGORIES, so they can't drift out of sync
+// with it or with each other.
 const LEVEL_COLORS   = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.color]));
 const LEVEL_DEPTH     = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.band]));
 const LEVEL_INTENSITY = LEVEL_DEPTH;
@@ -297,28 +282,21 @@ const PRESETS = {
   },
   // The public build's actual opening selection — Beneath the Surface +
   // Between Us, deliberately short of Into the Deep and After Dark (see the
-  // "Into the Deep starts deselected" note on DEFAULT_SELECTION above). This
-  // used to be applied through a separate chapters-only code path that never
-  // marked any mode button active, since it matches neither "Everything"
-  // (broader) nor any narrower preset — it's its own thing, so it gets its
-  // own preset and button rather than leaving the row showing nothing
-  // selected.
+  // "Into the Deep starts deselected" note on DEFAULT_SELECTION above). It
+  // matches neither "Everything" (broader) nor any narrower preset, so it has
+  // its own preset and button.
   balanced: {
     on:        ["culture","life","home","work","unwind","world","self","mind","body","values","wish",
                 "family","spirit","connect","friends","date","attract","us","usfriend","uslove"],
-    // "warm"/"quick" (Arrive) weren't listed at all, on or available — that
-    // hid the whole Arrive chapter rather than just leaving it unselected,
-    // which isn't what "not on by default" was supposed to mean. past/roots
-    // moved here from "on" too, now that they're part of Into the Deep —
-    // leaving them on left that chapter's button showing "part" on load, so
-    // a first click completed it to fully-on instead of clearing it.
+    // Arrive (warm/quick) and Into the Deep (past/roots included) are listed
+    // as available, not left out: unlisted categories are hidden entirely, and
+    // a chapter with only some of its categories on shows "part" on load, so
+    // a first click would complete it instead of clearing it.
     available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
     subtitle:  "Just enough edge."
   },
-  // Every preset below is banded now: "on" respects the depth ceiling the
-  // subtitle promises, "available" is the honest stretch beyond it. Full
-  // reasoning (why each is or isn't thin on purpose) is in the design log —
-  // the short version is in each subtitle.
+  // Every preset below is banded: "on" respects the depth ceiling the
+  // subtitle promises, "available" is the honest stretch beyond it.
   newpeople: {
     on:        ["quick","warm","culture","life","home","work","unwind","world"],
     available: [],
@@ -378,46 +356,27 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 
 
 // SPICY_LEVELS (the actual After Dark gate set, ✦ in LEVEL_LABELS),
-// SAFE_BLOCKED_LEVELS, ORDERED_SOLO_LEVELS and OPT_IN_ONLY all just read
-// their flag off CATEGORIES now, so a category's gate/ordered/optIn status
-// is set in exactly one place. SPICY_LEVELS used to be its own hand-typed
-// list and had drifted (listed `attract`, which isn't gated; missed
-// `usintimate`, which is); SAFE_BLOCKED_LEVELS was a second hand-typed list
-// of the exact same six categories, just in a different order — same fact,
-// two places it could (and did) disagree.
+// SAFE_BLOCKED_LEVELS, ORDERED_SOLO_LEVELS and OPT_IN_ONLY all read their
+// flag off CATEGORIES, so a category's gate/ordered/optIn status is set in
+// exactly one place.
 const SPICY_LEVELS = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].gate);
 const SAFE_BLOCKED_LEVELS = SPICY_LEVELS;
 const ORDERED_SOLO_LEVELS = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].ordered);
 const OPT_IN_ONLY = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].optIn);
 // COLBERT_OPTIONAL: questions present in the deck but not in the canonical 15.
-// When COLBERT_STRICT = true (HTML setting), these are filtered out during Colbert-solo play.
+// When COLBERT_STRICT = true (profile setting), these are filtered out during Colbert-solo play.
 const COLBERT_OPTIONAL = ['Window or aisle?','Earliest memory?','Cats or dogs?'];
 const COLBERT_STRICT = window.COLBERT_STRICT || false;
 
-// Deep and Breadth dropped from the picker: Deep duplicated what the Depth
-// dial already does (and does more precisely, continuously); Breadth's
-// whole premise ("one from every active category") surfaced "categories"
-// as a concept the player has to think about, which the app otherwise goes
-// out of its way to keep invisible. applyRandomMode()'s switch in deck.js
-// still has a default (plain shuffle) for any old saved session that has
-// 'deep'/'breadth' in storage, but the cases themselves are gone.
+// applyRandomMode()'s switch in deck.js falls back to a plain shuffle for any
+// saved session whose randomMode isn't one of these.
 const SHUFFLE_MODES = ['wild','arc'];
 
 
 // ═══════════════════════════════════════════════════════════
-// SHUFFLE MODE DESCRIPTIONS
-// ═══════════════════════════════════════════════════════════
-const SHUFFLE_DESCRIPTIONS = {
-  wild: 'Fully random — anything goes',
-  arc:  'Warm start, depth, cool-down — repeating pattern'
-};
-
-
-// ═══════════════════════════════════════════════════════════
-// EXPLORE BUCKETS — the only per-bucket data left; per-category bucket
-// membership lives on CATEGORIES itself (see the .bucket field above).
-// between-us.html no longer hand-authors the bucket grid — ui.js builds it
-// from this plus CATEGORIES at boot (see renderBucketGrid in ui.js).
+// EXPLORE BUCKETS — per-bucket data; per-category bucket membership lives on
+// CATEGORIES itself (the .bucket field above). ui.js builds the Explore grid
+// from this plus CATEGORIES at boot.
 // ═══════════════════════════════════════════════════════════
 const BUCKET_META = {
   easein:        { label:"Ease In",       color:"#d9a441", desc:"Small talk that's actually good talk" },
@@ -435,8 +394,8 @@ const BUCKET_META = {
 // CHAPTERS_META — the six chapters shown in Play (between-us.html's
 // .chapter buttons), in the app's canonical order. The single stored
 // source for a chapter's display name and colour — the chapter drawer's
-// rail (ui.js) and the end-of-set screen's sentence/hold-button colour
-// (presentation.js) both read this instead of each keeping their own copy.
+// rail (ui.js) and the end-of-hand summary's sentence colour
+// (presentation.js) both read it.
 // A category's own membership in a chapter is CATEGORIES[key].chapter,
 // which points at these same keys.
 // ═══════════════════════════════════════════════════════════
