@@ -64,7 +64,7 @@ body::before{
 .title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
 .title-rule{display:flex;align-items:center;justify-content:center;
   width:min(100%,320px);margin:12px auto 0;}
-.tr-svg{display:block;width:100%;height:auto;overflow:visible;color:var(--gold);}
+.tr-svg{display:block;width:100%;height:auto;overflow:visible;}
 .tr-svg path{vector-effect:non-scaling-stroke;}
 .subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
 
@@ -711,7 +711,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 /* the hairline from the header, centre plus its right half, in the card's own
    category colour (--orn, set per card in updatePartyDisplay) pulled slightly
    toward grey and dimmed, the way a passed card reads. */
-.party-ornament .po-svg{display:block;width:200px;height:auto;overflow:visible;
+.party-ornament .po-svg{display:block;width:170px;height:auto;overflow:visible;
   color:color-mix(in srgb,var(--orn,var(--gold)) 72%,#8a8274);opacity:.78;}
 .po-svg path{vector-effect:non-scaling-stroke;}
 .party-ornament i,.party-ornament b{display:none;}
@@ -813,7 +813,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
   .party-ornament{display:none;}
   .party-inner:has(.party-number.twist) .party-ornament{display:flex;margin-top:6px;}
-  .party-ornament .po-svg{width:260px;}
+  .party-ornament .po-svg{width:220px;}
   .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
   .party-number.twist::before{font-size:13px;}
 
