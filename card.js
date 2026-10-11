@@ -177,7 +177,7 @@ function setCardDisplay(card) {
   // Update party display
   updatePartyDisplay(card);
   renderTwist();   // same modifier, re-rendered in whichever language is now active
-};
+}
 
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
@@ -241,7 +241,7 @@ function flipToCard(card, isFirstDraw) {
     // Auto-save on every card
     autoSaveSession();
   }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.dealing animation-duration in styles.css
-};
+}
 
 function openPicker(options) {
   const inParty = state.partyMode;
