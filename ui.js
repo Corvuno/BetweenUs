@@ -4,15 +4,11 @@
 // structural IIFEs that build the tray/drawer chrome and the Play/Explore
 // controller, and the event listeners that don't belong to one specific
 // domain file. Loads last, after every function it wires up. Executes top-
-// to-bottom in the exact order app.js used to, so load-order-sensitive boot
-// logic (the double init sequence, the final default-selection deal) behaves
-// identically to before the split.
+// to-bottom, so the boot logic is load-order-sensitive (the double init
+// sequence, the final default-selection deal).
 
-// Explore's bucket grid used to be ~40 hand-typed buttons in between-us.html,
-// each carrying its own copy of a level/bucket/label that had to independently
-// agree with CATEGORIES/BUCKET_META in config.js — the source of the "Kink"
-// vs "Kinks" and stray-bucket-membership drift found this session. Built from
-// that single source instead, now. Runs first, before anything else in this
+// Explore's bucket grid is built from CATEGORIES/BUCKET_META in config.js, the
+// single source for every level/bucket/label. Runs first, before anything else in this
 // file (or any file that loads after it) can touch a .toggle-btn/.cat-bucket
 // element expecting it to already exist. Bucket order follows BUCKET_META's
 // own key order; category order within a bucket follows CATEGORIES' key
@@ -70,13 +66,10 @@ document.getElementById('customList').addEventListener('click', e => {
 if (MASTER_SAFE || WORKPLACE_MODE) {
   state.safeMode = true;
   document.getElementById('afterDarkToggle').style.display  = 'none';
-  document.querySelector('.spice-toggle') && (document.querySelector('.spice-toggle').style.display = 'none');
   SAFE_BLOCKED_LEVELS.forEach(l => {
     const btn = document.querySelector(`.toggle-btn[data-level="${l}"]`);
     if (btn) btn.style.display = 'none';
   });
-  const dBtn = null; // 'desire' mode removed with deck v14
-  if (dBtn) dBtn.style.display = 'none';
 }
 
 // Backup is a dev-only overflow category — hidden unless SHOW_BACKUP is set
@@ -117,8 +110,7 @@ loadCustomCards();
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 
 
-// Card limit — #limitBtnsDrawer (inside the "Fine-tune the hand" fold) is
-// now the only card-count picker in the app.
+// Card limit — #limitBtnsDrawer is the only card-count picker in the app.
 function selectCardLimit(limitAttr) {
   state.cardLimit = limitAttr === 'all' ? null : parseInt(limitAttr);
   syncLimitButtons();
@@ -321,7 +313,6 @@ document.getElementById('card').addEventListener('click', e => {
     overlay.classList.toggle('orient-landscape', mode === 'landscape');
     opts.forEach(b => b.classList.toggle('live', b.dataset.orient === mode));
   }
-  window.setPartyOrientation = setPartyOrientation;
   opts.forEach(b => b.addEventListener('click', e => {
     e.stopPropagation();
     setPartyOrientation(b.dataset.orient);
@@ -401,8 +392,8 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
   if(qEl) setTimeout(()=>qEl.classList.add('in'),400);
 })();
 
-// updateDrawMore — transforms btn-next into "hold to continue" at the end of a hand
-
+// End of a hand: pressing and holding the card, Next Card or the fullscreen overlay
+// continues into a fresh hand.
 const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const HOLD = 550;
@@ -456,58 +447,13 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 // ── Hand summary actions ── Change/Save, the screen-row's end-of-hand
 // content (see styles.css body.showing-hand-summary, presentation.js
 // showHandSummary()). Plain taps — the hold-to-draw-a-fresh-hand gesture
-// is Next Card itself (now in hold-mode), handled by the END_HOLD_TARGETS
-// gate above like any other end-of-hand state, so these need nothing of
-// their own beyond a click handler.
+// is Next Card itself (in hold-mode), handled by the END_HOLD_TARGETS gate.
 document.getElementById('btnChange') && document.getElementById('btnChange').addEventListener('click', () => {
   if (typeof openCats === 'function') openCats();
 });
 document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
   if (typeof exportSessionLog === 'function') exportSessionLog();
 });
-
-// ── End-of-set screen actions (dormant) ── wiring for the full-bleed
-// #endScreen's own hold/Change/Export, kept for when a reshaped version of
-// that screen comes back — #esHold no longer exists in the DOM, so this
-// IIFE no-ops below.
-(function(){
-  const btn = document.getElementById('esHold');
-  const fill = document.getElementById('esHoldFill');
-  if (!btn || !fill) return;
-  const HOLD = 600;
-  let timer = null;
-  function start(e){
-    e.preventDefault();
-    clearTimeout(timer);
-    fill.classList.remove('cancelling');
-    void fill.offsetWidth;   // restart the fill transition from 0 on a fresh press
-    fill.classList.add('filling');
-    timer = setTimeout(() => {
-      timer = null;
-      fill.classList.remove('filling');
-      fill.style.width = '';
-      if (typeof drawMore === 'function') drawMore();
-    }, HOLD);
-  }
-  function cancel(){
-    if (timer === null) return;   // already completed — nothing to retract
-    clearTimeout(timer); timer = null;
-    fill.classList.remove('filling');
-    fill.classList.add('cancelling');
-  }
-  btn.addEventListener('pointerdown', start);
-  ['pointerup','pointerleave','pointercancel'].forEach(ev => btn.addEventListener(ev, cancel));
-
-  const changeBtn = document.getElementById('esChange');
-  if (changeBtn) changeBtn.addEventListener('click', () => {
-    if (typeof openCats === 'function') openCats();
-  });
-
-  const exportBtn = document.getElementById('esExport');
-  if (exportBtn) exportBtn.addEventListener('click', () => {
-    if (typeof exportSessionLog === 'function') exportSessionLog();
-  });
-})();
 
 // ── Spice glyph buttons (one inline on the After Dark chapter in Play,
 //    one inline on the After Dark drawer in Explore) — same state, kept in sync ──
@@ -534,7 +480,7 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
 // SKIP UNDO — 3-second undo window after skip
 // ═══════════════════════════════════════════════════════════
 (function() {
-  // _undoCard / _undoIndex / _undoTimer are set by skipCard() itself now.
+  // _undoCard / _undoIndex / _undoTimer are set by skipCard().
   const undoBtn = document.getElementById('skipUndo');
   if (!undoBtn) return;
 
@@ -746,8 +692,8 @@ applyToggleUI();
      that's much bigger than the real content makes opening look near-
      instant (the content reaches full height long before the transition's
      nominal duration is up) while closing, which always travels the real
-     distance, reads as the properly-paced one — that mismatch is exactly
-     what made the preset picker's own open/close feel asymmetric earlier.
+     distance, reads as the properly-paced one — that mismatch makes
+     open/close feel asymmetric.
      Once fully open the cap is released to "none" so anything that grows
      inside the fold afterward (a bucket expanding inside Explore, say)
      isn't clipped by a stale measurement; closing re-measures the real
@@ -812,11 +758,10 @@ applyToggleUI();
   window.unlockBodyScroll = unlockBodyScroll;
 
   /* ── re-home existing controls into trays ── */
-  /* modes now live in the categories drawer as presets — always visible
-     under a plain "Start from" label, the same section-heading language
-     Chapters/Tune/Round use. No collapse/toggle any more: testing showed a
-     collapsed-by-default row read as inert text, not something to tap, and
-     once open there was no reason left to be able to close it again. */
+  /* modes live in the categories drawer as presets — always visible under a
+     plain "Start from" label, the same section-heading language
+     Chapters/Tune/Round use. No collapse/toggle: a collapsed row read as
+     inert text, not something to tap. */
   const presetHost=document.createElement('div');
   presetHost.className='preset-host open';
   presetHost.innerHTML='<div class="sect-lbl"><span>Start from</span></div>';
@@ -841,9 +786,8 @@ applyToggleUI();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
     catArea.removeAttribute('aria-hidden');
     $('d-cats').setAttribute('aria-expanded', 'true');
-    // Reopening used to leave the sheet scrolled wherever it was left last
-    // time (e.g. deep in Explore's list) — reset to the top on every open
-    // so it reads the same way each time it's reached.
+    // Reset to the top on every open, so the sheet doesn't reopen scrolled
+    // wherever it was left (e.g. deep in Explore's list).
     const pp = $('panePlay'); if (pp) pp.scrollTop = 0;
     // preventScroll: catArea is position:fixed, covering the viewport — it
     // needs no scroll to be "in view," but browsers don't know that and will
@@ -859,9 +803,8 @@ applyToggleUI();
     // stable, always-visible anchor (same one closeAllDrawers uses) is safer to
     // refocus than a trigger that may now sit inside a hidden dialog.
     // preventScroll here too: btn-menu sits down in the Controls section,
-    // below the Card section — without it, closing the sheet silently
-    // scrolled the whole page down to bring btn-menu into view, leaving the
-    // header/title pushed off the top after every close.
+    // below the Card section — without it, closing the sheet would scroll the
+    // whole page down to bring btn-menu into view, pushing the header off the top.
     const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
   }
   window.openCats=openCats; window.closeCats=closeCats;
@@ -964,9 +907,8 @@ applyToggleUI();
   });
 
   /* ── shuffle toggle: Arc vs Wild, a straight two-way switch ──
-     Deep/Breadth are gone from the picker (see SHUFFLE_MODES' note in
-     config.js) — Arc and Wild are the only two live shuffle modes, so this
-     is a plain toggle inside the fold, not a list. */
+     Arc and Wild are the only shuffle modes (SHUFFLE_MODES in config.js),
+     so this is a plain toggle, not a list. */
   function selectShuffleMode(mode){
     state.randomMode = mode;
     shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
@@ -977,13 +919,6 @@ applyToggleUI();
   if (shuffleToggle) shuffleToggle.addEventListener('click', e => {
     const btn = e.target.closest('.shuffle-toggle-opt'); if (!btn) return;
     selectShuffleMode(btn.dataset.mode);
-  });
-
-  /* ── "Fine-tune the hand" fold: dials, shuffle toggle, card count ── */
-  const finetuneToggle = $('finetuneToggle'), finetuneOptions = $('finetuneOptions');
-  if (finetuneToggle && finetuneOptions) finetuneToggle.addEventListener('click', () => {
-    const open = finetuneOptions.classList.toggle('open');
-    finetuneToggle.classList.toggle('open', open);
   });
 
   /* token labels are rendered from state by renderShell() — no self-observation */
@@ -1023,7 +958,7 @@ applyToggleUI();
 // (190deg) off CHAPTERS_META's colour for each chapter — computed once at
 // boot since, unlike a card's category, a chapter's colour never changes
 // at runtime. Stored in --ch-rail rather than written straight to
-// border-image-source, since styles.css now only paints it on .on (see
+// border-image-source, since styles.css only paints it on .on (see
 // the on/part/off rule there) — .part and the base/off state use a flat
 // --ch-derived colour instead. CHAPTERS_META (config.js) is the one
 // stored copy of these colours — the end-of-set screen reads the same
@@ -1074,12 +1009,9 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     return on === 0 ? 'off' : (on === pool.length ? 'on' : 'part');
   }
 
-  // Name is historical — it used to also drop state.activePreset and
-  // un-highlight the preset row, on the theory that touching a chapter or
-  // Explore bucket meant you'd left the preset behind. A tweak on top of
-  // Balanced is still Balanced, not nothing, so that part's gone: this now
-  // only re-syncs which toggle buttons are visible/locked (safe mode,
-  // in-deck, backup) — the preset identity itself survives an edit.
+  // Re-syncs which toggle buttons are visible/locked (safe mode, in-deck,
+  // backup). It deliberately leaves state.activePreset alone: a tweak on top
+  // of Balanced is still Balanced, so the preset identity survives an edit.
   function releasePresetMask(){
     document.querySelectorAll('.toggle-btn').forEach(b => {
       const lvl = b.dataset.level; if (!lvl) return;
@@ -1116,10 +1048,9 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
       btn.classList.toggle('part', st === 'part');
       /* a chapter with nothing reachable under it in the current mode doesn't
          belong on screen at all — the same rule an Explore drawer already
-         follows (bkt-hidden), applied one level up. This is what used to
-         hard-lock After Dark for Work/Family only; now it applies to any
-         chapter in any mode, e.g. After Dark in New people/Solo, or
-         Into the Deep in Work/Date/New people. */
+         follows (bkt-hidden), applied one level up. Applies to any chapter
+         in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
+         Work/Date/New people. */
       btn.classList.toggle('ch-hidden', visible.length === 0);
     });
     document.querySelectorAll('.cat-bucket').forEach(hdr => {
@@ -1139,9 +1070,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     });
     // The track fills from its centre tick out to the dot, in the dial's
     // own colour — "how far from balanced, and which way" reads at a
-    // glance from the fill alone, so the dot needs no value word next to
-    // or under it any more (Easy/Intense and Me/Us already say which way
-    // is which).
+    // glance from the fill alone, so the dot needs no value word (Easy/Intense
+    // and Me/Us already say which way is which).
     const setFill = (el, pos) => {
       if (!el) return;
       const left = Math.min(50, pos);
@@ -1171,8 +1101,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     const chaps = $('chapters');
     const text = LIST_MODE_TEXT[state.activePreset];
     // Customize stays visible even in list mode — it's the only door into
-    // Explore now that the tab strip is gone, so hiding it here dead-ended
-    // anyone wanting to browse categories or switch fixed sets.
+    // Explore, so hiding it would dead-end anyone wanting to browse
+    // categories or switch fixed sets.
     if (text) {
       note.textContent = text;
       note.style.display = 'block';
@@ -1184,7 +1114,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   }
 
   function commit(){
-    applyToggleUI();   // now calls syncIntentUI() itself
+    applyToggleUI();   // calls syncIntentUI() itself
     initDeck();
     if (typeof renderShell === 'function') renderShell();
   }
@@ -1211,10 +1141,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
      drag itself (like Android's system sliders, or Lightroom mobile's snap
      to 0): while the finger is within a few percent of 50, the thumb holds
      at exactly 50 instead of tracking the finger 1:1, so crossing centre
-     takes a small deliberate push. That reads as a physical catch. The
-     previous version only snapped once on release — the thumb tracked the
-     finger the whole drag, then jumped to 50 after the fact, which read as
-     the value being pulled there rather than the finger feeling anything. */
+     takes a small deliberate push. That reads as a physical catch, not as
+     the value being pulled to 50 after the fact. */
   function dial(el, apply){
     if (!el) return;
     const snap = () => { if (Math.abs(+el.value - 50) <= 4) el.value = 50; };
@@ -1341,10 +1269,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     syncIntentUI();
   });
 
-  /* Explore used to be a separate pane you navigated into and had to find
-     your way back out of. It's a fold now, appended right under the
-     console, in the same scroll as everything else — Customize just
-     toggles it open/closed in place. */
+  /* Explore is a fold appended right under the console, in the same scroll
+     as everything else — Customize just toggles it open/closed in place. */
   const customizeBtn = $('customizeBtn'), exploreFold = $('exploreFold');
   /* Opening the list scrolls the sheet so the Explore link rides up to the
      top and the first groups are in view while it unfolds — otherwise it
