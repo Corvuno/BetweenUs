@@ -1068,7 +1068,7 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
    "this opens something" cue, understated enough not to compete with them.
    A border instead of the base ::after bar since ::before/::after are real
    elements here (see .tok-rule below), not spare pseudo-elements. */
-.tok-preset{padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
+.tok-preset{gap:8px;padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
 /* .tok::after above (the plain token's own 2px inset underline bar) was never
    turned off once the hairlines moved from pseudo-elements to real ones —
    it was still rendering, stacked right under the border-bottom above: a
