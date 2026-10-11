@@ -16,6 +16,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Flesh** — "How far do you go in public — what are you okay with people seeing?" (displaced from Flesh 8 in v7.03, owner-approved; it never named affection, and players twice answered it as if it were the Body hide/show card. Replaced by the owner's own wording.)
 - **Body** — "Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful." (displaced from Body 7 in v7.02, owner-approved; players kept answering Flesh 8 as if it were this card, and the owner preferred a hide/show framing. The difficult-body half is gone from the deck. Dutch: "Wijs de plek op je lichaam aan waar je de moeizaamste relatie mee hebt — en dan de plek die je als mooi zou verdedigen.")
 - **Work** — "Which colleague taught you the most without ever meaning to?" (independently approved for Work 1 in a different session while this branch was still open; owner resolved the collision by keeping this session's "office drama" card instead — see the merge note in the change log)
 - **Warm** — "Some small thing you do properly, though nobody would ever check..." (displaced from Warm 1 in v6.88 by "Which chore do you secretly not mind?", moved in from Life 3 — owner's call, both cards occupied the same "quiet care nobody checks on" ground and the Life version was the stronger fit for Warm's register)
@@ -230,6 +231,17 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.03 — Flesh 8 replaced
+- **Flesh 8** → *"How much affection with a partner are you comfortable showing in front of
+  people — and what's the furthest you actually went?"* Replaces "How far do you go in
+  public — what are you okay with people seeing?" Owner's own wording, refined over
+  several rounds: "people" on purpose, to include everyone known and unknown; "went"
+  on purpose, so the second half asks for a story and not a lifetime tally; "furthest"
+  is left open so it covers anything from affection up to sex without naming either.
+  Two sides of one subject (what you say you're comfortable with, what you actually did),
+  which house style rule 2 allows. Reason: the old card never said "affection" and was
+  twice answered as the Body card. No Dutch line existed for it.
 
 ## Patch v7.02 — Body 7 replaced
 - **Body 7** → *"Which part of your body do you like keeping to yourself, and which part is
