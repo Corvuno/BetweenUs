@@ -35,7 +35,7 @@
   </div>
 
 
-  <!-- v6 TOKEN LINE — one entry point now: the active preset, in its own colour -->
+  <!-- TOKEN LINE — the active preset, in its own colour -->
   <div class="tok-line" id="tokLine">
     <button class="tok tok-preset" id="tokCats"><span class="tok-lbl">Selected<span class="tok-hint" id="tokHint"> &middot; tap to change</span></span><span class="tok-val-row"><span class="tok-rule tok-rule--l"></span><span class="tok-val" id="valCats">Balanced</span><span class="tok-rule tok-rule--r"></span></span></button>
   </div>
@@ -68,9 +68,8 @@
       <button class="cat-close" id="catClose">&#10005;</button>
     </div>
 
-    <!-- legacy controls: kept for existing preset / hard-safe-mode logic to
-         read and toggle, but no longer a visible row of their own — the
-         chapter and drawer for After Dark now do what this bar used to. -->
+    <!-- Hidden (display:none in styles.css) but still wired: preset and
+         hard-safe-mode logic read and toggle these controls. -->
     <div class="cat-topbar cat-topbar--legacy">
       <button class="cat-toggle-lbl" id="catLabel">
         <span class="cat-chevron" id="catArrow">&#9660;</span>
@@ -99,9 +98,7 @@
         <button type="button" class="link-plain" id="customizeBtn">Explore categories</button>
         <div class="list-mode-note" id="listModeNote"></div>
 
-        <!-- Explore lives right under Chapters now — same subsection-in-
-             place pattern as before, just moved up next to the link that
-             opens it instead of sitting after the console. -->
+        <!-- Explore sits right under Chapters, next to the link that opens it. -->
         <div class="explore-fold" id="exploreFold">
           <div class="cat-desc" id="catDesc">Tap or hold a category to see what it does.</div>
           <div class="allnone-row allnone-row--pane">
@@ -130,9 +127,8 @@
 
       <div class="play-sect play-sect--2">
         <!-- The mixing desk under "what kind of night" — always visible, not
-             a fold, since it isn't a rare path. No bounding card any more:
-             it reads as its own section (the "Tune" label) the same way
-             Chapters and Round do, instead of a separate boxed panel. -->
+             a fold. Reads as its own section (the "Tune" label) like
+             Chapters and Round. -->
         <div class="console" id="fineConsole">
           <div class="sect-lbl" id="tuneLbl">
             <span>Tune</span>
@@ -659,7 +655,7 @@
       <div class="party-level" id="party-level"></div>
       <div class="party-question" id="party-question">Tap to begin.</div>
       <div class="party-ornament" aria-hidden="true"><svg class="po-svg" viewBox="16 0 216 28" fill="none" stroke="currentColor" stroke-width="1" focusable="false"><defs><linearGradient id="poF" gradientUnits="userSpaceOnUse" x1="32" y1="0" x2="232" y2="0"><stop offset="0" style="stop-color:currentColor;stop-opacity:.55"/><stop offset="0.22" style="stop-color:color-mix(in srgb,currentColor 80%,#fff);stop-opacity:0.7"/><stop offset="0.54" style="stop-color:currentColor;stop-opacity:.45"/><stop offset="1" style="stop-color:currentColor;stop-opacity:0"/></linearGradient><clipPath id="poC"><rect x="16" y="0" width="30" height="28"/></clipPath></defs><path d="M32 14H232" stroke="url(#poF)"/><path d="M22 4H66M22 24H66"/><path d="M38 10H104M38 18H104" opacity=".5"/><g clip-path="url(#poC)"><path d="M0 14L10 4L20 14L10 24ZM12 14L22 4L32 14L22 24Z"/><path d="M12 14L16 10L20 14L16 18Z" fill="currentColor" stroke="none" opacity=".85"/></g></svg><i></i><b></b><i></i></div>
-      <div class="party-number" id="party-number"></div><!-- now: Twist only -->
+      <div class="party-number" id="party-number"></div><!-- Twist text only -->
     </div>
 
     <div class="party-bottom party-chrome">

@@ -52,10 +52,9 @@ async function check(name, fn) {
 function assert(cond, msg) { if (!cond) throw new Error(msg || 'assertion failed'); }
 
 // ── in-page helpers ─────────────────────────────────────────────────────────
-// The on-card "n / total" reading was retired (moved under the bar as
-// #progCountNum, in Roman numerals) — read the real state instead of
-// parsing rendered text, which is more robust and works before that
-// element exists at all (index -1, no card drawn yet).
+// Read the real state instead of parsing the rendered "n / total"
+// (#progCountNum): more robust, and works before any card is drawn
+// (index -1).
 async function cardParts(page) {
   return page.evaluate(() => ({ index: state.currentIndex + 1, total: state.visibleDeck.length }));
 }

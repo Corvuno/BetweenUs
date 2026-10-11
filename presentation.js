@@ -5,51 +5,18 @@
 // (language switch, drawer open/close buttons). (The app's boot sequence
 // lives in ui.js.)
 
-// Roman numerals for the counter's static readout — falls back to arabic
-// past what reads cleanly as a numeral (beyond XXXIX).
-// 2026-10-13: the counters (main screen and full screen) no longer use roman
-// numerals at any hand size: toRoman/partyRomanCount below are kept but unused.
-// Both screens read "n / total" in digits, in the same thin numeral font.
+// Counter readout on both screens: "n / total" in digits.
 function countLabel(n, total) {
   return `${n} / ${total}`;
-}
-
-const ROMAN_MAX = 39;
-function toRoman(n) {
-  const vals = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],
-                [50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
-  let out = '';
-  for (const [v, sym] of vals) while (n >= v) { out += sym; n -= v; }
-  return out || '0';
-}
-
-// Fullscreen's own count — "n / total" in roman rather than arabic, same
-// plain-slash separator it already used. Caps lower than the main counter
-// (twelve, not thirty-nine): at party size the numeral sits right next to
-// the question in the same reading line, so it has to stay short enough
-// not to compete with it — see FULLSCREEN.md.
-function partyRomanCount(n, total) {
-  const fmt = total > 12 ? String : toRoman;
-  // hair spaces (U+200A), not full spaces — a plain slash still separates
-  // cleanly once the numerals themselves are in a serif (see .party-number).
-  return `${fmt(n)} / ${fmt(total)}`;
 }
 
 // `currentOverride`, when given, replaces state.currentIndex for this render
 // only — used by the end-of-round summary to show every card as passed
 // without a "current" tick, without touching real session position.
 //
-// The rule is one flex tick per card, full stop — no dot-count scaling or
-// sliding window for huge decks the way the old dot row needed. A hairline
-// degrades gracefully at any density (unlike discrete dots, which stop
-// being individually readable past a few dozen), so "All" in Everything
-// (300+ cards) just renders as a very fine line with a spike at the
-// current position — the numeral underneath is what actually reads at
-// that size, same job it does at 5 or 10.
-// Dots keep their real shape/size/colour throughout — only which ones are
-// on screen changes. Up to 20, every card gets a dot; past that the window
-// slides to keep the current card (plus one ahead) in view, and everything
-// before it has simply scrolled out of frame, not compressed or restyled.
+// One tick per card, up to PROGRESS_CAP on screen. Past that the window
+// slides to keep the current card (plus one ahead) in view; ticks before it
+// have simply scrolled out of frame, not been compressed or restyled.
 const PROGRESS_CAP = 20;
 function renderProgress(currentOverride) {
   const container = document.getElementById('progress');
@@ -90,16 +57,12 @@ function renderProgress(currentOverride) {
     container.appendChild(endDot);
   }
 
-  // Always Roman, at any count — no arabic fallback past ROMAN_MAX the way
-  // the dot numeral used to have.
   if (countEl) {
     countEl.innerHTML = deckLen > 0
       ? countLabel(Math.min(cur + 1, deckLen), deckLen)
       : '';
   }
 }
-
-// ── SAFE MODE & PRESETS ───────────────────────────────────────────────────────
 
 function updateShuffleDisplay() {
   const name = SHUFFLE_MODES[shuffleModeIdx] || state.randomMode;
@@ -108,8 +71,6 @@ function updateShuffleDisplay() {
   const vo = document.getElementById('valOrder');
   if (vo) vo.textContent = name.charAt(0).toUpperCase() + name.slice(1);
 }
-
-// setCardDisplay — updates card face, accent bar, and fullscreen sync
 
 function updatePartyDisplay(card) {
   const pq  = document.getElementById('party-question');
@@ -453,7 +414,7 @@ function drawRoundTrace(cards) {
        + dots + `</svg>`;
 }
 
-// ── End of set — the full-bleed end screen's model. Tallies only THIS
+// ── End of hand — the model behind the hand summary. Tallies only THIS
 // hand (state.visibleDeck), not the whole multi-hand session log.
 function computeEndScreenModel() {
   const drawn = {};
@@ -556,66 +517,8 @@ function hideHandSummary() {
   document.body.classList.remove('showing-hand-summary');
 }
 
-// ── END OF SET (dormant) ── the full-bleed takeover showHandSummary() above
-// replaced — kept, unused, for a reshaped version to come back to later.
-// Nothing calls showEndScreen()/hideEndScreen() any more.
-function showEndScreen() {
-  clearTwist();
-  const model = computeEndScreenModel();
-  const sentence = document.getElementById('esSentence');
-  const chips    = document.getElementById('esChips');
-  const favs     = document.getElementById('esFavs');
-  const hold     = document.getElementById('esHold');
-  if (sentence) sentence.innerHTML = esSentenceHTML(model);
-  if (chips)    chips.innerHTML = esChipsHTML(model);
-  if (favs)     favs.innerHTML = esFavsHTML(model);
-  if (hold)     hold.style.setProperty('--es-chapter', model.last ? model.last.color : 'var(--gold)');
-  // Next Card's own position is fixed (header/token/preset/card/counter
-  // are all fixed-height above it), but the end screen's body content
-  // (sentence + chip cloud + favourites line) varies with what got drawn,
-  // so .es-actions landed at a different height each time — sometimes
-  // above Next Card's spot, sometimes below. Record where Next Card sits
-  // now, before it's hidden, so it can be reproduced exactly below.
-  const nextBtn = document.getElementById('btn-next');
-  const nextTop = nextBtn ? nextBtn.getBoundingClientRect().top : null;
-  document.body.classList.add('showing-end-screen');
-  // The display:none->flex swap happens the instant the class above is
-  // added, landing at opacity:0 (see styles.css) with .in not yet present.
-  // A bare requestAnimationFrame here isn't enough — the browser can (and
-  // in testing, did) coalesce the display change and the .in class into
-  // the same first paint, skipping the transition entirely. Forcing a
-  // synchronous reflow (void es.offsetHeight) between the two commits the
-  // opacity:0 state as an actual rendered frame first, the same trick
-  // flipToCard() already uses to restart the accent-bloom animation.
-  const es = document.getElementById('endScreen');
-  if (es) { es.classList.remove('in'); void es.offsetHeight; es.classList.add('in'); }
-  // Now that the end screen has laid out with its actual content, pad
-  // .es-body up to whatever height puts .es-actions exactly where Next
-  // Card was recorded above — never shrinks it (a long chip cloud is
-  // allowed to push the actions down further; it just can't land higher
-  // than Next Card's spot).
-  const esBody = document.querySelector('.es-body');
-  const esActions = document.querySelector('.es-actions');
-  if (esBody && esActions && nextTop != null) {
-    esBody.style.minHeight = '';
-    const actionsTop = esActions.getBoundingClientRect().top;
-    const delta = nextTop - actionsTop;
-    if (delta > 0) esBody.style.minHeight = (esBody.getBoundingClientRect().height + delta) + 'px';
-  }
-  // Every tick reads as passed on the (now hidden) counter, none current —
-  // keeps it correct for the instant hideEndScreen() reveals it again.
-  renderProgress(state.visibleDeck.length);
-}
-function hideEndScreen() {
-  const es = document.getElementById('endScreen');
-  if (es) es.classList.remove('in');
-  const esBody = document.querySelector('.es-body');
-  if (esBody) esBody.style.minHeight = '';
-  document.body.classList.remove('showing-end-screen');
-}
-
 // ── End-of-draw hold gate ──
-// The end screen is a stop, not something you tap through: continuing takes a
+// The end-of-hand summary is a stop, not something you tap through: continuing takes a
 // deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
 // touchend/click, so the gate opens a short swallow window that those handlers
 // (here and on the fullscreen overlay) check, keeping one hold to one advance.
@@ -635,9 +538,8 @@ function hint(on){
   if (el) el.classList.toggle('visible', !!on);
 }
 
-// Fullscreen's own end-of-set moment — the same in-card sic-wrap/arc-trace
-// treatment the full-bleed end screen used before it existed, inside the
-// party card (the party overlay doesn't use the full-bleed end screen).
+// Fullscreen's own end-of-set moment: the arc trace and category list,
+// shown inside the party card.
 function runPartySummary() {
   const isArc = state.randomMode === 'arc';
   const pl = document.getElementById('party-level');
