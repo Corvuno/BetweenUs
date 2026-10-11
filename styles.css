@@ -1701,3 +1701,15 @@ body.tok-taught .tok-hint{display:none;}
 .cat-bucket.bkt-hidden{display:none;}
 .cat-bucket.open{border-bottom-color:transparent;}
 
+/* ── Sentence case for the words people read (2026-10-11) ──
+   Names of things (BALANCED, the chapter names, a card's category) stay in
+   spaced capitals; hints, section headings, link text and the Three / Full
+   screen / Twist row are written normally. Owner-approved from side-by-side
+   renders of the real screens. */
+.tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
+.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
+.pick-toggle,.btn-fullscreen{text-transform:none;letter-spacing:.03em;font-size:.95rem;}
+@media(min-width:1024px){
+  .pick-toggle,.btn-fullscreen,.sect-lbl,.sect-lbl span,.link-plain{font-size:1rem;}
+  .cat-sheet-head-title{font-size:1rem;}
+}
