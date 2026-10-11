@@ -195,6 +195,14 @@ Alternative 2: [candidate replacement question]
 Alternative 3: [candidate replacement question]
 ```
 
+**Write issue cards as plain text in the chat message — never inside a code block.**
+The block above is only the template; the format is right, the code-block wrapper is
+not. The owner reads on a phone, where a code block does not wrap: long lines run off
+the screen and have to be scrolled sideways, which makes the proposal unreadable. Put
+each issue card's lines straight into the message, with the card's lines separated so
+they read as a card (a bold category/number line, then the reason and the three
+alternatives on their own lines).
+
 One issue card per proposed change, three alternatives each — never pick a single
 winner yourself. Only write a swap into `questions.js` after the owner has replied
 picking (or rewriting) one of the alternatives for that specific slot.
