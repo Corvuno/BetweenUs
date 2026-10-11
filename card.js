@@ -113,6 +113,16 @@ function applyCardMark(el, card) {
   }
 }
 
+// The start card: the card's back with the "begin" text, shown only before
+// the first draw. Pass the text to show it, or nothing to put the face back.
+function setStartBack(text) {
+  const el = document.getElementById('card');
+  if (!el) return;
+  const t = document.getElementById('cardBackText');
+  if (text && t) t.textContent = text;
+  el.classList.toggle('is-start', !!text);
+}
+
 function setCardDisplay(card) {
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
@@ -134,6 +144,9 @@ function setCardDisplay(card) {
       : (state.lang==='nl' ? 'Een plek om te beginnen…'   : 'A place to begin…');
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
+    // nothing to draw (no categories) keeps the plain message; otherwise the
+    // start card shows the same "begin" text on the card's back
+    setStartBack(state.visibleDeck.length===0 ? '' : (state.lang==='nl' ? 'Een plek om te beginnen…' : 'A place to begin…'));
     if (nextBtn) {
       nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
       // nothing's been dealt yet (fresh load, or a settings change just
@@ -146,6 +159,7 @@ function setCardDisplay(card) {
     clearTwist();
     return;
   }
+  setStartBack('');
   applyCardMark(el, card);
   const color = levelColor(card.level);
   if (accent) {
@@ -197,6 +211,7 @@ function flipToCard(card, isFirstDraw) {
     });
   }
   setTimeout(() => {
+    setStartBack('');   // the back turns over with the face swap, not before
     applyCardMark(el, card);
     const color = levelColor(card.level);
     if (accent) {

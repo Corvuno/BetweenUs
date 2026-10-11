@@ -211,6 +211,20 @@
           <div class="card-question" id="card-question" aria-live="polite" aria-atomic="true">Draw a card to begin.</div>
         </div>
         <div class="twist-sentence" id="twistSentence"></div>
+        <!-- START CARD: the card's back, shown only before the first draw
+             (card.js setStartBack). Decorative — the live text is still in
+             #card-question for screen readers. -->
+        <div class="card-back" id="cardBack" aria-hidden="true">
+          <span class="cb-lattice"></span>
+          <span class="cb-frame"></span>
+          <span class="cb-frame cb-frame--in"></span>
+          <i class="cb-br cb-br--tl"></i><i class="cb-br cb-br--tr"></i><i class="cb-br cb-br--bl"></i><i class="cb-br cb-br--br"></i>
+          <div class="cb-plate">
+            <svg class="cb-star" viewBox="-9 -9 18 18"><path d="M0 -8 2.3 -2.3 8 0 2.3 2.3 0 8 -2.3 2.3 -8 0 -2.3 -2.3Z" fill="currentColor"/></svg>
+            <span class="cb-rule"></span>
+            <span class="cb-text" id="cardBackText"></span>
+          </div>
+        </div>
       </div>
       <div class="end-hint" id="endHint">Hold to continue</div>
       <button class="skip-undo" id="skipUndo">&#8617; Undo skip</button>

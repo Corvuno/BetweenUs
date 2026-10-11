@@ -261,6 +261,45 @@ body{
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
 }
 .card-star:hover{opacity:.65;}.card-star.active{opacity:1;}
+
+/* ── START CARD ── the back of the card, shown before the first draw
+   (body class-free: card.js setStartBack toggles .is-start on #card).
+   Owner's "B · Lattice" back, written in container units so it fits any
+   card size (phone, desktop) instead of the 320×448 it was drawn at: sizes
+   scale off the card's height (cqh). The line/plate opacities are the
+   owner's spec values, not the shared border tokens, on purpose.
+   Decorative only — clicks pass through to the card. */
+.card-back{
+  display:none;position:absolute;inset:0;z-index:5;overflow:hidden;
+  container-type:size;background:var(--bg);color:var(--gold);pointer-events:none;
+}
+.card.is-start .card-back{display:block;}
+.card.is-start .card-body-inner,.card.is-start .card-star{visibility:hidden;}
+.cb-lattice{
+  position:absolute;inset:3.5cqh;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M0 0 18 18M18 0 0 18' fill='none' stroke='%23c9a84c' stroke-width='.6' opacity='.42'/%3E%3Ccircle cx='9' cy='9' r='.9' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='.7' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") 0 0/18px 18px;
+}
+.cb-frame{position:absolute;inset:3.5cqh;border:1px solid rgba(201,168,76,.5);}
+.cb-frame--in{inset:5.7cqh;border-color:rgba(201,168,76,.28);}
+.cb-br{position:absolute;width:6cqh;height:6cqh;border:0 solid var(--gold);opacity:.65;}
+.cb-br--tl{top:8.7cqh;left:8.7cqh;border-width:1px 0 0 1px;}
+.cb-br--tr{top:8.7cqh;right:8.7cqh;border-width:1px 1px 0 0;}
+.cb-br--bl{bottom:8.7cqh;left:8.7cqh;border-width:0 0 1px 1px;}
+.cb-br--br{bottom:8.7cqh;right:8.7cqh;border-width:0 1px 1px 0;}
+.cb-plate{
+  --d:66cqh;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:var(--d);height:var(--d);border-radius:50%;background:var(--bg);
+  box-shadow:0 0 0 1px rgba(201,168,76,.34),0 0 calc(var(--d)*.127) calc(var(--d)*.11) var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--d)*.05);
+}
+.cb-star{width:calc(var(--d)*.1);height:calc(var(--d)*.1);color:var(--gold);}
+.cb-rule{width:calc(var(--d)*.53);height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.8),transparent);}
+.cb-text{
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.44;
+  font-size:calc(var(--d)*.115);line-height:1.25;text-align:center;color:var(--cream);
+  padding:0 calc(var(--d)*.09);text-wrap:balance;
+}
 .card-body-inner{position:relative;z-index:1;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
 .card-level{font-family:'Jost',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:0;transition:color .5s ease,opacity .35s ease;}
 .card-level.in{opacity:.95;}
