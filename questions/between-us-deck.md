@@ -112,7 +112,7 @@ The subject matter is not what makes a card recognisable — every deck asks abo
 ## Rules
 
 1. **Anchor story cards on the pivot, not the topic.** A memorable story turns on one moment — the realisation, the surprise, the thing that changed. A card that names the topic gets an anecdote; a card that names the pivot gets the anecdote *and* the reason it stuck.
-2. **One question per card.** A second question doesn't deepen the first, it replaces it — players answer the louder one and the first goes unanswered.
+2. **One question per card.** A second question doesn't deepen the first, it replaces it — players answer the louder one and the first goes unanswered. **Two sides of one question is still one question** (owner's call, 2026-10-11): a card may light the same subject from both ends — hide and show, difficult and beautiful, hold back and let through — because the player answers one thing, their relationship with it, from two angles. What rule 2 rules out is a second, different question that competes with the first. Don't flag or split a card just for having two halves; check whether the halves are one subject (fine) or two subjects (not).
 3. **A second clause earns its place only if it changes the answer.** *"— and did you let it go?"* changes it. *"— and how does that feel?"* does not.
 4. **Don't hand the player the category.** Listing the kind of answer you expect narrows the answer to your list. Name the moment and let them bring the category.
 5. **Every card must be answerable by someone who has no story.** A card that only works if you've lived the specific thing is a dead card for half the table.
