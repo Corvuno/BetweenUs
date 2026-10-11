@@ -123,6 +123,8 @@ function updatePartyDisplay(card) {
   const color = levelColor(card.level);
   if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
   if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
+  const po = document.querySelector('.party-ornament');
+  if (po) po.style.setProperty('--orn', labelColor(color));
   if (pq) {
     pq.textContent = translateQ(card);
     pq.classList.add('entering');
