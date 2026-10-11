@@ -62,19 +62,10 @@ body::before{
 .header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .5s .15s ease,transform .5s .15s ease;}
 .header.in{opacity:1;transform:none;}
 .title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
-.title-rule{display:flex;align-items:center;justify-content:center;gap:9px;
+.title-rule{display:flex;align-items:center;justify-content:center;
   width:min(100%,320px);margin:12px auto 0;}
-.tr-line{flex:1;height:1px;background:linear-gradient(90deg,
-  transparent 0%,
-  color-mix(in srgb,var(--gold) 45%, transparent) 46%,
-  color-mix(in srgb,var(--gold-l) 70%, transparent) 78%,
-  color-mix(in srgb,var(--gold) 55%, transparent) 100%);}
-.tr-line:last-child{background:linear-gradient(90deg,
-  color-mix(in srgb,var(--gold) 55%, transparent) 0%,
-  color-mix(in srgb,var(--gold-l) 70%, transparent) 22%,
-  color-mix(in srgb,var(--gold) 45%, transparent) 54%,
-  transparent 100%);}
-.tr-dot{width:4px;height:4px;transform:rotate(45deg);background:var(--gold);opacity:.85;}
+.tr-svg{display:block;width:100%;height:auto;overflow:visible;}
+.tr-svg path{vector-effect:non-scaling-stroke;}
 .subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
 
 /* ── PRESET ROW ── */
@@ -717,9 +708,14 @@ body.showing-end-screen .end-screen.in{opacity:1;}
 
 /* line · diamond · line: always on phone portrait, only with Twist elsewhere */
 .party-ornament{display:flex;align-items:center;gap:10px;}
-.party-ornament i{width:44px;height:1px;background:rgba(201,168,76,.55);}
-.party-ornament i:last-child{background:linear-gradient(90deg,rgba(201,168,76,.55),transparent);}
-.party-ornament b{width:5px;height:5px;background:var(--gold);opacity:.8;transform:rotate(45deg);}
+/* the hairline from the header, centre plus its right half, in the card's own
+   category colour (--orn, set per card in updatePartyDisplay) pulled slightly
+   toward grey and dimmed, the way a passed card reads. */
+.party-ornament .po-svg{display:block;width:170px;height:auto;overflow:visible;
+  color:color-mix(in srgb,var(--orn,var(--gold)) 72%,#8a8274);opacity:.78;}
+.po-svg path{vector-effect:non-scaling-stroke;}
+.party-ornament i,.party-ornament b{display:none;}
+/* the old line · diamond · line stays only as the vertical rule between question and Twist (landscape) */
 
 /* Twist */
 .party-number{display:none;}
@@ -776,6 +772,9 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
   .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
   .party-inner:has(.party-number.twist) .party-ornament{grid-area:orn;display:flex;flex-direction:column;align-self:stretch;padding:16px 0;}
+  .party-inner:has(.party-number.twist) .party-ornament .po-svg{display:none;}
+  .party-inner:has(.party-number.twist) .party-ornament i{display:block;}
+  .party-inner:has(.party-number.twist) .party-ornament b{display:block;width:5px;height:5px;background:var(--gold);opacity:.8;transform:rotate(45deg);}
   .party-inner:has(.party-number.twist) .party-ornament i{flex:1;width:1px;height:auto;background:linear-gradient(180deg,transparent,rgba(201,168,76,.5));}
   .party-inner:has(.party-number.twist) .party-ornament i:last-child{background:linear-gradient(180deg,rgba(201,168,76,.5),transparent);}
   .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
@@ -814,7 +813,7 @@ body.showing-end-screen .end-screen.in{opacity:1;}
   .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
   .party-ornament{display:none;}
   .party-inner:has(.party-number.twist) .party-ornament{display:flex;margin-top:6px;}
-  .party-ornament i{width:110px;} .party-ornament b{width:6px;height:6px;}
+  .party-ornament .po-svg{width:220px;}
   .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
   .party-number.twist::before{font-size:13px;}
 
@@ -1300,6 +1299,9 @@ body.tok-taught .tok-hint{display:none;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament{grid-area:orn;display:flex;flex-direction:column;align-self:stretch;padding:16px 0;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament .po-svg{display:none;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament i{display:block;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament b{display:block;width:5px;height:5px;background:var(--gold);opacity:.8;transform:rotate(45deg);}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament i{flex:1;width:1px;height:auto;background:linear-gradient(180deg,transparent,rgba(201,168,76,.5));}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament i:last-child{background:linear-gradient(180deg,rgba(201,168,76,.5),transparent);}
   .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
@@ -1699,3 +1701,15 @@ body.tok-taught .tok-hint{display:none;}
 .cat-bucket.bkt-hidden{display:none;}
 .cat-bucket.open{border-bottom-color:transparent;}
 
+/* ── Sentence case for the words people read (2026-10-11) ──
+   Names of things (BALANCED, the chapter names, a card's category) stay in
+   spaced capitals; hints, section headings, link text and the Three / Full
+   screen / Twist row are written normally. Owner-approved from side-by-side
+   renders of the real screens. */
+.tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
+.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
+.pick-toggle,.btn-fullscreen{text-transform:none;letter-spacing:.03em;font-size:.95rem;}
+@media(min-width:1024px){
+  .pick-toggle,.btn-fullscreen,.sect-lbl,.sect-lbl span,.link-plain{font-size:1rem;}
+  .cat-sheet-head-title{font-size:1rem;}
+}
