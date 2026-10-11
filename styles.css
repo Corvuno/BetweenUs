@@ -296,7 +296,7 @@ body{
 .cb-star{width:calc(var(--d)*.1);height:calc(var(--d)*.1);color:var(--gold);}
 .cb-rule{width:calc(var(--d)*.53);height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.8),transparent);}
 .cb-text{
-  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.44;
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;
   font-size:calc(var(--d)*.115);line-height:1.25;text-align:center;color:var(--cream);
   padding:0 calc(var(--d)*.09);text-wrap:balance;
 }
@@ -1749,13 +1749,15 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── Type: Bodoni Moda for the questions, Federo for the sentence-case labels (2026-10-12) ──
    Owner-picked from side-by-side renders. font-size-adjust sizes Bodoni by its
-   lowercase height (0.44 against Cormorant's 0.40, so a little under the old
-   size, not the 0.40 match) and carries through every breakpoint's font-size
-   without touching them. Only the question itself changes: the card, the full-
+   lowercase height and carries through every breakpoint's font-size without
+   touching them. 0.36 is the largest value where no card, in English or Dutch,
+   that fitted in Cormorant stops fitting (card, full screen, both Draw-three
+   views, 320-480px wide); Bodoni is wider than Cormorant, so 0.40 or above
+   pushes the longest questions out of the fixed-shape card. Only the question itself changes: the card, the full-
    screen view and both Draw-three pickers. Twist sentences, drawers, the hand
    summary and help copy stay Cormorant. Federo has the same lowercase height
    as Jost (0.46), so labels keep their size; caps names stay Jost. */
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
-  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.44;}
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
 .tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain,.pick-toggle,.pick-toggle span,.btn-fullscreen{
   font-family:'Federo','Jost',sans-serif;}
