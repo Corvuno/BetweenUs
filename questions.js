@@ -157,7 +157,7 @@ const NEWDECK_CARDS = [
   { level: "body", question: "What music reaches your body before it reaches your head — and what happens?", nl: "Welke muziek bereikt je lichaam eerder dan je hoofd — en wat gebeurt er dan?" },
   { level: "body", question: "Point to where you carry your tension right now." },
   { level: "body", question: "What did pain teach you that you couldn't have learned any other way?" },
-  { level: "body", question: "Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful.", nl: "Wijs de plek op je lichaam aan waar je de moeizaamste relatie mee hebt — en dan de plek die je als mooi zou verdedigen." },
+  { level: "body", question: "Which part of your body do you like keeping to yourself, and which part is happily on display for the general public?" },
   { level: "body", question: "Which version of your body do you still compare this one to?" },
   { level: "body", question: "What is your body better at now than it has ever been?" },
   { level: "body", question: "What's your actual relationship with food?", nl: "Eten en jij..." },

@@ -16,6 +16,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
+- **Body** — "Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful." (displaced from Body 7 in v7.02, owner-approved; players kept answering Flesh 8 as if it were this card, and the owner preferred a hide/show framing. The difficult-body half is gone from the deck. Dutch: "Wijs de plek op je lichaam aan waar je de moeizaamste relatie mee hebt — en dan de plek die je als mooi zou verdedigen.")
 - **Work** — "Which colleague taught you the most without ever meaning to?" (independently approved for Work 1 in a different session while this branch was still open; owner resolved the collision by keeping this session's "office drama" card instead — see the merge note in the change log)
 - **Warm** — "Some small thing you do properly, though nobody would ever check..." (displaced from Warm 1 in v6.88 by "Which chore do you secretly not mind?", moved in from Life 3 — owner's call, both cards occupied the same "quiet care nobody checks on" ground and the Life version was the stronger fit for Warm's register)
 - **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
@@ -229,6 +230,19 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.02 — Body 7 replaced
+- **Body 7** → *"Which part of your body do you like keeping to yourself, and which part is
+  happily on display for the general public?"* Replaces "Point to the part of your body
+  you have the most difficult relationship with — then the one you'd defend as beautiful."
+  Owner picked this alternative over two others; the "general public" wording is the
+  owner's own, from their first hide/show draft. Two sides of one subject (covered and
+  shown), which house style rule 2 now allows. Reason: players answered Flesh 8
+  ("How far do you go in public — what are you okay with people seeing?") as if it were
+  the body card, and the hide/show framing separates the two. The old Dutch line was
+  removed rather than left behind, since it translated the old card's meaning; the
+  card falls back to English until a Dutch version is approved. Flesh 8 is still being
+  reworked and is unchanged.
 
 ## Patch v7.01 — card lists removed from this file; `questions.js` is the only copy
 A category-by-category comparison of this file against `NEWDECK_CARDS` found all 34
