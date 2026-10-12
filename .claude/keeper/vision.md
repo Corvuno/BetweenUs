@@ -41,6 +41,11 @@ For someone looking on their own (a first visitor from a post or a link), it rea
 beautiful boxed deck: clearly made for an evening with other people, pretty, and exciting
 to look through. Trying a few questions on your own is part of the fun.
 
+## Its words
+
+A player draws a card: they take it, it is theirs. Nothing is dealt or handed out, and
+the language stays clear of gambling and card-table words. "Draw" is the verb.
+
 ## How it looks
 
 Art deco: its geometry, symmetry and line work. Pretty and elegant, and also bold and
@@ -74,3 +79,6 @@ reachable on its own link, to illustrate how it used to be.
   (https://claude.ai/artifact/L89RGKuqjF31G4U9AFfX1L) and said neon is not the direction.
   Removed text: "Art deco in neon: the geometry, symmetry and line work of deco, lit up and
   turned up."
+- **2026-10-12** — Added "Its words": players draw, nothing is dealt. Drawing gives the
+  player ownership and keeps the app away from gambling. Came from the owner's reaction to
+  "Deal another hand" in the sketch.
