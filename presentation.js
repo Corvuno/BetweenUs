@@ -213,7 +213,7 @@ document.getElementById('catLabel').addEventListener('click', toggleCategories);
 
 // Shuffle mode is chosen from the Shuffle token tray (see the order list in the
 // app shell wiring below); the mode is applied via updateShuffleDisplay().
-// ── Reshuffle button: re-deal in the current shuffle mode ──
+// ── Reshuffle button: re-draw in the current shuffle mode ──
 document.getElementById('d-reshuffle').addEventListener('click',()=>{
   initDeck();
   updateDeckInfo(); updateDrawMore();
@@ -381,7 +381,7 @@ function updateDrawMore() {
 
   if (atSummary) {
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
-    // pile 10 extra cards onto the finished hand instead of dealing a new one).
+    // pile 10 extra cards onto the finished hand instead of drawing a new one).
     // This is the only state that skips straight to a new hand, and it always
     // needs the hold gesture — the last card of a hand still goes through this
     // screen first, never a one-tap shortcut around it.

@@ -1,11 +1,11 @@
 // ── UI ───────────────────────────────────────────────────────────────────────
 // DOM event wiring and app bootstrap. This is the file that actually runs at
-// load time: the boot sequence that deals the opening hand, the two
+// load time: the boot sequence that draws the opening hand, the two
 // structural IIFEs that build the tray/drawer chrome and the Play/Explore
 // controller, and the event listeners that don't belong to one specific
 // domain file. Loads last, after every function it wires up. Executes top-
 // to-bottom, so the boot logic is load-order-sensitive (the double init
-// sequence, the final default-selection deal).
+// sequence, the final default-selection draw).
 
 // Explore's bucket grid is built from CATEGORIES/BUCKET_META in config.js, the
 // single source for every level/bucket/label. Runs first, before anything else in this
@@ -887,13 +887,13 @@ applyToggleUI();
     });
   })();
 
-  // "Draw Cards" — closes the sheet and deals straight into the first hand
-  // of whatever's now selected, the same reshuffle-then-deal the app already
+  // "Draw Cards" — closes the sheet and draws straight into the first hand
+  // of whatever's now selected, the same reshuffle-then-draw the app already
   // does elsewhere (deck.js's end-of-hand hold) — so finishing the sheet
   // never leaves the placeholder card sitting there waiting for one more tap.
   const goBtn = $('catGoBtn');
   if (goBtn) goBtn.addEventListener('click', () => {
-    // Dealing a brand-new hand from the sheet is the "starting over" moment —
+    // Drawing a brand-new hand from the sheet is the "starting over" moment —
     // if a stored session was live, detach from it so these new cards land
     // only in the ephemeral autosave slot, never silently overwriting it.
     // Ordinary continued play (next/prev/skip/draw more/reshuffle/toggling a
@@ -1314,7 +1314,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
       exploreFold.classList.add('revealing');
     }
     if (open) scrollExploreIntoView(ms, calm);
-    syncIntentUI();   // looking is not choosing — opening the fold never re-deals the hand
+    syncIntentUI();   // looking is not choosing — opening the fold never re-draws the hand
     if (open && typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
   if (customizeBtn) customizeBtn.addEventListener('click', () => toggleExplore());
@@ -1356,10 +1356,10 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   syncIntentUI();
 })();
 
-applyQueryDeck();   // ?Q=Work1,Life7,... overrides the dealt default hand, if present
+applyQueryDeck();   // ?Q=Work1,Life7,... overrides the drawn default hand, if present
 
 // Silently resume whatever was last live (the ephemeral autosave slot, and
-// the stored session it may be bound to) — after the default deal and the
+// the stored session it may be bound to) — after the default draw and the
 // ?Q= override, so it's the last word on what's actually on screen. A ?Q=
 // test link must stay exactly what it says, never quietly swapped for a
 // saved session.

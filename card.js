@@ -149,7 +149,7 @@ function setCardDisplay(card) {
     setStartBack(state.visibleDeck.length===0 ? '' : (state.lang==='nl' ? 'Een plek om te beginnen…' : 'A place to begin…'));
     if (nextBtn) {
       nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
-      // nothing's been dealt yet (fresh load, or a settings change just
+      // nothing's been drawn yet (fresh load, or a settings change just
       // reset the hand) — make this the obvious "start" tap, not just
       // another "next" tap.
       nextBtn.classList.add('btn-draw--start');
@@ -192,14 +192,14 @@ function flipToCard(card, isFirstDraw) {
   if (lvlEl) lvlEl.classList.remove('in');
   const qEl = document.getElementById('card-question');
   if (qEl)  qEl.classList.remove('in');
-  // The first deal of a hand gets thrown onto the table — two ghost cards
+  // The first draw of a hand gets thrown onto the table — two ghost cards
   // trail behind the real one as it drops in at an angle (shows the
   // settings that were just chosen are actually taking effect); every card
   // after that gets the plain, quicker flip. Ghosts are real, temporary
   // elements (not a pure-CSS trick) — removed once the animation is done.
-  const animClass = isFirstDraw ? 'dealing' : 'flipping';
+  const animClass = isFirstDraw ? 'drawing-in' : 'flipping';
   el.classList.add(animClass);
-  // The start card's back dissolves instead of cutting: on the first deal it
+  // The start card's back dissolves instead of cutting: on the first draw it
   // starts fading as the card lands (~55% of the 1050ms drop) and is gone
   // exactly when the face arrives; on a plain flip it fades straight away.
   if (el.classList.contains('is-start')) setTimeout(() => setStartBack(''), isFirstDraw ? 600 : 0);
@@ -208,7 +208,7 @@ function flipToCard(card, isFirstDraw) {
     const area = el.parentElement;
     ghosts = [0, 1].map(i => {
       const g = document.createElement('div');
-      g.className = 'deal-ghost';
+      g.className = 'draw-ghost';
       g.style.animationDelay = (i * 40) + 'ms';
       area.insertBefore(g, el);
       return g;
@@ -240,7 +240,7 @@ function flipToCard(card, isFirstDraw) {
     updatePartyDisplay(card);
     // Auto-save on every card
     autoSaveSession();
-  }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.dealing animation-duration in styles.css
+  }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.drawing-in animation-duration in styles.css
 }
 
 function openPicker(options) {

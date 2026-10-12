@@ -59,7 +59,7 @@ async function cardParts(page) {
   return page.evaluate(() => ({ index: state.currentIndex + 1, total: state.visibleDeck.length }));
 }
 async function questionText(page) { return (await page.locator('#card-question').textContent()).trim(); }
-// Polls real DOM state instead of sleeping a fixed duration — the deal
+// Polls real DOM state instead of sleeping a fixed duration — the draw
 // animation's length is a styling detail, not a contract, so a test that
 // waits for it to *finish* (rather than guessing how long it takes) doesn't
 // need re-tuning every time that duration changes.
@@ -139,7 +139,7 @@ async function run() {
   await check('first tap on the card draws card 1 of the hand', async () => {
     await page.locator('#card').click();
     // the first draw of a hand plays the (longer) shuffle animation rather
-    // than the plain 175ms flip — see .card.dealing in styles.css; wait for
+    // than the plain 175ms flip — see .card.drawing-in in styles.css; wait for
     // the actual reveal instead of guessing its duration
     await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
@@ -409,8 +409,8 @@ async function run() {
     assert(await atEnd(), 'a quick tap on Next Card advanced past the end-of-hand gate');
 
     // Full hold: must advance into a fresh hand — wait for the actual reveal
-    // rather than a guessed duration (works whether this replays the deal
-    // animation or not; the deal animation only plays once per session).
+    // rather than a guessed duration (works whether this replays the draw
+    // animation or not; the draw animation only plays once per session).
     await pointerHold(page, '#btn-next', 650);
     await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);

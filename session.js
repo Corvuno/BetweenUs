@@ -104,7 +104,7 @@ function autoSaveSession() {
 
 // Silent, automatic — no button to notice, no "Continue?" step. Called once
 // at boot; if nothing was ever saved this is a no-op and the default preset
-// deal from ui.js's init block stands.
+// draw from ui.js's init block stands.
 function autoResumeSession() {
   try { state.activeSessionId = localStorage.getItem('bu-active-session-id') || ''; }
   catch(e) { state.activeSessionId = ''; }

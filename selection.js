@@ -121,7 +121,7 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
     applyPreset(btn.dataset.mode);
     initDeck();
     // Colbert/The 36 are a fixed start-to-finish sequence, not a hand to
-    // tune first — picking one should act like pressing Draw Cards: deal
+    // tune first — picking one should act like pressing Draw Cards: draw
     // straight into question 1 instead of leaving the sheet open on the
     // configuration screen.
     if (btn.classList.contains('fixed-seq-btn')) {

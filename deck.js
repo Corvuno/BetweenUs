@@ -179,9 +179,9 @@ function syncLimitButtons() {
 
 function initDeck(isContinuation) {
   // isContinuation: true only from drawMore() (Draw more / hold-to-continue),
-  // which deals a fresh hand under the SAME settings — the deal animation is
+  // which draws a fresh hand under the SAME settings — the draw animation is
   // reserved for a hand that starts because something actually changed.
-  state.skipDealAnim = !!isContinuation;
+  state.skipDrawAnim = !!isContinuation;
   state.skippedCards.clear();
   state.loggedQuestions.clear();
   state.handStarred.clear();
@@ -216,7 +216,7 @@ function initDeck(isContinuation) {
 }
 
 
-/* Draw vs session: a draw is dealt from what this session hasn't seen. */
+/* Draw vs session: a draw comes from what this session hasn't seen. */
 
 function _unseenFirst(deck){
   const seen = new Set(state.sessionLog.map(c => c.question));
@@ -226,7 +226,7 @@ function _unseenFirst(deck){
   return {deck: fresh.concat(used), unseen: fresh.length};
 }
 function _sliceDraw(deck, unseen){
-  /* deal only fresh cards; if none are left, the deck replays in full */
+  /* draw only fresh cards; if none are left, the deck replays in full */
   const cap = unseen > 0 ? Math.min(unseen, state.cardLimit === null ? unseen : state.cardLimit)
                          : (state.cardLimit === null ? deck.length : Math.min(state.cardLimit, deck.length));
   if (state.randomMode === 'arc') return _arcHand(unseen > 0 ? deck.slice(0, unseen) : deck, cap);
@@ -289,7 +289,7 @@ function _arcHand(source, cap){
 }
 
 function applyLimit() {
-  state.skipDealAnim = false;   // a card-limit change is a settings change, not a continuation
+  state.skipDrawAnim = false;   // a card-limit change is a settings change, not a continuation
   state.loggedQuestions.clear();
   const built = buildFullDeck();
   state.fullDeck = built.deck;
@@ -306,7 +306,7 @@ function applyLimit() {
 
 // ── ?Q= TEST DECK ─────────────────────────────────────────────────────────
 // Debug/demo shortcut: ?Q=Work1,Life7,Carnal4 renders exactly those cards, in
-// that order, as the whole hand — instead of the normal random deal — so a
+// that order, as the whole hand — instead of the normal random draw — so a
 // specific card can be pulled up or shown to someone without clicking
 // through category selection. Id = a CATEGORIES key (case-insensitive) plus
 // a 1-based index counted in questions.js order for that category, e.g.
@@ -330,7 +330,7 @@ function applyQueryDeck() {
   if (!cards.length) return false;
 
   state.queryDeckActive = true;
-  state.skipDealAnim = false;
+  state.skipDrawAnim = false;
   state.loggedQuestions.clear();
   state.fullDeck = cards;
   state.drawUnseen = cards.length;
@@ -353,9 +353,9 @@ function applyQueryDeck() {
 
 
 function drawMore() {
-  /* Deal a FRESH hand at the chosen limit rather than growing the current one.
+  /* Draw a FRESH hand at the chosen limit rather than growing the current one.
      The hand is always the size you picked (5) — it never becomes 10 or 15.
-     initDeck() deals unseen cards first, so a new hand doesn't repeat what this
+     initDeck() draws unseen cards first, so a new hand doesn't repeat what this
      session already showed. Same behaviour as Continue on the end screen. */
   initDeck(true);
   _nextCardBase();
@@ -386,11 +386,11 @@ function renderEndMessage(html) {
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
-    // The deal animation marks a new hand actually starting from a settings
+    // The draw animation marks a new hand actually starting from a settings
     // change — not "Draw more"/hold-to-continue, which extends play with the
-    // same settings and should feel like a plain next card, not a re-deal.
-    // initDeck(isContinuation) sets skipDealAnim accordingly on every reset.
-    const isFirstDraw = state.currentIndex === -1 && !state.skipDealAnim;
+    // same settings and should feel like a plain next card, not a re-draw.
+    // initDeck(isContinuation) sets skipDrawAnim accordingly on every reset.
+    const isFirstDraw = state.currentIndex === -1 && !state.skipDrawAnim;
     state.currentIndex++;
     flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
@@ -501,8 +501,8 @@ function nextCard() {
       return;
     case 'reshuffle':
       if (action.consumeHold) window._endHoldOK = false;
-      initDeck(true);   /* same settings, next hand — no deal animation */
-      _nextCardBase();   /* deal straight into the next hand — no blank card */
+      initDeck(true);   /* same settings, next hand — no draw animation */
+      _nextCardBase();   /* draw straight into the next hand — no blank card */
       return;
     case 'pick3':
       openPicker(state.visibleDeck.slice(action.startIdx, action.startIdx + action.count));

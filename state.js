@@ -41,7 +41,7 @@ const state = {
                             // actually tapped this time.
   customCards: [],
   categoriesCollapsed: DEFAULT_COLLAPSED,
-  skipDealAnim: false,   // set by initDeck(isContinuation) — true while dealing a fresh
+  skipDrawAnim: false,   // set by initDeck(isContinuation) — true while drawing a fresh
                           // hand under unchanged settings (Draw more, hold-to-continue),
                           // so only a hand that starts from an actual settings change
                           // gets the "thrown onto the table" animation
