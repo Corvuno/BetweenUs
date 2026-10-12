@@ -351,3 +351,12 @@ button spec) instead of writing a new one-off value. It does not cover category,
 or mode colours (those stay content colour, tuned separately) or the full font-size/
 letter-spacing scale (that file says exactly how far the 2026-09-23 pass went and why it
 stopped short of a blind file-wide sweep — read that section before extending it).
+
+## The Keeper (`/keeper`)
+
+The owner's product owner, set up 2026-10-12. Typing `/keeper` starts it: it sorts a wish
+into areas (A deck, B looks, C how the app works), talks it through, writes an agreement,
+hands building to the area builders (`.claude/agents/`, on Sonnet; Opus only when the owner
+asks), has it checked, lands it on `main` and reports back. The general process is in
+`.claude/skills/keeper/SKILL.md`; the Between Us half — areas, vision, lessons, agreements —
+is in `.claude/keeper/`. The core is kept project-neutral so it can move to its own repo later.
