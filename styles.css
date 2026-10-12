@@ -220,6 +220,8 @@ body{
 .c-accent{
   position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
   transition:background .5s ease;
+  -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+  mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
 .accent-bloom{animation:accentReveal 1s ease forwards;}
 @keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
