@@ -4,7 +4,11 @@
 // runnable by hand to preview what the next release would look like.
 //
 // How it works
-//   - Finds the latest release tag (highest x.y.z, with or without a leading v).
+//   - Finds the latest release tag (highest x.y.z, with or without a leading v),
+//     leaving out tags listed in RELEASE_SKIP_TAGS (comma-separated). The
+//     workflow fills that with every pre-release and draft on GitHub, so test
+//     cuts never count as "the previous release": changes are counted, and
+//     the notes written, from the last real release onward.
 //   - Looks at every non-merge commit since then. Commits that only touch
 //     docs / question notes / tests / workflows don't count — they never
 //     trigger or shape a release.
@@ -28,6 +32,7 @@
 // Usage:
 //   node scripts/release-plan.mjs [--force] [--now ISO] [--last-date ISO]
 //   node scripts/release-plan.mjs --print-last-tag
+// Locally, pre-releases aren't known unless you set RELEASE_SKIP_TAGS=1.1.8,... yourself.
 // Prints the plan as JSON. Inside GitHub Actions it also writes
 // release / version / size / notes to $GITHUB_OUTPUT.
 
@@ -68,6 +73,12 @@ export function latestTag(tags) {
     .map((t) => ({ t, v: parseTag(t) }))
     .filter((x) => x.v)
     .sort((a, b) => b.v[0] - a.v[0] || b.v[1] - a.v[1] || b.v[2] - a.v[2])[0]?.t;
+}
+
+// Every tag in the repo except the ones named in RELEASE_SKIP_TAGS.
+export function candidateTags(env = process.env) {
+  const skip = new Set((env.RELEASE_SKIP_TAGS || '').split(',').map((t) => t.trim()).filter(Boolean));
+  return git('tag', '--list').split('\n').filter(Boolean).filter((t) => !skip.has(t));
 }
 
 export function bump(tag, size) {
@@ -186,7 +197,7 @@ export function renderNotes(commits, size, cards) {
 }
 
 export function plan({ now = new Date(), lastDate, force = false } = {}) {
-  const tag = latestTag(git('tag', '--list').split('\n').filter(Boolean));
+  const tag = latestTag(candidateTags());
   if (!tag) throw new Error('No release tag found — fetch tags first (git fetch --tags).');
 
   const commits = collectCommits(tag);
@@ -209,7 +220,7 @@ export function plan({ now = new Date(), lastDate, force = false } = {}) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes('--print-last-tag')) {
-    console.log(latestTag(git('tag', '--list').split('\n').filter(Boolean)) || '');
+    console.log(latestTag(candidateTags()) || '');
     process.exit(0);
   }
   const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };

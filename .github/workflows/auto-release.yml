@@ -52,6 +52,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
+          # Pre-releases and drafts (usually test cuts) never count as the previous
+          # release. No "|| true" here: if GitHub can't be asked, stop rather
+          # than quietly counting test cuts.
+          export RELEASE_SKIP_TAGS=$(gh release list --limit 200 --json tagName,isPrerelease,isDraft \
+            -q '[.[] | select(.isPrerelease or .isDraft) | .tagName] | join(",")')
+          echo "Skipping pre-releases/drafts: ${RELEASE_SKIP_TAGS:-none}"
           # The last release's real publish date (the tag's commit date can be older).
           LAST_TAG=$(node scripts/release-plan.mjs --print-last-tag)
           LAST_DATE=$(gh release view "$LAST_TAG" --json publishedAt -q .publishedAt 2>/dev/null || true)
