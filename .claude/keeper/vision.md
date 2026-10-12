@@ -43,9 +43,8 @@ to look through. Trying a few questions on your own is part of the fun.
 
 ## How it looks
 
-Art deco in neon: the geometry, symmetry and line work of deco, lit up and turned up.
-Pretty and elegant, and also bold and out there. Modern elements are welcome as long as
-the whole stays bold. Every element is made for this deck: original ornament, such as the
+Art deco: its geometry, symmetry and line work. Pretty and elegant, and also bold and
+out there. Modern elements are welcome as long as the whole stays bold. Every element is made for this deck: original ornament, such as the
 hairline, the mark and the woven card back, in place of stock design. The accent colour is
 still open.
 
@@ -70,4 +69,8 @@ reachable on its own link, to illustrate how it used to be.
 
 ## Changes
 
-(none yet)
+- **2026-10-12** — Looks: "art deco in neon" taken out, the direction is art deco. The owner
+  saw a quick sketch of the end-of-hand screen in neon art deco next to the current one
+  (https://claude.ai/artifact/L89RGKuqjF31G4U9AFfX1L) and said neon is not the direction.
+  Removed text: "Art deco in neon: the geometry, symmetry and line work of deco, lit up and
+  turned up."
