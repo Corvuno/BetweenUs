@@ -1,5 +1,22 @@
 {
   "promptSuggestionEnabled": false,
   "alwaysThinkingEnabled": true,
-  "showThinkingSummaries": true
+  "showThinkingSummaries": true,
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(NODE_PATH=* node *)",
+      "Bash(python3 *)",
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(sed -n *)",
+      "Bash(mkdir -p *)",
+      "Artifact",
+      "Agent",
+      "SendUserFile"
+    ]
+  }
 }
