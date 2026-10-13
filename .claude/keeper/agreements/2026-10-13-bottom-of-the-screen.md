@@ -52,3 +52,54 @@ Twist choices from C are shown inside the B mockups.
 The mockup the owner picked is built as shown, and the Keeper has checked it on phone-size
 screenshots against that mockup; the C behaviour the owner picked works when tried as a
 player.
+
+---
+
+## Revised and approved, 2026-10-13 (after eight mockup rounds)
+
+Replaces the B and C sections above; those stay as the record of where this started.
+Mockups: round 6 https://claude.ai/artifact/K6Up3fQYdQW7pKmJ4dQGK7 is the whole-screen
+reference; round 8 https://claude.ai/artifact/6bzN7zqn8ZtRpmhN4Tn6Nj option B1 is the hint tone.
+
+### B) Looks — looks-builder
+- Draw (Next Card / Draw Card) stays exactly as it is.
+- Back and menu: same square frame, frame colour = the gold of Draw at border-strong
+  strength (rgba(201,168,76,.38)); symbols in copper #C67B28.
+- The row Three · Spotlight · Twist: all in celadon #A9C7B6 (symbol + word), one even
+  strength, between two fading horizontal rules in celadon (~42% alpha), with small
+  rotated-square separators in celadon between the items. No boxes, pills or outlines
+  around any item. Active state: underline under the word.
+- Hints under each item: darker celadon #5b6b63 ("B1"), Cormorant Garamond italic, ~.88rem,
+  centred, may wrap to two lines. Exact words:
+  "pick one of three" / "the question takes the stage" / "same question, new angle"
+- Logo ornament: the small centre diamond in copper #C67B28; the two inner horizontal line
+  pairs (the half-opacity ones) take the active preset's colour (the same colour as the
+  preset name under "Selected"). Tagline unchanged.
+- Start card (card back, before the first draw): the centre diamond of the mark and the
+  line under it take the active preset's colour.
+- "Custom" (the preset label when categories are picked by hand) is copper #C67B28,
+  everywhere the preset colour is used.
+- Twist's line on the card is celadon.
+- Equal visible gaps of ~33px: from the tagline to "Selected", and from the line under the
+  preset name to the top of the card (phone width; keep them equal at other widths).
+- Bar, numbers and tagline otherwise unchanged.
+
+### C) How it works — app-builder
+- "Full screen" is renamed "Spotlight" on the button and anywhere else in the app's chrome.
+  NOT in How to play — the owner leaves How to play alone for now.
+- Each hint disappears for good the moment its control has actually worked once (Three
+  switched on, Spotlight opened, Twist applied). A shake on a dimmed Twist does not count.
+  Stored per device; never comes back by itself.
+- New menu item directly below How to play: label "Show hints again", sub-line
+  "Every hint back, for whoever's new". It brings back every hint, including "tap to
+  change", and any hint added later.
+- Twist when it can't be used (before the first draw, during Three): stays dimmed; a tap
+  makes it shake (short horizontal shake, no words).
+- Twist when it works: the word Twist and the new line on the card light up together for
+  about half a second, then settle.
+- Spotlight brightens once (to near white, ~1s, no glow) when the third card is drawn,
+  once per device. Provisional — to be tested.
+
+### Done when
+Built as in round 6 with the round 8 B1 hint tone; the Keeper has checked it on phone
+screenshots against those mockups; the tester has gone through it as a player; on main.
