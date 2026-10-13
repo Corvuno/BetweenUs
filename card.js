@@ -1,5 +1,5 @@
 // ── CARD ─────────────────────────────────────────────────────────────────────
-// Everything about the single card in front of you: language selection
+// Everything about the single card in front of you: question text
 // (translateQ), face rendering (setCardDisplay/flipToCard), the Twist
 // modifier, the favourite star, and the pick-3 picker UI.
 
@@ -16,24 +16,24 @@
 // mode). Never survives a new card; flipToCard/clearTwist reset it every
 // draw.
 const MODIFIERS = [
-  { en: "How would you have answered this five years ago?", nl: "Hoe zou je dit vijf jaar geleden hebben beantwoord?" },
-  { en: "What do you suspect you'll answer differently five years from now?", nl: "Wat denk je dat je hier over vijf jaar anders op zou antwoorden?" },
-  { en: "What would someone close to you notice about this before you do?", nl: "Wat zou iemand die dicht bij je staat hieraan merken, voordat jij het zelf doorhebt?" },
-  { en: "What would you say if there were no consequences at all?", nl: "Wat zou je zeggen als er totaal geen gevolgen waren?" },
+  { en: "How would you have answered this five years ago?" },
+  { en: "What do you suspect you'll answer differently five years from now?" },
+  { en: "What would someone close to you notice about this before you do?" },
+  { en: "What would you say if there were no consequences at all?" },
 ];
 let currentTwist = null;
 function pickTwist() {
   const pool = MODIFIERS.filter(m => m !== currentTwist);
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
-function twistLabel() { return state.lang === 'nl' ? 'Wending' : 'Twist'; }
+function twistLabel() { return 'Twist'; }
 // Applies (or clears) the twist text on a counter element. party-number shows
 // only the Twist sentence (the count lives in #party-count), so clearing it
 // just empties it out, same as twistSentence.
 function applyTwistToCounter(el) {
   if (!el) return;
   if (currentTwist) {
-    el.textContent = state.lang === 'nl' && currentTwist.nl ? currentTwist.nl : currentTwist.en;
+    el.textContent = currentTwist.en;
     el.classList.add('twist');
   } else {
     el.textContent = '';
@@ -70,7 +70,7 @@ function clearTwist() { currentTwist = null; renderTwist(); }
 
 // ── TRANSLATION ───────────────────────────────────────────────────────────────
 function translateQ(card) {
-  return state.lang === 'nl' && card.nl ? card.nl : card.question;
+  return card.question;
 }
 
 
@@ -140,15 +140,15 @@ function setCardDisplay(card) {
     if (lvlEl)    { lvlEl.textContent=''; lvlEl.classList.remove('in'); }
     if (accent)   { accent.style.background=''; }
     if (qEl)      { qEl.textContent = state.visibleDeck.length===0
-      ? (state.lang==='nl' ? 'Selecteer minstens één categorie.' : 'Select at least one category.')
-      : (state.lang==='nl' ? 'Een plek om te beginnen…'   : 'A place to begin…');
+      ? 'Select at least one category.'
+      : 'A place to begin…';
       qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
     }
     // nothing to draw (no categories) keeps the plain message; otherwise the
     // start card shows the same "begin" text on the card's back
-    setStartBack(state.visibleDeck.length===0 ? '' : (state.lang==='nl' ? 'Een plek om te beginnen…' : 'A place to begin…'));
+    setStartBack(state.visibleDeck.length===0 ? '' : 'A place to begin…');
     if (nextBtn) {
-      nextBtn.textContent = state.lang==='nl' ? 'Trek kaart' : 'Draw Card';
+      nextBtn.textContent = 'Draw Card';
       // nothing's been drawn yet (fresh load, or a settings change just
       // reset the hand) — make this the obvious "start" tap, not just
       // another "next" tap.
@@ -171,12 +171,12 @@ function setCardDisplay(card) {
   }
   if (qEl)   qEl.textContent = translateQ(card);
   if (nextBtn) {
-    nextBtn.textContent = state.lang==='nl' ? 'Volgende kaart' : 'Next Card';
+    nextBtn.textContent = 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
   }
   // Update party display
   updatePartyDisplay(card);
-  renderTwist();   // same modifier, re-rendered in whichever language is now active
+  renderTwist();   // same modifier, re-rendered for the new card
 }
 
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync

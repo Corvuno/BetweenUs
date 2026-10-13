@@ -418,6 +418,17 @@ async function run() {
     assert(!(await atEnd()), 'still showing the hand summary after the hold started a fresh hand');
   });
 
+  await check('English only: no language switch, page language is en, no Dutch UI or Twist text', async () => {
+    assert(await page.locator('#d-lang').count() === 0, 'a language switch (#d-lang) still exists in the menu');
+    assert(await page.evaluate(() => document.documentElement.lang) === 'en', 'document language is not en');
+    assert(await page.evaluate(() => typeof state.lang === 'undefined' && typeof setLang === 'undefined'), 'state.lang / setLang still exist');
+    const dutch = await page.evaluate(() => /Nederlands|Trek kaart|Volgende kaart|Wending|Houd vast/.test(document.body.innerText + document.body.innerHTML));
+    assert(!dutch, 'Dutch UI text found in the page');
+    assert(await page.evaluate(() => MODIFIERS.every(m => Object.keys(m).join() === 'en')), 'a Twist still carries a non-English text');
+    const draw = (await page.locator('#btn-next').textContent()).trim();
+    assert(/^(Draw Card|Next Card|Summary|Hold to continue)$/.test(draw), `unexpected draw button text: ${draw}`);
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

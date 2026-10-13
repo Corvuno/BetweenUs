@@ -32,7 +32,7 @@ function loadCustomCards() {
       state.customCards = JSON.parse(v);
       state.customCards.forEach(c => {
         if (!ALL_CARDS.find(a => a.question === c.question))
-          ALL_CARDS.push({ level: c.level, question: c.question, nl: c.nl||undefined, custom: true });
+          ALL_CARDS.push({ level: c.level, question: c.question, custom: true });
       });
     }
   } catch(e) { state.customCards = []; }
@@ -52,15 +52,12 @@ function persistCustomCards() {
 
 function addCustomCard() {
   const text   = document.getElementById('customText').value.trim();
-  const textNl = (document.getElementById('customTextNl')?.value||'').trim();
   const level  = document.getElementById('customLevel').value;
   if (!text) return;
   const card = { level, question: text, custom: true };
-  if (textNl) card.nl = textNl;
   state.customCards.push(card);
   ALL_CARDS.push(card);
   document.getElementById('customText').value = '';
-  if (document.getElementById('customTextNl')) document.getElementById('customTextNl').value = '';
   persistCustomCards();
 }
 

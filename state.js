@@ -22,7 +22,6 @@ const state = {
   safeMode: false,
   spiceMode: false,
   randomMode: window.DEFAULT_SHUFFLE || 'wild',
-  lang: NL_DEFAULT ? 'nl' : (window.DEFAULT_LANGUAGE || 'en'),
   cardLimit: (window.DEFAULT_LIMIT === 0 ? null : (window.DEFAULT_LIMIT || 5)),
   fullDeck: [],
   visibleDeck: [],

@@ -32,7 +32,7 @@ function serializeSession() {
     deckQuestions: state.visibleDeck.map(c=>c.question),
     fullDeckQuestions: state.fullDeck.map(c=>c.question),
     position: state.currentIndex, toggles:[...state.activeToggles],
-    safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit, lang: state.lang,
+    safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit,
     activePreset: state.activePreset,
     sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
     savedAt: new Date().toISOString(),
@@ -53,8 +53,6 @@ function restoreSessionData(data) {
     // restore preset highlight
     state.activePreset = data.activePreset || '';
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.activePreset));
-    // restore language (also updates lang UI + html lang attribute)
-    setLang(data.lang || 'en', true);
     // restore session log
     if (window.LOG_PERSIST && Array.isArray(data.sessionLog)) {
       state.sessionLog = data.sessionLog;

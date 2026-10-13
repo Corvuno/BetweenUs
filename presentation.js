@@ -1,8 +1,7 @@
 // Rendering that isn't specific to one card or one selection: progress dots,
-// the app shell's token line, party-mode display, drawers, language
-// switching, and the end-of-hand/end-of-round summaries — plus the listeners
+// the app shell's token line, party-mode display, drawers, and the end-of-hand/end-of-round summaries — plus the listeners
 // for the controls that directly trigger this domain's own rendering
-// (language switch, drawer open/close buttons). (The app's boot sequence
+// (drawer open/close buttons). (The app's boot sequence
 // lives in ui.js.)
 
 // Counter readout on both screens: "n / total" in digits.
@@ -161,18 +160,14 @@ function closeAllDrawers() {
   if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
 }
 
-// ── Language: single switch, menu row only now — the inline row toggle was
-// removed to make room for the Twist trigger; the menu's own language row
-// (d-lang) was already a full duplicate of it. ──
-
 // "What kind of evening?" only means something in the evening — asking it at
 // 9am reads as a bug, not a deliberate choice of words. Read the real clock
 // instead of hard-coding one time of day.
 const TIME_OF_DAY_WORD = {
-  morning:   { en: 'morning',   nl: 'ochtend' },
-  afternoon: { en: 'afternoon', nl: 'middag' },
-  evening:   { en: 'evening',   nl: 'avond' },
-  night:     { en: 'night',     nl: 'nacht' },
+  morning:   'morning',
+  afternoon: 'afternoon',
+  evening:   'evening',
+  night:     'night',
 };
 function timeOfDay() {
   const h = new Date().getHours();
@@ -182,31 +177,19 @@ function timeOfDay() {
   return 'night';
 }
 function timeOfDayWord() {
-  const w = TIME_OF_DAY_WORD[timeOfDay()];
-  return state.lang === 'nl' ? w.nl : w.en;
+  return TIME_OF_DAY_WORD[timeOfDay()];
 }
 function updateTimeOfDayHeading() {
   const word = timeOfDayWord();
   // playLeadFirst now lives in the sheet's own header row, next to Close —
   // it's the sheet's title, not a lead-in line above the chapters any more.
   const heading = document.getElementById('playLeadFirst');
-  if (heading) heading.textContent = (state.lang === 'nl' ? 'Wat voor ' : 'What kind of ') + word + '?';
+  if (heading) heading.textContent = 'What kind of ' + word + '?';
   // Static now, not time-of-day framed — it's a plain inline link next to
   // the Chapters label, not a headline, so it doesn't need the word.
   const customizeBtn = document.getElementById('customizeBtn');
-  if (customizeBtn) customizeBtn.textContent = state.lang === 'nl' ? 'Verken categorieën' : 'Explore categories';
+  if (customizeBtn) customizeBtn.textContent = 'Explore categories';
 }
-
-function setLang(l, skipRefresh) {
-  state.lang = l;
-  document.documentElement.lang = l;
-  const ic = document.getElementById('dLangIcon'); if (ic) ic.textContent = l.toUpperCase();
-  const sub = document.getElementById('dLangSub');
-  if (sub) sub.textContent = l === 'en' ? 'Switch to Nederlands' : 'Schakel naar English';
-  updateTimeOfDayHeading();
-  if (!skipRefresh) setCardDisplay(state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length ? state.visibleDeck[state.currentIndex] : null);
-}
-document.getElementById('d-lang').addEventListener('click', () => setLang(state.lang === 'en' ? 'nl' : 'en'));
 
 // ── Category label toggle ──
 document.getElementById('catLabel').addEventListener('click', toggleCategories);
@@ -386,15 +369,15 @@ function updateDrawMore() {
     // needs the hold gesture — the last card of a hand still goes through this
     // screen first, never a one-tap shortcut around it.
     nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
-    nextBtn.textContent = state.lang === 'nl' ? 'Houd vast om door te gaan' : 'Hold to continue';
+    nextBtn.textContent = 'Hold to continue';
   } else {
     nextBtn.classList.remove('hold-mode');
     // On the last card, the tap ahead lands on the summary, not another
     // card — say so, instead of promising "Next Card" and surprising people.
     const atLastCard = state.currentIndex >= 0 && state.currentIndex === state.visibleDeck.length - 1;
     nextBtn.textContent = atLastCard
-      ? (state.lang === 'nl' ? 'Overzicht' : 'Summary')
-      : state.currentIndex >= 0 ? (state.lang === 'nl' ? 'Volgende kaart' : 'Next Card') : (state.lang === 'nl' ? 'Trek kaart' : 'Draw Card');
+      ? 'Summary'
+      : state.currentIndex >= 0 ? 'Next Card' : 'Draw Card';
   }
 };
 
@@ -496,7 +479,7 @@ function showHandSummary() {
   const lvlEl = document.getElementById('card-level');
   if (lvlEl) {
     lvlEl.classList.remove('in');
-    lvlEl.textContent = state.lang === 'nl' ? 'De set is afgerond' : 'The set is finished';
+    lvlEl.textContent = 'The set is finished';
     lvlEl.style.color = model.last ? labelColor(chColor) : chColor;
     void lvlEl.offsetWidth; lvlEl.classList.add('in');
   }
@@ -547,7 +530,7 @@ function runPartySummary() {
   const pc = document.getElementById('party-count');
   const pa = document.getElementById('party-accent');
   if (pa) pa.style.background = 'var(--gold-l)';
-  if (pl) { pl.textContent = isArc ? (state.lang === 'nl' ? 'Arc afgerond' : 'Arc complete') : (state.lang === 'nl' ? 'Ronde afgerond' : 'Draw complete'); pl.style.color = 'var(--gold-l)'; }
+  if (pl) { pl.textContent = isArc ? 'Arc complete' : 'Draw complete'; pl.style.color = 'var(--gold-l)'; }
   if (pc) pc.textContent = '— end —';
   if (pq) {
     const seen2 = new Set(), cats2 = [];

@@ -8,7 +8,7 @@ handful of plain HTML/CSS/JS files, opened directly.
 | Play | File | Build profile | Purpose |
 |---|---|---|---|
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html) | `between-us.html` | `public` | **Main version.** What you hand someone by default. |
-| [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=work) | `between-us-work.html` | `work` | Workplace-safe version — Dutch, no adult content reachable. Redirects to `between-us.html?profile=work`. |
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=work) | `between-us-work.html` | `work` | Workplace-safe version — no adult content reachable. Redirects to `between-us.html?profile=work`. |
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=editor) | `between-us-dev.html` | `editor` | Development build — everything on by default, dev conveniences on. Redirects to `between-us.html?profile=editor`. |
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us-classic.html) | `between-us-classic.html` | — | **Classic edition** (v5.2.2, 668 cards) — the old app and its original questions, from before the restart. Kept as-is for showing how it used to be; it keeps its own saved favourites/session, separate from the main version. |
 
@@ -47,7 +47,7 @@ questions.js          the question deck (content only, no app logic)
 config.js             build profile + static lookup tables (colors, depth, labels, presets)
 state.js               the app's mutable, cross-cutting state
 deck.js                 filtering, shuffling, building and advancing through the deck
-card.js                 the card in front of you: language, face render, Twist, star, picker
+card.js                 the card in front of you: question text, face render, Twist, star, picker
 library.js              favourites and custom cards — load/persist/render their drawers
 session.js              the session log and save/restore
 selection.js            category/preset selection
@@ -63,7 +63,7 @@ profile picks it up immediately.
 
 `config.js` reads the profile from the URL (`new URLSearchParams(location.search).get('profile')`,
 falling back to `"public"`) and applies the matching block from the `PROFILES` object defined
-at its top (language, shuffle, adult-content locking, spice, backup category, etc.). To
+at its top (shuffle, adult-content locking, spice, backup category, etc.). To
 fine-tune a version, edit its block in `PROFILES`; to change what every version shares, edit
 whichever of the 9 modules owns that behavior.
 

@@ -565,7 +565,6 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
             if (!c.question || !c.level) return;
             if (state.customCards.find(x => x.question === c.question)) return; // skip dupes
             const card = { level: c.level, question: c.question, custom: true };
-            if (c.nl) card.nl = c.nl;
             state.customCards.push(card);
             ALL_CARDS.push(card);
           });
@@ -639,8 +638,8 @@ let pickMode = false;
 
 updateCatCounts();
 
-// Apply initial language to all language UI (incl. html lang attribute)
-setLang(state.lang, true);
+// Initial "What kind of …?" heading and Explore link text
+updateTimeOfDayHeading();
 
 
 // ── Category grid: make it obvious that it scrolls ──

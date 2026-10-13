@@ -29,7 +29,6 @@
     public: {
       MASTER_SAFE:      false,   // true → no adult content anywhere, ever (hard lock)
       WORKPLACE_MODE:   false,   // true → hard lock + starts in Work mode
-      DEFAULT_LANGUAGE: "en",    // "en" or "nl"
       DEFAULT_SHUFFLE:  "arc",   // wild · deep · breadth · arc
       DEFAULT_LIMIT:    5,       // cards per hand: 5 · 10 · 20 · 0 (= All)
       START_COLLAPSED:  true,    // true → category list starts folded away
@@ -49,11 +48,10 @@
       DEFAULT_SELECTION: { mode:'preset', preset:'balanced', intensity:50, focus:50 },
     },
 
-    // WORK — workplace-safe: Dutch, adult content hard-locked, opens in Work mode.
+    // WORK — workplace-safe: adult content hard-locked, opens in Work mode.
     work: {
       MASTER_SAFE:      false,
       WORKPLACE_MODE:   true,
-      DEFAULT_LANGUAGE: "nl",
       DEFAULT_SHUFFLE:  "arc",
       DEFAULT_LIMIT:    5,
       START_COLLAPSED:  true,
@@ -73,7 +71,6 @@
     editor: {
       MASTER_SAFE:      false,
       WORKPLACE_MODE:   false,
-      DEFAULT_LANGUAGE: "en",
       DEFAULT_SHUFFLE:  "wild",
       DEFAULT_LIMIT:    5,
       START_COLLAPSED:  true,
@@ -92,7 +89,6 @@
   for (const _k in _p) window[_k] = _p[_k];
   window.BUILD_PROFILE     = BUILD_PROFILE;
   window.DEFAULT_COLLAPSED = window.START_COLLAPSED;
-  window.NL_DEFAULT        = (window.DEFAULT_LANGUAGE === "nl");
 
   // ── NO INTRO — this is intentional ───────────────────────────────────────
   // Between Us has no onboarding screen. Users hand it to each other and they

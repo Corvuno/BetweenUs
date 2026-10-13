@@ -232,6 +232,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.04 — Dutch translations removed from `questions.js`
+All 268 `nl:` fields were removed from `questions.js` (the app becomes English only).
+The Dutch is preserved, with the English question beside each line and grouped by
+category, in `questions/dutch-translations.md`, so it can come back. No English card
+changed: every card object is identical apart from the removed `nl` field, same count
+and order.
+
 ## Patch v7.03 — Flesh 8 replaced
 - **Flesh 8** → *"How much affection with a partner are you comfortable showing in front of
   people — and what's the furthest you actually went?"* Replaces "How far do you go in

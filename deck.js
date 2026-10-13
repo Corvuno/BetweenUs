@@ -400,10 +400,8 @@ function _nextCardBase() {
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
     const fresh = (()=>{const sn=new Set(state.sessionLog.map(c=>c.question));return state.fullDeck.filter(c=>!sn.has(c.question)).length;})();
     const html = fresh > 0
-      ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${fresh} ${state.lang==='nl'?'nieuwe kaarten over — houd vast voor de volgende ronde.':(fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.')}</span>`
-      : `<span style="font-size:1rem;color:var(--muted)">${state.lang==='nl'
-          ? `Dat was dit hele deck — alle ${state.visibleDeck.length} kaarten.<br><br>Kies meer categorieën om door te gaan, of houd vast om dit deck opnieuw te spelen.`
-          : `That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.`}</span>`;
+      ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${fresh} ${fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.'}</span>`
+      : `<span style="font-size:1rem;color:var(--muted)">That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.</span>`;
     renderEndMessage(html);
   }
 }
