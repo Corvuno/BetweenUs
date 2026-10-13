@@ -354,7 +354,7 @@ stopped short of a blind file-wide sweep — read that section before extending 
 
 ## The Keeper (`/keeper`)
 
-The owner's product owner, set up 2026-10-12. Typing `/keeper` starts it: it sorts a wish
+The owner's product owner, set up 2026-10-12. Typing `/keeper` (or `/Keeper`, via `.claude/commands/Keeper.md`) starts it: it sorts a wish
 into areas (A deck, B looks, C how the app works), talks it through, writes an agreement,
 hands building to the area builders (`.claude/agents/`, on Sonnet; Opus only when the owner
 asks), has it checked, lands it on `main` and reports back. The general process is in
