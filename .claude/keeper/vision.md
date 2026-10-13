@@ -72,6 +72,17 @@ with no shape yet.
 The classic edition (v5.2.2, the original questions from before the restart) stays
 reachable on its own link, to illustrate how it used to be.
 
+## Where it started
+
+The first version (also on its own link) was one page of 60 questions for a date, in five
+levels: Warm, Deep, Raw, Edge, Playful. "Draw Card" was the button from day one. The
+signature was already there: "What do you pretend to want less than you actually do?",
+"What's the story you tell about yourself that you're least sure is actually true?" From
+there it grew from two people to any table, and from 60 cards to 408 in a layered
+structure. Its cards also show what the house style later moved past: feeling-talk
+("What does loneliness feel like for you?"), a fixed asker ("What do you think I find
+attractive about you?"), and long cards with a second question attached.
+
 ## Changes
 
 - **2026-10-12** — Looks: "art deco in neon" taken out, the direction is art deco. The owner
@@ -82,3 +93,4 @@ reachable on its own link, to illustrate how it used to be.
 - **2026-10-12** — Added "Its words": players draw, nothing is dealt. Drawing gives the
   player ownership and keeps the app away from gambling. Came from the owner's reaction to
   "Deal another hand" in the sketch.
+- **2026-10-13** — Added "Where it started", from the very first version the owner shared.

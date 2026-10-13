@@ -11,6 +11,7 @@ handful of plain HTML/CSS/JS files, opened directly.
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=work) | `between-us-work.html` | `work` | Workplace-safe version — no adult content reachable. Redirects to `between-us.html?profile=work`. |
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us.html?profile=editor) | `between-us-dev.html` | `editor` | Development build — everything on by default, dev conveniences on. Redirects to `between-us.html?profile=editor`. |
 | [▶ Play](https://corvuno.github.io/BetweenUs/between-us-classic.html) | `between-us-classic.html` | — | **Classic edition** (v5.2.2, 668 cards) — the old app and its original questions, from before the restart. Kept as-is for showing how it used to be; it keeps its own saved favourites/session, separate from the main version. |
+| [▶ Play](https://corvuno.github.io/BetweenUs/between-us-first.html) | `between-us-first.html` | — | **First version** — the very first Between Us: 60 dating questions in five levels (Warm, Deep, Raw, Edge, Playful). Kept as-is, to show where it started. |
 
 The **Play** links open the live game on GitHub Pages. (Clicking a filename on GitHub shows
 the source instead — that's why plain filename links don't launch it.)

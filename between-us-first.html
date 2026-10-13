@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Between Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0c0a;
+    --surface: #161310;
+    --card-bg: #1a1612;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f0e8d8;
+    --muted: #7a6e60;
+    --red: #8b2e2e;
+    --border: rgba(201,168,76,0.2);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.6;
+  }
+
+  /* Ambient glow */
+  .glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 {
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    top: -200px; left: -200px;
+  }
+  .glow-2 {
+    background: radial-gradient(circle, rgba(139,46,46,0.05) 0%, transparent 70%);
+    bottom: -200px; right: -200px;
+  }
+
+  .container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 480px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+  }
+  .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Filter tabs */
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 0;
+  }
+  .filter-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg);
+  }
+
+  /* Card stack */
+  .card-area {
+    position: relative;
+    width: 100%;
+    height: 340px;
+  }
+
+  .card-stack-shadow {
+    position: absolute;
+    width: calc(100% - 20px);
+    height: 320px;
+    left: 10px;
+    top: 12px;
+    background: var(--surface);
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 2px;
+  }
+  .card-stack-shadow-2 {
+    position: absolute;
+    width: calc(100% - 40px);
+    height: 320px;
+    left: 20px;
+    top: 22px;
+    background: var(--bg);
+    border: 1px solid rgba(201,168,76,0.05);
+    border-radius: 2px;
+  }
+
+  .card {
+    position: absolute;
+    inset: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 36px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    user-select: none;
+    border-radius: 2px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+  }
+
+  .card.flipping {
+    animation: flipOut 0.35s ease forwards;
+  }
+
+  @keyframes flipOut {
+    0% { transform: rotateY(0deg) translateY(0); opacity: 1; }
+    40% { transform: rotateY(90deg) translateY(-8px); opacity: 0; }
+    41% { transform: rotateY(-90deg) translateY(-8px); opacity: 0; }
+    100% { transform: rotateY(0deg) translateY(0); opacity: 1; }
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card.entering {
+    animation: cardIn 0.4s ease forwards;
+  }
+
+  /* Decorative corner lines */
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.4;
+  }
+  .card::before {
+    top: 16px; left: 16px;
+    border-width: 1px 0 0 1px;
+  }
+  .card::after {
+    bottom: 16px; right: 16px;
+    border-width: 0 1px 1px 0;
+  }
+
+  .card-level {
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 3px 12px;
+    border: 1px solid currentColor;
+    opacity: 0.7;
+  }
+  .level-warm { color: #a87d4a; border-color: rgba(168,125,74,0.4); }
+  .level-deep { color: var(--gold); border-color: rgba(201,168,76,0.4); }
+  .level-raw { color: #c97070; border-color: rgba(201,112,112,0.4); }
+  .level-edge { color: #9e5a8a; border-color: rgba(158,90,138,0.4); }
+  .level-play { color: #6a9e7a; border-color: rgba(106,158,122,0.4); }
+
+  .safe-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: -16px;
+  }
+  .safe-toggle:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .safe-toggle.active {
+    border-color: #6a9e7a;
+    color: #6a9e7a;
+  }
+  .filter-btn.hidden-edge {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .card-question {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.55;
+    text-align: center;
+    color: var(--cream);
+  }
+
+  .card-number {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .btn-nav {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 1rem;
+  }
+  .btn-nav:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .btn-draw {
+    background: linear-gradient(135deg, #c9a84c, #a07830);
+    border: none;
+    color: var(--bg);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-draw:hover {
+    background: linear-gradient(135deg, #e8c97a, #c9a84c);
+    transform: translateY(-1px);
+  }
+  .btn-draw:active {
+    transform: translateY(0);
+  }
+
+  /* Progress */
+  .progress {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .progress-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--muted);
+    opacity: 0.3;
+    transition: all 0.3s;
+  }
+  .progress-dot.seen {
+    opacity: 1;
+    background: var(--gold);
+  }
+  .progress-dot.current {
+    width: 16px;
+    border-radius: 2px;
+    background: var(--gold-light);
+    opacity: 1;
+  }
+
+  /* Deck empty state */
+  .empty-state {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<div class="container">
+
+  <div class="header">
+    <div class="title">Between Us</div>
+    <div class="subtitle">Questions worth asking</div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="warm">Warm</button>
+    <button class="filter-btn" data-filter="deep">Deep</button>
+    <button class="filter-btn" data-filter="raw">Raw</button>
+    <button class="filter-btn" data-filter="edge">Edge</button>
+    <button class="filter-btn" data-filter="play">Playful</button>
+  </div>
+  <button class="safe-toggle" id="safeToggle">✦ Safe mode off</button>
+
+  <div class="card-area">
+    <div class="card-stack-shadow-2"></div>
+    <div class="card-stack-shadow"></div>
+    <div class="card" id="card">
+      <div class="card-level" id="card-level">Warm</div>
+      <div class="card-question" id="card-question">Draw a card to begin.</div>
+      <div class="card-number" id="card-number">— — —</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-nav" id="btn-prev" title="Previous">←</button>
+    <button class="btn-draw" id="btn-next">Draw Card</button>
+    <button class="btn-nav" id="btn-shuffle" title="Shuffle">⇌</button>
+  </div>
+
+  <div class="progress" id="progress"></div>
+
+</div>
+
+<script>
+const ALL_CARDS = [
+  // WARM — opening, light vulnerability
+  { level: "warm", question: "What's something small that reliably makes you happy that most people wouldn't guess?" },
+  { level: "warm", question: "What did you think this evening would be like — and how is it different so far?" },
+  { level: "warm", question: "What's a question you wish people asked you more often?" },
+  { level: "warm", question: "What's something you changed your mind about in the last few years?" },
+  { level: "warm", question: "Who in your life makes you feel most like yourself — and what is it about them?" },
+  { level: "warm", question: "What's the best compliment you've ever received — and did you believe it?" },
+  { level: "warm", question: "What does a perfect Saturday morning look like for you?" },
+  { level: "warm", question: "What's something you're quietly proud of that you rarely mention?" },
+  { level: "warm", question: "What's a place you've been that changed something in you — even slightly?" },
+  { level: "warm", question: "What's something you do when no one is watching that reveals who you actually are?" },
+  { level: "warm", question: "If you could have dinner with anyone alive right now, who — and what's the one thing you'd actually want to ask them?" },
+  { level: "warm", question: "What's the last thing that made you laugh until it hurt?" },
+
+  // DEEP — real self, real history
+  { level: "deep", question: "What's a version of yourself you've quietly let go of?" },
+  { level: "deep", question: "Is there something you've forgiven someone for that you never actually told them?" },
+  { level: "deep", question: "What would you most need someone to understand about you before they could truly love you?" },
+  { level: "deep", question: "When did you last feel truly seen — and what made it feel safe enough to let that happen?" },
+  { level: "deep", question: "What belief about yourself have you held the longest — and how sure are you it's still true?" },
+  { level: "deep", question: "What's something you find in other people that you're still learning to find in yourself?" },
+  { level: "deep", question: "What does loneliness feel like for you — and what do you usually do with it?" },
+  { level: "deep", question: "What's a pattern in your relationships you've only recently started to name?" },
+  { level: "deep", question: "If your younger self could see your life right now, what would surprise them most?" },
+  { level: "deep", question: "What's something you need from a partner that you've stopped asking for — because asking felt like too much?" },
+  { level: "deep", question: "What's the story you tell about yourself that you're least sure is actually true?" },
+  { level: "deep", question: "What does freedom mean to you — and do you actually have it?" },
+  { level: "deep", question: "What's something you want that you've convinced yourself you don't deserve?" },
+  { level: "deep", question: "When did you last surprise yourself — in a way you didn't expect?" },
+
+  // RAW — confrontational, paradox, Perel-style
+  { level: "raw", question: "What does desire feel like for you — and is it different from love?" },
+  { level: "raw", question: "What's the tension in you that never quite resolves — between what you want and what you allow yourself?" },
+  { level: "raw", question: "When do you feel most free — and does that feeling scare you at all?" },
+  { level: "raw", question: "What's something you find attractive in other people that you'd never admit in polite company?" },
+  { level: "raw", question: "Have you ever stayed somewhere — a relationship, a city, a version of yourself — longer than you should have? What kept you?" },
+  { level: "raw", question: "What do you pretend to want less than you actually do?" },
+  { level: "raw", question: "What's the thing someone could do that would make you feel instantly, completely safe with them?" },
+  { level: "raw", question: "Is there a part of you that you keep separate from everyone — not out of shame, but because it belongs only to you?" },
+  { level: "raw", question: "What's something about yourself you find hard to say out loud — not because it's dark, but because it's too honest?" },
+  { level: "raw", question: "Do you think you're easy to love? What makes you say that?" },
+  { level: "raw", question: "What's the version of you that shows up when no one needs anything from you?" },
+  { level: "raw", question: "What would you do differently if you weren't afraid of being misunderstood?" },
+
+  // EDGE — NSFW, intimate, direct
+  { level: "edge", question: "What's the difference between sex that's good and sex that stays with you?" },
+  { level: "edge", question: "Is there something you've always wanted to ask for in bed but haven't yet — not because it's too much, but because you haven't felt safe enough?" },
+  { level: "edge", question: "What does it feel like in your body when you're genuinely attracted to someone — before anything happens?" },
+  { level: "edge", question: "What's the most honest thing you could say about what you want from someone, physically?" },
+  { level: "edge", question: "Have you ever felt desire for someone and chosen not to act on it? What made you hold back — and do you regret it?" },
+  { level: "edge", question: "What does intimacy mean to you — and is it always connected to sex?" },
+  { level: "edge", question: "If you could design one night exactly as you'd want it — no negotiation, no compromise — what would it look like?" },
+  { level: "edge", question: "What do you think I find attractive about you — and are you comfortable with that?" },
+  { level: "edge", question: "What's something physical that you respond to more than you'd expect — something that catches you off guard?" },
+  { level: "edge", question: "Where's the line for you between exciting and too much — and has that line moved over time?" },
+  { level: "edge", question: "What's something you've done physically that felt completely unlike you — and what did you think of yourself afterward?" },
+  { level: "edge", question: "If attraction is a language, what's yours — and do people usually read it correctly?" },
+
+  // PLAYFUL — light provocation, laughter, mild spice
+  { level: "play", question: "What's a lie you tell so often you've almost started to believe it yourself?" },
+  { level: "play", question: "What's your most irrational dealbreaker — the one you'd be embarrassed to admit out loud?" },
+  { level: "play", question: "If someone went through your phone right now, what's the most embarrassing thing they'd find — and would you let them?" },
+  { level: "play", question: "What's something you're genuinely bad at that you still refuse to stop doing?" },
+  { level: "play", question: "What's the most ridiculous reason you've ever been attracted to someone?" },
+  { level: "play", question: "What's something you do in private that would completely change how someone sees you if they found out?" },
+  { level: "play", question: "What's your most chaotic trait — the one that's both your worst quality and secretly your best?" },
+  { level: "play", question: "If this evening was a movie, what genre would it be so far?" },
+  { level: "play", question: "What's the boldest thing you've ever done on impulse — and how did it turn out?" },
+  { level: "play", question: "What's something you pretend to be modest about but are actually very proud of?" },
+  { level: "play", question: "What's the worst advice you've ever followed — and what happened?" },
+  { level: "play", question: "Truth: what's your actual type — not the one you describe to people, the real one?" },
+];
+
+const LEVEL_STYLES = {
+  warm: "level-warm",
+  deep: "level-deep",
+  raw: "level-raw",
+  edge: "level-edge",
+  play: "level-play"
+};
+
+const LEVEL_LABELS = {
+  warm: "Warm",
+  deep: "Deep",
+  raw: "Raw",
+  edge: "Edge ✦",
+  play: "Playful"
+};
+
+let currentFilter = "all";
+let safeMode = false;
+let deck = [];
+let history = [];
+let currentIndex = -1;
+let started = false;
+
+function getFilteredCards() {
+  let cards = currentFilter === "all" ? [...ALL_CARDS] : ALL_CARDS.filter(c => c.level === currentFilter);
+  if (safeMode) cards = cards.filter(c => c.level !== "edge");
+  return cards;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initDeck() {
+  deck = shuffle(getFilteredCards());
+  history = [];
+  currentIndex = -1;
+  started = false;
+  renderProgress();
+  setCardDisplay(null);
+}
+
+function setCardDisplay(card) {
+  const el = document.getElementById('card');
+  const levelEl = document.getElementById('card-level');
+  const questionEl = document.getElementById('card-question');
+  const numberEl = document.getElementById('card-number');
+
+  if (!card) {
+    levelEl.className = 'card-level level-warm';
+    levelEl.textContent = '';
+    questionEl.textContent = 'Tap draw to begin.';
+    numberEl.textContent = '— — —';
+    return;
+  }
+
+  levelEl.className = `card-level ${LEVEL_STYLES[card.level]}`;
+  levelEl.textContent = LEVEL_LABELS[card.level];
+  questionEl.textContent = card.question;
+  numberEl.textContent = `${currentIndex + 1} / ${deck.length}`;
+}
+
+function flipToCard(card) {
+  const el = document.getElementById('card');
+  el.classList.add('flipping');
+  setTimeout(() => {
+    setCardDisplay(card);
+    el.classList.remove('flipping');
+    renderProgress();
+  }, 175);
+}
+
+function nextCard() {
+  if (currentIndex < deck.length - 1) {
+    currentIndex++;
+    if (!history.includes(currentIndex)) history.push(currentIndex);
+    flipToCard(deck[currentIndex]);
+    started = true;
+  } else {
+    // end of deck
+    const el = document.getElementById('card');
+    const questionEl = document.getElementById('card-question');
+    const levelEl = document.getElementById('card-level');
+    el.classList.add('flipping');
+    setTimeout(() => {
+      levelEl.textContent = '';
+      levelEl.className = 'card-level';
+      questionEl.innerHTML = `<span style="font-size:1rem;color:var(--muted)">That's all of them.<br><br>Shuffle for another round.</span>`;
+      document.getElementById('card-number').textContent = '— end —';
+      el.classList.remove('flipping');
+    }, 175);
+  }
+}
+
+function prevCard() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    flipToCard(deck[currentIndex]);
+  }
+}
+
+function renderProgress() {
+  const container = document.getElementById('progress');
+  const total = Math.min(deck.length, 36);
+  container.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot';
+    if (i < currentIndex) dot.classList.add('seen');
+    if (i === currentIndex) dot.classList.add('current');
+    container.appendChild(dot);
+  }
+}
+
+document.getElementById('safeToggle').addEventListener('click', () => {
+  safeMode = !safeMode;
+  const btn = document.getElementById('safeToggle');
+  const edgeFilterBtn = document.querySelector('[data-filter="edge"]');
+  if (safeMode) {
+    btn.textContent = '✓ Safe mode on';
+    btn.classList.add('active');
+    edgeFilterBtn.classList.add('hidden-edge');
+    if (currentFilter === 'edge') {
+      currentFilter = 'all';
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-filter="all"]').classList.add('active');
+    }
+  } else {
+    btn.textContent = '✦ Safe mode off';
+    btn.classList.remove('active');
+    edgeFilterBtn.classList.remove('hidden-edge');
+  }
+  initDeck();
+});
+
+// Events
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (!started && currentIndex === -1) {
+    nextCard();
+  } else {
+    nextCard();
+  }
+});
+
+document.getElementById('btn-prev').addEventListener('click', prevCard);
+
+document.getElementById('btn-shuffle').addEventListener('click', () => {
+  initDeck();
+  document.getElementById('btn-next').textContent = 'Draw Card';
+});
+
+document.getElementById('filters').addEventListener('click', (e) => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  initDeck();
+});
+
+// Init
+initDeck();
+</script>
+</body>
+</html>
