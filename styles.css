@@ -307,15 +307,16 @@ body.showing-hand-summary .card-question{
   .card-level{font-size:1rem;}
   .card-question{font-size:1.656rem;}
 }
-/* PC: the same King of Clubs shape. The desktop card is much wider than
-   the phone one, so on a short window that shape alone would push the
-   controls below the fold — max-width caps the card by window height
-   (380px ≈ everything on screen that isn't the card), which only kicks in
-   when the window is too short; on a normal full-HD or larger window the
-   card is its full width. The 640px floor stops a very short window (e.g. a
-   laptop at 150% scaling) shrinking it to a sliver — that one scrolls. */
+/* PC: the same King of Clubs shape. The desktop card is wide, so on a short
+   window its ratio alone would push the controls below the fold. Instead of
+   guessing how tall "everything that isn't the card" is, the desktop block
+   further down ("DESKTOP — a room") makes .app exactly one window tall and
+   lets .card-wrap take whatever height is left; the card is then sized from
+   that real space (container query units), so it shrinks as far as the
+   window needs and the page never scrolls. */
 @media(min-width:768px){
-  .card{aspect-ratio:556/360;max-width:max(640px, calc((100dvh - 380px) * 556 / 360));margin-left:auto;margin-right:auto;}
+  .card{aspect-ratio:556/360;overflow:hidden;margin-left:auto;margin-right:auto;}
+  .card-body-inner{min-height:0;overflow-y:auto;justify-content:safe center;overscroll-behavior:contain;}
 }
 /* ── Twist: a modifier layered onto the drawn card, not written into it ──
    The trigger lives in the control row. Tapping it doesn't add anything to the
@@ -1168,8 +1169,16 @@ body.tok-taught .tok-hint{display:none;}
 }
 @media(min-width:768px){
   /* centre the whole composition in the viewport instead of hanging from the top */
-  body{justify-content:safe center;padding-bottom:0;min-height:100dvh;}
-  .app{padding-top:0;padding-bottom:0;}
+  /* --desk-top-gap: the space above the "Between Us" title. One knob; the card
+     takes whatever height is left, so changing it never makes the page scroll. */
+  :root{--desk-top-gap:32px;}
+  /* the main screen is exactly one window tall (dvh follows a bookmarks bar
+     coming and going); the card is the one flexible piece, the rest keep their size */
+  body{justify-content:flex-start;padding-bottom:0;min-height:100dvh;}
+  .app{height:100dvh;padding-top:var(--desk-top-gap);padding-bottom:0;}
+  .app>*{flex-shrink:0;}
+  .app>.card-wrap{flex:1 1 0;min-height:0;container-type:size;display:flex;justify-content:center;align-items:center;}
+  .card-area{width:min(100cqw,calc(100cqh * 556 / 360));}
   .header{padding:0 0 18px;}
   .tok-line{padding:4px 0 2px;}
   .card-wrap{margin-top:18px;}
