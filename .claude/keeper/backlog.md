@@ -45,3 +45,12 @@ From the whole-deck check of narrowed categories. The owner took up the five wor
 - Money: Roots, 3, "What did you learn about money in the house you grew up in?" / Past, 5,
   "Trace the moment money started meaning something different to you." / Values, 8, "What
   can having money make disappear that not having it can't?"
+
+## Old versions on public links (2026-10-13)
+
+Three old versions now sit in the project: the first version (`between-us-first.html`), the
+classic edition (`between-us-classic.html`) and the classic archive notes. The first two
+have their own Play links and README rows, next to the real game. Kept so the owner can
+show where it came from. Before the site goes public: decide how they're reachable, so a
+visitor who finds those links doesn't take an old, unfinished version for the game, and so
+more old versions don't pile up as loose pages next to it.
