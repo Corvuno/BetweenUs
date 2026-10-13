@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261013e">
+<link rel="stylesheet" href="styles.css?v=20261013f">
 </head>
 <body>
 <div class="app">
@@ -243,9 +243,11 @@
       <button class="btn-sq" id="btn-menu" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><path d="M4 7h16M4 12h11M4 17h6"/></svg></button>
     </div>
     <div class="screen-row" id="screenRow">
-      <button class="pick-toggle" id="pickToggle"><svg class="pt-card" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="2" y="7" width="5.5" height="13"/><rect x="9.2" y="4" width="5.5" height="16"/><rect x="16.5" y="7" width="5.5" height="13"/></svg><span>Three</span></button>
-      <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="3" y="3" width="18" height="18"/><rect x="8" y="8" width="8" height="8"/></svg> Full screen</button>
-      <button class="btn-fullscreen twist-trigger" id="btnTwist" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="4" y="4" width="16" height="16"/><path d="M12 2 22 12 12 22 2 12z"/></svg> <span class="tt-label">Twist</span></button>
+      <button class="pick-toggle" id="pickToggle"><span class="row-top"><svg class="pt-card" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="2" y="7" width="5.5" height="13"/><rect x="9.2" y="4" width="5.5" height="16"/><rect x="16.5" y="7" width="5.5" height="13"/></svg><span class="row-lbl">Three</span></span><span class="row-hint">pick one of three</span></button>
+      <span class="row-sep" aria-hidden="true"></span>
+      <button class="btn-fullscreen btn-fullscreen--emphasis" id="btnParty"><span class="row-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="3" y="3" width="18" height="18"/><rect x="8" y="8" width="8" height="8"/></svg><span class="row-lbl">Full screen</span></span><span class="row-hint">the question takes the stage</span></button>
+      <span class="row-sep" aria-hidden="true"></span>
+      <button class="btn-fullscreen twist-trigger" id="btnTwist" type="button"><span class="row-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="4" y="4" width="16" height="16"/><path d="M12 2 22 12 12 22 2 12z"/></svg><span class="row-lbl tt-label">Twist</span></span><span class="row-hint">same question, new angle</span></button>
     </div>
     <!-- Same slot as .screen-row above, swapped in at the end of a hand
          (body.showing-hand-summary; see presentation.js showHandSummary/
@@ -682,17 +684,17 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261013e"></script>
-<script src="config.js?v=20261013e"></script>
-<script src="gilt.js?v=20261013e"></script>
-<script src="state.js?v=20261013e"></script>
-<script src="deck.js?v=20261013e"></script>
-<script src="card.js?v=20261013e"></script>
-<script src="library.js?v=20261013e"></script>
-<script src="session.js?v=20261013e"></script>
-<script src="selection.js?v=20261013e"></script>
-<script src="presentation.js?v=20261013e"></script>
-<script src="ui.js?v=20261013e"></script>
+<script src="questions.js?v=20261013f"></script>
+<script src="config.js?v=20261013f"></script>
+<script src="gilt.js?v=20261013f"></script>
+<script src="state.js?v=20261013f"></script>
+<script src="deck.js?v=20261013f"></script>
+<script src="card.js?v=20261013f"></script>
+<script src="library.js?v=20261013f"></script>
+<script src="session.js?v=20261013f"></script>
+<script src="selection.js?v=20261013f"></script>
+<script src="presentation.js?v=20261013f"></script>
+<script src="ui.js?v=20261013f"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.

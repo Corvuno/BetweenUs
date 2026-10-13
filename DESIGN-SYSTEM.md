@@ -89,6 +89,19 @@ Both tokens already existed and already held these exact values in two of the
 four places that used red — only the category chip (was `#ff2f2f`) and the
 chapter row (was `#6e1719`) needed to move onto them.
 
+### Frame colours — copper, celadon, preset (added 2026-10-13)
+```
+--copper:        #C67B28   /* the deck's own frame: logo centre diamond, back/menu symbols, "Custom" */
+--celadon:       #A9C7B6   /* the play-style row only: Three, Full screen, Twist, their rules/separators, Twist's line on the card */
+--celadon-hint:  #5b6b63   /* the hint lines under that row */
+--preset:        (set from renderShell) /* which edition: logo's inner line pairs, start-card diamond and rule */
+```
+One job each. Gold stays "draw" (Next Card, borders at the three tiers; back/menu
+frames use `--border-strong`). Copper is the deck's own frame. The preset colour says
+which edition is selected and falls back to `--gold`; "Custom" (no preset button
+matched) uses copper everywhere the preset colour is used. Celadon is not used
+anywhere else.
+
 ## What's fixed everywhere vs. what's scoped
 
 **Fixed file-wide:** the line/border tokens (§ Lines & borders), the quiet-

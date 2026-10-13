@@ -331,7 +331,11 @@ function renderShell() {
     const cs = presetBtn && getComputedStyle(presetBtn);
     const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
     vCats.textContent = label;
-    if (tokCats) col ? tokCats.style.setProperty('--tokc', col) : tokCats.style.removeProperty('--tokc');
+    // "Custom" (no preset button matched) is copper everywhere the preset
+    // colour is used; --preset on :root feeds the logo and the start card.
+    const useCol = col || (!presetBtn && label === 'Custom' ? '#C67B28' : '');
+    if (tokCats) useCol ? tokCats.style.setProperty('--tokc', useCol) : tokCats.style.removeProperty('--tokc');
+    useCol ? document.documentElement.style.setProperty('--preset', useCol) : document.documentElement.style.removeProperty('--preset');
   }
   // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
   // that the main-screen Shuffle token is gone.
