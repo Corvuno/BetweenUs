@@ -331,6 +331,16 @@ it as `Category, number, "question text"`, every time, not just category+number 
 just the text. The owner has no lookup table and isn't expected to build one; the full
 citation is what makes a reply readable without cross-referencing the deck file.
 
+**Every card on its own line — no exceptions.** The owner is dyslexic; cards run together
+in a sentence or a paragraph turn into unreadable text for them. So:
+
+- A different card always starts a new line. Never two cards in one line or one sentence.
+- A comment about a card goes on its own new line below that card, never on the card's line.
+- Make it obvious what is app text and what is commentary: the card line holds only the
+  citation (`Category, number,` and the question in quotes, in bold); a comment line starts
+  with "Comment:" and is never bold. Proposed wording (app lines, alternatives) is laid out
+  the same way: the wording alone on its line, the comment on the next.
+
 ## Where the cards live
 
 `questions.js` is the only copy of the card text — 34 categories, 12 cards each. The deck
