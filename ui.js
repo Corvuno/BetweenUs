@@ -193,12 +193,28 @@ document.getElementById('card').addEventListener('click', e => {
   }, { passive: false });
 })();
 
+// ── Show hints again (menu) ──
+(function(){
+  const b = document.getElementById('d-hints');
+  if (b) b.addEventListener('click', () => { hintsReset(); closeAllDrawers(); });
+})();
+
+// ── Spotlight brightens once ── PROVISIONAL, for testing. When the third card
+// of a session is drawn, the Spotlight button (symbol + word) brightens to near
+// white for about a second, once per device ever. Tune or remove here only.
+function spotlightBrightenOnce() {
+  const KEY = 'bu.spotBrightened';
+  try { if (localStorage.getItem(KEY)) return; localStorage.setItem(KEY, '1'); } catch (e) { return; }
+  replayClass(document.getElementById('btnParty'), 'spot-bright', 1050);
+}
+
 // ── Fullscreen party ──
 (function(){
   const btn = document.getElementById('btnParty');
   if (btn) {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
+      hintRetire('spotlight');
       state.partyMode = true;
       document.getElementById('partyOverlay').classList.add('open');
       if (state.currentIndex < 0 && state.visibleDeck.length > 0) {
@@ -609,6 +625,7 @@ let pickMode = false;
     renderShell();  // mirror the toggle onto the fullscreen Draw-three button
 
     if (pickMode) {
+      hintRetire('three');
       // Remember current limit and switch to All so there are always enough cards to pick from
       prevLimit = state.cardLimit;
       if (state.cardLimit !== null) {
@@ -811,13 +828,11 @@ applyToggleUI();
   // retires for good once it's done its job — fade first (not an instant
   // display:none) because the sheet covers the header on mobile, so the
   // hint disappearing is only ever actually seen on desktop.
-  const TOK_TAUGHT_KEY = 'bu.tokTaught';
-  if (localStorage.getItem(TOK_TAUGHT_KEY)) document.body.classList.add('tok-taught');
   openRow.addEventListener('click', () => {
-    if (!localStorage.getItem(TOK_TAUGHT_KEY)) {
-      localStorage.setItem(TOK_TAUGHT_KEY, '1');
+    if (!hintIsTaught('tok')) {
       const h = document.getElementById('tokHint');
-      if (h) { h.style.opacity = '0'; setTimeout(() => document.body.classList.add('tok-taught'), 350); }
+      if (h) h.style.opacity = '0';
+      setTimeout(() => hintRetire('tok'), 350);
     }
     openCats();
   });

@@ -12,6 +12,7 @@ function addToLog(card) {
   if (state.loggedQuestions.has(card.question)) return;   // re-visiting via prev/next must not re-log
   state.loggedQuestions.add(card.question);
   state.sessionLog.push({ question: card.question, level: card.level });
+  if (state.sessionLog.length === 3) spotlightBrightenOnce();
   renderLog();
 }
 

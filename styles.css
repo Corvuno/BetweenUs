@@ -23,7 +23,7 @@
   /* the bottom of the screen (see DESIGN-SYSTEM.md "Frame colours"):
      copper = the deck's own frame, celadon = the play-style row,
      --preset = the active preset's colour (set from renderShell). */
-  --copper:#C67B28;--celadon:#A9C7B6;--celadon-hint:#5b6b63;
+  --copper:#C67B28;--celadon:#A9C7B6;--celadon-hint:#5b6b63;--celadon-bright:#eef7f1;
   --preset:var(--gold);
 }
 html,body{height:100%;}
@@ -339,7 +339,8 @@ body.showing-hand-summary .card-question{
   letter-spacing:.01em;opacity:1;
 }
 .twist-trigger.active{color:var(--gold);}
-.twist-trigger.disabled,.party-twist.disabled{opacity:.32;pointer-events:none;}
+.twist-trigger.disabled{opacity:.32;}   /* still takes the tap, so it can shake */
+.party-twist.disabled{opacity:.32;pointer-events:none;}
 /* card flip animation */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
@@ -1514,7 +1515,18 @@ body.tok-taught .tok-hint{display:none;}
 #screenRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
 #screenRow > button.on .row-lbl,#screenRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
 #screenRow .twist-trigger.disabled{opacity:.32;}
-/* "Full screen" is wider than the r6 mockup's "Spotlight"; tighter tracking and
-   icon gap keep it between its separators until the label is renamed. */
-#btnParty .row-lbl{letter-spacing:.12em;}
-#btnParty .row-top{gap:6px;}
+/* Hints retire per control once it has worked (see HINTS in state.js). */
+body.hint-three-taught #pickToggle .row-hint,
+body.hint-spot-taught #btnParty .row-hint,
+body.hint-twist-taught #btnTwist .row-hint{display:none;}
+/* Twist can't be used: a short horizontal shake, no words. */
+@keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
+@keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
+#btnTwist.twist-shake{animation:twistShake .35s ease-in-out;}
+@media (prefers-reduced-motion:reduce){#btnTwist.twist-shake{animation:twistBlink .35s ease-in-out;}}
+/* Twist landed: the word and the card's new line light up together, then settle. */
+@keyframes twistLit{from{color:var(--celadon-bright)}}
+.twist-lit{animation:twistLit .5s ease-out;}
+/* Spotlight, provisional: brightens to near white once, then settles. No glow. */
+@keyframes spotBright{0%,55%{color:var(--celadon-bright)}100%{color:var(--celadon)}}
+#screenRow > button.spot-bright{animation:spotBright 1s ease-out;}

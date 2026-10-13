@@ -54,3 +54,38 @@ let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
 
 let _undoCard = null, _undoIndex = null, _undoTimer = null;
 
+
+
+// ── HINTS ─────────────────────────────────────────────────────────────────────
+// One shared store for every "teaching" hint. A hint retires for good (per
+// device) once its control has actually worked, and "Show hints again" in the
+// menu brings them all back. A future hint joins by adding one line here: its
+// storage key, the body class that hides it, and (optionally) its element id
+// for any inline fade. Nothing else needs to know about it.
+const HINTS = {
+  tok:       { key: 'bu.tokTaught',       cls: 'tok-taught' },          // "· tap to change"
+  three:     { key: 'bu.hintThreeTaught', cls: 'hint-three-taught' },   // under Three
+  spotlight: { key: 'bu.hintSpotTaught',  cls: 'hint-spot-taught' },    // under Spotlight
+  twist:     { key: 'bu.hintTwistTaught', cls: 'hint-twist-taught' }    // under Twist
+};
+function hintIsTaught(id) {
+  try { return !!localStorage.getItem(HINTS[id].key); } catch (e) { return document.body.classList.contains(HINTS[id].cls); }
+}
+function hintsApply() {
+  Object.keys(HINTS).forEach(id => document.body.classList.toggle(HINTS[id].cls, hintIsTaught(id)));
+}
+// The control has worked: the hint goes and stays gone.
+function hintRetire(id) {
+  if (!HINTS[id]) return;
+  try { localStorage.setItem(HINTS[id].key, '1'); } catch (e) {}
+  document.body.classList.add(HINTS[id].cls);
+}
+// Every hint back, whoever's new.
+function hintsReset() {
+  Object.keys(HINTS).forEach(id => {
+    try { localStorage.removeItem(HINTS[id].key); } catch (e) {}
+    document.body.classList.remove(HINTS[id].cls);
+  });
+  const t = document.getElementById('tokHint'); if (t) t.style.opacity = '';
+}
+hintsApply();
