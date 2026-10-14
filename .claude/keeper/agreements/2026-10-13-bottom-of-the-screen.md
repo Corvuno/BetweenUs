@@ -144,3 +144,6 @@ B) Looks — same builder
 - 2026-10-14, added (round 11 option C, https://claude.ai/artifact/T4kBDBjHqQz5AAFZp3gwX6): the menu
   stays as it is; only the chosen Shuffle option (Arc/Random) and the chosen Cards number
   (5/10/20/All) in the categories sheet's Round section turn celadon (text), the rest unchanged.
+- 2026-10-14, added (owner, after C was built: "I thought the text in this screen would change as
+  well — do it anyway, leave the icons alone"): in the main menu drawer, item labels in celadon
+  #A9C7B6 and sub-lines in the darker hint celadon #5b6b63 (as round 11 option A), icons unchanged.
