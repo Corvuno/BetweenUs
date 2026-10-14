@@ -62,3 +62,20 @@ named plainly in adult words.
 **Flesh app line:** "Undressed, and honest about it ✦" (owner, 2026-10-14).
 **Carnal app line:** "Sex as you actually have it, up close ✦" (owner, 2026-10-14).
 Tone for After Dark lines, in the owner's words: "pretty and still unmistakable."
+
+**Making room for Abyss** (owner, 2026-10-14): out — Kink 5, Bare 1, Bare 8, Carnal 2.
+Stay — Kink 6 (untouched kinks, the core of Kink), Kink 10 (needed once Abyss is gone),
+Bare 11 and 12 (location vs situation — different). Us: Intimate 10 and 12 are different
+(direct questions to the other person); a substitute for Us: Intimate 12 is wanted, low
+priority. Four slots open for three Abyss cards — which card goes where is open.
+
+## Card work list (running — what needs new words)
+
+Desire: Attract 4 (rewrite as the character card), Attract 5 (rewrite as a story),
+Attract 9 (rewrite as a story); new cards for Attract 1, 2, 12.
+World: World 4 (rewrite: a story about discovery / change); new cards for World 2, 5, 7,
+8, 9, 11.
+Home: new cards for Home 2, 5, 6, 7, 9 (agreed bad); Home 11 Roots-border question.
+Life: cards not gone through yet.
+After Dark: Kink 9 (change or go); one of the four freed slots (Kink 5, Bare 1, Bare 8,
+Carnal 2) has no Abyss card for it; Bare 10 may go later; Us: Intimate 12 substitute (low).
