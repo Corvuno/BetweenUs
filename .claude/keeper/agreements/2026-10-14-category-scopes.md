@@ -51,3 +51,7 @@ Carnal — Flesh's explicit sibling, training wheels off, details and insights e
 Bare — facts, figures and stupid stories; the oddest category. Kink — what makes you tick
 sexually. Desire — the edge of After Dark: just acceptable without being After Dark.
 Flesh 5 (pickup) stays in Flesh: it starts before, but the story is about the act.
+
+**Kink app line:** "What makes you tick — and how far you'd take it ✦" (owner, 2026-10-14).
+After Dark app lines: understated and grown-up, never blunt or giggly; Bare is the exception.
+Owner floated renaming Flesh to Edge — open.
