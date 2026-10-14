@@ -86,4 +86,4 @@ the new general rule is asked.)
 
 **Abyss placement** (owner, 2026-10-14): Abyss 12 → Bare (a confession). Carnal's freed slot
 (old Carnal 2) gets a new card. Abyss 1 and 11 take the Kink slot and the other Bare slot;
-by fit that reads Abyss 1 → Kink, Abyss 11 → Bare — asked to confirm.
+Abyss 1 → Kink (old Kink 5 slot), Abyss 11 → Bare (confirmed by owner, 2026-10-14).
