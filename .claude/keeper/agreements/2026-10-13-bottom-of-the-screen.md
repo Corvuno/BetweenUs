@@ -138,3 +138,6 @@ B) Looks — same builder
 - 2026-10-14, added: Back (#btn-prev) is dimmed on the start screen too, before the first card, and
   shakes when tapped, like the row. The doubled "Ways to play" heading stays as it is (owner is fine
   with it).
+- 2026-10-14, added (owner: "option two, looks way better"): the start card's diamond and its line use
+  a deeper shade of the preset colour (HSL lightness −7, never below 45%), so to the eye it matches
+  the preset name. Built 8e5ab02.
