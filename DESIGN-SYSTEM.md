@@ -94,7 +94,8 @@ chapter row (was `#6e1719`) needed to move onto them.
 --copper:        #C67B28   /* the deck's own frame: logo centre diamond and "Custom" only */
 --celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
 --celadon-hint:  #5b6b63   /* the hint lines under that row */
---preset:        (set from renderShell) /* which edition: logo's inner line pairs, start-card diamond and rule */
+--preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name */
+--preset-deep:   (set from renderShell) /* the preset a shade deeper (same hue/saturation, lightness -7 points, floor 45%, already-darker colours unchanged): for filled areas, i.e. the start-card diamond and its rule, which read paler than thin letters */
 ```
 One job each. Gold stays "draw" (Next Card, borders at the three tiers; back/menu
 frames rest at rgba(201,168,76,.2) and turn gold with their symbol on hover, press and

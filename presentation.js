@@ -329,6 +329,22 @@ function updateAfterDarkBtn() {
 // Single source of truth for the token-line labels. Every value is derived from
 // state and written here; callers invoke renderShell() after a state change
 // instead of the shell observing its own DOM for updates.
+// Hex colour -> a deeper shade of it (see renderShell). Returns '' if not a hex.
+function presetDeep(hex) {
+  let h = String(hex).trim().replace('#', '');
+  if (h.length === 3) h = h.replace(/./g, c => c + c);
+  if (!/^[0-9a-f]{6}$/i.test(h)) return '';
+  const r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255;
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+  let L = (mx + mn) / 2, S = 0, H = 0;
+  if (d) {
+    S = d / (1 - Math.abs(2 * L - 1));
+    H = mx === r ? ((g - b) / d + (g < b ? 6 : 0)) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    H *= 60;
+  }
+  const L2 = L > 0.45 ? Math.max(0.45, L - 0.07) : L;
+  return 'hsl(' + H.toFixed(1) + ',' + (S * 100).toFixed(1) + '%,' + (L2 * 100).toFixed(1) + '%)';
+}
 function renderShell() {
   // Entry token -> the active preset's own name and colour, read straight
   // off its .mode-btn (data-mode=state.activePreset) in the preset row —
@@ -356,6 +372,12 @@ function renderShell() {
     const useCol = col || (!presetBtn && label === 'Custom' ? '#C67B28' : '');
     if (tokCats) useCol ? tokCats.style.setProperty('--tokc', useCol) : tokCats.style.removeProperty('--tokc');
     useCol ? document.documentElement.style.setProperty('--preset', useCol) : document.documentElement.style.removeProperty('--preset');
+    // --preset-deep: the same colour a shade deeper, for filled areas (the start
+    // card's diamond and rule), which read paler than thin letters. Same hue and
+    // saturation, lightness down 7 points, never below 45%; colours already at or
+    // below 45% stay as they are. Non-hex values just fall back to --preset.
+    const deep = useCol && presetDeep(useCol);
+    deep ? document.documentElement.style.setProperty('--preset-deep', deep) : document.documentElement.style.removeProperty('--preset-deep');
   }
   // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
   // that the main-screen Shuffle token is gone.

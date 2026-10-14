@@ -25,6 +25,7 @@
      --preset = the active preset's colour (set from renderShell). */
   --copper:#C67B28;--celadon:#A9C7B6;--celadon-hint:#5b6b63;--celadon-bright:#eef7f1;
   --preset:var(--gold);
+  --preset-deep:var(--preset); /* a shade deeper, for filled areas (start-card diamond + rule); set in renderShell */
 }
 html,body{height:100%;}
 /* stops the browser's pull-to-refresh from firing when a swipe on a sheet/drawer
@@ -269,8 +270,8 @@ body{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--d)*.05);
 }
 .cb-mark{display:block;width:calc(var(--d)*.45);height:auto;overflow:visible;color:var(--gold);}
-.cb-rule{width:calc(var(--d)*.5);height:2px;background:linear-gradient(90deg,transparent,var(--preset),transparent);}
-.cb-mark path[fill]{fill:var(--preset);}
+.cb-rule{width:calc(var(--d)*.5);height:2px;background:linear-gradient(90deg,transparent,var(--preset-deep),transparent);}
+.cb-mark path[fill]{fill:var(--preset-deep);}
 .cb-text{
   font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;
   font-size:calc(var(--d)*.135);line-height:1.25;text-align:center;color:var(--cream);
