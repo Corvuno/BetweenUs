@@ -93,3 +93,10 @@ Abyss 1 → Kink (old Kink 5 slot), Abyss 11 → Bare (confirmed by owner, 2026-
 WEAK, placeholder). Attract 6 (outfit) goes once a replacement is approved. Open: Attract 4
 (owner's own wording to polish), Attract 6 replacement, World 5 (owner: un-invent gets cheap
 Colbert-style answers), World 8 and Home 5 replacements.
+
+**2026-10-14, round 3:** World 5 has missed twice (un-invent: cheap answers; internet set:
+"internet is too small") — two-miss rule: talking about what the tech card should get before
+any more options. World 8 → owner's direction: "where did you feel most like a foreigner",
+second half "and not like you expected" (to avoid the obvious looks answer). Home 5 → owner's
+direction: discovering a hidden place in town, as a story. Attract 4 → the owner's wording
+misses a bridge between "type" and "character". Attract 6 options were boring and weak.
