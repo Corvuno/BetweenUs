@@ -94,7 +94,7 @@ chapter row (was `#6e1719`) needed to move onto them.
 --copper:        #C67B28   /* the deck's own frame: logo centre diamond and "Custom" only */
 --celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
   /* also marks the chosen option in a choice row: Shuffle (Arc/Random) and Cards (5/10/20/All) in the categories sheet */
---celadon-hint:  #5b6b63   /* the hint lines under that row */
+--celadon-hint:  #5b6b63   /* the hint lines under that row; also the sub-lines in the main menu (its labels are celadon, icons stay gold) */
 --preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name */
 --preset-deep:   (set from renderShell) /* the preset a shade deeper (same hue/saturation, lightness -7 points, floor 45%, already-darker colours unchanged): for filled areas, i.e. the start-card diamond and its rule, which read paler than thin letters */
 ```

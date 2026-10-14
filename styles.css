@@ -1167,6 +1167,8 @@ body.tok-taught .tok-hint{display:none;}
 .d-icon svg{width:16px;height:16px;}
 .d-item{padding:15px 26px;gap:16px;}
 .d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}
+#menuDrawer .d-label{color:var(--celadon);}
+#menuDrawer .d-sub{color:var(--celadon-hint);}
 
 /* ── DESKTOP — a room, not a stretched phone ── */
 @media(min-width:768px){
