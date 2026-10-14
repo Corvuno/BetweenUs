@@ -114,3 +114,24 @@ screenshots against those mockups; the tester has gone through it as a player; o
   (#c9a84c), as in between-us-first.html `.btn-nav:hover`. Copper stays only in the logo's centre
   diamond and in Custom. Owner on cream: too close to the card's letters, fights it for attention.
   Reference: round 10 https://claude.ai/artifact/9AHupwHrWbcZg2vGqrr77T, "One accent: celadon".
+
+---
+
+## Follow-up approved, 2026-10-14 (start screen, hover, How to play)
+
+C) How it works — app-builder
+- Start screen (before the first card is drawn): Three, Spotlight and Twist are all dimmed and
+  can't be used; a tap makes the tapped one shake, exactly like Twist does now. They become
+  usable with the first card. The hints under them stay at full strength while the row is
+  dimmed (owner: "option 2"). Back is NOT part of this (owner didn't decide; stays as is).
+  Three no longer starts a hand from the start screen — first draw, then Three.
+- How to play: archive everything except the opening line ("This isn't a quiz…"), the Ways to
+  play section (the seven tiles + the "There are more ways than these…" note) and the closing
+  line ("No winners, no right answers…"). Archived text is kept word for word in
+  questions/how-to-play-archive.md. Menu item renamed — owner delegated the wording, it is a
+  placeholder: label "Ways to play", sub-line "Seven ways round the table". The help panel's
+  own title follows the new name.
+
+B) Looks — same builder
+- Hover (pointer devices) and press on Three, Spotlight and Twist: they light up gold (#c9a84c),
+  like back and menu, so they read as buttons. Not while dimmed.
