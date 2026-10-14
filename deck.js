@@ -16,15 +16,18 @@ function intentWeight(lvl, lo, hi){
 }
 
 /* One weighted pass, no replacement, no bias in the ordering it leaves
-   behind (Efraimidis–Spirakis). The shuffle mode then shapes what survives,
-   so Arc still arcs — over a pool the dials chose. */
-function applyIntent(cards){
-  if (!intentOn || cards.length < 8) return cards;
-  const ints = [...new Set(cards.map(c => c.level))].map(levelIntensity);
+   behind (Efraimidis–Spirakis). It only ORDERS: nothing is cut away, so every
+   card in the pool stays in play and the dial-suited ones just tend to come
+   first, fading naturally into the normal mix as they run out. `ref` is the
+   whole selection, so the dial's target doesn't drift as cards get used up. */
+function applyIntent(cards, ref){
+  ref = ref || cards;
+  if (!intentOn || ref.length < 8) return shuffle(cards);
+  const ints = [...new Set(ref.map(c => c.level))].map(levelIntensity);
   const lo = Math.min(...ints), hi = Math.max(...ints);
   const keyed = cards.map(c => ({ c, k: Math.pow(Math.random(), 1 / intentWeight(c.level, lo, hi)) }));
   keyed.sort((a, b) => b.k - a.k);
-  return keyed.slice(0, Math.max(20, Math.ceil(keyed.length * 0.30))).map(x => x.c);
+  return keyed.map(x => x.c);
 }
 
 
@@ -67,87 +70,25 @@ function shuffle(arr) {
 }
 
 
-function applyRandomMode(arr) {
-  switch (state.randomMode) {
-
-    case 'wild':
-      if (state.spiceMode && !state.safeMode) {
-        // spiceMode on: bias toward spicy (roughly 1-in-3 spicy cards)
-        const sp = shuffle(arr.filter(c => SPICY_LEVELS.includes(c.level)));
-        const ns = shuffle(arr.filter(c => !SPICY_LEVELS.includes(c.level)));
-        const r = []; let si=0, ni=0;
-        while (si<sp.length || ni<ns.length) {
-          if (ni<ns.length) r.push(ns[ni++]);
-          if (ni<ns.length) r.push(ns[ni++]);
-          if (si<sp.length) r.push(sp[si++]);
-        }
-        return r;
-      }
-      return shuffle(arr);
-
-    case 'arc': {
-      // Arc: cycling mini-arc pattern optimised for 5–20 card sessions.
-      // Pattern per 4 cards: Warm → Deep → Deep → Cool (repeat).
-      // After 70% of deck: Warm slot becomes Deep (full depth phase).
-      // No recovery breaths — unnecessary at short session lengths.
-      // Tiers read off the band table instead of a hardcoded list, so a future
-      // rebalance of LEVEL_DEPTH doesn't quietly drift out of sync with this.
-      // The gate (SPICY_LEVELS) is checked first and always wins 'S' — After
-      // Dark is graded by depth *within* S (see the sort below), not folded
-      // into L/M/H by its band number, since the gate is its own axis.
-      const wt = c => {
-        if (SPICY_LEVELS.includes(c.level)) return 'S';
-        const d = levelDepth(c.level);
-        if (d <= 2) return 'L';   // light/warm
-        if (d >= 5) return 'H';   // heavy/deep
-        return 'M';               // medium/cool
-      };
-      const pools = { L:[], M:[], H:[], S:[] };
-      arr.forEach(c => pools[wt(c)].push(c));
-      Object.values(pools).forEach(a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} });
-      // S ramps mild -> heavy by LEVEL_INTENSITY (stable sort keeps the shuffle
-      // within each intensity tier, so it's a graded ramp, not a fixed order).
-      pools.S.sort((a, b) => levelIntensity(a.level) - levelIntensity(b.level));
-      let li=0, mi=0, hi=0, si=0;
-      const total = arr.length;
-      const result = [];
-      // Slot pattern: L H H M
-      const pat = ['L','H','H','M'];
-      const draw = (type, pos) => {
-        const progress = pos / Math.max(total, 1);
-        // After 70%, L slots become H (full depth phase)
-        const t = (type === 'L' && progress >= 0.7) ? 'H' : type;
-        if (t === 'L') {
-          if (li < pools.L.length) return pools.L[li++];
-          if (mi < pools.M.length) return pools.M[mi++];
-          if (hi < pools.H.length) return pools.H[hi++];
-        } else if (t === 'H') {
-          if (hi < pools.H.length) return pools.H[hi++];
-          if (mi < pools.M.length) return pools.M[mi++];
-          if (li < pools.L.length) return pools.L[li++];
-        } else { // M / cool
-          // Spice mode: weave S cards into cool slots
-          if (state.spiceMode && si < pools.S.length && pos % 4 === 3) return pools.S[si++];
-          if (mi < pools.M.length) return pools.M[mi++];
-          if (li < pools.L.length) return pools.L[li++];
-          if (hi < pools.H.length) return pools.H[hi++];
-          if (si < pools.S.length) return pools.S[si++];
-        }
-        return null;
-      };
-      const hasCards = () => li<pools.L.length || mi<pools.M.length || hi<pools.H.length || si<pools.S.length;
-      let pos = 0;
-      while (hasCards() && pos < total * 4) {
-        const card = draw(pat[pos % pat.length], pos);
-        if (card) result.push(card);
-        pos++;
-      }
-      // Drain any remaining (shouldn't happen but safety net)
-      while (si < pools.S.length) result.push(pools.S[si++]);
-      return result;
+/* The order the unseen cards are drawn in: dial-weighted random when the
+   dials are on, plain random when off. Spice mode (After Dark on, not safe)
+   weaves roughly one After Dark card in three through that order, keeping
+   each side's own order so the dial weighting survives the weave. The
+   Random/Arc difference is only what happens inside the hand (_sliceDraw). */
+function orderUnseen(cards, ref) {
+  const ordered = applyIntent(cards, ref);
+  if (state.spiceMode && !state.safeMode) {
+    const sp = ordered.filter(c => SPICY_LEVELS.includes(c.level));
+    const ns = ordered.filter(c => !SPICY_LEVELS.includes(c.level));
+    const r = []; let si = 0, ni = 0;
+    while (si < sp.length || ni < ns.length) {
+      if (ni < ns.length) r.push(ns[ni++]);
+      if (ni < ns.length) r.push(ns[ni++]);
+      if (si < sp.length) r.push(sp[si++]);
     }
-    default: return shuffle(arr);
+    return r;
   }
+  return ordered;
 }
 
 
@@ -158,7 +99,7 @@ function applyRandomMode(arr) {
 function buildFullDeck() {
   const solo = orderedSoloLevel();
   if (solo) return { deck: getOrderedSolo(solo), unseen: null };
-  return _unseenFirst(applyRandomMode(applyIntent(getFilteredCards())));
+  return _unseenFirst(getFilteredCards());
 }
 
 /* Slices fullDeck down to the hand actually shown: honours cardLimit, and
@@ -194,6 +135,7 @@ function initDeck(isContinuation) {
     state.colbertPrevLimit = null;
     syncLimitButtons();
   }
+  _startFreshPassIfSpent();
   const built = buildFullDeck();
   state.fullDeck = built.deck;
   state.drawUnseen = built.unseen;
@@ -216,74 +158,100 @@ function initDeck(isContinuation) {
 }
 
 
-/* Draw vs session: a draw comes from what this session hasn't seen. */
+/* Draw vs session: a draw comes from what this pass hasn't seen.
+   "Seen" = the session log from state.seenFrom onward. The log itself is the
+   visible history and is never wiped; starting a fresh pass just moves
+   seenFrom to the end of it. */
+function _seenSet(){
+  const from = Math.min(Math.max(state.seenFrom || 0, 0), state.sessionLog.length);
+  return new Set(state.sessionLog.slice(from).map(c => c.question));
+}
+function _unseenCount(cards){
+  const seen = _seenSet();
+  return cards.filter(c => !seen.has(c.question)).length;
+}
+/* Nothing in the selection is unseen any more: a fresh pass begins, every
+   card in the selection counts as unseen again. Called when a new hand is
+   about to be built (hold-to-continue / Draw more / any settings change). */
+function _startFreshPassIfSpent(){
+  if (orderedSoloLevel()) return;
+  const cards = getFilteredCards();
+  if (cards.length && _unseenCount(cards) === 0) state.seenFrom = state.sessionLog.length;
+}
 
-function _unseenFirst(deck){
-  const seen = new Set(state.sessionLog.map(c => c.question));
-  if (!seen.size) return {deck, unseen: deck.length};
-  const fresh = deck.filter(c=>!seen.has(c.question));
-  const used  = deck.filter(c=> seen.has(c.question));
+/* Unseen cards first, in draw order (dial-weighted or random); seen cards
+   follow so fullDeck still holds the whole selection. */
+function _unseenFirst(cards){
+  const seen = _seenSet();
+  const fresh = orderUnseen(cards.filter(c => !seen.has(c.question)), cards);
+  const used  = shuffle(cards.filter(c => seen.has(c.question)));
   return {deck: fresh.concat(used), unseen: fresh.length};
 }
+/* The hand: the first N unseen cards in draw order (N = the limit, or every
+   unseen card for All); fewer only when fewer unseen cards are left. */
 function _sliceDraw(deck, unseen){
-  /* draw only fresh cards; if none are left, the deck replays in full */
-  const cap = unseen > 0 ? Math.min(unseen, state.cardLimit === null ? unseen : state.cardLimit)
-                         : (state.cardLimit === null ? deck.length : Math.min(state.cardLimit, deck.length));
-  if (state.randomMode === 'arc') return _arcHand(unseen > 0 ? deck.slice(0, unseen) : deck, cap);
-  return deck.slice(0, cap);
+  const n = state.cardLimit === null ? unseen : Math.min(unseen, state.cardLimit);
+  const hand = deck.slice(0, n);
+  return state.randomMode === 'arc' ? _arcHand(hand) : hand;
 }
 
-/* One hand, one arc. Two things a hand needs that deck-wide ordering can't
-   guarantee once seen cards are filtered out of it:
-     - variety: prefer a category the hand hasn't used yet, so five cards mean
-       five different categories whenever the selection allows, instead of three
-       cards out of the same pool;
-     - shape: order by depth so the hand opens warm, reaches its deepest card
-       around the middle and eases down after it, rather than zig-zagging.
-   The summary trace plots the same levelDepth, so the line reads as an arc too. */
-function _arcHand(source, cap){
-  if (source.length <= cap) return source.slice(0, cap);
-  /* Later arcs start from a warmer baseline. A conversation already a hand or
-     two in shouldn't drop back to small talk, so the floor rises one step per
-     completed hand and stops at 3 — deep enough not to feel like starting over,
-     shallow enough that the arc still has somewhere to climb and ease back to.
-     Cards at or above the floor are simply offered first, so a narrow category
-     selection quietly falls back to whatever is left. */
-  const round = Math.floor(state.sessionLog.length / Math.max(cap, 1));
-  const floor = Math.min(1 + round, 3);
-  if (floor > 1) {
-    const atFloor = source.filter(c => levelDepth(c.level) >= floor);
-    const below   = source.filter(c => levelDepth(c.level) <  floor);
-    source = atFloor.concat(below);
+/* Arc: the hand plays as consecutive mini arcs of 5 cards (a 5 is one arc, a
+   10 two, All as many as it takes; a short last group is its own small arc).
+   The hand's cards are taken in their draw order, five at a time, and each
+   group is shaped on its own:
+     - variety: within the group prefer a category it hasn't used yet, so five
+       cards mean five different categories whenever the cards allow (a card
+       skipped for repeating a category stays in line for the next group);
+     - shape: order by depth so the group opens warm, reaches its deepest card
+       around the middle and eases down after it.
+   The summary trace plots the same levelDepth, so the line reads as arcs. */
+function _arcHand(hand){
+  const ARC = 5;
+  const out = [];
+  let rest = hand.slice();
+  while (rest.length) {
+    const picked = [], used = new Set(), spares = [];
+    for (const c of rest) {
+      if (picked.length >= ARC) break;
+      if (used.has(c.level)) { spares.push(c); continue; }
+      used.add(c.level); picked.push(c);
+    }
+    for (let i = 0; picked.length < ARC && i < spares.length; i++) picked.push(spares[i]);
+    const taken = new Set(picked);
+    rest = rest.filter(c => !taken.has(c));
+    /* deepest card to the middle: walk the cards from shallow to deep, placing
+       them alternately at the front and the back, so depth rises then falls */
+    const byDepth = picked.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
+    const arc = new Array(byDepth.length);
+    let lo = 0, hi = byDepth.length - 1;
+    byDepth.forEach((c, i) => { if (i % 2 === 0) arc[lo++] = c; else arc[hi--] = c; });
+    out.push(...arc);
   }
-  const picked = [], usedLevels = new Set(), spares = [];
-  for (const c of source) {
-    if (picked.length >= cap) break;
-    if (usedLevels.has(c.level)) { spares.push(c); continue; }   // keep as a fallback
-    usedLevels.add(c.level); picked.push(c);
-  }
-  for (let i = 0; picked.length < cap && i < spares.length; i++) picked.push(spares[i]);
-  /* deepest card to the middle: walk the cards from shallow to deep, placing
-     them alternately at the front and the back, so depth rises then falls */
-  const byDepth = picked.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
-  const out = new Array(byDepth.length);
-  let lo = 0, hi = byDepth.length - 1;
-  byDepth.forEach((c, i) => { if (i % 2 === 0) out[lo++] = c; else out[hi--] = c; });
 
   /* An opener from After Dark reads as a different game than the one the
      table sat down for — fine as where a round lands, wrong as where it
-     starts. Never the first card; a rare 5% chance it survives as the
+     starts. Never the hand's first card; a rare 5% chance it survives as the
      second; free everywhere from the third card on. Skipped when the hand
-     is After-Dark-only (nothing else to open with) or has none at all. */
+     is After-Dark-only (nothing else to open with) or has none at all.
+     A rising-then-falling arc read backwards is still an arc, so the first
+     group is turned around when that fixes the opening; only if it doesn't
+     does a later non-After-Dark card swap in. */
   const isAD = c => SPICY_LEVELS.includes(c.level);
   if (out.some(c => !isAD(c))) {
-    const bump = (idx, surviveChance) => {
-      if (!out[idx] || !isAD(out[idx]) || Math.random() < surviveChance) return;
+    const keepSecond = Math.random() < 0.05;
+    const openOK = () => !isAD(out[0]) && (keepSecond || !isAD(out[1]));
+    if (!openOK()) {
+      const n = Math.min(ARC, out.length);
+      out.splice(0, n, ...out.slice(0, n).reverse());
+      if (!openOK()) out.splice(0, n, ...out.slice(0, n).reverse());   // turn it back
+    }
+    const bump = (idx, survive) => {
+      if (!out[idx] || !isAD(out[idx]) || survive) return;
       const swapAt = out.findIndex((c, i) => i > idx && !isAD(c));
       if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
     };
-    bump(0, 0);      // spot 1: never
-    bump(1, 0.05);   // spot 2: survives 5% of the time
+    bump(0, false);        // spot 1: never
+    bump(1, keepSecond);   // spot 2: survives 5% of the time
   }
   return out;
 }
@@ -291,6 +259,7 @@ function _arcHand(source, cap){
 function applyLimit() {
   state.skipDrawAnim = false;   // a card-limit change is a settings change, not a continuation
   state.loggedQuestions.clear();
+  _startFreshPassIfSpent();
   const built = buildFullDeck();
   state.fullDeck = built.deck;
   state.drawUnseen = built.unseen;
@@ -398,7 +367,7 @@ function _nextCardBase() {
     if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();
   } else {
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    const fresh = (()=>{const sn=new Set(state.sessionLog.map(c=>c.question));return state.fullDeck.filter(c=>!sn.has(c.question)).length;})();
+    const fresh = _unseenCount(state.fullDeck);
     const html = fresh > 0
       ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${fresh} ${fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.'}</span>`
       : `<span style="font-size:1rem;color:var(--muted)">That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.</span>`;

@@ -36,6 +36,7 @@ function serializeSession() {
     safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit,
     activePreset: state.activePreset,
     sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
+    seenFrom: window.LOG_PERSIST ? state.seenFrom : undefined,
     savedAt: new Date().toISOString(),
   };
 }
@@ -57,6 +58,7 @@ function restoreSessionData(data) {
     // restore session log
     if (window.LOG_PERSIST && Array.isArray(data.sessionLog)) {
       state.sessionLog = data.sessionLog;
+      state.seenFrom = Math.min(Math.max(+data.seenFrom || 0, 0), state.sessionLog.length);
       state.loggedQuestions = new Set(state.sessionLog.map(c => c.question));
       renderLog();
     }

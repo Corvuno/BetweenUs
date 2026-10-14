@@ -364,8 +364,8 @@ const OPT_IN_ONLY = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].optIn);
 const COLBERT_OPTIONAL = ['Window or aisle?','Earliest memory?','Cats or dogs?'];
 const COLBERT_STRICT = window.COLBERT_STRICT || false;
 
-// applyRandomMode()'s switch in deck.js falls back to a plain shuffle for any
-// saved session whose randomMode isn't one of these.
+// deck.js treats any saved session whose randomMode isn't 'arc' as plain
+// random order; these are the two it knows.
 const SHUFFLE_MODES = ['wild','arc'];
 
 

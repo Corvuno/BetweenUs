@@ -418,6 +418,39 @@ async function run() {
     assert(!(await atEnd()), 'still showing the hand summary after the hold started a fresh hand');
   });
 
+  await check('hand size: with most cards seen and the dials moved, a hand of 5 is 5 and All is every unseen card; running out starts a fresh pass', async () => {
+    const r = await page.evaluate(() => {
+      const keep = { lim: state.cardLimit, log: state.sessionLog, from: state.seenFrom, on: intentOn, ii: intentIntensity, fo: intentFocus };
+      intentOn = true; intentIntensity = 0.9; intentFocus = 0.1;
+      const sel = getFilteredCards(), unseenN = 12;
+      const seed = () => { state.sessionLog = shuffle(sel).slice(0, sel.length - unseenN).map(c => ({ question: c.question, level: c.level })); state.seenFrom = 0; };
+      const out = { sizes: [] };
+      state.cardLimit = 5; seed();
+      for (let i = 0; i < 3; i++) { initDeck(true); out.sizes.push(state.visibleDeck.length); state.visibleDeck.forEach(c => state.sessionLog.push({ question: c.question, level: c.level })); }
+      const logLen = state.sessionLog.length;
+      initDeck(true);
+      out.fresh = { size: state.visibleDeck.length, seenFrom: state.seenFrom, logLen, logKept: state.sessionLog.length === logLen };
+      state.cardLimit = null; seed(); initDeck(true); out.all = state.visibleDeck.length;
+      state.cardLimit = keep.lim; state.sessionLog = keep.log; state.seenFrom = keep.from;
+      intentOn = keep.on; intentIntensity = keep.ii; intentFocus = keep.fo;
+      return out;
+    });
+    assert(r.sizes.join() === '5,5,2', `hands of 5 from 12 unseen: got ${r.sizes.join()}`);
+    assert(r.fresh.size === 5 && r.fresh.seenFrom === r.fresh.logLen && r.fresh.logKept, `fresh pass after the last unseen card: ${JSON.stringify(r.fresh)}`);
+    assert(r.all === 12, `All should be every unseen card (12), got ${r.all}`);
+  });
+
+  await check('Spotlight opened before the first draw leaves card 1 with its category title showing', async () => {
+    await page.evaluate(() => { document.querySelector('.limit-btn').click(); });
+    await page.waitForTimeout(300);
+    await page.click('#btnParty');
+    await page.waitForTimeout(200);
+    await page.click('#partyExit');
+    await page.waitForTimeout(600);
+    const t = await page.evaluate(() => { const e = document.getElementById('card-level'); return { text: e.textContent.trim(), op: +getComputedStyle(e).opacity }; });
+    assert(t.text.length > 0 && t.op > 0.9, `category title missing or transparent: ${JSON.stringify(t)}`);
+  });
+
   await check('English only: no language switch, page language is en, no Dutch UI or Twist text', async () => {
     assert(await page.locator('#d-lang').count() === 0, 'a language switch (#d-lang) still exists in the menu');
     assert(await page.evaluate(() => document.documentElement.lang) === 'en', 'document language is not en');

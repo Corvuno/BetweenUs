@@ -232,12 +232,12 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
     const imported=[]; text.split('\n').forEach((line,i,arr)=>{
       if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(qMap[q.toLowerCase()]||{question:q,level:'deep'});}
     });
-    if(imported.length){state.sessionLog=imported;state.loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('logDrawer');}
+    if(imported.length){state.sessionLog=imported;state.seenFrom=0;state.loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('logDrawer');}
   }; inp.click();
 });
 
 document.getElementById('btnClearLog').addEventListener('click', () => {
-  state.sessionLog = []; state.loggedQuestions.clear(); renderLog();
+  state.sessionLog = []; state.seenFrom = 0; state.loggedQuestions.clear(); renderLog();
 });
 
 // ── Favourites ──

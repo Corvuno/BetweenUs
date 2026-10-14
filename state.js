@@ -30,6 +30,7 @@ const state = {
   skippedCards: new Set(),
   partyMode: false,
   sessionLog: [],
+  seenFrom: 0,                  // index into sessionLog: cards logged from here on count as "seen" this pass (a fresh pass moves it to the end; the log itself is never wiped)
   loggedQuestions: new Set(),   // per-round guard against duplicate log entries
   colbertPrevLimit: null,       // limit to restore after Colbert-solo play
   favourites: [],
