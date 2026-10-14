@@ -20,6 +20,11 @@ The Keeper. Started with `/keeper`.
   `Category, number, "question text"`. Before proposing, work out what the card is meant to
   get out of people, then write the question. The owner approves the exact words of every
   card before it is written. No exceptions, including on the fast path.
+- Category descriptions (agreed 2026-10-13/14): every category gets two — an app line
+  (short, in the app) and a writer brief in `questions/between-us-deck.md` (what it's about,
+  the subjects a card may cover, where it stops; the list's order means nothing). A category
+  gets this treatment when it is reworked, **and** whenever it is hit as a boundary while
+  writing cards for another category and actually collides. Built up as we go, not all at once.
 - Builder: `deck-builder`.
 
 **B) Looks** — how anything appears: colours, lines, type, layout, card faces, animation.

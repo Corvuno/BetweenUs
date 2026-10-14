@@ -27,8 +27,8 @@ Keep: Home 4 (which chair/corner), Home 8 (kitchen window). Home 2/5/6 (belongin
 **Desire** replaces Attract. It is the edge of After Dark: the questions that are just
 acceptable without being After Dark. Tagline direction: the old "Wanting, and being
 wanted" is what the owner meant; open to better. Attract 4 → rewrite as the character card
-(Attract 8 is the looks card). Attract 9 → rewrite as a story card. Attract 1, 2, 5, 12
-go. Keep 3, 6, 7, 8, 10, 11. Classic/bench candidates parked for the card stage.
+(Attract 8 is the looks card). Attract 9 → rewrite as a story card. Attract 5 → rewrite
+as a story card, stays (owner, 2026-10-14). Attract 1, 2, 12 go. Keep 3, 6, 7, 8, 10, 11. Classic/bench candidates parked for the card stage.
 Scope first, then cards.
 
 **Abyss** is removed. Abyss 1, 11 and 12 look for a home in Kink or Bare (being opened up
@@ -40,3 +40,7 @@ Keep World 1, 3, 6, 10, 12. World 11 goes (one culture card is enough; 6 is the 
 one). World 4 → rewrite as a story about discovery or change / embracing change.
 World 2, 5, 7, 8, 9 go (owner, 2026-10-14). Seven cards to write: six open slots plus
 the World 4 rewrite.
+
+**Flesh** gets the treatment now: Desire collides with it (Desire ends at the first touch,
+Flesh begins there). Standing rule: a category hit as a boundary that collides gets an app
+line + writer brief, made up as we go.
