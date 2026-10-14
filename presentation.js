@@ -17,7 +17,9 @@ function countLabel(n, total) {
 // slides to keep the current card (plus one ahead) in view; ticks before it
 // have simply scrolled out of frame, not been compressed or restyled.
 const PROGRESS_CAP = 20;
+let _progressOverride, _progressWidth = 0;
 function renderProgress(currentOverride) {
+  _progressOverride = currentOverride;
   const container = document.getElementById('progress');
   const countEl = document.getElementById('progCountNum');
   const deckLen = state.visibleDeck.length;
@@ -30,10 +32,20 @@ function renderProgress(currentOverride) {
   }
   const shown = Math.max(0, end - start + 1);
 
-  const W = 300, gapDefault = 4;
-  let dotW = shown > 0 ? (W - (shown - 1) * gapDefault) / shown : 0;
+  // The line is exactly the card's width (CSS: .progress is 100% of a column
+  // capped to the card); the pieces share that width, with room kept for the
+  // end diamond (8px + its 6px/2px margins + one gap) when it is shown.
+  const hasEnd = deckLen > 0 && end === deckLen - 1;
+  const W = (container.clientWidth || 300) - (hasEnd ? 16 : 0), gapDefault = 4;
+  _progressWidth = container.clientWidth;
+  const gaps = hasEnd ? shown : shown - 1;
+  let dotW = shown > 0 ? (W - gaps * gapDefault) / shown : 0;
   let gap = gapDefault;
-  if (dotW < 3) { dotW = 3; gap = shown > 1 ? Math.max(1.5, (W - shown * 3) / (shown - 1)) : 0; }
+  if (dotW < 3) { dotW = 3; gap = gaps > 0 ? Math.max(1.5, (W - shown * 3) / gaps) : 0; }
+  // past 20 cards the line carries on beyond the card: fade the sides where
+  // it does (not where the hand really starts or ends)
+  container.classList.toggle('fade-l', deckLen > PROGRESS_CAP && start > 0);
+  container.classList.toggle('fade-r', deckLen > PROGRESS_CAP && end < deckLen - 1);
 
   container.innerHTML = '';
   container.style.setProperty('--dot-gap', gap + 'px');
@@ -50,7 +62,7 @@ function renderProgress(currentOverride) {
   // The terminal diamond only appears once the real last card is inside the
   // visible window — a window that's slid away from the end has nothing to
   // cap yet.
-  if (deckLen > 0 && end === deckLen - 1) {
+  if (hasEnd) {
     const endDot = document.createElement('div');
     endDot.className = 'progress-tick end' + (cur >= deckLen ? ' current' : '');
     container.appendChild(endDot);
@@ -61,6 +73,14 @@ function renderProgress(currentOverride) {
       ? countLabel(Math.min(cur + 1, deckLen), deckLen)
       : '';
   }
+}
+
+// the line follows the card's width: redraw when it changes (resize, rotate)
+if (typeof ResizeObserver !== 'undefined') {
+  const _pEl = document.getElementById('progress');
+  if (_pEl) new ResizeObserver(() => {
+    if (_pEl.clientWidth !== _progressWidth) renderProgress(_progressOverride);
+  }).observe(_pEl);
 }
 
 function updateShuffleDisplay() {
