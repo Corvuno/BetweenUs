@@ -87,3 +87,9 @@ the new general rule is asked.)
 **Abyss placement** (owner, 2026-10-14): Abyss 12 → Bare (a confession). Carnal's freed slot
 (old Carnal 2) gets a new card. Abyss 1 and 11 take the Kink slot and the other Bare slot;
 Abyss 1 → Kink (old Kink 5 slot), Abyss 11 → Bare (confirmed by owner, 2026-10-14).
+
+**Card status 2026-10-14 (after batch 1):** 15 cards live (Patch v7.05). Being built: Attract 5
+(the mid-sentence look), World 8 (foreign custom — WEAK, placeholder), Home 5 (spot in town —
+WEAK, placeholder). Attract 6 (outfit) goes once a replacement is approved. Open: Attract 4
+(owner's own wording to polish), Attract 6 replacement, World 5 (owner: un-invent gets cheap
+Colbert-style answers), World 8 and Home 5 replacements.
