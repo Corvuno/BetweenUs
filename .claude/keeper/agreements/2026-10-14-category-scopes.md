@@ -38,4 +38,5 @@ now). Removing Abyss is an app change (C): category lists, presets, After Dark.
 be exact in the new two-description setup, but the owner wants this one).
 Keep World 1, 3, 6, 10, 12. World 11 goes (one culture card is enough; 6 is the better
 one). World 4 → rewrite as a story about discovery or change / embracing change.
-Open: World 2, 5, 7, 8, 9.
+World 2, 5, 7, 8, 9 go (owner, 2026-10-14). Seven cards to write: six open slots plus
+the World 4 rewrite.
