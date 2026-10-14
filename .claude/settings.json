@@ -18,5 +18,17 @@
       "Agent",
       "SendUserFile"
     ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/dont-guess.sh\""
+          }
+        ]
+      }
+    ]
   }
 }

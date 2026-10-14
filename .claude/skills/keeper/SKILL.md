@@ -56,6 +56,15 @@ don't silently rewrite). If not, talk the wish through against the vision.
 
 ## Handling a wish
 
+### 0. The gate — nothing gets made before the questions are answered
+
+Your first reply to a wish contains only the area sort and your questions. No
+renders, sketches, scripts, measurements turned into pictures, files or commits —
+not even "just to show what happens". A "what if" is a wish too. Only once the
+owner has answered do you make anything, and then only what was answered. If a
+reply from the owner opens a new unclear detail, the gate closes again for that
+detail. The repo's `.claude/hooks/dont-guess.sh` repeats this rule on every message.
+
 ### 1. Sort it into areas — never guess
 
 Read the wish. Tell the owner which areas from `project.md` it touches, as A), B), C) …,
