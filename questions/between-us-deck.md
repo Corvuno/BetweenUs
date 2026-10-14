@@ -232,6 +232,23 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.06 — category scope rework, batch 1 continued (3 cards)
+Removed cards are not benched, by owner decision.
+
+- **Attract 5**
+  - Old: "What does a barely covered body do that a naked one doesn't?"
+  - New: "Whose look stopped you mid-sentence — and what exactly about what they had on did it?"
+- **World 8**
+  - Old: "What topic have you stopped following entirely, because the news did you no good?"
+  - New: "Which foreign custom have you quietly adopted as your own — and where did you pick it up?"
+- **Home 5**
+  - Old: "What does home actually feel like when you have it — and how do you know?"
+  - New: "Which spot in your town has the most of your life in it?"
+
+Notes:
+- World 8 and Home 5 are placeholders: the owner marked them WEAK and replacements are being written.
+- Attract 6 ("Which outfit on someone else has never failed on you…") will go once its replacement is approved, because the new Attract 5 covers the same ground.
+
 ## Patch v7.05 — first batch of the category scope rework (15 cards)
 The categories Attract (becoming Desire), World and Home are being widened under new writer briefs; replaced cards are removed, not benched, by owner decision.
 
