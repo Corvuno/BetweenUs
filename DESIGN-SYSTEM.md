@@ -91,16 +91,18 @@ chapter row (was `#6e1719`) needed to move onto them.
 
 ### Frame colours — copper, celadon, preset (added 2026-10-13)
 ```
---copper:        #C67B28   /* the deck's own frame: logo centre diamond, back/menu symbols, "Custom" */
---celadon:       #A9C7B6   /* the play-style row only: Three, Full screen, Twist, their rules/separators, Twist's line on the card */
+--copper:        #C67B28   /* the deck's own frame: logo centre diamond and "Custom" only */
+--celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
 --celadon-hint:  #5b6b63   /* the hint lines under that row */
 --preset:        (set from renderShell) /* which edition: logo's inner line pairs, start-card diamond and rule */
 ```
 One job each. Gold stays "draw" (Next Card, borders at the three tiers; back/menu
-frames use `--border-strong`). Copper is the deck's own frame. The preset colour says
+frames rest at rgba(201,168,76,.2) and turn gold with their symbol on hover, press and
+keyboard focus). Copper is the deck's own frame (logo centre, Custom). The preset colour says
 which edition is selected and falls back to `--gold`; "Custom" (no preset button
-matched) uses copper everywhere the preset colour is used. Celadon is not used
-anywhere else.
+matched) uses copper everywhere the preset colour is used. Celadon is the colour
+of everything tappable besides Draw; back and menu are celadon at rest and gold
+while touched (the hover rule is scoped to `@media (hover:hover)` so it never sticks on touch).
 
 ## What's fixed everywhere vs. what's scoped
 
