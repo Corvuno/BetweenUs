@@ -58,3 +58,7 @@ Flesh keeps its name (owner, 2026-10-14: "it's just a name, and people understan
 nature"). Desire is the safe side of the edge; Flesh is the first step on the dark side.
 Flesh/Carnal app lines: two rounds missed (too explicit, then too cryptic) — target is sex
 named plainly in adult words.
+
+**Flesh app line:** "Undressed, and honest about it ✦" (owner, 2026-10-14).
+**Carnal app line:** "Sex as you actually have it, up close ✦" (owner, 2026-10-14).
+Tone for After Dark lines, in the owner's words: "pretty and still unmistakable."
