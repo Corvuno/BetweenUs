@@ -190,6 +190,12 @@ function setCardDisplay(card) {
     lvlEl.style.color = labelColor(color);
   }
   if (qEl)   qEl.textContent = translateQ(card);
+  /* .card-level and .card-question are invisible until they carry `in` —
+     every route that shows a card without the flip (Spotlight before the first
+     draw, a restored session) must turn them on itself, or the category title
+     stays at opacity 0. */
+  if (lvlEl) lvlEl.classList.add('in');
+  if (qEl)   qEl.classList.add('in');
   if (nextBtn) {
     nextBtn.textContent = 'Next Card';
     nextBtn.classList.remove('btn-draw--start');
