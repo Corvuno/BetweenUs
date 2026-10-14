@@ -126,7 +126,10 @@ if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
 // Draw controls
 document.getElementById('drawMoreBtn').addEventListener('click', drawMore);
 document.getElementById('btn-next').addEventListener('click', nextCard);
-document.getElementById('btn-prev').addEventListener('click', prevCard);
+document.getElementById('btn-prev').addEventListener('click', function() {
+  if (this.classList.contains('disabled')) { shakeRowBtn(this); return; }   // before the first card: shake, nothing else
+  prevCard();
+});
 
 // Card star
 document.getElementById('cardStar').addEventListener('click', e => {

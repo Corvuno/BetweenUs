@@ -463,6 +463,13 @@ async function run() {
       assert(await page.locator('#' + id).evaluate(el => el.classList.contains('row-shake')), `${id} did not shake`);
       await page.waitForTimeout(450);
     }
+    // Back is dimmed the same way (whole button), shakes, and does nothing; Menu is not dimmed
+    const bk = await page.evaluate(() => ({ dis: document.getElementById('btn-prev').classList.contains('disabled'), op: +getComputedStyle(document.getElementById('btn-prev')).opacity, menu: +getComputedStyle(document.getElementById('btn-menu')).opacity }));
+    assert(bk.dis && bk.op < 0.5 && bk.menu === 1, `back not dimmed (or menu dimmed): ${JSON.stringify(bk)}`);
+    await page.locator('#btn-prev').click();
+    assert(await page.locator('#btn-prev').evaluate(el => el.classList.contains('row-shake')), 'back did not shake');
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForTimeout(450);
     assert(!(await page.locator('#partyOverlay').evaluate(el => el.classList.contains('open'))), 'Spotlight opened before the first draw');
     assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
     assert((await cardParts(page)).index === 0, 'a dimmed button drew a card');
@@ -472,6 +479,7 @@ async function run() {
     for (const id of ['pickToggle', 'btnParty']) {
       assert(!(await page.locator('#' + id).evaluate(el => el.classList.contains('disabled'))), `${id} still dimmed after the first card`);
     }
+    assert(!(await page.locator('#btn-prev').evaluate(el => el.classList.contains('disabled'))), 'back still dimmed after the first card');
     // Spotlight opened after the first draw leaves the card's category title showing
     await page.click('#btnParty');
     await page.waitForTimeout(200);

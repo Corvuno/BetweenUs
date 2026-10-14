@@ -388,6 +388,9 @@ function updateDrawMore() {
   [document.getElementById('pickToggle'), document.getElementById('btnParty')].forEach(btn => {
     if (btn) btn.classList.toggle('disabled', state.currentIndex < 0);
   });
+  // Back waits for the first card too (it has nothing to go back to).
+  const prevBtn = document.getElementById('btn-prev');
+  if (prevBtn) prevBtn.classList.toggle('disabled', state.currentIndex < 0);
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
