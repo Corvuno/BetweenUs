@@ -103,3 +103,14 @@ reference; round 8 https://claude.ai/artifact/6bzN7zqn8ZtRpmhN4Tn6Nj option B1 i
 ### Done when
 Built as in round 6 with the round 8 B1 hint tone; the Keeper has checked it on phone
 screenshots against those mockups; the tester has gone through it as a player; on main.
+
+---
+
+## Follow-up approved, 2026-10-14 (rounds 9–10)
+
+- Logo inner lines at full preset colour (built 40039a0), desktop fits again (40039a0).
+- One accent: celadon. Back and menu symbols in celadon (#A9C7B6), frame the faint gold of the
+  first edition (rgba(201,168,76,.2)); on tap/press (and hover) frame and symbol turn gold
+  (#c9a84c), as in between-us-first.html `.btn-nav:hover`. Copper stays only in the logo's centre
+  diamond and in Custom. Owner on cream: too close to the card's letters, fights it for attention.
+  Reference: round 10 https://claude.ai/artifact/9AHupwHrWbcZg2vGqrr77T, "One accent: celadon".
