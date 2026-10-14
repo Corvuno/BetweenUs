@@ -107,6 +107,11 @@ async function pointerHold(page, selector, ms) {
   }, { selector });
 }
 
+// Three, Spotlight and Twist wait for the first card of a hand — draw it.
+async function drawFirstIfNeeded(page) {
+  if ((await cardParts(page)).index === 0) { await page.locator('#btn-next').click(); await page.waitForFunction(() => !document.getElementById('pickToggle').classList.contains('disabled'), null, { timeout: 4000 }); }
+}
+
 async function run() {
   const server = await startServer();
   const port = server.address().port;
@@ -293,7 +298,9 @@ async function run() {
   // ── G. Draw-three picker ─────────────────────────────────────────────────
   await check('draw-three picker opens instantly on toggle and choosing an option advances to it', async () => {
     await closeCategorySheet(); // idempotent — guards against a sheet left open by a prior step
-    // turning pick mode on IS the draw now — no extra tap on a blank card needed
+    // Three waits for the first card of a hand: draw one, then turn it on
+    // (turning pick mode on then draws the three options itself)
+    await drawFirstIfNeeded(page);
     await page.locator('#pickToggle').click();
     await page.waitForTimeout(400);
     const picker = page.locator('#cardPicker');
@@ -359,6 +366,7 @@ async function run() {
   // ── J. Fullscreen party tap zones ────────────────────────────────────────
   await check('fullscreen party mode: enter, tap zones move the deck, exit', async () => {
     await closeCategorySheet();
+    await drawFirstIfNeeded(page);   // Spotlight waits for the first card of a hand
     await page.locator('#btnParty').click();
     await page.waitForTimeout(300);
     const overlay = page.locator('#partyOverlay');
@@ -440,9 +448,31 @@ async function run() {
     assert(r.all === 12, `All should be every unseen card (12), got ${r.all}`);
   });
 
-  await check('Spotlight opened before the first draw leaves card 1 with its category title showing', async () => {
-    await page.evaluate(() => { document.querySelector('.limit-btn').click(); });
+  await check('start screen: Three, Spotlight and Twist are dimmed (hints bright), shake and do nothing until the first card; usable after it', async () => {
+    await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // fresh hand, nothing drawn
     await page.waitForTimeout(300);
+    assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
+    const taughtBefore = await page.evaluate(() => document.body.className);
+    for (const id of ['pickToggle', 'btnParty', 'btnTwist']) {
+      const info = await page.evaluate((id) => {
+        const b = document.getElementById(id);
+        return { dis: b.classList.contains('disabled'), top: +getComputedStyle(b.querySelector('.row-top')).opacity, hint: +getComputedStyle(b.querySelector('.row-hint')).opacity };
+      }, id);
+      assert(info.dis && info.top < 0.5 && info.hint === 1, `${id} not dimmed with a bright hint: ${JSON.stringify(info)}`);
+      await page.locator('#' + id).click();
+      assert(await page.locator('#' + id).evaluate(el => el.classList.contains('row-shake')), `${id} did not shake`);
+      await page.waitForTimeout(450);
+    }
+    assert(!(await page.locator('#partyOverlay').evaluate(el => el.classList.contains('open'))), 'Spotlight opened before the first draw');
+    assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
+    assert((await cardParts(page)).index === 0, 'a dimmed button drew a card');
+    assert(await page.evaluate(() => document.body.className) === taughtBefore, 'a shake retired a hint');
+    await drawFirstIfNeeded(page);
+    await page.waitForTimeout(1200);
+    for (const id of ['pickToggle', 'btnParty']) {
+      assert(!(await page.locator('#' + id).evaluate(el => el.classList.contains('disabled'))), `${id} still dimmed after the first card`);
+    }
+    // Spotlight opened after the first draw leaves the card's category title showing
     await page.click('#btnParty');
     await page.waitForTimeout(200);
     await page.click('#partyExit');

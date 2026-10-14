@@ -1546,7 +1546,15 @@ body.tok-taught .tok-hint{display:none;}
   font-size:.88rem;line-height:1.15;color:var(--celadon-hint);white-space:normal;max-width:104px;text-align:center;}
 #screenRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
 #screenRow > button.on .row-lbl,#screenRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
-#screenRow .twist-trigger.disabled{opacity:.32;}
+/* Not usable yet (before the first card; Twist also on the end screen): only the
+   symbol + word dim — the hint under them stays at full strength. */
+#screenRow > button.disabled{opacity:1;}
+#screenRow > button.disabled .row-top{opacity:.32;}
+/* Hover (pointer devices only), press and keyboard focus light up gold, like the
+   nav row's back and menu. Not while dimmed. Hint keeps its own tone. */
+#screenRow > button:not(.disabled):active,
+#screenRow > button:not(.disabled):focus-visible{color:var(--gold);}
+@media (hover:hover){#screenRow > button:not(.disabled):hover{color:var(--gold);}}
 /* Hints retire per control once it has worked (see HINTS in state.js). */
 body.hint-three-taught #pickToggle .row-hint,
 body.hint-spot-taught #btnParty .row-hint,
@@ -1554,8 +1562,9 @@ body.hint-twist-taught #btnTwist .row-hint{display:none;}
 /* Twist can't be used: a short horizontal shake, no words. */
 @keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
 @keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
-#btnTwist.twist-shake{animation:twistShake .35s ease-in-out;}
-@media (prefers-reduced-motion:reduce){#btnTwist.twist-shake{animation:twistBlink .35s ease-in-out;}}
+#screenRow > button.row-shake{animation:twistShake .35s ease-in-out;}
+@media (prefers-reduced-motion:reduce){#screenRow > button.row-shake{animation:none;}
+  #screenRow > button.row-shake .row-top{animation:twistBlink .35s ease-in-out;}}
 /* Twist landed: the word and the card's new line light up together, then settle. */
 @keyframes twistLit{from{color:var(--celadon-bright)}}
 .twist-lit{animation:twistLit .5s ease-out;}

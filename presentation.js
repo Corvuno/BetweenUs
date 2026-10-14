@@ -382,6 +382,12 @@ function updateDrawMore() {
   [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
     if (btn) btn.classList.toggle('disabled', !hasCurrentCard());
   });
+  // Three and Spotlight wait for the first card of a hand too (back-of-card
+  // start screen). Unlike Twist they stay usable on the end-of-hand screen,
+  // where the row is swapped out anyway.
+  [document.getElementById('pickToggle'), document.getElementById('btnParty')].forEach(btn => {
+    if (btn) btn.classList.toggle('disabled', state.currentIndex < 0);
+  });
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;

@@ -61,7 +61,7 @@ function renderTwist() {
 // from here since this only ever runs from a click, well after every module
 // has loaded.
 function toggleTwist() {
-  if (!hasCurrentCard()) { shakeTwist(); return; }   // can't be used right now — shake, no words
+  if (!hasCurrentCard()) { shakeRowBtn(document.getElementById('btnTwist')); return; }   // can't be used right now — shake, no words
   if (currentTwist) { clearTwist(); return; }   // tap again to untwist
   currentTwist = pickTwist();
   renderTwist();
@@ -76,9 +76,10 @@ function replayClass(el, cls, ms) {
   el.classList.add(cls);
   setTimeout(() => el.classList.remove(cls), ms);
 }
-// Twist on a moment it can't be used: the button shakes (blinks instead under
-// reduced motion). Does not count as using Twist, so the hint stays.
-function shakeTwist() { replayClass(document.getElementById('btnTwist'), 'twist-shake', 400); }
+// A play-row button (Three, Spotlight, Twist) tapped at a moment it can't be
+// used: it shakes (blinks instead under reduced motion). Does not count as
+// using it, so its hint stays.
+function shakeRowBtn(btn) { replayClass(btn, 'row-shake', 400); }
 // Twist just landed: the word Twist and the new line on the card light up
 // together, then settle.
 function flashTwist() {

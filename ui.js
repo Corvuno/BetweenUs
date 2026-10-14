@@ -214,6 +214,7 @@ function spotlightBrightenOnce() {
   if (btn) {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
+      if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
       hintRetire('spotlight');
       state.partyMode = true;
       document.getElementById('partyOverlay').classList.add('open');
@@ -620,6 +621,7 @@ let pickMode = false;
   let prevLimit = null; // remember the limit before pick mode was turned on
 
   btn.addEventListener('click', () => {
+    if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
     pickMode = !pickMode;
     btn.classList.toggle('on', pickMode);
     renderShell();  // mirror the toggle onto the fullscreen Draw-three button
