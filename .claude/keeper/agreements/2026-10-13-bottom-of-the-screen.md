@@ -135,3 +135,6 @@ C) How it works — app-builder
 B) Looks — same builder
 - Hover (pointer devices) and press on Three, Spotlight and Twist: they light up gold (#c9a84c),
   like back and menu, so they read as buttons. Not while dimmed.
+- 2026-10-14, added: Back (#btn-prev) is dimmed on the start screen too, before the first card, and
+  shakes when tapped, like the row. The doubled "Ways to play" heading stays as it is (owner is fine
+  with it).
