@@ -232,6 +232,55 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.05 — first batch of the category scope rework (15 cards)
+The categories Attract (becoming Desire), World and Home are being widened under new writer briefs; replaced cards are removed, not benched, by owner decision.
+
+- **Attract 9**
+  - Old: "How much does a voice do for you?"
+  - New: "Tell about a voice that made you lose track of what was actually being said."
+- **Attract 1**
+  - Old: "Someone walks into the room. What makes you look twice?"
+  - New: "Tell about the moment you realised someone was flirting with you — how long did it take you to notice?"
+- **Attract 2**
+  - Old: "What do you find attractive that you'd never admit on a first date?"
+  - New: "Tell about a moment of chemistry with a stranger that went absolutely nowhere."
+- **Attract 12**
+  - Old: "Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?"
+  - New: "Have you ever talked yourself into being attracted to someone — and how did that go?"
+- **World 4**
+  - Old: "What change in your lifetime still amazes you?"
+  - New: "What new thing did you refuse at first and now can't live without?"
+- **World 2**
+  - Old: "When did you last actually do something about a problem bigger than you — and did it matter?"
+  - New: "Which period of history would you have done well in — and which would have finished you off?"
+- **World 7**
+  - Old: "Do people actually change — or just get better at managing what doesn't?"
+  - New: "What piece of history did you only learn as an adult that changed how you see things?"
+- **World 9**
+  - Old: "Is there something happening in the world that genuinely worries you?"
+  - New: "Who's the richest person you've ever actually met — and what surprised you?"
+- **World 11**
+  - Old: "What would you defend about your country to a foreigner — and what not?"
+  - New: "What fact about the universe or nature still blows your mind?"
+- **Home 2**
+  - Old: "When did a place last stop feeling like home — like you didn't belong?"
+  - New: "Walk us down your street — what would we pass on the way to your door?"
+- **Home 6**
+  - Old: "What actually makes you feel at ease somewhere new — and how long does it usually take?"
+  - New: "Which move was the hardest — and what didn't make it into the boxes?"
+- **Home 7**
+  - Old: "If I walked into your home right now, what would I find?"
+  - New: "Where is the best light in your home, and when does it fall there?"
+- **Home 9**
+  - Old: "Your home tells people something about you. What?"
+  - New: "What do you tidy away when people come over — and what do you leave out on purpose?"
+- **Carnal 2**
+  - Old: "What do you want more of in bed that you rarely get?"
+  - New: "Take us through the best sex you've ever had — what made it that good?"
+- **Kink 9**
+  - Old: "Is there a situation where a material did more for you than just dress yourself or someone else?"
+  - New: "Which piece of clothing in your wardrobe exists for one reason only?"
+
 ## Patch v7.04 — Dutch translations removed from `questions.js`
 All 268 `nl:` fields were removed from `questions.js` (the app becomes English only).
 The Dutch is preserved, with the English question beside each line and grouped by

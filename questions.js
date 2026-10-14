@@ -82,14 +82,14 @@ const NEWDECK_CARDS = [
 
   // ─── HOME ───
   { level: "home", question: "Who is allowed in your home unannounced?" },
-  { level: "home", question: "When did a place last stop feeling like home — like you didn't belong?" },
+  { level: "home", question: "Walk us down your street — what would we pass on the way to your door?" },
   { level: "home", question: "What object in your house has survived the most versions of you?" },
   { level: "home", question: "Where in your home do you actually live — which chair, which corner?" },
   { level: "home", question: "What does home actually feel like when you have it — and how do you know?" },
-  { level: "home", question: "What actually makes you feel at ease somewhere new — and how long does it usually take?" },
-  { level: "home", question: "If I walked into your home right now, what would I find?" },
+  { level: "home", question: "Which move was the hardest — and what didn't make it into the boxes?" },
+  { level: "home", question: "Where is the best light in your home, and when does it fall there?" },
   { level: "home", question: "The view from your kitchen window — what could you look at every day and never tire of?" },
-  { level: "home", question: "Your home tells people something about you. What?" },
+  { level: "home", question: "What do you tidy away when people come over — and what do you leave out on purpose?" },
   { level: "home", question: "What kind of home do you want to live in — and how far is that from where you are now?" },
   { level: "home", question: "Which house from your life do you still walk through in dreams?" },
   { level: "home", question: "Who have you shared a home with — and what did it teach you?" },
@@ -236,18 +236,18 @@ const NEWDECK_CARDS = [
   { level: "date", question: "What's the most romantic thing you've attempted that failed completely?" },
 
   // ─── ATTRACT ───
-  { level: "attract", question: "Someone walks into the room. What makes you look twice?" },
-  { level: "attract", question: "What do you find attractive that you'd never admit on a first date?" },
+  { level: "attract", question: "Tell about the moment you realised someone was flirting with you — how long did it take you to notice?" },
+  { level: "attract", question: "Tell about a moment of chemistry with a stranger that went absolutely nowhere." },
   { level: "attract", question: "Tell about turning someone down — and admit whether you liked being asked." },
   { level: "attract", question: "You tell yourself you have a type — does that correspond with who you actually keep ending up with?" },
   { level: "attract", question: "What does a barely covered body do that a naked one doesn't?" },
   { level: "attract", question: "Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?" },
   { level: "attract", question: "Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?" },
   { level: "attract", question: "Who is your celebrity crush — and does that line up with your actual type?" },
-  { level: "attract", question: "How much does a voice do for you?" },
+  { level: "attract", question: "Tell about a voice that made you lose track of what was actually being said." },
   { level: "attract", question: "Are you a different person when you're attracted to someone — and who shows up?" },
   { level: "attract", question: "Guess what the person across from you finds attractive about you — then ask if you're right." },
-  { level: "attract", question: "Confidence: how does someone wear it — walk, voice, stillness — and what does it do to you?" },
+  { level: "attract", question: "Have you ever talked yourself into being attracted to someone — and how did that go?" },
 
   // ─── VALUES ───
   { level: "values", question: "There's something you'd refuse to do, whatever it cost..." },
@@ -265,16 +265,16 @@ const NEWDECK_CARDS = [
 
   // ─── WORLD ───
   { level: "world", question: "What's something the next generation will judge this one harshly for?" },
-  { level: "world", question: "When did you last actually do something about a problem bigger than you — and did it matter?" },
+  { level: "world", question: "Which period of history would you have done well in — and which would have finished you off?" },
   { level: "world", question: "What's something you benefit from that you know isn't fair?" },
-  { level: "world", question: "What change in your lifetime still amazes you?" },
+  { level: "world", question: "What new thing did you refuse at first and now can't live without?" },
   { level: "world", question: "Which political position of yours is genuinely hard to defend to people who disagree?" },
   { level: "world", question: "What's something you wish people understood about your culture?" },
-  { level: "world", question: "Do people actually change — or just get better at managing what doesn't?" },
+  { level: "world", question: "What piece of history did you only learn as an adult that changed how you see things?" },
   { level: "world", question: "What topic have you stopped following entirely, because the news did you no good?" },
-  { level: "world", question: "Is there something happening in the world that genuinely worries you?" },
+  { level: "world", question: "Who's the richest person you've ever actually met — and what surprised you?" },
   { level: "world", question: "Is progress real?" },
-  { level: "world", question: "What would you defend about your country to a foreigner — and what not?" },
+  { level: "world", question: "What fact about the universe or nature still blows your mind?" },
   { level: "world", question: "Which common belief about how the world works do you think is simply wrong?" },
 
   // ─── WORK ───
@@ -447,7 +447,7 @@ const NEWDECK_CARDS = [
 
   // ─── CARNAL ───
   { level: "carnal", question: "What pulls you out of your body during sex, when it happens?" },
-  { level: "carnal", question: "What do you want more of in bed that you rarely get?" },
+  { level: "carnal", question: "Take us through the best sex you've ever had — what made it that good?" },
   { level: "carnal", question: "What's a moment in bed you felt truly desired — not just touched?" },
   { level: "carnal", question: "What's your sexual superpower — and the night it proved you right?" },
   { level: "carnal", question: "When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?" },
@@ -482,7 +482,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
   { level: "kinks", question: "What kind of words instantly turn you on?" },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },
-  { level: "kinks", question: "Is there a situation where a material did more for you than just dress yourself or someone else?" },
+  { level: "kinks", question: "Which piece of clothing in your wardrobe exists for one reason only?" },
   { level: "kinks", question: "When did \"yes\" turn into \"actually, no\" while it was already happening?" },
   { level: "kinks", question: "Who introduced you to something you'd never have found or tried alone?" },
   { level: "kinks", question: "More than two — does it appeal, and what's the pull?" },
