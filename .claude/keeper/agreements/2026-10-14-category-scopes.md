@@ -54,4 +54,7 @@ Flesh 5 (pickup) stays in Flesh: it starts before, but the story is about the ac
 
 **Kink app line:** "What makes you tick — and how far you'd take it ✦" (owner, 2026-10-14).
 After Dark app lines: understated and grown-up, never blunt or giggly; Bare is the exception.
-Owner floated renaming Flesh to Edge — open.
+Flesh keeps its name (owner, 2026-10-14: "it's just a name, and people understand its
+nature"). Desire is the safe side of the edge; Flesh is the first step on the dark side.
+Flesh/Carnal app lines: two rounds missed (too explicit, then too cryptic) — target is sex
+named plainly in adult words.
