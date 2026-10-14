@@ -79,3 +79,8 @@ Home: new cards for Home 2, 5, 6, 7, 9 (agreed bad); Home 11 Roots-border questi
 Life: cards not gone through yet.
 After Dark: Kink 9 (change or go); one of the four freed slots (Kink 5, Bare 1, Bare 8,
 Carnal 2) has no Abyss card for it; Bare 10 may go later; Us: Intimate 12 substitute (low).
+
+**Removed cards are not benched** (owner, 2026-10-14): every card that goes in this work is
+removed outright — "they won't come back, probably." The change log still records the old
+text and why it went. (Overrides CLAUDE.md's bench step for this agreement; whether it is
+the new general rule is asked.)
