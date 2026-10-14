@@ -141,3 +141,6 @@ B) Looks — same builder
 - 2026-10-14, added (owner: "option two, looks way better"): the start card's diamond and its line use
   a deeper shade of the preset colour (HSL lightness −7, never below 45%), so to the eye it matches
   the preset name. Built 8e5ab02.
+- 2026-10-14, added (round 11 option C, https://claude.ai/artifact/T4kBDBjHqQz5AAFZp3gwX6): the menu
+  stays as it is; only the chosen Shuffle option (Arc/Random) and the chosen Cards number
+  (5/10/20/All) in the categories sheet's Round section turn celadon (text), the rest unchanged.
