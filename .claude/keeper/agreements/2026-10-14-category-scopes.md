@@ -77,10 +77,13 @@ World: World 4 (rewrite: a story about discovery / change); new cards for World 
 8, 9, 11.
 Home: new cards for Home 2, 5, 6, 7, 9 (agreed bad); Home 11 Roots-border question.
 Life: cards not gone through yet.
-After Dark: Kink 9 (change or go); one of the four freed slots (Kink 5, Bare 1, Bare 8,
-Carnal 2) has no Abyss card for it; Bare 10 may go later; Us: Intimate 12 substitute (low).
+After Dark: Kink 9 (change or go); a new Carnal card in the old Carnal 2 slot; Bare 10 may go later; Us: Intimate 12 substitute (low).
 
 **Removed cards are not benched** (owner, 2026-10-14): every card that goes in this work is
 removed outright — "they won't come back, probably." The change log still records the old
 text and why it went. (Overrides CLAUDE.md's bench step for this agreement; whether it is
 the new general rule is asked.)
+
+**Abyss placement** (owner, 2026-10-14): Abyss 12 → Bare (a confession). Carnal's freed slot
+(old Carnal 2) gets a new card. Abyss 1 and 11 take the Kink slot and the other Bare slot;
+by fit that reads Abyss 1 → Kink, Abyss 11 → Bare — asked to confirm.
