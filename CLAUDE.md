@@ -340,6 +340,8 @@ in a sentence or a paragraph turn into unreadable text for them. So:
   citation (`Category, number,` and the question in quotes, in bold); a comment line starts
   with "Comment:" and is never bold. Proposed wording (app lines, alternatives) is laid out
   the same way: the wording alone on its line, the comment on the next.
+- A group of cards ("the six unspoken-want cards", "the overlap") is never mentioned
+  without every card in it shown in full, right there — even if an earlier message listed them.
 
 ## Where the cards live
 
