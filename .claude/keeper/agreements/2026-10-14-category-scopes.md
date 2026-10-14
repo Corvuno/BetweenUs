@@ -44,3 +44,10 @@ the World 4 rewrite.
 **Flesh** gets the treatment now: Desire collides with it (Desire ends at the first touch,
 Flesh begins there). Standing rule: a category hit as a boundary that collides gets an app
 line + writer brief, made up as we go.
+
+**After Dark splits by register, not subject** (owner, 2026-10-14; their explanation, not
+app text): Flesh — sex in a proper form, sort of explicit, never shocking, anything goes.
+Carnal — Flesh's explicit sibling, training wheels off, details and insights expected.
+Bare — facts, figures and stupid stories; the oddest category. Kink — what makes you tick
+sexually. Desire — the edge of After Dark: just acceptable without being After Dark.
+Flesh 5 (pickup) stays in Flesh: it starts before, but the story is about the act.
