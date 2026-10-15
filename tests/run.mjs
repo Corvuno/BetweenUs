@@ -730,6 +730,31 @@ async function run() {
     }
   });
 
+  await check('Back then skip: reachedIdx moves with the cards, so the first unreached step still offers three; undo restores it', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click(); await waitForCardIndex(page, 1);
+    await page.locator('#btn-next').click(); await waitForCardIndex(page, 2);
+    await page.locator('#btn-next').click(); await waitForCardIndex(page, 3);
+    await page.waitForTimeout(1100);
+    await page.locator('#btn-prev').click(); await waitForCardIndex(page, 2);
+    await page.waitForTimeout(400);
+    await page.evaluate(() => { document.getElementById('pickToggle').click(); });   // Three on, mid-hand, behind the front
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(500);
+    const r = await page.evaluate(() => ({ reached: state.reachedIdx, cur: state.currentIndex, len: state.visibleDeck.length, open: state.pickerOpen }));
+    assert(r.reached === 1 && r.cur === 1 && r.len === 4 && !r.open, `after Back + skip: ${JSON.stringify(r)}`);
+    await page.locator('#skipUndo').evaluate(el => el.click());
+    await page.waitForTimeout(400);
+    assert(await page.evaluate(() => state.reachedIdx) === 2, 'undo did not restore reachedIdx');
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(500);
+    await page.locator('#btn-next').click();
+    await waitPicker(true);
+    assert(await page.evaluate(() => state.pickOptions.step) === 2 && await page.locator('#cardPicker .pick-opt').count() === 3, 'first unreached step did not offer three after Back + skip');
+    await page.evaluate(() => { document.getElementById('pickToggle').click(); });
+    await page.waitForTimeout(400);
+  });
+
   await check('start screen: with Three ON its button is not dimmed and switches Three off (then dims again); with Three off it stays dimmed; Spotlight and Twist stay dimmed', async () => {
     await freshHand({ three: true });
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');

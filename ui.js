@@ -515,11 +515,12 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
     restoreToLog(_undoLog);
     const insertAt = Math.min(_undoIndex, state.visibleDeck.length);
     state.visibleDeck.splice(insertAt, 0, _undoCard);
+    if (_undoReachedShift) state.reachedIdx++;
     state.currentIndex = insertAt;
     flipToCard(state.visibleDeck[state.currentIndex]);
     updateStarUI();
     updateDeckInfo(); renderProgress(); updateDrawMore();
-    _undoCard = null; _undoIndex = null; _undoLog = null;
+    _undoCard = null; _undoIndex = null; _undoLog = null; _undoReachedShift = false;
   });
 })();
 

@@ -59,7 +59,7 @@ const state = {
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
 
-let _undoCard = null, _undoIndex = null, _undoTimer = null, _undoLog = null;
+let _undoCard = null, _undoIndex = null, _undoTimer = null, _undoLog = null, _undoReachedShift = false;
 
 
 

@@ -432,11 +432,17 @@ function skipCard() {
   // end runs unconditionally too — matching the swipe-down caller, which
   // already never invokes skipCard() outside a valid index.
   const undoBtn = document.getElementById('skipUndo');
-  _undoLog = null;
+  _undoLog = null; _undoReachedShift = false;
   if (undoBtn) { _undoCard = state.visibleDeck[state.currentIndex]; _undoIndex = state.currentIndex; }
   if (!(state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0)) {
     // Remove from visibleDeck only — fullDeck stays intact for new rounds
     const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
+    /* cards after the skipped one move down a place: when the skip is behind
+       the front of the hand (after Back), reachedIdx moves with them so the
+       next step not yet reached still offers three */
+    _undoReachedShift = state.currentIndex < state.reachedIdx;
+    if (_undoReachedShift) state.reachedIdx--;
+    state.reachedIdx = Math.min(state.reachedIdx, state.visibleDeck.length - 1);
     state.skippedCards.add(removed.question);
     /* a skipped card counts as seen (not drawn again this pass) but is not
        part of the history list: out of the log, into skippedSeen */
@@ -461,7 +467,7 @@ function skipCard() {
     clearTimeout(_undoTimer);
     _undoTimer = setTimeout(() => {
       undoBtn.classList.remove('visible');
-      _undoCard = null; _undoIndex = null; _undoLog = null;
+      _undoCard = null; _undoIndex = null; _undoLog = null; _undoReachedShift = false;
     }, 3000);
   }
 }
