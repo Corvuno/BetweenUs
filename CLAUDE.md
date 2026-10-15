@@ -133,6 +133,10 @@ plain words, and stop.
 picker). Ask in plain sentences in the message itself. The owner answers in their
 own words.
 
+**Number your questions** (owner, 2026-10-15). When a message asks more than one
+question, number them 1, 2, 3 … so the owner can answer by number. Still plain
+sentences, one question per number, no suggested answers.
+
 ## Say what happened
 
 The owner wants to know what actually happened, as it happens, because it helps
