@@ -142,6 +142,13 @@ off. Don't ship a near miss.
   - anything that turned out different from the agreement, said plainly;
   - anything else the project's rules ask for in a report (see `project.md`).
 
+## Finding things
+
+When the owner asks whether something has been done, decided or is happening elsewhere, don't
+answer from memory or a quick look: hand the question to the project's search agent (see
+`project.md`) and pass on what it reports, keeping its status labels (talked about, agreed,
+built not live, live, dropped). Only when asked.
+
 ## The two-miss rule
 
 Two attempts in a row that miss the mark — two card proposals, two mockup rounds, two builds,

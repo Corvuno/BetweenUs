@@ -41,6 +41,12 @@ The Keeper. Started with `/keeper`.
 - Way of working: plain-language options with trade-offs, decided by the owner.
 - Builder: `app-builder`.
 
+**Finding things:** when the owner asks whether something has been done, agreed, or is
+being worked on in another thread, hand the question to the `searcher` agent (read-only,
+on Sonnet). It looks in the Keeper notes, the project and its history, and the owner's
+Claude Code conversations of the last two months; further back only when the owner asks.
+Only on request, never on its own.
+
 **Builder notes:** each builder (and the tester) reads its own corrections file in
 `.claude/keeper/builders/` before every job; the Keeper keeps those files up to date.
 
