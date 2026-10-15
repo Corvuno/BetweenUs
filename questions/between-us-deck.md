@@ -232,6 +232,14 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.08 — Attract 4 made clear it is about character
+Removed cards are not benched, by owner decision.
+
+- **Attract 4**
+  - Old: "You tell yourself you have a type — does that correspond with who you actually keep ending up with?"
+  - New: "You tell yourself you have a type — does that correspond with the traits you see in the person you end up with?"
+  - Owner's own wording; "type" here means a set of character traits, while Attract 8 keeps "type" for looks.
+
 ## Patch v7.07 — World 8 and Home 5 placeholders replaced
 Removed cards are not benched, by owner decision.
 

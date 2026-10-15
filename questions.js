@@ -239,7 +239,7 @@ const NEWDECK_CARDS = [
   { level: "attract", question: "Tell about the moment you realised someone was flirting with you — how long did it take you to notice?" },
   { level: "attract", question: "Tell about a moment of chemistry with a stranger that went absolutely nowhere." },
   { level: "attract", question: "Tell about turning someone down — and admit whether you liked being asked." },
-  { level: "attract", question: "You tell yourself you have a type — does that correspond with who you actually keep ending up with?" },
+  { level: "attract", question: "You tell yourself you have a type — does that correspond with the traits you see in the person you end up with?" },
   { level: "attract", question: "Whose look stopped you mid-sentence — and what exactly about what they had on did it?" },
   { level: "attract", question: "Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?" },
   { level: "attract", question: "Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?" },
