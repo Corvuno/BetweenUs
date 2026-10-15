@@ -706,6 +706,48 @@ async function run() {
     assert(f.seenFrom === f.len && f.sk === 0 && f.hand === 5, `fresh pass: ${JSON.stringify(f)}`);
   });
 
+  await check('skip gap: the card that slides in after a skip is logged and counts as seen; undo keeps it logged, no double entry (Spotlight has no skip)', async () => {
+    for (const spot of [false]) {
+      await freshHand({ three: false });
+      await page.locator('#card').click();
+      await waitForCardIndex(page, 1);
+      await page.waitForTimeout(1100);
+      if (spot) { await page.click('#btnParty'); await page.waitForTimeout(300); }
+      const a = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
+      if (spot) await page.keyboard.press('ArrowDown'); else await swipe(page, '#card', 0, 100);
+      await page.waitForTimeout(500);
+      const r = await page.evaluate((a) => {
+        const b = state.visibleDeck[state.currentIndex].question;
+        return { b, differs: b !== a, aLogged: state.sessionLog.some(c => c.question === a), bLogged: state.sessionLog.filter(c => c.question === b).length,
+                 bInDrawer: document.getElementById('logList').textContent.includes(b), bSeen: _seenSet().has(b), aSeen: _seenSet().has(a), n: state.sessionLog.length };
+      }, a);
+      assert(r.differs && !r.aLogged && r.aSeen && r.bLogged === 1 && r.bInDrawer && r.bSeen && r.n === 1, `skip gap (spotlight=${spot}): ${JSON.stringify(r)}`);
+      await page.locator('#skipUndo').evaluate(el => el.click());
+      await page.waitForTimeout(400);
+      const u = await page.evaluate(([a, b]) => ({ order: state.sessionLog.map(c => c.question), cur: state.visibleDeck[state.currentIndex].question, nextIs: state.visibleDeck[state.currentIndex + 1].question }), [a, r.b]);
+      assert(u.cur === a && u.nextIs === r.b && u.order.length === 2 && u.order[0] === a && u.order[1] === r.b, `undo after skip (spotlight=${spot}): ${JSON.stringify(u)}`);
+      if (spot) { await page.click('#partyExit'); await page.waitForTimeout(500); }
+    }
+  });
+
+  await check('start screen: with Three ON its button is not dimmed and switches Three off (then dims again); with Three off it stays dimmed; Spotlight and Twist stay dimmed', async () => {
+    await freshHand({ three: true });
+    assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
+    const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b.querySelector('.row-top')).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: document.getElementById('btnTwist').classList.contains('disabled') }; });
+    let s = await st();
+    assert(!s.dis && s.on && s.mode && s.top === 1 && s.spotDis && s.twistDis, `Three on at start: ${JSON.stringify(s)}`);
+    await page.locator('#pickToggle').click();
+    await page.waitForTimeout(450);
+    s = await st();
+    assert(!s.on && !s.mode && s.dis && s.top < 0.5, `after switching off at start: ${JSON.stringify(s)}`);
+    assert(!(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake'))) && (await cardParts(page)).index === 0, 'switching off at start shook or drew a card');
+    await page.locator('#pickToggle').click();   // off + dimmed: shakes, does nothing
+    assert(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake')), 'dimmed Three did not shake');
+    await page.waitForTimeout(450);
+    assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
+    await freshHand({ three: false });
+  });
+
   await check('English only: no language switch, page language is en, no Dutch UI or Twist text', async () => {
     assert(await page.locator('#d-lang').count() === 0, 'a language switch (#d-lang) still exists in the menu');
     assert(await page.evaluate(() => document.documentElement.lang) === 'en', 'document language is not en');
