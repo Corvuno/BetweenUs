@@ -67,7 +67,7 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "What's a story you've stretched out on purpose, just to keep it going a little longer?" },
 
   // ─── LIFE ───
-  { level: "life", question: "What do you let people assume about your life that isn't quite accurate?" },
+  { level: "life", question: "People assume something about your life that's not true..." },
   { level: "life", question: "What would have to change for your life to feel more like your own?" },
   { level: "life", question: "Who would know it was you from just one small habit, without ever seeing your face?" },
   { level: "life", question: "If you had to name what's getting the least of you lately, what would it be?" },

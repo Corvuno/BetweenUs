@@ -232,6 +232,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.11 — Life 1 reworded (Life rework begins)
+
+- **Life 1**
+  - Old: "What do you let people assume about your life that isn't quite accurate?"
+  - New: "People assume something about your life that's not true..."
+  - Owner's own wording. First card of the Life rework: Life is now ordinary daily life, everything that has to be done. Life 1, 3, 5, 8, 9 stay; the other seven get new cards.
+
 ## Patch v7.10 — World 5 made systemic
 
 - **World 5**
