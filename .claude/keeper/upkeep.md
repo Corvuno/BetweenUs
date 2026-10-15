@@ -8,4 +8,4 @@ after the last one. Owner's call, 2026-10-15: removing is fine, less is more.
 
 ## Runs
 
-- **Not run yet.** Set up 2026-10-15; the first upkeep runs the next time the Keeper is opened.
+- **Not run yet.** Set up 2026-10-15. Owner's call, 2026-10-15: the first upkeep waits until after the weekend — it runs in the first Keeper session on or after Monday 2026-10-19, not before.
