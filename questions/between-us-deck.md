@@ -232,6 +232,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.10 — World 5 made systemic
+
+- **World 5**
+  - Old: "Which law or decision from above landed right in your own life — and what would you have done instead?"
+  - New: "Which law or decision from above landed right in your own life — and did you understand why it is there?"
+  - Owner's own wording — more neutral and about the system, not about bashing the decision-makers.
+
 ## Patch v7.09 — Attract 5 widened to the person; World 5 on power and politics
 Removed cards are not benched, by owner decision.
 

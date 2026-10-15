@@ -268,7 +268,7 @@ const NEWDECK_CARDS = [
   { level: "world", question: "Which period of history would you have done well in — and which would have finished you off?" },
   { level: "world", question: "What's something you benefit from that you know isn't fair?" },
   { level: "world", question: "What new thing did you refuse at first and now can't live without?" },
-  { level: "world", question: "Which law or decision from above landed right in your own life — and what would you have done instead?" },
+  { level: "world", question: "Which law or decision from above landed right in your own life — and did you understand why it is there?" },
   { level: "world", question: "What's something you wish people understood about your culture?" },
   { level: "world", question: "What piece of history did you only learn as an adult that changed how you see things?" },
   { level: "world", question: "Where in the world did you feel most like a foreigner — and not in the way you expected?" },
