@@ -232,6 +232,18 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.09 — Attract 5 widened to the person; World 5 on power and politics
+Removed cards are not benched, by owner decision.
+
+- **Attract 5**
+  - Old: "Whose look stopped you mid-sentence — and what exactly about what they had on did it?"
+  - New: "Whose look stopped you mid-sentence — and what was it about them in that moment?"
+  - Now covers the person, the moment and their vibe, leaving clothes to Attract 6 (the outfit card stays — owner: Attract's job is light and fun).
+- **World 5**
+  - Old: "Which political position of yours is genuinely hard to defend to people who disagree?"
+  - New: "Which law or decision from above landed right in your own life — and what would you have done instead?"
+  - Covers power and politics, grounded in the player's own life.
+
 ## Patch v7.08 — Attract 4 made clear it is about character
 Removed cards are not benched, by owner decision.
 
