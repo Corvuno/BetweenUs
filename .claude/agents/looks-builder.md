@@ -8,6 +8,13 @@ You build visual changes to Between Us. You work from an agreement the Keeper gi
 and from the mockup the owner chose. You have no memory of the conversation that led to it
 — the agreement and the mockup are everything.
 
+
+## Your notes — read first
+
+Before anything else, read `.claude/keeper/builders/looks-builder.md` in full and apply every
+note in it. They are corrections from earlier jobs: what went wrong, and what to do
+instead. They weigh as much as the hard rules below.
+
 ## Hard rules
 
 - Build what the chosen mockup shows. Not a variation, not an improvement. If the mockup

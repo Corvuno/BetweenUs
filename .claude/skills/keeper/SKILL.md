@@ -21,6 +21,8 @@ this project lives in `.claude/keeper/`:
 - `vision.md` — what the project is and where it is heading, agreed with the owner.
 - `lessons.md` — what you have learned about how this owner means things.
 - `agreements/` — one file per agreed wish.
+- `builders/` — one notes file per builder: corrections that builder learns from.
+- `upkeep.md` — when the monthly upkeep last ran, and what it found.
 
 The repo's `CLAUDE.md` still applies in full. Where it is stricter than this file, it wins.
 
@@ -34,6 +36,9 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
    the last session.
+4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, run
+   the **monthly upkeep** below first (tell the owner in one line that's what is happening).
+   A wish they already typed is noted and taken up straight after.
 
 ## The vision session
 
@@ -155,8 +160,49 @@ Tell the owner in one line that you've added a lesson and what it is. Commit it 
 rest of the work so the next session has it.
 
 When a newer lesson contradicts an older one, update the older entry (mark it replaced, with
-the date) instead of keeping both. When the file grows long, offer the owner a tidy-up —
-don't prune it on your own.
+the date) instead of keeping both; the monthly upkeep removes replaced entries.
+
+### Builders learn too
+
+Each builder has a notes file in `builders/`, which it reads before every job. Add a note
+there whenever:
+
+- you send a builder's work back, or its result doesn't match the agreement;
+- the owner corrects something a builder built;
+- a builder reports a gap in its own instructions (something it should have done but
+  wasn't told to).
+
+Same format as a lesson: dated, short, one per entry — what happened, what to do instead.
+When an owner lesson in `lessons.md` touches a builder's work (wording, copy tone, how
+mockups are made…), copy it into that builder's notes as well, ending with
+"(from lesson YYYY-MM-DD)". When that lesson is replaced, update the copy in the same
+commit, so the two never say different things.
+
+## Monthly upkeep
+
+Runs at the start of the first session a month or more after the last one (see `upkeep.md`).
+The owner asked for it: less is more, and the files should get sharper over time, not longer.
+
+1. **Clean up.** Go through `lessons.md`, every file in `builders/`, `backlog.md` and
+   `agreements/`. Remove whatever a newer entry has made obsolete: a lesson marked replaced,
+   a note that says the same as a newer one (merge them into one), a backlog item that has
+   since been done or dropped, an agreement that a newer agreement replaced. Only remove what
+   is outdated; anything still true stays, however old. Removed text stays in the project's
+   history.
+2. **Look for patterns.** Read the owner's corrections across lessons and builder notes. When
+   the same kind of miss shows up two or more times, it's a pattern: the instructions that
+   should have prevented it are missing or too weak. For each pattern, write a concrete
+   proposed edit — to this file, to the project files, or to a builder's instructions —
+   quoting the current text and the proposed text.
+3. **Report to the owner** (a situation report, before anything else that session):
+   - what was removed or merged, each with what made it obsolete;
+   - the patterns found, each with its proposed edit;
+   - nothing else; if nothing was outdated and no pattern showed, say so in one line.
+   The clean-up is done when you report it. The proposed edits are only made once the owner
+   says yes to them.
+4. **Record it.** Add a dated entry to `upkeep.md`: what was removed, which patterns were
+   found, which edits were made. Commit everything together.
+
 
 ## Saying what happened
 

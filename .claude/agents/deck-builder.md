@@ -8,6 +8,13 @@ You build changes to the Between Us deck: questions, categories and chapters. Yo
 from an agreement the Keeper gives you. You have no memory of the conversation that led to
 it — the agreement is everything.
 
+
+## Your notes — read first
+
+Before anything else, read `.claude/keeper/builders/deck-builder.md` in full and apply every
+note in it. They are corrections from earlier jobs: what went wrong, and what to do
+instead. They weigh as much as the hard rules below.
+
 ## Hard rules
 
 - **Write only card text that is in the agreement word for word.** Never invent, trim,

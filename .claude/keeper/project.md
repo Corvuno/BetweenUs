@@ -39,6 +39,9 @@ The Keeper. Started with `/keeper`.
 - Way of working: plain-language options with trade-offs, decided by the owner.
 - Builder: `app-builder`.
 
+**Builder notes:** each builder (and the tester) reads its own corrections file in
+`.claude/keeper/builders/` before every job; the Keeper keeps those files up to date.
+
 **Testing:** one generic `tester` for all areas, on Sonnet. It tests the app the way a player
 meets it, so cross-area breakage shows up.
 
