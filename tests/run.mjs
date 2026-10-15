@@ -489,6 +489,290 @@ async function run() {
     assert(t.text.length > 0 && t.op > 0.9, `category title missing or transparent: ${JSON.stringify(t)}`);
   });
 
+  // ── Three, inside the hand ────────────────────────────────────────────────
+  // A fresh hand of 5 (Arc), nothing seen, Three off, no Spotlight; optionally Three on before the first draw.
+  async function freshHand({ three = false, mode = 'arc' } = {}) {
+    await page.evaluate(({ three, mode }) => {
+      if (state.partyMode) exitParty();
+      closePicker(); state.pickOptions = null;
+      pickMode = three;
+      document.getElementById('pickToggle').classList.toggle('on', three);
+      state.randomMode = mode; state.cardLimit = 5; syncLimitButtons();
+      state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {};
+      renderLog(); initDeck(); renderShell();
+    }, { three, mode });
+    await page.waitForTimeout(250);
+  }
+  const waitPicker = (open = true) => page.waitForFunction((o) => state.pickerOpen === o, open, { timeout: 3000 });
+  const pickInfo = () => page.evaluate(() => ({ step: state.pickOptions.step, qs: state.pickOptions.options.map(c => c.question), planned: state.pickOptions.planned.question, depths: state.pickOptions.options.map(c => levelDepth(c.level)), pDepth: levelDepth(state.pickOptions.planned.level) }));
+
+  await check('Three inside a 5-card Arc hand: 5 picks of 3 options at the planned step\'s depth, then the end screen', async () => {
+    await freshHand({ three: true });
+    const picked = [];
+    for (let i = 0; i < 5; i++) {
+      if (i === 0) await page.locator('#card').click(); else await page.locator('#btn-next').click();
+      await waitPicker(true);
+      const before = await page.evaluate(() => { const pl = state.pickOptions.planned; const hand = new Set(state.visibleDeck.map(c => c.question)); const seen = _seenSet(); return { n: getFilteredCards().filter(c => levelDepth(c.level) === levelDepth(pl.level) && !hand.has(c.question) && !seen.has(c.question) && !_sittingOut(c) && !state.handOffered.has(c.question)).length, handLen: state.visibleDeck.length }; });
+      const info = await pickInfo();
+      assert(info.step === i, `options were for step ${info.step}, expected ${i}`);
+      assert(info.qs.length === 3 && new Set(info.qs).size === 3, `step ${i}: expected 3 distinct options, got ${info.qs.length}`);
+      assert(info.qs.includes(info.planned), `step ${i}: the planned card is not among the options`);
+      if (before.n >= 2) assert(info.depths.every(d => d === info.pDepth), `step ${i}: options at depths ${info.depths} but the planned card's is ${info.pDepth} (${before.n} others at that depth exist)`);
+      assert(before.handLen === 5, `hand length ${before.handLen}`);
+      const opts = page.locator('#cardPicker .pick-opt');
+      assert(await opts.count() === 3, 'the picker did not show 3 options');
+      const text = (await opts.nth(i % 3).locator('.pick-opt-q').textContent()).trim();
+      await opts.nth(i % 3).click();
+      await waitForCardIndex(page, i + 1);
+      await page.waitForTimeout(300);
+      assert(await questionText(page) === text, `step ${i}: the card is not the picked option`);
+      picked.push(text);
+    }
+    const st = await page.evaluate(() => ({ len: state.visibleDeck.length, logged: state.sessionLog.length, idx: state.currentIndex, open: state.pickerOpen }));
+    assert(st.len === 5 && st.logged === 5 && st.idx === 4 && !st.open, `after 5 picks: ${JSON.stringify(st)}`);
+    await page.locator('#card').click();   // after the last step: the normal end screen, no sixth pick
+    await page.waitForTimeout(900);
+    assert(await page.evaluate(() => document.body.classList.contains('showing-hand-summary') && !state.pickerOpen), 'no end screen after the 5th pick');
+  });
+
+  await check('Three on and off mid-hand acts from the next card: no restart, card count unchanged, off with options up shows the planned card', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    const before = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit }));
+    await page.locator('#pickToggle').click();   // on: the very next card is three options
+    await waitPicker(true);
+    let mid = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit, step: state.pickOptions.step, planned: state.pickOptions.planned.question, idx: state.currentIndex, q: document.getElementById('card-question').textContent.trim() }));
+    assert(mid.hand === before.hand && mid.lim === before.lim && mid.lim === 5, `switching on changed the hand or the limit: ${JSON.stringify({ b: before.hand, m: mid.hand, lim: mid.lim })}`);
+    assert(mid.deck.join('|') === before.deck.join('|') && mid.step === 1 && mid.idx === 0, 'switching on restarted or changed the hand');
+    assert(!/place to begin|draw a card/i.test(mid.q), 'switching on went back to the start card');
+    await page.locator('#pickToggle').click();   // off with the options up: the planned card takes the step
+    await page.waitForTimeout(500);
+    const after = await page.evaluate(() => ({ open: state.pickerOpen, idx: state.currentIndex, q: document.getElementById('card-question').textContent.trim(), cur: state.visibleDeck[state.currentIndex].question, sit: Object.keys(state.sitOut).length, hand: state.handNo, len: state.visibleDeck.length, lim: state.cardLimit, qq: [...state.sessionLog].map(c => c.question) }));
+    assert(!after.open && after.idx === 1 && after.cur === mid.planned, 'off with options up did not show the planned card for that step');
+    assert(after.sit === 0, 'the two put back were made to sit out');
+    assert(after.hand === before.hand && after.len === 5 && after.lim === 5, 'switching off changed the hand or the limit');
+    assert(after.qq.includes(mid.planned) && after.qq.length === 2, 'planned card not logged as the step\'s card');
+    await page.locator('#btn-next').click();   // next: one card at that step
+    await page.waitForTimeout(400);
+    assert(!(await page.evaluate(() => state.pickerOpen)) && (await cardParts(page)).index === 3, 'with Three off the next card was not a single card');
+    await page.locator('#pickToggle').click();   // on again: next card is three again
+    await waitPicker(true);
+    assert((await pickInfo()).step === 3, 'switching on again did not offer the next step');
+    await page.locator('#pickToggle').click();
+    await page.waitForTimeout(500);
+  });
+
+  await check('cards passed over in a Three pick sit out the next hand and are drawable again from the one after; not logged as seen', async () => {
+    await freshHand({ three: true });
+    await page.locator('#card').click();
+    await waitPicker(true);
+    const info = await pickInfo();
+    const passed = info.qs.filter(q => q !== info.qs[0]);
+    await page.locator('#cardPicker .pick-opt').nth(0).click();
+    await page.waitForTimeout(400);
+    const r = await page.evaluate((passed) => {
+      const unseenPart = () => new Set(state.fullDeck.slice(0, state.drawUnseen).map(c => c.question));
+      const logged = state.sessionLog.map(c => c.question);
+      const out = { loggedPassed: passed.some(q => logged.includes(q)), sit: passed.map(q => state.sitOut[q]), hand: state.handNo };
+      initDeck(true);   // hand 2
+      out.h2 = passed.some(q => unseenPart().has(q) || state.visibleDeck.some(c => c.question === q));
+      initDeck(true);   // hand 3
+      out.h3 = passed.every(q => unseenPart().has(q));
+      out.h3sit = passed.some(q => q in state.sitOut);
+      return out;
+    }, passed);
+    assert(!r.loggedPassed, 'a passed-over card was logged as seen');
+    assert(r.sit.every(v => v === r.hand + 2), `sit-out marks wrong: ${r.sit} (hand ${r.hand})`);
+    assert(!r.h2, 'a passed-over card is in the next hand');
+    assert(r.h3 && !r.h3sit, 'passed-over cards are not drawable again from the hand after');
+  });
+
+  await check('Spotlight open/close with Three options up: the options move along, Next stays put, Close/Back/Twist/Three/Next are tappable over them', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    await page.locator('#card').click();   // step 1 shown
+    await waitForCardIndex(page, 2);
+    await page.waitForTimeout(400);
+    await page.locator('#pickToggle').click();   // Three on: options for step 2
+    await waitPicker(true);
+    const qs0 = (await pickInfo()).qs;
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(500);
+    let s = await page.evaluate(() => ({ party: document.getElementById('partyPicker').classList.contains('open'), main: document.getElementById('cardPicker').classList.contains('open'), qs: [...document.querySelectorAll('#partyPickerOptions .pick-opt-q')].map(e => e.textContent.trim()), open: state.pickerOpen }));
+    assert(s.party && !s.main && s.open, 'options did not move into Spotlight');
+    const texts = await page.evaluate((qs) => qs.map(q => translateQ({ question: q })), qs0);
+    assert(s.qs.length === 3 && s.qs.every(t => texts.includes(t)), 'Spotlight shows different options');
+    // each control is the topmost thing at its own centre (not covered by the options)
+    for (const id of ['partyExit', 'partyPrevBtn', 'partyBtnTwist', 'partyPick', 'partyNext', 'partyPickerBack']) {
+      const ok = await page.evaluate((id) => { const el = document.getElementById(id); const r = el.getBoundingClientRect(); const t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!t && (t === el || el.contains(t)); }, id);
+      assert(ok, `#${id} is covered while the options show`);
+    }
+    // Next does nothing (no stuck, no card drawn without options); Twist still works
+    const idx = await page.evaluate(() => state.currentIndex);
+    await page.locator('#partyNext').click();
+    await page.waitForTimeout(300);
+    assert(await page.evaluate(() => state.pickerOpen && state.currentIndex) === idx, 'Next drew a card under the options');
+    await page.locator('#partyBtnTwist').click();
+    await page.waitForTimeout(200);
+    assert(await page.evaluate(() => !!currentTwist || document.getElementById('partyBtnTwist').classList.contains('active')), 'Twist did not respond over the options');
+    await page.locator('#partyExit').click();   // Close: the options go back to the main screen
+    await page.waitForTimeout(500);
+    s = await page.evaluate(() => ({ party: document.getElementById('partyPicker').classList.contains('open'), main: document.getElementById('cardPicker').classList.contains('open'), qs: [...document.querySelectorAll('#pickerOptions .pick-opt-q')].map(e => e.textContent.trim()), pm: state.partyMode }));
+    assert(s.main && !s.party && !s.pm && s.qs.length === 3 && s.qs.every(t => texts.includes(t)), 'options did not come back to the main screen');
+    await page.locator('#btnParty').click();   // and in again, then switch Three off from inside Spotlight with the options up
+    await page.waitForTimeout(400);
+    await page.locator('#partyPick').click();
+    await page.waitForTimeout(500);
+    s = await page.evaluate(() => ({ open: state.pickerOpen, three: pickMode, idx: state.currentIndex, sit: Object.keys(state.sitOut).length }));
+    assert(!s.open && !s.three && s.idx === 2 && s.sit === 0, `Three off in Spotlight with options up: ${JSON.stringify(s)}`);
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(400);
+    // "‹ One card" does the same: on, open Spotlight, press it
+    await page.locator('#pickToggle').click();
+    await waitPicker(true);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(400);
+    await page.locator('#partyPickerBack').click();
+    await page.waitForTimeout(500);
+    s = await page.evaluate(() => ({ open: state.pickerOpen, three: pickMode }));
+    assert(!s.open && !s.three, '"‹ One card" did not switch Three off');
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(300);
+  });
+
+  await check('key 3 in Spotlight switches Three on and off; arrows are not blocked while Three is on', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(400);
+    await page.keyboard.press('3');
+    await waitPicker(true);
+    await page.keyboard.press('3');
+    await page.waitForTimeout(400);
+    assert(await page.evaluate(() => !pickMode && !state.pickerOpen && state.currentIndex === 1), 'key 3 did not switch Three off with options up');
+    await page.keyboard.press('3');
+    await waitPicker(true);
+    await page.keyboard.press('ArrowLeft');   // Back leaves the options
+    await page.waitForTimeout(300);
+    assert(await page.evaluate(() => pickMode && !state.pickerOpen), 'ArrowLeft was blocked or misbehaved with Three on');
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(400);
+    await page.evaluate(() => { if (pickMode) document.getElementById('pickToggle').click(); });
+  });
+
+  await check('skipped cards count as seen but are not in the history; undo takes them back; a fresh pass clears them', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    const q = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
+    assert(await page.evaluate((q) => state.sessionLog.some(c => c.question === q), q), 'card was not in the log before the skip');
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(400);
+    const r = await page.evaluate((q) => {
+      const out = { seen: state.skippedSeen.has(q), inLog: state.sessionLog.some(c => c.question === q), inDrawer: document.getElementById('logList').textContent.includes(q) };
+      out.back = [];
+      for (let i = 0; i < 6; i++) { initDeck(true); out.back.push(state.fullDeck.slice(0, state.drawUnseen).some(c => c.question === q) || state.visibleDeck.some(c => c.question === q)); }
+      return out;
+    }, q);
+    assert(r.seen && !r.inLog && !r.inDrawer, `skipped card state: ${JSON.stringify(r)}`);
+    assert(!r.back.some(Boolean), 'a skipped card came back in a later hand');
+    // undo puts it back
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    const q2 = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(300);
+    await page.locator('#skipUndo').click();
+    await page.waitForTimeout(400);
+    const u = await page.evaluate((q) => ({ seen: state.skippedSeen.has(q), inLog: state.sessionLog.filter(c => c.question === q).length }), q2);
+    assert(!u.seen && u.inLog === 1, `undo-skip: ${JSON.stringify(u)}`);
+    // when the whole selection is used up (skipped ones included) a fresh pass starts and empties the set
+    const f = await page.evaluate(() => {
+      const sel = getFilteredCards();
+      state.sessionLog = sel.slice(1).map(c => ({ question: c.question, level: c.level })); state.seenFrom = 0;
+      state.skippedSeen = new Set(); state.skippedSeen.add(sel[0].question);
+      initDeck(true);
+      return { seenFrom: state.seenFrom, len: state.sessionLog.length, sk: state.skippedSeen.size, hand: state.visibleDeck.length };
+    });
+    assert(f.seenFrom === f.len && f.sk === 0 && f.hand === 5, `fresh pass: ${JSON.stringify(f)}`);
+  });
+
+  await check('skip gap: the card that slides in after a skip is logged and counts as seen; undo keeps it logged, no double entry (Spotlight has no skip)', async () => {
+    for (const spot of [false]) {
+      await freshHand({ three: false });
+      await page.locator('#card').click();
+      await waitForCardIndex(page, 1);
+      await page.waitForTimeout(1100);
+      if (spot) { await page.click('#btnParty'); await page.waitForTimeout(300); }
+      const a = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
+      if (spot) await page.keyboard.press('ArrowDown'); else await swipe(page, '#card', 0, 100);
+      await page.waitForTimeout(500);
+      const r = await page.evaluate((a) => {
+        const b = state.visibleDeck[state.currentIndex].question;
+        return { b, differs: b !== a, aLogged: state.sessionLog.some(c => c.question === a), bLogged: state.sessionLog.filter(c => c.question === b).length,
+                 bInDrawer: document.getElementById('logList').textContent.includes(b), bSeen: _seenSet().has(b), aSeen: _seenSet().has(a), n: state.sessionLog.length };
+      }, a);
+      assert(r.differs && !r.aLogged && r.aSeen && r.bLogged === 1 && r.bInDrawer && r.bSeen && r.n === 1, `skip gap (spotlight=${spot}): ${JSON.stringify(r)}`);
+      await page.locator('#skipUndo').evaluate(el => el.click());
+      await page.waitForTimeout(400);
+      const u = await page.evaluate(([a, b]) => ({ order: state.sessionLog.map(c => c.question), cur: state.visibleDeck[state.currentIndex].question, nextIs: state.visibleDeck[state.currentIndex + 1].question }), [a, r.b]);
+      assert(u.cur === a && u.nextIs === r.b && u.order.length === 2 && u.order[0] === a && u.order[1] === r.b, `undo after skip (spotlight=${spot}): ${JSON.stringify(u)}`);
+      if (spot) { await page.click('#partyExit'); await page.waitForTimeout(500); }
+    }
+  });
+
+  await check('Back then skip: reachedIdx moves with the cards, so the first unreached step still offers three; undo restores it', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click(); await waitForCardIndex(page, 1);
+    await page.locator('#btn-next').click(); await waitForCardIndex(page, 2);
+    await page.locator('#btn-next').click(); await waitForCardIndex(page, 3);
+    await page.waitForTimeout(1100);
+    await page.locator('#btn-prev').click(); await waitForCardIndex(page, 2);
+    await page.waitForTimeout(400);
+    await page.evaluate(() => { document.getElementById('pickToggle').click(); });   // Three on, mid-hand, behind the front
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(500);
+    const r = await page.evaluate(() => ({ reached: state.reachedIdx, cur: state.currentIndex, len: state.visibleDeck.length, open: state.pickerOpen }));
+    assert(r.reached === 1 && r.cur === 1 && r.len === 4 && !r.open, `after Back + skip: ${JSON.stringify(r)}`);
+    await page.locator('#skipUndo').evaluate(el => el.click());
+    await page.waitForTimeout(400);
+    assert(await page.evaluate(() => state.reachedIdx) === 2, 'undo did not restore reachedIdx');
+    await swipe(page, '#card', 0, 100);
+    await page.waitForTimeout(500);
+    await page.locator('#btn-next').click();
+    await waitPicker(true);
+    assert(await page.evaluate(() => state.pickOptions.step) === 2 && await page.locator('#cardPicker .pick-opt').count() === 3, 'first unreached step did not offer three after Back + skip');
+    await page.evaluate(() => { document.getElementById('pickToggle').click(); });
+    await page.waitForTimeout(400);
+  });
+
+  await check('start screen: with Three ON its button is not dimmed and switches Three off (then dims again); with Three off it stays dimmed; Spotlight and Twist stay dimmed', async () => {
+    await freshHand({ three: true });
+    assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
+    const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b.querySelector('.row-top')).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: document.getElementById('btnTwist').classList.contains('disabled') }; });
+    let s = await st();
+    assert(!s.dis && s.on && s.mode && s.top === 1 && s.spotDis && s.twistDis, `Three on at start: ${JSON.stringify(s)}`);
+    await page.locator('#pickToggle').click();
+    await page.waitForTimeout(450);
+    s = await st();
+    assert(!s.on && !s.mode && s.dis && s.top < 0.5, `after switching off at start: ${JSON.stringify(s)}`);
+    assert(!(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake'))) && (await cardParts(page)).index === 0, 'switching off at start shook or drew a card');
+    await page.locator('#pickToggle').click();   // off + dimmed: shakes, does nothing
+    assert(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake')), 'dimmed Three did not shake');
+    await page.waitForTimeout(450);
+    assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
+    await freshHand({ three: false });
+  });
+
   await check('English only: no language switch, page language is en, no Dutch UI or Twist text', async () => {
     assert(await page.locator('#d-lang').count() === 0, 'a language switch (#d-lang) still exists in the menu');
     assert(await page.evaluate(() => document.documentElement.lang) === 'en', 'document language is not en');

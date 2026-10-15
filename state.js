@@ -32,6 +32,12 @@ const state = {
   sessionLog: [],
   seenFrom: 0,                  // index into sessionLog: cards logged from here on count as "seen" this pass (a fresh pass moves it to the end; the log itself is never wiped)
   loggedQuestions: new Set(),   // per-round guard against duplicate log entries
+  skippedSeen: new Set(),       // questions skipped this pass: they count as seen (_seenSet) without being in the history list; cleared when a fresh pass starts (seenFrom moves)
+  handNo: 0,                    // counts the hands built this session (initDeck/applyLimit); the clock for sitOut
+  sitOut: {},                   // question -> first handNo it may be drawn again: the cards passed over in a Three pick sit out the next hand
+  reachedIdx: -1,               // furthest index of this hand that has been shown (Three only offers options on steps not reached yet)
+  handOffered: new Set(),       // questions already offered as Three options in this hand (never offered twice)
+  pickOptions: null,            // {step, options, planned} while the Three options are on screen
   colbertPrevLimit: null,       // limit to restore after Colbert-solo play
   favourites: [],
   handStarred: new Set(),   // questions actually starred during THIS hand, via the star
@@ -53,7 +59,7 @@ const state = {
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
 
-let _undoCard = null, _undoIndex = null, _undoTimer = null;
+let _undoCard = null, _undoIndex = null, _undoTimer = null, _undoLog = null, _undoReachedShift = false;
 
 
 

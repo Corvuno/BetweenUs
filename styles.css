@@ -682,6 +682,15 @@ body.showing-hand-summary .card-question{
   -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
 .party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;} /* same as category */
 .party-picker .pick-opt-q{font:italic 300 25px/1.18 'Cormorant Garamond',serif;color:var(--cream);text-wrap:pretty;}
+/* With the three up, Close, Back, Twist, Three and Next stay usable: the chrome
+   rows sit above the picker, only their buttons take taps (the rows themselves
+   span the screen and would block "‹ One card"), the count steps aside for
+   "‹ One card" in the same spot, and the options stop above the bottom row
+   (--pk-x, set by fitPartyPicker() in card.js). */
+.party-overlay.picking .party-chrome{z-index:31;pointer-events:none;}
+.party-overlay.picking .party-chrome button{pointer-events:auto;}
+.party-overlay.picking .party-count-wrap{visibility:hidden;}
+.party-picker .picker-options{margin-bottom:var(--pk-x,0px);}
 
 /* ── phone landscape ── */
 @media (orientation:landscape) and (max-height:500px){

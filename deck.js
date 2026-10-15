@@ -126,6 +126,7 @@ function initDeck(isContinuation) {
   state.skippedCards.clear();
   state.loggedQuestions.clear();
   state.handStarred.clear();
+  _newHandBookkeeping();
   if (orderedSoloLevel()) {
     if (state.colbertPrevLimit === null) state.colbertPrevLimit = state.cardLimit;   // remember to restore later
     state.cardLimit = null;
@@ -159,12 +160,15 @@ function initDeck(isContinuation) {
 
 
 /* Draw vs session: a draw comes from what this pass hasn't seen.
-   "Seen" = the session log from state.seenFrom onward. The log itself is the
-   visible history and is never wiped; starting a fresh pass just moves
-   seenFrom to the end of it. */
+   "Seen" = the session log from state.seenFrom onward, plus the cards skipped
+   this pass (state.skippedSeen: seen, but not in the history list). The log
+   itself is the visible history and is never wiped; starting a fresh pass
+   just moves seenFrom to the end of it and empties skippedSeen. */
 function _seenSet(){
   const from = Math.min(Math.max(state.seenFrom || 0, 0), state.sessionLog.length);
-  return new Set(state.sessionLog.slice(from).map(c => c.question));
+  const seen = new Set(state.sessionLog.slice(from).map(c => c.question));
+  state.skippedSeen.forEach(q => seen.add(q));
+  return seen;
 }
 function _unseenCount(cards){
   const seen = _seenSet();
@@ -176,15 +180,34 @@ function _unseenCount(cards){
 function _startFreshPassIfSpent(){
   if (orderedSoloLevel()) return;
   const cards = getFilteredCards();
-  if (cards.length && _unseenCount(cards) === 0) state.seenFrom = state.sessionLog.length;
+  if (cards.length && _unseenCount(cards) === 0) { state.seenFrom = state.sessionLog.length; state.skippedSeen.clear(); }
 }
+
+/* A new hand is being built (initDeck / applyLimit): the hand counter moves on,
+   Three's bookkeeping for the hand starts empty, and any options still on
+   screen belong to the hand that just ended. */
+function _newHandBookkeeping(){
+  state.handNo++;
+  state.reachedIdx = -1;
+  state.handOffered.clear();
+  Object.keys(state.sitOut).forEach(q => { if (state.sitOut[q] <= state.handNo) delete state.sitOut[q]; });
+  if (state.pickerOpen) closePicker();
+  state.pickOptions = null;
+}
+function _sittingOut(c){ return (state.sitOut[c.question] || 0) > state.handNo; }
 
 /* Unseen cards first, in draw order (dial-weighted or random); seen cards
    follow so fullDeck still holds the whole selection. */
 function _unseenFirst(cards){
   const seen = _seenSet();
-  const fresh = orderUnseen(cards.filter(c => !seen.has(c.question)), cards);
-  const used  = shuffle(cards.filter(c => seen.has(c.question)));
+  const unseenCards = cards.filter(c => !seen.has(c.question));
+  /* cards passed over in a Three pick sit out this hand; if that would leave
+     nothing to draw, they are let back in rather than building an empty hand */
+  let eligible = unseenCards.filter(c => !_sittingOut(c));
+  if (!eligible.length) eligible = unseenCards;
+  const eligSet = new Set(eligible);
+  const fresh = orderUnseen(eligible, cards);
+  const used  = shuffle(cards.filter(c => !eligSet.has(c)));
   return {deck: fresh.concat(used), unseen: fresh.length};
 }
 /* The hand: the first N unseen cards in draw order (N = the limit, or every
@@ -259,6 +282,7 @@ function _arcHand(hand){
 function applyLimit() {
   state.skipDrawAnim = false;   // a card-limit change is a settings change, not a continuation
   state.loggedQuestions.clear();
+  _newHandBookkeeping();
   _startFreshPassIfSpent();
   const built = buildFullDeck();
   state.fullDeck = built.deck;
@@ -361,6 +385,7 @@ function _nextCardBase() {
     // initDeck(isContinuation) sets skipDrawAnim accordingly on every reset.
     const isFirstDraw = state.currentIndex === -1 && !state.skipDrawAnim;
     state.currentIndex++;
+    state.reachedIdx = Math.max(state.reachedIdx, state.currentIndex);
     flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();
@@ -368,9 +393,17 @@ function _nextCardBase() {
   } else {
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
     const fresh = _unseenCount(state.fullDeck);
-    const html = fresh > 0
-      ? `<span style="font-size:1rem;color:var(--muted)">That's your ${state.visibleDeck.length}.<br><br>${fresh} ${fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.'}</span>`
-      : `<span style="font-size:1rem;color:var(--muted)">That's the whole deck — all ${state.visibleDeck.length} cards.<br><br>Add categories to keep going, or hold to replay this deck.</span>`;
+    /* two separate lines (each its own block, with a space between in the text
+       too): "That's your 236." and "234 new cards left" used to run together
+       as "236.234" wherever the line breaks were lost */
+    const n = state.visibleDeck.length;
+    const line1 = fresh > 0
+      ? `That's your ${n} ${n===1?'card':'cards'}.`
+      : `That's the whole deck — all ${n} cards.`;
+    const line2 = fresh > 0
+      ? `${fresh} ${fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.'}`
+      : `Add categories to keep going, or hold to replay this deck.`;
+    const html = `<span style="font-size:1rem;color:var(--muted)"><span style="display:block">${line1}</span> <span style="display:block;margin-top:1.4em">${line2}</span></span>`;
     renderEndMessage(html);
   }
 }
@@ -378,6 +411,9 @@ function _nextCardBase() {
 // the end-of-draw hold gate and post-advance hooks (party/session summary).
 
 function prevCard() {
+  /* Three options on screen: Back leaves them (no pick, nothing sits out) and
+     is the card behind them again — the card of the step before. */
+  if (state.pickerOpen) { closePicker(); state.pickOptions = null; return; }
   if (state.currentIndex > 0) {
     state.currentIndex--;
     flipToCard(state.visibleDeck[state.currentIndex]);
@@ -396,11 +432,22 @@ function skipCard() {
   // end runs unconditionally too — matching the swipe-down caller, which
   // already never invokes skipCard() outside a valid index.
   const undoBtn = document.getElementById('skipUndo');
+  _undoLog = null; _undoReachedShift = false;
   if (undoBtn) { _undoCard = state.visibleDeck[state.currentIndex]; _undoIndex = state.currentIndex; }
   if (!(state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0)) {
     // Remove from visibleDeck only — fullDeck stays intact for new rounds
     const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
+    /* cards after the skipped one move down a place: when the skip is behind
+       the front of the hand (after Back), reachedIdx moves with them so the
+       next step not yet reached still offers three */
+    _undoReachedShift = state.currentIndex < state.reachedIdx;
+    if (_undoReachedShift) state.reachedIdx--;
+    state.reachedIdx = Math.min(state.reachedIdx, state.visibleDeck.length - 1);
     state.skippedCards.add(removed.question);
+    /* a skipped card counts as seen (not drawn again this pass) but is not
+       part of the history list: out of the log, into skippedSeen */
+    state.skippedSeen.add(removed.question);
+    _undoLog = removeFromLog(removed.question);
     // Show next card (or skipped-all state)
     if (state.visibleDeck.length === 0) {
       state.currentIndex = state.visibleDeck.length; // sentinel: past end
@@ -408,6 +455,10 @@ function skipCard() {
     } else {
       if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
       flipToCard(state.visibleDeck[state.currentIndex]);
+      /* the card that slides into the slot is shown, so it is logged and
+         counts as seen like any shown card (no-op if already in the log, e.g.
+         a card visited earlier). Undo leaves it logged: it was shown. */
+      addToLog(state.visibleDeck[state.currentIndex]);
     }
     updateDeckInfo(); renderProgress(); updateDrawMore();
   }
@@ -416,7 +467,7 @@ function skipCard() {
     clearTimeout(_undoTimer);
     _undoTimer = setTimeout(() => {
       undoBtn.classList.remove('visible');
-      _undoCard = null; _undoIndex = null;
+      _undoCard = null; _undoIndex = null; _undoLog = null; _undoReachedShift = false;
     }, 3000);
   }
 }
@@ -444,12 +495,11 @@ function decideNextCardAction() {
   }
 
   if (state.pickerOpen) return { type: 'noop' };  // pick-3 intercept (works in fullscreen too)
+  /* Three: each step of the hand not shown yet is offered as three cards (the
+     planned one plus two). Steps already reached (after Back) just advance. */
   if (pickMode) {
-    const startIdx = state.currentIndex + 1;
-    if (startIdx < state.visibleDeck.length) {
-      const count = Math.min(3, state.visibleDeck.length - startIdx);
-      if (count >= 2) return { type: 'pick3', startIdx, count };
-    }
+    const step = state.currentIndex + 1;
+    if (step < state.visibleDeck.length && step > state.reachedIdx) return { type: 'pick3', step };
   }
 
   return { type: 'advance', wasAtEnd: state.currentIndex >= state.visibleDeck.length - 1 };
@@ -471,9 +521,12 @@ function nextCard() {
       initDeck(true);   /* same settings, next hand — no draw animation */
       _nextCardBase();   /* draw straight into the next hand — no blank card */
       return;
-    case 'pick3':
-      openPicker(state.visibleDeck.slice(action.startIdx, action.startIdx + action.count));
+    case 'pick3': {
+      const options = buildPickOptions(action.step);
+      if (options.length < 2) { _nextCardBase(); return; }   // nothing to set beside the planned card: the single card
+      openPicker(options, action.step);
       return;
+    }
     case 'advance':
       _nextCardBase();
       if (action.wasAtEnd) {
@@ -484,19 +537,57 @@ function nextCard() {
   }
 }
 
-function choosePick(chosen, allOptions) {
-  // Remove unchosen cards from both decks silently
-  allOptions.forEach(c => {
-    if (c.question === chosen.question) return;
-    const vi = state.visibleDeck.findIndex(x => x.question === c.question);
-    if (vi >= 0) state.visibleDeck.splice(vi, 1);
-    const fi = state.fullDeck.findIndex(x => x.question === c.question);
-    if (fi >= 0) state.fullDeck.splice(fi, 1);
-  });
-  // Set currentIndex to the chosen card
-  const newIdx = state.visibleDeck.findIndex(x => x.question === chosen.question);
-  if (newIdx >= 0) state.currentIndex = newIdx;
+/* Three, inside the hand. The options for a step are the card the hand
+   planned there plus two more drawn the way that step's card would be:
+   Arc takes two unseen cards from the selection at the planned card's depth
+   (levelDepth), or the nearest depth when fewer exist; Wild takes the next
+   two in the dial-weighted draw order. Never a card already in this hand,
+   seen, skipped, sitting out, or offered earlier in this hand. In Arc the After
+   Dark opener rule holds (none as an option on step 1; on step 2 only 1 time
+   in 20). If the selection can't supply two, sit-outs are let back in first,
+   then there are simply fewer options. */
+function buildPickOptions(step) {
+  const planned = state.visibleDeck[step];
+  if (!planned) return [];
+  const inHand = new Set(state.visibleDeck.map(c => c.question));
+  const seen = _seenSet();
+  const all = getFilteredCards();
+  const base = all.filter(c => !inHand.has(c.question) && !seen.has(c.question) && !state.handOffered.has(c.question));
+  let pool = base.filter(c => !_sittingOut(c));
+  if (pool.length < 2) pool = base;
+  const isArc = state.randomMode === 'arc';
+  const isAD = c => SPICY_LEVELS.includes(c.level);
+  if (isArc && !isAD(planned) && step <= 1 && !(step === 1 && Math.random() < 0.05)) {
+    const noAD = pool.filter(c => !isAD(c));
+    if (noAD.length >= 2) pool = noAD;
+  }
+  let cand = orderUnseen(pool, all);
+  if (isArc) {
+    const d = levelDepth(planned.level);
+    cand = cand.map((c, i) => ({ c, i, k: Math.abs(levelDepth(c.level) - d) }))
+               .sort((a, b) => a.k - b.k || a.i - b.i).map(x => x.c);
+  }
+  return shuffle([planned, ...cand.slice(0, 2)]);
+}
+
+/* The player picks one of the options for `step`. It takes the step in the
+   hand. The ones passed over sit out the next hand (drawable again from the
+   hand after) and are not logged as seen. `noConsequence` is Three being
+   switched off with the options up: the planned card takes the step and the
+   others just go back. */
+function choosePick(chosen, options, step, noConsequence) {
+  if (step == null) step = state.pickOptions ? state.pickOptions.step : state.currentIndex + 1;
+  state.visibleDeck[step] = chosen;
+  if (!noConsequence) {
+    options.forEach(c => {
+      state.handOffered.add(c.question);
+      if (c.question !== chosen.question) state.sitOut[c.question] = state.handNo + 2;
+    });
+  }
+  state.currentIndex = step;
+  state.reachedIdx = Math.max(state.reachedIdx, step);
   closePicker();
+  state.pickOptions = null;
   flipToCard(chosen);
   if (state.partyMode) updatePartyDisplay(chosen);
   addToLog(chosen);

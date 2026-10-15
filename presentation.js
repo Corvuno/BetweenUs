@@ -142,6 +142,7 @@ function exitParty() {
   state.partyMode = false;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.remove('open');
+  movePickerToScreen();   // Three options up: they move along back to the main screen
 };
 
 // ── Drawer helpers ──
@@ -257,7 +258,7 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
 });
 
 document.getElementById('btnClearLog').addEventListener('click', () => {
-  state.sessionLog = []; state.seenFrom = 0; state.loggedQuestions.clear(); renderLog();
+  state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.loggedQuestions.clear(); renderLog();
 });
 
 // ── Favourites ──
@@ -406,10 +407,14 @@ function updateDrawMore() {
   });
   // Three and Spotlight wait for the first card of a hand too (back-of-card
   // start screen). Unlike Twist they stay usable on the end-of-hand screen,
-  // where the row is swapped out anyway.
-  [document.getElementById('pickToggle'), document.getElementById('btnParty')].forEach(btn => {
-    if (btn) btn.classList.toggle('disabled', state.currentIndex < 0);
-  });
+  // where the row is swapped out anyway. Exception: with Three already ON it
+  // stays live on the start screen, so it can be switched off (never on).
+  // (Reads the button's 'on' class: pickMode itself is declared in ui.js,
+  // which loads after this file.)
+  const pickBtn = document.getElementById('pickToggle');
+  if (pickBtn) pickBtn.classList.toggle('disabled', state.currentIndex < 0 && !pickBtn.classList.contains('on'));
+  const spotBtn = document.getElementById('btnParty');
+  if (spotBtn) spotBtn.classList.toggle('disabled', state.currentIndex < 0);
   // Back waits for the first card too (it has nothing to go back to).
   const prevBtn = document.getElementById('btn-prev');
   if (prevBtn) prevBtn.classList.toggle('disabled', state.currentIndex < 0);
