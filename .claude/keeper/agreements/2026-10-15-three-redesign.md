@@ -43,3 +43,15 @@ on gives 5 picks of three at rising/falling depth then the end screen; switching
 acts from the next card without a restart; unpicked cards are absent from the next hand and can
 return from the one after; skipped cards don't return and don't show in the history;
 `node tests/run.mjs between-us.html` passes with new checks for these.
+
+## Added after the first build (owner, 2026-10-15)
+
+- Skip gap: the card that slides in after a skip is treated like any card shown — it counts
+  as seen and is listed in the history.
+- Start screen: while Three is still on, the Three button stays tappable on the start screen
+  and switches Three off. While Three is off it stays dimmed until the first card, as now
+  (it can be switched off, not on, before the first draw).
+- Builder decisions the owner saw and let stand: end message "That's your N cards." / "M new
+  cards left — hold to continue."; already-played steps don't re-offer three; Back with three
+  up closes them without a choice; Three switched on at the last card waits for the next hand;
+  fewer options when the selection can't supply two extras.
