@@ -25,3 +25,6 @@ begin…" (owner: the logical side effect of All; may revisit later).
 Done when: each of 1–6 checked in the real page on a phone-size screen, main screen and
 Spotlight; `node tests/run.mjs between-us.html` passes with new checks for repeated picks,
 Spotlight picks, and switching screens mid-pick.
+
+**Replaced the same day** by `2026-10-15-three-redesign.md`: the owner redesigned Three and
+asked for it to be built now, together with these fixes ("the future is now").
