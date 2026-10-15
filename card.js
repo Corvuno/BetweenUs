@@ -282,6 +282,7 @@ function openPicker(options) {
     div.className = 'pick-opt';
     const color = levelColor(card.level);
     const { light } = giltStops(color);
+    div.style.setProperty('--pc-solid', color);   // arrow colour on the normal-screen Three
     div.style.setProperty('--pc', `linear-gradient(180deg,${color},${light} 50%,${color})`);
     div.innerHTML = `
       <div class="pick-opt-accent" style="background:linear-gradient(90deg,${color},${light} 50%,${color})"></div>
