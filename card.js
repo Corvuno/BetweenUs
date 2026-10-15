@@ -270,7 +270,7 @@ function flipToCard(card, isFirstDraw) {
   }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.drawing-in animation-duration in styles.css
 }
 
-function openPicker(options) {
+function openPicker(options, step) {
   const inParty = state.partyMode;
   const picker = document.getElementById(inParty ? 'partyPicker' : 'cardPicker');
   const optsEl = document.getElementById(inParty ? 'partyPickerOptions' : 'pickerOptions');
@@ -291,20 +291,44 @@ function openPicker(options) {
         <span class="pick-opt-q">${esc(translateQ(card))}</span>
       </div>`;
     // stopPropagation prevents the card's own click handler from also firing
-    div.addEventListener('click', e => { e.stopPropagation(); choosePick(card, options); });
+    div.addEventListener('click', e => { e.stopPropagation(); choosePick(card, options, step); });
     optsEl.appendChild(div);
   });
 
   picker.classList.add('open');
   state.pickerOpen = true;
-  if (!inParty) fitPicker(optsEl);
+  state.pickOptions = { step, options, planned: state.visibleDeck[step] };
+  document.getElementById('partyOverlay')?.classList.toggle('picking', inParty);
+  if (inParty) fitPartyPicker(); else fitPicker(optsEl);
 }
 
 function closePicker() {
   ['cardPicker','partyPicker'].forEach(id=>{
     const p=document.getElementById(id); if(p) p.classList.remove('open');
   });
+  document.getElementById('partyOverlay')?.classList.remove('picking');
   state.pickerOpen = false;
+}
+
+/* The player moved between the main screen and Spotlight with the Three
+   options up: the same options (same step) open in the screen they went to. */
+function movePickerToScreen() {
+  if (!state.pickerOpen || !state.pickOptions) return;
+  const o = state.pickOptions;
+  closePicker();
+  openPicker(o.options, o.step);
+}
+
+/* Three in Spotlight: the options sit under Close, Back, Twist, Three and Next
+   (those stay tappable, see .party-overlay.picking in styles.css); this keeps
+   the options clear of the bottom row, whatever the layout puts there. */
+function fitPartyPicker() {
+  const ov = document.getElementById('partyOverlay'), pk = document.getElementById('partyPicker');
+  const bar = ov && ov.querySelector('.party-bottom');
+  if (!pk || !bar) return;
+  const need = ov.getBoundingClientRect().bottom - bar.getBoundingClientRect().top;
+  const pad = parseFloat(getComputedStyle(pk).paddingBottom) || 0;
+  pk.style.setProperty('--pk-x', Math.max(0, need - pad) + 'px');
 }
 
 // Normal screen only: if a question needs a 3rd line, step the text down (max 20%).
@@ -316,6 +340,7 @@ function fitPicker(el) {
 }
 window.addEventListener('resize', () => {
   if (state.pickerOpen && !state.partyMode) fitPicker(document.getElementById('pickerOptions'));
+  if (state.pickerOpen && state.partyMode) fitPartyPicker();
 });
 
 

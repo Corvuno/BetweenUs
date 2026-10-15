@@ -221,6 +221,7 @@ function spotlightBrightenOnce() {
       hintRetire('spotlight');
       state.partyMode = true;
       document.getElementById('partyOverlay').classList.add('open');
+      movePickerToScreen();   // Three options up: they move along into Spotlight
       if (state.currentIndex < 0 && state.visibleDeck.length > 0) {
         state.currentIndex = 0;
         setCardDisplay(state.visibleDeck[0]);
@@ -241,6 +242,7 @@ function spotlightBrightenOnce() {
     e.stopPropagation();
     state.partyMode = false;
     newOv.classList.remove('open');
+    movePickerToScreen();   // Three options up: they move along back to the main screen
   });
 
   // Next/prev — chrome buttons forward to the same nav the tap zones use
@@ -263,11 +265,11 @@ function spotlightBrightenOnce() {
     toggleFavourite();
   });
 
-  // Draw-three picker's back button just closes the picker
+  // "‹ One card" is switching Three off, exactly (same as the Three button)
   const partyPickerBack = newOv.querySelector('#partyPickerBack');
   if (partyPickerBack) partyPickerBack.addEventListener('click', e => {
     e.stopPropagation();
-    closePicker();
+    document.getElementById('pickToggle').click();
   });
 
   // Touch: single handler, always prevents click so mobile never double-fires
@@ -356,7 +358,6 @@ document.addEventListener('keydown',e=>{
     if(e.key==='Escape' && typeof closeCats==='function') closeCats();
     return;
   }
-  if(typeof pickMode!=='undefined' && pickMode) return;
   if(state.partyMode){
     if(e.key==='Escape')     exitParty();
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); updateDrawMore(); }
@@ -510,13 +511,15 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
     undoBtn.classList.remove('visible');
     // Re-insert card at original position and remove from skipped set
     state.skippedCards.delete(_undoCard.question);
+    state.skippedSeen.delete(_undoCard.question);
+    restoreToLog(_undoLog);
     const insertAt = Math.min(_undoIndex, state.visibleDeck.length);
     state.visibleDeck.splice(insertAt, 0, _undoCard);
     state.currentIndex = insertAt;
     flipToCard(state.visibleDeck[state.currentIndex]);
     updateStarUI();
     updateDeckInfo(); renderProgress(); updateDrawMore();
-    _undoCard = null; _undoIndex = null;
+    _undoCard = null; _undoIndex = null; _undoLog = null;
   });
 })();
 
@@ -621,37 +624,30 @@ let pickMode = false;
 (function(){
   const btn = document.getElementById('pickToggle');
   if (!btn) return;
-  let prevLimit = null; // remember the limit before pick mode was turned on
 
+  /* Three is a layer on the hand, not a different hand: it never touches the
+     card count or restarts anything. On: the very next card is three options
+     (when there is a next step). Off: the next card is the step's single
+     planned card; with the options on screen, the planned card takes the step
+     now and the other two go back (no pick, so nothing sits out). */
   btn.addEventListener('click', () => {
     if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
     pickMode = !pickMode;
     btn.classList.toggle('on', pickMode);
-    renderShell();  // mirror the toggle onto the fullscreen Draw-three button
+    renderShell();  // mirror the toggle onto the fullscreen Three button
 
     if (pickMode) {
       hintRetire('three');
-      // Remember current limit and switch to All so there are always enough cards to pick from
-      prevLimit = state.cardLimit;
-      if (state.cardLimit !== null) {
-        state.cardLimit = null;
-        syncLimitButtons();
-        initDeck();
-      }
-      // Turning this on IS the draw — show the first three immediately
-      // instead of leaving the "place to begin" placeholder sitting there
-      // for an extra, unsignposted tap.
-      nextCard();
+      // Turning this on IS the draw — show the next step's three straight
+      // away (only from the front of the hand, and only if there is a next step).
+      if (state.currentIndex === state.reachedIdx && state.currentIndex + 1 < state.visibleDeck.length) nextCard();
+      updateDeckInfo();
+    } else if (state.pickerOpen && state.pickOptions) {
+      const o = state.pickOptions;
+      choosePick(o.planned, o.options, o.step, true);
       updateDeckInfo();
     } else {
-      // Restore previous limit
       closePicker();
-      if (prevLimit !== null) {
-        state.cardLimit = prevLimit;
-        syncLimitButtons();
-        initDeck();
-      }
-      prevLimit = null;
     }
   });
 })();

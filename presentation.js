@@ -142,6 +142,7 @@ function exitParty() {
   state.partyMode = false;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.remove('open');
+  movePickerToScreen();   // Three options up: they move along back to the main screen
 };
 
 // ── Drawer helpers ──
@@ -257,7 +258,7 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
 });
 
 document.getElementById('btnClearLog').addEventListener('click', () => {
-  state.sessionLog = []; state.seenFrom = 0; state.loggedQuestions.clear(); renderLog();
+  state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.loggedQuestions.clear(); renderLog();
 });
 
 // ── Favourites ──
