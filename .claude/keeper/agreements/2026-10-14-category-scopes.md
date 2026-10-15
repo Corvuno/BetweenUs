@@ -100,3 +100,9 @@ any more options. World 8 → owner's direction: "where did you feel most like a
 second half "and not like you expected" (to avoid the obvious looks answer). Home 5 → owner's
 direction: discovering a hidden place in town, as a story. Attract 4 → the owner's wording
 misses a bridge between "type" and "character". Attract 6 options were boring and weak.
+
+**2026-10-15:** Attract 4 live in the owner's own wording (v7.08). Attract 6 (outfit) STAYS —
+the owner: Attract's job is light and fun. Instead Attract 5 widens from the clothes to the
+person: the captured moment and their vibe. Desire writer brief must name its tone: light and
+fun. World 5 subject chosen: power and politics. The news: owner sees it as a "problem of the
+week show", asked what a news card would ask.
