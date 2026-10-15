@@ -41,6 +41,16 @@ For someone looking on their own (a first visitor from a post or a link), it rea
 beautiful boxed deck: clearly made for an evening with other people, pretty, and exciting
 to look through. Trying a few questions on your own is part of the fun.
 
+## The screen, on every device
+
+Agreed 2026-10-15, owner's words. These hold for every layout, phone, PC or TV, and any
+design that breaks one is out before it is judged on anything else:
+
+- The screen focuses on the question, and the question alone. The controls needed to play
+  are shown.
+- Controls are hidden and/or layered, so there is less complexity.
+- Never show the next cards; they can only distract from what's now.
+
 ## Its words
 
 A player draws a card: they take it, it is theirs. Nothing is dealt or handed out, and
@@ -94,3 +104,6 @@ attractive about you?"), and long cards with a second question attached.
   player ownership and keeps the app away from gambling. Came from the owner's reaction to
   "Deal another hand" in the sketch.
 - **2026-10-13** — Added "Where it started", from the very first version the owner shared.
+- **2026-10-15** — Added "The screen, on every device": three rules the owner set after the
+  first PC layout round, where three options broke them (controls spread around the card, the
+  whole menu always open, the deck and drawn cards on the table).
