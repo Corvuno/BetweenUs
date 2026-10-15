@@ -449,6 +449,10 @@ function skipCard() {
     } else {
       if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
       flipToCard(state.visibleDeck[state.currentIndex]);
+      /* the card that slides into the slot is shown, so it is logged and
+         counts as seen like any shown card (no-op if already in the log, e.g.
+         a card visited earlier). Undo leaves it logged: it was shown. */
+      addToLog(state.visibleDeck[state.currentIndex]);
     }
     updateDeckInfo(); renderProgress(); updateDrawMore();
   }

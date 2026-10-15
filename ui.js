@@ -634,6 +634,7 @@ let pickMode = false;
     if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
     pickMode = !pickMode;
     btn.classList.toggle('on', pickMode);
+    updateDrawMore();   // start screen: Three off dims again, until the first card
     renderShell();  // mirror the toggle onto the fullscreen Three button
 
     if (pickMode) {
