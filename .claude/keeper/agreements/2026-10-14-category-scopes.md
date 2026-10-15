@@ -113,3 +113,16 @@ doesn't fit, and only when they say "bench it" (now in CLAUDE.md and deck-builde
 stays where Attract sits (Beneath the Surface, same depth). Owner asks whether the rename is
 still needed, since most cards are about attraction — open. Next: Life keep/go, app lines for
 Life and Desire/Attract, then new Life cards, then the next category.
+
+**2026-10-15 (Life + names):**
+- **The name stays Attract.** No rename to Desire. The few cards that don't strictly fit
+  "attraction" (the being-wanted ones, e.g. Attract 1, 3, 11) are fine there — owner: "they
+  are not an issue." Place and depth unchanged. Where this file says "Desire", read Attract.
+- **Life:** stay — Life 3, 5, 8, 9, and Life 1 reworded in the owner's words ("People assume
+  something about your life that's not true..."). Go — Life 2, 4, 6, 7, 10, 11, 12 (new cards).
+- **Life app line** (owner's wording): "How your days actually get done — and the habits that
+  make them yours" (owner wrote "make it yours"; "them" is my grammar fix, flagged to owner).
+- **Attract app line:** owner proposed "Crushes, chemistry, and the looks that catch your eye",
+  asked if it is weak — open.
+- **Card forms may vary** (owner): questions don't all need the same shape — open "..." prompts,
+  statements and commands are all fine.

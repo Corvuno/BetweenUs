@@ -25,6 +25,8 @@ The Keeper. Started with `/keeper`.
   the subjects a card may cover, where it stops; the list's order means nothing). A category
   gets this treatment when it is reworked, **and** whenever it is hit as a boundary while
   writing cards for another category and actually collides. Built up as we go, not all at once.
+- Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a
+  command are all fine — variety in how cards ask is welcome.
 - Builder: `deck-builder`.
 
 **B) Looks** — how anything appears: colours, lines, type, layout, card faces, animation.
