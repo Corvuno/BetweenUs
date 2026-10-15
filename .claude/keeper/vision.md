@@ -51,6 +51,11 @@ design that breaks one is out before it is judged on anything else:
 - Controls are hidden and/or layered, so there is less complexity.
 - Never show the next cards; they can only distract from what's now.
 
+What these mean (owner, 2026-10-15): no card other than the current one is on screen,
+past or future (past is less bad than future, but still out); Three is the exception,
+because its three cards are all current. "The controls needed to play" are the ones the
+phone and PC already show today; everything else stays hidden or layered.
+
 ## Its words
 
 A player draws a card: they take it, it is theirs. Nothing is dealt or handed out, and
