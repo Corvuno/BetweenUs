@@ -16,6 +16,29 @@ function addToLog(card) {
   renderLog();
 }
 
+/* Skip takes a card back out of the history list (the card was logged when it
+   was shown). Returns what is needed to put it back (undo), or null. seenFrom
+   is kept pointing at the same card. */
+function removeFromLog(question) {
+  let idx = -1;
+  for (let i = state.sessionLog.length - 1; i >= 0; i--) if (state.sessionLog[i].question === question) { idx = i; break; }
+  state.loggedQuestions.delete(question);
+  if (idx < 0) return null;
+  const entry = state.sessionLog.splice(idx, 1)[0];
+  const movedSeenFrom = idx < state.seenFrom;
+  if (movedSeenFrom) state.seenFrom--;
+  renderLog();
+  return { idx, entry, movedSeenFrom };
+}
+function restoreToLog(info) {
+  if (!info) return;
+  const at = Math.min(info.idx, state.sessionLog.length);
+  state.sessionLog.splice(at, 0, info.entry);
+  if (info.movedSeenFrom) state.seenFrom++;
+  state.loggedQuestions.add(info.entry.question);
+  renderLog();
+}
+
 function renderLog() {
   const el = document.getElementById('logList');
   el.innerHTML = state.sessionLog.length === 0
@@ -37,6 +60,9 @@ function serializeSession() {
     activePreset: state.activePreset,
     sessionLog: window.LOG_PERSIST ? state.sessionLog : undefined,
     seenFrom: window.LOG_PERSIST ? state.seenFrom : undefined,
+    skippedSeen: window.LOG_PERSIST ? [...state.skippedSeen] : undefined,
+    handNo: window.LOG_PERSIST ? state.handNo : undefined,
+    sitOut: window.LOG_PERSIST ? state.sitOut : undefined,
     savedAt: new Date().toISOString(),
   };
 }
@@ -60,6 +86,9 @@ function restoreSessionData(data) {
       state.sessionLog = data.sessionLog;
       state.seenFrom = Math.min(Math.max(+data.seenFrom || 0, 0), state.sessionLog.length);
       state.loggedQuestions = new Set(state.sessionLog.map(c => c.question));
+      state.skippedSeen = new Set(Array.isArray(data.skippedSeen) ? data.skippedSeen : []);
+      state.handNo = Math.max(+data.handNo || 0, 0);
+      state.sitOut = (data.sitOut && typeof data.sitOut === 'object') ? data.sitOut : {};
       renderLog();
     }
     // sync spice glyph
@@ -69,6 +98,7 @@ function restoreSessionData(data) {
     state.visibleDeck=(data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
     state.fullDeck=(data.fullDeckQuestions||data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
     state.currentIndex=data.position??-1;
+    state.reachedIdx=state.currentIndex;
     syncLimitButtons();
     updateDeckInfo(); updateDrawMore(); renderProgress();
     setCardDisplay(state.currentIndex>=0 ? state.visibleDeck[state.currentIndex] : null);
