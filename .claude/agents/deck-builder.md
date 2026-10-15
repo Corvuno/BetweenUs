@@ -37,7 +37,8 @@ instead. They weigh as much as the hard rules below.
 ## Bookkeeping, in the same change
 
 - Every card change gets a change-log entry in `questions/between-us-deck.md`.
-- Every card that is replaced moves to the BENCH with the reason.
+- A replaced card is removed, not benched — the change log keeps its old text and why. Only
+  bench a card when the agreement explicitly says the owner asked to bench it.
 - A retired category name goes to the ARCHIVE.
 - If you changed any `.js` or `.css` file, bump every `?v=` value in `between-us.html`
   together (they must all match). Never edit `between-us-work.html` or `between-us-dev.html`.

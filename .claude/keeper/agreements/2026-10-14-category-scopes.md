@@ -106,3 +106,10 @@ the owner: Attract's job is light and fun. Instead Attract 5 widens from the clo
 person: the captured moment and their vibe. Desire writer brief must name its tone: light and
 fun. World 5 subject chosen: power and politics. The news: owner sees it as a "problem of the
 week show", asked what a news card would ask.
+
+**2026-10-15 (later):** World 5 → owner's own wording, "more neutral and systemic — I like
+systems more than bashing". Bench rule settled for good: bench only what the owner likes but
+doesn't fit, and only when they say "bench it" (now in CLAUDE.md and deck-builder). Desire:
+stays where Attract sits (Beneath the Surface, same depth). Owner asks whether the rename is
+still needed, since most cards are about attraction — open. Next: Life keep/go, app lines for
+Life and Desire/Attract, then new Life cards, then the next category.

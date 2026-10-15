@@ -349,9 +349,13 @@ in a sentence or a paragraph turn into unreadable text for them. So:
 file no longer repeats them (retired 2026-10-06; the two had been verified identical).
 `questions/between-us-deck.md` now holds only what the app doesn't: the ARCHIVE of retired
 category names, the BENCH of parked cards, HOUSE STYLE, and the change log. When a card
-changes, edit `questions.js`, and in the same commit add the change-log entry and move
-any displaced card to the BENCH with the reason — git shows that a card changed, the log
-and bench keep why.
+changes, edit `questions.js`, and in the same commit add the change-log entry (old text,
+new text, why) — git shows that a card changed, the log keeps why.
+
+**The bench is only for cards the owner likes but that don't fit** (owner, 2026-10-15). A
+displaced card is removed, not benched, unless the owner says "bench it" — typically a card
+they like that lost to a better alternative, or a good alternative that didn't win its slot.
+Never bench on your own initiative; the owner doesn't want the bench overfilled.
 
 ## Follow `DESIGN-SYSTEM.md` for chrome/visual work
 
