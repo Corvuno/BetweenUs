@@ -232,6 +232,18 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.07 — World 8 and Home 5 placeholders replaced
+Removed cards are not benched, by owner decision.
+
+- **World 8**
+  - Old: "Which foreign custom have you quietly adopted as your own — and where did you pick it up?"
+  - New: "Where in the world did you feel most like a foreigner — and not in the way you expected?"
+- **Home 5**
+  - Old: "Which spot in your town has the most of your life in it?"
+  - New: "When did you last discover a hidden place in your own town — and how did you find it?"
+
+The v7.06 placeholders (marked weak) are replaced by the owner's chosen cards.
+
 ## Patch v7.06 — category scope rework, batch 1 continued (3 cards)
 Removed cards are not benched, by owner decision.
 
