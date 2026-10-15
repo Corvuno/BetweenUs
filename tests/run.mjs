@@ -384,26 +384,48 @@ async function run() {
     assert(!(await overlay.evaluate(el => el.classList.contains('open'))), 'party overlay did not close');
   });
 
-  // ── K. End-of-hand hold-to-continue gate ────────────────────────────────
-  await check('end-of-hand: the hand summary appears in-card, and Next Card\'s own hold starts a fresh hand', async () => {
+  // ── K. End of hand: Intermezzo, hold to flip to the list, hold to continue ──
+  const imAtEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-hand-summary'));
+  const imSide = async () => await page.evaluate(() => state.handSide);
+  const imWaitSide = async (side) => { await page.waitForFunction(s => state.handSide === s, side, { timeout: 3000 }); await page.waitForTimeout(350); };
+  const imHold = async (selector) => { await pointerHold(page, selector, 650); await page.waitForTimeout(400); };
+  const imBtn = async () => (await page.locator('#btn-next').textContent()).trim();
+
+  await check('end of hand: the card shows its back with the pause mark and INTERMEZZO; the old summary is gone; Hold to flip card', async () => {
     // Run the current hand out to its end (tap through, waiting out the
     // 175ms flip animation each time so we don't race the DOM update),
     // then the 500ms showHandSummary() delay past the last card.
-    const atEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-hand-summary'));
-    for (let i = 0; i < 20 && !(await atEnd()); i++) {
+    for (let i = 0; i < 20 && !(await imAtEnd()); i++) {
       await page.locator('#card').click();
       await page.waitForTimeout(300);
     }
     await page.waitForTimeout(600);
-    assert(await atEnd(), `did not reach the end-of-hand summary after 20 taps (${await questionText(page)})`);
-    // card-wrap/controls-wrap stay visible (this is the same layout as any
-    // other draw, not a takeover screen) — only the screen-row content and
-    // the card face change (styles.css body.showing-hand-summary).
-    assert(await page.locator('#card-wrap').isVisible(), 'card-wrap disappeared during the hand summary');
+    assert(await imAtEnd(), `did not reach the end of the hand after 20 taps (${await questionText(page)})`);
+    assert((await imSide()) === 'intermezzo', `end of hand did not open on Intermezzo: ${await imSide()}`);
+    assert(await page.locator('#card-wrap').isVisible(), 'card-wrap disappeared at the end of the hand');
     assert(await page.locator('#handActionsRow').isVisible(), 'the Change/Save row did not appear');
-    assert(!(await page.locator('#screenRow').isVisible()), 'three/Full Screen/Twist stayed visible during the hand summary');
+    assert(!(await page.locator('#screenRow').isVisible()), 'three/Full Screen/Twist stayed visible at the end of the hand');
+    const cls = await page.locator('#card').evaluate(el => [...el.classList]);
+    assert(cls.includes('is-start') && cls.includes('is-intermezzo') && !cls.includes('is-hand-list'), `card classes at Intermezzo: ${cls}`);
+    assert(await page.locator('#card .cb-fermata').isVisible(), 'the pause mark is not visible on the back');
+    assert(await page.locator('#card .cb-caption').isVisible(), 'the INTERMEZZO word is not visible');
+    assert((await page.locator('#card .cb-caption').evaluate(el => getComputedStyle(el).textTransform)) === 'uppercase', 'the caption is not in capitals');
+    assert(!(await page.locator('#card .cb-mark:not(.cb-fermata)').first().isVisible()), 'the start logo shows on the Intermezzo back');
+    const bodyText = await page.locator('body').innerText();
+    assert(!/set is finished|You began at|cards? you starred/i.test(bodyText), 'old end-of-hand summary text is still on screen');
+    assert(await page.locator('#card .es-chip, #card .hs-wrap').count() === 0, 'old summary markup is still in the card');
+    // the diamond takes the last drawn card's chapter colour (lifted for legibility)
+    const want = await page.evaluate(() => {
+      const last = state.visibleDeck[state.visibleDeck.length - 1];
+      return labelColor(CHAPTERS_META[CATEGORIES[last.level].chapter].color).toLowerCase();
+    });
+    const got = await page.evaluate(() => document.body.style.getPropertyValue('--im-color').trim().toLowerCase());
+    assert(got === want, `--im-color ${got} is not the last card's chapter colour ${want}`);
+    assert((await imBtn()) === 'Hold to flip card', `button reads "${await imBtn()}"`);
+  });
 
-    // Quick tap: pointerdown+up well under the hold threshold must NOT advance.
+  await check('end of hand: a quick tap on the button or the card does nothing; a hold on the button flips to the list (stars, no title, no corner star)', async () => {
+    // Quick tap: pointerdown+up well under the hold threshold must NOT flip or advance.
     await page.evaluate(() => {
       document.getElementById('btn-next').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     });
@@ -413,17 +435,172 @@ async function run() {
       el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     });
+    await page.locator('#card').click();
     await page.waitForTimeout(300);
-    assert(await atEnd(), 'a quick tap on Next Card advanced past the end-of-hand gate');
+    assert((await imSide()) === 'intermezzo', 'a tap flipped or advanced the end-of-hand card');
 
-    // Full hold: must advance into a fresh hand — wait for the actual reveal
-    // rather than a guessed duration (works whether this replays the draw
-    // animation or not; the draw animation only plays once per session).
-    await pointerHold(page, '#btn-next', 650);
+    await imHold('#btn-next');
+    assert((await imSide()) === 'list', `a hold on the button did not flip to the list: ${await imSide()}`);
+    assert((await imBtn()) === 'Hold to continue', `button reads "${await imBtn()}" on the list side`);
+    const info = await page.evaluate(() => ({
+      rows: document.querySelectorAll('#card-question .hd-row').length, n: state.visibleDeck.length,
+      texts: [...document.querySelectorAll('#card-question .hd-q')].map(e => e.textContent),
+      qs: state.visibleDeck.map(c => c.question),
+      level: document.getElementById('card-level').textContent,
+      cls: [...document.getElementById('card').classList],
+    }));
+    assert(info.rows === info.n && info.n > 0, `list has ${info.rows} rows for a hand of ${info.n}`);
+    assert(JSON.stringify(info.texts) === JSON.stringify(info.qs), 'list rows are not this hand\'s questions in order');
+    assert(info.level === '' && info.cls.includes('is-hand-list') && !info.cls.includes('is-start'), `list side state wrong: ${JSON.stringify(info)}`);
+    assert(!(await page.locator('#cardStar').isVisible()), 'the card\'s corner star shows on the list side');
+    assert(await page.locator('#card .hd-star').first().isVisible(), 'row stars are not visible');
+  });
+
+  await check('hand list: a row star toggles the same favourite the card star uses; the list scrolls; scrolling does not move the hand', async () => {
+    const q0 = await page.evaluate(() => state.visibleDeck[0].question);
+    const was = await page.evaluate(q => state.favourites.some(f => f.question === q), q0);
+    await page.locator('#card .hd-star').first().click();
+    await page.waitForTimeout(150);
+    const now = await page.evaluate(q => ({ fav: state.favourites.some(f => f.question === q), starred: state.handStarred.has(q), on: document.querySelector('#card .hd-star').classList.contains('on'), side: state.handSide, idx: state.currentIndex }), q0);
+    assert(now.fav === !was && now.on === !was, `star did not toggle the favourite: ${JSON.stringify(now)}`);
+    assert(now.side === 'list' && now.idx === await page.evaluate(() => state.visibleDeck.length), 'tapping a star moved the hand or flipped the card');
+    await page.locator('#card .hd-star').first().click();
+    await page.waitForTimeout(150);
+    assert(await page.evaluate(q => state.favourites.some(f => f.question === q), q0) === was, 'second tap did not undo the star');
+    // the star on the list and the card's own star share one store
+    await page.evaluate(() => { state.currentIndex = 0; });   // (state only) the card star acts on the card at the index
+    await page.evaluate(() => toggleFavourite());
+    assert(await page.locator('#card .hd-star').first().evaluate(el => el.classList.contains('on')) === !was, 'the card star did not show on the list star');
+    await page.evaluate(() => { toggleFavourite(); state.currentIndex = state.visibleDeck.length; });
+    // scrolling: give the list more rows than fit, scroll it, nothing else moves
+    const sc = await page.evaluate(() => { const l = document.querySelector('#card .hd-list'); return { over: l.scrollHeight - l.clientHeight, h: l.clientHeight }; });
+    if (sc.over > 4) {
+      await page.evaluate(() => { document.querySelector('#card .hd-list').scrollTop = 40; });
+      assert((await imSide()) === 'list', 'scrolling moved the card');
+    }
+  });
+
+  await check('end of hand: Back on the list side (button, arrow key, swipe right) turns to Intermezzo; on Intermezzo it goes back a card as before', async () => {
+    await page.locator('#btn-prev').click(); await imWaitSide('intermezzo');
+    assert(await page.locator('#card').evaluate(el => el.classList.contains('is-start') && !el.classList.contains('is-hand-list')), 'not back on the Intermezzo card');
+    assert((await imBtn()) === 'Hold to flip card', 'button did not go back to "Hold to flip card"');
+    await imHold('#card');   // a hold on the card flips as well
+    assert((await imSide()) === 'list', 'a hold on the card did not flip to the list');
+    await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo');
+    await imHold('#btn-next'); assert((await imSide()) === 'list', 'could not flip again');
+    // swipe right on the card
+    await page.evaluate(() => {
+      const c = document.getElementById('card');
+      const mk = (type, x) => c.dispatchEvent(new TouchEvent(type, { bubbles: true, cancelable: true, touches: type === 'touchend' ? [] : [new Touch({ identifier: 1, target: c, clientX: x, clientY: 300 })], changedTouches: [new Touch({ identifier: 1, target: c, clientX: x, clientY: 300 })] }));
+      mk('touchstart', 80); mk('touchend', 220);
+    });
+    await imWaitSide('intermezzo');
+    // Intermezzo: Back is the old Back — the last card of the hand
+    const n = await page.evaluate(() => state.visibleDeck.length);
+    await page.locator('#btn-prev').click();
+    await page.waitForTimeout(500);
+    const st = await page.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, back: document.getElementById('card').classList.contains('is-start'), body: document.body.classList.contains('showing-hand-summary') }));
+    assert(st.side === null && st.idx === n - 1 && !st.back && !st.body, `Back from Intermezzo: ${JSON.stringify(st)}`);
+    // and forward again to the end of the hand
+    await page.locator('#card').click(); await page.waitForTimeout(900);
+    assert((await imSide()) === 'intermezzo', 'did not come back to Intermezzo after stepping forward');
+  });
+
+  await check('end of hand: Save gives two files (the list and a state file); Import restores a state file; the .txt import still works', async () => {
+    const files = [];
+    const onDl = d => files.push(d);
+    page.on('download', onDl);
+    await page.locator('#btnSave').click();
+    await page.waitForTimeout(1500);
+    page.off('download', onDl);
+    const names = files.map(f => f.suggestedFilename());
+    assert(files.length === 2, `Save gave ${files.length} files: ${names}`);
+    assert(names.some(n => /^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(n)) && names.some(n => /^between-us-state-\d{4}-\d{2}-\d{2}\.json$/.test(n)), `unexpected file names: ${names}`);
+    const stateFile = files.find(f => f.suggestedFilename().endsWith('.json'));
+    const json = JSON.parse(await (await import('node:fs/promises')).readFile(await stateFile.path(), 'utf8'));
+    const live = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), mode: state.randomMode, lim: state.cardLimit }));
+    assert(json.format === 'between-us-state' && JSON.stringify(json.data.deckQuestions) === JSON.stringify(live.q), 'state file does not hold this hand');
+    assert(json.data.position === live.q.length - 1, `state file position ${json.data.position} (at the end of a hand it is the last card)`);
+    // wreck the live state, then import the file
+    await page.evaluate(() => { document.getElementById('d-reshuffle').click(); });
+    await page.waitForTimeout(500);
+    await page.locator('#btn-menu').click();
+    await page.locator('#d-log').click();
+    const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
+    await chooser.setFiles(await stateFile.path());
+    await page.waitForTimeout(800);
+    const back = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), idx: state.currentIndex }));
+    assert(JSON.stringify(back.q) === JSON.stringify(live.q) && back.idx === live.q.length - 1, `state import did not restore the hand: idx ${back.idx}`);
+    // the .txt still imports as before
+    const txt = files.find(f => f.suggestedFilename().endsWith('.txt'));
+    await page.evaluate(() => { window.__logKeep = { log: state.sessionLog, from: state.seenFrom, logged: state.loggedQuestions }; });
+    await page.locator('#btn-menu').click();
+    await page.locator('#d-log').click();
+    const [chooser2] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
+    await chooser2.setFiles(await txt.path());
+    await page.waitForTimeout(500);
+    assert(await page.evaluate(() => state.sessionLog.length > 0), 'the .txt import loaded nothing');
+    // put the history back as it was: the import replaces it, and later checks count on the real one
+    await page.evaluate(() => { const k = window.__logKeep; state.sessionLog = k.log; state.seenFrom = k.from; state.loggedQuestions = k.logged; renderLog(); closeAllDrawers(); });
+    // back to the end of the hand for the next check
+    await page.evaluate(() => { state.currentIndex = state.visibleDeck.length; showHandSummary(); });
+    await page.waitForTimeout(300);
+  });
+
+  await check('end of hand: a hold on the list side starts a fresh hand (card face back, flip state cleared)', async () => {
+    await imHold('#btn-next'); assert((await imSide()) === 'list', 'not on the list side');
+    await pointerHold(page, '#card', 650);
     await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
     assert(index === 1 && total > 0, `hold did not start a fresh hand, got ${index}/${total}`);
-    assert(!(await atEnd()), 'still showing the hand summary after the hold started a fresh hand');
+    await page.waitForTimeout(600);
+    const st = await page.evaluate(() => ({ side: state.handSide, body: document.body.className, cls: [...document.getElementById('card').classList], par: [...document.getElementById('partyOverlay').classList] }));
+    assert(st.side === null && !/showing-hand-summary|hand-side-list/.test(st.body) && !st.cls.some(c => /^is-(start|intermezzo|hand-list)$/.test(c)) && !st.par.some(c => /^is-(hand|intermezzo)/.test(c)), `end-of-hand state left behind: ${JSON.stringify(st)}`);
+    assert((await imBtn()) !== 'Hold to continue' && (await imBtn()) !== 'Hold to flip card', 'button still in end-of-hand mode');
+  });
+
+  await check('end of hand: changing a preset or the card limit from Intermezzo or the list clears the end state', async () => {
+    for (const side of ['intermezzo', 'list']) {
+      await page.evaluate(() => { const l = state.visibleDeck.length; state.currentIndex = l; showHandSummary(); });
+      if (side === 'list') { await page.evaluate(() => flipHandList()); }
+      await page.waitForTimeout(400);
+      assert((await imSide()) === side, `not on ${side}`);
+      await page.evaluate(() => document.getElementById('d-reshuffle').click());   // a settings-style rebuild of the hand
+      await page.waitForTimeout(500);
+      const st = await page.evaluate(() => ({ side: state.handSide, body: document.body.className, start: document.getElementById('card').classList.contains('is-start'), im: document.getElementById('card').classList.contains('is-hand-list') }));
+      assert(st.side === null && !/showing-hand-summary|hand-side-list/.test(st.body) && !st.im, `after a rebuild from ${side}: ${JSON.stringify(st)}`);
+    }
+  });
+
+  await check('fullscreen end of hand: Intermezzo, hold flips to the list, stars work, Back returns, hold continues', async () => {
+    await freshHand({ three: false });
+    await page.locator('#btn-next').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1200);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(500);
+    for (let i = 0; i < 8 && !(await imSide()); i++) { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(450); }
+    await page.waitForTimeout(500);
+    assert((await imSide()) === 'intermezzo', `fullscreen did not end on Intermezzo: ${await imSide()}`);
+    const ov = page.locator('#partyOverlay');
+    assert(await ov.locator('.cb-fermata').isVisible() && (await ov.locator('.im-word').textContent()).trim().toLowerCase() === 'intermezzo', 'fullscreen Intermezzo has no mark and word');
+    assert(!/Arc complete|Draw complete/.test(await ov.innerText()), 'old fullscreen summary text is still there');
+    await pointerHold(page, '#partyOverlay', 650); await page.waitForTimeout(400);
+    assert((await imSide()) === 'list', 'a hold in fullscreen did not flip to the list');
+    assert(await ov.locator('.hd-row').count() === await page.evaluate(() => state.visibleDeck.length), 'fullscreen list rows differ from the hand');
+    const q0 = await page.evaluate(() => state.visibleDeck[0].question);
+    const was = await page.evaluate(q => state.favourites.some(f => f.question === q), q0);
+    const pt = await ov.locator('.hd-star').first().evaluate(el => { const r = el.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; });
+    await page.touchscreen.tap(pt[0], pt[1]); await page.waitForTimeout(300);
+    assert(await page.evaluate(q => state.favourites.some(f => f.question === q), q0) === !was, 'tapping a fullscreen star did not toggle the favourite');
+    assert((await imSide()) === 'list', 'a star tap in fullscreen moved the card');
+    await page.touchscreen.tap(pt[0], pt[1]); await page.waitForTimeout(300);
+    await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo');
+    await pointerHold(page, '#partyOverlay', 650); await page.waitForTimeout(400);
+    await pointerHold(page, '#partyOverlay', 650); await waitForCardIndex(page, 1);
+    const st = await page.evaluate(() => ({ side: state.handSide, ov: document.getElementById('partyOverlay').className }));
+    assert(st.side === null && !/is-hand|is-intermezzo/.test(st.ov), `fullscreen end state left behind: ${JSON.stringify(st)}`);
+    await page.locator('#partyExit').click(); await page.waitForTimeout(300);
   });
 
   await check('hand size: with most cards seen and the dials moved, a hand of 5 is 5 and All is every unseen card; running out starts a fresh pass', async () => {

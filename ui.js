@@ -155,7 +155,7 @@ document.getElementById('card').addEventListener('mousedown', e => {
 });
 document.getElementById('card').addEventListener('click', e => {
   if (state.partyMode) return;
-  if (e.target.closest('#cardStar')) return;
+  if (e.target.closest('#cardStar, .hd-star')) return;
   if (cardMouseDownAt) {
     const dragged = Math.abs(e.clientX - cardMouseDownAt.x) > 6 || Math.abs(e.clientY - cardMouseDownAt.y) > 6;
     cardMouseDownAt = null;
@@ -230,6 +230,8 @@ function spotlightBrightenOnce() {
         updateDrawMore();
       } else if (state.currentIndex >= 0 && state.visibleDeck[state.currentIndex]) {
         updatePartyDisplay(state.visibleDeck[state.currentIndex]);
+      } else if (state.handSide) {
+        renderHandSide(false);   // the hand has ended: fullscreen shows the same side the card is on
       }
     });
   }
@@ -287,7 +289,12 @@ function spotlightBrightenOnce() {
   }, { passive: true });
 
   newOv.addEventListener('touchend', e => {
-    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
+    /* scrolling the hand's list is not a tap or a swipe of the card */
+    if (e.target.closest('.hd-list')) {
+      const sdx = e.changedTouches[0].clientX - ptsx, sdy = e.changedTouches[0].clientY - ptsy;
+      if (Math.abs(sdy) > 10 && Math.abs(sdy) >= Math.abs(sdx)) return;
+    }
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -313,7 +320,7 @@ function spotlightBrightenOnce() {
   // Click — desktop only (mobile click is suppressed by touchend's preventDefault above)
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
-    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
@@ -429,16 +436,21 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     /* a new press starts a new gesture — never inherit a stale swallow flag */
     window._endHoldFired = false;
     if (!atEnd()) return;
+    /* a star in the hand's list is a tap, never a hold */
+    if (e && e.target && e.target.closest && e.target.closest('.hd-star')) return;
     clearTimeout(timer);
     const b = holdBtn();
     if (b && e && e.currentTarget === b) b.classList.add('holding');
     timer = setTimeout(() => {
       if (b) b.classList.remove('holding');
-      window._endHoldOK    = true;
       /* Swallow the release, however long the press lasted. A time window here
          expired mid-hold, letting the release advance a second card. */
       window._endHoldFired = true;
       hint(false);
+      /* Intermezzo: the first hold turns the card over to the hand's list; the
+         next one (list side) starts the next hand. */
+      if (state.handSide === 'intermezzo') { flipHandList(); return; }
+      window._endHoldOK    = true;
       if (typeof nextCard === 'function') nextCard();
     }, HOLD);
   }
@@ -473,7 +485,7 @@ document.getElementById('btnChange') && document.getElementById('btnChange').add
   if (typeof openCats === 'function') openCats();
 });
 document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
-  if (typeof exportSessionLog === 'function') exportSessionLog();
+  if (typeof saveSessionFiles === 'function') saveSessionFiles();
 });
 
 // ── Spice glyph buttons (one inline on the After Dark chapter in Play,

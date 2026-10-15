@@ -71,3 +71,9 @@ The last drawn card (C) sets the colour of the button, the diamond and the small
 - Save gives two files; the state file loads back in through Import.
 - The start logo animates every time the card back appears.
 - `node tests/run.mjs between-us.html` passes.
+
+## Added during the build (owner, 2026-10-15)
+
+- Back from the list to Intermezzo: the mark does not redraw; it shows finished, diamond breathing.
+- Fullscreen: the "— end —" text in the count slot at the end of a hand goes.
+- The old fullscreen end-of-hand summary ("Arc complete", small arc chart) is removed with the rest of the old end screen.

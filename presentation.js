@@ -245,10 +245,37 @@ function exportSessionLog() {
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
 }
 document.getElementById('btnExport').addEventListener('click', exportSessionLog);
+
+// The state file: selection, settings and position, from serializeSession() —
+// the one definition of what a session captures. At the end of a hand the
+// position is the last card (the hand's end is not a card to come back to).
+const STATE_FILE_FORMAT = 'between-us-state';
+function exportSessionState() {
+  const data = serializeSession();
+  if (data.deckQuestions.length && data.position >= data.deckQuestions.length) data.position = data.deckQuestions.length - 1;
+  const file = { format: STATE_FILE_FORMAT, version: 1, data };
+  const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `between-us-state-${new Date().toISOString().slice(0,10)}.json`; a.click();
+}
+// Save (end-of-hand screen): both files in one press. Browsers may refuse a
+// second download fired in the same instant, so the second follows shortly after.
+function saveSessionFiles() {
+  exportSessionLog();
+  setTimeout(exportSessionState, 400);
+}
+
 document.getElementById('btnImport') && document.getElementById('btnImport').addEventListener('click',()=>{
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='.txt';
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='.txt,.json,text/plain,application/json';
   inp.onchange=async e=>{
     const text=await e.target.files[0]?.text(); if(!text) return;
+    // a state file restores the selection, settings and position
+    if (text.trimStart().startsWith('{')) {
+      let file = null;
+      try { file = JSON.parse(text); } catch(err) {}
+      if (file && file.format === STATE_FILE_FORMAT && file.data) { restoreSessionData(file.data); closeAllDrawers(); }
+      return;
+    }
     const qMap={}; ALL_CARDS.forEach(c=>{qMap[c.question.toLowerCase().trim()]=c;});
     const imported=[]; text.split('\n').forEach((line,i,arr)=>{
       if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(qMap[q.toLowerCase()]||{question:q,level:'deep'});}
@@ -428,8 +455,12 @@ function updateDrawMore() {
     // This is the only state that skips straight to a new hand, and it always
     // needs the hold gesture — the last card of a hand still goes through this
     // screen first, never a one-tap shortcut around it.
-    nextBtn.classList.add('hold-mode');   /* distinct colour: this one needs a hold */
-    nextBtn.textContent = 'Hold to continue';
+    nextBtn.classList.add('hold-mode');   /* distinct look: this one needs a hold */
+    // Intermezzo: the first hold turns the card to the list; on the list the
+    // next hold starts the next hand (until Intermezzo is up, a hold continues).
+    nextBtn.textContent = state.handSide === 'intermezzo' ? 'Hold to flip card' : 'Hold to continue';
+    const hintEl = document.getElementById('endHint');
+    if (hintEl) hintEl.textContent = nextBtn.textContent;
   } else {
     nextBtn.classList.remove('hold-mode');
     // On the last card, the tap ahead lands on the summary, not another
@@ -441,123 +472,195 @@ function updateDrawMore() {
   }
 };
 
-// Small SVG trace of category depth across the hand — a quick visual read
-// of whether the round stayed shallow, dove deep, or moved around. Used by
-// fullscreen's runPartySummary() below.
-function drawRoundTrace(cards) {
-  if (!cards || cards.length < 2 || cards.length > 48) return '';
-  const W = 240, H = 62, PAD = 10;
-  const step = (W - PAD * 2) / (cards.length - 1);
-  const pts = cards.map((c, i) => [+(PAD + i * step).toFixed(1), +(52 - (levelDepth(c.level) - 1) * 8).toFixed(1)]);
-  const line = pts.map(p => p.join(',')).join(' ');
-  const dots = pts.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="${cards.length > 24 ? 2.2 : 3}" fill="${levelColor(cards[i].level)}"/>`).join('');
-  return `<svg class="sic-trace" viewBox="0 0 ${W} ${H}" role="img" aria-label="The hand you drew: ${cards.length} cards, from light to deep.">`
-       + `<line x1="${PAD}" y1="58" x2="${W - PAD}" y2="58" stroke="currentColor" stroke-width="1" opacity=".12"/>`
-       + `<polyline points="${line}" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".28"/>`
-       + dots + `</svg>`;
+// ── END OF HAND: Intermezzo ──────────────────────────────────────────────────
+// The end of every hand is a pause, not a report. The card shows its lattice
+// back with the pause mark and the word INTERMEZZO (side 'intermezzo'); a hold
+// turns it over to the hand's questions, each with its own star (side 'list');
+// a second hold starts the next hand (ui.js END_HOLD_TARGETS gate). Back on the
+// list side returns to Intermezzo (prevCard in deck.js). state.handSide says
+// which side is up ('intermezzo' | 'list' | null when no hand has ended).
+// Fullscreen shows the same two sides in #partyOverlay; both surfaces are
+// painted together so leaving or entering fullscreen mid-way stays in step.
+//
+// Hooks (for styling): body.showing-hand-summary (any end-of-hand side),
+// body.hand-side-list (list side up), --im-color on <body> (last drawn card's
+// chapter colour, lifted for legibility), #card.is-start.is-intermezzo (the
+// back as Intermezzo), #card.is-hand-list (list side), #card.flipping while the
+// swap is in progress, #partyOverlay.is-hand-end/.is-intermezzo/.is-hand-list.
+
+let handSideToken = 0;   // a swap still waiting on its timer drops out if the hand side changed since
+// Looks: true while Intermezzo is shown again after the list (Back): the pause mark
+// then appears finished and breathing, without drawing itself in once more.
+let handStill = false;
+
+// The last drawn card's chapter: raw chapter colour (rail) and the lifted one
+// (diamond, rule, button) — labelColor lifts After Dark's near-black lacquer.
+function handEndColors() {
+  const last = state.visibleDeck[state.visibleDeck.length - 1];
+  const cat = last && CATEGORIES[last.level];
+  const ch = cat && CHAPTERS_META[cat.chapter];
+  if (!ch) return { raw: null, label: null };
+  return { raw: ch.color, label: labelColor(ch.color) };
 }
 
-// ── End of hand — the model behind the hand summary. Tallies only THIS
-// hand (state.visibleDeck), not the whole multi-hand session log.
-function computeEndScreenModel() {
-  const drawn = {};
-  state.visibleDeck.forEach(c => { drawn[c.level] = (drawn[c.level] || 0) + 1; });
+const HAND_STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.6l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 
-  const chips = Object.keys(CATEGORIES)
-    .filter(key => drawn[key] > 0)
-    .map(key => ({ label: CATEGORIES[key].label, count: drawn[key], color: CATEGORIES[key].color }));
+function isFavouriteCard(c) { return !!c && state.favourites.some(f => f.question === c.question); }
 
-  // Chapters that actually appeared, in CHAPTERS_META's canonical order —
-  // derived from CATEGORIES[key].chapter, the same field the chapter
-  // drawer itself groups by, so this can't drift from what's on screen there.
-  const visited = Object.keys(CHAPTERS_META)
-    .filter(chId => Object.keys(CATEGORIES).some(key => CATEGORIES[key].chapter === chId && drawn[key] > 0))
-    .map(chId => ({ label: CHAPTERS_META[chId].label, color: CHAPTERS_META[chId].color }));
-  const first = visited[0] || null;
-  const last = visited[visited.length - 1] || first;
-
-  // Only cards actually starred THIS hand — a card that was already a
-  // favourite from an earlier session shouldn't show up here just because
-  // it happened to get redrawn without anyone tapping its star this time.
-  const favCount = state.visibleDeck.filter(c => state.handStarred.has(c.question)).length;
-
-  return { chips, moved: visited.length > 1, stayed: visited.length === 1, first, last, favCount };
-}
-
-const FAV_COUNT_WORDS = ['no','one','two','three','four','five','six','seven','eight','nine','ten',
-  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
-
-// "You began at {first} and ended {last}" / "The whole set stayed in {only}"
-// — chapter names carry that chapter's own colour (lifted via labelColor()
-// the same way the chapter drawer lifts After Dark's near-black lacquer).
-function esSentenceHTML(model) {
-  if (!model.first) return '';
-  if (model.stayed) {
-    const c = labelColor(model.first.color);
-    return `The whole set stayed<br>in <span class="es-chapter" style="color:${c}">${esc(model.first.label)}</span>`;
-  }
-  const cf = labelColor(model.first.color), cl = labelColor(model.last.color);
-  return `You began at <span class="es-chapter" style="color:${cf}">${esc(model.first.label)}</span><br>`
-       + `and ended <span class="es-chapter" style="color:${cl}">${esc(model.last.label)}</span>`;
-}
-
-function esChipsHTML(model) {
-  return model.chips.map(c => {
-    const border = `color-mix(in srgb, ${c.color} 50%, transparent)`;
-    const fill   = `color-mix(in srgb, ${c.color} 12%, transparent)`;
-    const countColor = `color-mix(in srgb, ${c.color} 95%, transparent)`;
-    const count = c.count > 1 ? `<span class="es-chip-count" style="color:${countColor}">${c.count}</span>` : '';
-    return `<span class="es-chip" style="border-color:${border};background:${fill}">${esc(c.label)}${count}</span>`;
+// The hand's questions, in the order they were drawn: category diamond,
+// the question in full, its own star (outline = not a favourite, filled = one).
+function handListHTML() {
+  const rows = state.visibleDeck.map((c, i) => {
+    const on = isFavouriteCard(c);
+    return `<li class="hd-row"><span class="hd-d" style="background:${levelColor(c.level)}"></span>`
+         + `<span class="hd-q">${esc(translateQ(c))}</span>`
+         + `<button type="button" class="hd-star${on ? ' on' : ''}" data-i="${i}" aria-pressed="${on}" aria-label="Favourite this question">${HAND_STAR_SVG}</button></li>`;
   }).join('');
+  return `<div class="hd-box"><ol class="hd-list">${rows}</ol><span class="hd-track" aria-hidden="true"><i class="hd-thumb"></i></span></div>`;
 }
 
-function esFavsHTML(model) {
-  if (!model.favCount) return '';
-  const word = FAV_COUNT_WORDS[model.favCount] !== undefined ? FAV_COUNT_WORDS[model.favCount] : String(model.favCount);
-  const line = model.favCount === 1 ? 'one card you starred' : `${word} cards you starred`;
-  return `<span class="es-star">&#9733;</span>${esc(line)}`;
+// Stars follow the favourites store (the card's own star writes to it too).
+function syncHandStars() {
+  document.querySelectorAll('.hd-star').forEach(b => {
+    const on = isFavouriteCard(state.visibleDeck[+b.dataset.i]);
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
 }
 
-// ── HAND SUMMARY ── the end-of-hand message: same card-wrap/controls-wrap
-// layout as any other draw, not a separate screen — the card face carries
-// the sentence/chip-cloud/favourites content from computeEndScreenModel(),
-// Next Card becomes Hold (already handled by updateDrawMore()'s atEnd()
-// branch, unchanged), and screen-row's three/Full Screen/Twist swap to
-// Change/Save via body.showing-hand-summary (see styles.css). hideHandSummary()
-// — called from setCardDisplay()/flipToCard() — reverses this the moment a
-// real card is shown again, whatever path got there (another hand, a
-// settings change, Explore/a preset picked mid-summary).
-function showHandSummary() {
-  clearTwist();
-  const model = computeEndScreenModel();
-  const chColor = model.last ? model.last.color : 'var(--gold-l)';
+// Wire a freshly written list: stars, and the thin scroll indicator.
+function bindHandList(root) {
+  if (!root) return;
+  root.querySelectorAll('.hd-star').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation(); e.preventDefault();   // a star is not a tap on the card
+    const c = state.visibleDeck[+b.dataset.i];
+    if (c) toggleFavourite(c);
+  }));
+  const list = root.querySelector('.hd-list'), track = root.querySelector('.hd-track'), thumb = root.querySelector('.hd-thumb');
+  if (!list || !track || !thumb) return;
+  const place = () => {
+    const over = list.scrollHeight - list.clientHeight;
+    track.style.display = over > 2 ? '' : 'none';
+    if (over <= 2) return;
+    const H = track.clientHeight, h = Math.max(18, H * list.clientHeight / list.scrollHeight);
+    thumb.style.height = h + 'px';
+    thumb.style.top = ((H - h) * list.scrollTop / over) + 'px';
+  };
+  list.addEventListener('scroll', place, { passive: true });
+  if (window.ResizeObserver) new ResizeObserver(place).observe(list);
+  requestAnimationFrame(place);
+}
+
+function paintHandSide() {
+  const side = state.handSide;
+  if (!side) return;
+  const isList = side === 'list';
+  const col = handEndColors();
+  if (col.label) document.body.style.setProperty('--im-color', col.label);
+
+  // — the card on the main screen
+  const el = document.getElementById('card');
+  const lvlEl = document.getElementById('card-level');
+  const qEl = document.getElementById('card-question');
   const accent = document.getElementById('c-accent');
   if (accent) {
-    accent.style.background = giltRail(chColor);
+    accent.style.background = col.raw ? giltRail(col.raw) : '';
     accent.classList.remove('accent-bloom'); void accent.offsetWidth; accent.classList.add('accent-bloom');
   }
-  const lvlEl = document.getElementById('card-level');
-  if (lvlEl) {
-    lvlEl.classList.remove('in');
-    lvlEl.textContent = 'The set is finished';
-    lvlEl.style.color = model.last ? labelColor(chColor) : chColor;
-    void lvlEl.offsetWidth; lvlEl.classList.add('in');
+  if (lvlEl) { lvlEl.classList.remove('in'); lvlEl.textContent = ''; }
+  if (el) {
+    el.classList.toggle('im-still', handStill);
+    if (isList) { el.classList.remove('is-start'); el.classList.add('is-intermezzo', 'is-hand-list'); }
+    else        { el.classList.remove('is-hand-list'); el.classList.add('is-start', 'is-intermezzo'); }
   }
-  const qEl = document.getElementById('card-question');
   if (qEl) {
-    qEl.classList.remove('in');
-    let html = `<div class="hs-wrap"><div class="hs-sentence">${esSentenceHTML(model)}</div>`;
-    if (model.chips.length)  html += `<div class="hs-chips">${esChipsHTML(model)}</div>`;
-    if (model.favCount)      html += `<div class="hs-favs">${esFavsHTML(model)}</div>`;
-    html += `</div>`;
-    qEl.innerHTML = html;
-    void qEl.offsetWidth; qEl.classList.add('in');
+    if (isList) { qEl.innerHTML = handListHTML(); bindHandList(qEl); }
+    else        { qEl.textContent = 'Intermezzo'; }   // under the back: not shown, not announced
+    qEl.classList.add('in');
   }
-  document.body.classList.add('showing-hand-summary');
-  renderProgress(state.visibleDeck.length);
+
+  // — fullscreen
+  const pq = document.getElementById('party-question');
+  const pl = document.getElementById('party-level');
+  const pc = document.getElementById('party-count');
+  const pa = document.getElementById('party-accent');
+  if (pa) pa.style.background = col.raw ? giltRail(col.raw) : 'var(--gold-l)';
+  if (pl) { pl.textContent = ''; pl.style.color = ''; }
+  if (pc) pc.textContent = '';   // the count slot stays empty at the end of a hand
+  if (pq) {
+    if (isList) { pq.innerHTML = handListHTML(); bindHandList(pq); }
+    else {
+      const mark = document.querySelector('#cardBack .cb-fermata');
+      pq.innerHTML = `<div class="im-wrap${handStill ? ' still' : ''}">${mark ? mark.outerHTML : ''}<span class="im-rule"></span><span class="im-word">Intermezzo</span></div>`;
+    }
+  }
 }
+
+// Brings both surfaces to state.handSide. animate: the swap rides the card's
+// existing flip beat (the face changes while it is turned away).
+function renderHandSide(animate) {
+  const side = state.handSide;
+  if (!side) return;
+  const token = ++handSideToken;
+  const isList = side === 'list';
+  document.body.classList.add('showing-hand-summary');
+  document.body.classList.toggle('hand-side-list', isList);
+  const ov = document.getElementById('partyOverlay');
+  if (ov) { ov.classList.add('is-hand-end'); ov.classList.toggle('is-intermezzo', !isList); ov.classList.toggle('is-hand-list', isList); }
+  const el = document.getElementById('card');
+  const swap = () => {
+    if (token !== handSideToken || state.handSide !== side) return;
+    paintHandSide();
+    if (el) el.classList.remove('flipping');
+  };
+  if (animate && el) {
+    el.classList.add('flipping'); setTimeout(swap, 175);
+    // The card turns over on its side (styles.css .turning): edge-on at 175ms, which is
+    // when the face swaps. Back to Intermezzo turns the other way round.
+    const turn = isList ? 'turning' : 'turning-back';
+    const pc = document.querySelector('#partyOverlay .party-card');
+    [el, pc].forEach(n => { if (n) { n.classList.remove('turning', 'turning-back'); void n.offsetWidth; n.classList.add(turn); } });
+    setTimeout(() => { [el, pc].forEach(n => { if (n && (token === handSideToken || !state.handSide)) n.classList.remove(turn); }); }, 380);
+  }
+  else swap();
+}
+
+function showHandSummary() {
+  clearTwist();
+  state.handSide = 'intermezzo';
+  handStill = false;
+  renderHandSide(false);
+  renderProgress(state.visibleDeck.length);
+  updateDrawMore();
+}
+// Hold #1 at the end of a hand: turn the card over to the list.
+function flipHandList() {
+  if (state.handSide !== 'intermezzo') return;
+  state.handSide = 'list';
+  renderHandSide(true);
+  updateDrawMore();
+}
+// Back on the list side: turn it over again to Intermezzo.
+function showHandIntermezzo() {
+  if (state.handSide !== 'list') return;
+  state.handSide = 'intermezzo';
+  handStill = true;
+  renderHandSide(true);
+  updateDrawMore();
+}
+// Called from setCardDisplay()/flipToCard() — the moment a real card (or the
+// start card) is shown again, whatever path got there (next hand, a settings
+// change, Explore or a preset picked mid-way). Card-face classes are dropped by
+// setStartBack() so the back can fade out with its mark intact.
 function hideHandSummary() {
-  document.body.classList.remove('showing-hand-summary');
+  const was = !!state.handSide;
+  handSideToken++;
+  handStill = false;
+  state.handSide = null;
+  document.body.classList.remove('showing-hand-summary', 'hand-side-list');
+  const ov = document.getElementById('partyOverlay');
+  if (ov) ov.classList.remove('is-hand-end', 'is-intermezzo', 'is-hand-list');
+  if (was) { const el = document.getElementById('card'); if (el) el.classList.remove('flipping'); }
 }
 
 // ── End-of-draw hold gate ──
@@ -581,23 +684,6 @@ function hint(on){
   if (el) el.classList.toggle('visible', !!on);
 }
 
-// Fullscreen's own end-of-set moment: the arc trace and category list,
-// shown inside the party card.
-function runPartySummary() {
-  const isArc = state.randomMode === 'arc';
-  const pl = document.getElementById('party-level');
-  const pq = document.getElementById('party-question');
-  const pc = document.getElementById('party-count');
-  const pa = document.getElementById('party-accent');
-  if (pa) pa.style.background = 'var(--gold-l)';
-  if (pl) { pl.textContent = isArc ? 'Arc complete' : 'Draw complete'; pl.style.color = 'var(--gold-l)'; }
-  if (pc) pc.textContent = '— end —';
-  if (pq) {
-    const seen2 = new Set(), cats2 = [];
-    state.sessionLog.forEach(c => { if (!seen2.has(c.level)) { seen2.add(c.level); cats2.push(c.level); } });
-    const arcHtml = cats2.map(l => `<span style="color:${levelColor(l)}">${LEVEL_LABELS[l]||l}</span>`).join('<span style="opacity:.35"> · </span>');
-    pq.innerHTML = `<div class="sic-wrap">${drawRoundTrace(state.visibleDeck)}<div class="sic-arc" style="font-size:.85rem">${arcHtml}</div></div>`;
-  }
-}
-
-
+// Fullscreen's end of hand is the same Intermezzo/list flow (showHandSummary
+// paints both the card and the fullscreen overlay).
+function runPartySummary() { showHandSummary(); }
