@@ -692,30 +692,33 @@ body.showing-hand-summary .card-question{
 .party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .5s ease;}
 .party-overlay.idle .party-chrome{opacity:.28;}
 /* grid (not space-between) so the count is centred on the screen regardless of Close/★ widths */
-.party-top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);padding:max(40px,env(safe-area-inset-top)) 26px 0;}
+/* L2: Twist top-left, Three top-right, the count between them with the star under it (the count needs room from the top edge) */
+.party-top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;padding:max(58px,env(safe-area-inset-top)) 26px 0;}
 .party-top .party-count-wrap{justify-self:center;}
-.party-top .party-star{justify-self:end;}
-.party-bottom{justify-content:center;gap:16px;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
+.party-top .party-twist{justify-self:start;padding:0 !important;}
+.party-top .party-pick{justify-self:end;padding:0 !important;}
+/* L2: back and next in the bottom corners, Close in gold between them, where Spotlight opened */
+.party-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
+.party-prev-btn{justify-self:start;} .party-next-btn{justify-self:end;}
 .party-chrome button{height:44px;min-width:44px;background:none;border:none;padding:0 6px;cursor:pointer;
   color:var(--muted-l);font:400 12px/1 'Jost',sans-serif;letter-spacing:.2em;text-transform:uppercase;
   display:flex;align-items:center;justify-content:center;gap:6px;}
 .party-chrome button:hover{color:var(--cream);}
-.party-exit{justify-self:start;padding-left:0 !important;}
+.party-chrome .party-exit{justify-self:center;color:var(--gold);gap:9px;padding:0 12px;}
+.party-chrome .party-exit:hover{color:var(--gold-l);}
+.party-exit svg{width:16px;height:16px;}
 .party-prev-btn,.party-next-btn,.party-star{font:400 17px/1 'Jost',sans-serif !important;letter-spacing:0 !important;padding:0 !important;}
 .party-prev-btn:disabled{opacity:.3;pointer-events:none;}
 .party-star.on,.party-twist.active,.party-pick.on{color:var(--gold-l) !important;}
 .party-twist svg{width:16px;height:16px;}
-.party-actions{display:flex;align-items:center;gap:16px;}
-.party-pick::before{content:'';width:4px;height:4px;background:var(--gold);opacity:.8;transform:rotate(45deg);margin-right:10px;} /* ◆ between Twist and Three */
 .party-key{display:none;color:var(--muted);margin-left:6px;}
-.pp-long{display:none;}
 
-/* count: rules + diamonds (hidden on phone portrait) */
-.party-count-wrap{display:flex;align-items:center;gap:10px;}
+/* count: a short rule each side (hidden on phone portrait), the star underneath */
+.party-count-wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 10px;}
+.party-count-wrap .party-star{flex:0 0 100%;height:28px;margin-top:2px;}
 .party-count{font:400 15px/1 'Poiret One',sans-serif;letter-spacing:.22em;color:var(--gold);white-space:nowrap;}
 .pc-rule{display:none;align-items:center;gap:10px;}
 .pc-rule::before{content:'';width:20px;height:1px;background:rgba(201,168,76,.45);}
-.pc-rule::after{content:'';width:4px;height:4px;background:var(--gold);opacity:.8;transform:rotate(45deg);}
 .pc-rule--r{flex-direction:row-reverse;}
 
 /* tap zones */
@@ -733,8 +736,9 @@ body.showing-hand-summary .card-question{
   transition:opacity .22s ease,transform .32s cubic-bezier(.2,.7,.2,1);}
 .party-question.entering{opacity:0;transform:translateY(10px);}
 
-/* line · diamond · line: always on phone portrait, only with Twist elsewhere */
-.party-ornament{display:flex;align-items:center;gap:10px;}
+/* the divider between question and Twist text: only on a Twist card (the plain card has no line under the question) */
+.party-ornament{display:none;align-items:center;gap:10px;}
+.party-inner:has(.party-number.twist) .party-ornament{display:flex;}
 /* the hairline from the header, centre plus its right half, in the card's own
    category colour (--orn, set per card in updatePartyDisplay) pulled slightly
    toward grey and dimmed, the way a passed card reads. */
@@ -752,24 +756,23 @@ body.showing-hand-summary .card-question{
 
 /* Draw three */
 .party-picker{position:absolute;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;
-  padding:max(40px,env(safe-area-inset-top)) 26px max(34px,env(safe-area-inset-bottom));}
+  padding:calc(max(58px,env(safe-area-inset-top)) + 70px) 26px max(34px,env(safe-area-inset-bottom));}
 .party-picker.open{display:flex;}
 /* same two corners as the frame */
 .party-picker::before,.party-picker::after{content:'';position:absolute;width:24px;height:24px;border:solid var(--gold);opacity:.45;pointer-events:none;}
 .party-picker::before{top:12px;left:12px;border-width:1px 0 0 1px;}
 .party-picker::after{bottom:12px;right:12px;border-width:0 1px 1px 0;}
-.party-picker-top{display:flex;justify-content:center;}
-.party-picker-back{height:44px;background:none;border:none;padding:0;color:var(--muted-l);font:400 12px/1 'Jost',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;}
-.party-picker .picker-hint{display:none;}
 .party-picker .picker-options{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
 .party-picker .pick-opt{flex:1 0 auto;position:relative;display:flex;flex-direction:column;justify-content:center;
   padding:18px 4px;background:none;cursor:pointer;transition:background .15s;}
 .party-picker .pick-opt:hover{background:#15120f;}
-/* line · diamond · line between options */
-.party-picker .pick-opt+.pick-opt::before{content:'';position:absolute;top:0;left:50%;width:98px;height:1px;transform:translateX(-50%);
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.5) 40%,transparent 40% 60%,rgba(201,168,76,.5) 60%,transparent);}
-.party-picker .pick-opt+.pick-opt::after{content:'';position:absolute;top:-2px;left:50%;width:4px;height:4px;
-  background:var(--gold);opacity:.8;transform:translateX(-50%) rotate(45deg);}
+/* divider between options: a hairline straight through, a short bar in each neighbouring option's category
+   colour on either side of it (--pd-a: the option before, --pd-b: this one). Added by openPicker() in card.js. */
+.party-picker .pick-div{position:absolute;left:50%;top:0;width:190px;height:1px;transform:translate(-50%,-50%);pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.5) 22%,rgba(201,168,76,.5) 78%,transparent);}
+.party-picker .pick-div::before,.party-picker .pick-div::after{content:'';position:absolute;left:50%;width:32px;height:3px;margin-left:-16px;}
+.party-picker .pick-div::before{bottom:3px;background:var(--pd-a,var(--gold));}
+.party-picker .pick-div::after{top:3px;background:var(--pd-b,var(--gold));}
 .party-picker .pick-opt-accent{display:none;}
 /* the faded category side line, exactly as tall as label + question */
 .party-picker .pick-opt-text{position:relative;display:flex;flex-direction:column;gap:12px;padding-left:20px;text-align:left;}
@@ -778,24 +781,20 @@ body.showing-hand-summary .card-question{
 .party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;} /* same as category */
 .party-picker .pick-opt-q{font:italic 300 25px/1.18 'Cormorant Garamond',serif;color:var(--cream);text-wrap:pretty;}
 /* With the three up, Close, Back, Twist, Three and Next stay usable: the chrome
-   rows sit above the picker, only their buttons take taps (the rows themselves
-   span the screen and would block "‹ One card"), the count steps aside for
-   "‹ One card" in the same spot, and the options stop above the bottom row
-   (--pk-x, set by fitPartyPicker() in card.js). */
+   rows sit above the picker and only their buttons take taps (the rows span the
+   screen). The count and star stay on show, Three reads gold (it switches Three
+   off, which is how you get back to one card), and the options stop above the
+   bottom row (--pk-x, set by fitPartyPicker() in card.js). */
 .party-overlay.picking .party-chrome{z-index:31;pointer-events:none;}
 .party-overlay.picking .party-chrome button{pointer-events:auto;}
-.party-overlay.picking .party-count-wrap{visibility:hidden;}
 .party-picker .picker-options{margin-bottom:var(--pk-x,0px);}
 
 /* ── phone landscape ── */
 @media (orientation:landscape) and (max-height:500px){
   .party-frame{--fi:10px;--fs:20px;}
-  .party-top{padding:10px 48px 0;}
+  .party-top{padding:14px 48px 0;}
   .pc-rule{display:flex;}
-  .party-bottom{padding:0 48px 12px;gap:18px;}
-  .party-bottom::before,.party-bottom::after{content:'';width:18px;height:1px;background:rgba(201,168,76,.45);order:0;}
-  .party-prev-btn{order:-1;} .party-next-btn{order:1;}
-  .pp-long{display:inline;} .pp-short{display:none;}
+  .party-bottom{padding:0 48px 12px;}
 
   .party-inner{padding:0 48px;gap:18px;}
   .party-level{font-size:15px;}
@@ -816,14 +815,13 @@ body.showing-hand-summary .card-question{
   .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
 
   /* Draw three: three columns, vertical rules between */
-  .party-picker{padding:10px 48px 20px;}
+  .party-picker{padding:64px 48px 20px;}
   .party-picker::before,.party-picker::after{width:20px;height:20px;}
   .party-picker::before{top:10px;left:10px;} .party-picker::after{bottom:10px;right:10px;}
   .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:44px;overflow:visible;}
   .party-picker .pick-opt{padding:0;justify-content:center;}
-  .party-picker .pick-opt+.pick-opt::before{top:8%;bottom:8%;left:-22px;width:1px;height:auto;transform:none;
-    background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 42%,transparent 42% 58%,rgba(201,168,76,.5) 58%,transparent);}
-  .party-picker .pick-opt+.pick-opt::after{top:50%;left:-24px;transform:translateY(-50%) rotate(45deg);}
+  /* sideways: the divider stands upright in the gap between columns, a little dimmer */
+  .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
   .party-picker .pick-opt-text{padding-left:18px;}
   .party-picker .pick-opt-level{font-size:12px;}
   .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
@@ -833,14 +831,13 @@ body.showing-hand-summary .card-question{
 @media (min-width:900px) and (min-height:501px){
   .party-frame{--fi:24px;--fs:40px;}
   .party-top{padding:44px 88px 0;}
+  .party-top .party-twist,.party-top .party-pick{gap:10px;}
   .pc-rule{display:flex;} .pc-rule::before{width:40px;}
   .party-count{font-size:18px;letter-spacing:.24em;}
-  .party-bottom{padding:16px 88px 40px;gap:22px;}
-  .party-bottom::before,.party-bottom::after{content:'';width:24px;height:1px;background:rgba(201,168,76,.45);}
-  .party-prev-btn{order:-1;} .party-next-btn{order:1;}
-  .party-chrome button,.party-picker-back{font-size:15px;} /* readable on desktop */
-  .party-actions{gap:22px;}
-  .party-key,.pp-long{display:inline;} .pp-short{display:none;}
+  .party-bottom{padding:16px 88px 46px;}
+  .party-chrome button{font-size:15px;} /* readable on desktop */
+  .party-key{display:inline;}
+  .party-exit svg{width:18px;height:18px;}
   .party-prev-btn,.party-next-btn{font-size:18px !important;}
 
   .party-inner{padding:0 88px;gap:34px;}
@@ -848,22 +845,23 @@ body.showing-hand-summary .card-question{
   .party-level::before{width:36px;}
   .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
   .party-ornament{display:none;}
-  .party-inner:has(.party-number.twist) .party-ornament{display:flex;margin-top:6px;}
+  .party-inner:has(.party-number.twist) .party-ornament{margin-top:6px;}
   .party-ornament .po-svg{width:220px;}
   .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
   .party-number.twist::before{font-size:13px;}
 
-  .party-picker{padding:44px 88px 56px;}
+  /* the three options stacked in a centred column, one above the other */
+  .party-picker{padding:104px 88px 56px;}
   .party-picker::before,.party-picker::after{width:40px;height:40px;}
   .party-picker::before{top:24px;left:24px;} .party-picker::after{bottom:24px;right:24px;}
-  .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:80px;overflow:visible;}
-  .party-picker .pick-opt{padding:0;}
-  .party-picker .pick-opt+.pick-opt::before{top:0;bottom:0;left:-40px;width:1px;height:auto;transform:none;
-    background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 44%,transparent 44% 56%,rgba(201,168,76,.5) 56%,transparent);}
-  .party-picker .pick-opt+.pick-opt::after{top:50%;left:-42px;width:5px;height:5px;transform:translateY(-50%) rotate(45deg);}
-  .party-picker .pick-opt-text{gap:22px;padding-left:28px;}
+  .party-picker .picker-options{display:flex;flex-direction:column;overflow:visible;}
+  .party-picker .pick-opt{flex:1 1 0;padding:10px 0;justify-content:center;}
+  .party-picker .pick-opt-text{width:100%;max-width:980px;margin:0 auto;gap:22px;padding-left:28px;}
   .party-picker .pick-opt-level{font-size:13px;}
   .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
+  .party-picker .pick-div{width:300px;}
+  .party-picker .pick-div::before,.party-picker .pick-div::after{width:44px;margin-left:-22px;height:4px;}
+  .party-picker .pick-div::before{bottom:4px;} .party-picker .pick-div::after{top:4px;}
 }
 
 .drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
@@ -1219,26 +1217,31 @@ body.tok-taught .tok-hint{display:none;}
 .btn-draw.nudge{animation:drawNudge .3s ease;}
 @keyframes drawNudge{0%,100%{transform:none;}30%{transform:translateX(-3px);}60%{transform:translateX(3px);}}
 
+.party-orient{display:none;}  /* phone only, see below */
 /* ── FULLSCREEN — phone orientation toggle ──
    For anyone whose phone is orientation-locked: mirrors the CSS landscape
    layout above via a class instead of an actual media query, so the
    composition matches what a real rotation would produce. */
 @media(max-width:899px){
-  .party-orient{display:flex;align-items:center;gap:14px;position:fixed;left:50%;
-    bottom:100px;transform:translateX(-50%);z-index:6;transition:opacity .5s ease;}
+  /* the switch: a word set upright along the right edge between two short fading hairlines.
+     "Sideways" in portrait, "Upright" once switched (ui.js sets data-land). Above the picker (z-index 30). */
+  .party-orient{display:block;position:fixed;right:6px;bottom:112px;width:34px;height:170px;z-index:40;transition:opacity .5s ease;}
   .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
-  .party-orient-opt{width:15px;height:22px;padding:0;cursor:pointer;
-    background:none;border:1px solid var(--border-strong);}
-  .party-orient-opt--landscape{width:26px;height:15px;}
-  .party-orient-opt.live{border-color:#c9a84c;background:rgba(201,168,76,.16);}
+  .party-orient-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:34px;height:170px;
+    background:none;border:0;padding:0;cursor:pointer;color:var(--celadon);font-family:'Jost',sans-serif;-webkit-tap-highlight-color:transparent;}
+  .party-orient-btn:active{color:var(--gold-l);}
+  .party-orient-btn .ln{flex:1;width:1px;display:block;}
+  .party-orient-btn .ln:first-child{background:linear-gradient(180deg,transparent,rgba(201,168,76,.5));}
+  .party-orient-btn .ln:last-child{background:linear-gradient(0deg,transparent,rgba(201,168,76,.5));}
+  .party-orient-btn .tx{font:600 12px/1 'Jost',sans-serif;letter-spacing:.34em;text-transform:uppercase;writing-mode:vertical-rl;margin-right:-.34em;}
+  .party-orient-btn [data-s]{display:none;}
+  .party-orient[data-land="0"] [data-s="p"],.party-orient[data-land="1"] [data-s="l"]{display:block;}
+  .party-overlay:not(.orient-landscape) .party-picker{padding-right:44px;}
 
   .party-overlay.orient-landscape .party-frame{--fi:10px;--fs:20px;}
-  .party-overlay.orient-landscape .party-top{padding:10px 48px 0;}
+  .party-overlay.orient-landscape .party-top{padding:14px 48px 0;}
   .party-overlay.orient-landscape .pc-rule{display:flex;}
-  .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;gap:18px;}
-  .party-overlay.orient-landscape .party-bottom::before,.party-overlay.orient-landscape .party-bottom::after{content:'';width:18px;height:1px;background:rgba(201,168,76,.45);order:0;}
-  .party-overlay.orient-landscape .party-prev-btn{order:-1;} .party-overlay.orient-landscape .party-next-btn{order:1;}
-  .party-overlay.orient-landscape .pp-long{display:inline;} .party-overlay.orient-landscape .pp-short{display:none;}
+  .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;}
 
   .party-overlay.orient-landscape .party-inner{padding:0 48px;gap:18px;}
   .party-overlay.orient-landscape .party-level{font-size:15px;}
@@ -1257,17 +1260,27 @@ body.tok-taught .tok-hint{display:none;}
   .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-ornament i:last-child{background:linear-gradient(180deg,rgba(201,168,76,.5),transparent);}
   .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
 
-  .party-overlay.orient-landscape .party-picker{padding:10px 48px 20px;}
+  .party-overlay.orient-landscape .party-picker{padding:64px 48px 20px;}
   .party-overlay.orient-landscape .party-picker::before,.party-overlay.orient-landscape .party-picker::after{width:20px;height:20px;}
   .party-overlay.orient-landscape .party-picker::before{top:10px;left:10px;} .party-overlay.orient-landscape .party-picker::after{bottom:10px;right:10px;}
   .party-overlay.orient-landscape .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:44px;overflow:visible;}
   .party-overlay.orient-landscape .party-picker .pick-opt{padding:0;justify-content:center;}
-  .party-overlay.orient-landscape .party-picker .pick-opt+.pick-opt::before{top:8%;bottom:8%;left:-22px;width:1px;height:auto;transform:none;
-    background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 42%,transparent 42% 58%,rgba(201,168,76,.5) 58%,transparent);}
-  .party-overlay.orient-landscape .party-picker .pick-opt+.pick-opt::after{top:50%;left:-24px;transform:translateY(-50%) rotate(45deg);}
+  .party-overlay.orient-landscape .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
   .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:18px;}
   .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:12px;}
   .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
+}
+/* Sideways forced on an upright (tall, narrow) phone: the count needs room from the top edge,
+   and the three columns are fitted to the width so they read like a real sideways phone's:
+   nothing cut off, the dividers in the gaps between the columns, never over a label. */
+@media (max-width:899px) and (min-height:501px){
+  .party-overlay.orient-landscape .party-top{padding-top:max(58px,env(safe-area-inset-top));}
+  .party-overlay.orient-landscape .party-picker{padding:calc(max(58px,env(safe-area-inset-top)) + 70px) 40px 20px 22px;}
+  .party-overlay.orient-landscape .party-picker .picker-options{column-gap:26px;}
+  .party-overlay.orient-landscape .party-picker .pick-div{left:-13px;width:200px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:12px;gap:10px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:10px;letter-spacing:.2em;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:16px;line-height:1.22;overflow-wrap:break-word;}
 }
 /* real landscape already gets the layout above from its own media query;
    the toggle only matters for a portrait-locked phone, so hide it once the

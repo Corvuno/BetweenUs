@@ -294,6 +294,7 @@ function openPicker(options, step) {
   if (!picker || !optsEl) return;
 
   optsEl.innerHTML = '';
+  let prevColor = null;
   options.forEach(card => {
     const div = document.createElement('div');
     div.className = 'pick-opt';
@@ -308,6 +309,14 @@ function openPicker(options, step) {
         <span class="pick-opt-q">${esc(translateQ(card))}</span>
       </div>`;
     // stopPropagation prevents the card's own click handler from also firing
+    // Spotlight: the divider between options, a bar in each neighbour's category colour (styles.css .pick-div)
+    if (inParty && prevColor) {
+      const d = document.createElement('i');
+      d.className = 'pick-div'; d.setAttribute('aria-hidden', 'true');
+      d.style.setProperty('--pd-a', prevColor); d.style.setProperty('--pd-b', color);
+      div.appendChild(d);
+    }
+    prevColor = color;
     div.addEventListener('click', e => { e.stopPropagation(); choosePick(card, options, step); });
     optsEl.appendChild(div);
   });

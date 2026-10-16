@@ -845,7 +845,7 @@ async function run() {
     const texts = await page.evaluate((qs) => qs.map(q => translateQ({ question: q })), qs0);
     assert(s.qs.length === 3 && s.qs.every(t => texts.includes(t)), 'Spotlight shows different options');
     // each control is the topmost thing at its own centre (not covered by the options)
-    for (const id of ['partyExit', 'partyPrevBtn', 'partyBtnTwist', 'partyPick', 'partyNext', 'partyPickerBack']) {
+    for (const id of ['partyExit', 'partyPrevBtn', 'partyBtnTwist', 'partyPick', 'partyNext', 'partyStar']) {
       const ok = await page.evaluate((id) => { const el = document.getElementById(id); const r = el.getBoundingClientRect(); const t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!t && (t === el || el.contains(t)); }, id);
       assert(ok, `#${id} is covered while the options show`);
     }
@@ -869,15 +869,71 @@ async function run() {
     assert(!s.open && !s.three && s.idx === 2 && s.sit === 0, `Three off in Spotlight with options up: ${JSON.stringify(s)}`);
     await page.locator('#partyExit').click();
     await page.waitForTimeout(400);
-    // "‹ One card" does the same: on, open Spotlight, press it
+    // "‹ One card" is gone; the Three toggle (top-right) does that job and shows gold while the options are up
+    assert(await page.locator('#partyPickerBack').count() === 0, '#partyPickerBack ("‹ One card") is still in the page');
     await page.locator('#pickToggle').click();
     await waitPicker(true);
     await page.locator('#btnParty').click();
     await page.waitForTimeout(400);
-    await page.locator('#partyPickerBack').click();
+    s = await page.evaluate(() => { const b = document.getElementById('partyPick'); const r = b.getBoundingClientRect(); const c = document.querySelector('#partyOverlay .party-count-wrap').getBoundingClientRect(); return { on: b.classList.contains('on'), colour: getComputedStyle(b).color, top: r.top < 120 && r.left > innerWidth / 2, countShown: getComputedStyle(document.getElementById('party-count')).visibility !== 'hidden' && c.height > 0 }; });
+    assert(s.on && s.top, `Three toggle while picking: ${JSON.stringify(s)}`);
+    assert(s.countShown, 'the count is hidden while picking');
+    await page.locator('#partyPick').click();
     await page.waitForTimeout(500);
     s = await page.evaluate(() => ({ open: state.pickerOpen, three: pickMode }));
-    assert(!s.open && !s.three, '"‹ One card" did not switch Three off');
+    assert(!s.open && !s.three, 'the Three toggle did not switch Three off from the options');
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(300);
+  });
+
+  await check('Spotlight layout: arrows in the bottom corners, gold Close between, Twist/Three top corners, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(500);
+    const box = id => page.evaluate(id => { const r = document.querySelector(id).getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom, cx: (r.left + r.right) / 2 }; }, id);
+    const [pv, ex, nx, tw, pk, st, ct] = await Promise.all(['#partyPrevBtn', '#partyExit', '#partyNext', '#partyBtnTwist', '#partyPick', '#partyStar', '#party-count'].map(box));
+    assert(pv.l < ex.l && ex.r < nx.r && Math.abs(pv.t - ex.t) < 30 && ex.t > 844 - 140, 'back / Close / next are not in one bottom row');
+    assert(Math.abs(ex.cx - 195) < 4, 'Close is not centred at the bottom');
+    assert(tw.l < 100 && pk.r > 290 && tw.t < 140 && pk.t < 140, 'Twist and Three are not in the top corners');
+    assert(st.t >= ct.b - 2 && Math.abs(st.cx - ct.cx) < 6, 'the star is not under the count');
+    assert(await page.evaluate(() => getComputedStyle(document.querySelector('.party-ornament')).display === 'none'), 'the line under the question is still showing');
+    assert(await page.evaluate(() => !!document.querySelector('#partyExit svg') && getComputedStyle(document.getElementById('partyExit')).color === 'rgb(201, 168, 76)'), 'Close is not gold with the Spotlight symbol');
+    // the Sideways switch
+    const vis = () => page.evaluate(() => { const o = document.getElementById('partyOrient'); return { shown: getComputedStyle(o).display !== 'none', word: [...o.querySelectorAll('[data-s]')].filter(e => getComputedStyle(e).display !== 'none').map(e => e.textContent).join(''), land: document.getElementById('partyOverlay').classList.contains('orient-landscape') }; });
+    let o = await vis();
+    assert(o.shown && o.word === 'Sideways' && !o.land, `switch in portrait: ${JSON.stringify(o)}`);
+    await page.locator('#partyOrientBtn').click();
+    o = await vis();
+    assert(o.land && o.word === 'Upright', `after Sideways: ${JSON.stringify(o)}`);
+    await page.locator('#partyOrientBtn').click();
+    o = await vis();
+    assert(!o.land && o.word === 'Sideways', `after Upright: ${JSON.stringify(o)}`);
+    // forced sideways with Three up: three columns, nothing cut off, dividers in the gaps
+    await page.locator('#partyOrientBtn').click();
+    await page.locator('#partyPick').click();
+    await waitPicker(true);
+    await page.waitForTimeout(300);
+    const cols = await page.evaluate(() => [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => { const r = e.getBoundingClientRect(); return { l: r.left, r: r.right, ok: e.scrollWidth <= e.clientWidth + 1 }; }));
+    assert(cols.length === 3 && cols[0].r <= cols[1].l + 1 && cols[1].r <= cols[2].l + 1 && cols.every(c => c.l >= 0 && c.r <= 390 && c.ok), `forced sideways Three columns: ${JSON.stringify(cols)}`);
+    await page.locator('#partyOrientBtn').click();
+    await page.locator('#partyPick').click();
+    await page.waitForTimeout(400);
+    // PC: no switch, options stacked one above the other
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.waitForTimeout(300);
+    assert(!(await vis()).shown, 'the Sideways switch shows on a PC');
+    await page.locator('#partyPick').click();
+    await waitPicker(true);
+    await page.waitForTimeout(300);
+    const rows = await page.evaluate(() => [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, b: r.bottom }; }));
+    assert(rows.length === 3 && rows[0].b <= rows[1].t + 1 && rows[1].b <= rows[2].t + 1 && Math.abs(rows[0].l - rows[2].l) < 2, `PC options not stacked: ${JSON.stringify(rows)}`);
+    assert(await page.evaluate(() => document.querySelectorAll('#partyPickerOptions .pick-div').length === 2), 'expected 2 dividers between 3 options');
+    await page.locator('#partyPick').click();
+    await page.waitForTimeout(300);
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
   });
