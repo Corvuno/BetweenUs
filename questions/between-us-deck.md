@@ -233,6 +233,16 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.13 — Life rework complete
+
+- **Life 2**
+  - Old: "What would have to change for your life to feel more like your own?"
+  - New: "What's the first thing you do after the alarm — before you're anyone for anybody?"
+- **Life 12**
+  - Old: "If you stopped explaining why you can't, what would change about how you live?"
+  - New: "Which piece of admin have you been putting off the longest — and what's actually stopping you?"
+- Life rework done — Life 1, 3, 5, 8, 9 kept (Life 1 reworded), seven new cards; owner sees Life 7 (forms, queues, phone calls — things to get through) and Life 12 (paperwork you put off) as different subjects.
+
 ## Patch v7.12 — Life rework: five new cards
 Removed cards are not benched, by owner decision (one exception: see the BENCH entry for the commute card).
 

@@ -68,7 +68,7 @@ const NEWDECK_CARDS = [
 
   // ─── LIFE ───
   { level: "life", question: "People assume something about your life that's not true..." },
-  { level: "life", question: "What would have to change for your life to feel more like your own?" },
+  { level: "life", question: "What's the first thing you do after the alarm — before you're anyone for anybody?" },
   { level: "life", question: "Who would know it was you from just one small habit, without ever seeing your face?" },
   { level: "life", question: "What do you cook when you're only cooking for yourself?" },
   { level: "life", question: "What takes up far more of your life than anyone would guess?" },
@@ -78,7 +78,7 @@ const NEWDECK_CARDS = [
   { level: "life", question: "What does getting older take from you that you didn't expect, and what does it give?" },
   { level: "life", question: "What's the strangest thing you've seen on public transport — or from behind the wheel?" },
   { level: "life", question: "How many unread messages are you sitting on right now — and which one are you avoiding?" },
-  { level: "life", question: "If you stopped explaining why you can't, what would change about how you live?" },
+  { level: "life", question: "Which piece of admin have you been putting off the longest — and what's actually stopping you?" },
 
   // ─── HOME ───
   { level: "home", question: "Who is allowed in your home unannounced?" },
