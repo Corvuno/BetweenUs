@@ -101,3 +101,12 @@ Three toggle replaces "‹ One card"; three options stacked on PC; G2 dividers (
 vertical); question line removed; diamonds beside the count and between Twist and Three
 removed; O3 switch; forced-sideways pick-three fixed; count and star stay visible in
 pick-three with room from the top edge; end-of-hand hint just above the bottom row.
+
+## Built — 2026-10-16
+
+Live on main (d626805): L2, Close at the bottom, Three toggle in the picker, stacked options
+on PC, G2 dividers, question line and extra diamonds removed, O3 switch, end-of-hand hint
+kept. Checked by the Keeper against rounds 2–3 at phone, sideways, PC and forced-wide; tests
+37/37. Sent back: forced-wide pick-three text was too small → Keeper's design call: it stacks
+like upright pick-three at full size. Twist divider follows round 4; Keeper's call on its
+placement: lined up with the text on the left, not centred.
