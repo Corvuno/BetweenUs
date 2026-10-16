@@ -69,3 +69,16 @@ rules stay hidden (owner). The L2 build starts from current main so none of this
 - Close at the very bottom on phone: fine for now.
 - The phone's portrait/landscape switch keeps working in the new layout: part of this job.
 - Twist card's ornament line: owner asked to be shown it before deciding (in round 2).
+
+## Round 2 outcome — 2026-10-16
+
+Round 2: https://claude.ai/artifact/DrA8o1sX3hSexpy6QVG2qm
+- Flourish: **G2, colour stripes** (hairline straight through, a short bar in each neighbour's
+  category colour on either side). On the vertical divider (sideways phone) the stripes are
+  dimmed somewhat.
+- Twist card: the line between question and twist text gets the flourish too (owner: "that's
+  where the flourish comes in"). Open: what colour the twist side's bar takes.
+- Orientation switch: owner asked for better ideas than the two outlined rectangles → a
+  small mockup round of its own.
+- Mockup slip to avoid in the build: count and star stay at the top in pick-three; the count
+  needs room from the top edge when the orientation switch shows.
