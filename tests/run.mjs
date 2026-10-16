@@ -405,11 +405,12 @@ async function run() {
   await check('end of hand: the card shows its back with the pause mark and INTERMEZZO; the old summary is gone; Tap to flip card', async () => {
     // Run the current hand out to its end (tap through, waiting out the
     // 175ms flip animation each time so we don't race the DOM update),
-    // then the 500ms showHandSummary() delay past the last card.
-    for (let i = 0; i < 20 && !(await imAtEnd()); i++) {
+    // then the end message and its fade before showHandSummary().
+    for (let i = 0; i < 20 && !(await page.evaluate(() => state.currentIndex >= state.visibleDeck.length)); i++) {
       await page.locator('#card').click();
       await page.waitForTimeout(300);
     }
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 }).catch(() => {});   // the message, its fade, then the turn
     await page.waitForTimeout(600);
     assert(await imAtEnd(), `did not reach the end of the hand after 20 taps (${await questionText(page)})`);
     assert((await imSide()) === 'intermezzo', `end of hand did not open on Intermezzo: ${await imSide()}`);
@@ -504,7 +505,9 @@ async function run() {
     const st = await page.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, back: document.getElementById('card').classList.contains('is-start'), body: document.body.classList.contains('showing-hand-summary') }));
     assert(st.side === null && st.idx === n - 1 && !st.back && !st.body, `Back from Intermezzo: ${JSON.stringify(st)}`);
     // and forward again to the end of the hand
-    await page.locator('#card').click(); await page.waitForTimeout(900);
+    await page.locator('#card').click();
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 }).catch(() => {});   // message, fade, then the turn
+    await page.waitForTimeout(400);
     assert((await imSide()) === 'intermezzo', 'did not come back to Intermezzo after stepping forward');
   });
 
@@ -561,7 +564,7 @@ async function run() {
     assert((await imBtn()) !== 'Hold to continue' && (await imBtn()) !== 'Tap to flip card', 'button still in end-of-hand mode');
   });
 
-  await check('end of hand: a hold on Intermezzo (button or card) skips the list and starts a fresh hand, with no flip first; a tap in the 500 ms before Intermezzo does not flip', async () => {
+  await check('end of hand: a hold on Intermezzo (button or card) skips the list and starts a fresh hand, with no flip first; a tap while the end message is up does not flip', async () => {
     for (const sel of ['#btn-next', '#card']) {
       await page.evaluate(() => { state.currentIndex = state.visibleDeck.length; showHandSummary(); });
       await page.waitForTimeout(400);
@@ -580,8 +583,37 @@ async function run() {
     await page.waitForTimeout(150);
     await page.locator('#card').click(); await page.waitForTimeout(100);
     assert(await page.evaluate(() => state.handSide) === null, 'a tap before Intermezzo flipped the card');
-    await page.waitForTimeout(700);
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 }).catch(() => {});
     assert((await imSide()) === 'intermezzo', 'Intermezzo did not come up after the gap');
+  });
+
+  await check('end of hand: the message after the last card is the exact words, centred, then fades out into Intermezzo; same in fullscreen', async () => {
+    for (const fs of [false, true]) {
+      await freshHand({ three: false });
+      await page.locator('#btn-next').click(); await waitForCardIndex(page, 1);
+      await page.waitForTimeout(1200);
+      if (fs) { await page.locator('#btnParty').click(); await page.waitForTimeout(500); }
+      const n = await page.evaluate(() => state.visibleDeck.length);
+      await page.evaluate(() => { state.currentIndex = state.visibleDeck.length - 2; _nextCardBase(); });   // draw the last card, then step past it
+      await page.waitForTimeout(300);
+      await page.evaluate(() => { nextCard(); });
+      await page.waitForTimeout(900);
+      const sel = fs ? '#party-question .end-msg' : '#card-question .end-msg';
+      const t = await page.locator(sel).first().innerText();
+      const want = n === 1 ? 'That was your 1 card.' : `Those were your ${n} cards.`;
+      const fresh = await page.evaluate(() => _unseenCount(state.fullDeck));
+      if (fresh > 0) assert(t.trim() === want, `end message: "${t}" (wanted "${want}")`);
+      const al = await page.locator(sel).first().evaluate(el => getComputedStyle(el).textAlign);
+      assert(al === 'center', `end message not centred: ${al}`);
+      const ms = await page.evaluate(() => window.__x = state.handSide);
+      assert(ms === null, 'Intermezzo came up while the message should still be on screen');
+      await page.waitForFunction(() => document.querySelector('.end-msg.out'), null, { timeout: 6000 });
+      await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 3000 });
+      if (fs) { await page.evaluate(() => document.getElementById('partyOverlay').classList.contains('open')); }
+      const left = await page.locator('.end-msg').count();
+      assert(left === 0, 'the end message is still in the DOM after Intermezzo came up');
+      if (fs) { await page.locator('#partyOverlay').evaluate(() => {}); await page.evaluate(() => exitParty()); await page.waitForTimeout(300); }
+    }
   });
 
   await check('end of hand: changing a preset or the card limit from Intermezzo or the list clears the end state', async () => {
@@ -605,6 +637,7 @@ async function run() {
     await page.locator('#btnParty').click();
     await page.waitForTimeout(500);
     for (let i = 0; i < 8 && !(await imSide()); i++) { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(450); }
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 }).catch(() => {});   // message, fade, then the turn
     await page.waitForTimeout(500);
     assert((await imSide()) === 'intermezzo', `fullscreen did not end on Intermezzo: ${await imSide()}`);
     const ov = page.locator('#partyOverlay');
@@ -736,7 +769,7 @@ async function run() {
     const st = await page.evaluate(() => ({ len: state.visibleDeck.length, logged: state.sessionLog.length, idx: state.currentIndex, open: state.pickerOpen }));
     assert(st.len === 5 && st.logged === 5 && st.idx === 4 && !st.open, `after 5 picks: ${JSON.stringify(st)}`);
     await page.locator('#card').click();   // after the last step: the normal end screen, no sixth pick
-    await page.waitForTimeout(900);
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 }).catch(() => {});   // message, fade, turn
     assert(await page.evaluate(() => document.body.classList.contains('showing-hand-summary') && !state.pickerOpen), 'no end screen after the 5th pick');
   });
 

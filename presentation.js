@@ -99,6 +99,7 @@ function updatePartyDisplay(card) {
   const ps  = document.getElementById('partyStar');
   const pv  = document.getElementById('partyPrevBtn');
   if (pv) pv.disabled = state.currentIndex <= 0;
+  if (pq) pq.classList.remove('is-end-msg');
   if (!card) {
     if (pq) pq.textContent = 'Draw a card to begin.';
     if (pl) { pl.textContent=''; pl.style.color=''; }
@@ -596,6 +597,7 @@ function paintHandSide() {
   if (pl) { pl.textContent = ''; pl.style.color = ''; }
   if (pc) pc.textContent = '';   // the count slot stays empty at the end of a hand
   if (pq) {
+    pq.classList.remove('is-end-msg');
     if (isList) { pq.innerHTML = handListHTML(); bindHandList(pq); }
     else {
       const mark = document.querySelector('#cardBack .cb-fermata');
@@ -661,6 +663,7 @@ function showHandIntermezzo() {
 // change, Explore or a preset picked mid-way). Card-face classes are dropped by
 // setStartBack() so the back can fade out with its mark intact.
 function hideHandSummary() {
+  clearEndTimers();   // a pending end-message fade / turn belongs to the hand that just ended
   const was = !!state.handSide;
   handSideToken++;
   handStill = false;

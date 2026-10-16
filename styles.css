@@ -293,6 +293,15 @@ body{
   cursor:text;
 }
 .card-question.in{opacity:1;transform:none;}
+/* The message after the last card of a hand: quiet, centred on the card (both
+   surfaces); it fades out before the card turns to Intermezzo. */
+.end-msg{display:block;font-size:1rem;color:var(--muted);text-align:center;transition:opacity .45s ease;}
+.end-msg.out{opacity:0;}
+@media (prefers-reduced-motion:reduce){.end-msg{transition:none;}}
+.card-body-inner:has(.end-msg){padding-bottom:18px;}      /* even padding, so the message sits in the middle of the card */
+.card-body-inner:has(.end-msg) .card-level{display:none;}
+.party-inner:has(.is-end-msg) .party-ornament{display:none;}
+.party-question.is-end-msg{align-self:stretch;text-align:center;font-size:clamp(1.1rem,1.6vw,1.5rem);line-height:1.5;}
 /* The one place that selectable text is a problem, not a feature: the
    end-of-hand summary reuses this same element (showHandSummary() in
    presentation.js writes the hand list into #card-question),

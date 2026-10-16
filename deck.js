@@ -376,6 +376,27 @@ function renderEndMessage(html) {
   }, 175);
 }
 
+/* The message after the last card of a hand (in the card, and in fullscreen):
+   it stays up long enough to read, fades out, and only then does the card turn
+   to its back (showHandSummary). Timers are kept so a new card or hand shown in
+   the meantime (hold-to-continue, a settings change) cancels the pending
+   fade/turn — hideHandSummary() calls clearEndTimers(). */
+const END_MSG_READ_MS = { 1: 2600, 2: 3600 };   // from the start of the swap to the start of the fade
+const END_MSG_FADE_MS = 450;
+let _endTimers = [];
+let _endMsgLines = 1;
+function clearEndTimers() { _endTimers.forEach(clearTimeout); _endTimers = []; }
+function endMessageToIntermezzo() {
+  clearEndTimers();
+  const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = END_MSG_READ_MS[_endMsgLines] || END_MSG_READ_MS[1];
+  _endTimers.push(setTimeout(() => {
+    if (reduced) { showHandSummary(); return; }
+    document.querySelectorAll('.end-msg').forEach(m => m.classList.add('out'));
+    _endTimers.push(setTimeout(showHandSummary, END_MSG_FADE_MS));
+  }, wait));
+}
+
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
@@ -393,18 +414,21 @@ function _nextCardBase() {
   } else {
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
     const fresh = _unseenCount(state.fullDeck);
-    /* two separate lines (each its own block, with a space between in the text
-       too): "That's your 236." and "234 new cards left" used to run together
-       as "236.234" wherever the line breaks were lost */
+    /* Each line is its own block. Unseen cards left in the selection: one line.
+       Nothing unseen left: two lines, with M = the whole selection (fullDeck),
+       not the hand. */
     const n = state.visibleDeck.length;
-    const line1 = fresh > 0
-      ? `That's your ${n} ${n===1?'card':'cards'}.`
-      : `That's the whole deck — all ${n} cards.`;
-    const line2 = fresh > 0
-      ? `${fresh} ${fresh===1?'new card left — hold to continue.':'new cards left — hold to continue.'}`
-      : `Add categories to keep going, or hold to replay this deck.`;
-    const html = `<span style="font-size:1rem;color:var(--muted)"><span style="display:block">${line1}</span> <span style="display:block;margin-top:1.4em">${line2}</span></span>`;
+    const lines = fresh > 0
+      ? [`Th${n===1?'at was':'ose were'} your ${n} ${n===1?'card':'cards'}.`]
+      : [`You've drawn all ${state.fullDeck.length} cards in your selection.`, `Add categories to keep going.`];
+    _endMsgLines = lines.length;
+    const html = `<span class="end-msg">${lines.map((l,i) => `<span style="display:block${i?';margin-top:1.4em':''}">${l}</span>`).join('')}</span>`;
     renderEndMessage(html);
+    // fullscreen: the same message, centred in the fullscreen card
+    const pq = document.getElementById('party-question');
+    const pl = document.getElementById('party-level');
+    if (pl) { pl.textContent = ''; pl.style.color = ''; }
+    if (pq) { pq.innerHTML = html; pq.classList.add('is-end-msg'); }
   }
 }
 // nextCard is defined below (APP SHELL section) — it wraps _nextCardBase with
@@ -532,8 +556,7 @@ function nextCard() {
     case 'advance':
       _nextCardBase();
       if (action.wasAtEnd) {
-        if (state.partyMode) setTimeout(runPartySummary, 250);
-        else                 setTimeout(showHandSummary, 500);
+        endMessageToIntermezzo();   // message, fade, then the card turns to Intermezzo (both surfaces)
       }
       return;
   }
