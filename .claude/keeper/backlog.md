@@ -54,3 +54,11 @@ have their own Play links and README rows, next to the real game. Kept so the ow
 show where it came from. Before the site goes public: decide how they're reachable, so a
 visitor who finds those links doesn't take an old, unfinished version for the game, and so
 more old versions don't pile up as loose pages next to it.
+
+## PC layout: two directions in the fridge (2026-10-16)
+
+From the PC layout rounds (round 1 https://claude.ai/artifact/KZamSbhQ892nfSf6GsxiDb, round 2
+https://claude.ai/artifact/RHEAQYwN23trosYVCLWorE). The owner would consider only these two,
+but both lose the plot on where the controls sit, so they're parked while round 3 starts over:
+- Option 2, Triptych: three framed Art Deco panels, card in the middle.
+- Option 3, Spotlight-led: the question large across a framed screen, no card box.
