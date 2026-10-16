@@ -134,3 +134,11 @@ and what people notice"), 11 (unread messages). Bench: the commute card (Life 10
 "also fun"). Open: Life 2 (sleep routine — owner liked alt 1 and alt 3, asked for two more
 versions of each); Life 12 (owner picked the put-off-admin card, which they also asked to bench
 from Life 7 — asked which; and it would make two admin cards in Life).
+
+**2026-10-16 (writer lists, After Dark):** Subject lists rebuilt outward from each category's
+purpose (they had been lifted from the cards). Carnal now also covers what you experienced and
+what you like and dislike. Bare: "the wrong name at the wrong moment" and "embarrassing
+purchases" removed (owner: too juvenile, not what this deck is). Us: Intimate writer list
+approved; app line: "Ask each other what you'd never ask anyone else ✦". Kink and Flesh lists
+to be redone the same way. Owner questioned "laughing during sex" — I had pushed it in three
+places (Carnal 8 alt 1, Carnal list, Us: Intimate list).
