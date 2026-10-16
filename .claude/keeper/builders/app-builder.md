@@ -9,3 +9,4 @@ Format: **date** — what happened / what to do instead.
 
 - **2026-10-12** — The owner: "the word deal does not exist." / Players *draw* a card (they take it, it's theirs); nothing is dealt or handed out, and no gambling or card-table words. Use "draw" for every card action, in copy, mockups, comments and names alike. (from lesson 2026-10-12)
 - **2026-10-13** — A help line talked down to the player ("all the little tips for first-timers"). / Copy in this app never treats the player as a beginner: no "little", no "tips for first-timers". Write as one adult to another — say who it's for or what it does. (from lesson 2026-10-13)
+- **2026-10-16** — The end-of-hand message shipped in a small muted style the owner couldn't read. / Any text a player has to read gets a readable size, never the small 'quiet message' style by default. (from lesson 2026-10-16)

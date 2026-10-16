@@ -115,3 +115,5 @@ before Intermezzo, is centred and then fades out into Intermezzo (no cut). Exact
   "Add categories to keep going."
   (312 = the size of the whole selection, not the hand.) No "hold to replay": the button
   already says what to do.
+
+- (owner, 2026-10-16) The message after the last card is far too small: it takes the size of the INTERMEZZO word (in fullscreen: the fullscreen INTERMEZZO word). The list stays as it is.
