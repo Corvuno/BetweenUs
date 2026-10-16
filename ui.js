@@ -125,7 +125,14 @@ if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
 
 // Draw controls
 document.getElementById('drawMoreBtn').addEventListener('click', drawMore);
-document.getElementById('btn-next').addEventListener('click', nextCard);
+// At Intermezzo (end of a hand, side 'intermezzo') a tap flips the card to the hand's
+// list; a hold skips the list and continues (END_HOLD_TARGETS gate below, whose
+// capture-phase click guard swallows the release of a hold before it gets here).
+// Before Intermezzo is up (the 500 ms after the last card) a tap does what it always did.
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (state.handSide === 'intermezzo') { flipHandList(); return; }
+  nextCard();
+});
 document.getElementById('btn-prev').addEventListener('click', function() {
   if (this.classList.contains('disabled')) { shakeRowBtn(this); return; }   // before the first card: shake, nothing else
   prevCard();
@@ -162,6 +169,7 @@ document.getElementById('card').addEventListener('click', e => {
     if (dragged) return; // was a drag-select, not a tap
   }
   if (window.getSelection && String(window.getSelection()).length > 0) return;
+  if (state.handSide === 'intermezzo') { flipHandList(); return; }   // a tap on the Intermezzo card turns it over
   nextCard();
   updateDeckInfo();
 });
@@ -313,6 +321,7 @@ function spotlightBrightenOnce() {
       // tap — only act on card area
       if (!e.target.closest('.party-card')) return;
       if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
+      else if (state.handSide === 'intermezzo') partyThrottle(() => { flipHandList(); });
       else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
     }
   }, { passive: false });
@@ -324,6 +333,7 @@ function spotlightBrightenOnce() {
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
+    else if (state.handSide === 'intermezzo') partyThrottle(() => { flipHandList(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
   });
 })();
@@ -421,7 +431,7 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
 })();
 
 // End of a hand: pressing and holding the card, Next Card or the fullscreen overlay
-// continues into a fresh hand.
+// continues into a fresh hand (on Intermezzo and on the list alike).
 const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const HOLD = 550;
@@ -447,9 +457,8 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
          expired mid-hold, letting the release advance a second card. */
       window._endHoldFired = true;
       hint(false);
-      /* Intermezzo: the first hold turns the card over to the hand's list; the
-         next one (list side) starts the next hand. */
-      if (state.handSide === 'intermezzo') { flipHandList(); return; }
+      /* A hold continues into the next hand from either side of Intermezzo (on the
+         Intermezzo side a tap flips instead — see the click handlers). */
       window._endHoldOK    = true;
       if (typeof nextCard === 'function') nextCard();
     }, HOLD);
@@ -810,6 +819,14 @@ applyToggleUI();
      the drawer and eating its taps. Re-home both to <body>: scrim below, drawer above. */
   document.body.appendChild(scrim);
   document.body.appendChild(catArea);
+  /* Things that must wait for the sheet to be fully gone (the start-card logo
+     animation) register with afterCatsClosed(); they run on the sheet's own
+     transitionend, with a timeout as a safety net. */
+  let catsClosing=false; const closeWaiters=[];
+  function catsBusy(){ return catArea.classList.contains('sheet-open') || catsClosing; }
+  function flushCloseWaiters(){ catsClosing=false; if(catArea.classList.contains('sheet-open')) return; closeWaiters.splice(0).forEach(fn=>fn()); }
+  window.afterCatsClosed=function(fn){ if(catsBusy()) closeWaiters.push(fn); else fn(); };
+  window.catsBusy=catsBusy;
   function openCats(){
     if(!togglesWrap.classList.contains('open')) catLabel.click(); /* keep original state machine in sync */
     catArea.classList.add('sheet-open'); scrim.classList.add('on');
@@ -826,7 +843,15 @@ applyToggleUI();
     catArea.focus({preventScroll: true});
   }
   function closeCats(){
+    const wasOpen=catArea.classList.contains('sheet-open');
     catArea.classList.remove('sheet-open'); scrim.classList.remove('on');
+    if(wasOpen){
+      catsClosing=true;
+      const done=e=>{ if(e && (e.target!==catArea || e.propertyName!=='transform')) return;
+        catArea.removeEventListener('transitionend',done); flushCloseWaiters(); };
+      catArea.addEventListener('transitionend',done);
+      setTimeout(()=>{ catArea.removeEventListener('transitionend',done); if(catsClosing) flushCloseWaiters(); },600);
+    }
     unlockBodyScroll();
     catArea.setAttribute('aria-hidden', 'true');
     $('d-cats').setAttribute('aria-expanded', 'false');

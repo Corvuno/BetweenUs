@@ -531,6 +531,8 @@ body.showing-hand-summary .card-question{
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-b{animation-delay:.8s;}
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-fl path{animation-duration:1s;animation-delay:1.4s;}
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
+/* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
+.card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
 /* the card turns over on its side, like a real card: edge-on at 175ms (the face swap), then
    the other face comes round. Back to Intermezzo turns it the other way. */
 @keyframes cardTurn{0%{transform:perspective(1100px) rotateY(0);animation-timing-function:ease-in;}49.9%{transform:perspective(1100px) rotateY(90deg);}50%{transform:perspective(1100px) rotateY(-90deg);animation-timing-function:ease-out;}100%{transform:perspective(1100px) rotateY(0);}}

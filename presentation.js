@@ -458,7 +458,7 @@ function updateDrawMore() {
     nextBtn.classList.add('hold-mode');   /* distinct look: this one needs a hold */
     // Intermezzo: the first hold turns the card to the list; on the list the
     // next hold starts the next hand (until Intermezzo is up, a hold continues).
-    nextBtn.textContent = state.handSide === 'intermezzo' ? 'Hold to flip card' : 'Hold to continue';
+    nextBtn.textContent = state.handSide === 'intermezzo' ? 'Tap to flip card' : 'Hold to continue';
     const hintEl = document.getElementById('endHint');
     if (hintEl) hintEl.textContent = nextBtn.textContent;
   } else {
@@ -474,9 +474,9 @@ function updateDrawMore() {
 
 // ── END OF HAND: Intermezzo ──────────────────────────────────────────────────
 // The end of every hand is a pause, not a report. The card shows its lattice
-// back with the pause mark and the word INTERMEZZO (side 'intermezzo'); a hold
+// back with the pause mark and the word INTERMEZZO (side 'intermezzo'); a tap
 // turns it over to the hand's questions, each with its own star (side 'list');
-// a second hold starts the next hand (ui.js END_HOLD_TARGETS gate). Back on the
+// a hold on either side starts the next hand (ui.js END_HOLD_TARGETS gate). Back on the
 // list side returns to Intermezzo (prevCard in deck.js). state.handSide says
 // which side is up ('intermezzo' | 'list' | null when no hand has ended).
 // Fullscreen shows the same two sides in #partyOverlay; both surfaces are
@@ -633,7 +633,7 @@ function showHandSummary() {
   renderProgress(state.visibleDeck.length);
   updateDrawMore();
 }
-// Hold #1 at the end of a hand: turn the card over to the list.
+// A tap on Intermezzo: turn the card over to the list.
 function flipHandList() {
   if (state.handSide !== 'intermezzo') return;
   state.handSide = 'list';

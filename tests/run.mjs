@@ -384,14 +384,25 @@ async function run() {
     assert(!(await overlay.evaluate(el => el.classList.contains('open'))), 'party overlay did not close');
   });
 
-  // ── K. End of hand: Intermezzo, hold to flip to the list, hold to continue ──
+  // ── K. End of hand: Intermezzo, tap to flip to the list, hold (either side) to continue ──
   const imAtEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-hand-summary'));
   const imSide = async () => await page.evaluate(() => state.handSide);
   const imWaitSide = async (side) => { await page.waitForFunction(s => state.handSide === s, side, { timeout: 3000 }); await page.waitForTimeout(350); };
   const imHold = async (selector) => { await pointerHold(page, selector, 650); await page.waitForTimeout(400); };
+  // A tap: press and release well under the hold threshold, then the click a tap leaves behind.
+  const imTap = async (selector) => {
+    await page.evaluate(sel => document.querySelector(sel).dispatchEvent(new PointerEvent('pointerdown', { bubbles: true })), selector);
+    await page.waitForTimeout(80);
+    await page.evaluate(sel => {
+      const el = document.querySelector(sel);
+      el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    }, selector);
+    await page.waitForTimeout(400);
+  };
   const imBtn = async () => (await page.locator('#btn-next').textContent()).trim();
 
-  await check('end of hand: the card shows its back with the pause mark and INTERMEZZO; the old summary is gone; Hold to flip card', async () => {
+  await check('end of hand: the card shows its back with the pause mark and INTERMEZZO; the old summary is gone; Tap to flip card', async () => {
     // Run the current hand out to its end (tap through, waiting out the
     // 175ms flip animation each time so we don't race the DOM update),
     // then the 500ms showHandSummary() delay past the last card.
@@ -421,26 +432,13 @@ async function run() {
     });
     const got = await page.evaluate(() => document.body.style.getPropertyValue('--im-color').trim().toLowerCase());
     assert(got === want, `--im-color ${got} is not the last card's chapter colour ${want}`);
-    assert((await imBtn()) === 'Hold to flip card', `button reads "${await imBtn()}"`);
+    assert((await imBtn()) === 'Tap to flip card', `button reads "${await imBtn()}"`);
+    assert((await page.locator('#endHint').textContent()).trim() === 'Tap to flip card', 'the end hint does not follow the button');
   });
 
-  await check('end of hand: a quick tap on the button or the card does nothing; a hold on the button flips to the list (stars, no title, no corner star)', async () => {
-    // Quick tap: pointerdown+up well under the hold threshold must NOT flip or advance.
-    await page.evaluate(() => {
-      document.getElementById('btn-next').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-    });
-    await page.waitForTimeout(80);
-    await page.evaluate(() => {
-      const el = document.getElementById('btn-next');
-      el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
-      el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-    });
-    await page.locator('#card').click();
-    await page.waitForTimeout(300);
-    assert((await imSide()) === 'intermezzo', 'a tap flipped or advanced the end-of-hand card');
-
-    await imHold('#btn-next');
-    assert((await imSide()) === 'list', `a hold on the button did not flip to the list: ${await imSide()}`);
+  await check('end of hand: a tap on the button flips to the list (stars, no title, no corner star); a tap on the list does not flip back or move the hand', async () => {
+    await imTap('#btn-next');
+    assert((await imSide()) === 'list', `a tap on the button did not flip to the list: ${await imSide()}`);
     assert((await imBtn()) === 'Hold to continue', `button reads "${await imBtn()}" on the list side`);
     const info = await page.evaluate(() => ({
       rows: document.querySelectorAll('#card-question .hd-row').length, n: state.visibleDeck.length,
@@ -454,6 +452,10 @@ async function run() {
     assert(info.level === '' && info.cls.includes('is-hand-list') && !info.cls.includes('is-start'), `list side state wrong: ${JSON.stringify(info)}`);
     assert(!(await page.locator('#cardStar').isVisible()), 'the card\'s corner star shows on the list side');
     assert(await page.locator('#card .hd-star').first().isVisible(), 'row stars are not visible');
+    // taps on the list text leave the card where it is
+    await page.locator('#card .hd-q').first().click();
+    await page.waitForTimeout(300);
+    assert((await imSide()) === 'list', 'a tap on the list changed the side');
   });
 
   await check('hand list: a row star toggles the same favourite the card star uses; the list scrolls; scrolling does not move the hand', async () => {
@@ -483,11 +485,11 @@ async function run() {
   await check('end of hand: Back on the list side (button, arrow key, swipe right) turns to Intermezzo; on Intermezzo it goes back a card as before', async () => {
     await page.locator('#btn-prev').click(); await imWaitSide('intermezzo');
     assert(await page.locator('#card').evaluate(el => el.classList.contains('is-start') && !el.classList.contains('is-hand-list')), 'not back on the Intermezzo card');
-    assert((await imBtn()) === 'Hold to flip card', 'button did not go back to "Hold to flip card"');
-    await imHold('#card');   // a hold on the card flips as well
-    assert((await imSide()) === 'list', 'a hold on the card did not flip to the list');
+    assert((await imBtn()) === 'Tap to flip card', 'button did not go back to "Tap to flip card"');
+    await page.locator('#card').click(); await page.waitForTimeout(400);   // a tap on the card flips as well
+    assert((await imSide()) === 'list', 'a tap on the card did not flip to the list');
     await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo');
-    await imHold('#btn-next'); assert((await imSide()) === 'list', 'could not flip again');
+    await imTap('#btn-next'); assert((await imSide()) === 'list', 'could not flip again');
     // swipe right on the card
     await page.evaluate(() => {
       const c = document.getElementById('card');
@@ -548,7 +550,7 @@ async function run() {
   });
 
   await check('end of hand: a hold on the list side starts a fresh hand (card face back, flip state cleared)', async () => {
-    await imHold('#btn-next'); assert((await imSide()) === 'list', 'not on the list side');
+    await imTap('#btn-next'); assert((await imSide()) === 'list', 'not on the list side');
     await pointerHold(page, '#card', 650);
     await waitForCardIndex(page, 1);
     const { index, total } = await cardParts(page);
@@ -556,7 +558,30 @@ async function run() {
     await page.waitForTimeout(600);
     const st = await page.evaluate(() => ({ side: state.handSide, body: document.body.className, cls: [...document.getElementById('card').classList], par: [...document.getElementById('partyOverlay').classList] }));
     assert(st.side === null && !/showing-hand-summary|hand-side-list/.test(st.body) && !st.cls.some(c => /^is-(start|intermezzo|hand-list)$/.test(c)) && !st.par.some(c => /^is-(hand|intermezzo)/.test(c)), `end-of-hand state left behind: ${JSON.stringify(st)}`);
-    assert((await imBtn()) !== 'Hold to continue' && (await imBtn()) !== 'Hold to flip card', 'button still in end-of-hand mode');
+    assert((await imBtn()) !== 'Hold to continue' && (await imBtn()) !== 'Tap to flip card', 'button still in end-of-hand mode');
+  });
+
+  await check('end of hand: a hold on Intermezzo (button or card) skips the list and starts a fresh hand, with no flip first; a tap in the 500 ms before Intermezzo does not flip', async () => {
+    for (const sel of ['#btn-next', '#card']) {
+      await page.evaluate(() => { state.currentIndex = state.visibleDeck.length; showHandSummary(); });
+      await page.waitForTimeout(400);
+      assert((await imSide()) === 'intermezzo', 'not on Intermezzo');
+      const seen = await page.evaluate(() => { window.__sides = []; const o = flipHandList; window.flipHandList = function () { window.__sides.push('flip'); return o.apply(this, arguments); }; return true; });
+      await pointerHold(page, sel, 700);
+      await waitForCardIndex(page, 1);
+      const st = await page.evaluate(() => { const r = { side: state.handSide, flips: window.__sides.length, idx: state.currentIndex }; return r; });
+      await page.evaluate(() => { delete window.flipHandList; });
+      assert(st.side === null && st.flips === 0 && st.idx === 0, `a hold on ${sel} at Intermezzo: ${JSON.stringify(st)}`);
+      await page.waitForTimeout(400);
+    }
+    // the gap after the last card: Intermezzo is not up yet, a tap must not flip
+    await page.evaluate(() => { state.currentIndex = state.visibleDeck.length - 2; });
+    await page.evaluate(() => { nextCard(); });
+    await page.waitForTimeout(150);
+    await page.locator('#card').click(); await page.waitForTimeout(100);
+    assert(await page.evaluate(() => state.handSide) === null, 'a tap before Intermezzo flipped the card');
+    await page.waitForTimeout(700);
+    assert((await imSide()) === 'intermezzo', 'Intermezzo did not come up after the gap');
   });
 
   await check('end of hand: changing a preset or the card limit from Intermezzo or the list clears the end state', async () => {
@@ -572,7 +597,7 @@ async function run() {
     }
   });
 
-  await check('fullscreen end of hand: Intermezzo, hold flips to the list, stars work, Back returns, hold continues', async () => {
+  await check('fullscreen end of hand: Intermezzo, tap flips to the list, stars work, Back returns, hold continues', async () => {
     await freshHand({ three: false });
     await page.locator('#btn-next').click();
     await waitForCardIndex(page, 1);
@@ -585,8 +610,10 @@ async function run() {
     const ov = page.locator('#partyOverlay');
     assert(await ov.locator('.cb-fermata').isVisible() && (await ov.locator('.im-word').textContent()).trim().toLowerCase() === 'intermezzo', 'fullscreen Intermezzo has no mark and word');
     assert(!/Arc complete|Draw complete/.test(await ov.innerText()), 'old fullscreen summary text is still there');
-    await pointerHold(page, '#partyOverlay', 650); await page.waitForTimeout(400);
-    assert((await imSide()) === 'list', 'a hold in fullscreen did not flip to the list');
+    assert(/Tap to flip card/.test(await page.locator('#endHint').textContent()), 'fullscreen hint does not say Tap to flip card');
+    const cardPt = await ov.locator('.party-card').evaluate(el => { const r = el.getBoundingClientRect(); return [r.x + r.width * 0.7, r.y + r.height / 2]; });
+    await page.touchscreen.tap(cardPt[0], cardPt[1]); await page.waitForTimeout(500);
+    assert((await imSide()) === 'list', 'a tap in fullscreen did not flip to the list');
     assert(await ov.locator('.hd-row').count() === await page.evaluate(() => state.visibleDeck.length), 'fullscreen list rows differ from the hand');
     const q0 = await page.evaluate(() => state.visibleDeck[0].question);
     const was = await page.evaluate(q => state.favourites.some(f => f.question === q), q0);
@@ -596,8 +623,9 @@ async function run() {
     assert((await imSide()) === 'list', 'a star tap in fullscreen moved the card');
     await page.touchscreen.tap(pt[0], pt[1]); await page.waitForTimeout(300);
     await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo');
-    await pointerHold(page, '#partyOverlay', 650); await page.waitForTimeout(400);
-    await pointerHold(page, '#partyOverlay', 650); await waitForCardIndex(page, 1);
+    await page.mouse.click(cardPt[0], cardPt[1]); await page.waitForTimeout(500);   // mouse tap flips too
+    assert((await imSide()) === 'list', 'a mouse click in fullscreen did not flip to the list');
+    await pointerHold(page, '#partyOverlay', 700); await waitForCardIndex(page, 1);
     const st = await page.evaluate(() => ({ side: state.handSide, ov: document.getElementById('partyOverlay').className }));
     assert(st.side === null && !/is-hand|is-intermezzo/.test(st.ov), `fullscreen end state left behind: ${JSON.stringify(st)}`);
     await page.locator('#partyExit').click(); await page.waitForTimeout(300);

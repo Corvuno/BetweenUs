@@ -144,7 +144,15 @@ function setStartBack(text) {
   if (!el) return;
   const t = document.getElementById('cardBackText');
   if (text && t) t.textContent = text;
+  const wasStart = el.classList.contains('is-start');
   el.classList.toggle('is-start', !!text);
+  // A start back that newly appears while the deck sheet is open or still
+  // sliding shut holds its logo undrawn until the sheet is fully gone.
+  if (!text) el.classList.remove('logo-wait');
+  else if (!wasStart && typeof window.catsBusy === 'function' && window.catsBusy()) {
+    el.classList.add('logo-wait');
+    window.afterCatsClosed(() => el.classList.remove('logo-wait'));
+  }
   // The end-of-hand states (presentation.js) are variants of this back. A new
   // start text drops the Intermezzo look; showing a face drops the list side.
   // Intermezzo itself stays on while the back fades out, so its mark doesn't
