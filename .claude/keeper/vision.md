@@ -55,6 +55,8 @@ What these mean (owner, 2026-10-15): no card other than the current one is on sc
 past or future (past is less bad than future, but still out); Three is the exception,
 because its three cards are all current. "The controls needed to play" are the ones the
 phone and PC already show today; everything else stays hidden or layered.
+These rules are for the card screen. The end-of-hand overview (the list on the back of
+Intermezzo) is a different screen and shows the whole hand on purpose (owner, 2026-10-16).
 
 ## Its words
 

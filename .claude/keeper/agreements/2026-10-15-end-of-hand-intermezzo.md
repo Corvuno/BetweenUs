@@ -77,3 +77,14 @@ The last drawn card (C) sets the colour of the button, the diamond and the small
 - Back from the list to Intermezzo: the mark does not redraw; it shows finished, diamond breathing.
 - Fullscreen: the "— end —" text in the count slot at the end of a hand goes.
 - The old fullscreen end-of-hand summary ("Arc complete", small arc chart) is removed with the rest of the old end screen.
+
+## Adjustments after the first build (owner, 2026-10-16)
+
+- Intermezzo flips with a **tap**, not a hold: button reads "Tap to flip card"; a tap on the
+  button or the card flips to the list. "Different world, different behaviour."
+- A **hold** on Intermezzo skips the list and goes straight to the next hand.
+- List side unchanged: "Hold to continue" stays a hold; taps on the list stay free for
+  scrolling and stars (a tap on the list does not flip back; only Back does).
+- The start-card logo animation, when a new deck loads from the deck configuration sheet
+  (the categories sheet), waits until the sheet has fully closed before it plays.
+- Fullscreen: the two short lines next to the empty count slot stay hidden.
