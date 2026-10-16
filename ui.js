@@ -275,13 +275,6 @@ function spotlightBrightenOnce() {
     toggleFavourite();
   });
 
-  // "‹ One card" is switching Three off, exactly (same as the Three button)
-  const partyPickerBack = newOv.querySelector('#partyPickerBack');
-  if (partyPickerBack) partyPickerBack.addEventListener('click', e => {
-    e.stopPropagation();
-    document.getElementById('pickToggle').click();
-  });
-
   // Touch: single handler, always prevents click so mobile never double-fires
   let ptsx = 0, ptsy = 0, partyBusy = false;
   const partyThrottle = (fn) => {
@@ -338,24 +331,26 @@ function spotlightBrightenOnce() {
   });
 })();
 
-// ── Fullscreen phone orientation toggle ── mirrors actual device rotation
+// ── Fullscreen phone orientation switch ── mirrors actual device rotation
 // (resize/orientationchange) so it stays true even for someone who never
-// touches it, but tapping either rectangle sets it directly too — the
-// point is anyone whose phone is orientation-locked can still reach the
-// wide layout without physically rotating anything.
+// touches it, but the word on the right edge ("Sideways" / "Upright") sets it
+// directly too — the point is anyone whose phone is orientation-locked can
+// still reach the wide layout without physically rotating anything.
 (function(){
   const orient = document.getElementById('partyOrient');
   if (!orient) return;
   const overlay = document.getElementById('partyOverlay');
-  const opts = [...orient.querySelectorAll('.party-orient-opt')];
+  const btn = document.getElementById('partyOrientBtn');
   function setPartyOrientation(mode){
     overlay.classList.toggle('orient-landscape', mode === 'landscape');
-    opts.forEach(b => b.classList.toggle('live', b.dataset.orient === mode));
+    orient.dataset.land = mode === 'landscape' ? '1' : '0';
+    // the layout changed under the options: keep them clear of the bottom row
+    if (state.pickerOpen && state.partyMode) fitPartyPicker();
   }
-  opts.forEach(b => b.addEventListener('click', e => {
+  if (btn) btn.addEventListener('click', e => {
     e.stopPropagation();
-    setPartyOrientation(b.dataset.orient);
-  }));
+    setPartyOrientation(overlay.classList.contains('orient-landscape') ? 'portrait' : 'landscape');
+  });
   const syncToDevice = () => setPartyOrientation(
     matchMedia('(orientation: landscape)').matches ? 'landscape' : 'portrait');
   syncToDevice();

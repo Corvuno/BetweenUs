@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261016h">
+<link rel="stylesheet" href="styles.css?v=20261016i">
 </head>
 <body>
 <div class="app">
@@ -521,9 +521,12 @@
     <div class="party-frame" aria-hidden="true"><i></i><i></i></div>
 
     <div class="party-top party-chrome">
-      <button class="party-exit" id="partyExit">&#8249; Close<span class="party-key">Esc</span></button>
-      <span class="party-count-wrap"><i class="pc-rule"></i><span class="party-count" id="party-count"></span><i class="pc-rule pc-rule--r"></i></span>
-      <button class="party-star" id="partyStar" aria-label="Star">&#9733;</button>
+      <button class="party-twist" id="partyBtnTwist" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="4" y="4" width="16" height="16"/><path d="M12 2 22 12 12 22 2 12z"/></svg>
+        Twist<span class="party-key">T</span>
+      </button>
+      <span class="party-count-wrap"><i class="pc-rule"></i><span class="party-count" id="party-count"></span><i class="pc-rule pc-rule--r"></i><button class="party-star" id="partyStar" aria-label="Star">&#9733;</button></span>
+      <button class="party-pick" id="partyPick" type="button">Three<span class="party-key">3</span></button>
     </div>
 
     <div class="party-zone-prev" id="party-zone-prev"></div>
@@ -539,21 +542,11 @@
     <div class="party-bottom party-chrome">
       <div class="party-end-hint" id="partyEndHint" aria-hidden="true"></div>
       <button class="party-prev-btn" id="partyPrevBtn" aria-label="Previous">&#8592;</button>
-      <div class="party-actions">
-        <button class="party-twist" id="partyBtnTwist" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt"><rect x="4" y="4" width="16" height="16"/><path d="M12 2 22 12 12 22 2 12z"/></svg>
-          Twist<span class="party-key">T</span>
-        </button>
-        <button class="party-pick" id="partyPick"><span class="pp-long">Draw three</span><span class="pp-short">Three</span><span class="party-key">3</span></button>
-      </div>
+      <button class="party-exit" id="partyExit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><rect x="8" y="8" width="8" height="8"/></svg>Close<span class="party-key">Esc</span></button>
       <button class="party-next-btn" id="partyNext" aria-label="Next">&#8594;</button>
     </div>
 
     <div class="card-picker party-picker" id="partyPicker">
-      <div class="party-picker-top">
-        <button class="party-picker-back" id="partyPickerBack">&#8249; One card</button>
-        <div class="picker-hint" id="partyPickerHint">Pick one &mdash; the other two are gone</div>
-      </div>
       <div class="picker-options" id="partyPickerOptions"></div>
     </div>
   </div>
@@ -562,23 +555,22 @@
        mirror of device orientation, for anyone whose phone is orientation-
        locked and can't just turn it. Reports the live state as much as it
        sets it — see ui.js's setPartyOrientation(). -->
-  <div class="party-orient" id="partyOrient" aria-hidden="true">
-    <button type="button" class="party-orient-opt party-orient-opt--portrait" data-orient="portrait" aria-label="Portrait"></button>
-    <button type="button" class="party-orient-opt party-orient-opt--landscape" data-orient="landscape" aria-label="Landscape"></button>
+  <div class="party-orient" id="partyOrient" data-land="0">
+    <button type="button" class="party-orient-btn" id="partyOrientBtn" aria-label="Turn the screen"><i class="ln"></i><span class="tx"><span data-s="p">Sideways</span><span data-s="l">Upright</span></span><i class="ln"></i></button>
   </div>
 </div>
 
-<script src="questions.js?v=20261016h"></script>
-<script src="config.js?v=20261016h"></script>
-<script src="gilt.js?v=20261016h"></script>
-<script src="state.js?v=20261016h"></script>
-<script src="deck.js?v=20261016h"></script>
-<script src="card.js?v=20261016h"></script>
-<script src="library.js?v=20261016h"></script>
-<script src="session.js?v=20261016h"></script>
-<script src="selection.js?v=20261016h"></script>
-<script src="presentation.js?v=20261016h"></script>
-<script src="ui.js?v=20261016h"></script>
+<script src="questions.js?v=20261016i"></script>
+<script src="config.js?v=20261016i"></script>
+<script src="gilt.js?v=20261016i"></script>
+<script src="state.js?v=20261016i"></script>
+<script src="deck.js?v=20261016i"></script>
+<script src="card.js?v=20261016i"></script>
+<script src="library.js?v=20261016i"></script>
+<script src="session.js?v=20261016i"></script>
+<script src="selection.js?v=20261016i"></script>
+<script src="presentation.js?v=20261016i"></script>
+<script src="ui.js?v=20261016i"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.
