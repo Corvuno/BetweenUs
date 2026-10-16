@@ -35,6 +35,7 @@ The Keeper. Started with `/keeper`.
   its own new artifact link (never overwrite a round the owner has seen), and you explain why
   each option works or doesn't without picking one. The builder builds only from the mockup
   the owner chose. Follows `DESIGN-SYSTEM.md`.
+- Placement, form, size and colour are decided by the Keeper and the builder, shown as options. The owner is not asked where things go (owner, 2026-10-16: "I am not a designer"). The Keeper also says so plainly when an owner's own design instruction is a bad plan.
 - Builder: `looks-builder`.
 
 **Names we use:** "the evening chooser" = the sheet headed "What kind of evening?" (code: `#cat-area`). Internal only, not shown in the app.
