@@ -51,3 +51,11 @@ Round 1: https://claude.ai/artifact/7typD67ntJH9DqhuxGPM6k
   ("it adds little").
 - Flourishes F1–F3 rejected: "random flourishes; they have to fit the space and work in the
   theme." A second flourish round follows once the target is clear.
+
+## Carried in from the end-of-hand thread — 2026-10-16
+
+From `2026-10-16` sections of `2026-10-15-end-of-hand-intermezzo.md` (live on main, 91f7b29):
+at the end of a hand only, Spotlight shows a quiet centred hint line above the bottom row
+("Tap to flip card" / "Hold to continue", #partyEndHint). In L2 it sits just above the
+Back · Close · Next row. At the end of a hand the count slot stays empty and its little
+rules stay hidden (owner). The L2 build starts from current main so none of this is lost.
