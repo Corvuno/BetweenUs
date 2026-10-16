@@ -88,3 +88,16 @@ The last drawn card (C) sets the colour of the button, the diamond and the small
 - The start-card logo animation, when a new deck loads from the deck configuration sheet
   (the categories sheet), waits until the sheet has fully closed before it plays.
 - Fullscreen: the two short lines next to the empty count slot stay hidden.
+
+## Second round of adjustments (owner, 2026-10-16)
+
+- Fullscreen hint, option C from https://claude.ai/artifact/3nTchXQg531HBofUgPuNRc: a quiet
+  line just above the bottom row of fullscreen, in the same words as the phone button —
+  "Tap to flip card" on Intermezzo, "Hold to continue" on the list. Built now on today's
+  Spotlight layout; the Spotlight-layout thread (L2) is told to carry it over (in L2: just
+  above Back · Close · Next).
+- The list's questions were far too small to read on phone and PC: make them comfortable to
+  read on both (builder sizes it; fewer fit at once, the list scrolls sooner).
+- The short message after the last card ("That's your 5 cards.") keeps only its first line,
+  centred on the card, then fades out into Intermezzo instead of cutting. The "whole deck"
+  version of that message is still open with the owner.
