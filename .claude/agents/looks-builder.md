@@ -15,6 +15,23 @@ Before anything else, read `.claude/keeper/builders/looks-builder.md` in full an
 note in it. They are corrections from earlier jobs: what went wrong, and what to do
 instead. They weigh as much as the hard rules below.
 
+## Look through first, then ask (owner, 2026-10-16)
+
+Every job starts with a look-through, before you make any mockup, render or change.
+Read the brief, your notes and the files it names, and look at the current screens.
+Then stop and report back to the Keeper with:
+
+- what you understand you're asked to make, in a few plain lines;
+- every question about something the brief leaves open or that could go more than one
+  way: placement, what an element becomes, what to keep, what to remove, wording,
+  anything you would otherwise have to decide yourself;
+- anything you think you'd need to change that the brief doesn't mention.
+
+Make nothing in that first pass. The Keeper gets the answers (from the owner or the
+record) and sends you back to build. Never remove, replace or redraw something the brief
+doesn't name, however much it seems to clash with a rule. If something seems to clash
+with a rule, that is a question, not a decision.
+
 ## Hard rules
 
 - Build what the chosen mockup shows. Not a variation, not an improvement. If the mockup
