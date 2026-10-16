@@ -101,3 +101,17 @@ The last drawn card (C) sets the colour of the button, the diamond and the small
 - The short message after the last card ("That's your 5 cards.") keeps only its first line,
   centred on the card, then fades out into Intermezzo instead of cutting. The "whole deck"
   version of that message is still open with the owner.
+
+## The message after the last card (owner, 2026-10-16)
+
+Replaces the "whole deck" open point above. The short card shown right after the last card,
+before Intermezzo, is centred and then fades out into Intermezzo (no cut). Exact words:
+
+- Normal (unseen cards are left in the selection): one line only —
+  "Those were your 5 cards." (5 = this hand's size). No "cards left" count (owner: "it does
+  not add"). Grammar for a 1-card hand: "That was your 1 card."
+- All cards in the selection drawn: two lines —
+  "You've drawn all 312 cards in your selection."
+  "Add categories to keep going."
+  (312 = the size of the whole selection, not the hand.) No "hold to replay": the button
+  already says what to do.
