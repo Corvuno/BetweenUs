@@ -97,6 +97,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Roots** — "Was there a kid at school whose opinion of you mattered way more than it should have?" (displaced from Roots 7 in v6.71, itself only one patch old)
 - **Deep** — "Something true about you has never had an occasion to be said..." (displaced from Deep 1 in v6.72; the original card, held since it first got flagged)
 - **World** — "What has travel actually taught you — beyond the stories?" (displaced from World 8 in v6.72; freed up the "travel" subject for Unwind 7, which is where it landed instead)
+- **Life** — "What happens on your daily commute that nobody else would notice?" (an alternative for Life 10 in the 2026-10-16 Life rework; owner liked it — "it's also fun" — but chose the public-transport card for the slot)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -231,6 +232,26 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.12 — Life rework: five new cards
+Removed cards are not benched, by owner decision (one exception: see the BENCH entry for the commute card).
+
+- **Life 4**
+  - Old: "If you had to name what's getting the least of you lately, what would it be?"
+  - New: "What do you cook when you're only cooking for yourself?"
+- **Life 6**
+  - Old: "What's something that cost you, that you'd do exactly the same again?"
+  - New: "What do you happily overspend on every week — and what do you refuse to pay a cent more for?"
+- **Life 7**
+  - Old: "What's something you're doing right now without knowing if it'll actually work out?"
+  - New: "What's the most absurd form, queue or phone call you've ever had to get through?"
+- **Life 10**
+  - Old: "Out of everything filling your days right now, what actually matters to you?"
+  - New: "What's the strangest thing you've seen on public transport — or from behind the wheel?"
+- **Life 11**
+  - Old: "What's different about your life this year?"
+  - New: "How many unread messages are you sitting on right now — and which one are you avoiding?"
+- Life is now ordinary daily life, everything that has to be done. Each new card takes a different subject (food, money, admin, getting around, the phone). Life 2 and Life 12 still to come.
 
 ## Patch v7.11 — Life 1 reworded (Life rework begins)
 
