@@ -1621,7 +1621,8 @@ body.tok-taught .tok-hint{display:none;}
    as Jost (0.46), so labels keep their size; caps names stay Jost. */
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
   font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
-.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain,.pick-toggle,.pick-toggle span,.btn-fullscreen{
+.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain,.pick-toggle,.pick-toggle span,.btn-fullscreen,
+.d-sub,#menuDrawer .d-sub,.chapter .ch-desc,.drawer-empty{
   font-family:'Federo','Jost',sans-serif;}
 
 /* ── Logo ornament: centre diamond copper, inner line pairs take the preset ── */
