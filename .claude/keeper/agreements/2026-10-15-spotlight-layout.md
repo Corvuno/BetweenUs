@@ -82,3 +82,22 @@ Round 2: https://claude.ai/artifact/DrA8o1sX3hSexpy6QVG2qm
   small mockup round of its own.
 - Mockup slip to avoid in the build: count and star stay at the top in pick-three; the count
   needs room from the top edge when the orientation switch shows.
+
+## Round 3 outcome — 2026-10-16
+
+Round 3: https://claude.ai/artifact/XSgNimRgFnVa6po1XvErmj
+- Orientation switch: **O3, a word on the edge** ("Sideways" / "Upright", vertical on the
+  right edge between two short hairlines).
+- Fix included: pick-three on an upright phone switched to sideways falls apart (narrow
+  columns, divider over a label, an option cut off) — it should read like a real sideways
+  phone's pick-three.
+- Twist card bar colour: owner "figure it out" → shown as a small set of options (round 4)
+  while the rest is built; Twist's divider is done once picked.
+
+## Build now (everything decided)
+
+L2 layout (phone, sideways phone, PC); Close bottom centre in gold with the Spotlight symbol;
+Three toggle replaces "‹ One card"; three options stacked on PC; G2 dividers (dimmed when
+vertical); question line removed; diamonds beside the count and between Twist and Three
+removed; O3 switch; forced-sideways pick-three fixed; count and star stay visible in
+pick-three with room from the top edge; end-of-hand hint just above the bottom row.
