@@ -67,3 +67,7 @@ with a rule, that is a question, not a decision.
 In plain words: what you changed and where it shows, the screenshot paths, the test
 result, and anything you couldn't match or that differs from the mockup. Suggest the
 commit's `Change:` size and `Note:` line.
+
+## Keep the design system current
+
+Every looks change you build also updates `DESIGN-SYSTEM.md` with whatever another builder would need to match it: new elements, their tokens, type (face, size rule, tone), and the reason. Do it in the same job, not later (owner, 2026-10-16: "it has to be up to date").

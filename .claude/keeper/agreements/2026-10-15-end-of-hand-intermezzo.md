@@ -117,3 +117,4 @@ before Intermezzo, is centred and then fades out into Intermezzo (no cut). Exact
   already says what to do.
 
 - (owner, 2026-10-16) The message after the last card is far too small: it takes the size of the INTERMEZZO word (in fullscreen: the fullscreen INTERMEZZO word). The list stays as it is.
+- (owner, 2026-10-16, replaces the INTERMEZZO-size line above) The message was already bigger than INTERMEZZO; what made it unreadable was the thin slanted serif in faint grey. It takes INTERMEZZO's lettering instead: plain upright spaced capitals in the same bright tone, keeping its current (bigger) size. Same in fullscreen.
