@@ -59,3 +59,26 @@ at the end of a hand only, Spotlight shows a quiet centred hint line above the b
 ("Tap to flip card" / "Hold to continue", #partyEndHint). In L2 it sits just above the
 Back · Close · Next row. At the end of a hand the count slot stays empty and its little
 rules stay hidden (owner). The L2 build starts from current main so none of this is lost.
+
+## Owner's answers — 2026-10-16
+
+- Flourish target confirmed: it comes out of the space and the screen's own pieces (the
+  hairline, corner markers, category stripe), small like the diamond, part of the line, and
+  cohesive with the whole look.
+- The diamond between Twist and Three and the diamonds beside the count go too.
+- Close at the very bottom on phone: fine for now.
+- The phone's portrait/landscape switch keeps working in the new layout: part of this job.
+- Twist card's ornament line: owner asked to be shown it before deciding (in round 2).
+
+## Round 2 outcome — 2026-10-16
+
+Round 2: https://claude.ai/artifact/DrA8o1sX3hSexpy6QVG2qm
+- Flourish: **G2, colour stripes** (hairline straight through, a short bar in each neighbour's
+  category colour on either side). On the vertical divider (sideways phone) the stripes are
+  dimmed somewhat.
+- Twist card: the line between question and twist text gets the flourish too (owner: "that's
+  where the flourish comes in"). Open: what colour the twist side's bar takes.
+- Orientation switch: owner asked for better ideas than the two outlined rectangles → a
+  small mockup round of its own.
+- Mockup slip to avoid in the build: count and star stay at the top in pick-three; the count
+  needs room from the top edge when the orientation switch shows.
