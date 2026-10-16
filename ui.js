@@ -125,7 +125,14 @@ if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
 
 // Draw controls
 document.getElementById('drawMoreBtn').addEventListener('click', drawMore);
-document.getElementById('btn-next').addEventListener('click', nextCard);
+// At Intermezzo (end of a hand, side 'intermezzo') a tap flips the card to the hand's
+// list; a hold skips the list and continues (END_HOLD_TARGETS gate below, whose
+// capture-phase click guard swallows the release of a hold before it gets here).
+// Before Intermezzo is up (the 500 ms after the last card) a tap does what it always did.
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (state.handSide === 'intermezzo') { flipHandList(); return; }
+  nextCard();
+});
 document.getElementById('btn-prev').addEventListener('click', function() {
   if (this.classList.contains('disabled')) { shakeRowBtn(this); return; }   // before the first card: shake, nothing else
   prevCard();
@@ -155,13 +162,14 @@ document.getElementById('card').addEventListener('mousedown', e => {
 });
 document.getElementById('card').addEventListener('click', e => {
   if (state.partyMode) return;
-  if (e.target.closest('#cardStar')) return;
+  if (e.target.closest('#cardStar, .hd-star')) return;
   if (cardMouseDownAt) {
     const dragged = Math.abs(e.clientX - cardMouseDownAt.x) > 6 || Math.abs(e.clientY - cardMouseDownAt.y) > 6;
     cardMouseDownAt = null;
     if (dragged) return; // was a drag-select, not a tap
   }
   if (window.getSelection && String(window.getSelection()).length > 0) return;
+  if (state.handSide === 'intermezzo') { flipHandList(); return; }   // a tap on the Intermezzo card turns it over
   nextCard();
   updateDeckInfo();
 });
@@ -230,6 +238,8 @@ function spotlightBrightenOnce() {
         updateDrawMore();
       } else if (state.currentIndex >= 0 && state.visibleDeck[state.currentIndex]) {
         updatePartyDisplay(state.visibleDeck[state.currentIndex]);
+      } else if (state.handSide) {
+        renderHandSide(false);   // the hand has ended: fullscreen shows the same side the card is on
       }
     });
   }
@@ -287,7 +297,12 @@ function spotlightBrightenOnce() {
   }, { passive: true });
 
   newOv.addEventListener('touchend', e => {
-    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
+    /* scrolling the hand's list is not a tap or a swipe of the card */
+    if (e.target.closest('.hd-list')) {
+      const sdx = e.changedTouches[0].clientX - ptsx, sdy = e.changedTouches[0].clientY - ptsy;
+      if (Math.abs(sdy) > 10 && Math.abs(sdy) >= Math.abs(sdx)) return;
+    }
     /* a hold just continued the draw — its release must not advance again.
        Reads the flag, doesn't clear it: the click handler below checks it
        too, in case this touchend's preventDefault doesn't fully suppress a
@@ -306,6 +321,7 @@ function spotlightBrightenOnce() {
       // tap — only act on card area
       if (!e.target.closest('.party-card')) return;
       if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
+      else if (state.handSide === 'intermezzo') partyThrottle(() => { flipHandList(); });
       else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
     }
   }, { passive: false });
@@ -313,10 +329,11 @@ function spotlightBrightenOnce() {
   // Click — desktop only (mobile click is suppressed by touchend's preventDefault above)
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
-    if (e.target.closest('.party-chrome, .party-picker, .party-orient')) return;
+    if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
     if (window._endHoldFired) { return; }
     if (!e.target.closest('.party-card')) return; // outside card = no action
     if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
+    else if (state.handSide === 'intermezzo') partyThrottle(() => { flipHandList(); });
     else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
   });
 })();
@@ -414,7 +431,7 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
 })();
 
 // End of a hand: pressing and holding the card, Next Card or the fullscreen overlay
-// continues into a fresh hand.
+// continues into a fresh hand (on Intermezzo and on the list alike).
 const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 (function(){
   const HOLD = 550;
@@ -429,16 +446,20 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
     /* a new press starts a new gesture — never inherit a stale swallow flag */
     window._endHoldFired = false;
     if (!atEnd()) return;
+    /* a star in the hand's list is a tap, never a hold */
+    if (e && e.target && e.target.closest && e.target.closest('.hd-star')) return;
     clearTimeout(timer);
     const b = holdBtn();
     if (b && e && e.currentTarget === b) b.classList.add('holding');
     timer = setTimeout(() => {
       if (b) b.classList.remove('holding');
-      window._endHoldOK    = true;
       /* Swallow the release, however long the press lasted. A time window here
          expired mid-hold, letting the release advance a second card. */
       window._endHoldFired = true;
       hint(false);
+      /* A hold continues into the next hand from either side of Intermezzo (on the
+         Intermezzo side a tap flips instead — see the click handlers). */
+      window._endHoldOK    = true;
       if (typeof nextCard === 'function') nextCard();
     }, HOLD);
   }
@@ -473,7 +494,7 @@ document.getElementById('btnChange') && document.getElementById('btnChange').add
   if (typeof openCats === 'function') openCats();
 });
 document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
-  if (typeof exportSessionLog === 'function') exportSessionLog();
+  if (typeof saveSessionFiles === 'function') saveSessionFiles();
 });
 
 // ── Spice glyph buttons (one inline on the After Dark chapter in Play,
@@ -798,6 +819,14 @@ applyToggleUI();
      the drawer and eating its taps. Re-home both to <body>: scrim below, drawer above. */
   document.body.appendChild(scrim);
   document.body.appendChild(catArea);
+  /* Things that must wait for the sheet to be fully gone (the start-card logo
+     animation) register with afterCatsClosed(); they run on the sheet's own
+     transitionend, with a timeout as a safety net. */
+  let catsClosing=false; const closeWaiters=[];
+  function catsBusy(){ return catArea.classList.contains('sheet-open') || catsClosing; }
+  function flushCloseWaiters(){ catsClosing=false; if(catArea.classList.contains('sheet-open')) return; closeWaiters.splice(0).forEach(fn=>fn()); }
+  window.afterCatsClosed=function(fn){ if(catsBusy()) closeWaiters.push(fn); else fn(); };
+  window.catsBusy=catsBusy;
   function openCats(){
     if(!togglesWrap.classList.contains('open')) catLabel.click(); /* keep original state machine in sync */
     catArea.classList.add('sheet-open'); scrim.classList.add('on');
@@ -814,7 +843,15 @@ applyToggleUI();
     catArea.focus({preventScroll: true});
   }
   function closeCats(){
+    const wasOpen=catArea.classList.contains('sheet-open');
     catArea.classList.remove('sheet-open'); scrim.classList.remove('on');
+    if(wasOpen){
+      catsClosing=true;
+      const done=e=>{ if(e && (e.target!==catArea || e.propertyName!=='transform')) return;
+        catArea.removeEventListener('transitionend',done); flushCloseWaiters(); };
+      catArea.addEventListener('transitionend',done);
+      setTimeout(()=>{ catArea.removeEventListener('transitionend',done); if(catsClosing) flushCloseWaiters(); },600);
+    }
     unlockBodyScroll();
     catArea.setAttribute('aria-hidden', 'true');
     $('d-cats').setAttribute('aria-expanded', 'false');

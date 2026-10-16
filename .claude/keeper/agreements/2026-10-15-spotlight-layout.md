@@ -40,3 +40,14 @@ looks-builder builds from the chosen mockup.
 
 Checked by the Keeper against the chosen mockup on phone, sideways phone and PC, in normal
 play and while picking from three; `node tests/run.mjs between-us.html` passes.
+
+## Round 1 outcome — 2026-10-16
+
+Round 1: https://claude.ai/artifact/7typD67ntJH9DqhuxGPM6k
+- Layout: **L2** chosen (arrows in the bottom corners, Close in the gold middle, Twist and
+  Three in the top corners beside the count, star under the count). Owner: "L3 is a stroke of
+  brilliance … L2 is more spotlight. L3 is too much a menu, it takes away from the card."
+- Point 3 reversed: the fading line under the question is **removed** on phone and PC
+  ("it adds little").
+- Flourishes F1–F3 rejected: "random flourishes; they have to fit the space and work in the
+  theme." A second flourish round follows once the target is clear.

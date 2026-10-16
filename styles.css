@@ -295,7 +295,7 @@ body{
 .card-question.in{opacity:1;transform:none;}
 /* The one place that selectable text is a problem, not a feature: the
    end-of-hand summary reuses this same element (showHandSummary() in
-   presentation.js writes its sentence/chips/favourites into #card-question),
+   presentation.js writes the hand list into #card-question),
    and that screen's whole interaction is holding the card to continue —
    a hold that starts on selectable text tries to select it instead. Locked
    back down for exactly this one screen, same as the rest of the card. */
@@ -453,7 +453,11 @@ body.showing-hand-summary .card-question{
 
 /* ── LIMIT ── */
 /* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
-.btn-draw.hold-mode{background:linear-gradient(135deg,#7a6050 0%,#5a4030 100%);letter-spacing:.1em;}
+/* End of a hand: the button takes the last drawn card's chapter colour (--im-color, set on
+   <body> by presentation.js paintHandSide) — a gradient of it, dark text, the gold button's size and type. */
+.btn-draw.hold-mode{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--im-color,var(--gold)) 86%,#fff) 0%,color-mix(in srgb,var(--im-color,var(--gold)) 76%,#000) 100%);
+  color:var(--bg);letter-spacing:.1em;}
 /* the very first draw of a hand — before any card has been drawn, or right
    after a settings change reset the deck. Sized up (no glow — see change
    log) to make this the obvious "start" tap instead of looking like every
@@ -470,28 +474,99 @@ body.showing-hand-summary .card-question{
 .draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
 .deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
 
-/* ── IN-CARD SESSION SUMMARY ── */
-.sic-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
-.sic-arc{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;line-height:1.65;text-align:center;color:var(--cream);opacity:.85;}
-.sic-trace{display:block;width:100%;max-width:270px;height:auto;color:var(--cream);margin:2px auto 0;}
-
-/* ── HAND SUMMARY ── the end-of-hand content, inside the normal card face
-   (see presentation.js showHandSummary()) — the sentence/chip-cloud/
-   favourites model from computeEndScreenModel(). */
-.hs-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;}
-.hs-sentence{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
-  font-size:1.05rem;line-height:1.35;text-align:center;color:var(--cream);}
-.hs-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
-.hs-favs{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;
-  font-style:italic;font-size:.85rem;color:color-mix(in srgb, var(--cream) 70%, transparent);}
-
-.es-chapter{font-style:normal;font-weight:400;font-size:1.05rem;}
-.es-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border:1px solid;border-radius:2px;
-  font-family:'Jost',sans-serif;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--cream);white-space:nowrap;}
-.es-chip-count{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.72rem;
-  letter-spacing:0;text-transform:none;}
-.es-star{color:var(--gold-l);font-size:.8rem;}
+/* ── END OF HAND: INTERMEZZO ── (presentation.js; hooks listed there)
+   Side 1: the card's back with the pause mark and INTERMEZZO in the window
+   (#card.is-start.is-intermezzo). Side 2: the hand's list on the card face
+   (#card.is-hand-list). --im-color is the last drawn card's chapter colour. */
+.cb-fermata,.cb-caption{display:none;}
+.card.is-intermezzo .cb-mark:not(.cb-fermata),.card.is-intermezzo .cb-text{display:none;}
+.card.is-intermezzo .cb-fermata{display:block;width:calc(var(--d)*.62);}
+.card.is-intermezzo .cb-caption{
+  display:block;font-family:'Federo',sans-serif;font-size:calc(var(--d)*.075);letter-spacing:.32em;
+  text-transform:uppercase;color:var(--muted-l);margin-top:calc(var(--d)*.02);white-space:nowrap;
+}
+.cb-fermata .dm,.im-wrap .dm{fill:var(--im-color,var(--preset-deep));stroke:none;}
+.card.is-intermezzo .cb-rule{background:linear-gradient(90deg,transparent,var(--im-color,var(--preset-deep)),transparent);}
+/* the list side */
+.card.is-hand-list .card-level{display:none;}
+.card.is-hand-list .card-star{display:none;}
+.card.is-hand-list .card-body-inner{padding:18px 30px 14px 36px;align-items:stretch;justify-content:stretch;overflow:hidden;}
+.card.is-hand-list .card-question{flex:1;min-height:0;width:100%;font-size:1rem;text-align:left;cursor:pointer;}
+.hd-box{position:relative;width:100%;height:100%;}
+.hd-list{
+  list-style:none;margin:0;padding:8px 18px 14px 0;box-sizing:border-box;height:100%;width:100%;
+  display:flex;flex-direction:column;gap:10px;text-align:left;
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(transparent,#000 10px,#000 calc(100% - 22px),transparent);
+  mask-image:linear-gradient(transparent,#000 10px,#000 calc(100% - 22px),transparent);
+}
+.hd-list::-webkit-scrollbar{width:0;}
+.hd-row{display:grid;grid-template-columns:8px 1fr 30px;gap:10px;align-items:start;}
+.hd-d{width:6px;height:6px;transform:rotate(45deg);display:block;margin-top:.55em;}
+.hd-q{font-family:'Bodoni Moda',serif;font-style:italic;font-size:.8rem;line-height:1.35;color:var(--cream);user-select:none;-webkit-user-select:none;}
+.hd-star{
+  background:none;border:none;padding:0;margin:-6px -6px -6px 0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.hd-star svg{width:15px;height:15px;fill:none;stroke:currentColor;}
+.hd-star.on{color:var(--gold-l);}
+.hd-star.on svg{fill:currentColor;}
+.hd-track{position:absolute;right:2px;top:10px;bottom:10px;width:1px;background:rgba(201,168,76,.18);pointer-events:none;}
+.hd-thumb{position:absolute;left:-1px;width:3px;background:rgba(232,201,122,.7);}
+/* Motion (mockup b3): the card fades to its back, the two arches draw in one after the
+   other, the diamond appears, the flanking hairlines fade in, the diamond keeps breathing.
+   Plays whenever Intermezzo appears (the animation names only apply while it shows). On
+   return from the list (.im-still / .still) the finished mark shows and only breathes. */
+@keyframes imDraw{to{stroke-dashoffset:0;}}
+@keyframes imFade{to{opacity:.9;}}
+@keyframes imBreathe{0%,100%{opacity:.9;}50%{opacity:.45;}}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata :is(.a1,.a2){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s .5s ease-out forwards;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .a2{animation-delay:.8s;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .fl{opacity:0;animation:imFade .8s 1.9s forwards;}
+:is(.card.is-start.is-intermezzo.im-still,.party-overlay.open .im-wrap.still) .cb-fermata .dm{animation:imBreathe 3.2s ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo.im-still,.party-overlay.open .im-wrap.still) .cb-fermata .fl{opacity:.9;}
+/* the start card's logo: draws itself, then its diamond breathes — every time that back appears */
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s .5s ease-out forwards;}
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-b{animation-delay:.8s;}
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-fl path{animation-duration:1s;animation-delay:1.4s;}
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
+/* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
+.card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
+/* the card turns over on its side, like a real card: edge-on at 175ms (the face swap), then
+   the other face comes round. Back to Intermezzo turns it the other way. */
+@keyframes cardTurn{0%{transform:perspective(1100px) rotateY(0);animation-timing-function:ease-in;}49.9%{transform:perspective(1100px) rotateY(90deg);}50%{transform:perspective(1100px) rotateY(-90deg);animation-timing-function:ease-out;}100%{transform:perspective(1100px) rotateY(0);}}
+@keyframes cardTurnBack{0%{transform:perspective(1100px) rotateY(0);animation-timing-function:ease-in;}49.9%{transform:perspective(1100px) rotateY(-90deg);}50%{transform:perspective(1100px) rotateY(90deg);animation-timing-function:ease-out;}100%{transform:perspective(1100px) rotateY(0);}}
+.card.turning,.party-card.turning{animation:cardTurn .35s linear both;}
+.card.turning-back,.party-card.turning-back{animation:cardTurnBack .35s linear both;}
+@media (prefers-reduced-motion:reduce){
+  .card.turning,.card.turning-back,.party-card.turning,.party-card.turning-back{animation:none;}
+  .cb-fermata :is(.a1,.a2),.cb-mark :is(.lg-a,.lg-b,.lg-fl path){animation:none !important;stroke-dasharray:none !important;stroke-dashoffset:0 !important;}
+  .cb-fermata .dm,.cb-mark .lg-dm{animation:none !important;opacity:.9 !important;}
+  .cb-fermata .fl{animation:none !important;opacity:.9 !important;}
+}
+/* fullscreen: the same two sides in the overlay's own layout */
+.party-overlay.is-hand-end .party-star{visibility:hidden;}
+.party-overlay.is-hand-end .party-ornament{display:none;}
+.im-wrap{display:flex;flex-direction:column;align-items:center;gap:clamp(14px,2vw,28px);width:100%;color:var(--gold);}
+.im-wrap .cb-fermata{display:block;width:clamp(230px,30vw,440px);height:auto;}
+.im-rule{width:clamp(150px,19vw,280px);height:2px;background:linear-gradient(90deg,transparent,var(--im-color,var(--preset-deep)),transparent);}
+.im-word{font-family:'Federo',sans-serif;font-size:clamp(.8rem,.9vw + .4rem,1.2rem);letter-spacing:.32em;text-transform:uppercase;color:var(--muted-l);}
+.party-overlay.is-hand-list .party-zone-prev,.party-overlay.is-hand-list .party-zone-next{pointer-events:none;}
+.party-overlay.open.is-hand-list .party-inner{pointer-events:auto;}
+.party-overlay.is-hand-list .party-inner{align-items:stretch;padding-top:70px;padding-bottom:80px;justify-content:stretch;}
+.party-overlay.is-hand-list .party-question{flex:1;min-height:0;width:100%;font-size:1.05rem;line-height:1.35;}
+.party-overlay.is-hand-list .party-ornament,.party-overlay.is-hand-list .party-level{display:none;}
+.party-overlay.is-hand-list .party-question{max-width:820px;align-self:center;}
+.party-overlay.is-hand-list .hd-q{font-size:clamp(1.05rem,1.1vw + .75rem,1.55rem);}
+.party-overlay.is-hand-list .hd-list{gap:clamp(10px,1.6vh,22px);}
+.party-overlay.is-hand-list .hd-row{grid-template-columns:10px 1fr 40px;gap:14px;}
+.party-overlay.is-hand-list .hd-d{width:7px;height:7px;}
+.party-overlay.is-hand-list .hd-star svg{width:19px;height:19px;}
+.party-overlay.is-hand-list .hd-track{right:0;}
+.party-overlay.is-hand-end .party-inner{align-items:center;}
+.party-overlay.is-hand-list .party-inner{align-items:stretch;}
+.hd-star{pointer-events:auto;}
 
 /* ── DRAWER SYSTEM ── */
 .overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
@@ -793,6 +868,8 @@ body.fixed-seq-mode .screen-row{display:none;}
 .screen-row--hand{display:none;}
 body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
 body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
+/* Change and Save: the colour Three / Spotlight / Twist have once a card is drawn (--celadon) */
+.screen-row--hand .btn-fullscreen{color:var(--celadon);}
 .pick-toggle{
   background:transparent;border:none;border-bottom:1px solid transparent;
   color:var(--btn-quiet);
@@ -1596,3 +1673,6 @@ body.hint-twist-taught #btnTwist .row-hint{display:none;}
 /* Spotlight, provisional: brightens to near white once, then settles. No glow. */
 @keyframes spotBright{0%,55%{color:var(--celadon-bright)}100%{color:var(--celadon)}}
 #screenRow > button.spot-bright{animation:spotBright 1s ease-out;}
+
+/* fullscreen, end of a hand: the count slot is empty — no rules around nothing */
+.party-overlay.is-hand-end .pc-rule{display:none;}

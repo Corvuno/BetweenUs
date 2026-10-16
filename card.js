@@ -95,8 +95,10 @@ function translateQ(card) {
 }
 
 
-async function toggleFavourite() {
-  const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
+async function toggleFavourite(forCard) {
+  // No argument: the card on screen (the card's own star). The end-of-hand list
+  // passes the question it is starring, so both go through this one store.
+  const card = forCard || (state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null);
   if (!card) return;
   const idx = state.favourites.findIndex(f => f.question === card.question);
   if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
@@ -104,6 +106,7 @@ async function toggleFavourite() {
   try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); } catch(e) {}
   updateStarUI();
   renderFavourites();
+  if (typeof syncHandStars === 'function') syncHandStars();
 }
 
 function updateStarUI() {
@@ -141,7 +144,21 @@ function setStartBack(text) {
   if (!el) return;
   const t = document.getElementById('cardBackText');
   if (text && t) t.textContent = text;
+  const wasStart = el.classList.contains('is-start');
   el.classList.toggle('is-start', !!text);
+  // A start back that newly appears while the deck sheet is open or still
+  // sliding shut holds its logo undrawn until the sheet is fully gone.
+  if (!text) el.classList.remove('logo-wait');
+  else if (!wasStart && typeof window.catsBusy === 'function' && window.catsBusy()) {
+    el.classList.add('logo-wait');
+    window.afterCatsClosed(() => el.classList.remove('logo-wait'));
+  }
+  // The end-of-hand states (presentation.js) are variants of this back. A new
+  // start text drops the Intermezzo look; showing a face drops the list side.
+  // Intermezzo itself stays on while the back fades out, so its mark doesn't
+  // change under the dissolve.
+  if (text) el.classList.remove('is-intermezzo');
+  el.classList.remove('is-hand-list');
 }
 
 function setCardDisplay(card) {

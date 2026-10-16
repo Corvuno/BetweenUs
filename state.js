@@ -27,6 +27,7 @@ const state = {
   visibleDeck: [],
   drawUnseen: undefined,  // how many of fullDeck this session hasn't shown yet; set by buildFullDeck()
   currentIndex: -1,
+  handSide: null,         // end of a hand: 'intermezzo' (card back + pause mark) or 'list' (the hand's questions); null otherwise (presentation.js)
   skippedCards: new Set(),
   partyMode: false,
   sessionLog: [],
