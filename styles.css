@@ -495,20 +495,25 @@ body.showing-hand-summary .card-question{
 .hd-box{position:relative;width:100%;height:100%;}
 .hd-list{
   list-style:none;margin:0;padding:8px 18px 14px 0;box-sizing:border-box;height:100%;width:100%;
-  display:flex;flex-direction:column;gap:10px;text-align:left;
+  display:flex;flex-direction:column;gap:.75em;text-align:left;font-size:var(--hd-fs);
   overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;
   -webkit-mask-image:linear-gradient(transparent,#000 10px,#000 calc(100% - 22px),transparent);
   mask-image:linear-gradient(transparent,#000 10px,#000 calc(100% - 22px),transparent);
 }
 .hd-list::-webkit-scrollbar{width:0;}
-.hd-row{display:grid;grid-template-columns:8px 1fr 30px;gap:10px;align-items:start;}
-.hd-d{width:6px;height:6px;transform:rotate(45deg);display:block;margin-top:.55em;}
-.hd-q{font-family:'Bodoni Moda',serif;font-style:italic;font-size:.8rem;line-height:1.35;color:var(--cream);user-select:none;-webkit-user-select:none;}
+.hd-list{--hd-fs:1.02rem;}
+@media(min-width:768px){.hd-list{--hd-fs:1.3rem;}}
+@media(min-width:1024px){.hd-list{--hd-fs:1.45rem;}}
+@media(min-width:1500px){.hd-list{--hd-fs:1.65rem;}}
+/* everything in a row is sized from the question's own size, so diamonds and stars grow with it */
+.hd-row{font-size:var(--hd-fs);display:grid;grid-template-columns:.5em 1fr 2em;gap:.7em;align-items:start;}
+.hd-d{width:.42em;height:.42em;transform:rotate(45deg);display:block;margin-top:.46em;}
+.hd-q{font-family:'Bodoni Moda',serif;font-style:italic;font-size:1em;line-height:1.35;color:var(--cream);user-select:none;-webkit-user-select:none;}
 .hd-star{
-  background:none;border:none;padding:0;margin:-6px -6px -6px 0;width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  background:none;border:none;padding:0;margin:-6px -6px -6px 0;width:max(34px,2.2em);height:max(34px,2.2em);display:flex;align-items:center;justify-content:center;
   color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;
 }
-.hd-star svg{width:15px;height:15px;fill:none;stroke:currentColor;}
+.hd-star svg{width:1.1em;height:1.1em;fill:none;stroke:currentColor;}
 .hd-star.on{color:var(--gold-l);}
 .hd-star.on svg{fill:currentColor;}
 .hd-track{position:absolute;right:2px;top:10px;bottom:10px;width:1px;background:rgba(201,168,76,.18);pointer-events:none;}
@@ -558,15 +563,21 @@ body.showing-hand-summary .card-question{
 .party-overlay.is-hand-list .party-question{flex:1;min-height:0;width:100%;font-size:1.05rem;line-height:1.35;}
 .party-overlay.is-hand-list .party-ornament,.party-overlay.is-hand-list .party-level{display:none;}
 .party-overlay.is-hand-list .party-question{max-width:820px;align-self:center;}
-.party-overlay.is-hand-list .hd-q{font-size:clamp(1.05rem,1.1vw + .75rem,1.55rem);}
+.party-overlay.is-hand-list .hd-list{--hd-fs:clamp(1.25rem,1.1vw + .95rem,1.8rem);}
+/* fullscreen hint at hand end: a quiet line just above the bottom row, same words as the phone button */
+.party-end-hint{display:none;position:absolute;left:0;right:0;bottom:100%;margin-bottom:-4px;justify-content:center;pointer-events:none;
+  font-family:'Federo','Jost',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.party-end-hint b{font-weight:400;color:var(--gold-l);margin-right:.4em;}
+.party-overlay.is-hand-end .party-end-hint{display:flex;}
+@media (min-width:900px) and (min-height:501px){.party-end-hint{font-size:.85rem;margin-bottom:0;}}
+@media (orientation:landscape) and (max-height:500px){.party-overlay.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}}
+.party-overlay.orient-landscape.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}
 .party-overlay.is-hand-list .hd-list{gap:clamp(10px,1.6vh,22px);}
-.party-overlay.is-hand-list .hd-row{grid-template-columns:10px 1fr 40px;gap:14px;}
-.party-overlay.is-hand-list .hd-d{width:7px;height:7px;}
-.party-overlay.is-hand-list .hd-star svg{width:19px;height:19px;}
 .party-overlay.is-hand-list .hd-track{right:0;}
 .party-overlay.is-hand-end .party-inner{align-items:center;}
 .party-overlay.is-hand-list .party-inner{align-items:stretch;}
-.hd-star{pointer-events:auto;}
+.party-overlay.open .hd-star{pointer-events:auto;}
+.party-overlay:not(.open) .hd-star{pointer-events:none;}
 
 /* ── DRAWER SYSTEM ── */
 .overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}

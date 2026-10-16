@@ -461,6 +461,14 @@ function updateDrawMore() {
     nextBtn.textContent = state.handSide === 'intermezzo' ? 'Tap to flip card' : 'Hold to continue';
     const hintEl = document.getElementById('endHint');
     if (hintEl) hintEl.textContent = nextBtn.textContent;
+    // Fullscreen's quiet line: same words, the verb picked out in gold (CSS shows it at hand end only).
+    const fsHint = document.getElementById('partyEndHint');
+    if (fsHint) {
+      const [verb, ...rest] = nextBtn.textContent.split(' ');
+      fsHint.textContent = '';
+      const v = document.createElement('b'); v.textContent = verb;
+      fsHint.append(v, ' ' + rest.join(' '));
+    }
   } else {
     nextBtn.classList.remove('hold-mode');
     // On the last card, the tap ahead lands on the summary, not another
