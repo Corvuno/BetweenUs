@@ -911,13 +911,20 @@ async function run() {
     await page.locator('#partyOrientBtn').click();
     o = await vis();
     assert(!o.land && o.word === 'Sideways', `after Upright: ${JSON.stringify(o)}`);
-    // forced sideways with Three up: three columns, nothing cut off, dividers in the gaps
-    await page.locator('#partyOrientBtn').click();
+    // forced sideways on an upright phone with Three up: stacked like upright Three, same text sizes, horizontal undimmed dividers
     await page.locator('#partyPick').click();
     await waitPicker(true);
     await page.waitForTimeout(300);
-    const cols = await page.evaluate(() => [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => { const r = e.getBoundingClientRect(); return { l: r.left, r: r.right, ok: e.scrollWidth <= e.clientWidth + 1 }; }));
-    assert(cols.length === 3 && cols[0].r <= cols[1].l + 1 && cols[1].r <= cols[2].l + 1 && cols.every(c => c.l >= 0 && c.r <= 390 && c.ok), `forced sideways Three columns: ${JSON.stringify(cols)}`);
+    const stk = await page.evaluate(() => {
+      const opts = [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => { const r = e.getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom }; });
+      const lv = getComputedStyle(document.querySelector('#partyPickerOptions .pick-opt-level')).fontSize;
+      const q = getComputedStyle(document.querySelector('#partyPickerOptions .pick-opt-q')).fontSize;
+      const d = document.querySelector('#partyPickerOptions .pick-div');
+      return { opts, lv, q, div: d ? { tf: getComputedStyle(d).transform, op: getComputedStyle(d).opacity } : null };
+    });
+    assert(stk.opts.length === 3 && stk.opts[0].b <= stk.opts[1].t + 1 && stk.opts[1].b <= stk.opts[2].t + 1 && stk.opts.every(c => c.l >= 0 && c.r <= 390), `forced sideways Three is not stacked: ${JSON.stringify(stk.opts)}`);
+    assert(stk.lv === '12px' && stk.q === '25px', `forced sideways Three text sizes: ${stk.lv} / ${stk.q}`);
+    assert(stk.div && stk.div.op === '1' && /^matrix\(1, 0, 0, 1,/.test(stk.div.tf), `forced sideways Three dividers: ${JSON.stringify(stk.div)}`);
     await page.locator('#partyOrientBtn').click();
     await page.locator('#partyPick').click();
     await page.waitForTimeout(400);
