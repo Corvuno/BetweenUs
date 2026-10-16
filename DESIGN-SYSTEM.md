@@ -106,6 +106,76 @@ matched) uses copper everywhere the preset colour is used. Celadon is the colour
 of everything tappable besides Draw; back and menu are celadon at rest and gold
 while touched (the hover rule is scoped to `@media (hover:hover)` so it never sticks on touch).
 
+## The end of a hand (added 2026-10-16; built 2026-10-15/16)
+After the last card of a hand the app shows, in order: the message, the Intermezzo
+card back, and (on a tap) the hand's list. All of it follows the colours above; the
+only new colour is the last drawn card's chapter colour, held as `--im-color` on
+`<body>` (set by `paintHandSide` in `presentation.js`). Fullscreen shows the same
+things in its own layout (`.party-overlay.is-hand-end` / `.is-hand-list`).
+
+**Readability rule (owner, 2026-10-16, said twice).** Text a player has to read is
+never set as quiet, muted small print. Size it against the nearest comparable text
+on the card, and check it at real phone size (390x844). A layout never shrinks such
+text to fit; it changes the arrangement instead (wrap, stack, scroll).
+
+**The message after the last card** (`.end-msg`, `.party-question.is-end-msg`):
+lettered like INTERMEZZO, because that word reads well. Federo, upright (`font-style:normal`
+— the card question's italic is switched off), uppercase, `letter-spacing:.32em`, colour
+`--muted-l`, centred, `line-height:1.6`. It keeps its own size (1rem on the card and in
+fullscreen); it is *not* sized to the INTERMEZZO word. Each line is its own block;
+long lines wrap inside the card, never overflow; each line carries `padding-left:.32em`
+so the last letter's tracking doesn't push it off-centre. Fades out (.45s) into Intermezzo.
+Earlier look (thin italic serif, `--muted`) was unreadable and is gone.
+
+**Intermezzo card back** (`.card.is-intermezzo`, fullscreen `.im-wrap`): the pause mark
+(fermata, two arches and a diamond) replaces the logo; the caption INTERMEZZO sits under
+it — Federo, uppercase, `.32em` tracking, `--muted-l`, size from the card (`calc(var(--d)*.075)`)
+and in fullscreen `clamp(.8rem,.9vw + .4rem,1.2rem)` (`.im-word`). The diamond and the
+rule under the mark are filled with `var(--im-color, var(--preset-deep))`; the rule is a
+transparent-gold-transparent gradient of that colour. The diamond breathes
+(`imBreathe`, opacity .9 to .45, 3.2s). On arrival the arches draw in, then the diamond,
+then the flanking hairlines (`imDraw` 1.4s, `imFade`); coming back from the list the
+finished mark shows and only breathes (`.im-still` / `.still`).
+
+**The flip**: a real card turn on its side — edge-on at 175ms, the other face comes round,
+.35s total (`cardTurn`, Intermezzo to list; `cardTurnBack`, the other way). Applies to the
+card and the fullscreen card. Intermezzo flips with a tap; a hold skips the list.
+
+**Hold/Tap button at hand end** (`.btn-draw.hold-mode`): the gold button's size and type
+(`letter-spacing:.1em`), but filled with a gradient of `--im-color` (86% mixed to white
+down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words: "Tap to
+flip card" on Intermezzo, "Hold to continue" on the list.
+
+**Change / Save at hand end** (`.screen-row--hand .btn-fullscreen`): `--celadon`, the
+same as Three / Spotlight / Twist once a card is drawn.
+
+**The hand list** (`.hd-list`, `.hd-row`): Bodoni Moda italic questions in `--cream`
+(readable, not muted). Size is set once per breakpoint with `--hd-fs`, as a rule against
+the card's own question: 1.02rem on phone (card question is 1rem or more), 1.3rem from 768px,
+1.45rem from 1024px, 1.65rem from 1500px; fullscreen `clamp(1.25rem,1.1vw + .95rem,1.8rem)`.
+Everything in a row is sized in `em` from that one value, so diamonds and stars grow with
+the text: a row is a grid of diamond (`.42em`, rotated square, in the card's level (chapter)
+colour), question, star (`1.1em` icon; a tap target of at least 34px;
+`--muted` off, `--gold-l` filled when on). Rows are spaced `.75em` apart (fullscreen
+`clamp(10px,1.6vh,22px)`). The list scrolls inside the card with no browser scrollbar; its
+own scroll indicator is a 1px gold track (`rgba(201,168,76,.18)`) with a 3px thumb
+(`rgba(232,201,122,.7)`) down the right edge; top and bottom edges fade out with a
+mask (10px top, 22px bottom) instead of cutting rows off. Fewer rows fit at once on
+purpose; the list scrolls sooner rather than shrink the text.
+
+**Fullscreen hint line** (`.party-end-hint`): a quiet line just above the bottom row,
+same words as the phone button. Federo, uppercase, `.22em`, `--muted`, `.72rem`
+(`.85rem` from 900px wide); a leading gold-light word marks the action (`--gold-l`).
+It is a hint for a control that is already there, not text to be read for content.
+
+**The start card's logo** animates like the pause mark: the lines draw in, the diamond
+fades in and then breathes (same keyframes), every time that back appears. When a new
+deck loads from the categories sheet it waits (`.logo-wait`) until the sheet has fully closed.
+
+**Reduced motion** (`prefers-reduced-motion:reduce`): the flip has no turn; the drawn
+marks (pause mark and logo) show finished at once, the diamond stays at opacity .9
+without breathing; the end message fades with no transition.
+
 ## What's fixed everywhere vs. what's scoped
 
 **Fixed file-wide:** the line/border tokens (§ Lines & borders), the quiet-

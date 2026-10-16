@@ -599,7 +599,7 @@ async function run() {
       await page.evaluate(() => { nextCard(); });
       await page.waitForTimeout(900);
       const sel = fs ? '#party-question .end-msg' : '#card-question .end-msg';
-      const t = await page.locator(sel).first().innerText();
+      const t = await page.locator(sel).first().textContent();
       const want = n === 1 ? 'That was your 1 card.' : `Those were your ${n} cards.`;
       const fresh = await page.evaluate(() => _unseenCount(state.fullDeck));
       if (fresh > 0) assert(t.trim() === want, `end message: "${t}" (wanted "${want}")`);

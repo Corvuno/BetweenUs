@@ -293,9 +293,10 @@ body{
   cursor:text;
 }
 .card-question.in{opacity:1;transform:none;}
-/* The message after the last card of a hand: quiet, centred on the card (both
+/* The message after the last card of a hand: INTERMEZZO's lettering (Federo, spaced capitals, --muted-l) at its own size, centred on the card (both
    surfaces); it fades out before the card turns to Intermezzo. */
-.end-msg{display:block;font-size:1rem;color:var(--muted);text-align:center;transition:opacity .45s ease;}
+.end-msg{display:block;font-family:'Federo',sans-serif;font-style:normal;font-size:1rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted-l);text-align:center;line-height:1.6;transition:opacity .45s ease;}
+.end-msg>span{padding-left:.32em;}   /* the last letter's trailing space would push the line off-centre */
 .end-msg.out{opacity:0;}
 @media (prefers-reduced-motion:reduce){.end-msg{transition:none;}}
 .card-body-inner:has(.end-msg){padding-bottom:18px;}      /* even padding, so the message sits in the middle of the card */
