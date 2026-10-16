@@ -37,6 +37,8 @@ The Keeper. Started with `/keeper`.
   the owner chose. Follows `DESIGN-SYSTEM.md`.
 - Builder: `looks-builder`.
 
+**Names we use:** "the evening chooser" = the sheet headed "What kind of evening?" (code: `#cat-area`). Internal only, not shown in the app.
+
 **C) How the app works** — behaviour, screens, flows, settings, profiles, saving, offline.
 - Way of working: plain-language options with trade-offs, decided by the owner.
 - Builder: `app-builder`.
