@@ -126,3 +126,11 @@ Life and Desire/Attract, then new Life cards, then the next category.
   asked if it is weak — open.
 - **Card forms may vary** (owner): questions don't all need the same shape — open "..." prompts,
   statements and commands are all fine.
+
+**2026-10-16:** Attract app line: "Crushes, chemistry, and whoever catches your eye" (owner).
+Life picks being built: Life 4 (cook for yourself), 6 (overspend / refuse to pay), 7 (absurd
+form, queue or phone call), 10 (strangest thing on public transport — owner: "tells about travel
+and what people notice"), 11 (unread messages). Bench: the commute card (Life 10 alt 1, owner:
+"also fun"). Open: Life 2 (sleep routine — owner liked alt 1 and alt 3, asked for two more
+versions of each); Life 12 (owner picked the put-off-admin card, which they also asked to bench
+from Life 7 — asked which; and it would make two admin cards in Life).
