@@ -39,6 +39,11 @@ The Keeper. Started with `/keeper`.
   each option works or doesn't without picking one. The builder builds only from the mockup
   the owner chose. Follows `DESIGN-SYSTEM.md`.
 - Placement, form, size and colour are decided by the Keeper and the builder, shown as options. The owner is not asked where things go (owner, 2026-10-16: "I am not a designer"). The Keeper also says so plainly when an owner's own design instruction is a bad plan.
+- Hard rules from the owner (2026-10-17):
+  - No glowing effects to draw attention.
+  - Every question uses the same font size; no sizing by length.
+  - Chapter and category colours are never changed without asking the owner first, not even a tint to make one fit.
+  - Layout tests use cards from the owner's own deck only, never the optional sets (Colbert, The 36, Magical).
 - Builder: `looks-builder`.
 
 **Names we use:** "the evening chooser" = the sheet headed "What kind of evening?" (code: `#cat-area`). Internal only, not shown in the app.
