@@ -38,3 +38,4 @@ The evening part fits one phone screen without scrolling; the mix door can't be 
 for a second path; the owner picked a mockup and it's built and live.
 
 ## Rounds
+- Round 1 (2026-10-18): https://claude.ai/artifact/7z6eYydX1a8DVzC2s2d2Hc — current, Trimmed, Two steps, Layers (rethink).
