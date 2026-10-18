@@ -533,6 +533,8 @@ body.showing-hand-summary .card-question{
 @keyframes imDraw{to{stroke-dashoffset:0;}}
 @keyframes imFade{to{opacity:.9;}}
 @keyframes imBreathe{0%,100%{opacity:.9;}50%{opacity:.45;}}
+/* the bar under the mark echoes the diamond: same timing, half the dip */
+@keyframes imEcho{0%,100%{opacity:.9;}50%{opacity:.675;}}
 :is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata :is(.a1,.a2){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s .5s ease-out forwards;}
 :is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .a2{animation-delay:.8s;}
 :is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
@@ -544,6 +546,10 @@ body.showing-hand-summary .card-question{
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-b{animation-delay:.8s;}
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-fl path{animation-duration:1s;animation-delay:1.4s;}
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
+/* the bar under the mark appears with the diamond and breathes in step with it (softer): start card, pause card, Spotlight */
+:is(.card.is-start:not(.is-intermezzo),.card.is-start.is-intermezzo:not(.im-still)) .cb-rule,.party-overlay.open .im-wrap:not(.still) .im-rule{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imEcho 3.2s 2.4s ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo.im-still .cb-rule,.party-overlay.open .im-wrap.still .im-rule){animation:imEcho 3.2s ease-in-out infinite;}
+.card.is-start.logo-wait:not(.is-intermezzo) .cb-rule{animation:none;}
 /* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
 /* the card turns over on its side, like a real card: 0.9s, soft perspective, a slight dip in size at
@@ -561,6 +567,7 @@ body.showing-hand-summary .card-question{
   .cb-fermata :is(.a1,.a2),.cb-mark :is(.lg-a,.lg-b,.lg-fl path){animation:none !important;stroke-dasharray:none !important;stroke-dashoffset:0 !important;}
   .cb-fermata .dm,.cb-mark .lg-dm{animation:none !important;opacity:.9 !important;}
   .cb-fermata .fl{animation:none !important;opacity:.9 !important;}
+  .cb-rule,.im-rule{animation:none !important;opacity:.9 !important;}
 }
 /* fullscreen: the same two sides in the overlay's own layout */
 .party-overlay.is-hand-end .party-star{visibility:hidden;}
