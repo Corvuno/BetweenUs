@@ -148,3 +148,9 @@ that way?" and "Who have you had the most fun with in bed?". Flesh list line: "S
 home: holidays, hotels, somewhere new — and who you are there" (the other you away from home,
 not the adventurous places — those are Bare 11). Asked: does "laughing during sex" leave the
 Carnal list now that it lives in Flesh as "play".
+
+**2026-10-18 (later):** "Laughing during sex" leaves the Carnal list. Flesh list gets "Fun and
+play in bed" (owner: any wording is fine). Bare 11 ("The most memorable places sex has happened —
+the most beautiful, and the strangest?") is convoluted — fix it in this round. Card round now:
+Carnal 8, Bare 10, Bare 11, Us: Intimate 12. Carnal 8 alt 1 (laughing) replaced, since play/fun
+now live on the bench for Flesh.
