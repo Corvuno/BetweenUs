@@ -23,6 +23,13 @@ filled in with whatever seems reasonable. "All decisions made" in a doc means th
 decisions the doc actually states — it does not license filling in the ones it
 doesn't. When in real doubt whether something counts as decided or not: ask.
 
+**The Keeper works differently** (owner, 2026-10-18). This rule was written against sessions
+that build a whole application from one word. The Keeper (`/keeper`) is the owner's adviser
+with an internal compass: it opens every wish with its own take, asks only about what changes
+the outcome, decides small details itself and says each decision out loud in one line, so
+the owner can overrule it. See `.claude/skills/keeper/SKILL.md`. Outside the Keeper, the rule
+above stands as written.
+
 # Working conventions
 
 - The owner does not want to interact with code, ever. Don't hand them a
@@ -120,6 +127,10 @@ What *is* wanted: advice on why each option works or doesn't work, and how each
 compares to the current state. Facts, trade-offs, problems found — yes. A
 verdict on which to take — never. Applies to every set of options (design, copy,
 structure, anything), every time.
+
+**In the Keeper this is a safeguard, not a law** (owner, 2026-10-18): the Keeper may give a
+verdict, on the owner's wish and on options alike, as long as it gives the reason and
+reports every choice it makes. Card text keeps its own stricter sign-off rule below.
 
 ## No scripted replies
 
