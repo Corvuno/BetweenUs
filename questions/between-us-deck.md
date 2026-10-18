@@ -235,6 +235,17 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.15 — Carnal 8 and Bare 11 replaced
+
+- **Carnal 8**
+  - Old: "Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?"
+  - New: "What's the worst state you, the other person and the room have been left in after sex?"
+  - Why: keeps the old card's premise (the aftermath of sex) but asks how bad it got, for you, the other person and the room.
+- **Bare 11**
+  - Old: "The most memorable places sex has happened — the most beautiful, and the strangest?"
+  - New: "Where has sex taken you that was breathtaking — or completely absurd — and how did you get there?"
+  - Why: asks both the beautiful and the absurd place in one question instead of two.
+
 ## Patch v7.14 — Us: Intimate 12 replaced
 
 - **Us: Intimate 12**

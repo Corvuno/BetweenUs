@@ -453,7 +453,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?" },
   { level: "carnal", question: "What's a sound someone's made in bed that you still think about?" },
   { level: "carnal", question: "What's something a partner's done in bed that turned you on in a way you didn't expect — and how did you respond?" },
-  { level: "carnal", question: "Teeth, nails, grip, hair — what evidence do you want to find on yourself the next day?" },
+  { level: "carnal", question: "What's the worst state you, the other person and the room have been left in after sex?" },
   { level: "carnal", question: "When does sex stop being about you — and is that a good thing?" },
   { level: "carnal", question: "What's something sexual you've never asked for because it's better when it's offered?" },
   { level: "carnal", question: "Which of your turn-ons did you find through porn instead of real life?" },
@@ -470,7 +470,7 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "What does sexual fulfilment feel like — and do you have it now?" },
   { level: "bare", question: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?" },
   { level: "bare", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
-  { level: "bare", question: "The most memorable places sex has happened — the most beautiful, and the strangest?" },
+  { level: "bare", question: "Where has sex taken you that was breathtaking — or completely absurd — and how did you get there?" },
   { level: "bare", question: "Have you ever faked something in bed — what, and why?" },
 
   // ─── KINKS ───
