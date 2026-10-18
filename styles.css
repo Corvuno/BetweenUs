@@ -548,12 +548,16 @@ body.showing-hand-summary .card-question{
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
 /* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
-/* the card turns over on its side, like a real card: edge-on at 175ms (the face swap), then
-   the other face comes round. Back to Intermezzo turns it the other way. */
-@keyframes cardTurn{0%{transform:perspective(1100px) rotateY(0);animation-timing-function:ease-in;}49.9%{transform:perspective(1100px) rotateY(90deg);}50%{transform:perspective(1100px) rotateY(-90deg);animation-timing-function:ease-out;}100%{transform:perspective(1100px) rotateY(0);}}
-@keyframes cardTurnBack{0%{transform:perspective(1100px) rotateY(0);animation-timing-function:ease-in;}49.9%{transform:perspective(1100px) rotateY(-90deg);}50%{transform:perspective(1100px) rotateY(90deg);animation-timing-function:ease-out;}100%{transform:perspective(1100px) rotateY(0);}}
-.card.turning,.party-card.turning{animation:cardTurn .35s linear both;}
-.card.turning-back,.party-card.turning-back{animation:cardTurnBack .35s linear both;}
+/* the card turns over on its side, like a real card: 0.9s, soft perspective, a slight dip in size at
+   the edge. Edge-on at 450ms is the face swap (the JS swaps then, never at another moment); it slows
+   in to the edge and eases out of it. The back is there instantly at the edge (no fade of the lattice).
+   One shared turn: message to Intermezzo and Intermezzo to list use cardTurn, back to Intermezzo
+   turns the other way (cardTurnBack). */
+@keyframes cardTurn{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(-90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
+@keyframes cardTurnBack{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(-90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
+.card.turning,.party-card.turning{animation:cardTurn .9s linear both;}
+.card.turning-back,.party-card.turning-back{animation:cardTurnBack .9s linear both;}
+.card.turning .card-back,.card.turning-back .card-back{transition:none;}
 @media (prefers-reduced-motion:reduce){
   .card.turning,.card.turning-back,.party-card.turning,.party-card.turning-back{animation:none;}
   .cb-fermata :is(.a1,.a2),.cb-mark :is(.lg-a,.lg-b,.lg-fl path){animation:none !important;stroke-dasharray:none !important;stroke-dashoffset:0 !important;}

@@ -124,7 +124,7 @@ lettered like INTERMEZZO, because that word reads well. Federo, upright (`font-s
 `--muted-l`, centred, `line-height:1.6`. It keeps its own size (1rem on the card and in
 fullscreen); it is *not* sized to the INTERMEZZO word. Each line is its own block;
 long lines wrap inside the card, never overflow; each line carries `padding-left:.32em`
-so the last letter's tracking doesn't push it off-centre. Fades out (.45s) into Intermezzo.
+so the last letter's tracking doesn't push it off-centre. Stays up ~1.1s (one line) or ~1.9s (two lines), then the card turns over into Intermezzo (no fade; see The flip).
 Earlier look (thin italic serif, `--muted`) was unreadable and is gone.
 
 **Intermezzo card back** (`.card.is-intermezzo`, fullscreen `.im-wrap`): the pause mark
@@ -137,9 +137,17 @@ transparent-gold-transparent gradient of that colour. The diamond breathes
 then the flanking hairlines (`imDraw` 1.4s, `imFade`); coming back from the list the
 finished mark shows and only breathes (`.im-still` / `.still`).
 
-**The flip**: a real card turn on its side — edge-on at 175ms, the other face comes round,
-.35s total (`cardTurn`, Intermezzo to list; `cardTurnBack`, the other way). Applies to the
-card and the fullscreen card. Intermezzo flips with a tap; a hold skips the list.
+**The flip**: one shared, slow card turn on its side, for every turn of this card (message to
+Intermezzo, Intermezzo to list, list back to Intermezzo). 0.9s total (`cardTurn`; `cardTurnBack`
+is the mirror, used turning back to Intermezzo). `perspective(1600px)` (soft), a dip to
+`scale(.94)` at the edge, `rotateY` 0 to 90deg, flipping to -90deg at 50% and back to 0. The
+curve is eased, not linear: slows into the edge (`cubic-bezier(.45,0,.75,.4)`), eases out of it
+(`cubic-bezier(.25,.6,.55,1)`). Edge-on is at 450ms and that is the only moment the face
+swaps (JS: `TURN_MID_MS` 450, class removed at `TURN_END_MS` 940, both in `deck.js`). While
+turning, `.card-back` has `transition:none`, so the lattice back is there at once at the edge
+instead of fading in; the `.flipping` text fade is not used for these turns (the edge hides the
+swap). Applies to the card and the fullscreen card. Intermezzo flips with a tap; a hold skips
+the list. Earlier look (0.35s, `perspective(1100px)`, edge at 175ms, no size dip) is gone.
 
 **Hold/Tap button at hand end** (`.btn-draw.hold-mode`): the gold button's size and type
 (`letter-spacing:.1em`), but filled with a gradient of `--im-color` (86% mixed to white
@@ -190,7 +198,7 @@ deck loads from the categories sheet it waits (`.logo-wait`) until the sheet has
 
 **Reduced motion** (`prefers-reduced-motion:reduce`): the flip has no turn; the drawn
 marks (pause mark and logo) show finished at once, the diamond stays at opacity .9
-without breathing; the end message fades with no transition.
+without breathing; the end message switches to Intermezzo with no turn, at the same moment.
 
 ## What's fixed everywhere vs. what's scoped
 
