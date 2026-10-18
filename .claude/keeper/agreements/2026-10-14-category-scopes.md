@@ -162,3 +162,54 @@ completely absurd). Bare 10: owner likes the "where do you find them" angle of t
 alternatives asked. KEEP IN MIND (owner): "How old were you the first time — and did it feel
 early, late, or right on time?" — "the first first-time question that makes sense"; candidate
 for a later slot.
+
+---
+
+# FINAL AGREEMENT TO APPROVE (2026-10-18)
+
+Cards are done (live through Patch v7.16). What is left to build:
+
+## A) Deck
+
+1. **Abyss's three cards move** (owner-placed 2026-10-14):
+   - Abyss 1 "What once felt too far in bed that's now just a Tuesday — and what still gives you
+     pause on a Saturday night?" → Kink 5 slot (replaces "What do you still keep quiet about in
+     bed, and what makes you keep it that way?").
+   - Abyss 11 "Who in your normal life knows about this side of you — do they understand, and who
+     will never find out?" → Bare 1 slot (replaces "Where does sex actually land on the list of
+     things that matter to you?").
+   - Abyss 12 "What is something considered 'taboo' by society that you actually find quite
+     appealing?" → Bare 8 slot (replaces "What does sexual fulfilment feel like — and do you have it
+     now?").
+   - (Keeper's call: which Abyss card takes which of the two Bare slots — 11 → 1, 12 → 8.)
+   - The other nine Abyss cards are removed, not benched. "Abyss" goes to the ARCHIVE of retired
+     names.
+2. **Writer briefs** go into `questions/between-us-deck.md` as a new section "WRITER BRIEFS", one
+   per category touched: Life, Home, World, Attract, Flesh, Carnal, Bare, Kink, Us: Intimate. Each:
+   what it's about, subjects (a direction, not a boundary — thought lines, not a checklist), where
+   it stops. Text as agreed in chat 2026-10-13…18, with the owner's edits (Bare: no wrong-name /
+   embarrassing-purchase lines; Carnal: likes/dislikes in, laughing out; Flesh: "sex away from
+   home", "fun and play in bed"; Attract: light and fun, the safe side of After Dark's edge).
+   Header line: After Dark is grown-up, never juvenile.
+
+## B) Looks — nothing changes.
+
+## C) How the app works
+
+1. **New app lines** (CATEGORIES desc in config.js):
+   - Life: "How your days actually get done — and the habits that make them yours"
+   - Home: "Your rooms, your street, your town — and the next one"
+   - World: "Past, future, and everything out there in between"
+   - Attract: "Crushes, chemistry, and whoever catches your eye"
+   - Flesh: "Undressed, and honest about it ✦"
+   - Carnal: "Sex as you actually have it, up close ✦"
+   - Kink: "What makes you tick — and how far you'd take it ✦"
+   - Us: Intimate: "Ask each other what you'd never ask anyone else ✦"
+   - Bare: unchanged.
+2. **Abyss removed from the app:** its CATEGORIES record and every preset's "available" list; the
+   app must still load for players whose saved selection included Abyss.
+3. Unwind's line ("Rest, weather, small pleasures…") stays for now — parked in the backlog.
+
+## Done when
+All of the above live on main, tests pass, Abyss nowhere on screen, the eight new lines visible on
+the selection screens (screenshots), and the writer briefs readable in the deck notes.
