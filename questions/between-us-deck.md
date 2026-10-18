@@ -235,6 +235,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+## Patch v7.14 — Us: Intimate 12 replaced
+
+- **Us: Intimate 12**
+  - Old: "What do you hold back with me — and what would it take to stop?"
+  - New: "Who usually starts things between us — and would you like that to change?"
+  - Why: the old card sat too close to Us: Intimate 10 (both about what you haven't said); the new one is about who starts things.
+
 ## Patch v7.13 — Life rework complete
 
 - **Life 2**
