@@ -1786,6 +1786,9 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   .card-body-inner{padding:14px 7cqw 0;gap:2cqw;}
   .card-level{font-size:2cqw;}
   .card-question{font-size:6.8cqw;line-height:1.12;}
+  .card.is-hand-list .card-body-inner{padding:48px 7cqw 48px;}
+  .card.is-hand-list .card-question{font-size:1rem;line-height:normal;}
+  .hd-list{--hd-fs:2.2cqw;justify-content:safe center;gap:.9em;}
 
   /* bottom row */
   #btn-prev{grid-column:1;grid-row:4 / 6;justify-self:start;align-self:center;width:auto;height:auto;border:0;background:none;
