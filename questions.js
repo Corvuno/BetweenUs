@@ -460,14 +460,14 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?" },
 
   // ─── BLUNT ───
-  { level: "bare", question: "Where does sex actually land on the list of things that matter to you?" },
+  { level: "bare", question: "Who in your normal life knows about this side of you — do they understand, and who will never find out?" },
   { level: "bare", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
   { level: "bare", question: "When has your body not done what you wanted in bed — and what did you do?" },
   { level: "bare", question: "The most sexually bold text you've sent that landed exactly right — care to repeat it?" },
   { level: "bare", question: "What did you believe about sex that turned out to be nonsense?" },
   { level: "bare", question: "Your count — do you know it? Break it down: relationships, flings, one-night stands." },
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
-  { level: "bare", question: "What does sexual fulfilment feel like — and do you have it now?" },
+  { level: "bare", question: "What is something considered 'taboo' by society that you actually find quite appealing?" },
   { level: "bare", question: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?" },
   { level: "bare", question: "Where do you actually meet the people you end up sleeping with — and has that changed over the years?" },
   { level: "bare", question: "Where has sex taken you that was breathtaking — or completely absurd — and how did you get there?" },
@@ -478,7 +478,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "Watching, or being watched — which does more for you?" },
   { level: "kinks", question: "What's a specific time pain, given or taken, brought pleasure along with it?" },
   { level: "kinks", question: "Alone or with someone — what does a toy give you that you otherwise wouldn't get?" },
-  { level: "kinks", question: "What do you still keep quiet about in bed, and what makes you keep it that way?" },
+  { level: "kinks", question: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
   { level: "kinks", question: "What kind of words instantly turn you on?" },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },
@@ -486,20 +486,6 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "When did \"yes\" turn into \"actually, no\" while it was already happening?" },
   { level: "kinks", question: "Who introduced you to something you'd never have found or tried alone?" },
   { level: "kinks", question: "More than two — does it appeal, and what's the pull?" },
-
-  // ─── ABYSS ───
-  { level: "abyss", question: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
-  { level: "abyss", question: "What's a specific moment, going as far as you have, that surprised you with how safe it felt?" },
-  { level: "abyss", question: "What does going to the extreme give you that gentle never could?" },
-  { level: "abyss", question: "Tell about a scene that changed you." },
-  { level: "abyss", question: "Has your body ever said yes while something deeper said no — and how did you find out?" },
-  { level: "abyss", question: "In the darkest rooms, what's the gentlest thing that happens?" },
-  { level: "abyss", question: "Tell about the safeword that got used — or the one that should have been." },
-  { level: "abyss", question: "Where did you find out you had a limit?" },
-  { level: "abyss", question: "What kind of trust does going that far actually take?" },
-  { level: "abyss", question: "What did you consent to that you didn't actually want?" },
-  { level: "abyss", question: "Who in your normal life knows about this side of you — do they understand, and who will never find out?" },
-  { level: "abyss", question: "What is something considered 'taboo' by society that you actually find quite appealing?" },
 ];
 
 // ── REFERENCE SETS — canonical sequences, deck-independent (like Colbert) ──
