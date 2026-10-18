@@ -615,6 +615,9 @@ function renderHandSide(animate) {
   const isList = side === 'list';
   document.body.classList.add('showing-hand-summary');
   document.body.classList.toggle('hand-side-list', isList);
+  // Save's hint follows the device's local time of day.
+  const sh = document.getElementById('saveHint');
+  if (sh) { const hr = new Date().getHours(); sh.textContent = 'take ' + (hr >= 5 && hr < 12 ? 'this morning' : hr < 18 && hr >= 12 ? 'this afternoon' : hr >= 18 ? 'this evening' : 'tonight') + ' with you'; }
   const ov = document.getElementById('partyOverlay');
   if (ov) { ov.classList.add('is-hand-end'); ov.classList.toggle('is-intermezzo', !isList); ov.classList.toggle('is-hand-list', isList); }
   const el = document.getElementById('card');

@@ -486,9 +486,11 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
 // showHandSummary()). Plain taps — the hold-to-draw-a-fresh-hand gesture
 // is Next Card itself (in hold-mode), handled by the END_HOLD_TARGETS gate.
 document.getElementById('btnChange') && document.getElementById('btnChange').addEventListener('click', () => {
+  hintRetire('change');
   if (typeof openCats === 'function') openCats();
 });
 document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
+  hintRetire('save');
   if (typeof saveSessionFiles === 'function') saveSessionFiles();
 });
 

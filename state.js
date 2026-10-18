@@ -74,7 +74,9 @@ const HINTS = {
   tok:       { key: 'bu.tokTaught',       cls: 'tok-taught' },          // "· tap to change"
   three:     { key: 'bu.hintThreeTaught', cls: 'hint-three-taught' },   // under Three
   spotlight: { key: 'bu.hintSpotTaught',  cls: 'hint-spot-taught' },    // under Spotlight
-  twist:     { key: 'bu.hintTwistTaught', cls: 'hint-twist-taught' }    // under Twist
+  twist:     { key: 'bu.hintTwistTaught', cls: 'hint-twist-taught' },   // under Twist
+  change:    { key: 'bu.hintChangeTaught', cls: 'hint-change-taught' }, // under Change (end of hand)
+  save:      { key: 'bu.hintSaveTaught',  cls: 'hint-save-taught' }      // under Save (end of hand)
 };
 function hintIsTaught(id) {
   try { return !!localStorage.getItem(HINTS[id].key); } catch (e) { return document.body.classList.contains(HINTS[id].cls); }

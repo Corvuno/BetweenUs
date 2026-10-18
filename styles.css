@@ -887,8 +887,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 .screen-row--hand{display:none;}
 body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
 body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
-/* Change and Save: the colour Three / Spotlight / Twist have once a card is drawn (--celadon) */
-.screen-row--hand .btn-fullscreen{color:var(--celadon);}
+/* Change and Save look and behave like Three / Spotlight / Twist: they share the #screenRow rules (see "The play-style row" below). */
 .pick-toggle{
   background:transparent;border:none;border-bottom:1px solid transparent;
   color:var(--btn-quiet);
@@ -1668,38 +1667,41 @@ body.tok-taught .tok-hint{display:none;}
 .tr-svg path:nth-of-type(4){stroke:var(--preset);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
 .tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
 
-/* ── The play-style row: Three · Full screen · Twist ──
+/* ── The play-style row: Three · Spotlight · Twist (also the end-of-hand row Change · Save, #handActionsRow) ──
    One celadon, one strength, no boxes. Two fading rules above and below,
    rotated-square separators between items, hint line under each. Active =
    underline under the word only. Placed last so it wins over the quiet
    text-button rules above. */
-#screenRow{position:relative;gap:4px;padding:4px 0 6px;align-items:flex-start;}
-#screenRow::before,#screenRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
+#screenRow,#handActionsRow{position:relative;gap:4px;padding:4px 0 6px;align-items:flex-start;}
+#screenRow::before,#handActionsRow::before,#screenRow::after,#handActionsRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
   background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent) 30%,color-mix(in srgb,var(--celadon) 42%,transparent) 70%,transparent);}
-#screenRow::before{top:0;}
-#screenRow::after{bottom:0;}
-#screenRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
+#screenRow::before,#handActionsRow::before{top:0;}
+#screenRow::after,#handActionsRow::after{bottom:0;}
+#screenRow > button,#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
   font-family:'Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
-#screenRow > button:hover{color:var(--celadon);}
-#screenRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
-#screenRow > button svg{width:17px;height:17px;flex-shrink:0;}
-#screenRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
+#screenRow > button:hover,#handActionsRow > button:hover{color:var(--celadon);}
+#screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
+#screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
+#screenRow .row-hint,#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
   font-size:.88rem;line-height:1.15;color:var(--celadon-hint);white-space:normal;max-width:104px;text-align:center;}
-#screenRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
-#screenRow > button.on .row-lbl,#screenRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
+#screenRow .row-sep,#handActionsRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
+#screenRow > button.on .row-lbl,#handActionsRow > button.on .row-lbl,#screenRow > button.active .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
 /* Not usable yet (before the first card; Twist also on the end screen): only the
    symbol + word dim — the hint under them stays at full strength. */
-#screenRow > button.disabled{opacity:1;}
-#screenRow > button.disabled .row-top{opacity:.32;}
+#screenRow > button.disabled,#handActionsRow > button.disabled{opacity:1;}
+#screenRow > button.disabled .row-top,#handActionsRow > button.disabled .row-top{opacity:.32;}
 /* Hover (pointer devices only), press and keyboard focus light up gold, like the
    nav row's back and menu. Not while dimmed. Hint keeps its own tone. */
 #screenRow > button:not(.disabled):active,
-#screenRow > button:not(.disabled):focus-visible{color:var(--gold);}
-@media (hover:hover){#screenRow > button:not(.disabled):hover{color:var(--gold);}}
+#handActionsRow > button:not(.disabled):active,
+#screenRow > button:not(.disabled):focus-visible,#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
+@media (hover:hover){#screenRow > button:not(.disabled):hover,#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
 /* Hints retire per control once it has worked (see HINTS in state.js). */
 body.hint-three-taught #pickToggle .row-hint,
 body.hint-spot-taught #btnParty .row-hint,
-body.hint-twist-taught #btnTwist .row-hint{display:none;}
+body.hint-twist-taught #btnTwist .row-hint,
+body.hint-change-taught #btnChange .row-hint,
+body.hint-save-taught #btnSave .row-hint{display:none;}
 /* Twist can't be used: a short horizontal shake, no words. */
 @keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
 @keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}

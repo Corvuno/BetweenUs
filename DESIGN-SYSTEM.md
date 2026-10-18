@@ -146,8 +146,24 @@ card and the fullscreen card. Intermezzo flips with a tap; a hold skips the list
 down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words: "Tap to
 flip card" on Intermezzo, "Hold to continue" on the list.
 
-**Change / Save at hand end** (`.screen-row--hand .btn-fullscreen`): `--celadon`, the
-same as Three / Spotlight / Twist once a card is drawn.
+**Change / Save at hand end** (`#handActionsRow`, swapped in for `#screenRow` via
+`body.showing-hand-summary`): the same row as Three / Spotlight / Twist, not a copy of it.
+The `#screenRow` rules in styles.css ("The play-style row") list `#handActionsRow` as a
+second selector, so rules above and below, `--celadon` capitals (Jost, `.72rem`, `.22em`),
+17px icon, gold on hover/press and the italic `.row-hint` line (`--celadon-hint`) are one
+definition. Markup is the same pattern: `button > .row-top (svg + .row-lbl)` then
+`.row-hint`. Two items, no separator diamond. Icons: 24x24 viewBox, `fill:none`, stroke
+`currentColor` 1.7, miter, butt (as Twist).
+- Change: a deco dial — outer arc, inner arc at `.55` opacity, base line, needle ending in a
+  filled diamond. (It opens the category sheet, which sets which questions are drawn.)
+- Save: two stacked chevrons over a line.
+Hints (owner's words, lowercase): Change "set which questions are drawn"; Save follows the
+device's local time when the end-of-hand row is shown — 05:00-11:59 "take this morning with
+you", 12:00-17:59 "take this afternoon with you", 18:00-23:59 "take this evening with you",
+00:00-04:59 "take tonight with you" (set in `renderHandSide`, presentation.js). Both hints
+retire the first time their button is used, like the others: `HINTS` entries `change` and
+`save` in state.js, body classes `hint-change-taught` / `hint-save-taught`, and "Show hints
+again" brings them back. Fullscreen has no Change/Save, so none there.
 
 **The hand list** (`.hd-list`, `.hd-row`): Bodoni Moda italic questions in `--cream`
 (readable, not muted). Size is set once per breakpoint with `--hd-fs`, as a rule against
