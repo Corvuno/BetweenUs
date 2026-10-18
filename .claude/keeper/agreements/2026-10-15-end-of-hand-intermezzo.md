@@ -118,3 +118,21 @@ before Intermezzo, is centred and then fades out into Intermezzo (no cut). Exact
 
 - (owner, 2026-10-16) The message after the last card is far too small: it takes the size of the INTERMEZZO word (in fullscreen: the fullscreen INTERMEZZO word). The list stays as it is.
 - (owner, 2026-10-16, replaces the INTERMEZZO-size line above) The message was already bigger than INTERMEZZO; what made it unreadable was the thin slanted serif in faint grey. It takes INTERMEZZO's lettering instead: plain upright spaced capitals in the same bright tone, keeping its current (bigger) size. Same in fullscreen.
+
+## Change and Save get icons and hint lines (owner, 2026-10-18)
+
+Rounds: icons 1 https://claude.ai/artifact/1KVNUfzXVxuDQBGgUwmsrZ (layout D chosen),
+2 https://claude.ai/artifact/B2B3knSkV6fCbKny8DrBYn (Save G chosen),
+3 https://claude.ai/artifact/AF4fwzCCFMSdr64FxScuRn, 4 https://claude.ai/artifact/XSrzUiqNALxrwtktyEeQW2
+(Change L chosen), 5 https://claude.ai/artifact/R1C9kXDzGbLTgCDijtzZjY (L confirmed over knob/radio).
+
+- Change and Save at the end of a hand become full row buttons exactly like Three · Spotlight ·
+  Twist on the play screen (layout D): icon + capital label in the same type, fine rules above and
+  below the row, an italic hint line under each that disappears once learned, as the others do.
+- Change icon L: a deco dial (two arcs, base line, needle ending in a diamond).
+  Save icon G: two stacked chevrons over a line.
+- Hint lines (owner's words):
+  - Change: "set which questions are drawn"
+  - Save: "take this morning with you" (05:00–12:00), "take this afternoon with you"
+    (12:00–18:00), "take this evening with you" (18:00–24:00), "take tonight with you"
+    (00:00–05:00), by the device's local time when the end of the hand is shown.
