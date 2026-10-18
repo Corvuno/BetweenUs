@@ -142,3 +142,9 @@ purchases" removed (owner: too juvenile, not what this deck is). Us: Intimate wr
 approved; app line: "Ask each other what you'd never ask anyone else ✦". Kink and Flesh lists
 to be redone the same way. Owner questioned "laughing during sex" — I had pushed it in three
 places (Carnal 8 alt 1, Carnal list, Us: Intimate list).
+
+**2026-10-18:** Benched (owner asked): Flesh "When did sex last feel like play — and what made it
+that way?" and "Who have you had the most fun with in bed?". Flesh list line: "Sex away from
+home: holidays, hotels, somewhere new — and who you are there" (the other you away from home,
+not the adventurous places — those are Bare 11). Asked: does "laughing during sex" leave the
+Carnal list now that it lives in Flesh as "play".

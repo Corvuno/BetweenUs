@@ -98,6 +98,8 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Deep** — "Something true about you has never had an occasion to be said..." (displaced from Deep 1 in v6.72; the original card, held since it first got flagged)
 - **World** — "What has travel actually taught you — beyond the stories?" (displaced from World 8 in v6.72; freed up the "travel" subject for Unwind 7, which is where it landed instead)
 - **Life** — "What happens on your daily commute that nobody else would notice?" (an alternative for Life 10 in the 2026-10-16 Life rework; owner liked it — "it's also fun" — but chose the public-transport card for the slot)
+- **Flesh** — "When did sex last feel like play — and what made it that way?" (written 2026-10-18 for laughing and play in bed; owner: "play is exactly the word I'd look for" — it is what they call that feeling. Fulfils a need; no slot yet.)
+- **Flesh** — "Who have you had the most fun with in bed?" (written 2026-10-18 alongside the play card; the owner dropped the "not the best sex, the most fun" contrast from the draft — "the fun can be the best". Fulfils a need; no slot yet.)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
