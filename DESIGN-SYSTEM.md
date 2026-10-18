@@ -136,6 +136,10 @@ transparent-gold-transparent gradient of that colour. The diamond breathes
 (`imBreathe`, opacity .9 to .45, 3.2s). On arrival the arches draw in, then the diamond,
 then the flanking hairlines (`imDraw` 1.4s, `imFade`); coming back from the list the
 finished mark shows and only breathes (`.im-still` / `.still`).
+The rule under the mark is its reflection: it appears with the diamond (same `imFade`, same
+delay) and breathes in exact step (same 3.2s, same delay, same easing) with `imEcho`, opacity
+.9 to .675 (half the diamond's dip). Same on the start card (`.cb-rule`) and in Spotlight
+(`.im-rule`); hidden while the mark is drawing or waiting (`.logo-wait`).
 
 **The flip**: one shared, slow card turn on its side, for every turn of this card (message to
 Intermezzo, Intermezzo to list, list back to Intermezzo). 0.9s total (`cardTurn`; `cardTurnBack`
@@ -200,7 +204,7 @@ deck loads from the categories sheet it waits (`.logo-wait`) until the sheet has
 
 **Reduced motion** (`prefers-reduced-motion:reduce`): the flip has no turn; the drawn
 marks (pause mark and logo) show finished at once, the diamond stays at opacity .9
-without breathing; the end message switches to Intermezzo with no turn, at the same moment.
+without breathing, and the rule under it shows steady at .9; the end message switches to Intermezzo with no turn, at the same moment.
 
 ## Spotlight follows the main screen (owner, 2026-10-18)
 
