@@ -100,6 +100,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Life** — "What happens on your daily commute that nobody else would notice?" (an alternative for Life 10 in the 2026-10-16 Life rework; owner liked it — "it's also fun" — but chose the public-transport card for the slot)
 - **Flesh** — "When did sex last feel like play — and what made it that way?" (written 2026-10-18 for laughing and play in bed; owner: "play is exactly the word I'd look for" — it is what they call that feeling. Fulfils a need; no slot yet.)
 - **Flesh** — "Who have you had the most fun with in bed?" (written 2026-10-18 alongside the play card; the owner dropped the "not the best sex, the most fun" contrast from the draft — "the fun can be the best". Fulfils a need; no slot yet.)
+- **Bare** — "How old were you the first time — and did it feel early, late, or right on time?" (written 2026-10-18 for Bare 10; owner: "the first first-time question that makes sense" — kept for a later slot.)
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -234,6 +235,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.16 — Bare 10 replaced
+
+- **Bare 10**
+  - Old: "Tell the story of the most outrageous sexual situation you've found yourself in."
+  - New: "Where do you actually meet the people you end up sleeping with — and has that changed over the years?"
+  - Why: grown-up Bare — where you meet people, not how many (kept clear of Bare 6, the count). The old "outrageous situation" card was the one the owner wanted gone. The first-time alternative ("How old were you the first time — and did it feel early, late, or right on time?") went to the bench at the owner's request.
 
 ## Patch v7.15 — Carnal 8 and Bare 11 replaced
 
