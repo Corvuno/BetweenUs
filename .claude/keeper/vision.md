@@ -114,3 +114,7 @@ attractive about you?"), and long cards with a second question attached.
 - **2026-10-15** — Added "The screen, on every device": three rules the owner set after the
   first PC layout round, where three options broke them (controls spread around the card, the
   whole menu always open, the deck and drawn cards on the table).
+- **2026-10-18** — After Dark, made explicit: it is grown-up questions about sex, the start of
+  a real conversation — never juvenile. Not the drunk sex-talk register ("we did it after
+  buying a vibrator" trivia the owner doesn't care about). That holds for every After Dark
+  category, Bare included: Bare's facts and silly stories are still adult ones.

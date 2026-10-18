@@ -27,7 +27,12 @@ The Keeper. Started with `/keeper`.
   writing cards for another category and actually collides. Built up as we go, not all at once.
 - Subjects in a writer brief are a direction, not a boundary (owner, 2026-10-16): a subject not
   on the list still belongs if it fits "what the category is about". Build the list outward
-  from the category's purpose — never by summarising the cards it already has.
+  from the category's purpose — never by summarising the cards it already has. The subjects
+  are thought lines to write cards in — the feeling and the box the writer should look into,
+  not a checklist; it's fine that many have no card (owner, 2026-10-18).
+- After Dark is never juvenile (owner, 2026-10-18, see vision): grown-up questions about sex
+  that start a real conversation — not drunk sex-talk trivia. Screen every After Dark subject
+  and card for this, Bare included.
 - Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a
   command are all fine — variety in how cards ask is welcome.
 - Builder: `deck-builder`.
