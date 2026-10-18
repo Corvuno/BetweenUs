@@ -380,6 +380,7 @@ document.addEventListener('keydown',e=>{
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
     if(e.key==='ArrowDown')  { e.preventDefault(); skipCard(); }
+    if(e.key==='3') document.getElementById('pickToggle').click();
   }
 });
 

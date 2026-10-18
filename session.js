@@ -11,6 +11,9 @@ function addToLog(card) {
   if (!card) return;
   if (state.loggedQuestions.has(card.question)) return;   // re-visiting via prev/next must not re-log
   state.loggedQuestions.add(card.question);
+  /* Three can set a card already seen this pass beside the unseen ones; if it is
+     picked it is already in the history and counted as seen — no second entry */
+  if (state.sessionLog.slice(Math.max(state.seenFrom || 0, 0)).some(c => c.question === card.question)) return;
   state.sessionLog.push({ question: card.question, level: card.level });
   if (state.sessionLog.length === 3) spotlightBrightenOnce();
   renderLog();

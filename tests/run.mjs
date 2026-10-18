@@ -800,6 +800,59 @@ async function run() {
     assert(await page.evaluate(() => document.body.classList.contains('showing-hand-summary') && !state.pickerOpen), 'no end screen after the 5th pick');
   });
 
+  await check('Three late in a pass (7 unseen left, 5-card hand): three options on every step, no repeats, no card from the hand, seen cards logged once', async () => {
+    for (const mode of ['arc', 'wild']) {
+      await page.evaluate((mode) => {
+        if (state.partyMode) exitParty();
+        closePicker(); state.pickOptions = null;
+        pickMode = true; document.getElementById('pickToggle').classList.add('on');
+        state.randomMode = mode; state.cardLimit = 5; syncLimitButtons();
+        state.sitOut = {}; state.skippedSeen.clear(); state.seenFrom = 0;
+        state.loggedQuestions.clear();
+        const all = getFilteredCards();
+        state.sessionLog = all.slice(0, all.length - 7).map(c => ({ question: c.question, level: c.level }));
+        state.sessionLog.forEach(c => state.loggedQuestions.add(c.question));
+        renderLog(); initDeck(); renderShell();
+      }, mode);
+      await page.waitForTimeout(250);
+      assert(await page.evaluate(() => state.visibleDeck.length) === 5, `${mode}: the hand is not 5 cards`);
+      const logged0 = await page.evaluate(() => state.sessionLog.length);
+      const offered = new Set();
+      for (let i = 0; i < 5; i++) {
+        if (i === 0) await page.locator('#card').click(); else await page.locator('#btn-next').click();
+        await waitPicker(true);
+        const o = await page.evaluate(() => ({ step: state.pickOptions.step, qs: state.pickOptions.options.map(c => c.question), hand: state.visibleDeck.map(c => c.question), planned: state.pickOptions.planned.question }));
+        assert(o.step === i && o.qs.length === 3 && new Set(o.qs).size === 3, `${mode} step ${i}: expected 3 distinct options, got ${o.qs.length}`);
+        o.qs.filter(q => q !== o.planned).forEach(q => {
+          assert(!o.hand.includes(q), `${mode} step ${i}: an extra option is a card of the hand`);
+          assert(!offered.has(q), `${mode} step ${i}: an extra option was already offered this hand`);
+          offered.add(q);
+        });
+        await page.locator('#cardPicker .pick-opt').nth(0).click();
+        await waitForCardIndex(page, i + 1);
+        await page.waitForTimeout(250);
+      }
+      const uniq = await page.evaluate(() => new Set(state.sessionLog.map(c => c.question)).size === state.sessionLog.length);
+      assert(uniq, `${mode}: a card was logged twice: ${await page.evaluate(() => JSON.stringify(state.sessionLog.map(c => c.question).filter((q, i, a) => a.indexOf(q) !== i)))}`);
+      assert(await page.evaluate(() => state.sessionLog.length) <= logged0 + 5, `${mode}: more than 5 cards logged for the hand`);
+    }
+  });
+
+  await check('Three is live right after the first draw (button and Spotlight not dimmed) and the 3 key toggles it on the main screen', async () => {
+    await freshHand({ three: false });
+    await page.locator('#btn-next').click();
+    await page.waitForTimeout(150);   // well inside the ~1s draw animation
+    const dim = await page.evaluate(() => ({ t: document.getElementById('pickToggle').classList.contains('disabled'), s: document.getElementById('btnParty').classList.contains('disabled') }));
+    assert(!dim.t && !dim.s, `Three/Spotlight still dimmed during the first draw: ${JSON.stringify(dim)}`);
+    await page.keyboard.press('3');
+    await waitPicker(true);
+    assert(await page.evaluate(() => pickMode), 'the 3 key did not switch Three on');
+    await page.keyboard.press('3');
+    await page.waitForTimeout(400);
+    assert(!(await page.evaluate(() => pickMode || state.pickerOpen)), 'the 3 key did not switch Three off');
+    assert((await questionText(page)).length > 0 && !/place to begin/i.test(await questionText(page)), 'the card face is wrong after toggling during the first draw');
+  });
+
   await check('Three on and off mid-hand acts from the next card: no restart, card count unchanged, off with options up shows the planned card', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();
