@@ -13,6 +13,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Blunt** — "Direct to a fault — the questions your friends ask three drinks in" (renamed to Bare)
 - **Desire** — "Wanting, and being wanted"
 - **Lens** — "How you perceive — what you notice, what you miss"
+- **Abyss** — "The far room. For the ones who go further than most. Aftercare included." (retired 2026-10-18; owner: no fun, no place; three of its cards moved to Kink and Bare)
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
@@ -101,6 +102,152 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Flesh** — "When did sex last feel like play — and what made it that way?" (written 2026-10-18 for laughing and play in bed; owner: "play is exactly the word I'd look for" — it is what they call that feeling. Fulfils a need; no slot yet.)
 - **Flesh** — "Who have you had the most fun with in bed?" (written 2026-10-18 alongside the play card; the owner dropped the "not the best sex, the most fun" contrast from the draft — "the fun can be the best". Fulfils a need; no slot yet.)
 - **Bare** — "How old were you the first time — and did it feel early, late, or right on time?" (written 2026-10-18 for Bare 10; owner: "the first first-time question that makes sense" — kept for a later slot.)
+
+## WRITER BRIEFS — what each category is about
+
+*Agreed with the owner, 2026-10-13 to 2026-10-18. Every category gets two descriptions: the
+short app line (in config.js) and this brief for whoever writes cards. The app line alone always
+ends up too narrow and makes cards drift toward sameness; the brief keeps the category wide.*
+
+*How to read a brief: the subjects are a direction, not a boundary — lines of thought to write
+cards in, the feeling and the territory to look into, not a checklist. A subject that isn't
+listed still belongs if it fits what the category is about. The order means nothing. It is fine
+that many subjects have no card yet. Build new cards outward from what the category is for,
+never by copying what its cards already ask.*
+
+*After Dark is grown-up, never juvenile: questions about sex that start a real conversation, not
+drunk sex-talk trivia. That holds for every After Dark category, Bare included.*
+
+### Life
+**App line:** How your days actually get done — and the habits that make them yours
+**About:** Ordinary daily life. The things that have to be done, and how this person does them.
+Nothing special, and still unmistakably them.
+**Lines of thought:** mornings and bedtimes, sleep · cooking, food, groceries · cleaning, laundry,
+chores · money from day to day · errands, admin, paperwork, appointments · getting around ·
+the phone, messages, screens · neighbours and the local shop · small daily mishaps · lists,
+calendars, keeping track · looking after yourself (doctor, dentist, haircut) · looking after
+others' practical needs (pets, plants, the people you cook for) · routines, and the habits other
+people notice · getting older, as it shows in daily life.
+**Where it stops:** the job is Work's · free time and fun are Unwind's · the place you live is
+Home's · how your head works is Mind's and Self's · wishing life were different is Wish's ·
+principles are Values' · Warm and Quick touch daily life in one line; a Life card goes one story
+deeper.
+
+### Home
+**App line:** Your rooms, your street, your town — and the next one
+**About:** The place you live, from the chair you sit in to the town around it, why it's that
+one, and where you'd go next.
+**Lines of thought:** your corner, your chair, your room · the objects in it · how it's furnished,
+decorated, kept or not kept · the view, the sounds, the smell, the light · who you live with ·
+guests, having people over, who has a key · your street and neighbourhood · your town or city,
+and why you live there · moving house, packing, the first night somewhere new · the homes you've
+had as an adult · where you want to live next, the dream place.
+**Where it stops:** the house you grew up in and what it did to you is Roots' · the chores done
+in the house are Life's · travel is Unwind's · a Home card is about the place, not about
+belonging as a feeling.
+
+### World
+**App line:** Past, future, and everything out there in between
+**About:** The world out there: how it works, where it came from, where it's going, and where you
+stand in it. Systems over blame — curious and neutral, not bashing.
+**Lines of thought:** history · the future · technology and the internet · science and discoveries
+· change in your lifetime, and how you took it · politics, power and the systems that land in
+your life · fairness and privilege · money and the economy · other countries and cultures, and
+your own · nature and climate · the news · big open questions a table can argue about.
+**Where it stops:** art and media are Culture's · personal principles are Values' · meaning and
+faith are Spirit's · how people tick inside is Mind's and Self's.
+
+### Attract
+**App line:** Crushes, chemistry, and whoever catches your eye
+**About:** Attraction both ways — what pulls you to someone, in looks and in character, and what
+it's like to be wanted. Light and fun; the safe side of After Dark's edge: just acceptable without
+being After Dark. A card here can be answered honestly without telling anything about sex.
+**Lines of thought:** first impressions · your type in looks, and in character · bodies, and what
+you notice first · what clothes do, on you and on someone else · being looked at · crushes:
+celebrity, inconvenient, hopeless · chemistry with strangers · flirting and being flirted with ·
+tension that never went anywhere · the moment you knew you wanted someone · wanting someone you
+shouldn't · being wanted, and what it does to you · wanting that wasn't returned · turning
+someone down, being turned down · attractions that made no sense · instant turn-offs · who you
+become when you're attracted · daydreams · voices, style, the way someone moves, their vibe ·
+what others find attractive in you.
+**Where it stops:** once the honest answer is about sex, it belongs in After Dark · dating and
+relationships are Romance's · questions about the two of you are the Us categories'.
+
+### Flesh ✦
+**App line:** Undressed, and honest about it
+**About:** Sex in a proper form: somewhat explicit, never shocking, and any subject is allowed.
+Honest, warm, sometimes playful. Less detail than Carnal.
+**Lines of thought:** how it started — the pickup, the first move, seduction · the first touch,
+kissing, making out · undressing and the build-up · the setting: where, the light, music, the
+mood · sex away from home: holidays, hotels, somewhere new — and who you are there · spontaneous
+versus planned · waking up together · first times with someone · chemistry: why it worked with
+one person and not another · casual versus in love · how often, and whether that suits you ·
+confidence in bed, your body with someone · talking in bed · fun and play in bed · what makes sex
+good for you · experiences that surprised you · what trust makes possible · affection in public ·
+afterwards.
+**Where it stops:** the same subjects can appear in Carnal, Bare or Kink — the split in After Dark
+is how far the answer goes, not the topic. A subject may sit in two categories only if the card
+asks for a different story.
+
+### Carnal ✦
+**App line:** Sex as you actually have it, up close
+**About:** Flesh's explicit sibling — the training wheels come off. Sex as you actually have it:
+what you've experienced, what you like and what you don't, told in detail and with insight into
+yourself.
+**Lines of thought:** what you love in bed, and what you can't stand · the best sex and the worst ·
+what you always come back to, and what you tried once · pace and rhythm · oral · orgasms, yours
+and theirs · the body during sex: sweat, mess, sounds · quick versus a long night · morning,
+half-asleep, drunk and sober sex · make-up sex, break-up sex, sex after a fight · sex in a long
+relationship versus with someone new · the first time with a new person, learning each other ·
+asking for something, guiding someone mid-way · what kills it mid-way · the aftermath ·
+how your sex has changed over the years · what sex has taught you about yourself · feeling
+desired · porn and erotica · losing yourself.
+**Where it stops:** facts, figures and silly stories are Bare's · specific kinks and how far you go
+are Kink's · the lighter version is Flesh's · questions to your partner are Us: Intimate's. If
+Flesh covers the same subject, the Carnal card asks for a different story, not the same one with
+more detail.
+
+### Bare ✦
+**App line:** (unchanged) Direct to a fault — the questions your friends ask three drinks in
+**About:** Facts, figures and silly stories — the oddest category. Blunt is allowed; answers can be
+short, or the story that makes the whole table laugh. Still grown-up, never juvenile.
+**Lines of thought:** your count, how often, longest and shortest, ages · firsts and lasts · places ·
+where you meet the people you sleep with · getting caught · awkward mornings after · things that
+went wrong, small injuries · faking · solo sex · toys: bought, hidden, found · sexting, nudes sent
+and received · apps and hook-ups and how they actually went · myths you believed, sex education ·
+age gaps · what your friends know about your sex life · the longest dry spell, and the busiest
+stretch · taboos and confessions · who knows what about you.
+**Where it stops:** what it was like, in detail, is Carnal's · what you're into is Kink's · the
+lead-up is Flesh's.
+
+### Kink ✦
+**App line:** What makes you tick — and how far you'd take it
+**About:** What turns you on in particular and why, and how far you'd take it. Your taste and your
+edges — not one specific night (that's Carnal).
+**Lines of thought:** what turns you on, and where that comes from · the first spark: how you found
+out · fetishes: materials, uniforms, body parts, objects · power: being in charge, surrendering,
+control · pain and intensity · restraint and blindfolds · role play and scenarios · words: praise,
+dirty talk, being told what to do · watching and being watched · the thrill of maybe getting
+caught · more than two, swapping, open arrangements · toys and gear · fantasy versus what you'd
+really do · how your edges have shifted · your hard limits · taboo · talking about it: how you
+bring it up, agreements, aftercare · kink inside a relationship · clubs, parties, scenes · shame
+and pride: who knows, who never will.
+**Where it stops:** sex as it happened, in detail, is Carnal's · blunt facts and confessions are
+Bare's · the lighter version is Flesh's · questions to your partner are Us: Intimate's.
+
+### Us: Intimate ✦
+**App line:** Ask each other what you'd never ask anyone else
+**About:** Your physical and sexual life together, asked straight to the person across from you.
+Warm, direct, allowed to be playful. Some cards ask you to show it, not tell it.
+**Lines of thought:** what works between you, and what you want from each other · how it started,
+your first time together · who starts things · how it's changed since the beginning · the best
+night you've had together · times and places, on holiday · touching and kissing · when your
+wanting doesn't line up, dry spells together · stress, work and kids, and what they do to it ·
+jealousy and other people · fantasies about each other · what you admire about each other's
+bodies · what you've learned from each other · laughing together in bed, your little rituals ·
+what's hard to ask each other.
+**Where it stops:** a card that isn't asked to your partner is Flesh's, Carnal's, Kink's or Bare's ·
+the non-physical side of your relationship is Us: Love's.
 
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
@@ -235,6 +382,23 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.17 — Abyss retired; its three cards move to Kink and Bare; writer briefs added
+
+- **Kink 5**
+  - Old: "What do you still keep quiet about in bed, and what makes you keep it that way?"
+  - New: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?" (was Abyss 1)
+  - Why: Abyss is retired (owner: no fun, no place); its strongest cards move into the categories that fit.
+- **Bare 1**
+  - Old: "Where does sex actually land on the list of things that matter to you?"
+  - New: "Who in your normal life knows about this side of you — do they understand, and who will never find out?" (was Abyss 11)
+  - Why: as above.
+- **Bare 8**
+  - Old: "What does sexual fulfilment feel like — and do you have it now?"
+  - New: "What is something considered 'taboo' by society that you actually find quite appealing?" (was Abyss 12)
+  - Why: as above.
+- **Abyss 2–10** removed (nine cards, not benched; Abyss 1, 11 and 12 moved as above). Category name goes to the ARCHIVE.
+- Writer briefs now exist for Life, Home, World, Attract, Flesh, Carnal, Bare, Kink and Us: Intimate (new WRITER BRIEFS section, between BENCH and the NOTE/HOUSE STYLE sections).
 
 ## Patch v7.16 — Bare 10 replaced
 
