@@ -47,8 +47,7 @@ function renderTwist() {
     if (!btn) return;
     // btnTwist carries an SVG icon alongside its label — overwriting the
     // button's full textContent would wipe the icon out along with it, so
-    // only the label span (or the whole button, for icon-less partyBtnTwist)
-    // gets the text update.
+    // only the label span gets the text update (both buttons have one).
     const label = btn.querySelector('.tt-label') || btn;
     label.textContent = twistLabel();
     btn.classList.toggle('active', !!currentTwist);
@@ -112,7 +111,10 @@ async function toggleFavourite(forCard) {
 function updateStarUI() {
   const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
   const star = document.getElementById('cardStar');
-  if (star) star.classList.toggle('active', !!card && state.favourites.some(f => f.question === card.question));
+  const starred = !!card && state.favourites.some(f => f.question === card.question);
+  if (star) star.classList.toggle('active', starred);
+  const pStar = document.getElementById('partyStar');   // Spotlight's twin lights with it
+  if (pStar) pStar.classList.toggle('on', starred);
 }
 
 // Deck-identity marking on the card face itself: After Dark categories get

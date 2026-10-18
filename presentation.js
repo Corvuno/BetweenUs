@@ -99,6 +99,7 @@ function updatePartyDisplay(card) {
   const ps  = document.getElementById('partyStar');
   const pv  = document.getElementById('partyPrevBtn');
   if (pv) pv.disabled = state.currentIndex <= 0;
+  applyCardMark(document.querySelector('.party-frame'), card);   // deck-mark corners (After Dark, Colbert, The 36) reach Spotlight too
   if (pq) pq.classList.remove('is-end-msg');
   if (!card) {
     if (pq) pq.textContent = 'Draw a card to begin.';
