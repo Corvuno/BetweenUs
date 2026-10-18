@@ -146,6 +146,8 @@ card and the fullscreen card. Intermezzo flips with a tap; a hold skips the list
 down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words: "Tap to
 flip card" on Intermezzo, "Hold to continue" on the list.
 
+**Play row words** (`#screenRow` `.row-lbl`: Three, Spotlight, Twist, Change, Save): all Jost, 400, `.72rem`, `.22em`, uppercase, as the row sets. Three's word used to render in Federo because the Federo label rule listed `.pick-toggle span`; that selector is gone so the row's own type applies (owner, 2026-10-18).
+
 **Change / Save at hand end** (`#handActionsRow`, swapped in for `#screenRow` via
 `body.showing-hand-summary`): the same row as Three / Spotlight / Twist, not a copy of it.
 The `#screenRow` rules in styles.css ("The play-style row") list `#handActionsRow` as a
