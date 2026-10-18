@@ -39,3 +39,16 @@ for a second path; the owner picked a mockup and it's built and live.
 
 ## Rounds
 - Round 1 (2026-10-18): https://claude.ai/artifact/7z6eYydX1a8DVzC2s2d2Hc — current, Trimmed, Two steps, Layers (rethink).
+
+## Change 2026-10-18 (after round 1)
+Owner liked round 1's mix view (categories grouped under their chapters) and asked to make it
+the same view: each chapter on the evening sheet unfolds in place to show its categories.
+Replaces the separate door and mix view. The evening still fits one screen while folded.
+- Tapping a chapter still switches it on/off; unfolding is a separate, clear target.
+- A chapter with only some categories on shows that plainly (e.g. 1 / 5).
+- Fixed Sets (Colbert, The 36) sit as the last fold in the same list. Abyss and Magical stay out.
+- Sliders stay out, also when mixing (Keeper's call, owner may overrule). A mix plays with
+  the preset's tuning as it was.
+- Owner picked Option 1 (Trimmed) as the base, with the chapters unfolding (2026-10-18).
+  Tap heights stay as today (round 1 had shrunk them). Next: one mockup of exactly this,
+  folded and unfolded, then build.
