@@ -37,6 +37,11 @@ The Keeper. Started with `/keeper`.
   line, what it's about, lines of thought (built outward from its purpose), where it stops, with
   the borders to neighbouring categories named; (2) then look at its twelve cards as a whole: what
   stays and what goes; (3) only then write new cards for the open slots.
+- Lines of thought are built outward, not converted from the cards (owner, 2026-10-18: "else this
+  exercise is worthless"). Check before showing a list: most lines must be subjects no current
+  card touches; mark the ones that come from existing cards.
+- Read `.claude/keeper/taste.md` before proposing wording; add to it whenever the owner likes or
+  turns something down.
 - App lines: three options per line, and vary the structure — not every line "X, Y, Z — and
   why it matters". Mix short phrases, images, questions, contrasts (owner, 2026-10-18).
 - Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a
