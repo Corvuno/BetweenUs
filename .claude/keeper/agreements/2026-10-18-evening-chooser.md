@@ -52,3 +52,4 @@ Replaces the separate door and mix view. The evening still fits one screen while
 - Owner picked Option 1 (Trimmed) as the base, with the chapters unfolding (2026-10-18).
   Tap heights stay as today (round 1 had shrunk them). Next: one mockup of exactly this,
   folded and unfolded, then build.
+- Round 2 (2026-10-18): https://claude.ai/artifact/HHAV2hmi89asrdHZ8vXAnw — Option 1 with chapters unfolding; presets folded behind one row to fit.
