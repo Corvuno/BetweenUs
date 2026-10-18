@@ -926,7 +926,7 @@ async function run() {
     assert(Math.abs(ex.cx - 195) < 4, 'Close is not centred at the bottom');
     assert(tw.l < 100 && pk.r > 290 && tw.t < 140 && pk.t < 140, 'Twist and Three are not in the top corners');
     assert(st.t >= ct.b - 2 && Math.abs(st.cx - ct.cx) < 6, 'the star is not under the count');
-    assert(await page.evaluate(() => getComputedStyle(document.querySelector('.party-ornament')).display === 'none'), 'the line under the question is still showing');
+    assert(await page.evaluate(() => getComputedStyle(document.querySelector('.twist-div')).display === 'none'), 'the divider under the question is showing without a Twist');
     assert(await page.evaluate(() => !!document.querySelector('#partyExit svg') && getComputedStyle(document.getElementById('partyExit')).color === 'rgb(169, 199, 182)'), 'Close is not celadon (like the main Spotlight button) with the Spotlight symbol');
     // the Sideways switch
     const vis = () => page.evaluate(() => { const o = document.getElementById('partyOrient'); return { shown: getComputedStyle(o).display !== 'none', word: [...o.querySelectorAll('[data-s]')].filter(e => getComputedStyle(e).display !== 'none').map(e => e.textContent).join(''), land: document.getElementById('partyOverlay').classList.contains('orient-landscape') }; });
@@ -1099,6 +1099,31 @@ async function run() {
     await page.waitForTimeout(450);
     assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
     await freshHand({ three: false });
+  });
+
+  await check('Spotlight Twist divider: two bars (card colour, soft celadon), no diamond, old ornament gone', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(500);
+    const none = await page.evaluate(() => getComputedStyle(document.querySelector('.twist-div')).display);
+    assert(none === 'none', `divider shows without a Twist (${none})`);
+    await page.evaluate(() => { currentTwist = MODIFIERS[0]; renderTwist(); });
+    await page.waitForTimeout(100);
+    const r = await page.evaluate(() => {
+      const d = document.querySelector('.twist-div'), cs = getComputedStyle(d);
+      const a = getComputedStyle(d, '::before'), b = getComputedStyle(d, '::after');
+      return { display: cs.display, kids: d.children.length, old: !!document.querySelector('.party-ornament, .po-svg'),
+        a: a.backgroundColor, b: b.backgroundColor, aw: a.width, bw: b.width, level: getComputedStyle(document.getElementById('party-level')).color };
+    });
+    assert(r.display === 'block' && r.aw !== '0px' && r.bw !== '0px', `divider not drawn with two bars: ${JSON.stringify(r)}`);
+    assert(r.kids === 0 && !r.old, `a diamond / old ornament is still there: ${JSON.stringify(r)}`);
+    assert(r.a !== r.b && r.b !== 'rgba(0, 0, 0, 0)', `bars not distinct: ${JSON.stringify(r)}`);
+    await page.evaluate(() => { clearTwist(); });
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(400);
   });
 
   await check('English only: no language switch, page language is en, no Dutch UI or Twist text', async () => {

@@ -223,7 +223,12 @@ Twins and what they share (main / Spotlight):
 - Star: `#cardStar` / `#partyStar`: `--gold`, opacity `.18` off, `.65` on hover (mouse only), `1` when starred.
   `updateStarUI()` (card.js) keeps both in step.
 - Twist text: `.twist-sentence.twist` / `.party-number.twist` Cormorant italic, `--celadon` (also its
-  TWIST label in Spotlight). The ornament between question and Twist text is not part of this rule (separate round).
+  TWIST label in Spotlight). The divider between question and Twist text is the Twist divider (below).
+- Twist divider (`.twist-div`, Spotlight only; replaces the old `.party-ornament`): the pick-divider flourish (hairline plus a short
+  bar either side). Question-side bar = the card's category colour (`--pd-a`, set in `updatePartyDisplay`, the same source as
+  `.pick-div`); twist-side bar = `--celadon-soft` (`--pd-b`). Horizontal on phone and PC, starting at the text's left edge, hairline
+  fading out to the right (190px / 300px PC; bars 32x3 / 44x4). Sideways phone and forced-wide: vertical between the question and
+  Twist columns, dimmed (`opacity:.65`) like the vertical pick dividers, question bar left, twist bar right. No diamond.
 - Count: Poiret One `.22em`, `--gold`; flanking rules `.prog-count-rule` / `.pc-rule::before` are one shared
   rule (gold at 30%, fading outward); only the length differs (44px main, 20px Spotlight).
 - Corner markers: `.card::before/::after` / `.party-frame i`: gold at opacity `.35`, size scales. Deck marks
@@ -234,6 +239,11 @@ Twins and what they share (main / Spotlight):
   at 42% (the row's rules), gold on press/hover/focus.
 - INTERMEZZO (`.im-word`) is upright (`font-style:normal`), like the main card's `.cb-caption`; it does not
   inherit the card question's italic.
+
+## Tokens added
+- `--celadon-soft`: `color-mix(in srgb, var(--celadon) 74%, var(--bg))` = rgb(129,150,137). Celadon pulled toward the background until its
+  luminance (0.284) matches `--muted-l` (0.282): a celadon with the weight of the quiet neutral, for small accent bars (owner 2026-10-18: "a bit
+  less lightness, so it sits more at T3 in terms of intensity"). Used by the Twist divider's twist-side bar.
 
 ## What's fixed everywhere vs. what's scoped
 
