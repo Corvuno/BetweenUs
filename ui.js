@@ -1416,3 +1416,13 @@ applyQueryDeck();   // ?Q=Work1,Life7,... overrides the drawn default hand, if p
 // saved session.
 if (!state.queryDeckActive) autoResumeSession();
 
+
+
+// Wide screens (see styles.css "WIDE SCREENS"): one scale for the chrome around the card, 1 at 1920x1080 and
+// smaller on smaller windows, so the composition keeps its shape and the card gets the room. Phone: unused.
+function setWideScale() {
+  const k = Math.max(0.62, Math.min(1, Math.min(innerWidth / 1920, innerHeight / 1080) * 1.08));
+  document.documentElement.style.setProperty('--k', k.toFixed(3));
+}
+setWideScale();
+window.addEventListener('resize', setWideScale);

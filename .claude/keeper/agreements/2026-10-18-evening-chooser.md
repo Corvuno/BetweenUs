@@ -52,3 +52,17 @@ Replaces the separate door and mix view. The evening still fits one screen while
 - Owner picked Option 1 (Trimmed) as the base, with the chapters unfolding (2026-10-18).
   Tap heights stay as today (round 1 had shrunk them). Next: one mockup of exactly this,
   folded and unfolded, then build.
+- Round 2 (2026-10-18): https://claude.ai/artifact/HHAV2hmi89asrdHZ8vXAnw — Option 1 with chapters unfolding; presets folded behind one row to fit.
+
+## Final call 2026-10-18 (after round 2) — build this
+Owner: "this is the way to go… cleaned up, this is better." Build round 2 with these corrections:
+- Start from stays unfolded: the ten presets shown as today (folding them was tried before;
+  nobody touched them any more).
+- The chapter row's left line stays as in today's app (one continuous line, not split into
+  segments). A partly-on chapter keeps the colour running the full length, paler/lighter
+  than a fully-on one. Same idea for the row tint.
+- Everything else as round 2: chapters unfold via the count + chevron on the right, the row
+  itself switches the chapter; categories in cream with the colour on dot + underline; None
+  at the Chapters heading (no All); Fixed Sets as the last foldable row; Shuffle and Cards on
+  one line, no Round heading; no sliders; After Dark mark next to its name.
+- The sheet may scroll now (presets open). Draw Cards stays fixed.
