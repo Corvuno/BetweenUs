@@ -39,7 +39,7 @@
       COLBERT_STRICT:   true,    // true → Colbert plays its canonical 15, in order
       // what "Draw" plays, and what the app opens on. mode 'chapters' unions the
       // listed chapters; mode 'all' mirrors the All button (everything except
-      // the opt-in-only lists and Abyss). intensity/focus are 0-100, 50=balanced.
+      // the opt-in-only lists). intensity/focus are 0-100, 50=balanced.
       // "Into the Deep" starts deselected — playtesters found it too daring
       // to be on by default; people can switch it on themselves once they
       // know what they're choosing. mode:'preset' routes through the same
@@ -115,13 +115,13 @@ const NL_DEFAULT        = window.NL_DEFAULT || false;
 //    focus       — -1 (about you) to 1 (about the two of you)
 //    desc        — the tooltip
 //    chapter     — which Play chapter it belongs to, or omitted (Colbert/
-//                  The 36/Abyss/Backup aren't part of the guided evenings)
+//                  The 36/Backup aren't part of the guided evenings)
 //    bucket      — which Explore bucket it belongs to, or omitted (Colbert/
 //                  The 36 get their own entry point instead, same reasoning
 //                  as not being in a chapter)
-//    gate        — true only for the six actual After Dark (✦) categories
+//    gate        — true only for the five actual After Dark (✦) categories
 //    optIn       — never swept up by Select All or auto-spice; needs a
-//                  deliberate tap (the ordered sets, plus Abyss)
+//                  deliberate tap (the ordered sets)
 //    ordered     — plays in a fixed, canonical order when selected alone
 //
 //    Depth/exposure note: band
@@ -129,10 +129,8 @@ const NL_DEFAULT        = window.NL_DEFAULT || false;
 //    topic and not by the After Dark gate — they're deliberately different
 //    axes. That's why After Dark categories land all over the band scale
 //    instead of clustering at the top: flesh/bare are mostly descriptive
-//    (band 3), kinks asks you to name something you keep quiet (band 5),
-//    abyss reads the same as roots/past — "tell me about the time/place
-//    you found this out" — so it sits with them (band 6), not off on its
-//    own. Intensity runs the same scale as depth (a category has one
+//    (band 3), kinks asks you to name something you keep quiet (band 5).
+//    Intensity runs the same scale as depth (a category has one
 //    depth, not two disagreeing ones); focus runs from a question about
 //    you to a question about the two of you. ──
 const CATEGORIES = {
@@ -147,10 +145,10 @@ const CATEGORIES = {
             desc:"What moves you, what leaves you cold, and the places that shaped your eye",
             chapter:"surface", bucket:"viewpoints" },
   life:   { label:"Life",   color:"#5bbe62", band:2, focus:0,
-            desc:"The shape of your ordinary days — and whether they're yours",
+            desc:"How your days actually get done — and the habits that make them yours",
             chapter:"surface", bucket:"everyday" },
   home:   { label:"Home",   color:"#b7ca40", band:2, focus:0.1,
-            desc:"Rooms, objects, and the feeling of belonging somewhere",
+            desc:"Your rooms, your street, your town — and the next one",
             chapter:"surface", bucket:"everyday" },
   work:   { label:"Work",   color:"#32a0c5", band:2, focus:0,
             desc:"What you do all day — and who you become doing it",
@@ -159,7 +157,7 @@ const CATEGORIES = {
             desc:"Rest, weather, small pleasures, and where you go to stop",
             chapter:"surface", bucket:"everyday" },
   world:  { label:"World",  color:"#2d6a4f", band:2, focus:0,
-            desc:"Power, fairness, and the world you're actually living in",
+            desc:"Past, future, and everything out there in between",
             chapter:"surface", bucket:"viewpoints" },
 
   self:   { label:"Self",   color:"#6bbaf0", band:5, focus:-1,
@@ -187,7 +185,7 @@ const CATEGORIES = {
             desc:"Falling, staying, leaving — how you do love",
             chapter:"findout", bucket:"relationships" },
   attract:{ label:"Attract", color:"#da5ab6", band:3, focus:0.7,
-            desc:"Desire before anything happens — what pulls you, and what you do with it",
+            desc:"Crushes, chemistry, and whoever catches your eye",
             chapter:"findout", bucket:"relationships" },
   family: { label:"Family", color:"#a67537", band:5, focus:0.4,
             desc:"The family you have now — roles, rules, and what you'd pass on",
@@ -226,23 +224,20 @@ const CATEGORIES = {
               chapter:"aboutus", bucket:"usb" },
 
   usintimate: { label:"Us: Intimate ✦", color:"#a13039", band:4, focus:1, gate:true,
-                desc:"Physical and intimate — for the two of you only ✦",
+                desc:"Ask each other what you'd never ask anyone else ✦",
                 chapter:"afterdark", bucket:"afterdarkb" },
   flesh:      { label:"Flesh ✦",   color:"#832f4d", band:3, focus:0.6, gate:true,
-                desc:"The body in desire — before and around the act ✦",
+                desc:"Undressed, and honest about it ✦",
                 chapter:"afterdark", bucket:"afterdarkb" },
   carnal:     { label:"Carnal ✦",  color:"#8d1c22", band:4, focus:0.7, gate:true,
-                desc:"The act itself, from the inside ✦",
+                desc:"Sex as you actually have it, up close ✦",
                 chapter:"afterdark", bucket:"afterdarkb" },
   bare:       { label:"Bare ✦",    color:"#b52074", band:3, focus:0.3, gate:true,
                 desc:"Direct to a fault — the questions your friends ask three drinks in ✦",
                 chapter:"afterdark", bucket:"afterdarkb" },
   kinks:      { label:"Kink ✦",    color:"#742055", band:5, focus:0.4, gate:true,
-                desc:"Power, edge, and what you'd rather not explain ✦",
+                desc:"What makes you tick — and how far you'd take it ✦",
                 chapter:"afterdark", bucket:"afterdarkb" },
-  abyss:      { label:"Abyss ✦",   color:"#5c1016", band:6, focus:0, gate:true, optIn:true,
-                desc:"The far room. For the ones who go further than most. Aftercare included. ✦",
-                bucket:"afterdarkb" },
 
   colbert: { label:"Colbert", color:"#dcb04a", band:1, focus:0, ordered:true, optIn:true,
              desc:"The Colbert Questionnaire — same 15 questions, asked in order" },
@@ -273,7 +268,7 @@ function levelFocus(l){ return LEVEL_FOCUS[l] != null ? LEVEL_FOCUS[l] : 0; }
 const PRESETS = {
   open: {
     on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","bare"],
-    available: ["colbert","aron","magic","carnal","kinks","backup","abyss"],
+    available: ["colbert","aron","magic","carnal","kinks","backup"],
     subtitle:  "Everything on the table"
   },
   // The public build's actual opening selection — Beneath the Surface +
@@ -288,7 +283,7 @@ const PRESETS = {
     // as available, not left out: unlisted categories are hidden entirely, and
     // a chapter with only some of its categories on shows "part" on load, so
     // a first click would complete it instead of clearing it.
-    available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup","abyss"],
+    available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup"],
     subtitle:  "Just enough edge."
   },
   // Every preset below is banded: "on" respects the depth ceiling the
@@ -320,12 +315,12 @@ const PRESETS = {
   },
   partner: {
     on:        ["us","uslove","connect","wish","family","body","spirit","self","values","date"],
-    available: ["past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","abyss","aron","magic"],
+    available: ["past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","aron","magic"],
     subtitle:  "Just the two of you."
   },
   latenight: {
     on:        ["connect","self","values","wish","deep","unwind"],
-    available: ["raw","shadow","grief","past","roots","usintimate","flesh","carnal","bare","kinks","abyss"],
+    available: ["raw","shadow","grief","past","roots","usintimate","flesh","carnal","bare","kinks"],
     subtitle:  "When it doesn't need softening."
   },
   solo: {

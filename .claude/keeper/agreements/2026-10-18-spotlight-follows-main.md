@@ -47,3 +47,10 @@ celadon now, so "Twist's own gold" changes meaning).
 
 Checked by the Keeper side by side, main vs Spotlight, at phone, sideways and PC, in normal
 play, picking from three, Twist active and end of hand; tests pass.
+
+## Built — 2026-10-18
+
+Live on main (7fd62f9, merged 8b2c551). Checked by the Keeper side by side (main vs Spotlight)
+at phone and PC, Three picking and Twist active; tests 38/38 after merging the latest main.
+Builder left small known differences: Twist text weight 400 in Spotlight vs 300 on main;
+count rules shorter in Spotlight. Round 4 is superseded by round 5 (same question, live colours).

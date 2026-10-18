@@ -110,3 +110,13 @@ kept. Checked by the Keeper against rounds 2–3 at phone, sideways, PC and forc
 37/37. Sent back: forced-wide pick-three text was too small → Keeper's design call: it stacks
 like upright pick-three at full size. Twist divider follows round 4; Keeper's call on its
 placement: lined up with the text on the left, not centred.
+
+## Twist divider — built 2026-10-18
+
+Round 5: https://claude.ai/artifact/W6dS9zWx7KDNL5EwAhbmB9. Owner picked T1 with the celadon
+toned down to T3's intensity → token `--celadon-soft` (celadon mixed toward the background to
+`--muted-l`'s lightness). Question-side bar = category colour via the pick-divider source;
+left-aligned on phone/PC, vertical and dimmed sideways; old ornament and diamond removed.
+Live on main (e626608). Keeper checked it against round 5 T1/T3. Tests: one run 37/39 (fullscreen
+end-of-hand star tap; start-screen Three click timeout), the next 39/39 — the builder saw the same
+once; looks like timing flakiness in those two checks, not this change.

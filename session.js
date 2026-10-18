@@ -76,7 +76,8 @@ function restoreSessionData(data) {
     state.randomMode=data.randomMode||'wild'; state.cardLimit=data.cardLimit;
     shuffleModeIdx=SHUFFLE_MODES.indexOf(state.randomMode); if(shuffleModeIdx<0) shuffleModeIdx=7;
     updateShuffleDisplay();
-    state.activeToggles=new Set(data.toggles||[]);
+    // ignore keys that no longer exist (e.g. a retired category like "abyss")
+    state.activeToggles=new Set((data.toggles||[]).filter(l => Object.prototype.hasOwnProperty.call(CATEGORIES, l)));
     if (MASTER_SAFE) SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
     // restore preset highlight
     state.activePreset = data.activePreset || '';

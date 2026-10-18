@@ -99,6 +99,7 @@ function updatePartyDisplay(card) {
   const ps  = document.getElementById('partyStar');
   const pv  = document.getElementById('partyPrevBtn');
   if (pv) pv.disabled = state.currentIndex <= 0;
+  applyCardMark(document.querySelector('.party-frame'), card);   // deck-mark corners (After Dark, Colbert, The 36) reach Spotlight too
   if (pq) pq.classList.remove('is-end-msg');
   if (!card) {
     if (pq) pq.textContent = 'Draw a card to begin.';
@@ -111,8 +112,8 @@ function updatePartyDisplay(card) {
   const color = levelColor(card.level);
   if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
   if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
-  const po = document.querySelector('.party-ornament');
-  if (po) po.style.setProperty('--orn', labelColor(color));
+  const td = document.querySelector('.twist-div');   // Twist divider: question-side bar = the card's category colour, as the pick dividers use
+  if (td) td.style.setProperty('--pd-a', color);
   if (pq) {
     pq.textContent = translateQ(card);
     pq.classList.add('entering');

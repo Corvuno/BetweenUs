@@ -33,6 +33,12 @@ The Keeper. Started with `/keeper`.
 - After Dark is never juvenile (owner, 2026-10-18, see vision): grown-up questions about sex
   that start a real conversation — not drunk sex-talk trivia. Screen every After Dark subject
   and card for this, Bare included.
+- **Standard method for redesigning a category** (owner, 2026-10-18): (1) define it first — app
+  line, what it's about, lines of thought (built outward from its purpose), where it stops, with
+  the borders to neighbouring categories named; (2) then look at its twelve cards as a whole: what
+  stays and what goes; (3) only then write new cards for the open slots.
+- App lines: three options per line, and vary the structure — not every line "X, Y, Z — and
+  why it matters". Mix short phrases, images, questions, contrasts (owner, 2026-10-18).
 - Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a
   command are all fine — variety in how cards ask is welcome.
 - Builder: `deck-builder`.

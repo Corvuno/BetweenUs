@@ -384,6 +384,30 @@ async function run() {
     assert(!(await overlay.evaluate(el => el.classList.contains('open'))), 'party overlay did not close');
   });
 
+  // ── J2. Spotlight mirrors the main screen: star lights, Twist keeps its icon and key hint ──
+  await check('Spotlight: tapping the star lights #partyStar; Twist keeps icon and T hint', async () => {
+    await closeCategorySheet();
+    await drawFirstIfNeeded(page);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(300);
+    const starOn = () => page.evaluate(() => document.getElementById('partyStar').classList.contains('on'));
+    const was = await starOn();
+    await page.locator('#partyStar').click();
+    await page.waitForTimeout(200);
+    assert((await starOn()) === !was, 'tapping the star in Spotlight did not toggle #partyStar');
+    assert((await page.evaluate(() => document.getElementById('cardStar').classList.contains('active'))) === !was, '#cardStar out of step with #partyStar');
+    await page.locator('#partyStar').click();   // put it back
+    await page.waitForTimeout(150);
+    assert((await starOn()) === was, 'star did not toggle back');
+    await page.evaluate(() => toggleTwist());
+    await page.waitForTimeout(200);
+    const tw = await page.evaluate(() => { const b = document.getElementById('partyBtnTwist'); return { svg: !!b.querySelector('svg'), key: !!b.querySelector('.party-key'), lbl: b.querySelector('.row-lbl').textContent, active: b.classList.contains('active') }; });
+    assert(tw.svg && tw.key && tw.lbl === 'Twist' && tw.active, 'Twist button in Spotlight lost its icon, key hint or label: ' + JSON.stringify(tw));
+    await page.evaluate(() => clearTwist());
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(300);
+  });
+
   // ── K. End of hand: Intermezzo, tap to flip to the list, hold (either side) to continue ──
   const imAtEnd = async () => await page.evaluate(() => document.body.classList.contains('showing-hand-summary'));
   const imSide = async () => await page.evaluate(() => state.handSide);
@@ -889,7 +913,7 @@ async function run() {
     await page.waitForTimeout(300);
   });
 
-  await check('Spotlight layout: arrows in the bottom corners, gold Close between, Twist/Three top corners, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
+  await check('Spotlight layout: arrows in the bottom corners, celadon Close between, Twist/Three top corners, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();
     await waitForCardIndex(page, 1);
@@ -902,8 +926,8 @@ async function run() {
     assert(Math.abs(ex.cx - 195) < 4, 'Close is not centred at the bottom');
     assert(tw.l < 100 && pk.r > 290 && tw.t < 140 && pk.t < 140, 'Twist and Three are not in the top corners');
     assert(st.t >= ct.b - 2 && Math.abs(st.cx - ct.cx) < 6, 'the star is not under the count');
-    assert(await page.evaluate(() => getComputedStyle(document.querySelector('.party-ornament')).display === 'none'), 'the line under the question is still showing');
-    assert(await page.evaluate(() => !!document.querySelector('#partyExit svg') && getComputedStyle(document.getElementById('partyExit')).color === 'rgb(201, 168, 76)'), 'Close is not gold with the Spotlight symbol');
+    assert(await page.evaluate(() => getComputedStyle(document.querySelector('.twist-div')).display === 'none'), 'the divider under the question is showing without a Twist');
+    assert(await page.evaluate(() => !!document.querySelector('#partyExit svg') && getComputedStyle(document.getElementById('partyExit')).color === 'rgb(169, 199, 182)'), 'Close is not celadon (like the main Spotlight button) with the Spotlight symbol');
     // the Sideways switch
     const vis = () => page.evaluate(() => { const o = document.getElementById('partyOrient'); return { shown: getComputedStyle(o).display !== 'none', word: [...o.querySelectorAll('[data-s]')].filter(e => getComputedStyle(e).display !== 'none').map(e => e.textContent).join(''), land: document.getElementById('partyOverlay').classList.contains('orient-landscape') }; });
     let o = await vis();
@@ -1075,6 +1099,31 @@ async function run() {
     await page.waitForTimeout(450);
     assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
     await freshHand({ three: false });
+  });
+
+  await check('Spotlight Twist divider: two bars (card colour, soft celadon), no diamond, old ornament gone', async () => {
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(500);
+    const none = await page.evaluate(() => getComputedStyle(document.querySelector('.twist-div')).display);
+    assert(none === 'none', `divider shows without a Twist (${none})`);
+    await page.evaluate(() => { currentTwist = MODIFIERS[0]; renderTwist(); });
+    await page.waitForTimeout(100);
+    const r = await page.evaluate(() => {
+      const d = document.querySelector('.twist-div'), cs = getComputedStyle(d);
+      const a = getComputedStyle(d, '::before'), b = getComputedStyle(d, '::after');
+      return { display: cs.display, kids: d.children.length, old: !!document.querySelector('.party-ornament, .po-svg'),
+        a: a.backgroundColor, b: b.backgroundColor, aw: a.width, bw: b.width, level: getComputedStyle(document.getElementById('party-level')).color };
+    });
+    assert(r.display === 'block' && r.aw !== '0px' && r.bw !== '0px', `divider not drawn with two bars: ${JSON.stringify(r)}`);
+    assert(r.kids === 0 && !r.old, `a diamond / old ornament is still there: ${JSON.stringify(r)}`);
+    assert(r.a !== r.b && r.b !== 'rgba(0, 0, 0, 0)', `bars not distinct: ${JSON.stringify(r)}`);
+    await page.evaluate(() => { clearTwist(); });
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(400);
   });
 
   await check('English only: no language switch, page language is en, no Dutch UI or Twist text', async () => {
