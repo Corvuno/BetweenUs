@@ -136,3 +136,14 @@ Rounds: icons 1 https://claude.ai/artifact/1KVNUfzXVxuDQBGgUwmsrZ (layout D chos
   - Save: "take this morning with you" (05:00–12:00), "take this afternoon with you"
     (12:00–18:00), "take this evening with you" (18:00–24:00), "take tonight with you"
     (00:00–05:00), by the device's local time when the end of the hand is shown.
+
+## From the message into Intermezzo: a slower turn (owner, 2026-10-18)
+
+Compared in https://claude.ai/artifact/4XrDNjNiuMKaLdBJSWUFUV (now / turn / fade). Owner: the turn
+works best, but slower ("it looks weird this way"). Keeper decisions, named to the owner:
+- The message shows about 1.1 s (one line) or 1.9 s (two lines), then the card turns — no fade.
+- The card turns over on its side from the message (front) to the Intermezzo back, swap at the
+  edge-on midpoint; then the pause mark draws itself as before.
+- Every turn of this card (message → Intermezzo, Intermezzo ↔ list) takes 0.9 s instead of
+  0.35 s, with a softer perspective and a slight dip in size at the edge, so it reads as a card
+  turning rather than a squash.
