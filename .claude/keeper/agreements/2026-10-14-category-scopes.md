@@ -213,3 +213,8 @@ Cards are done (live through Patch v7.16). What is left to build:
 ## Done when
 All of the above live on main, tests pass, Abyss nowhere on screen, the eight new lines visible on
 the selection screens (screenshots), and the writer briefs readable in the deck notes.
+
+**BUILT 2026-10-18** — approved by the owner ("continue") and live on main: Abyss retired (three
+cards to Kink 5, Bare 1, Bare 8; nine removed; name archived), writer briefs in the deck notes,
+eight new app lines, Abyss gone from the app with a guard for old saved selections. 39/39 checks.
+Next round: Culture, Roots, Wish, Work, Spirit, Body (+ Unwind's app line).
