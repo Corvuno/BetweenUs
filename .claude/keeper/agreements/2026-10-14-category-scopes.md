@@ -228,3 +228,7 @@ needs to feel wider), Wish ("Dreams kept, dreams dropped" — another word for d
 Lists agreed: Work, Spirit, Body, Unwind (plus broader lines added 2026-10-18). Culture also
 covers architecture, design, sculpture — list to be less media-heavy. Roots: "music and TV of
 your childhood" border question.
+Round 2 app lines, settled 2026-10-18: Culture "Everything you love that someone else made — from
+a song to a building"; Wish "Dreams kept, dreams outgrown". Owner: "agreed on the rest" (lists,
+Roots border call: childhood music/TV stays in Roots as childhood; as taste it's Culture). Asked:
+whether the revisited first-round lines (Life, Home, World, Attract, Kink) change.
