@@ -1044,8 +1044,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   const chapterLevels = id => (CHAPTERS[id] || []).filter(inDeck);
   const bucketLevels  = id => [...document.querySelectorAll('.toggle-btn[data-bucket="'+id+'"]')]
                                 .map(b => b.dataset.level).filter(inDeck);
-  /* Ease In and After Dark each hold opt-in-only members (the ordered lists;
-     Abyss) that a bulk click deliberately never turns on. Judging a bucket's
+  /* A bucket can hold opt-in-only members (Ease In has the ordered lists)
+     that a bulk click deliberately never turns on. Judging a bucket's
      on/off state against ALL its members meant it could never reach "on" —
      every click re-ran the turn-on branch, so it looked stuck and never
      deselected. On/off is judged only against the members a click can
