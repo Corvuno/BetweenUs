@@ -469,7 +469,7 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
   { level: "bare", question: "What does sexual fulfilment feel like — and do you have it now?" },
   { level: "bare", question: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?" },
-  { level: "bare", question: "Tell the story of the most outrageous sexual situation you've found yourself in." },
+  { level: "bare", question: "Where do you actually meet the people you end up sleeping with — and has that changed over the years?" },
   { level: "bare", question: "Where has sex taken you that was breathtaking — or completely absurd — and how did you get there?" },
   { level: "bare", question: "Have you ever faked something in bed — what, and why?" },
 
