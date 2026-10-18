@@ -218,3 +218,13 @@ the selection screens (screenshots), and the writer briefs readable in the deck 
 cards to Kink 5, Bare 1, Bare 8; nine removed; name archived), writer briefs in the deck notes,
 eight new app lines, Abyss gone from the app with a guard for old saved selections. 39/39 checks.
 Next round: Culture, Roots, Wish, Work, Spirit, Body (+ Unwind's app line).
+
+## Round 2 (Culture, Roots, Wish, Work, Spirit, Body, Unwind) — 2026-10-18
+App lines chosen: Roots keeps "The house you grew up in, and what it's still doing" (captures
+the twofold); Work "The job you have, and the ones that got you here"; Spirit "What you believe
+when no one is asking"; Body "How you treat the only body you'll get"; Unwind "What you do when
+nothing has to be done". Open: Culture (angle "Everything you love that someone else made",
+needs to feel wider), Wish ("Dreams kept, dreams dropped" — another word for dropped).
+Lists agreed: Work, Spirit, Body, Unwind (plus broader lines added 2026-10-18). Culture also
+covers architecture, design, sculpture — list to be less media-heavy. Roots: "music and TV of
+your childhood" border question.
