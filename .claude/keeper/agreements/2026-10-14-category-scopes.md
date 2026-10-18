@@ -154,3 +154,11 @@ play in bed" (owner: any wording is fine). Bare 11 ("The most memorable places s
 the most beautiful, and the strangest?") is convoluted — fix it in this round. Card round now:
 Carnal 8, Bare 10, Bare 11, Us: Intimate 12. Carnal 8 alt 1 (laughing) replaced, since play/fun
 now live on the bench for Flesh.
+
+**2026-10-18 (cards):** Us: Intimate 12 live (who starts things). Being built: Carnal 8 ("What's
+the worst state you, the other person and the room have been left in after sex?" — "the other
+person" chosen over "your partner", since it isn't always a partner) and Bare 11 (breathtaking or
+completely absurd). Bare 10: owner likes the "where do you find them" angle of the apps card;
+alternatives asked. KEEP IN MIND (owner): "How old were you the first time — and did it feel
+early, late, or right on time?" — "the first first-time question that makes sense"; candidate
+for a later slot.
