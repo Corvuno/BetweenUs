@@ -377,23 +377,31 @@ function renderEndMessage(html) {
 }
 
 /* The message after the last card of a hand (in the card, and in fullscreen):
-   it stays up long enough to read, fades out, and only then does the card turn
-   to its back (showHandSummary). Timers are kept so a new card or hand shown in
-   the meantime (hold-to-continue, a settings change) cancels the pending
-   fade/turn — hideHandSummary() calls clearEndTimers(). */
-const END_MSG_READ_MS = { 1: 2600, 2: 3600 };   // from the start of the swap to the start of the fade
-const END_MSG_FADE_MS = 450;
+   it stays up long enough to read, then the card turns over on its side to its
+   back (the shared .turning, see styles.css) and showHandSummary() swaps the face
+   at the edge-on midpoint. Timers are kept so a new card or hand shown in the
+   meantime (hold-to-continue, a settings change) cancels the pending turn —
+   hideHandSummary() calls clearEndTimers(). */
+const END_MSG_READ_MS = { 1: 1100, 2: 1900 };   // from the start of the swap to the start of the turn
+const TURN_MID_MS = 450, TURN_END_MS = 940;     // the turn: 0.9s, edge-on at 450ms (matches styles.css cardTurn)
 let _endTimers = [];
 let _endMsgLines = 1;
-function clearEndTimers() { _endTimers.forEach(clearTimeout); _endTimers = []; }
+let _endTurnNodes = [];
+function clearEndTimers() {
+  _endTimers.forEach(clearTimeout); _endTimers = [];
+  _endTurnNodes.forEach(n => n.classList.remove('turning')); _endTurnNodes = [];   // a cancelled turn must not stay on the card
+}
 function endMessageToIntermezzo() {
   clearEndTimers();
   const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = END_MSG_READ_MS[_endMsgLines] || END_MSG_READ_MS[1];
   _endTimers.push(setTimeout(() => {
     if (reduced) { showHandSummary(); return; }
-    document.querySelectorAll('.end-msg').forEach(m => m.classList.add('out'));
-    _endTimers.push(setTimeout(showHandSummary, END_MSG_FADE_MS));
+    const c = document.getElementById('card'), pc = document.querySelector('#partyOverlay .party-card');
+    const ns = _endTurnNodes = [c, pc].filter(Boolean);
+    ns.forEach(n => { n.classList.remove('turning', 'turning-back'); void n.offsetWidth; n.classList.add('turning'); });
+    _endTimers.push(setTimeout(showHandSummary, TURN_MID_MS));
+    _endTimers.push(setTimeout(() => clearEndTimers(), TURN_END_MS));
   }, wait));
 }
 

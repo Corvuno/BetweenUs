@@ -628,13 +628,14 @@ function renderHandSide(animate) {
     if (el) el.classList.remove('flipping');
   };
   if (animate && el) {
-    el.classList.add('flipping'); setTimeout(swap, 175);
-    // The card turns over on its side (styles.css .turning): edge-on at 175ms, which is
-    // when the face swaps. Back to Intermezzo turns the other way round.
+    setTimeout(swap, TURN_MID_MS);
+    // The card turns over on its side (styles.css .turning, 0.9s): edge-on at 450ms, which is
+    // when the face swaps (no .flipping text fade here: the edge hides the swap). Back to
+    // Intermezzo turns the other way round.
     const turn = isList ? 'turning' : 'turning-back';
     const pc = document.querySelector('#partyOverlay .party-card');
     [el, pc].forEach(n => { if (n) { n.classList.remove('turning', 'turning-back'); void n.offsetWidth; n.classList.add(turn); } });
-    setTimeout(() => { [el, pc].forEach(n => { if (n && (token === handSideToken || !state.handSide)) n.classList.remove(turn); }); }, 380);
+    setTimeout(() => { [el, pc].forEach(n => { if (n && (token === handSideToken || !state.handSide)) n.classList.remove(turn); }); }, TURN_END_MS);
   }
   else swap();
 }

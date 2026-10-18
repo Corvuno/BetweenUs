@@ -401,7 +401,7 @@ const NEWDECK_CARDS = [
   { level: "usintimate", question: "Would you want to know if I were drawn to someone else? Ask me the same." },
   { level: "usintimate", question: "What have you been wanting to try with me but haven't said?" },
   { level: "usintimate", question: "When do you catch me wanting you — and what does it make you do?" },
-  { level: "usintimate", question: "What do you hold back with me — and what would it take to stop?" },
+  { level: "usintimate", question: "Who usually starts things between us — and would you like that to change?" },
 
   // ─── SHADOW ───
   { level: "shadow", question: "You lie most consistently about..." },
