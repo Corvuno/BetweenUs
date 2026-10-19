@@ -54,20 +54,3 @@ have their own Play links and README rows, next to the real game. Kept so the ow
 show where it came from. Before the site goes public: decide how they're reachable, so a
 visitor who finds those links doesn't take an old, unfinished version for the game, and so
 more old versions don't pile up as loose pages next to it.
-
-## PC layout: two directions in the fridge (2026-10-16)
-
-From the PC layout rounds (round 1 https://claude.ai/artifact/KZamSbhQ892nfSf6GsxiDb, round 2
-https://claude.ai/artifact/RHEAQYwN23trosYVCLWorE). The owner would consider only these two,
-but both lose the plot on where the controls sit, so they're parked while round 3 starts over:
-- Option 2, Triptych: three framed Art Deco panels, card in the middle.
-- Option 3, Spotlight-led: the question large across a framed screen, no card box.
-
-## The evening chooser, redesigned (2026-10-18)
-
-Owner asked for a new "What kind of evening?" chooser using everything learned from the PC
-layout rounds, then put it on hold: "I'm rethinking the whole thing, leave it for now."
-Keeper's take on record: on PC it is a phone sheet in a narrow window, with chapters as
-stacked boxes and the categories/depth/focus/round settings below the fold. Open questions
-when it comes back: PC look only, or content and order too (phone included); and whether the
-hand-size number picker (other session, 2026-10-16) is folded in.
