@@ -79,6 +79,16 @@ Note: one short plain-language line for the release notes
   (`.github/workflows/auto-release.yml`; `scripts/release-plan.mjs` has the rules). Run
   `node scripts/release-plan.mjs --force` to preview the next release.
 
+**Keep `RELEASE-NOTES-NEXT.md` current too** (owner, 2026-10-19). The release notes are a few
+player headlines, not a list of commits, and they come from `RELEASE-NOTES-NEXT.md` at the repo
+root. Every user-facing commit also updates that file, by the rules in its header comment: if
+the change belongs to an existing bullet, merge it into that bullet; add a new bullet only for
+something a player would notice as new; small things stay under the final "smaller fixes"
+bullet. At most about five bullets, no section headings, nothing about colours, fonts, sizes
+or positions, no card text. Card changes are one bullet with counts. The `Note:` line stays
+as the fallback used when the file is empty. The release workflow empties the file after
+publishing.
+
 ## Talk to me, don't just execute
 
 A request isn't only a ticket to close. Before or while building: say if something
