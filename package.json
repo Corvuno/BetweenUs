@@ -1,0 +1,19 @@
+{
+  "name": "between-us-checks",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc -p jsconfig.json && tsc -p jsconfig.sw.json",
+    "lint": "eslint .",
+    "check:static": "node scripts/check.mjs",
+    "check:baseline": "node scripts/check.mjs --update-baseline",
+    "check": "node tests/run.mjs between-us.html && node scripts/check.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.0.0",
+    "eslint-plugin-sonarjs": "^3.0.0",
+    "globals": "^15.0.0",
+    "ts-api-utils": "^2.5.0",
+    "typescript": "^5.6.0"
+  }
+}

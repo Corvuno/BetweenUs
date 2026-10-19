@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "strict": false,
+    "skipLibCheck": true
+  },
+  "files": [
+    "questions.js", "config.js", "gilt.js", "state.js", "deck.js", "card.js",
+    "library.js", "session.js", "selection.js", "presentation.js", "ui.js"
+  ]
+}

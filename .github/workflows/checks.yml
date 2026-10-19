@@ -1,0 +1,31 @@
+name: Checks
+
+# Runs the browser test harness, the type check and the linter on every push to main
+# and on pull requests. The type check + lint compare against checks-baseline.json:
+# old findings are tolerated, any new one fails (see CHECKS.md).
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tests/package-lock.json
+      - run: npm ci
+      - run: npm ci
+        working-directory: tests
+      - run: npx playwright install --with-deps chromium
+        working-directory: tests
+      - name: Browser tests
+        run: node tests/run.mjs between-us.html
+      - name: Type check and lint (new findings only)
+        run: node scripts/check.mjs
