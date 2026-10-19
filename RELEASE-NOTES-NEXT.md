@@ -13,8 +13,8 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- Seven new or reworded questions, mostly in the After Dark categories, plus one in Us: Intimate.
-- The Abyss category is retired: its cards moved into Kink and Bare, and eight categories have clearer descriptions.
-- Spotlight now follows the main screen's look and behaviour, including the star and Twist.
-- At the end of a hand, the card turns over slowly into Intermezzo, and Change and Save are now proper buttons with hints.
-- Smaller fixes throughout, including phones that kept an old copy of the deck.
+- New layout for PC and tablet: a big card with the controls around it.
+- The Deck, where you choose your evening, is reworked: chapters unfold into their categories, and Custom shows its categories' colours.
+- Hands mix better: no more three or four cards from one category, and Three works in every hand.
+- Abyss is retired and its cards moved into Kink and Bare; seven questions are new or reworded, mostly in After Dark.
+- Spotlight now matches the main screen, plus smaller fixes throughout.
