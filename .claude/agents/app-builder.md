@@ -58,6 +58,7 @@ build step:
 
 ## Check before reporting
 
+- Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19).
 - Run `node tests/run.mjs between-us.html` before you start (so you know what already
   fails) and after (setup in `tests/README.md`; Playwright's Chromium is preinstalled —
   don't run `playwright install`).

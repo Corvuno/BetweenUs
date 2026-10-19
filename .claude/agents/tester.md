@@ -20,6 +20,7 @@ instead. They weigh as much as the hard rules below.
 
 ## Rules
 
+- Run `npm run check:static` (type check + linter, see `CHECKS.md`) and report its result; a new finding is a finding.
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
 - Go through the agreement **line by line** (and the chosen mockup, if the Keeper gives one):

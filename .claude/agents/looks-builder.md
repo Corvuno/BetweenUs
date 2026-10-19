@@ -79,6 +79,7 @@ build step:
 
 ## Check before reporting
 
+- Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19).
 - Take before and after screenshots of everything you changed (Playwright; Chromium is
   preinstalled at /opt/pw-browsers — don't run `playwright install`). Save them in the
   scratchpad, not in the repo, and list the paths in your report.

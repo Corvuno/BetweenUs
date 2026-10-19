@@ -16,6 +16,7 @@ apply every note in it.
 
 ## Rules
 
+- Run `npm run check:static` (type check + linter, see `CHECKS.md`) and report its result; a new finding is a finding.
 - **Never fix anything.** Don't edit files. You report; the Keeper sends fixes back to the builder.
 - Read the changed code in its surroundings, not just the diff lines: the functions it calls
   and the ones that call it.
