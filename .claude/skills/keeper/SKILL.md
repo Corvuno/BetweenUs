@@ -36,9 +36,10 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
    the last session.
-4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, run
-   the **monthly upkeep** below first (tell the owner in one line that's what is happening).
-   A wish they already typed is noted and taken up straight after.
+4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, say so
+   in one line and ask the owner to start it in its own thread (`/keeper upkeep`). Never run
+   the upkeep inside a wish conversation (owner, 2026-10-19): it needs a whole session to go
+   through every file in full. A thread opened with `/keeper upkeep` does only the upkeep.
 
 ## The vision session
 
@@ -62,6 +63,9 @@ don't silently rewrite). If not, talk the wish through against the vision.
 ## Handling a wish
 
 ### 0. Your take first — you are an adviser, not an executor
+
+Before your take, pull main and look at the live app and at any agreement that touches the
+same element (owner, 2026-10-19). Then open with your own take.
 
 The owner rules, and doesn't know everything. You are their second: a keeper of the product
 with your own compass (the vision, the lessons, what you see in the project). Open every wish

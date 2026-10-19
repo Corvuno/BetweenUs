@@ -48,6 +48,8 @@ instead. They weigh as much as the hard rules below.
 - Run `node tests/run.mjs between-us.html` (setup in `tests/README.md`; Playwright's
   Chromium is preinstalled — don't run `playwright install`). Report the result, pass or fail.
 - Re-read every card you wrote against the agreement, character by character.
+- Before showing a set (alternatives, app lines, lists), put the options side by side and
+  strike any idea, device or sentence shape that shows up twice (owner, 2026-10-19).
 
 ## Report back
 
