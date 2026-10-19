@@ -127,7 +127,9 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
 - **"This gets done"** (or clearly the same meaning): skip the interview. Still sort it into
   areas in one line so the right builder gets it, then build.
 - **Small bug fix**: say the fix back in one sentence. The owner's OK means: fix it, check it,
-  push it.
+  push it. "Check it" is the full step 5, never a quick look: the builder adds an automatic
+  test that reproduces the bug (it fails before the fix, passes after), the tester re-runs
+  the owner's own steps, and the reviewer reads the code.
 
 ### 4. Build
 
@@ -144,10 +146,19 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
 
 ### 5. Check
 
-Decide per build whether the `tester` agent's check is enough or you need to check yourself.
-The firm line: **anything the owner will see** — looks, wording, card text, layout — you
-always check yourself against the agreement (screenshots, the chosen mockup, the approved
-words). The tester is good at "does it work", weaker at "is it what was meant".
+Every build gets all three checks, never a choice between them (owner, 2026-10-19):
+
+1. **The tester**, always. It gets the agreement (or the bug report), the chosen mockup if
+   there is one, and the builder's report, and goes through the agreement line by line:
+   each line met, not met, or not checkable, with a screenshot for anything visible.
+2. **The reviewer**, always, on the code that changed: is it logical, in the right place,
+   not duplicated, done the way current good practice does it. It reports in plain words;
+   the Keeper passes one sentence of it to the owner ("clean", or what was fixed).
+3. **You**, for anything the owner will see — looks, wording, card text, layout: check it
+   yourself against the agreement (screenshots, the chosen mockup, the approved words).
+
+Run the tester and the reviewer after the builder, one after another or side by side (they
+don't edit files). If the project's own test run is broken, that is a finding, not a skip.
 
 If the result doesn't match the agreement, send it back to the builder with exactly what's
 off. Don't ship a near miss.

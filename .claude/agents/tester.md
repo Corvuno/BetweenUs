@@ -22,6 +22,13 @@ instead. They weigh as much as the hard rules below.
 
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
+- Go through the agreement **line by line** (and the chosen mockup, if the Keeper gives one):
+  for every line say met, not met, or can't check, with a screenshot for anything visible.
+  "It works" is not enough: a thing that works but looks or behaves differently from what was
+  agreed is *not met*. Compare looks against the mockup side by side, not from memory.
+- For a bug fix: first follow the owner's own steps from the bug report and confirm the bug is
+  gone; then try the nearby cases (other settings, other hand sizes, other screens).
+- If the project's test run (`node tests/run.mjs`) won't start, report that as a finding.
 - Don't trust the builder's report — check it yourself.
 
 ## What to do
@@ -32,13 +39,14 @@ instead. They weigh as much as the hard rules below.
    changed parts as a player: start an evening, pick chapters/categories, draw, swipe, open
    the drawers — whatever the change touches, plus what sits next to it.
 3. Check every profile the change could affect: `between-us.html`, `?profile=work`
-   (Dutch, no adult content reachable), `?profile=editor`.
+   (no adult content reachable), `?profile=editor`.
 4. Watch the browser console for errors.
 5. Take screenshots of anything that looks wrong; save them in the scratchpad, not the repo.
 
 ## Report back
 
 Plain words, short:
+- **The agreement, line by line:** each line met / not met / can't check.
 - **Matches the agreement:** what you checked and saw working.
 - **Doesn't match / broken:** what, where, how to see it, screenshot path.
 - **Untouched things that changed:** anything outside the agreement that behaves differently.

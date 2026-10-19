@@ -43,6 +43,10 @@ instead. They weigh as much as the hard rules below.
   next to it, in every profile it affects.
 - If the change adds behaviour the tests don't cover and it fits the harness's style, add a
   check for it.
+- **Every bug fix adds an automatic test that reproduces the bug**: run it before the fix
+  (it must fail) and after (it must pass), and say both in your report (owner, 2026-10-19).
+- If the test run itself won't start, say so in your report; never report "tests pass"
+  without having seen them run.
 
 ## Report back
 
