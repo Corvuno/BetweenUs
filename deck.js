@@ -616,7 +616,16 @@ function buildPickOptions(step) {
       cand = cand.map((c, i) => ({ c, i, k: Math.abs(levelDepth(c.level) - d) }))
                  .sort((x, y) => x.k - y.k || x.i - y.i).map(x => x.c);
     }
-    picked.push(...cand.slice(0, 2 - picked.length));
+    /* Variety within the tier: take, one at a time, the first card whose
+       category isn't already among the options (the planned card's included);
+       only when the tier has none left does a same-category card from this
+       same tier fill in. Freshness still comes first: a later tier is never
+       used while this one can supply a card. */
+    while (picked.length < 2 && cand.length) {
+      const used = new Set([planned.level, ...picked.map(c => c.level)]);
+      const at = cand.findIndex(c => !used.has(c.level));
+      picked.push(cand.splice(at < 0 ? 0 : at, 1)[0]);
+    }
   });
   return shuffle([planned, ...picked]);
 }

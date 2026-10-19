@@ -875,6 +875,44 @@ async function run() {
     }
   });
 
+  await check('Three offers three different categories (broad selection, fresh pass, Arc and Wild, many draws); late in a pass an unseen same-category card beats a seen different-category one', async () => {
+    const r = await page.evaluate(() => {
+      const out = { bad: [], cats: 0, late: [] };
+      if (state.partyMode) exitParty();
+      closePicker(); state.pickOptions = null;
+      state.cardLimit = 5; state.sitOut = {}; state.skippedSeen.clear(); state.seenFrom = 0;
+      const resetSeen = () => { state.sessionLog = []; state.loggedQuestions.clear(); };
+      for (const mode of ['arc', 'wild']) {
+        state.randomMode = mode;
+        out.cats = new Set(getFilteredCards().map(c => c.level)).size;
+        for (let n = 0; n < 40; n++) {
+          resetSeen(); state.handOffered = new Set(); initDeck();
+          for (let step = 0; step < state.visibleDeck.length; step++) {
+            const o = buildPickOptions(step);
+            const lv = new Set(o.map(c => c.level));
+            if (o.length !== 3 || lv.size !== 3) out.bad.push(`${mode} hand ${n} step ${step}: ${o.map(c => c.level).join(' / ')}`);
+          }
+        }
+        // late in a pass: everything seen except cards of the planned card's own category
+        for (const step of [2, 3]) {
+          resetSeen(); state.handOffered = new Set(); initDeck();
+          const planned = state.visibleDeck[step], hand = new Set(state.visibleDeck.map(c => c.question));
+          const same = getFilteredCards().filter(c => c.level === planned.level && !hand.has(c.question));
+          getFilteredCards().filter(c => c.level !== planned.level).forEach(c => { state.sessionLog.push({ question: c.question, level: c.level }); state.loggedQuestions.add(c.question); });
+          const o = buildPickOptions(step);
+          const extras = o.filter(c => c.question !== planned.question);
+          out.late.push({ mode, step, n: same.length, ok: extras.length === 2 && extras.every(c => c.level === planned.level) });
+        }
+      }
+      resetSeen(); initDeck();
+      return out;
+    });
+    assert(r.cats >= 3, `the default selection has only ${r.cats} categories`);
+    assert(r.bad.length === 0, `options from repeated categories: ${r.bad.slice(0, 5).join('; ')} (${r.bad.length} in all)`);
+    r.late.forEach(l => { if (l.n >= 2) assert(l.ok, `${l.mode} step ${l.step}: an unseen same-category card was passed over for a seen one of another category`); });
+    await freshHand({ three: false });
+  });
+
   await check('Three is live right after the first draw (button and Spotlight not dimmed) and the 3 key toggles it on the main screen', async () => {
     await freshHand({ three: false });
     await page.locator('#btn-next').click();
