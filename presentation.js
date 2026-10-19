@@ -568,7 +568,7 @@ function updateDrawMore() {
 //
 // Hooks (for styling): body.showing-hand-summary (any end-of-hand side),
 // body.hand-side-list (list side up), --im-color on <body> (last drawn card's
-// chapter colour, lifted for legibility), #card.is-start.is-intermezzo (the
+// category colour, lifted for legibility), #card.is-start.is-intermezzo (the
 // back as Intermezzo), #card.is-hand-list (list side), #card.flipping while the
 // swap is in progress, #partyOverlay.is-hand-end/.is-intermezzo/.is-hand-list.
 
@@ -577,14 +577,39 @@ let handSideToken = 0;   // a swap still waiting on its timer drops out if the h
 // then appears finished and breathing, without drawing itself in once more.
 let handStill = false;
 
-// The last drawn card's chapter: raw chapter colour (rail) and the lifted one
-// (diamond, rule, button) — labelColor lifts After Dark's near-black lacquer.
+// ── TEST SWITCH: pause colour (temporary — remove this block, its menu row #d-pausecolour in
+// between-us.html, and the mode check in handEndColors() once the owner has decided) ──
+// 'last' = the pause takes the last drawn card's category colour (default); 'chapter' = that
+// card's chapter colour (the old behaviour). Stored per device.
+const PAUSE_COLOUR_KEY = 'bu-pause-colour';
+let pauseColourMode = 'last';
+try { if (localStorage.getItem(PAUSE_COLOUR_KEY) === 'chapter') pauseColourMode = 'chapter'; } catch (e) {}
+(function () {
+  const row = document.getElementById('d-pausecolour');
+  if (!row) return;
+  const sub = row.querySelector('.d-sub');
+  const showMode = () => { if (sub) sub.textContent = pauseColourMode === 'chapter' ? 'Chapter' : 'Last card'; };
+  showMode();
+  row.addEventListener('click', () => {
+    pauseColourMode = pauseColourMode === 'chapter' ? 'last' : 'chapter';
+    try { localStorage.setItem(PAUSE_COLOUR_KEY, pauseColourMode); } catch (e) {}
+    showMode();
+    if (state.handSide) paintHandSide();   // pause showing: repaint its colour now
+  });
+})();
+// ── end of test switch ──
+
+// The colour of the pause: raw (rail) and the lifted one (diamond, rule, button) — labelColor
+// lifts After Dark's near-black lacquer. Takes the last drawn card's category colour, or (test
+// switch on "Chapter") that card's chapter colour.
 function handEndColors() {
   const last = state.visibleDeck[state.visibleDeck.length - 1];
   const cat = last && CATEGORIES[last.level];
-  const ch = cat && CHAPTERS_META[cat.chapter];
-  if (!ch) return { raw: null, label: null };
-  return { raw: ch.color, label: labelColor(ch.color) };
+  const base = pauseColourMode === 'chapter'
+    ? (cat && CHAPTERS_META[cat.chapter] && CHAPTERS_META[cat.chapter].color)
+    : (cat && levelColor(last.level));
+  if (!base) return { raw: null, label: null };
+  return { raw: base, label: labelColor(base) };
 }
 
 const HAND_STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.6l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" stroke-width="1.5" stroke-linejoin="round"/></svg>';

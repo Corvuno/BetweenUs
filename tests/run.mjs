@@ -476,13 +476,13 @@ async function run() {
     const bodyText = await page.locator('body').innerText();
     assert(!/set is finished|You began at|cards? you starred/i.test(bodyText), 'old end-of-hand summary text is still on screen');
     assert(await page.locator('#card .es-chip, #card .hs-wrap').count() === 0, 'old summary markup is still in the card');
-    // the diamond takes the last drawn card's chapter colour (lifted for legibility)
+    // the diamond takes the last drawn card's category colour (lifted for legibility)
     const want = await page.evaluate(() => {
       const last = state.visibleDeck[state.visibleDeck.length - 1];
-      return labelColor(CHAPTERS_META[CATEGORIES[last.level].chapter].color).toLowerCase();
+      return labelColor(levelColor(last.level)).toLowerCase();
     });
     const got = await page.evaluate(() => document.body.style.getPropertyValue('--im-color').trim().toLowerCase());
-    assert(got === want, `--im-color ${got} is not the last card's chapter colour ${want}`);
+    assert(got === want, `--im-color ${got} is not the last card's category colour ${want}`);
     assert((await imBtn()) === 'Tap to flip card', `button reads "${await imBtn()}"`);
     assert((await page.locator('#endHint').textContent()).trim() === 'Tap to flip card', 'the end hint does not follow the button');
   });
