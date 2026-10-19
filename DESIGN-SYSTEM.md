@@ -113,6 +113,20 @@ one the player made, so it shows. Celadon is the colour
 of everything tappable besides Draw; back and menu are celadon at rest and gold
 while touched (the hover rule is scoped to `@media (hover:hover)` so it never sticks on touch).
 
+## Colour changes are eased (standing rule, owner 2026-10-19)
+Colour and state changes in the chrome are always eased, **~0.4-0.6s** (`ease`), never a snap.
+Instant only under `prefers-reduced-motion:reduce`. Any new element that changes colour follows it.
+Gradients and `color-mix()` cannot transition on their own, so build them from registered custom
+properties (`@property`, syntax `<color>`) and put the `transition` on those properties:
+- `--im-color` (inherits, initial gold): the pause colour on `<body>`; `body{transition:--im-color .6s ease}`
+  so the diamond, the rule and the Spotlight copies, all reading `var(--im-color)`, follow it.
+- `--rail-d` / `--rail-m` / `--rail-l` (initial transparent): the three stops of a rail's five-stop
+  gilt sweep. `.c-accent` and `.party-c-accent` draw the gradient from them and transition them;
+  set them with `giltRailPaint(el, hex)` in `gilt.js`, never with an inline `background`.
+- `--bd-a` / `--bd-b` (initial = the gold button's two stops): the gold button's gradient;
+  `.btn-draw` transitions them (hover and the end-of-hand colour set them, not `background`).
+Reduced motion: one rule at the end of `styles.css` sets `transition:none` on all of these.
+
 ## The end of a hand (added 2026-10-16; built 2026-10-15/16)
 After the last card of a hand the app shows, in order: the message, the Intermezzo
 card back, and (on a tap) the hand's list. All of it follows the colours above; the
@@ -138,7 +152,7 @@ Earlier look (thin italic serif, `--muted`) was unreadable and is gone.
 (fermata, two arches and a diamond) replaces the logo; the caption INTERMEZZO sits under
 it — Federo, uppercase, `.32em` tracking, `--muted-l`, size from the card (`calc(var(--d)*.075)`)
 and in fullscreen `clamp(.8rem,.9vw + .4rem,1.2rem)` (`.im-word`). The diamond and the
-rule under the mark are filled with `var(--im-color, var(--preset-deep))`; the rule is a
+rule under the mark are filled with `var(--im-color)` (registered, initial gold; eases when it changes); the rule is a
 transparent-gold-transparent gradient of that colour. The diamond breathes
 (`imBreathe`, opacity .9 to .45, 3.2s). On arrival the arches draw in, then the diamond,
 then the flanking hairlines (`imDraw` 1.4s, `imFade`); coming back from the list the

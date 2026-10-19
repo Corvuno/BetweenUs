@@ -148,7 +148,7 @@ function initDeck(isContinuation) {
   updateDrawMore();
   // clear accent on fresh deck
   const accent=document.getElementById('c-accent');
-  if(accent){ accent.style.background=''; accent.classList.remove('accent-bloom'); }
+  if(accent){ giltRailPaint(accent, null); accent.classList.remove('accent-bloom'); }
   // init level
   const lv=document.getElementById('card-level');
   if(lv){ lv.classList.remove('in'); lv.textContent=''; }

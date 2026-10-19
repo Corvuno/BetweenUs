@@ -118,5 +118,19 @@
 
   window.giltStops = giltStops;
   window.giltRail = giltRail;
+
+  // Rails that ease between colours: the same five-stop sweep as giltRail(), but the three stop
+  // colours go in as registered custom properties (--rail-d/-m/-l, see styles.css) which
+  // CSS transitions; gradients themselves cannot be transitioned. No colour = transparent.
+  function giltRailPaint(el, baseHex) {
+    if (!el) return;
+    if (!baseHex) { ['d', 'm', 'l'].forEach(k => el.style.removeProperty('--rail-' + k)); return; }
+    const intense = typeof matchMedia === 'function' && matchMedia('(min-width: 1024px)').matches;
+    const { dark, light, mid } = giltStops(baseHex, intense);
+    el.style.setProperty('--rail-d', dark);
+    el.style.setProperty('--rail-m', mid);
+    el.style.setProperty('--rail-l', light);
+  }
+  window.giltRailPaint = giltRailPaint;
   window.labelColor = labelColor;
 })();

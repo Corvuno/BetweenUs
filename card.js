@@ -178,7 +178,7 @@ function setCardDisplay(card) {
   if (!card) {
     applyCardMark(el, null);
     if (lvlEl)    { lvlEl.textContent=''; lvlEl.classList.remove('in'); }
-    if (accent)   { accent.style.background=''; }
+    if (accent)   { giltRailPaint(accent, null); }
     if (qEl)      { qEl.textContent = state.visibleDeck.length===0
       ? 'Select at least one category.'
       : 'A place to begin…';
@@ -203,7 +203,7 @@ function setCardDisplay(card) {
   applyCardMark(el, card);
   const color = levelColor(card.level);
   if (accent) {
-    accent.style.background = giltRail(color);
+    giltRailPaint(accent, color);
   }
   if (lvlEl) {
     lvlEl.textContent = LEVEL_LABELS[card.level] || '';
@@ -272,7 +272,7 @@ function flipToCard(card, isFirstDraw) {
     applyCardMark(el, card);
     const color = levelColor(card.level);
     if (accent) {
-      accent.style.background = giltRail(color);
+      giltRailPaint(accent, color);
       accent.classList.remove('accent-bloom');
       void accent.offsetWidth;
       accent.classList.add('accent-bloom');

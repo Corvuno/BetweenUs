@@ -1,6 +1,15 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 *{scrollbar-width:none;-ms-overflow-style:none;}
 *::-webkit-scrollbar{display:none;}
+/* Colour changes in the chrome ease (~.6s), never snap (DESIGN-SYSTEM.md). Gradients and
+   color-mix() can only ease when built from registered custom properties, so these are registered:
+   --im-color (the pause colour, set on <body>), the rails' three stops, the gold button's two. */
+@property --im-color{syntax:'<color>';inherits:true;initial-value:#c9a84c;}
+@property --rail-d{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --rail-m{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --rail-l{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --bd-a{syntax:'<color>';inherits:false;initial-value:#c9a84c;}
+@property --bd-b{syntax:'<color>';inherits:false;initial-value:#a07830;}
 :root{
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
@@ -44,6 +53,7 @@ body{
      toward better letter-spacing/kerning at these small sizes too. */
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   text-rendering:optimizeLegibility;
+  transition:--im-color .6s ease;   /* the pause diamond, rule and button follow it */
 }
 .app{position:relative;z-index:1;width:100%;max-width:460px;padding:0 18px;display:flex;flex-direction:column;align-items:center;}
 
@@ -220,7 +230,8 @@ body{
 .card.mark-full .card-ad-mark{display:flex;}
 .c-accent{
   position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
-  transition:background .5s ease;
+  background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
+  transition:--rail-d .6s ease,--rail-m .6s ease,--rail-l .6s ease;
   -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
   mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
@@ -446,8 +457,8 @@ body.showing-hand-summary .card-question{
 .nav-row #btn-prev.disabled:active,.nav-row #btn-prev.disabled:focus-visible{border-color:rgba(201,168,76,.2);color:var(--celadon);}
 @media (hover:hover){.nav-row #btn-prev.disabled:hover{border-color:rgba(201,168,76,.2);color:var(--celadon);}}
 .btn-sq svg{width:19px;height:19px;}
-.btn-draw{flex:1;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-.btn-draw:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+.btn-draw{flex:1;--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}
 .btn-draw:active{transform:scale(.98);}
 .btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-fullscreen svg{width:16px;height:16px;flex-shrink:0;}
@@ -458,7 +469,7 @@ body.showing-hand-summary .card-question{
 /* End of a hand: the button takes the last drawn card's chapter colour (--im-color, set on
    <body> by presentation.js paintHandSide) — a gradient of it, dark text, the gold button's size and type. */
 .btn-draw.hold-mode{
-  background:linear-gradient(135deg,color-mix(in srgb,var(--im-color,var(--gold)) 86%,#fff) 0%,color-mix(in srgb,var(--im-color,var(--gold)) 76%,#000) 100%);
+  --bd-a:color-mix(in srgb,var(--im-color) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-color) 76%,#000);
   color:var(--bg);letter-spacing:.1em;}
 /* the very first draw of a hand — before any card has been drawn, or right
    after a settings change reset the deck. Sized up (no glow — see change
@@ -683,7 +694,7 @@ body.showing-hand-summary .card-question{
 .party-overlay.open{opacity:1;pointer-events:all;}
 .party-card{position:absolute;inset:0;display:flex;flex-direction:column;}
 .party-card::before,.party-card::after{content:none;}
-.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:6;transition:background .5s ease;
+.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:6;background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);transition:--rail-d .6s ease,--rail-m .6s ease,--rail-l .6s ease;
   -webkit-mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);}
 
 /* two card corners: top-left, bottom-right */
@@ -1734,4 +1745,9 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   .party-chrome .party-pick svg,.party-chrome .party-twist svg,.party-chrome .party-exit svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
   .party-chrome .party-pick .party-key,.party-chrome .party-twist .party-key,.party-chrome .party-exit .party-key{margin:0 calc(var(--k)*4px) 0 0;}
   .party-top .party-twist,.party-top .party-pick{font-size:max(11px,calc(var(--k)*14px));}
+}
+
+/* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */
+@media (prefers-reduced-motion:reduce){
+  body,.btn-draw,.c-accent,.party-c-accent{transition:none;}
 }

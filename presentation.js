@@ -105,12 +105,12 @@ function updatePartyDisplay(card) {
     if (pq) pq.textContent = 'Draw a card to begin.';
     if (pl) { pl.textContent=''; pl.style.color=''; }
     if (pc) pc.textContent = '';
-    if (pa) pa.style.background = '';
+    if (pa) giltRailPaint(pa, null);
     if (ps) ps.classList.remove('on');
     return;
   }
   const color = levelColor(card.level);
-  if (pa) { pa.style.background=giltRail(color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
+  if (pa) { giltRailPaint(pa, color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
   if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
   const td = document.querySelector('.twist-div');   // Twist divider: question-side bar = the card's category colour, as the pick dividers use
   if (td) td.style.setProperty('--pd-a', color);
@@ -673,7 +673,7 @@ function paintHandSide() {
   const qEl = document.getElementById('card-question');
   const accent = document.getElementById('c-accent');
   if (accent) {
-    accent.style.background = col.raw ? giltRail(col.raw) : '';
+    giltRailPaint(accent, col.raw);
     accent.classList.remove('accent-bloom'); void accent.offsetWidth; accent.classList.add('accent-bloom');
   }
   if (lvlEl) { lvlEl.classList.remove('in'); lvlEl.textContent = ''; }
@@ -693,7 +693,7 @@ function paintHandSide() {
   const pl = document.getElementById('party-level');
   const pc = document.getElementById('party-count');
   const pa = document.getElementById('party-accent');
-  if (pa) pa.style.background = col.raw ? giltRail(col.raw) : 'var(--gold-l)';
+  if (pa) giltRailPaint(pa, col.raw || '#e8c97a');   // --gold-l
   if (pl) { pl.textContent = ''; pl.style.color = ''; }
   if (pc) pc.textContent = '';   // the count slot stays empty at the end of a hand
   if (pq) {
