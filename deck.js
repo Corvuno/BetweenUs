@@ -418,6 +418,10 @@ function _nextCardBase() {
     flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();
+    /* Three and Spotlight are live from the moment the first card is drawn, not
+       only once its draw animation has landed (updateDrawMore runs from flipToCard
+       at the end of it) */
+    if (state.currentIndex === 0) ['pickToggle', 'btnParty'].forEach(id => document.getElementById(id)?.classList.remove('disabled'));
     if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();
   } else {
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
@@ -575,32 +579,46 @@ function nextCard() {
    Arc takes two unseen cards from the selection at the planned card's depth
    (levelDepth), or the nearest depth when fewer exist; Wild takes the next
    two in the dial-weighted draw order. Never a card already in this hand,
-   seen, skipped, sitting out, or offered earlier in this hand. In Arc the After
+   offered earlier in this hand, and unseen cards come first. In Arc the After
    Dark opener rule holds (none as an option on step 1; on step 2 only 1 time
-   in 20). If the selection can't supply two, sit-outs are let back in first,
-   then there are simply fewer options. */
+   in 20). If fewer than two unseen cards are left, cards already seen this
+   pass fill in (so Three keeps working late in a pass), then the sit-outs from
+   last hand; fewer options only when the selection can't supply two others. */
 function buildPickOptions(step) {
   const planned = state.visibleDeck[step];
   if (!planned) return [];
   const inHand = new Set(state.visibleDeck.map(c => c.question));
   const seen = _seenSet();
   const all = getFilteredCards();
-  const base = all.filter(c => !inHand.has(c.question) && !seen.has(c.question) && !state.handOffered.has(c.question));
-  let pool = base.filter(c => !_sittingOut(c));
-  if (pool.length < 2) pool = base;
+  const others = all.filter(c => !inHand.has(c.question) && !state.handOffered.has(c.question));
   const isArc = state.randomMode === 'arc';
   const isAD = c => SPICY_LEVELS.includes(c.level);
-  if (isArc && !isAD(planned) && step <= 1 && !(step === 1 && Math.random() < 0.05)) {
-    const noAD = pool.filter(c => !isAD(c));
-    if (noAD.length >= 2) pool = noAD;
-  }
-  let cand = orderUnseen(pool, all);
-  if (isArc) {
-    const d = levelDepth(planned.level);
-    cand = cand.map((c, i) => ({ c, i, k: Math.abs(levelDepth(c.level) - d) }))
-               .sort((a, b) => a.k - b.k || a.i - b.i).map(x => x.c);
-  }
-  return shuffle([planned, ...cand.slice(0, 2)]);
+  const noADOpener = isArc && !isAD(planned) && step <= 1 && !(step === 1 && Math.random() < 0.05);
+  const d = isArc ? levelDepth(planned.level) : 0;
+  /* Tiers, in order: unseen cards, then cards already seen this pass, then the
+     sit-outs from last hand (unseen first). Later tiers only top up what the
+     earlier ones couldn't supply, so Three keeps working late in a pass. */
+  const tiers = [
+    others.filter(c => !seen.has(c.question) && !_sittingOut(c)),
+    others.filter(c => seen.has(c.question) && !_sittingOut(c)),
+    others.filter(c => !seen.has(c.question) && _sittingOut(c)),
+    others.filter(c => seen.has(c.question) && _sittingOut(c)),
+  ];
+  const picked = [];
+  tiers.forEach((tier, ti) => {
+    if (picked.length >= 2 || !tier.length) return;
+    if (noADOpener) {
+      const noAD = tier.filter(c => !isAD(c));
+      if (noAD.length >= 2) tier = noAD;
+    }
+    let cand = (ti === 1 || ti === 3) ? shuffle(tier) : orderUnseen(tier, all);
+    if (isArc) {
+      cand = cand.map((c, i) => ({ c, i, k: Math.abs(levelDepth(c.level) - d) }))
+                 .sort((x, y) => x.k - y.k || x.i - y.i).map(x => x.c);
+    }
+    picked.push(...cand.slice(0, 2 - picked.length));
+  });
+  return shuffle([planned, ...picked]);
 }
 
 /* The player picks one of the options for `step`. It takes the step in the

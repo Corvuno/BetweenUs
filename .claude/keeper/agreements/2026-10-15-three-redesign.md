@@ -1,7 +1,7 @@
 # Three, redesigned (+ skip counts as seen) — 2026-10-15
 
 Agreed with the owner 2026-10-15, building on the Three bug report and fixes
-(`2026-10-15-three-fixes.md`, which this replaces). Area: C (how the app works). B only where
+(the 2026-10-15 three-fixes agreement, which this replaced; removed in the 2026-10-19 upkeep, still in git history). Area: C (how the app works). B only where
 the three options stop covering Spotlight's controls. A doesn't change.
 
 Owner's idea: "Just keep the current Arc, just give options in that section of the Arc, then

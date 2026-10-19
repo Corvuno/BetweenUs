@@ -261,6 +261,13 @@ function flipToCard(card, isFirstDraw) {
     });
   }
   setTimeout(() => {
+    /* Three can now be used during the first draw's animation: if another card
+       has taken this step meanwhile, this late face swap must not overwrite it */
+    if (state.currentIndex < state.visibleDeck.length && state.visibleDeck[state.currentIndex] !== card) {
+      el.classList.remove(animClass);
+      ghosts.forEach(g => g.remove());
+      return;
+    }
     setStartBack('');   // the back turns over with the face swap, not before
     applyCardMark(el, card);
     const color = levelColor(card.level);
