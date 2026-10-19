@@ -23,3 +23,15 @@ prints a hint when it notices fixed ones. Never run it to hide a new finding.
 
 Known false positive in the baseline: names a file publishes with `window.x = x` inside a
 wrapper (e.g. `giltRail`) show up as "Cannot find name" in the files that use them.
+
+## Limits (honest notes)
+
+- "Strict for new code" means *no new findings against the baseline*, not strict typing
+  (`strict` is off in the jsconfig files).
+- Swap blind spot: fixing one old finding and adding a new one with the identical message in
+  the same file keeps the count equal, so it passes.
+- `no-unused-vars` only covers local variables and tsc has no `noUnusedLocals`, so a new unused
+  top-level function is not reported (functions are shared between files).
+- CI runs only `between-us.html`; `between-us-work.html` and `between-us-dev.html` are redirects.
+- A broken check run (bad config, crash) fails the script with exit code 2; it never reads as "no findings".
+- `ts-api-utils` is in devDependencies because eslint-plugin-sonarjs crashes without it (it does not declare it).

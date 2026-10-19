@@ -13,15 +13,28 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const baselinePath = join(root, 'checks-baseline.json');
 const run = (args) => spawnSync('npx', args, { cwd: root, encoding: 'utf8', maxBuffer: 1 << 26 });
 
+const fail = (message) => { console.error(`Check could not run: ${message}`); process.exit(2); };
+
 const typeFindings = () => ['jsconfig.json', 'jsconfig.sw.json'].flatMap((config) => {
-  const out = run(['tsc', '-p', config, '--pretty', 'false']).stdout;
-  return [...out.matchAll(/^(.+?)\(\d+,\d+\): error (TS\d+): (.*)$/gm)]
-    .map(([, file, code, message]) => ({ file, rule: code, message }));
+  const result = run(['tsc', '-p', config, '--pretty', 'false']);
+  if (result.error) fail(result.error.message);
+  const lines = result.stdout.split('\n').filter((line) => line.includes('error TS'));
+  const found = lines.flatMap((line) => {
+    const m = line.match(/^(.+?)\(\d+,\d+\): error (TS\d+): (.*)$/);
+    return m ? [{ file: m[1], rule: m[2], message: m[3] }] : [];
+  });
+  // A tsc run that broke (bad config, crash) must not read as "no findings".
+  if (found.length < lines.length) fail(`tsc -p ${config}: ${lines.find((l) => !/^.+?\(\d+,\d+\): error/.test(l))}`);
+  if (result.status !== 0 && !found.length) fail(`tsc -p ${config} exited ${result.status}: ${result.stdout}${result.stderr}`);
+  return found;
 });
 
 const lintFindings = () => {
-  const out = run(['eslint', '.', '-f', 'json']).stdout;
-  return JSON.parse(out).flatMap((result) => result.messages.map((m) => ({
+  const result = run(['eslint', '.', '-f', 'json']);
+  if (result.error) fail(result.error.message);
+  // ESLint exits 1 for findings, 2 for a broken run.
+  if (result.status > 1) fail(`eslint exited ${result.status}: ${result.stderr}`);
+  return JSON.parse(result.stdout).flatMap((result) => result.messages.map((m) => ({
     file: relative(root, result.filePath), rule: m.ruleId ?? 'parse-error', message: m.message,
   })));
 };
