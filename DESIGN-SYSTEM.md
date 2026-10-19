@@ -91,18 +91,26 @@ chapter row (was `#6e1719`) needed to move onto them.
 
 ### Frame colours — copper, celadon, preset (added 2026-10-13)
 ```
---copper:        #C67B28   /* the deck's own frame: logo centre diamond and "Custom" only */
+--copper:        #C67B28   /* the deck's own frame: the logo's centre diamond only (no longer Custom) */
 --celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
   /* also marks the chosen option in a choice row: Shuffle (Arc/Random) and Cards (5/10/20/All) in the categories sheet */
 --celadon-hint:  #5b6b63   /* the hint lines under that row; also the sub-lines in the main menu (its labels are celadon, icons stay gold) */
---preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name */
+--preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name. Strangers #8fd14f, Family #ee7a35 (--mc in styles.css) */
+--preset-a/-b:  (set from renderShell, Custom with 2+ categories only) /* first and second picked category colour: the logo's inner line pairs split left/right (gradient #trP) */
 --preset-deep:   (set from renderShell) /* the preset a shade deeper (same hue/saturation, lightness -7 points, floor 45%, already-darker colours unchanged): for filled areas, i.e. the start-card diamond and its rule, which read paler than thin letters */
 ```
 One job each. Gold stays "draw" (Next Card, borders at the three tiers; back/menu
 frames rest at rgba(201,168,76,.2) and turn gold with their symbol on hover, press and
-keyboard focus). Copper is the deck's own frame (logo centre, Custom). The preset colour says
-which edition is selected and falls back to `--gold`; "Custom" (no preset button
-matched) uses copper everywhere the preset colour is used. Celadon is the colour
+keyboard focus). Copper is only the logo's centre diamond. The preset colour says
+which edition is selected and falls back to `--gold`. "Custom" (no preset button
+matched) wears the colours of the selected, playable categories in CATEGORIES order
+(`customPicks` in presentation.js): one category = that colour everywhere, still; two or
+more = logo line pairs split between the first two, `--preset`/preset name a plain blend of
+the first two or three (never more), and the start card's diamond and rule (`--preset-deep`
+on #card) step through ALL picks, switching at the faint point of each breath (one Web
+Animation locked to the diamond's breath, no timers; cancelled when the start card leaves;
+reduced motion = first colour, still). The top logo never animates. Reason: Custom is the
+one the player made, so it shows. Celadon is the colour
 of everything tappable besides Draw; back and menu are celadon at rest and gold
 while touched (the hover rule is scoped to `@media (hover:hover)` so it never sticks on touch).
 

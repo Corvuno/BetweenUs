@@ -86,7 +86,7 @@ body{
    CTA/brand colour, not a mode. */
 .mode-btn[data-mode="open"]{--mc:#6f8fd8;}
 .mode-btn[data-mode="balanced"]{--mc:#4a95b8;}
-.mode-btn[data-mode="newpeople"]{--mc:#c99765;}
+.mode-btn[data-mode="newpeople"]{--mc:#8fd14f;}
 .mode-btn[data-mode="friends"]{--mc:#6bb36e;}
 /* dating/partner nudged more saturated than their Romance/Us:Love twins
    below — a "tad more intense", kept in sync with config.js so the preset
@@ -96,7 +96,7 @@ body{
 .mode-btn[data-mode="latenight"]{--mc:#75609c;}
 .mode-btn[data-mode="solo"]{--mc:#669bbb;}
 .mode-btn[data-mode="work"]{--mc:#4dbebe;}
-.mode-btn[data-mode="family_p"]{--mc:#ba8e58;}
+.mode-btn[data-mode="family_p"]{--mc:#ee7a35;}
 
 /* Grouping without extra chrome. Who's-here just needs breathing room
    before it, not its own line — a bigger gap after Balanced is enough of a
@@ -1673,7 +1673,7 @@ body.tok-taught .tok-hint{display:none;}
   font-family:'Federo','Jost',sans-serif;}
 
 /* ── Logo ornament: centre diamond copper, inner line pairs take the preset ── */
-.tr-svg path:nth-of-type(4){stroke:var(--preset);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
+.tr-svg path:nth-of-type(4){stroke:url(#trP);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
 .tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
 
 /* ── The play-style row: Three · Spotlight · Twist (also the end-of-hand row Change · Save, #handActionsRow) ──

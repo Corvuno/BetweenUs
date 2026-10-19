@@ -375,6 +375,51 @@ function presetDeep(hex) {
   const L2 = L > 0.45 ? Math.max(0.45, L - 0.07) : L;
   return 'hsl(' + H.toFixed(1) + ',' + (S * 100).toFixed(1) + '%,' + (L2 * 100).toFixed(1) + '%)';
 }
+// ── CUSTOM: the picked categories' colours ───────────────────────────────────
+// The selected, playable categories in CATEGORIES order (config.js), same filter
+// getFilteredCards() applies: switched on, in the deck, and not safe-blocked while
+// safe mode is on.
+function customPicks() {
+  const safe = state.safeMode || MASTER_SAFE || WORKPLACE_MODE;
+  return Object.keys(CATEGORIES).filter(k => state.activeToggles.has(k) && DECK_LEVELS.has(k) &&
+    !(safe && SAFE_BLOCKED_LEVELS.includes(k)) && CATEGORIES[k].color).map(k => CATEGORIES[k].color);
+}
+// Plain average of 2-3 hex colours (a soft blend).
+function blendHex(cols) {
+  const ch = cols.map(c => { let h = c.replace('#', ''); if (h.length === 3) h = h.replace(/./g, x => x + x);
+    return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); });
+  return '#' + [0, 1, 2].map(i => Math.round(ch.reduce((a, c) => a + c[i], 0) / ch.length).toString(16).padStart(2, '0')).join('');
+}
+// The start card's diamond (and the rule under it, which share --preset-deep on
+// #card) takes the next picked colour at the faint point of each breath, so the
+// switch is never seen. One Web Animation locked to the diamond's own breath
+// (imBreathe: faint 1.6s into each 3.2s cycle, breath starting after its 2.4s
+// delay, so 4.0s in, then every 3.2s). It exists only while that breath runs:
+// the card face showing, the deck sheet closing, or reduced motion all cancel it.
+// No timer is involved.
+let _startCols = [];
+let _startCycle = null;   // { src: the breath CSSAnimation, key, anim }
+function stopStartCycle() { if (_startCycle) { try { _startCycle.anim.cancel(); } catch (e) {} _startCycle = null; } }
+function syncStartCycle() {
+  const card = document.getElementById('card');
+  const dm = card && card.querySelector('.cb-mark:not(.cb-fermata) .lg-dm');
+  const src = dm && card.classList.contains('is-start') && !card.classList.contains('is-intermezzo') && dm.getAnimations
+    ? dm.getAnimations().find(a => a.animationName === 'imBreathe') : null;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const key = _startCols.join();
+  if (!src || reduce || _startCols.length < 2) { stopStartCycle(); return; }
+  if (_startCycle && _startCycle.src === src && _startCycle.key === key) return;
+  stopStartCycle();
+  const n = _startCols.length;
+  const frames = _startCols.map((c, i) => ({ '--preset-deep': presetDeep(c) || c, offset: i / n, easing: 'step-end' }));
+  frames.push({ '--preset-deep': presetDeep(_startCols[0]) || _startCols[0], offset: 1 });
+  const anim = card.animate(frames, { duration: 3200 * n, delay: 800, iterations: Infinity, fill: 'backwards' });
+  anim.startTime = src.startTime;
+  _startCycle = { src, key, anim };
+}
+document.addEventListener('animationstart', e => { if (e.target.classList && e.target.classList.contains('lg-dm')) syncStartCycle(); });
+document.addEventListener('animationcancel', e => { if (e.target.classList && e.target.classList.contains('lg-dm')) syncStartCycle(); });
+
 function renderShell() {
   // Entry token -> the active preset's own name and colour, read straight
   // off its .mode-btn (data-mode=state.activePreset) in the preset row —
@@ -397,17 +442,29 @@ function renderShell() {
     const cs = presetBtn && getComputedStyle(presetBtn);
     const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
     vCats.textContent = label;
-    // "Custom" (no preset button matched) is copper everywhere the preset
-    // colour is used; --preset on :root feeds the logo and the start card.
-    const useCol = col || (!presetBtn && label === 'Custom' ? '#C67B28' : '');
+    // "Custom" (no preset button matched) wears the colours of the categories
+    // picked, in CATEGORIES order (see customPicks). One category: that colour
+    // everywhere, still. Two or more: the top logo's inner line pairs split
+    // left/right between the first two (--preset-a/-b); the preset name and
+    // --preset are a soft blend of the first two or three (never more); the
+    // start card's diamond and rule step through ALL of them (startCycle).
+    const isCustom = !presetBtn && label === 'Custom';
+    const picks = isCustom ? customPicks() : [];
+    const useCol = col || (picks.length > 1 ? blendHex(picks.slice(0, 3)) : (picks[0] || ''));
+    const root = document.documentElement;
+    if (picks.length > 1) { root.style.setProperty('--preset-a', picks[0]); root.style.setProperty('--preset-b', picks[1]); }
+    else { root.style.removeProperty('--preset-a'); root.style.removeProperty('--preset-b'); }
+    _startCols = picks.length > 1 ? picks : [];
     if (tokCats) useCol ? tokCats.style.setProperty('--tokc', useCol) : tokCats.style.removeProperty('--tokc');
-    useCol ? document.documentElement.style.setProperty('--preset', useCol) : document.documentElement.style.removeProperty('--preset');
+    useCol ? root.style.setProperty('--preset', useCol) : root.style.removeProperty('--preset');
     // --preset-deep: the same colour a shade deeper, for filled areas (the start
     // card's diamond and rule), which read paler than thin letters. Same hue and
     // saturation, lightness down 7 points, never below 45%; colours already at or
     // below 45% stay as they are. Non-hex values just fall back to --preset.
-    const deep = useCol && presetDeep(useCol);
+    // With several picks the still colour is the first pick's.
+    const deep = (picks.length > 1 ? presetDeep(picks[0]) : useCol && presetDeep(useCol));
     deep ? document.documentElement.style.setProperty('--preset-deep', deep) : document.documentElement.style.removeProperty('--preset-deep');
+    syncStartCycle();
   }
   // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
   // that the main-screen Shuffle token is gone.
