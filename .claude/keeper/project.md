@@ -62,7 +62,7 @@ The Keeper. Started with `/keeper`.
   - Layout tests use cards from the owner's own deck only, never the optional sets (Colbert, The 36, Magical).
 - Builder: `looks-builder`.
 
-**Names we use:** "the evening chooser" = the sheet headed "What kind of evening?" (code: `#cat-area`). Internal only, not shown in the app.
+**Names we use:** "the evening chooser" = the sheet now headed **The Deck** (named 2026-10-19; was only "What kind of evening?"; code: `#cat-area`). In the app it is The Deck; "Selected deck" on the card screen points to it.
 
 **C) How the app works** — behaviour, screens, flows, settings, profiles, saving, offline.
 - Way of working: plain-language options with trade-offs, decided by the owner.

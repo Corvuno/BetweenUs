@@ -69,3 +69,6 @@ Owner: "this is the way to go… cleaned up, this is better." Build round 2 with
 
 ## Built 2026-10-19
 Landed on main. Shuffle/Cards one-line fix and spice-glow removal sent back once after the Keeper check. Open: a name for the sheet (owner asked 2026-10-19; options shown, waiting).
+
+## Name 2026-10-19
+Owner: the sheet is called **The Deck** (heading of the sheet; the time-of-day question stays as the line under it). The card screen's label "Selected" becomes "Selected deck" (the " · tap to change" hint stays as today, hiding once learned).
