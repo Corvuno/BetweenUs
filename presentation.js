@@ -384,6 +384,26 @@ function customPicks() {
   return Object.keys(CATEGORIES).filter(k => state.activeToggles.has(k) && DECK_LEVELS.has(k) &&
     !(safe && SAFE_BLOCKED_LEVELS.includes(k)) && CATEGORIES[k].color).map(k => CATEGORIES[k].color);
 }
+// Which 2-3 picks are shown (logo line pairs, name gradient, --preset): the pick
+// furthest (Lab distance) from gold #c9a84c first, then each next the one furthest
+// from everything chosen so far, so a warm-heavy selection never reads gold.
+// Returned in CATEGORIES order. With 3 or fewer picks all are shown.
+function shownPicks(picks) {
+  if (picks.length <= 3) return picks.slice();
+  const lab = hex => {
+    const h = hex.replace('#', ''), c = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255)
+      .map(v => v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    const x = (0.4124 * c[0] + 0.3576 * c[1] + 0.1805 * c[2]) / 0.95047, y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2], z = (0.0193 * c[0] + 0.1192 * c[1] + 0.9505 * c[2]) / 1.08883;
+    const f = t => t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116;
+    return [116 * f(y) - 16, 500 * (f(x) - f(y)), 200 * (f(y) - f(z))];
+  };
+  const d = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const L = picks.map(lab), chosen = [], gold = lab('#c9a84c');
+  const far = ref => { let best = -1, bi = -1; L.forEach((l, i) => { if (chosen.includes(i)) return; const m = Math.min(...ref.map(r => d(l, r))); if (m > best) { best = m; bi = i; } }); return bi; };
+  chosen.push(far([gold]));
+  while (chosen.length < 3) chosen.push(far(chosen.map(i => L[i])));
+  return chosen.sort((a, b) => a - b).map(i => picks[i]);
+}
 // The start card's diamond (and the rule under it, which share --preset-deep on
 // #card) takes the next picked colour at the faint point of each breath, so the
 // switch is never seen. One Web Animation locked to the diamond's own breath
@@ -444,14 +464,16 @@ function renderShell() {
     // start card's diamond and rule step through ALL of them (startCycle).
     const isCustom = !presetBtn && label === 'Custom';
     const picks = isCustom ? customPicks() : [];
-    const useCol = col || picks[0] || '';
+    const shown = shownPicks(picks);
+    const useCol = col || shown[0] || picks[0] || '';
     const root = document.documentElement;
-    if (picks.length > 1) { root.style.setProperty('--preset-a', picks[0]); root.style.setProperty('--preset-b', picks[1]); }
+    if (picks.length > 1) { root.style.setProperty('--preset-a', shown[0]); root.style.setProperty('--preset-b', shown[1]); }
     else { root.style.removeProperty('--preset-a'); root.style.removeProperty('--preset-b'); }
-    _startCols = picks.length > 1 ? picks : [];
+    // the diamond cycles through ALL picks, starting at the first shown colour
+    { const at = picks.indexOf(shown[0]); _startCols = picks.length > 1 ? picks.slice(at).concat(picks.slice(0, at)) : []; }
     if (tokCats) {
       tokCats.classList.toggle('tok-multi', picks.length > 1);
-      picks.length > 1 ? tokCats.style.setProperty('--tokg', 'linear-gradient(90deg,' + picks.slice(0, 3).join(',') + ')') : tokCats.style.removeProperty('--tokg');
+      picks.length > 1 ? tokCats.style.setProperty('--tokg', 'linear-gradient(90deg,' + shown.join(',') + ')') : tokCats.style.removeProperty('--tokg');
     }
     if (tokCats) useCol ? tokCats.style.setProperty('--tokc', useCol) : tokCats.style.removeProperty('--tokc');
     useCol ? root.style.setProperty('--preset', useCol) : root.style.removeProperty('--preset');

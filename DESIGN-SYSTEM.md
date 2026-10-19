@@ -105,8 +105,8 @@ keyboard focus). Copper is only the logo's centre diamond. The preset colour say
 which edition is selected and falls back to `--gold`. "Custom" (no preset button
 matched) wears the colours of the selected, playable categories in CATEGORIES order
 (`customPicks` in presentation.js): one category = that colour everywhere, still; two or
-more = logo line pairs split between the first two, the preset name a soft left-to-right gradient of the first two or three (never more, `.tok-multi`/`--tokg`; clipped text), `--preset` and `--tokc` the first pick (never an average), and the start card's diamond and rule (`--preset-deep`
-on #card) step through ALL picks, switching at the faint point of each breath (one Web
+more = up to 3 "shown" colours are chosen (`shownPicks`: the pick furthest in Lab from gold first, then each furthest from those chosen, kept in CATEGORIES order, so many warm picks never read gold); the logo line pairs split between the first two of them, the preset name a soft left-to-right gradient of the shown colours (never more than three, `.tok-multi`/`--tokg`; clipped text), `--preset` and `--tokc` the first shown colour (never an average), and the start card's diamond and rule (`--preset-deep`
+on #card) step through ALL picks starting at the first shown colour, switching at the faint point of each breath (one Web
 Animation locked to the diamond's breath, no timers; cancelled when the start card leaves;
 reduced motion = first colour, still). The top logo never animates. Reason: Custom is the
 one the player made, so it shows. Celadon is the colour
