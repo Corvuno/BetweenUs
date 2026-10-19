@@ -1389,6 +1389,40 @@ async function run() {
     assert(/^(Draw Card|Next Card|Summary|Hold to continue)$/.test(draw), `unexpected draw button text: ${draw}`);
   });
 
+  await check('damaged saved favourites / custom cards: the app still loads and both drawers show empty', async () => {
+    const damaged = [
+      ['null', 'null'],
+      ['an object', '{"a":1}'],
+      ['not JSON', '{oops'],
+      ['entries without text', '[null, 5, {"level":"light"}]'],
+    ];
+    for (const [label, value] of damaged) {
+      const damagedPage = await (await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true })).newPage();
+      const errors = [];
+      damagedPage.on('pageerror', (e) => errors.push(e.message));
+      await damagedPage.addInitScript((v) => {
+        localStorage.setItem('bu-favourites', v);
+        localStorage.setItem('bu-custom-cards', v);
+      }, value);
+      await damagedPage.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await damagedPage.waitForSelector('#card', { state: 'visible' });
+      assert(errors.length === 0, `${label}: page errors on load: ${errors.join(' | ')}`);
+      const shown = await damagedPage.evaluate(() => {
+        renderFavourites();
+        renderCustomList();
+        return {
+          favs: document.querySelector('#favsList').textContent.trim(),
+          custom: document.querySelector('#customList').textContent.trim(),
+          customInDeck: ALL_CARDS.filter(c => c.custom).length,
+        };
+      });
+      assert(/No favourites yet/.test(shown.favs), `${label}: favourites drawer not empty: ${shown.favs}`);
+      assert(/No custom cards yet/.test(shown.custom), `${label}: custom drawer not empty: ${shown.custom}`);
+      assert(shown.customInDeck === 0, `${label}: custom cards leaked into the deck`);
+      await damagedPage.context().close();
+    }
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

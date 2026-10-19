@@ -4,9 +4,22 @@
 // in card.js — this file owns the saved collections, not the per-card toggle.)
 
 
+/* Saved list from localStorage, or [] when nothing usable is stored: missing,
+   unreadable, not JSON, not a list. Entries without a level and question are dropped. */
+function readSavedCards(key) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(saved)
+      ? saved.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string')
+      : [];
+  } catch (error) {
+    console.warn(`Ignoring unreadable saved data "${key}":`, error);
+    return [];
+  }
+}
+
 function loadFavourites() {
-  try { const v = localStorage.getItem('bu-favourites'); if (v) state.favourites = JSON.parse(v); }
-  catch(e) { state.favourites = []; }
+  state.favourites = readSavedCards('bu-favourites');
   updateStarUI();
 }
 
@@ -26,16 +39,11 @@ function renderFavourites() {
 
 // ── CUSTOM CARDS ──────────────────────────────────────────────────────────────
 function loadCustomCards() {
-  try {
-    const v = localStorage.getItem('bu-custom-cards');
-    if (v) {
-      state.customCards = JSON.parse(v);
-      state.customCards.forEach(c => {
-        if (!ALL_CARDS.find(a => a.question === c.question))
-          ALL_CARDS.push({ level: c.level, question: c.question, custom: true });
-      });
-    }
-  } catch(e) { state.customCards = []; }
+  state.customCards = readSavedCards('bu-custom-cards');
+  state.customCards.forEach(c => {
+    if (!ALL_CARDS.some(a => a.question === c.question))
+      ALL_CARDS.push({ level: c.level, question: c.question, custom: true });
+  });
   renderCustomList();
 }
 
@@ -43,7 +51,12 @@ function loadCustomCards() {
    refresh the grid's per-category counts, and reshuffle the deck to reflect
    the new ALL_CARDS. */
 function persistCustomCards() {
-  try { localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards)); } catch(e) {}
+  try {
+    localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards));
+  } catch (error) {
+    // Storage full or blocked (private mode): the card stays for this session only.
+    console.warn('Custom cards could not be saved:', error);
+  }
   renderCustomList();
   updateCatCounts();
   initDeck();
