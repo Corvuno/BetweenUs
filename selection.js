@@ -84,9 +84,9 @@ function applyPreset(mode) {
 
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
-    const inMode = preset.on.includes(lvl) || preset.available.includes(lvl);
     const lockedOut = (MASTER_SAFE || WORKPLACE_MODE) && SAFE_BLOCKED_LEVELS.includes(lvl);
-    const hidden = !inMode || lockedOut || !DECK_LEVELS.has(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
+    /* the sheet's panels always list every category of a chapter, whatever the preset */
+    const hidden = lockedOut || !DECK_LEVELS.has(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
     btn.style.display = hidden ? 'none' : '';
     const locked = !hidden && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl);
     btn.classList.toggle('hard-locked', locked);
@@ -134,10 +134,16 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
 );
 
 
-// Category toggles
-document.getElementById('toggles').addEventListener('click', e => {
+// Category toggles (the buttons live in each chapter's panel inside #chapters)
+document.getElementById('chapters').addEventListener('click', e => {
   const btn = e.target.closest('.toggle-btn');
-  if (!btn || btn.classList.contains('hard-locked')) return;
+  if (!btn) return;
+  if (btn.classList.contains('hard-locked')) {
+    // A locked After Dark category opens After Dark (same gate as its chapter row)
+    // and switches on only itself, not the rest of the chapter.
+    if (typeof openAfterDark !== 'function' || !openAfterDark()) return;
+    if (typeof releasePresetMask === 'function') releasePresetMask();
+  }
   if (btn._longPressed) { btn._longPressed = false; return; }   // long-press reads, never toggles
   const lvl = btn.dataset.level;
   state.activeToggles[state.activeToggles.has(lvl) ? 'delete' : 'add'](lvl);
@@ -152,17 +158,6 @@ document.getElementById('toggles').addEventListener('click', e => {
     setTimeout(() => { btn.classList.add('tip-fade'); btn.classList.remove('show-tip'); }, 1200);
     setTimeout(() => btn.classList.remove('tip-fade'), 1900);
   }
-});
-
-document.getElementById('selectAll').addEventListener('click', () => {
-  document.querySelectorAll('.toggle-btn:not(.hard-locked)').forEach(btn => {
-    if (OPT_IN_ONLY.includes(btn.dataset.level)) return;
-    if (btn.dataset.level && btn.style.display !== 'none') state.activeToggles.add(btn.dataset.level);
-  });
-  state.activePreset = '';
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-  applyToggleUI();
-  initDeck();
 });
 
 document.getElementById('deselectAll').addEventListener('click', () => {

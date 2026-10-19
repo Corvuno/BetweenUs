@@ -208,10 +208,6 @@ function updateTimeOfDayHeading() {
   // it's the sheet's title, not a lead-in line above the chapters any more.
   const heading = document.getElementById('playLeadFirst');
   if (heading) heading.textContent = 'What kind of ' + word + '?';
-  // Static now, not time-of-day framed — it's a plain inline link next to
-  // the Chapters label, not a headline, so it doesn't need the word.
-  const customizeBtn = document.getElementById('customizeBtn');
-  if (customizeBtn) customizeBtn.textContent = 'Explore categories';
 }
 
 // ── Category label toggle ──

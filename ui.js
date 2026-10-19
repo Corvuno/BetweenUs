@@ -7,45 +7,24 @@
 // to-bottom, so the boot logic is load-order-sensitive (the double init
 // sequence, the final default-selection draw).
 
-// Explore's bucket grid is built from CATEGORIES/BUCKET_META in config.js, the
-// single source for every level/bucket/label. Runs first, before anything else in this
-// file (or any file that loads after it) can touch a .toggle-btn/.cat-bucket
-// element expecting it to already exist. Bucket order follows BUCKET_META's
-// own key order; category order within a bucket follows CATEGORIES' key
-// order — both already read top-to-bottom as the intended display order.
-(function renderBucketGrid(){
-  // #bucketGrid is a plain wrapper inside #toggles, sibling to the static
-  // Fixed Sets button/panel that also lives there — innerHTML-replacing
-  // #toggles itself would wipe those out along with the generated buckets.
-  const wrap = document.getElementById('bucketGrid');
-  if (!wrap) return;
-  const byBucket = {};
-  Object.keys(CATEGORIES).forEach(id => {
-    const b = CATEGORIES[id].bucket;
-    if (b) (byBucket[b] = byBucket[b] || []).push(id);
-  });
-  let html = '';
-  Object.keys(BUCKET_META).forEach(bid => {
-    const members = byBucket[bid] || [];
-    if (!members.length) return;
-    const meta = BUCKET_META[bid];
-    // The one bit of bucket-specific markup that isn't just "name + members":
-    // After Dark's inline spice-glyph toggle sits between its select button
-    // and its expand chevron.
-    const spiceGlyph = bid === 'afterdarkb'
-      ? ' <button type="button" class="spice-glyph spice-glyph--inline" id="spiceGlyphBtn2" title="A little more, once After Dark is open">&#10022;</button>'
-      : '';
-    html += `<div class="cat-bucket open" data-bucket="${bid}" style="--ch:${meta.color}"><button type="button" class="cbk-select"><span class="cbk-name">${esc(meta.label)}</span><span class="cbk-count"></span></button>${spiceGlyph}<button type="button" class="cbk-expand" aria-label="Show categories"><span class="cbk-chev">+</span></button></div>`;
-    members.forEach(id => {
+// Each chapter's category buttons are built from CATEGORIES in config.js (the
+// category's own .chapter field says where it goes), into that chapter's panel
+// in the sheet. Runs first, before anything else in this file (or any file that
+// loads after it) can touch a .toggle-btn expecting it to already exist. Order
+// within a chapter follows CATEGORIES' key order. Categories with no chapter
+// (Colbert, The 36, Magical, Abyss, Backup, Meta) have no button in the sheet.
+(function renderChapterPanels(){
+  document.querySelectorAll('.chapter-panel[data-chapter]').forEach(panel => {
+    const ch = panel.dataset.chapter;
+    let html = '';
+    Object.keys(CATEGORIES).forEach(id => {
       const cat = CATEGORIES[id];
-      const listClass = cat.ordered ? ' toggle-btn--list' : '';
-      // Backup is the one dimmed/italic overflow chip — a single-category
-      // exception, not worth a registry field of its own.
-      const dimStyle = id === 'backup' ? ' style="opacity:.22;font-style:italic;"' : '';
-      html += `<button class="toggle-btn${listClass}" data-level="${id}" data-bucket="${bid}"${dimStyle}>${esc(cat.label)}</button>`;
+      if (cat.chapter !== ch) return;
+      const desc = (typeof CATEGORY_DESCRIPTIONS !== 'undefined' && CATEGORY_DESCRIPTIONS[id]) || '';
+      html += `<button type="button" class="toggle-btn" data-level="${id}" data-chapter="${ch}" style="--c:${levelColor(id)}" title="${esc(desc)}"><i class="cat-dot" aria-hidden="true"></i><span class="cat-name">${esc(cat.label)}</span></button>`;
     });
+    panel.innerHTML = html;
   });
-  wrap.innerHTML = html;
 })();
 
 [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
@@ -543,40 +522,6 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
 })();
 
 
-(function() {
-  const descEl = document.getElementById('catDesc');
-  if (!descEl) return;
-  const show = (btn) => {
-    const desc = CATEGORY_DESCRIPTIONS[btn.dataset.level];
-    if (!desc) return;
-    descEl.textContent = desc + (btn.dataset.count ? '  ·  ' + btn.dataset.count + ' cards' : '');
-    descEl.classList.add('lit');
-  };
-  const showBucket = (el) => {
-    const desc = BUCKET_DESCRIPTIONS[el.dataset.bucket];
-    if (!desc) return;
-    descEl.textContent = desc;
-    descEl.classList.add('lit');
-  };
-  document.querySelectorAll('.toggle-btn, .cbk-select').forEach(btn => {
-    const isBucket = btn.classList.contains('cbk-select');
-    const fire = () => isBucket ? showBucket(btn.closest('.cat-bucket')) : show(btn);
-    // Desktop hover reads it too, no need to click
-    btn.addEventListener('mouseenter', fire);
-    // Every tap updates the description — same moment the category toggles
-    btn.addEventListener('click', () => { if (!btn._longPressed) fire(); });
-    // Long-press (450ms) reads the description WITHOUT toggling the category
-    let touchTimer = null;
-    btn.addEventListener('touchstart', () => {
-      btn._longPressed = false;
-      touchTimer = setTimeout(() => { btn._longPressed = true; fire(); }, 450);
-    }, {passive:true});
-    btn.addEventListener('touchmove', () => clearTimeout(touchTimer), {passive:true});
-    btn.addEventListener('touchend',  () => clearTimeout(touchTimer), {passive:true});
-  });
-})();
-
-
 // ═══════════════════════════════════════════════════════════
 // CUSTOM CARDS — export / import
 // ═══════════════════════════════════════════════════════════
@@ -676,7 +621,7 @@ let pickMode = false;
 
 updateCatCounts();
 
-// Initial "What kind of …?" heading and Explore link text
+// Initial "What kind of …?" heading
 updateTimeOfDayHeading();
 
 
@@ -1022,6 +967,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   if (!meta) return;
   el.style.setProperty('--ch-rail', giltRail(meta.color, 190));
   el.style.setProperty('--ch', labelColor(meta.color));
+  if (el.parentElement) el.parentElement.style.setProperty('--ch', labelColor(meta.color)); // the unfolded panel's paled left line
 });
 
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
@@ -1042,8 +988,6 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   });
   const inDeck = l => DECK_LEVELS.has(l);
   const chapterLevels = id => (CHAPTERS[id] || []).filter(inDeck);
-  const bucketLevels  = id => [...document.querySelectorAll('.toggle-btn[data-bucket="'+id+'"]')]
-                                .map(b => b.dataset.level).filter(inDeck);
   /* A bucket can hold opt-in-only members (Ease In has the ordered lists)
      that a bulk click deliberately never turns on. Judging a bucket's
      on/off state against ALL its members meant it could never reach "on" —
@@ -1080,6 +1024,9 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     return true;
   }
 
+  window.openAfterDark = openAfterDark;
+  window.releasePresetMask = releasePresetMask;
+
   function setLevels(levels, on){
     levels.forEach(l => {
       if (on) { if (!(state.safeMode && SAFE_BLOCKED_LEVELS.includes(l))) state.activeToggles.add(l); }
@@ -1103,37 +1050,12 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. */
       btn.classList.toggle('ch-hidden', visible.length === 0);
+      const grp = btn.closest('.chapter-group');
+      if (grp) grp.classList.toggle('ch-hidden', visible.length === 0);
+      /* "n / total": how many of this chapter's categories are on, of those reachable here */
+      const ct = btn.querySelector('.ch-ct');
+      if (ct) ct.textContent = visible.filter(l => state.activeToggles.has(l)).length + ' / ' + visible.length;
     });
-    document.querySelectorAll('.cat-bucket').forEach(hdr => {
-      const levels  = bucketLevels(hdr.dataset.bucket);
-      const visible = levels.filter(l => {
-        const b = document.querySelector('.toggle-btn[data-level="'+l+'"]');
-        return b && b.style.display !== 'none';
-      });
-      const st = stateOf(controllable(visible));
-      hdr.classList.toggle('on',   st === 'on');
-      hdr.classList.toggle('part', st === 'part');
-      hdr.classList.toggle('bkt-hidden', visible.length === 0);
-      const c = hdr.querySelector('.cbk-count');
-      if (c) c.textContent = visible.length
-        ? visible.filter(l => state.activeToggles.has(l)).length + ' / ' + visible.length
-        : '';
-    });
-    // The track fills from its centre tick out to the dot, in the dial's
-    // own colour — "how far from balanced, and which way" reads at a
-    // glance from the fill alone, so the dot needs no value word (Easy/Intense
-    // and Me/Us already say which way is which).
-    const setFill = (el, pos) => {
-      if (!el) return;
-      const left = Math.min(50, pos);
-      el.style.left = left + '%';
-      el.style.width = Math.abs(pos - 50) + '%';
-    };
-    setFill($('dialIntFill'), intentIntensity * 100);
-    setFill($('dialFocFill'), (intentFocus + 1) / 2 * 100);
-    const ii = $('dialIntensity'), fi = $('dialFocus');
-    if (ii) ii.style.opacity = intentOn ? '1' : '.45';
-    if (fi) fi.style.opacity = intentOn ? '1' : '.45';
     updateListModeNote();
   }
   window.syncIntentUI = syncIntentUI;
@@ -1151,16 +1073,15 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     if (!note) return;
     const chaps = $('chapters');
     const text = LIST_MODE_TEXT[state.activePreset];
-    // Customize stays visible even in list mode — it's the only door into
-    // Explore, so hiding it would dead-end anyone wanting to browse
-    // categories or switch fixed sets.
+    // The Fixed Sets row stays visible even in list mode, so you can switch
+    // from one set to the other; only the chapters step aside.
     if (text) {
       note.textContent = text;
       note.style.display = 'block';
-      if (chaps) chaps.style.display = 'none';
+      if (chaps) chaps.querySelectorAll('.chapter-group:not(.chapter-group--fixed)').forEach(g => g.style.display = 'none');
     } else {
       note.style.display = 'none';
-      if (chaps) chaps.style.display = '';
+      if (chaps) chaps.querySelectorAll('.chapter-group').forEach(g => g.style.display = '');
     }
   }
 
@@ -1176,7 +1097,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
      wipes the rest of the room; it only ever adds or removes its own
      categories. ── */
   $('chapters').addEventListener('click', e => {
-    if (e.target.closest('.spice-glyph')) return;   // the inline After Dark spice toggle handles itself
+    if (e.target.closest('.spice-glyph, .ch-fold')) return;   // the spice toggle and the fold target handle themselves
     const btn = e.target.closest('.chapter'); if (!btn) return;
     const id = btn.dataset.chapter;
     const turningOn = stateOf(controllable(chapterLevels(id))) !== 'on';
@@ -1186,26 +1107,6 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     setLevels(chapterLevels(id), turningOn);
     commit();
   });
-
-  /* ── dials ── */
-  /* Halfway is the default — a magnetic dead zone around it, felt during the
-     drag itself (like Android's system sliders, or Lightroom mobile's snap
-     to 0): while the finger is within a few percent of 50, the thumb holds
-     at exactly 50 instead of tracking the finger 1:1, so crossing centre
-     takes a small deliberate push. That reads as a physical catch, not as
-     the value being pulled to 50 after the fact. */
-  function dial(el, apply){
-    if (!el) return;
-    const snap = () => { if (Math.abs(+el.value - 50) <= 4) el.value = 50; };
-    el.addEventListener('input', () => { snap(); apply(+el.value / 100); intentOn = true; syncIntentUI(); });
-    ['change','pointerup','touchend'].forEach(ev =>
-      el.addEventListener(ev, () => {
-        snap();
-        apply(+el.value / 100); intentOn = true; commit();
-      }, {passive:true}));
-  }
-  dial($('dialIntensity'), t => { intentIntensity = t; });
-  dial($('dialFocus'),     t => { intentFocus = t * 2 - 1; });
 
   /* ── defaults: what the app opens on, and what Draw plays ── */
   function applyDefaultSelection(){
@@ -1244,40 +1145,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     }
     intentIntensity = (d.intensity != null ? d.intensity : 50) / 100;
     intentFocus     = ((d.focus != null ? d.focus : 50) / 100) * 2 - 1;
-    const ii = $('dialIntensity'), fi = $('dialFocus');
-    if (ii) ii.value = d.intensity != null ? d.intensity : 50;
-    if (fi) fi.value = d.focus != null ? d.focus : 50;
     intentOn = true;
   }
-
-  /* ── Explore drawers: select and expand are separate buttons now, each
-     with a real touch target, instead of one element with a tiny hot corner
-     found via closest() — that ambiguity was why the drawer only opened
-     some of the time. ── */
-  document.querySelectorAll('.cat-bucket').forEach(hdr => {
-    const id = hdr.dataset.bucket;
-    const expandBtn = hdr.querySelector('.cbk-expand');
-    if (expandBtn) expandBtn.addEventListener('click', () => {
-      const open = hdr.classList.toggle('open');
-      document.querySelectorAll('.toggle-btn[data-bucket="'+id+'"]')
-        .forEach(b => b.classList.toggle('chip-folded', !open));
-      if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
-    });
-    const selectBtn = hdr.querySelector('.cbk-select');
-    if (selectBtn) selectBtn.addEventListener('click', () => {
-      const levels = bucketLevels(id).filter(l => {
-        const b = document.querySelector('.toggle-btn[data-level="'+l+'"]');
-        return b && b.style.display !== 'none';
-      });
-      const turningOn = stateOf(controllable(levels)) !== 'on';
-      if (id === 'afterdarkb' && turningOn && !openAfterDark()) return;
-      releasePresetMask();
-      intentOn = false;   // an Explore edit only drops the dials' weighting — the
-                          // selection itself stays exactly as edited
-      setLevels(levels.filter(l => !(turningOn && OPT_IN_ONLY.includes(l))), turningOn);
-      commit();
-    });
-  });
 
   /* A chip, preset or bulk All/None is a selection of its own — the dials
      stop weighting it, so a chapter tapped afterwards doesn't silently
@@ -1285,10 +1154,13 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
      itself is untouched; every route in (preset, Explore, a chapter) is a
      plain add/remove toggle on whatever's already there — nothing wipes
      the room out from under whatever came before it. */
-  ['toggles','modeBar','selectAll','deselectAll'].forEach(id => {
+  ['modeBar','deselectAll'].forEach(id => {
     const el = $(id);
     if (el) el.addEventListener('click', () => { intentOn = false; syncIntentUI(); }, true);
   });
+  $('chapters').addEventListener('click', e => {
+    if (e.target.closest('.toggle-btn')) { intentOn = false; syncIntentUI(); }
+  }, true);
 
   /* Each "Start from" room has its own natural depth and focus. The preset
      itself still decides exactly which categories are on — this only moves
@@ -1314,86 +1186,28 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     const d = PRESET_DIALS[modeBtn.dataset.mode]; if (!d) return;
     intentIntensity = d.intensity / 100;
     intentFocus     = (d.focus / 100) * 2 - 1;
-    const ii = $('dialIntensity'), fi = $('dialFocus');
-    if (ii) ii.value = d.intensity;
-    if (fi) fi.value = d.focus;
     syncIntentUI();
   });
 
-  /* Explore is a fold appended right under the console, in the same scroll
-     as everything else — Customize just toggles it open/closed in place. */
-  const customizeBtn = $('customizeBtn'), exploreFold = $('exploreFold');
-  /* Opening the list scrolls the sheet so the Explore link rides up to the
-     top and the first groups are in view while it unfolds — otherwise it
-     grows below the visible part of the sheet and nothing seems to happen.
-     Same duration and easing as the fold, so the pane always has room to
-     scroll into. Any touch or wheel from the player cancels it. */
-  let exploreScrollRaf = 0;
-  function scrollExploreIntoView(ms, calm){
-    const pane = $('panePlay');
-    if (!pane || !customizeBtn) return;
-    cancelAnimationFrame(exploreScrollRaf);
-    const delta = customizeBtn.getBoundingClientRect().top - pane.getBoundingClientRect().top - 12;
-    if (delta <= 0) return;
-    const from = pane.scrollTop, t0 = performance.now();
-    if (calm) { pane.scrollTop = from + delta; return; }
-    const ease = t => 1 - Math.pow(1 - t, 3);
-    const stop = () => cancelAnimationFrame(exploreScrollRaf);
-    pane.addEventListener('wheel', stop, { once:true, passive:true });
-    pane.addEventListener('touchstart', stop, { once:true, passive:true });
-    const step = now => {
-      const k = Math.min(1, (now - t0) / ms);
-      pane.scrollTop = from + delta * ease(k);
-      if (k < 1) exploreScrollRaf = requestAnimationFrame(step);
-    };
-    exploreScrollRaf = requestAnimationFrame(step);
-  }
-  function toggleExplore(forceOpen){
-    if (!exploreFold) return;
-    const open = typeof forceOpen === 'boolean' ? forceOpen : !exploreFold.classList.contains('open');
-    exploreFold.classList.toggle('open', open);
-    if (customizeBtn) customizeBtn.classList.toggle('open', open);
+  /* ── folds: a chapter's count + chevron (and the whole Fixed Sets row) opens its
+     panel in place. Several can be open at once; looking is not choosing, so
+     opening or closing never touches the selection or the hand. ── */
+  function toggleFold(btn){
+    const grp = btn.closest('.chapter-group');
+    const panel = grp && grp.querySelector('.chapter-panel');
+    if (!panel) return;
+    const open = !panel.classList.contains('open');
+    panel.classList.toggle('open', open);
+    grp.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // The list is ~1250px tall — the fold's usual 0.32s made that a jump, so it
-    // gets a longer, softer ease, and its rows fade in one after another.
-    const ms = calm ? 1 : (open ? 700 : 450);
-    window.slideFold(exploreFold, open, ms, 'cubic-bezier(.22,.61,.36,1)');
-    if (open && !calm) {
-      exploreFold.querySelectorAll('#bucketGrid > *, .fixed-seq-toggle').forEach((el, i) =>
-        el.style.setProperty('--i', Math.min(i, 22)));
-      exploreFold.classList.remove('revealing'); exploreFold.offsetHeight;
-      exploreFold.classList.add('revealing');
-    }
-    if (open) scrollExploreIntoView(ms, calm);
-    syncIntentUI();   // looking is not choosing — opening the fold never re-draws the hand
-    if (open && typeof updateGridScrollHint === 'function') updateGridScrollHint();
+    window.slideFold(panel, open, calm ? 1 : 320);
+    if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
-  if (customizeBtn) customizeBtn.addEventListener('click', () => toggleExplore());
-
-  /* ── "Tune the hand" info tooltip — a tap target, not a permanent
-     explainer line eating space in the console. ── */
-  const fineInfoBtn = $('fineInfoBtn'), fineInfoTip = $('fineInfoTip');
-  if (fineInfoBtn && fineInfoTip) {
-    fineInfoBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      const open = fineInfoTip.classList.toggle('open');
-      fineInfoBtn.classList.toggle('open', open);
-    });
-    document.addEventListener('click', e => {
-      if (fineInfoTip.classList.contains('open') && !fineInfoBtn.contains(e.target) && !fineInfoTip.contains(e.target)) {
-        fineInfoTip.classList.remove('open');
-        fineInfoBtn.classList.remove('open');
-      }
-    });
-  }
-
-  // Fixed sets (Colbert/The 36) stay collapsed until asked for — no
-  // permanent space for something most sessions never touch.
-  const fixedSeqToggle = $('fixedSeqToggle'), fixedSeqOptions = $('fixedSeqOptions');
-  if (fixedSeqToggle && fixedSeqOptions) fixedSeqToggle.addEventListener('click', () => {
-    const open = fixedSeqOptions.classList.toggle('open');
-    fixedSeqToggle.classList.toggle('open', open);
-    window.slideFold(fixedSeqOptions, open);
+  $('chapters').addEventListener('click', e => {
+    const f = e.target.closest('.ch-fold');
+    if (f) toggleFold(f);
   });
 
   /* ── move the re-homed presets into Play, where they belong ── */
