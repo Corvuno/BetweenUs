@@ -239,3 +239,18 @@ Round 2 stay/go, agreed 2026-10-19 ("Agreed accept for these"):
   money instead of status? Rephrasing options shown 2026-10-19.
 - Removed cards are removed, not benched. Next: new cards, Culture/Roots/Wish first, then
   Work/Spirit/Body.
+Round 2 card picks, 2026-10-19:
+- Correction: the Wish card that goes is Wish 10 "What do you want for someone else that you can't
+  give them?" (owner meant 10, not 11; "wanting for someone else becomes generic"). Wish 11 stays.
+- Work 2 → "What would you do for a living if money and status played no role at all?"
+- Culture 6 → "Which everyday object is so well made it makes you happy every time you use it?"
+- Culture 10 → "Which building in the world would you most like to spend a night in?"
+- Roots 5 → "Where did your family go on holiday — and what always went wrong?"
+- Wish 6 → "What are you saving up for right now?"
+- Wish 8 → "What's the oddest thing on your someday list?"
+- Wish 10 → "Which person you admire are you secretly trying to become a bit more like?"
+- Open: Culture 12 (more trend options), Roots 10 and 12 (new angles), Wish 4 (owner wrote
+  "Alt 4", there were three — asked), Wish 5 (alt 3 "When did you last do something just because
+  you were scared of it?" picked, owner asks whether it's really Wish). Work 5/7/11, Spirit
+  2/3/7/9/10, Body 2/9 shown, picks after this batch.
+- Keeper decision: build the round in one go once every slot is decided.

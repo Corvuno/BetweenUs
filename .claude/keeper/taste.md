@@ -50,3 +50,8 @@ a light category; "belonging" as a feeling; subject lists copied from the cards.
 - Attract 6 options on turn-offs and being turned down — "boring and weak"; Attract's job is light and fun.
 - Home cards on belonging as a feeling.
 - Subject lists summarised from the existing cards — "this exercise is worthless" unless built outward.
+
+2026-10-19: turned down Roots alternatives built on sensory childhood scenes (kitchen smell,
+dinner sounds, bedroom walls, food you were made to eat) — "not feeling them"; the owner has no
+childhood memories. Liked: holiday-that-went-wrong, well-made everyday object, a building to
+spend a night in, saving up, someday list, the person you're trying to become.
