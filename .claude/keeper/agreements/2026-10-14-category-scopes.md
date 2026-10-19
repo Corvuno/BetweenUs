@@ -261,3 +261,10 @@ Picks 2026-10-19 (second):
 - Wish 5 → owner wrote "What are you saving up for right now?", already picked for Wish 6 —
   asked which slot it goes to.
 - Culture 12: trend dropped; new subjects shown.
+Picks 2026-10-19 (third):
+- Culture 12 → "What's the best thing you've ever seen live — a concert, a play, a match?"
+- Bench (owner: "they also work"): "Which cover version is better than the original?" and
+  "Which video online have you watched more times than you'd admit?"
+- Wish 5 → "What's the oddest thing on your someday list?" (owner). That card was picked for
+  Wish 8 before. Keeper decision: it moves to Wish 5; Wish 6 keeps "What are you saving up for
+  right now?"; Wish 8 is open again — new options shown.
