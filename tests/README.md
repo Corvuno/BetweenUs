@@ -6,10 +6,18 @@ headless Chromium and asserts on real DOM state: deck load, tap/swipe/skip/
 hold, keyboard arrows, category toggles, the draw-three picker, drawers,
 After Dark, and fullscreen party mode.
 
-## Setup (one-time)
+## Setup
+
+Cloud sessions: nothing to do. `run.mjs` first tries the local `playwright`
+package; if it isn't installed it falls back to the shared copy at
+`/opt/node-tools/node_modules/playwright`, which uses the preinstalled Chromium
+in `/opt/pw-browsers` (`PLAYWRIGHT_BROWSERS_PATH`). Never run
+`playwright install` there.
+
+Local machine (one-time):
 
 ```
-npm install -D playwright && npx playwright install chromium
+cd tests && npm install && npx playwright install chromium
 ```
 
 ## Run

@@ -10,7 +10,18 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+
+// Use the local `playwright` (npm install in tests/) when present; otherwise
+// fall back to the shared install in the cloud sessions (/opt/node-tools).
+const FALLBACK_PW = '/opt/node-tools/node_modules/playwright';
+let chromium;
+try {
+  ({ chromium } = await import('playwright'));
+} catch (e) {
+  if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e;
+  ({ chromium } = createRequire(import.meta.url)(FALLBACK_PW));
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
