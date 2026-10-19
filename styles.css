@@ -86,7 +86,7 @@ body{
    CTA/brand colour, not a mode. */
 .mode-btn[data-mode="open"]{--mc:#6f8fd8;}
 .mode-btn[data-mode="balanced"]{--mc:#4a95b8;}
-.mode-btn[data-mode="newpeople"]{--mc:#c99765;}
+.mode-btn[data-mode="newpeople"]{--mc:#8fd14f;}
 .mode-btn[data-mode="friends"]{--mc:#6bb36e;}
 /* dating/partner nudged more saturated than their Romance/Us:Love twins
    below — a "tad more intense", kept in sync with config.js so the preset
@@ -96,7 +96,7 @@ body{
 .mode-btn[data-mode="latenight"]{--mc:#75609c;}
 .mode-btn[data-mode="solo"]{--mc:#669bbb;}
 .mode-btn[data-mode="work"]{--mc:#4dbebe;}
-.mode-btn[data-mode="family_p"]{--mc:#ba8e58;}
+.mode-btn[data-mode="family_p"]{--mc:#ee7a35;}
 
 /* Grouping without extra chrome. Who's-here just needs breathing room
    before it, not its own line — a bigger gap after Balanced is enough of a
@@ -131,7 +131,7 @@ body{
   transition:color .2s,text-shadow .2s;line-height:1;
 }
 .spice-glyph:hover{color:rgba(240,232,216,.7);}
-.spice-glyph.on{color:#e8a040;text-shadow:0 0 8px rgba(232,160,64,.5);}
+.spice-glyph.on{color:#e8a040;}
 
 /* After Dark — text link, no border */
 .after-dark-btn{
@@ -145,8 +145,7 @@ body{
 .after-dark-btn.on{color:var(--ad-red);border-bottom-color:rgba(193,39,45,.5);text-shadow:0 0 10px rgba(193,39,45,.55);}
 .after-dark-btn.hidden{display:none;}
 
-/* All / None — minimal text links, centered */
-.allnone-row{display:flex;align-items:center;gap:1px;}
+/* None — a minimal text link at the right of the Chapters heading */
 .deselect-btn{
   background:none;border:none;
   color:var(--btn-quiet);
@@ -164,11 +163,6 @@ body{
 /* category grid */
 .cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
 .cat-grid-wrap.open{display:block;}
-.toggles{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;padding:8px 0 4px;}
-/* #bucketGrid holds the JS-generated bucket/category buttons; display:contents
-   keeps it invisible to .toggles' flex layout, so its children wrap as direct
-   flex items. */
-#bucketGrid{display:contents;}
 .toggle-btn{
   flex:0 0 auto;cursor:pointer;
   font-family:'Jost',sans-serif;font-size:.75rem;text-transform:uppercase;
@@ -984,13 +978,6 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 .cat-grid-wrap::-webkit-scrollbar{display:none;width:0;height:0;}
 .grid-fade{position:sticky;bottom:-1px;left:0;right:0;height:34px;margin-top:-34px;pointer-events:none;opacity:0;transition:opacity .25s;background:linear-gradient(to bottom,rgba(14,12,10,0),#0e0c0a 85%);display:block;z-index:2;}
 .cat-grid-wrap.can-scroll .grid-fade{opacity:1;}
-.cat-desc{
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;
-  color:var(--muted);text-align:center;padding:6px 16px 8px;
-  min-height:3.1em;display:flex;align-items:center;justify-content:center;
-  line-height:1.35;transition:color .2s ease;
-}
-.cat-desc.lit{color:var(--gold);}
 
 /* ── SKIP UNDO ── */
 .skip-undo{
@@ -1082,6 +1069,8 @@ body.tok-taught .tok-hint{display:none;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
+/* Custom with 2+ categories: the name is a soft gradient of the first 2-3 picked colours (--tokg, set in renderShell) */
+.tok-multi .tok-val{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
 /* no dropdown caret on this token — the hairlines and underline already say it opens something */
 .tok-preset .tok-val::after{content:none;}
 
@@ -1128,36 +1117,6 @@ body.tok-taught .tok-hint{display:none;}
 #catLabel{display:none;}
 .cat-topbar{flex-shrink:0;justify-content:center;padding:0 0 6px;}
 .cat-topbar--legacy{display:none!important;}   /* logic kept, row no longer shown */
-
-/* the After Dark chapter row carries its own inline spice toggle. Same
-   padding as every other .chapter row (15px 13px, see below) so this one
-   isn't visibly shorter just because it's built from a nested .ch-hit
-   instead of being the button itself. */
-.chapter.chapter--afterdark{display:flex;align-items:stretch;padding:0;gap:0;}
-.chapter.chapter--afterdark .ch-hit{flex:1;display:flex;align-items:center;gap:10px;
-  background:none;border:none;cursor:pointer;text-align:left;padding:15px 8px 15px 13px;color:inherit;font:inherit;}
-.spice-glyph--inline{flex-shrink:0;margin-right:8px;align-self:center;}
-
-/* All/None: one small pair per pane, not a shared floating bar */
-.allnone-row--pane{display:flex;justify-content:center;gap:1px;padding:8px 0 2px;}
-
-/* Explore buckets: select (name) and expand (chevron) are two separate
-   buttons. Padding matches Chapters' own row padding and has no inner divider
-   line, so the two read as the same kind of row. */
-.cbk-select{flex:1;display:flex;align-items:baseline;gap:9px;background:none;border:none;
-  cursor:pointer;text-align:left;padding:15px 4px 15px 13px;color:inherit;font:inherit;}
-.cbk-expand{flex:0 0 auto;min-width:44px;min-height:44px;display:flex;align-items:center;
-  justify-content:center;background:none;border:none;cursor:pointer;padding-right:9px;}
-.cbk-expand:hover{background:rgba(255,255,255,.02);}
-.cbk-expand:hover .cbk-chev{color:var(--gold);}
-.cbk-chev{font-family:'Jost',sans-serif;font-size:.85rem;font-weight:300;color:var(--muted);transition:transform .22s ease,color .2s;}
-.cat-controls{flex-wrap:wrap;justify-content:center;row-gap:10px;gap:20px;}
-.cat-area .cat-desc{flex-shrink:0;}
-/* Explore is a fold inside the Shape sheet's own scroll (.pane-play), so the
-   grid flows as a long list instead of capping its own height with a second,
-   nested scrollbar. */
-.explore-fold .cat-grid-wrap{max-height:none;border-top:1px solid var(--dim);}
-.cat-area .toggles{padding-bottom:max(24px,env(safe-area-inset-bottom));}
 
 /* Not shown on screen — the draw button already reads "Hold to continue"
    at the end of a hand, so this second copy at the bottom of the viewport
@@ -1356,7 +1315,6 @@ body.tok-taught .tok-hint{display:none;}
   .session-btn{font-size:.85rem;padding:15px 18px;}
   .toggle-btn{font-size:.85rem;padding:15px 14px 13px;}
   .preset-host .mode-btn{font-size:.88rem;padding:15px 14px;}
-  .cat-desc{font-size:.95rem;}
   .help-content p{font-size:1.1rem;}
 }
 @media(min-width:1180px){
@@ -1414,40 +1372,7 @@ body.tok-taught .tok-hint{display:none;}
    lets the dials shape it; Explore is the whole cabinet, drawer by drawer.
    The dials weight the draw — steep, but never to zero — they don't filter it. */
 
-/* The fixed-set fold's "whisper" link style: plain text, a glyph, nothing louder. */
-.fixed-seq-toggle{display:flex;align-items:center;gap:5px;
-  background:none;border:none;cursor:pointer;color:var(--btn-quiet);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
-  padding:15px 0;transition:color .2s;}
-.fixed-seq-toggle:hover{color:var(--gold);}
-.fixed-seq-toggle::after{content:'\203A';font-size:.85rem;opacity:.6;
-  display:inline-block;transition:transform .2s;}
-/* height is animated from JS (measured against the real content, not a
-   guessed constant — see slideFold() in ui.js), so opening and closing
-   always travel the same real distance instead of one looking instant */
-.explore-fold{overflow:hidden;max-height:0;}
-/* rows fade up one after another while the list unfolds (--i set in ui.js) */
-@keyframes exploreRowIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-.explore-fold.revealing #bucketGrid > *,.explore-fold.revealing .fixed-seq-toggle{
-  animation:exploreRowIn .45s cubic-bezier(.22,.61,.36,1) backwards;animation-delay:calc(var(--i,0) * 22ms);}
-
-/* Colbert/The 36 — one more row in the same category list, same bucket
-   look, same "+" reveal, instead of a separate whisper-link section
-   living below it. --ch keys it into the same colour system the other
-   buckets use, just neutral (it isn't tied to a category's own hue). */
-.fixed-seq-toggle--bucket{width:100%;display:flex;align-items:center;gap:0;
-  border-bottom:1px solid var(--dim);margin:0;padding:15px 4px;
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(240,232,216,.6);--ch:var(--gold);}
-.fixed-seq-toggle--bucket:hover{background:rgba(255,255,255,.02);color:rgba(240,232,216,.6);}
-.fixed-seq-toggle--bucket::after{content:none;}
-.fixed-seq-toggle--bucket .cbk-name{flex:0 0 auto;}
-.fixed-seq-toggle--bucket .cbk-count{flex:1;font-size:.75rem;letter-spacing:.06em;
-  text-transform:none;color:var(--muted);}
-.fixed-seq-toggle--bucket .cbk-chev{font-size:.85rem;}
-.fixed-seq-toggle--bucket.open .cbk-chev{transform:rotate(45deg);}
-.fixed-seq-toggle--bucket:hover .cbk-chev{color:var(--gold);}
-/* same JS-measured height animation as .explore-fold above. Vertical
+/* height is animated from JS (slideFold). Vertical
    padding has to live on .open only, not the base rule — max-height:0
    can't actually shrink a box below its own padding (padding is a fixed
    length, not something the browser will squeeze), so a bare .padding
@@ -1505,154 +1430,120 @@ body.tok-taught .tok-hint{display:none;}
    lines of .ch-desc at its current font-size/line-height plus the row's
    own 15px top/bottom padding; align-items:center (not baseline) so a
    one-line row centers inside that height instead of sitting at the top. */
-.chapter{--ch:var(--gold);
-  display:flex;align-items:center;gap:10px;width:100%;min-height:65px;text-align:left;cursor:pointer;
+.chapter{--ch:var(--gold);position:relative;
+  display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
-  padding:15px 13px;transition:background .2s,border-color .2s;}
-/* the left rail: a vertical metal sweep (same gilt.js gradient as the card
-   accent, at 190deg instead of 100deg), painted only once a chapter is fully
-   on — .part gets a flat, muted line and .off (the base rule above) the same
-   plain --dim edge as the rest of the box. The gradient is written by JS into
-   --ch-rail from each chapter's data-base hex — see ui.js. */
+  transition:background .2s,border-color .2s;}
+/* the left rail: one continuous line down the whole row. A vertical metal sweep
+   (same gilt.js gradient as the card accent, at 190deg instead of 100deg) once a
+   chapter is fully on; a partly-on chapter keeps a line of its colour, paler,
+   along the same full length. --ch-rail is written by JS from each chapter's
+   colour — see ui.js. */
 .chapter{border-image-slice:1;border-image-width:0 0 0 3px;border-image-repeat:stretch;border-image-source:none;}
 .chapter:hover{border-color:var(--border);}
+/* the row is one tap target for the whole chapter: the name button stretches over
+   it (::after), and the fold target and spice mark sit above that. */
+.ch-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 8px 8px 13px;}
+.ch-title{display:flex;align-items:center;gap:2px;}
+.ch-hit{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left;}
+.ch-hit::after{content:'';position:absolute;inset:0;}
+.spice-glyph--inline{position:relative;z-index:1;flex-shrink:0;align-self:center;padding:8px 8px;}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
   text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
-.chapter .ch-desc{flex:1;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
+.chapter .ch-desc{font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
-/* one signal, not two: no background wash here — carrying both a faint
-   tint and a muted line made "part" read muddier than plain "off",
-   instead of clearly between it and "on". The line alone does the job. */
-.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);}
+/* fold target: count over a chevron, set off by a hairline */
+.ch-fold{position:relative;z-index:1;width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:7px;background:none;border:none;cursor:pointer;color:var(--celadon);}
+.ch-fold::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:1px;background:var(--border);}
+.ch-ct{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--muted-l);}
+.chapter.part .ch-ct{color:var(--cream);}
+.ch-chev{display:block;transition:transform .22s ease;}
+.ch-fold.open .ch-chev{transform:rotate(180deg);}
+.chapter-group.open .chapter{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
+/* partly on: the same line, paler, the whole length; a paler tint on the row */
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);
+  background:color-mix(in srgb, var(--ch) 4.5%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
-/* a per-chapter tint (color-mix off --ch), kept at 9% since a whole list of
-   these on-screen at once reads louder than a single button. */
 .chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);border-image-source:var(--ch-rail);}
-.chapter.on .ch-name{color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 40%, transparent);}
+.chapter.on .ch-name{color:var(--ch);}
+.chapter-group{display:block;}
+.chapter-group.ch-hidden{display:none;}
+/* the unfolded panel: categories, each its own tap target */
+.chapter-group{--ch:var(--gold);}
+.chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0 6px 0 8px;
+  border:1px solid var(--dim);border-top:none;border-radius:0 0 2px 2px;border-width:0 1px 0 3px;
+  border-left-color:color-mix(in srgb, var(--ch) 40%, transparent);
+  background:color-mix(in srgb, var(--ch) 3%, transparent);}
+.chapter-panel.open{padding:2px 6px 6px 8px;border-width:0 1px 1px 3px;}
+.chapter-panel .toggle-btn{display:flex;align-items:center;gap:7px;min-height:44px;padding:0 9px;
+  color:rgba(240,232,216,.64)!important;border-bottom:none;opacity:1;text-shadow:none;}
+.chapter-panel .toggle-btn .cat-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--c);flex-shrink:0;}
+.chapter-panel .toggle-btn.on{color:var(--cream)!important;border-bottom:none;}
+.chapter-panel .toggle-btn.on .cat-dot{background:var(--c);}
+.chapter-panel .toggle-btn.on .cat-name{box-shadow:0 1px 0 0 var(--c);padding-bottom:3px;margin-bottom:-3px;}
+.chapter-panel .toggle-btn.hard-locked{pointer-events:auto;cursor:pointer;opacity:.75;}
+.chapter-panel .toggle-btn.suggested{border-bottom:none;opacity:1;}
+/* Fixed Sets: the whole row is the fold */
+.ch-fold--row{width:100%;min-height:49px;flex-direction:row;gap:12px;padding:0 0 0 13px;
+  border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;color:var(--celadon);}
+.ch-fold--row::before{display:none;}
+.ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
+.ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
+.chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
+.ch-fold--row .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(240,232,216,.68);white-space:nowrap;}
+.ch-fold--row .ch-desc{flex:1;text-align:left;font-size:.8rem;color:var(--muted-l);}
+.chapter-group--fixed{--ch:var(--cream);}
+.chapter-group--fixed .chapter-panel.fixed-seq-options{display:flex;border-width:0 1px 1px 3px;border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
+.chapter-group--fixed .chapter-panel.fixed-seq-options:not(.open){border-width:0;}
+.chapter-group--fixed .chapter-panel.fixed-seq-options.open{padding:2px 6px 6px 8px;}
+/* Colbert / The 36: picked like categories, no box. Cream word, list colour on the mark and underline when on. */
+.chapter-panel .fixed-seq-btn{display:flex;width:auto;margin:0;justify-content:flex-start;border:none;border-radius:0;
+  min-height:44px;padding:0 9px;font-size:.8rem;letter-spacing:.08em;color:rgba(240,232,216,.64);}
+.chapter-panel .fixed-seq-btn::before{color:var(--list-col);opacity:.9;margin-right:7px;}
+.chapter-panel .fixed-seq-btn:hover{color:var(--cream);}
+.chapter-panel .fixed-seq-btn.active{color:var(--cream);}
+.chapter-panel .fixed-seq-btn::after{display:block;content:'';position:absolute;left:9px;right:9px;bottom:10px;height:1px;background:var(--list-col);opacity:0;}
+.chapter-panel .fixed-seq-btn.active::after{opacity:1;}
+.cat-grid-wrap.chapter-wrap{max-height:none;border-top:none;overflow:visible;padding:0 0 6px;}
 .chapter.ch-hidden{display:none;}
-
-/* ── the console: icon-led on purpose, so it never reads as a fourth list
-   of chapter-style choices — this is mechanics, not content. ── */
-/* No bounding card: Tune reads as its own section the same way Chapters/Round
-   do (a .sect-lbl heading). */
-.console{margin-top:20px;}
 
 /* section headings shared by Start from / Chapters / Tune / Round — one
    small-caps label style used everywhere instead of each section
    inventing its own header treatment. */
 .sect-lbl{display:flex;align-items:center;justify-content:space-between;position:relative;
   color:rgba(240,232,216,.45);margin:0 0 12px;}
-.play-sect--2 .sect-lbl:first-child{margin-bottom:18px;}
 /* Chapters/Tune headers drop to the warm muted tone used across the card
    set, rather than the neutral grey every other .sect-lbl (Start from,
    Round) still uses. */
-#chaptersLbl,#tuneLbl{color:#7a6e60;}
-/* the inline "Explore categories" link next to the Chapters label — same
-   whisper-link weight the fixed-set fold already uses, not a button. Its
-   own warm gold (rather than the header's muted tone) marks it as the one
-   live link on an otherwise static row. */
-.link-plain{background:none;border:none;cursor:pointer;color:var(--btn-quiet);
-  padding:15px 0;transition:color .2s;}
-.link-plain:hover,.link-plain.open{color:var(--gold-l);}
-.link-plain::after{content:'\203A';margin-left:4px;display:inline-block;transition:transform .2s;}
-.link-plain.open::after{transform:rotate(90deg);}
-
-/* "what am I looking at" — a small info affordance, not baked-in explainer
-   text taking up permanent room */
-.info-btn{background:none;border:none;cursor:pointer;padding:16px;color:var(--btn-quiet);
-  display:inline-flex;align-items:center;}
-.info-btn svg{width:12px;height:12px;}
-.info-btn:hover,.info-btn.open{color:var(--gold-l);}
-.tooltip{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:250px;
-  max-width:calc(100vw - 40px);background:#1d1915;border:1px solid var(--border);border-radius:8px;
-  padding:11px 13px;font-family:'Cormorant Garamond',serif;font-size:.82rem;line-height:1.45;
-  color:rgba(240,232,216,.8);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:5;
-  display:none;pointer-events:none;}
-.tooltip.open{display:block;}
-.tooltip::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(45deg);
-  width:9px;height:9px;background:#1d1915;border-left:1px solid var(--border);border-top:1px solid var(--border);}
-
-.ctrl-row{display:flex;align-items:flex-start;gap:12px;position:relative;}
-.ctrl-row+.ctrl-row{margin-top:26px;}
-.ctrl-icon{width:26px;height:26px;border-radius:50%;background:rgba(240,232,216,.05);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.ctrl-icon svg{width:13px;height:13px;color:var(--ic,var(--gold));}
-.ctrl-body{flex:1;min-width:0;}
-.ctrl-top{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.09em;
-  text-transform:uppercase;color:rgba(240,232,216,.7);padding-bottom:14px;}
-.ctrl-ends{display:flex;justify-content:space-between;font-family:'Jost',sans-serif;font-size:.75rem;
-  letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-top:9px;}
-/* the track's own tick marks + centre-out colour fill carry the reading;
-   Easy/Intense and Me/Us already say which way is which, so no value word. */
-.track-wrap{position:relative;height:16px;}
-.tick{position:absolute;top:50%;width:1px;height:6px;background:rgba(240,232,216,.22);
-  transform:translate(-50%,-50%);pointer-events:none;}
-/* the two end ticks read as the track's hard stop, not just another
-   position marker — taller and heavier than the three in between */
-.tick.end{width:1.5px;height:11px;background:rgba(240,232,216,.4);}
-.track-fill{position:absolute;top:50%;height:1px;background:var(--ic);
-  transform:translateY(-50%);pointer-events:none;}
-
-.console-divider{border-top:1px solid var(--dim);margin:22px 0 18px;}
-
-/* Shuffle and Cards, side by side, under the shared "Round" heading. Bottom
-   margin gives it breathing room before Draw Cards, like every other section break. */
-.seg-row{display:flex;gap:14px;margin-bottom:22px;}
-.seg{flex:1;min-width:0;}
-.seg-head{padding-bottom:8px;text-align:center;}
-.seg-head span{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--muted);}
-/* one quiet rail for both — same border, same button size, same soft flat
-   fill on whichever option is active, so the two rails read as a matched pair. */
+#chaptersLbl{color:#7a6e60;}
+/* Shuffle and Cards: ONE line, no boxes, no rails. A quiet word, then the choices; the
+   picked choice is celadon with a 1px celadon underline. Each choice is 48px tall. */
+.seg-row{display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:nowrap;margin:6px 0 22px;}
+.seg{display:flex;align-items:center;flex:none;min-width:0;}
+.seg-head{padding:0 2px 0 0;text-align:left;}
+.seg-head span{font-family:'Federo',sans-serif;font-size:.9rem;letter-spacing:.02em;text-transform:none;
+  color:rgba(240,232,216,.62);}
 .seg .shuffle-toggle,
-.limit-row--drawer{margin:0;max-width:none;padding:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;gap:0;}
+.limit-row--drawer{display:flex;margin:0;width:auto;max-width:none;padding:0;border:none;border-radius:0;overflow:visible;gap:0;}
 .seg .shuffle-toggle-opt,
-.limit-row--drawer .limit-btn{flex:1;border:none;border-radius:0;padding:15px 0;
-  font-size:.75rem;letter-spacing:.04em;color:rgba(240,232,216,.5);opacity:1;}
+.limit-row--drawer .limit-btn{position:relative;flex:none;min-height:48px;border:none;border-radius:0;padding:0 6px;background:none;
+  font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:rgba(240,232,216,.5);opacity:1;text-shadow:none;}
 .seg .shuffle-toggle-opt.active,
-.limit-row--drawer .limit-btn.active{background:rgba(240,232,216,.06);color:var(--celadon);opacity:1;}
-
-.dial-range{-webkit-appearance:none;appearance:none;width:100%;height:16px;background:none;cursor:pointer;position:relative;z-index:1;}
-.dial-range::-webkit-slider-runnable-track{height:1px;background:rgba(240,232,216,.16);}
-.dial-range::-moz-range-track{height:1px;background:rgba(240,232,216,.16);}
-.dial-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
-  width:12px;height:12px;border-radius:50%;margin-top:-5.5px;border:none;background:var(--gold);}
-.dial-range::-moz-range-thumb{width:12px;height:12px;border-radius:50%;border:none;background:var(--gold);}
-/* Depth's icon, its track fill, and its thumb all share Into the Deep's
-   purple; Focus matches Focus's teal — one colour per control, no glow. */
-.dial-range--int::-webkit-slider-thumb{background:#8f74b8;}
-.dial-range--int::-moz-range-thumb{background:#8f74b8;}
-.dial-range--foc::-webkit-slider-thumb{background:#65c9b0;}
-.dial-range--foc::-moz-range-thumb{background:#65c9b0;}
-
-/* Explore: buckets borrow Chapters' own row language (bordered, the
-   bucket's own colour always on its name) instead of a separate visual
-   style — one "how a group of things reads" rule for the whole sheet. */
-.cat-bucket{display:flex;align-items:stretch;gap:0;flex:0 0 100%;width:100%;
-  border:1px solid var(--dim);border-left:2px solid var(--ch);border-radius:2px;
-  margin-bottom:4px;transition:background .2s;--ch:var(--gold);}
-.cat-bucket:hover{background:rgba(255,255,255,.02);}
-.cbk-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--ch);text-shadow:0 0 10px color-mix(in srgb, var(--ch) 30%, transparent);
-  transition:color .2s;white-space:nowrap;}
-.cat-bucket.part .cbk-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));text-shadow:none;}
-.cbk-count{flex:1;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.06em;
-  color:var(--muted-l);}
-.cat-bucket:hover .cbk-chev{color:var(--gold);}
-.cat-bucket.open .cbk-chev{transform:rotate(45deg);}   /* + becomes \u00d7 */
-.toggle-btn.chip-folded{display:none;}
-.cat-bucket.bkt-hidden{display:none;}
-.cat-bucket.open{border-bottom-color:transparent;}
+.limit-row--drawer .limit-btn.active{background:none;color:var(--celadon);opacity:1;text-shadow:none;}
+.seg .shuffle-toggle-opt.active::after,
+.limit-row--drawer .limit-btn.active::after{content:'';position:absolute;left:6px;right:6px;bottom:11px;height:1px;background:var(--celadon);}
 
 /* ── Sentence case for the words people read ──
    Names of things (BALANCED, the chapter names, a card's category) stay in
    spaced capitals; hints, section headings, link text and the Three / Full
    screen / Twist row are written normally. */
 .tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
-.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
+.sect-lbl,.sect-lbl span,.cat-sheet-head-title{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
 .pick-toggle,.btn-fullscreen{text-transform:none;letter-spacing:.03em;font-size:.95rem;}
 @media(min-width:1024px){
-  .pick-toggle,.btn-fullscreen,.sect-lbl,.sect-lbl span,.link-plain{font-size:1rem;}
+  .pick-toggle,.btn-fullscreen,.sect-lbl,.sect-lbl span{font-size:1rem;}
   .cat-sheet-head-title{font-size:1rem;}
 }
 
@@ -1668,12 +1559,12 @@ body.tok-taught .tok-hint{display:none;}
    as Jost (0.46), so labels keep their size; caps names stay Jost. */
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
   font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
-.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.link-plain,.pick-toggle,.btn-fullscreen,
+.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.pick-toggle,.btn-fullscreen,
 .d-sub,#menuDrawer .d-sub,.chapter .ch-desc,.drawer-empty{
   font-family:'Federo','Jost',sans-serif;}
 
 /* ── Logo ornament: centre diamond copper, inner line pairs take the preset ── */
-.tr-svg path:nth-of-type(4){stroke:var(--preset);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
+.tr-svg path:nth-of-type(4){stroke:url(#trP);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
 .tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
 
 /* ── The play-style row: Three · Spotlight · Twist (also the end-of-hand row Change · Save, #handActionsRow) ──

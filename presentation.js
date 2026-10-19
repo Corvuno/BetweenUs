@@ -208,10 +208,6 @@ function updateTimeOfDayHeading() {
   // it's the sheet's title, not a lead-in line above the chapters any more.
   const heading = document.getElementById('playLeadFirst');
   if (heading) heading.textContent = 'What kind of ' + word + '?';
-  // Static now, not time-of-day framed — it's a plain inline link next to
-  // the Chapters label, not a headline, so it doesn't need the word.
-  const customizeBtn = document.getElementById('customizeBtn');
-  if (customizeBtn) customizeBtn.textContent = 'Explore categories';
 }
 
 // ── Category label toggle ──
@@ -375,6 +371,65 @@ function presetDeep(hex) {
   const L2 = L > 0.45 ? Math.max(0.45, L - 0.07) : L;
   return 'hsl(' + H.toFixed(1) + ',' + (S * 100).toFixed(1) + '%,' + (L2 * 100).toFixed(1) + '%)';
 }
+// ── CUSTOM: the picked categories' colours ───────────────────────────────────
+// The selected, playable categories in CATEGORIES order (config.js), same filter
+// getFilteredCards() applies: switched on, in the deck, and not safe-blocked while
+// safe mode is on.
+function customPicks() {
+  const safe = state.safeMode || MASTER_SAFE || WORKPLACE_MODE;
+  return Object.keys(CATEGORIES).filter(k => state.activeToggles.has(k) && DECK_LEVELS.has(k) &&
+    !(safe && SAFE_BLOCKED_LEVELS.includes(k)) && CATEGORIES[k].color).map(k => CATEGORIES[k].color);
+}
+// Which 2-3 picks are shown (logo line pairs, name gradient, --preset): the pick
+// furthest (Lab distance) from gold #c9a84c first, then each next the one furthest
+// from everything chosen so far, so a warm-heavy selection never reads gold.
+// Returned in CATEGORIES order. With 3 or fewer picks all are shown.
+function shownPicks(picks) {
+  if (picks.length <= 3) return picks.slice();
+  const lab = hex => {
+    const h = hex.replace('#', ''), c = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255)
+      .map(v => v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    const x = (0.4124 * c[0] + 0.3576 * c[1] + 0.1805 * c[2]) / 0.95047, y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2], z = (0.0193 * c[0] + 0.1192 * c[1] + 0.9505 * c[2]) / 1.08883;
+    const f = t => t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116;
+    return [116 * f(y) - 16, 500 * (f(x) - f(y)), 200 * (f(y) - f(z))];
+  };
+  const d = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const L = picks.map(lab), chosen = [], gold = lab('#c9a84c');
+  const far = ref => { let best = -1, bi = -1; L.forEach((l, i) => { if (chosen.includes(i)) return; const m = Math.min(...ref.map(r => d(l, r))); if (m > best) { best = m; bi = i; } }); return bi; };
+  chosen.push(far([gold]));
+  while (chosen.length < 3) chosen.push(far(chosen.map(i => L[i])));
+  return chosen.sort((a, b) => a - b).map(i => picks[i]);
+}
+// The start card's diamond (and the rule under it, which share --preset-deep on
+// #card) takes the next picked colour at the faint point of each breath, so the
+// switch is never seen. One Web Animation locked to the diamond's own breath
+// (imBreathe: faint 1.6s into each 3.2s cycle, breath starting after its 2.4s
+// delay, so 4.0s in, then every 3.2s). It exists only while that breath runs:
+// the card face showing, the deck sheet closing, or reduced motion all cancel it.
+// No timer is involved.
+let _startCols = [];
+let _startCycle = null;   // { src: the breath CSSAnimation, key, anim }
+function stopStartCycle() { if (_startCycle) { try { _startCycle.anim.cancel(); } catch (e) {} _startCycle = null; } }
+function syncStartCycle() {
+  const card = document.getElementById('card');
+  const dm = card && card.querySelector('.cb-mark:not(.cb-fermata) .lg-dm');
+  const src = dm && card.classList.contains('is-start') && !card.classList.contains('is-intermezzo') && dm.getAnimations
+    ? dm.getAnimations().find(a => a.animationName === 'imBreathe') : null;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const key = _startCols.join();
+  if (!src || reduce || _startCols.length < 2) { stopStartCycle(); return; }
+  if (_startCycle && _startCycle.src === src && _startCycle.key === key) return;
+  stopStartCycle();
+  const n = _startCols.length;
+  const frames = _startCols.map((c, i) => ({ '--preset-deep': presetDeep(c) || c, offset: i / n, easing: 'step-end' }));
+  frames.push({ '--preset-deep': presetDeep(_startCols[0]) || _startCols[0], offset: 1 });
+  const anim = card.animate(frames, { duration: 3200 * n, delay: 800, iterations: Infinity, fill: 'backwards' });
+  anim.startTime = src.startTime;
+  _startCycle = { src, key, anim };
+}
+document.addEventListener('animationstart', e => { if (e.target.classList && e.target.classList.contains('lg-dm')) syncStartCycle(); });
+document.addEventListener('animationcancel', e => { if (e.target.classList && e.target.classList.contains('lg-dm')) syncStartCycle(); });
+
 function renderShell() {
   // Entry token -> the active preset's own name and colour, read straight
   // off its .mode-btn (data-mode=state.activePreset) in the preset row —
@@ -397,17 +452,36 @@ function renderShell() {
     const cs = presetBtn && getComputedStyle(presetBtn);
     const col = cs && (cs.getPropertyValue('--mc').trim() || cs.getPropertyValue('--list-col').trim());
     vCats.textContent = label;
-    // "Custom" (no preset button matched) is copper everywhere the preset
-    // colour is used; --preset on :root feeds the logo and the start card.
-    const useCol = col || (!presetBtn && label === 'Custom' ? '#C67B28' : '');
+    // "Custom" (no preset button matched) wears the colours of the categories
+    // picked, in CATEGORIES order (see customPicks). One category: that colour
+    // everywhere, still. Two or more: the top logo's inner line pairs split
+    // left/right between the first two (--preset-a/-b); the preset name is a
+    // left-to-right gradient of the first two or three (never more), --preset the first pick; the
+    // start card's diamond and rule step through ALL of them (startCycle).
+    const isCustom = !presetBtn && label === 'Custom';
+    const picks = isCustom ? customPicks() : [];
+    const shown = shownPicks(picks);
+    const useCol = col || shown[0] || picks[0] || '';
+    const root = document.documentElement;
+    if (picks.length > 1) { root.style.setProperty('--preset-a', shown[0]); root.style.setProperty('--preset-b', shown[1]); }
+    else { root.style.removeProperty('--preset-a'); root.style.removeProperty('--preset-b'); }
+    // the diamond cycles through ALL picks, starting at the first shown colour
+    { const at = picks.indexOf(shown[0]); _startCols = picks.length > 1 ? picks.slice(at).concat(picks.slice(0, at)) : []; }
+    if (tokCats) {
+      tokCats.classList.toggle('tok-multi', picks.length > 1);
+      picks.length > 1 ? tokCats.style.setProperty('--tokg', 'linear-gradient(90deg,' + shown.join(',') + ')') : tokCats.style.removeProperty('--tokg');
+    }
     if (tokCats) useCol ? tokCats.style.setProperty('--tokc', useCol) : tokCats.style.removeProperty('--tokc');
-    useCol ? document.documentElement.style.setProperty('--preset', useCol) : document.documentElement.style.removeProperty('--preset');
+    useCol ? root.style.setProperty('--preset', useCol) : root.style.removeProperty('--preset');
+    // (--preset and --tokc are the first pick; the name itself is a gradient of the first 2-3, .tok-multi.)
     // --preset-deep: the same colour a shade deeper, for filled areas (the start
     // card's diamond and rule), which read paler than thin letters. Same hue and
     // saturation, lightness down 7 points, never below 45%; colours already at or
     // below 45% stay as they are. Non-hex values just fall back to --preset.
+    // With several picks the still colour is the first pick's.
     const deep = useCol && presetDeep(useCol);
     deep ? document.documentElement.style.setProperty('--preset-deep', deep) : document.documentElement.style.removeProperty('--preset-deep');
+    syncStartCycle();
   }
   // Shuffle toggle (Arc/Wild), inside the "Fine-tune the hand" fold now
   // that the main-screen Shuffle token is gone.
@@ -494,7 +568,7 @@ function updateDrawMore() {
 //
 // Hooks (for styling): body.showing-hand-summary (any end-of-hand side),
 // body.hand-side-list (list side up), --im-color on <body> (last drawn card's
-// chapter colour, lifted for legibility), #card.is-start.is-intermezzo (the
+// category colour, lifted for legibility), #card.is-start.is-intermezzo (the
 // back as Intermezzo), #card.is-hand-list (list side), #card.flipping while the
 // swap is in progress, #partyOverlay.is-hand-end/.is-intermezzo/.is-hand-list.
 
@@ -503,14 +577,39 @@ let handSideToken = 0;   // a swap still waiting on its timer drops out if the h
 // then appears finished and breathing, without drawing itself in once more.
 let handStill = false;
 
-// The last drawn card's chapter: raw chapter colour (rail) and the lifted one
-// (diamond, rule, button) — labelColor lifts After Dark's near-black lacquer.
+// ── TEST SWITCH: pause colour (temporary — remove this block, its menu row #d-pausecolour in
+// between-us.html, and the mode check in handEndColors() once the owner has decided) ──
+// 'last' = the pause takes the last drawn card's category colour (default); 'chapter' = that
+// card's chapter colour (the old behaviour). Stored per device.
+const PAUSE_COLOUR_KEY = 'bu-pause-colour';
+let pauseColourMode = 'last';
+try { if (localStorage.getItem(PAUSE_COLOUR_KEY) === 'chapter') pauseColourMode = 'chapter'; } catch (e) {}
+(function () {
+  const row = document.getElementById('d-pausecolour');
+  if (!row) return;
+  const sub = row.querySelector('.d-sub');
+  const showMode = () => { if (sub) sub.textContent = pauseColourMode === 'chapter' ? 'Chapter' : 'Last card'; };
+  showMode();
+  row.addEventListener('click', () => {
+    pauseColourMode = pauseColourMode === 'chapter' ? 'last' : 'chapter';
+    try { localStorage.setItem(PAUSE_COLOUR_KEY, pauseColourMode); } catch (e) {}
+    showMode();
+    if (state.handSide) paintHandSide();   // pause showing: repaint its colour now
+  });
+})();
+// ── end of test switch ──
+
+// The colour of the pause: raw (rail) and the lifted one (diamond, rule, button) — labelColor
+// lifts After Dark's near-black lacquer. Takes the last drawn card's category colour, or (test
+// switch on "Chapter") that card's chapter colour.
 function handEndColors() {
   const last = state.visibleDeck[state.visibleDeck.length - 1];
   const cat = last && CATEGORIES[last.level];
-  const ch = cat && CHAPTERS_META[cat.chapter];
-  if (!ch) return { raw: null, label: null };
-  return { raw: ch.color, label: labelColor(ch.color) };
+  const base = pauseColourMode === 'chapter'
+    ? (cat && CHAPTERS_META[cat.chapter] && CHAPTERS_META[cat.chapter].color)
+    : (cat && levelColor(last.level));
+  if (!base) return { raw: null, label: null };
+  return { raw: base, label: labelColor(base) };
 }
 
 const HAND_STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.6l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" stroke-width="1.5" stroke-linejoin="round"/></svg>';

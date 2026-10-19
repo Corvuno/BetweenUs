@@ -91,18 +91,25 @@ chapter row (was `#6e1719`) needed to move onto them.
 
 ### Frame colours — copper, celadon, preset (added 2026-10-13)
 ```
---copper:        #C67B28   /* the deck's own frame: logo centre diamond and "Custom" only */
+--copper:        #C67B28   /* the deck's own frame: the logo's centre diamond only (no longer Custom) */
 --celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
   /* also marks the chosen option in a choice row: Shuffle (Arc/Random) and Cards (5/10/20/All) in the categories sheet */
 --celadon-hint:  #5b6b63   /* the hint lines under that row; also the sub-lines in the main menu (its labels are celadon, icons stay gold) */
---preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name */
+--preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name. Strangers #8fd14f, Family #ee7a35 (--mc in styles.css) */
+--preset-a/-b:  (set from renderShell, Custom with 2+ categories only) /* first and second picked category colour: the logo's inner line pairs split left/right (gradient #trP) */
 --preset-deep:   (set from renderShell) /* the preset a shade deeper (same hue/saturation, lightness -7 points, floor 45%, already-darker colours unchanged): for filled areas, i.e. the start-card diamond and its rule, which read paler than thin letters */
 ```
 One job each. Gold stays "draw" (Next Card, borders at the three tiers; back/menu
 frames rest at rgba(201,168,76,.2) and turn gold with their symbol on hover, press and
-keyboard focus). Copper is the deck's own frame (logo centre, Custom). The preset colour says
-which edition is selected and falls back to `--gold`; "Custom" (no preset button
-matched) uses copper everywhere the preset colour is used. Celadon is the colour
+keyboard focus). Copper is only the logo's centre diamond. The preset colour says
+which edition is selected and falls back to `--gold`. "Custom" (no preset button
+matched) wears the colours of the selected, playable categories in CATEGORIES order
+(`customPicks` in presentation.js): one category = that colour everywhere, still; two or
+more = up to 3 "shown" colours are chosen (`shownPicks`: the pick furthest in Lab from gold first, then each furthest from those chosen, kept in CATEGORIES order, so many warm picks never read gold); the logo line pairs split between the first two of them, the preset name a soft left-to-right gradient of the shown colours (never more than three, `.tok-multi`/`--tokg`; clipped text), `--preset` and `--tokc` the first shown colour (never an average), and the start card's diamond and rule (`--preset-deep`
+on #card) step through ALL picks starting at the first shown colour, switching at the faint point of each breath (one Web
+Animation locked to the diamond's breath, no timers; cancelled when the start card leaves;
+reduced motion = first colour, still). The top logo never animates. Reason: Custom is the
+one the player made, so it shows. Celadon is the colour
 of everything tappable besides Draw; back and menu are celadon at rest and gold
 while touched (the hover rule is scoped to `@media (hover:hover)` so it never sticks on touch).
 
@@ -281,3 +288,37 @@ one, not a blind sed across the file.
 - `config.js` — category/chapter colour tables (untouched) and the two
   After Dark reds that now point at the shared tokens' values
 - `between-us.html` — the one remaining inline style (`#dLangIcon`)
+
+## The evening chooser (added 2026-10-18)
+The sheet "What kind of evening?": Start from (ten presets, as before), a Chapters heading with
+None, six chapter rows that unfold in place, Fixed Sets as the last row, Shuffle and Cards on one
+line, Draw Cards fixed. Chapter and category colours stay content colour, set from `config.js`.
+
+- **Chapter row** (`.chapter`, 65px): one continuous left line (3px) down the whole row, as in
+  the app before. Off: `--dim` line, no tint. Fully on: the gilt sweep (`--ch-rail`), row tint
+  `--ch` 9%, name in the chapter colour. Partly on (`.part`): the same line the whole length in
+  the chapter colour mixed 45% into `--dim` (paler), row tint 4.5%, name `--ch` 70% into `--muted`.
+  Names carry **no glow** (the old text-shadow on a fully-on chapter name was removed, hard rule).
+  The row is one tap target (name button stretched over it) that switches the chapter.
+- **Fold target** (`.ch-fold`, right of the row, 60px wide): the count "n / total" in `--muted-l`
+  (`--cream` when partly on) over a celadon chevron, 7px apart, set off from the row by a 1px
+  `--border` hairline inset 14px top and bottom. No box, no outline. The chevron turns over when
+  open. Reason: the count says the state, the chevron says "opens", the hairline separates the
+  fold from the switch without a container.
+- **Panel** (`.chapter-panel`, the unfolded categories): left line 3px in the chapter colour at 40%
+  (`--ch` is set on `.chapter-group` by `ui.js` for this), `--dim` on the other sides, tint `--ch`
+  3%. Each category is a 44px tap target.
+- **Category chip marks**: the word is always cream (`rgba(240,232,216,.64)` unpicked, `--cream`
+  picked) so every colour stays readable. The category colour is carried by the dot and the
+  underline only: picked = filled 7px dot plus a 1px underline in the exact colour; unpicked =
+  hollow 1.5px ring. A locked After Dark category stays at .75 opacity so it is still readable.
+- **Fixed Sets** (`.ch-fold--row`, 49px): the whole row is the fold. Name in `.68` cream, hint in
+  `--muted-l`, a 1px `--border` hairline (inset 10px) and a celadon chevron in a 60px cell on the
+  right. Inside, Colbert and The 36 are picked like categories (no box): a list glyph in the set's
+  colour, cream word, underline in the set's colour when picked.
+- **None** (`#deselectAll`, at the Chapters heading, right): quiet text button (`--btn-quiet`,
+  .75rem, caps). There is no All here.
+- **Shuffle and Cards** (`.seg-row`): one line, no boxes or rails, no headings. A quiet Federo word
+  (.9rem, cream .62), then the choices in .78rem caps (cream .5); the picked one is celadon with a
+  1px celadon underline. Each choice is 48px tall. The spice mark's "on" state is colour only
+  (no glow).

@@ -240,12 +240,6 @@ async function run() {
       el.addEventListener('transitionend', done);
       setTimeout(done, 500);
     }));
-    // the sheet defaults to Shape — the category buckets live behind the
-    // Customize button, which unfolds Explore's grid in place
-    if (!(await page.locator('#exploreFold').evaluate(el => el.classList.contains('open')))) {
-      await page.locator('#customizeBtn').click();
-      await page.waitForTimeout(200);
-    }
   }
   async function closeCategorySheet() {
     const catArea = page.locator('#cat-area');
@@ -270,15 +264,19 @@ async function run() {
   // so the bare identifier resolves fine.
   async function activeToggleCount() { return page.evaluate(() => state.activeToggles.size); }
 
-  await check('toggling a category bucket changes the active set and reshuffles the deck', async () => {
+  await check('tapping a chapter row switches its categories on or off and reshuffles the deck; the fold target only opens it', async () => {
     try {
       await openCategorySheet();
-      // Categories are now grouped into buckets (Ease In, Everyday, …) under
-      // the Explore tab; each bucket's cbk-select toggles the whole bucket.
-      const bucket = page.locator('.cat-bucket[data-bucket="everyday"]');
-      assert(await bucket.count() > 0, 'expected an "everyday" bucket');
+      // Each chapter row switches the whole chapter; its right-hand count + chevron
+      // unfolds the chapter's categories in place without touching the selection.
+      const row = page.locator('.chapter[data-chapter="surface"]');
+      assert(await row.count() > 0, 'expected a "surface" chapter row');
       const before = await activeToggleCount();
-      await bucket.locator('.cbk-select').click();
+      await row.locator('.ch-fold').click();
+      await page.waitForTimeout(450);
+      assert((await activeToggleCount()) === before, 'unfolding a chapter changed the selection');
+      assert(await page.locator('.chapter-panel[data-chapter="surface"] .toggle-btn').count() > 0, 'unfolded chapter shows no categories');
+      await row.locator('.ch-hit').click({ force: true });
       await page.waitForTimeout(300);
       const after = await activeToggleCount();
       assert(after !== before, `active category count did not change (${before})`);
@@ -287,9 +285,37 @@ async function run() {
       const { index: resetIndex } = await cardParts(page);
       assert(resetIndex === 0, `deck did not reset to the draw-to-begin placeholder, currentIndex+1 was ${resetIndex}`);
       // restore for later tests
-      await bucket.locator('.cbk-select').click();
+      await row.locator('.ch-hit').click({ force: true });
       await page.waitForTimeout(300);
       assert((await activeToggleCount()) === before, 'active category count did not restore');
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
+  await check('a single category in an unfolded chapter toggles on its own, the chapter count follows, and None clears everything', async () => {
+    try {
+      await openCategorySheet();
+      const row = page.locator('.chapter[data-chapter="surface"]');
+      // folds keep their state between visits to the sheet — open it only if it is shut
+      if (!(await row.locator('.ch-fold').evaluate(el => el.classList.contains('open')))) {
+        await row.locator('.ch-fold').click();
+        await page.waitForTimeout(450);
+      }
+      const cat = page.locator('.chapter-panel[data-chapter="surface"] .toggle-btn:visible').first();
+      const was = await cat.evaluate(el => el.classList.contains('on'));
+      const ctBefore = await row.locator('.ch-ct').textContent();
+      await cat.click();
+      await page.waitForTimeout(300);
+      assert((await cat.evaluate(el => el.classList.contains('on'))) !== was, 'category did not toggle');
+      assert((await row.locator('.ch-ct').textContent()) !== ctBefore, 'chapter count did not follow the category');
+      await cat.click(); await page.waitForTimeout(300);
+      assert((await row.locator('.ch-ct').textContent()) === ctBefore, 'chapter count did not restore');
+      const keep = await page.evaluate(() => ({ t: [...state.activeToggles], p: state.activePreset }));
+      await page.locator('#deselectAll').click();
+      await page.waitForTimeout(300);
+      assert((await activeToggleCount()) === 0, 'None did not clear every category');
+      await page.evaluate(k => { applyPreset(k.p); state.activeToggles = new Set(k.t); document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === k.p)); applyToggleUI(); initDeck(); }, keep);
     } finally {
       await closeCategorySheet();
     }
@@ -339,8 +365,8 @@ async function run() {
   // #afterDarkToggle itself is legacy now (kept only so the old preset /
   // hard-safe-mode logic still has something to read — its row is
   // permanently display:none, see .cat-topbar--legacy). The real, current
-  // entry point is the "After Dark" bucket in the Explore tab.
-  await check('the After Dark bucket adds adult categories to the active set', async () => {
+  // entry point is the "After Dark" chapter row in the sheet.
+  await check('the After Dark chapter row adds adult categories to the active set', async () => {
     const legacyBtn = page.locator('#afterDarkToggle');
     if (await legacyBtn.evaluate(el => el.style.display === 'none')) {
       console.log('  \x1b[33m·\x1b[0m (hard-locked in this profile — skipped, counted as pass)');
@@ -348,14 +374,14 @@ async function run() {
     }
     try {
       await openCategorySheet();
-      const bucket = page.locator('.cat-bucket[data-bucket="afterdarkb"]');
-      assert(await bucket.count() > 0, 'expected an "afterdarkb" bucket');
+      const bucket = page.locator('.chapter[data-chapter="afterdark"]');
+      assert(await bucket.count() > 0, 'expected an "afterdark" chapter row');
       const before = await activeToggleCount();
-      await bucket.locator('.cbk-select').click();
+      await bucket.locator('.ch-hit').click({ force: true });
       await page.waitForTimeout(300);
       const after = await activeToggleCount();
       assert(after !== before, `active category count did not change after toggling After Dark (${before})`);
-      await bucket.locator('.cbk-select').click(); // restore
+      await bucket.locator('.ch-hit').click({ force: true }); // restore
       await page.waitForTimeout(300);
       assert((await activeToggleCount()) === before, 'active category count did not restore');
     } finally {
@@ -450,13 +476,13 @@ async function run() {
     const bodyText = await page.locator('body').innerText();
     assert(!/set is finished|You began at|cards? you starred/i.test(bodyText), 'old end-of-hand summary text is still on screen');
     assert(await page.locator('#card .es-chip, #card .hs-wrap').count() === 0, 'old summary markup is still in the card');
-    // the diamond takes the last drawn card's chapter colour (lifted for legibility)
+    // the diamond takes the last drawn card's category colour (lifted for legibility)
     const want = await page.evaluate(() => {
       const last = state.visibleDeck[state.visibleDeck.length - 1];
-      return labelColor(CHAPTERS_META[CATEGORIES[last.level].chapter].color).toLowerCase();
+      return labelColor(levelColor(last.level)).toLowerCase();
     });
     const got = await page.evaluate(() => document.body.style.getPropertyValue('--im-color').trim().toLowerCase());
-    assert(got === want, `--im-color ${got} is not the last card's chapter colour ${want}`);
+    assert(got === want, `--im-color ${got} is not the last card's category colour ${want}`);
     assert((await imBtn()) === 'Tap to flip card', `button reads "${await imBtn()}"`);
     assert((await page.locator('#endHint').textContent()).trim() === 'Tap to flip card', 'the end hint does not follow the button');
   });

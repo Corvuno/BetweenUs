@@ -66,3 +66,6 @@ Owner: "this is the way to go… cleaned up, this is better." Build round 2 with
   at the Chapters heading (no All); Fixed Sets as the last foldable row; Shuffle and Cards on
   one line, no Round heading; no sliders; After Dark mark next to its name.
 - The sheet may scroll now (presets open). Draw Cards stays fixed.
+
+## Built 2026-10-19
+Landed on main. Shuffle/Cards one-line fix and spice-glow removal sent back once after the Keeper check. Open: a name for the sheet (owner asked 2026-10-19; options shown, waiting).
