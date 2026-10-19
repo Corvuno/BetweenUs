@@ -978,6 +978,18 @@ async function run() {
         if (hand.length !== Math.min(lim ?? Infinity, keep.size)) out.crowded.short++;
         if (maxRun(hand) > 2 && fillable(counts, hand.length) >= hand.length) out.crowded.avoidable++;
       }
+      /* After Dark joining an Arc hand must not break the up-then-down shape (the opener swap) */
+      const savedToggles = new Set(state.activeToggles), savedSpice = state.spiceMode, savedSafe = state.safeMode;
+      SPICY_LEVELS.forEach(l => state.activeToggles.add(l));
+      state.spiceMode = true; state.safeMode = false; intentOn = false; state.randomMode = 'arc'; state.cardLimit = 5;
+      const shaped = (run) => { const d = run.map(c => levelDepth(c.level)); let i = 0; while (i < d.length - 1 && d[i] <= d[i + 1]) i++; while (i < d.length - 1 && d[i] >= d[i + 1]) i++; return i >= d.length - 1; };
+      out.shape = { hands: 400, broken: 0 };
+      for (let i = 0; i < out.shape.hands; i++) {
+        state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {}; state.handNo++;
+        const b = buildFullDeck();
+        if (!shaped(sliceVisibleDeck(b.deck, b.unseen))) out.shape.broken++;
+      }
+      state.activeToggles = savedToggles; state.spiceMode = savedSpice; state.safeMode = savedSafe;
       /* only two categories selected: hands still fill to the size picked */
       state.randomMode = 'arc'; state.cardLimit = 10;
       const n2 = setPool([big, others[0]], 8, 8);
@@ -989,6 +1001,7 @@ async function run() {
     assert(r.bad === 0, `${r.bad} of ${r.hands} hands had 3+ cards of one category in a run of five (worst ${r.worst})`);
     assert(r.crowded.short === 0, `crowded hands came out short: ${r.crowded.short}/${r.crowded.hands}`);
     assert(r.crowded.avoidable === 0, `${r.crowded.avoidable} of ${r.crowded.hands} crowded long hands stacked 3+ of a category although the unseen cards could avoid it`);
+    assert(r.shape.broken <= r.shape.hands * 0.02, `${r.shape.broken} of ${r.shape.hands} Arc hands with After Dark lost their up-then-down shape`);
     assert(r.threeBad === 0, `${r.threeBad} Three options would stack a third card of a category`);
     assert(r.cappedOnly.got === Math.min(10, r.cappedOnly.n), `two-category selection did not fill: ${JSON.stringify(r.cappedOnly)}`);
     await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });

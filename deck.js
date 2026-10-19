@@ -199,19 +199,59 @@ function _sittingOut(c){ return (state.sitOut[c.question] || 0) > state.handNo; 
 const RUN = 5;      // a run: five consecutive cards of a hand, the unit of an Arc and of the spread
 const RUN_CAP = 2;  // most cards of one category in a run
 
+/* The later runs of a hand (`places` places after the current run), summed once per run for _canFillRuns: `outside[k]`
+   is the places in all but the first k later runs, `cap[k]` how many cards of
+   one category those first k runs can take (a short final run takes fewer). */
+function _laterRunsPlan(places) {
+  const sizes = Array.from({ length: Math.ceil(places / RUN) }, (_, i) => Math.min(RUN, places - i * RUN));
+  const outside = new Array(sizes.length + 1).fill(0);
+  for (let k = sizes.length - 1; k >= 0; k--) outside[k] = outside[k + 1] + sizes[k];
+  const cap = sizes.reduce((sums, size) => [...sums, sums.at(-1) + Math.min(RUN_CAP, size)], [0]);
+  return { outside, cap };
+}
+
+/* Which numbers k of later runs _canFillRuns has to try. The later runs are all
+   five places but the last, so the cut value is concave in k up to the last
+   full run (a falling straight line plus a category supply that only flattens)
+   and its lowest point is at an end: k = 0, the last full run, or all runs. */
+function _cutPoints(plan) {
+  const last = plan.cap.length - 1;
+  return new Set([0, Math.max(0, last - 1), last]);
+}
+
 /* Can `places` still be filled with at most RUN_CAP cards of a category per run?
    `left` counts the cards still available per category; the current run has
-   `runRoom` places left and `inRun` cards so far; `laterRuns` are the sizes of
-   the runs after it. Max-flow/min-cut: for the current run in or out of the
-   cut and every number k of later runs in it, the cards outside the cut plus
-   what the categories can supply into it must reach `places`. */
-function _canFillRuns(left, places, runRoom, inRun, laterRuns) {
-  const supplyInto = (cap, room) => [...left].reduce((sum, [level, n]) => sum + Math.min(n, cap + room(level)), 0);
-  return [false, true].every(withCurrent => laterRuns.concat(0).every((_, k) => {
-    const outside = laterRuns.slice(k).reduce((a, b) => a + b, 0) + (withCurrent ? 0 : runRoom);
-    const room = level => (withCurrent ? Math.min(RUN_CAP - (inRun.get(level) ?? 0), runRoom) : 0);
-    return outside + supplyInto(k * RUN_CAP, room) >= places;
-  }));
+   `runRoom` places left and `inRun` cards so far; `plan` is the later runs
+   (_laterRunsPlan). The count condition (Hall / min-cut): for the current run
+   in or out of the cut and every number k of later runs in it, the places
+   outside the cut plus what the categories can supply into it must reach
+   `places`. */
+function _canFillRuns(left, places, runRoom, inRun, plan) {
+  const roomIn = level => Math.min(RUN_CAP - (inRun.get(level) ?? 0), runRoom);
+  const holds = (k, withCurrent) => {
+    let supply = plan.outside[k] + (withCurrent ? 0 : runRoom);
+    for (const [level, n] of left) supply += Math.min(n, plan.cap[k] + (withCurrent ? roomIn(level) : 0));
+    return supply >= places;
+  };
+  return [..._cutPoints(plan)].every(k => holds(k, false) && holds(k, true));
+}
+
+/* The earliest card of each category, in draw order. */
+function _earliestPerCategory(cards) {
+  const seen = new Set();
+  return cards.filter(c => !seen.has(c.level) && seen.add(c.level));
+}
+
+/* The card for the next place: the earliest head that is under the cap (Arc:
+   one per category first) and still lets the hand be filled; if none does, a
+   third can't be avoided, so the least used category in the run. */
+function _placeCard(heads, count, fits, distinctFirst) {
+  const caps = distinctFirst ? [1, RUN_CAP] : [RUN_CAP];
+  for (const cap of caps) {
+    const card = heads.find(c => count(c) < cap && fits(c));
+    if (card) return card;
+  }
+  return heads.reduce((best, c) => (count(c) < count(best) ? c : best));
 }
 
 /* Category spread: chooses the hand's cards so that no run of five holds more
@@ -228,11 +268,11 @@ function _spreadRuns(ordered, handSize, distinctFirst) {
   const rest = [...ordered];
   const left = new Map();
   rest.forEach(c => left.set(c.level, (left.get(c.level) ?? 0) + 1));
+  const drawPos = new Map(ordered.map((c, i) => [c, i]));
   const hand = [];
   while (hand.length < size) {
     const runLen = Math.min(RUN, size - hand.length);
-    const laterRuns = Array.from({ length: Math.ceil((size - hand.length - runLen) / RUN) },
-      (_, i) => Math.min(RUN, size - hand.length - runLen - i * RUN));
+    const plan = _laterRunsPlan(size - hand.length - runLen);
     const inRun = new Map();
     const run = [];
     const count = card => inRun.get(card.level) ?? 0;
@@ -242,32 +282,35 @@ function _spreadRuns(ordered, handSize, distinctFirst) {
     };
     const fits = card => {
       take(card, 1);
-      const ok = _canFillRuns(left, size - hand.length - run.length - 1, runLen - run.length - 1, inRun, laterRuns);
+      const ok = _canFillRuns(left, size - hand.length - run.length - 1, runLen - run.length - 1, inRun, plan);
       take(card, -1);
       return ok;
     };
     while (run.length < runLen) {
-      const heads = rest.filter((c, i) => rest.findIndex(d => d.level === c.level) === i);   // earliest card of each category
-      const tiers = [distinctFirst && 1, RUN_CAP].filter(Boolean);
-      const card = tiers.map(cap => heads.find(c => count(c) < cap && fits(c))).find(Boolean)
-        ?? heads.reduce((best, c) => (count(c) < count(best) ? c : best));   // a third can't be avoided: spread what there is
+      const card = _placeCard(_earliestPerCategory(rest), count, fits, distinctFirst);
       rest.splice(rest.indexOf(card), 1);
       take(card, 1);
       run.push(card);
     }
-    hand.push(...run.sort((x, y) => ordered.indexOf(x) - ordered.indexOf(y)));   // draw order inside the run
+    hand.push(...run.sort((x, y) => drawPos.get(x) - drawPos.get(y)));   // draw order inside the run
   }
   return [...hand, ...rest];
 }
 
-/* Would swapping cards i and j still keep both of their runs at two per category or fewer? */
-function _swapKeepsSpread(cards, i, j) {
-  const swapped = cards.with(i, cards[j]).with(j, cards[i]);
-  return [i, j].every(k => {
-    const from = Math.floor(k / RUN) * RUN;
-    const run = swapped.slice(from, from + RUN);
-    return run.every(c => run.filter(d => d.level === c.level).length <= RUN_CAP);
-  });
+const _spreadHolds = run => run.every(c => run.filter(d => d.level === c.level).length <= RUN_CAP);
+/* an arc rises to its deepest card, then eases down */
+const _isArcShaped = run => {
+  const depths = run.map(c => levelDepth(c.level));
+  let i = 0;
+  while (i < depths.length - 1 && depths[i] <= depths[i + 1]) i++;
+  while (i < depths.length - 1 && depths[i] >= depths[i + 1]) i++;
+  return i >= depths.length - 1;
+};
+/* Would swapping cards i and j leave both of their runs passing `holds`? */
+function _swapKeeps(cards, i, j, holds) {
+  const swapped = [...cards];
+  [swapped[i], swapped[j]] = [swapped[j], swapped[i]];
+  return [i, j].every(k => holds(swapped.slice(Math.floor(k / RUN) * RUN, Math.floor(k / RUN) * RUN + RUN)));
 }
 
 /* Unseen cards first, in draw order (dial-weighted or random); seen cards
@@ -336,9 +379,12 @@ function _arcHand(hand){
     }
     const bump = (idx, survive) => {
       if (!out[idx] || !isAD(out[idx]) || survive) return;
-      /* prefer a swap that keeps the spread; the opener rule wins if none does */
+      /* prefer a swap that keeps both the spread and the arc's shape, then one
+         that keeps the spread; the opener rule wins if none does */
       const later = out.flatMap((c, i) => (i > idx && !isAD(c) ? [i] : []));
-      const swapAt = later.find(i => _swapKeepsSpread(out, idx, i)) ?? later[0] ?? -1;
+      const keepsAll = run => _spreadHolds(run) && _isArcShaped(run);
+      const swapAt = later.find(i => _swapKeeps(out, idx, i, keepsAll))
+        ?? later.find(i => _swapKeeps(out, idx, i, _spreadHolds)) ?? later[0] ?? -1;
       if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
     };
     bump(0, false);        // spot 1: never
