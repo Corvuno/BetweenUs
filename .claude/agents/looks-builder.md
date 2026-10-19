@@ -55,6 +55,22 @@ with a rule, that is a question, not a decision.
 - Check it on a phone-sized screen as well as a wide one, and in every profile the change
   shows up in (`?profile=work`, `?profile=editor`).
 
+## How the code is written (owner, 2026-10-19)
+
+Write it the way a careful senior developer would today, for a plain HTML/CSS/JS app with no
+build step:
+- Modern JavaScript: `const`/`let`, arrow functions, template strings, optional chaining (`?.`)
+  and `??`, array methods (`map`/`filter`/`find`), `Set`/`Map`, small pure functions that take
+  input and return output instead of reaching into globals where you can.
+- Modern CSS: custom properties (the `DESIGN-SYSTEM.md` tokens), flex/grid, `clamp()`, logical
+  properties; no magic numbers that should be a named value; no `!important` to win a fight.
+- Fix the cause, not the symptom: a rule goes where the decision it shapes is made. No
+  workarounds layered on top of earlier workarounds; if you find one, say so in your report.
+- Reuse what exists before writing something new; remove what your change makes dead.
+- Names that say what a thing is; a short comment only where the *why* isn't obvious.
+- Leave the code you touch a little cleaner, but don't rewrite what the job doesn't need —
+  bigger clean-ups are proposed to the Keeper, not slipped in.
+
 ## Check before reporting
 
 - Take before and after screenshots of everything you changed (Playwright; Chromium is

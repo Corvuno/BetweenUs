@@ -232,3 +232,10 @@ Round 2 app lines, settled 2026-10-18: Culture "Everything you love that someone
 a song to a building"; Wish "Dreams kept, dreams outgrown". Owner: "agreed on the rest" (lists,
 Roots border call: childhood music/TV stays in Roots as childhood; as taste it's Culture). Asked:
 whether the revisited first-round lines (Life, Home, World, Attract, Kink) change.
+Round 2 stay/go, agreed 2026-10-19 ("Agreed accept for these"):
+- Culture goes: 6, 10, 12. Roots goes: 5, 10, 12. Wish goes: 4, 5, 6, 8 and also 11 (owner
+  added). Work goes: 5, 7, 11. Spirit goes: 2, 3, 7, 9, 10. Body goes: 2, 9.
+- Work 2 "What would you do professionally if status played no role at all?" — owner: should it be
+  money instead of status? Rephrasing options shown 2026-10-19.
+- Removed cards are removed, not benched. Next: new cards, Culture/Roots/Wish first, then
+  Work/Spirit/Body.
