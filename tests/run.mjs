@@ -955,6 +955,29 @@ async function run() {
           opts.forEach(o => { const cnt = rest.filter(c => c.level === o.level).length; if (cnt >= 2) out.threeBad++; });
         }
       }
+      /* crowded long hands: whenever the unseen cards CAN fill the hand at two per category
+         per run (exact max-flow/min-cut check), no run may hold a third */
+      const fillable = (counts, size) => {
+        const runs = Array.from({ length: Math.ceil(size / 5) }, (_, i) => Math.min(5, size - i * 5)).sort((x, y) => y - x);
+        const sum = (xs) => xs.reduce((a, b) => a + b, 0);
+        return Math.min(...Array.from({ length: runs.length + 1 }, (_, k) =>
+          sum(runs.slice(k)) + sum(counts.map(n => Math.min(n, sum(runs.slice(0, k).map(r => Math.min(2, r))))))));
+      };
+      out.crowded = { hands: 0, avoidable: 0, short: 0 };
+      intentOn = false; state.spiceMode = false; state.handOffered.clear();
+      const shapes = [[3, 6, 6, 11, 4, 4], [8, 3, 3, 3, 3], [10, 3, 3, 3, 3, 3], [12, 12, 12, 12, 12, 12], [9, 9, 2, 2, 2]];
+      for (const mode of ['arc', 'wild']) for (const lim of [null, 20]) for (const shape of shapes) for (let i = 0; i < 12; i++) {
+        state.randomMode = mode; state.cardLimit = lim;
+        const keep = new Set();
+        lv.slice().sort(() => Math.random() - 0.5).slice(0, shape.length).forEach((l, j) => all.filter(c => c.level === l).slice(0, shape[j]).forEach(c => keep.add(c.question)));
+        state.sessionLog = all.filter(c => !keep.has(c.question)).map(c => ({ question: c.question, level: c.level }));
+        state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {}; state.handNo++;
+        const b = buildFullDeck(); const hand = sliceVisibleDeck(b.deck, b.unseen);
+        const counts = Object.values(Object.groupBy(b.deck.slice(0, b.unseen), c => c.level)).map(g => g.length);
+        out.crowded.hands++;
+        if (hand.length !== Math.min(lim ?? Infinity, keep.size)) out.crowded.short++;
+        if (maxRun(hand) > 2 && fillable(counts, hand.length) >= hand.length) out.crowded.avoidable++;
+      }
       /* only two categories selected: hands still fill to the size picked */
       state.randomMode = 'arc'; state.cardLimit = 10;
       const n2 = setPool([big, others[0]], 8, 8);
@@ -964,6 +987,8 @@ async function run() {
     });
     assert(r.short === 0, `hands came out short: ${r.short}/${r.hands}`);
     assert(r.bad === 0, `${r.bad} of ${r.hands} hands had 3+ cards of one category in a run of five (worst ${r.worst})`);
+    assert(r.crowded.short === 0, `crowded hands came out short: ${r.crowded.short}/${r.crowded.hands}`);
+    assert(r.crowded.avoidable === 0, `${r.crowded.avoidable} of ${r.crowded.hands} crowded long hands stacked 3+ of a category although the unseen cards could avoid it`);
     assert(r.threeBad === 0, `${r.threeBad} Three options would stack a third card of a category`);
     assert(r.cappedOnly.got === Math.min(10, r.cappedOnly.n), `two-category selection did not fill: ${JSON.stringify(r.cappedOnly)}`);
     await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });

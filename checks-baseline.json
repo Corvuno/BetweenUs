@@ -20,8 +20,6 @@
   "deck.js | TS2339 | Property 'offsetWidth' does not exist on type 'Element'.": 1,
   "deck.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 20 to the 15 allowed.": 1,
   "deck.js | sonarjs/no-nested-assignment | Extract the assignment of \"byLevel[c.level]\" from this expression.": 1,
-  "deck.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 1,
-  "deck.js | sonarjs/no-nested-functions | Refactor this code to not nest functions more than 4 levels deep.": 1,
   "deck.js | sonarjs/no-nested-template-literals | Refactor this code to not use nested template literals.": 1,
   "deck.js | sonarjs/void-use | Remove this use of the \"void\" operator.": 1,
   "gilt.js | TS2339 | Property 'giltRail' does not exist on type 'Window & typeof globalThis'.": 1,

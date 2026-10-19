@@ -196,57 +196,78 @@ function _newHandBookkeeping(){
 }
 function _sittingOut(c){ return (state.sitOut[c.question] || 0) > state.handNo; }
 
-/* Category spread: in every run of five cards of the hand (positions 0-4, 5-9,
-   ...) at most two come from one category, wherever the unseen cards allow.
-   It works on the order the unseen cards will be drawn in, BEFORE the hand is
-   cut, so it decides which cards are chosen, not only their order. The hand's
-   places are laid out as runs of five (a short last run is its own run); the
-   cards are walked in draw order and each takes the first run that still has
-   room and room for its category (two). Arc then spreads those same cards
-   again, one per category per run first (five cards, five categories when the
-   pool allows). Cards that fit nowhere stay behind the hand, in order. Only
-   when the places left can't be filled without it does a third of a category
-   come in (the pool has no other category left). Unseen cards only: this is
-   never handed seen cards. Inside a run the draw order is kept. */
-function _spreadRuns(ordered, preferDistinct, handSize){
-  const n = Math.min(handSize, ordered.length);
-  const pos = new Map(ordered.map((c, i) => [c, i]));
-  const lay = (cards, caps) => {
-    const runs = [];
-    for (let left = n; left > 0; left -= 5) runs.push({ room: Math.min(5, left), cards: [], count: {} });
-    const placed = new Set();
-    const put = (c, r) => { r.cards.push(c); r.count[c.level] = (r.count[c.level] || 0) + 1; r.room--; placed.add(c); };
-    caps.forEach(cap => cards.forEach(c => {
-      if (placed.has(c)) return;
-      const r = runs.find(r => r.room > 0 && (r.count[c.level] || 0) < cap);
-      if (r) put(c, r);
-    }));
-    cards.forEach(c => {        // places still empty: nothing else is left to put there
-      if (placed.has(c)) return;
-      const r = runs.find(r => r.room > 0);
-      if (r) put(c, r);
-    });
-    const hand = [];
-    runs.forEach(r => hand.push(...r.cards.sort((x, y) => pos.get(x) - pos.get(y))));
-    return { hand, over: runs.some(r => Object.values(r.count).some(v => v > 2)) };
-  };
-  let best = preferDistinct ? lay(ordered, [1, 2]) : null;   // Arc: one per category per run first
-  if (!best || best.over) {                                    // otherwise (or if that strands cards): two per run
-    let two = lay(ordered, [2]);
-    if (two.over) {     // a crowded pool: place the biggest categories first so no run is left holding the rest
-      const tally = {};
-      ordered.forEach(c => { tally[c.level] = (tally[c.level] || 0) + 1; });
-      const crowded = lay(ordered.slice().sort((x, y) => tally[y.level] - tally[x.level] || pos.get(x) - pos.get(y)), [2]);
-      if (!crowded.over) two = crowded;
+const RUN = 5;      // a run: five consecutive cards of a hand, the unit of an Arc and of the spread
+const RUN_CAP = 2;  // most cards of one category in a run
+
+/* Can `places` still be filled with at most RUN_CAP cards of a category per run?
+   `left` counts the cards still available per category; the current run has
+   `runRoom` places left and `inRun` cards so far; `laterRuns` are the sizes of
+   the runs after it. Max-flow/min-cut: for the current run in or out of the
+   cut and every number k of later runs in it, the cards outside the cut plus
+   what the categories can supply into it must reach `places`. */
+function _canFillRuns(left, places, runRoom, inRun, laterRuns) {
+  const supplyInto = (cap, room) => [...left].reduce((sum, [level, n]) => sum + Math.min(n, cap + room(level)), 0);
+  return [false, true].every(withCurrent => laterRuns.concat(0).every((_, k) => {
+    const outside = laterRuns.slice(k).reduce((a, b) => a + b, 0) + (withCurrent ? 0 : runRoom);
+    const room = level => (withCurrent ? Math.min(RUN_CAP - (inRun.get(level) ?? 0), runRoom) : 0);
+    return outside + supplyInto(k * RUN_CAP, room) >= places;
+  }));
+}
+
+/* Category spread: chooses the hand's cards so that no run of five holds more
+   than two of one category, wherever the unseen cards allow. One pass over the
+   unseen cards in draw order, BEFORE the hand is cut: each place takes the
+   earliest card whose category is under the cap (Arc: one per category first,
+   so five cards mean five categories when the pool allows) AS LONG AS the
+   places still to come can be filled afterwards (_canFillRuns). That look-ahead
+   keeps a heavy category from being left to pile up in the last runs;
+   otherwise the draw order (dials, After Dark weave) decides. Unseen cards
+   only; cards not taken stay behind the hand, in order. */
+function _spreadRuns(ordered, handSize, distinctFirst) {
+  const size = Math.min(handSize, ordered.length);
+  const rest = [...ordered];
+  const left = new Map();
+  rest.forEach(c => left.set(c.level, (left.get(c.level) ?? 0) + 1));
+  const hand = [];
+  while (hand.length < size) {
+    const runLen = Math.min(RUN, size - hand.length);
+    const laterRuns = Array.from({ length: Math.ceil((size - hand.length - runLen) / RUN) },
+      (_, i) => Math.min(RUN, size - hand.length - runLen - i * RUN));
+    const inRun = new Map();
+    const run = [];
+    const count = card => inRun.get(card.level) ?? 0;
+    const take = (card, by) => {
+      left.set(card.level, left.get(card.level) - by);
+      inRun.set(card.level, count(card) + by);
+    };
+    const fits = card => {
+      take(card, 1);
+      const ok = _canFillRuns(left, size - hand.length - run.length - 1, runLen - run.length - 1, inRun, laterRuns);
+      take(card, -1);
+      return ok;
+    };
+    while (run.length < runLen) {
+      const heads = rest.filter((c, i) => rest.findIndex(d => d.level === c.level) === i);   // earliest card of each category
+      const tiers = [distinctFirst && 1, RUN_CAP].filter(Boolean);
+      const card = tiers.map(cap => heads.find(c => count(c) < cap && fits(c))).find(Boolean)
+        ?? heads.reduce((best, c) => (count(c) < count(best) ? c : best));   // a third can't be avoided: spread what there is
+      rest.splice(rest.indexOf(card), 1);
+      take(card, 1);
+      run.push(card);
     }
-    best = two;
-    if (preferDistinct) {                                      // same cards, spread over the runs
-      const again = lay(two.hand.slice().sort((x, y) => pos.get(x) - pos.get(y)), [1, 2]);
-      if (!again.over || two.over) best = again;
-    }
+    hand.push(...run.sort((x, y) => ordered.indexOf(x) - ordered.indexOf(y)));   // draw order inside the run
   }
-  const inHand = new Set(best.hand);
-  return best.hand.concat(ordered.filter(c => !inHand.has(c)));
+  return [...hand, ...rest];
+}
+
+/* Would swapping cards i and j still keep both of their runs at two per category or fewer? */
+function _swapKeepsSpread(cards, i, j) {
+  const swapped = cards.with(i, cards[j]).with(j, cards[i]);
+  return [i, j].every(k => {
+    const from = Math.floor(k / RUN) * RUN;
+    const run = swapped.slice(from, from + RUN);
+    return run.every(c => run.filter(d => d.level === c.level).length <= RUN_CAP);
+  });
 }
 
 /* Unseen cards first, in draw order (dial-weighted or random); seen cards
@@ -259,8 +280,7 @@ function _unseenFirst(cards){
   let eligible = unseenCards.filter(c => !_sittingOut(c));
   if (!eligible.length) eligible = unseenCards;
   const eligSet = new Set(eligible);
-  const fresh = _spreadRuns(orderUnseen(eligible, cards), state.randomMode === 'arc',
-                          state.cardLimit === null ? eligible.length : state.cardLimit);
+  const fresh = _spreadRuns(orderUnseen(eligible, cards), state.cardLimit ?? eligible.length, state.randomMode === 'arc');
   const used  = shuffle(cards.filter(c => !eligSet.has(c)));
   return {deck: fresh.concat(used), unseen: fresh.length};
 }
@@ -283,11 +303,10 @@ function _sliceDraw(deck, unseen){
        around the middle and eases down after it.
    The summary trace plots the same levelDepth, so the line reads as arcs. */
 function _arcHand(hand){
-  const ARC = 5;
   const out = [];
   let rest = hand.slice();
   while (rest.length) {
-    const picked = rest.slice(0, ARC);
+    const picked = rest.slice(0, RUN);
     rest = rest.slice(picked.length);
     /* deepest card to the middle: walk the cards from shallow to deep, placing
        them alternately at the front and the back, so depth rises then falls */
@@ -311,23 +330,15 @@ function _arcHand(hand){
     const keepSecond = Math.random() < 0.05;
     const openOK = () => !isAD(out[0]) && (keepSecond || !isAD(out[1]));
     if (!openOK()) {
-      const n = Math.min(ARC, out.length);
+      const n = Math.min(RUN, out.length);
       out.splice(0, n, ...out.slice(0, n).reverse());
       if (!openOK()) out.splice(0, n, ...out.slice(0, n).reverse());   // turn it back
     }
     const bump = (idx, survive) => {
       if (!out[idx] || !isAD(out[idx]) || survive) return;
-      /* prefer a swap that keeps every run of five at two per category or
-         fewer; the opener rule still wins if no such swap exists */
-      const runOK = r => { const m = {}; return out.slice(r * ARC, r * ARC + ARC).every(c => (m[c.level] = (m[c.level] || 0) + 1) <= 2); };
-      const nonAD = out.map((c, i) => i).filter(i => i > idx && !isAD(out[i]));
-      const safe = nonAD.find(i => {
-        [out[idx], out[i]] = [out[i], out[idx]];
-        const ok = runOK(Math.floor(idx / ARC)) && runOK(Math.floor(i / ARC));
-        [out[idx], out[i]] = [out[i], out[idx]];
-        return ok;
-      });
-      const swapAt = safe !== undefined ? safe : (nonAD.length ? nonAD[0] : -1);
+      /* prefer a swap that keeps the spread; the opener rule wins if none does */
+      const later = out.flatMap((c, i) => (i > idx && !isAD(c) ? [i] : []));
+      const swapAt = later.find(i => _swapKeepsSpread(out, idx, i)) ?? later[0] ?? -1;
       if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
     };
     bump(0, false);        // spot 1: never
@@ -665,10 +676,10 @@ function buildPickOptions(step) {
      option from a category the rest of that run already holds twice would make
      a third. Such options come last within their tier (a third only when the
      tier has nothing else). Seen cards never jump the queue to avoid it. */
-  const runStart = Math.floor(step / 5) * 5;
-  const runCount = {};
-  state.visibleDeck.slice(runStart, runStart + 5).forEach((c, k) => { if (c && runStart + k !== step) runCount[c.level] = (runCount[c.level] || 0) + 1; });
-  const full = c => (runCount[c.level] || 0) >= 2;
+  const runStart = Math.floor(step / RUN) * RUN;
+  const runLevels = state.visibleDeck.slice(runStart, runStart + RUN)
+    .flatMap((c, k) => (c && runStart + k !== step ? [c.level] : []));
+  const full = c => runLevels.filter(level => level === c.level).length >= RUN_CAP;
   const picked = [];
   tiers.forEach((tier, ti) => {
     if (picked.length >= 2 || !tier.length) return;
@@ -681,13 +692,12 @@ function buildPickOptions(step) {
       cand = cand.map((c, i) => ({ c, i, k: Math.abs(levelDepth(c.level) - d) }))
                  .sort((x, y) => x.k - y.k || x.i - y.i).map(x => x.c);
     }
-    /* Variety within the tier: take, one at a time, the first card whose
-       category isn't already among the options (the planned card's included);
-       only when the tier has none left does a same-category card from this
-       same tier fill in. The category spread (full) comes before variety:
-       a card that would make a third of its category in the run of five
-       is taken only when nothing else in the tier fits. Freshness still comes first: a later tier is never
-       used while this one can supply a card. */
+    /* Within the tier, take one card at a time: first one that keeps the
+       run of five at two per category and brings a category not yet among the
+       options (the planned card's included), then one that only keeps the run
+       within the cap, then one that only brings a new category, then the
+       first. Freshness still comes first: a later tier is never used while
+       this one can supply a card. */
     while (picked.length < 2 && cand.length) {
       const used = new Set([planned.level, ...picked.map(c => c.level)]);
       let at = cand.findIndex(c => !used.has(c.level) && !full(c));   // the cap first, then variety
