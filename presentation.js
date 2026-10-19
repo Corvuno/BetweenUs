@@ -665,7 +665,10 @@ function paintHandSide() {
   if (!side) return;
   const isList = side === 'list';
   const col = handEndColors();
-  if (col.label) document.body.style.setProperty('--im-color', col.label);
+  if (col.label) {
+    document.body.style.setProperty('--im-color', col.label);    // eased on <body>: diamond, rule
+    document.body.style.setProperty('--im-target', col.label);   // not eased: the button eases itself
+  }
 
   // — the card on the main screen
   const el = document.getElementById('card');
@@ -693,7 +696,7 @@ function paintHandSide() {
   const pl = document.getElementById('party-level');
   const pc = document.getElementById('party-count');
   const pa = document.getElementById('party-accent');
-  if (pa) giltRailPaint(pa, col.raw || '#e8c97a');   // --gold-l
+  if (pa) giltRailPaint(pa, col.raw || getComputedStyle(document.documentElement).getPropertyValue('--gold-l').trim());
   if (pl) { pl.textContent = ''; pl.style.color = ''; }
   if (pc) pc.textContent = '';   // the count slot stays empty at the end of a hand
   if (pq) {
