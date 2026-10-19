@@ -79,3 +79,15 @@ Format:
 
 - **2026-10-19** — Said: "Medium update -> 1000 lines of what changed. All things are way too detailed. Who fucking cares." / I did: saw only the repeats and contradictions in the 1.5.0 notes and planned a fix that kept every detail, just without duplicates. / Meant: release notes are a few headlines for players (about five), not a record of the work; colours, fonts and positions never make it in. / Next time: judge anything written for players by what a player would care about first, then by correctness.
 - **2026-10-19** — Said: "testing is good, this sounds insane for something this small… I never said perfect." / I did: sent the category-cap fix through four rounds with full tester and reviewer runs each time (~785k tokens), and chased long-hand cases (20/All) the owner never raised. / Meant: checks are proportional — a small bug gets a few sets tried by hand; fix what was asked, not more. / Next time: size every check to the change (SKILL.md step 5); edge cases beyond the ask get one line in the report, never a round on my own.
+
+## 2026-10-19 — collision checks skip Colbert, Magical and The 36
+The owner: "Colbert, magical, 36 can be left out of the compare. They are their own thing."
+When checking a candidate card against the deck, leave those three sets out. Check every other
+category.
+
+## 2026-10-19 — Roots cards must work without vivid childhood memories
+The owner has almost no memories of their childhood, and so will some players. Roots cards that
+need a sharp scene from childhood (a smell, a bedroom, a dinner table) shut those players out.
+Give Roots angles that work anyway: stories the family tells about you, things you kept, where
+the family comes from, grandparents, words and habits from where you grew up, what people
+expected of you.
