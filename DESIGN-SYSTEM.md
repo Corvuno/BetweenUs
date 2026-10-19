@@ -322,3 +322,14 @@ line, Draw Cards fixed. Chapter and category colours stay content colour, set fr
   (.9rem, cream .62), then the choices in .78rem caps (cream .5); the picked one is celadon with a
   1px celadon underline. Each choice is 48px tall. The spice mark's "on" state is colour only
   (no glow).
+
+## The Deck sheet heading (added 2026-10-19)
+The evening chooser sheet (`#cat-area`, aria-label "The Deck") is named **The Deck**: a
+`.drawer-title` (the same heading every drawer and panel uses: Jost, uppercase, `.16em`
+tracking, `--gold`, centred; .75rem, .85rem from 1024px, .9rem from 1180px) with
+`.cat-sheet-name` (6px under it, no other value). The time-of-day question
+(`#playLeadFirst`, "What kind of evening?", set by `updateTimeOfDayHeading`) stays as the
+line directly under it, in its existing quieter tone (cream at .6, Federo, sentence case).
+Close (✕) is unchanged. No new box, line or glow. Reason: the sheet had no name, only a
+question. The card screen's label reads "Selected deck" (was "Selected"); the
+" · tap to change" / "click to change" hint is unchanged.

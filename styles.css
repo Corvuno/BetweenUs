@@ -1107,6 +1107,7 @@ body.tok-taught .tok-hint{display:none;}
    — sits in this row next to Close. */
 .cat-sheet-head{position:relative;padding:4px 0 16px;flex-shrink:0;}
 .cat-sheet-head-title{text-align:center;color:rgba(240,232,216,.6);}
+.cat-sheet-name{padding:0 0 6px;}
 /* padding carries the tap target up toward the ~44px minimum — the glyph
    itself stays the same visual size, the invisible hit area just grows
    around it instead of stopping a few px past the "x" */
