@@ -28,3 +28,14 @@ change colour between breaths, then: "Just build it."
 Custom with 1, 3 and 8 categories, Strangers and Family look as in round 1 option C on phone,
 Spotlight and PC; the diamond changes colour only while faint; DESIGN-SYSTEM.md's frame
 colours section says what Custom does now.
+
+## Built 2026-10-19 (live on main, 6c0d987) — differences from the text above
+- The start-card rule breathes with the diamond (since c6aaf86), so it switches colour with it
+  instead of being a blend (Keeper's call).
+- The name is a left-to-right colour run of the shown colours, never an average (an average
+  came out mud/mustard; sent back once).
+- With more than three picks, the shown colours are the picks furthest from gold and from each
+  other (first picks were often yellow/orange and read gold again; Keeper's call). The diamond
+  still cycles through every pick.
+- Spotlight shows no start mark or preset name, so nothing changes there. The pause card
+  (Intermezzo) diamond stays on one colour.
