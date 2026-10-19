@@ -913,6 +913,62 @@ async function run() {
     await freshHand({ three: false });
   });
 
+  await check('category spread: a hand never stacks 3+ cards of one category while other unseen categories exist (Arc and Random, hands of 5/10; Three options too)', async () => {
+    const r = await page.evaluate(() => {
+      if (state.partyMode) exitParty();
+      closePicker(); state.pickOptions = null;
+      const out = { bad: 0, hands: 0, short: 0, worst: 0, threeBad: 0, threeTried: 0, cappedOnly: null };
+      const all = getFilteredCards();
+      const lv = [...new Set(all.map(c => c.level))];
+      const big = lv.includes('family') ? 'family' : lv[0];
+      const others = lv.filter(l => l !== big).slice(0, 10);
+      const setPool = (levels, perOther, perBig) => {
+        const keep = new Set();
+        levels.forEach(l => all.filter(c => c.level === l).slice(0, l === big ? perBig : perOther).forEach(c => keep.add(c.question)));
+        state.sessionLog = all.filter(c => !keep.has(c.question)).map(c => ({ question: c.question, level: c.level }));
+        state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {};
+        return keep.size;
+      };
+      const maxRun = (hand) => { let w = 0; for (let i = 0; i < hand.length; i += 5) { const m = {}; hand.slice(i, i + 5).forEach(c => { m[c.level] = (m[c.level] || 0) + 1; }); w = Math.max(w, ...Object.values(m)); } return w; };
+      for (const mode of ['arc', 'wild']) for (const lim of [5, 10]) {
+        state.randomMode = mode; state.cardLimit = lim; pickMode = false;
+        for (let i = 0; i < 150; i++) {
+          const n = setPool([big, ...others], 2, 10);
+          state.handNo++;
+          const b = buildFullDeck(); const hand = sliceVisibleDeck(b.deck, b.unseen);
+          out.hands++;
+          if (hand.length !== Math.min(lim, n)) out.short++;
+          const w = maxRun(hand); out.worst = Math.max(out.worst, w);
+          if (w > 2) out.bad++;
+        }
+      }
+      /* Three: the options for a step must not push its run of five past two */
+      state.randomMode = 'arc'; state.cardLimit = 5;
+      for (let i = 0; i < 60; i++) {
+        setPool([big, ...others], 2, 10); state.handNo++;
+        const b = buildFullDeck(); state.fullDeck = b.deck; state.drawUnseen = b.unseen;
+        state.visibleDeck = sliceVisibleDeck(b.deck, b.unseen); state.handOffered.clear();
+        for (let step = 0; step < 5; step++) {
+          const opts = buildPickOptions(step);
+          const rest = state.visibleDeck.filter((c, k) => k !== step);
+          out.threeTried++;
+          opts.forEach(o => { const cnt = rest.filter(c => c.level === o.level).length; if (cnt >= 2) out.threeBad++; });
+        }
+      }
+      /* only two categories selected: hands still fill to the size picked */
+      state.randomMode = 'arc'; state.cardLimit = 10;
+      const n2 = setPool([big, others[0]], 8, 8);
+      state.handNo++;
+      const b2 = buildFullDeck(); out.cappedOnly = { n: n2, got: sliceVisibleDeck(b2.deck, b2.unseen).length };
+      return out;
+    });
+    assert(r.short === 0, `hands came out short: ${r.short}/${r.hands}`);
+    assert(r.bad === 0, `${r.bad} of ${r.hands} hands had 3+ cards of one category in a run of five (worst ${r.worst})`);
+    assert(r.threeBad === 0, `${r.threeBad} Three options would stack a third card of a category`);
+    assert(r.cappedOnly.got === Math.min(10, r.cappedOnly.n), `two-category selection did not fill: ${JSON.stringify(r.cappedOnly)}`);
+    await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });
+  });
+
   await check('Three is live right after the first draw (button and Spotlight not dimmed) and the 3 key toggles it on the main screen', async () => {
     await freshHand({ three: false });
     await page.locator('#btn-next').click();
