@@ -458,7 +458,8 @@ body.showing-hand-summary .card-question{
 @media (hover:hover){.nav-row #btn-prev.disabled:hover{border-color:rgba(201,168,76,.2);color:var(--celadon);}}
 .btn-sq svg{width:19px;height:19px;}
 .btn-draw{flex:1;--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}
+/* Hover answers in .2s (a transition runs with the style it moves to, so this is the way in only). */
+.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;transition:all .2s;}
 .btn-draw:active{transform:scale(.98);}
 .btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-fullscreen svg{width:16px;height:16px;flex-shrink:0;}
@@ -466,10 +467,12 @@ body.showing-hand-summary .card-question{
 
 /* ── LIMIT ── */
 /* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
-/* End of a hand: the button takes the last drawn card's chapter colour (--im-color, set on
-   <body> by presentation.js paintHandSide) — a gradient of it, dark text, the gold button's size and type. */
+/* End of a hand: the button takes the pause colour (--im-color, the last drawn card's category colour,
+   set on <body> by presentation.js paintHandSide) — a gradient of it, dark text, the gold button's size and type.
+   It reads --im-target (the same colour, set without easing) because --im-color already eases on <body>:
+   reading that would ease the button twice and lag it behind the diamond. */
 .btn-draw.hold-mode{
-  --bd-a:color-mix(in srgb,var(--im-color) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-color) 76%,#000);
+  --bd-a:color-mix(in srgb,var(--im-target) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-target) 76%,#000);
   color:var(--bg);letter-spacing:.1em;}
 /* the very first draw of a hand — before any card has been drawn, or right
    after a settings change reset the deck. Sized up (no glow — see change
@@ -490,7 +493,7 @@ body.showing-hand-summary .card-question{
 /* ── END OF HAND: INTERMEZZO ── (presentation.js; hooks listed there)
    Side 1: the card's back with the pause mark and INTERMEZZO in the window
    (#card.is-start.is-intermezzo). Side 2: the hand's list on the card face
-   (#card.is-hand-list). --im-color is the last drawn card's chapter colour. */
+   (#card.is-hand-list). --im-color is the last drawn card's category colour. */
 .cb-fermata,.cb-caption{display:none;}
 .card.is-intermezzo .cb-mark:not(.cb-fermata),.card.is-intermezzo .cb-text{display:none;}
 .card.is-intermezzo .cb-fermata{display:block;width:calc(var(--d)*.62);}
@@ -498,8 +501,8 @@ body.showing-hand-summary .card-question{
   display:block;font-family:'Federo',sans-serif;font-size:calc(var(--d)*.075);letter-spacing:.32em;
   text-transform:uppercase;color:var(--muted-l);margin-top:calc(var(--d)*.02);white-space:nowrap;
 }
-.cb-fermata .dm,.im-wrap .dm{fill:var(--im-color,var(--preset-deep));stroke:none;}
-.card.is-intermezzo .cb-rule{background:linear-gradient(90deg,transparent,var(--im-color,var(--preset-deep)),transparent);}
+.cb-fermata .dm,.im-wrap .dm{fill:var(--im-color);stroke:none;}
+.card.is-intermezzo .cb-rule{background:linear-gradient(90deg,transparent,var(--im-color),transparent);}
 /* the list side */
 .card.is-hand-list .card-level{display:none;}
 .card.is-hand-list .card-star{display:none;}
@@ -579,7 +582,7 @@ body.showing-hand-summary .card-question{
 .party-overlay.is-hand-end .twist-div{display:none;}
 .im-wrap{display:flex;flex-direction:column;align-items:center;gap:clamp(14px,2vw,28px);width:100%;color:var(--gold);}
 .im-wrap .cb-fermata{display:block;width:clamp(230px,30vw,440px);height:auto;}
-.im-rule{width:clamp(150px,19vw,280px);height:2px;background:linear-gradient(90deg,transparent,var(--im-color,var(--preset-deep)),transparent);}
+.im-rule{width:clamp(150px,19vw,280px);height:2px;background:linear-gradient(90deg,transparent,var(--im-color),transparent);}
 .im-word{font-family:'Federo',sans-serif;font-size:clamp(.8rem,.9vw + .4rem,1.2rem);letter-spacing:.32em;text-transform:uppercase;color:var(--muted-l);font-style:normal;}
 .party-overlay.is-hand-list .party-zone-prev,.party-overlay.is-hand-list .party-zone-next{pointer-events:none;}
 .party-overlay.open.is-hand-list .party-inner{pointer-events:auto;}
