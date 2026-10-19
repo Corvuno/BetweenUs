@@ -7,7 +7,10 @@ name: Automatic release
 #
 # How the size is decided, and what counts, is documented at the top of
 # scripts/release-plan.mjs. Commits say how big they are with a "Change:"
-# and "Note:" line (see CLAUDE.md).
+# and "Note:" line (see CLAUDE.md). The release notes themselves are the few
+# player headlines kept in RELEASE-NOTES-NEXT.md; the Note: lines are only the
+# fallback when that file is empty. After a successful publish, the reset-notes
+# job below empties the file again and commits that to main.
 #
 # It wakes up at 01:10 UTC (02:10 or 03:10 in Amsterdam). GitHub often starts
 # scheduled jobs hours late, so the time of day isn't checked: the first run
@@ -37,6 +40,7 @@ jobs:
       release: ${{ steps.plan.outputs.release }}
       version: ${{ steps.plan.outputs.version }}
       notes: ${{ steps.plan.outputs.notes }}
+      notes_file_hash: ${{ steps.hash.outputs.hash }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,6 +70,14 @@ jobs:
           [ "$MANUAL" = "true" ] && ARGS="$ARGS --force"
           node scripts/release-plan.mjs $ARGS
 
+      - name: Remember which version of the notes file was published
+        id: hash
+        run: |
+          # No file means no headlines, so the plan used the fallback; leave the hash empty.
+          HASH=""
+          [ -f RELEASE-NOTES-NEXT.md ] && HASH=$(git hash-object RELEASE-NOTES-NEXT.md)
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+
   publish:
     needs: plan
     # A manual run only publishes when "Actually publish" is ticked.
@@ -76,3 +88,51 @@ jobs:
       notes: ${{ needs.plan.outputs.notes }}
     permissions:
       contents: write
+
+  reset-notes:
+    needs: [plan, publish]
+    # Only after a real, successful publish.
+    if: needs.publish.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Empty RELEASE-NOTES-NEXT.md back to its header comment
+        env:
+          PUBLISHED_HASH: ${{ needs.plan.outputs.notes_file_hash }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          if [ ! -f RELEASE-NOTES-NEXT.md ]; then
+            echo "No notes file; nothing to reset."
+            exit 0
+          fi
+          # If someone added headlines after the release was planned, leave
+          # them for the next release rather than wiping them.
+          if [ "$(git hash-object RELEASE-NOTES-NEXT.md)" != "$PUBLISHED_HASH" ]; then
+            echo "Notes file changed since the release was planned; leaving it alone."
+            exit 0
+          fi
+          node scripts/release-plan.mjs --reset-notes
+          if git diff --quiet; then echo "Nothing to reset."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Reset release notes after $VERSION"
+          # Other commits may land on main meanwhile: rebase onto them and try again.
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            echo "Push attempt $attempt failed."
+            sleep $((attempt * 5))
+          done
+          echo "::error::Release $VERSION was published, but resetting RELEASE-NOTES-NEXT.md on main failed after 3 attempts. Empty the file back to its header comment by hand, or the next release repeats these notes."
+          exit 1

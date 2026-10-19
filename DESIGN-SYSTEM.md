@@ -125,6 +125,10 @@ properties (`@property`, syntax `<color>`) and put the `transition` on those pro
   set them with `giltRailPaint(el, hex)` in `gilt.js`, never with an inline `background`.
 - `--bd-a` / `--bd-b` (initial = the gold button's two stops): the gold button's gradient;
   `.btn-draw` transitions them (hover and the end-of-hand colour set them, not `background`).
+  Hover answers in .2s (the `:hover` rule carries its own `transition:all .2s`; a transition runs with the
+  style it moves to, so only the way in is quick). At the end of a hand the stops derive from `--im-target`
+  (the pause colour, set without easing next to `--im-color`), never from the eased `--im-color`: reading
+  that would ease the button twice and lag it ~.5s behind the diamond.
 Reduced motion: one rule at the end of `styles.css` sets `transition:none` on all of these.
 
 ## The end of a hand (added 2026-10-16; built 2026-10-15/16)

@@ -151,7 +151,15 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
 
 ### 5. Check
 
-Every build gets all three checks, never a choice between them (owner, 2026-10-19):
+Every build gets all three checks, never a choice between them (owner, 2026-10-19), **sized to
+the change** (owner, same day: "proportional — small bug, test a few sets; does not happen, fine"):
+- A small bug fix: the tester tries the owner's steps and a few nearby sets by hand; does it
+  happen, yes or no. The reviewer reads the diff once. No big simulations, no timing studies,
+  no exhaustive proofs.
+- Bigger or visible changes: the full line-by-line check below.
+- Fix what the owner asked about. Cases beyond it (other hand sizes, rare edges) get one line in
+  the report; the owner decides whether they're worth a round. Never chase them on your own.
+
 
 1. **The tester**, always. It gets the agreement (or the bug report), the chosen mockup if
    there is one, and the builder's report, and goes through the agreement line by line:

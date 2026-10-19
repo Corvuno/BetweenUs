@@ -20,6 +20,12 @@
 //     (fix/tweak/nudge/bump/revert/trim/swap...) stay small, clear feature
 //     signals (new files, big diffs, add/rebuild/redesign...) are medium,
 //     and anything it can't read with confidence defaults to medium.
+//   - Release notes are a few player headlines, not a list of commits. If
+//     RELEASE-NOTES-NEXT.md (repo root) has real
+//     content, the notes are the size label plus that file. The workflow empties
+//     the file after a successful publish. If it is empty, the commits' Note:
+//     lines are the fallback, capped at 5 bullets with the rest folded into
+//     "…and smaller fixes". See renderNotes.
 //   - The release size is the biggest commit size, and also at least
 //     "medium" once CARD_MEDIUM_THRESHOLD or more cards changed in total.
 //   - small -> patch, medium -> minor, large -> major.
@@ -32,12 +38,13 @@
 // Usage:
 //   node scripts/release-plan.mjs [--force] [--now ISO] [--last-date ISO]
 //   node scripts/release-plan.mjs --print-last-tag
+//   node scripts/release-plan.mjs --reset-notes   (empty RELEASE-NOTES-NEXT.md back to its header comment)
 // Locally, pre-releases aren't known unless you set RELEASE_SKIP_TAGS=1.1.8,... yourself.
 // Prints the plan as JSON. Inside GitHub Actions it also writes
 // release / version / size / notes to $GITHUB_OUTPUT.
 
 import { execFileSync } from 'node:child_process';
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const TIME_ZONE = 'Europe/Amsterdam';
@@ -173,27 +180,60 @@ function changedCardCount(tag) {
   return diff.split('\n').filter((l) => l.startsWith('+') && !l.startsWith('+++') && l.includes('question:')).length;
 }
 
-// Labelled commits always get their note. Unlabelled ones use a cleaned-up
-// subject (plumbing like merges/reverts/cache-busts is left out), at most
-// MAX_UNLABELLED per area. Unlabelled card edits aren't listed one by one;
-// the Cards section ends with a single total instead.
-const MAX_UNLABELLED = 6;
+// Release notes are a few headlines for players (see RELEASE-NOTES-NEXT.md).
+//   File mode: if RELEASE-NOTES-NEXT.md has real content once its comments and
+//   blank lines are stripped, the notes are the size label, a blank line, and
+//   that content. No automatic "N cards replaced" line: the card headline in
+//   the file covers it.
+//   Fallback (file empty): the labelled commits' Note: lines, no section
+//   headings, at most MAX_BULLETS bullets. When there are more, the most
+//   recent ones are kept (the card-count line, if any, always stays first)
+//   and the rest fold into one "…and smaller fixes" bullet.
+const MAX_BULLETS = 5;
+const NOTES_FILE = fileURLToPath(new URL('../RELEASE-NOTES-NEXT.md', import.meta.url));
+const SIZE_LABEL = { small: 'Small update', medium: 'Medium update', large: 'Large update' };
 
-export function renderNotes(commits, size, cards) {
-  const label = { small: 'Small update', medium: 'Medium update', large: 'Large update' }[size];
-  const out = [`**${label}.**`, ''];
-  for (const area of AREAS.map((a) => a.name)) {
-    const mine = commits.filter((c) => c.area === area);
-    const labelled = [...new Set(mine.filter((c) => c.labelled).map((c) => c.blurb))];
-    const rest = area === 'Cards' ? [] : [...new Set(mine.filter((c) => !c.labelled && !isNoise(c.subject)).map((c) => c.blurb))];
-    const shown = rest.slice(-MAX_UNLABELLED);
-    const lines = [...labelled, ...shown];
-    if (rest.length > shown.length) lines.push(`…and ${rest.length - shown.length} smaller changes`);
-    if (area === 'Cards' && cards) lines.push(`${cards} card${cards === 1 ? '' : 's'} replaced or reworded`);
-    if (!lines.length) continue;
-    out.push(`### ${area}`, ...lines.map((i) => `- ${i}`), '');
+// Throws if a comment is opened and never closed: that file is half-written,
+// and publishing its text as notes would be worse than using the fallback.
+export function headlinesFromFile(text) {
+  const stripped = text.replace(/<!--[\s\S]*?-->/g, '');
+  if (stripped.includes('<!--')) throw new Error('RELEASE-NOTES-NEXT.md has a "<!--" comment that is never closed.');
+  return stripped.split('\n').map((l) => l.trimEnd()).filter((l) => l.trim()).join('\n');
+}
+
+// The file with everything after its leading header comment removed.
+// Throws if the file does not start with a properly closed comment.
+export function resetNotesText(text) {
+  const header = /^\s*<!--[\s\S]*?-->/.exec(text)?.[0];
+  if (!header) throw new Error('RELEASE-NOTES-NEXT.md must start with a closed "<!-- … -->" header comment; not touching it.');
+  return `${header.trimStart()}\n`;
+}
+
+// '' for a missing file or an unusable one (with a warning); other read errors surface.
+export function readHeadlines(file = NOTES_FILE) {
+  let text;
+  try { text = readFileSync(file, 'utf8'); } catch (e) {
+    if (e.code === 'ENOENT') return '';
+    throw e;
   }
-  return out.join('\n').trim();
+  try { return headlinesFromFile(text); } catch (e) {
+    console.warn(`Warning: ${e.message} Using the commits' Note: lines instead.`);
+    return '';
+  }
+}
+
+export function renderNotes(commits, size, cards, headlines = '') {
+  const out = [`**${SIZE_LABEL[size]}.**`, ''];
+  if (headlines) return [...out, headlines].join('\n');
+  const lead = cards ? [`${cards} card${cards === 1 ? '' : 's'} replaced or reworded`] : [];
+  const seen = new Set();
+  const notes = [];
+  const add = (c) => { if (!seen.has(c.blurb)) { seen.add(c.blurb); notes.push(c.blurb); } };
+  commits.filter((c) => c.labelled && c.area !== 'Cards').forEach(add);
+  commits.filter((c) => !c.labelled && c.area !== 'Cards' && !isNoise(c.subject)).forEach(add);
+  const room = MAX_BULLETS - lead.length;
+  const items = notes.length > room ? [...lead, ...notes.slice(-(room - 1)), '…and smaller fixes'] : [...lead, ...notes];
+  return [...out, ...items.map((i) => `- ${i}`)].join('\n');
 }
 
 export function plan({ now = new Date(), lastDate, force = false } = {}) {
@@ -214,13 +254,20 @@ export function plan({ now = new Date(), lastDate, force = false } = {}) {
     if (nights < NIGHTS_BETWEEN_RELEASES) { result.reason = `Only ${nights} night(s) since the last release; waiting for ${NIGHTS_BETWEEN_RELEASES}.`; return result; }
   }
 
-  return { ...result, release: true, version: bump(tag, size), notes: renderNotes(commits, size, cards) };
+  return { ...result, release: true, version: bump(tag, size), notes: renderNotes(commits, size, cards, readHeadlines()) };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes('--print-last-tag')) {
     console.log(latestTag(candidateTags()) || '');
+    process.exit(0);
+  }
+  if (args.includes('--reset-notes')) {
+    try { writeFileSync(NOTES_FILE, resetNotesText(readFileSync(NOTES_FILE, 'utf8'))); } catch (e) {
+      console.error(`--reset-notes failed: ${e.message}`);
+      process.exit(1);
+    }
     process.exit(0);
   }
   const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
