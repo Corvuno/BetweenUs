@@ -36,7 +36,11 @@ apply every note in it.
 5. **Side effects:** saved data (seen cards, settings) still read correctly by old and new code;
    every profile (`between-us.html`, `?profile=work`, `?profile=editor`); Spotlight and the
    main screen kept in step; `?v=` cache values bumped together when CSS/JS changed.
-6. **Tests:** a bug fix comes with a test that reproduces the bug. Missing → finding.
+6. **Simplicity:** is this the simplest code that does the job? Extra passes, retries, flags
+   and special cases are a finding when a simpler approach exists; name it.
+7. **Touched code modernised:** what the change touched should leave in modern style (see the
+   builders' "How the code is written").
+8. **Tests:** a bug fix comes with a test that reproduces the bug. Missing → finding.
 
 ## Report back
 

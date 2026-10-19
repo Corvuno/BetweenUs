@@ -68,8 +68,14 @@ build step:
   workarounds layered on top of earlier workarounds; if you find one, say so in your report.
 - Reuse what exists before writing something new; remove what your change makes dead.
 - Names that say what a thing is; a short comment only where the *why* isn't obvious.
-- Leave the code you touch a little cleaner, but don't rewrite what the job doesn't need —
-  bigger clean-ups are proposed to the Keeper, not slipped in.
+- **Bring what you touch up to date** (owner, 2026-10-19): every function, rule or block your
+  job changes leaves in modern style, as above, even if it was old-style before. Whole files
+  you merely pass through are not rewritten; bigger clean-ups are proposed to the Keeper.
+- **Simple wins** (owner, 2026-10-19): the simplest code that does the job. No extra layers,
+  options, fallbacks or retries "just in case". If your first version needs several passes or
+  special cases, look for the one-pass idea before reporting. If the job as asked is very
+  complex and a small change to *what* is asked would make it much simpler, stop and report
+  that to the Keeper before building.
 
 ## Check before reporting
 
