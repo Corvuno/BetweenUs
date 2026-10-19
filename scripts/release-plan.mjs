@@ -38,12 +38,13 @@
 // Usage:
 //   node scripts/release-plan.mjs [--force] [--now ISO] [--last-date ISO]
 //   node scripts/release-plan.mjs --print-last-tag
+//   node scripts/release-plan.mjs --reset-notes   (empty RELEASE-NOTES-NEXT.md back to its header comment)
 // Locally, pre-releases aren't known unless you set RELEASE_SKIP_TAGS=1.1.8,... yourself.
 // Prints the plan as JSON. Inside GitHub Actions it also writes
 // release / version / size / notes to $GITHUB_OUTPUT.
 
 import { execFileSync } from 'node:child_process';
-import { appendFileSync, readFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const TIME_ZONE = 'Europe/Amsterdam';
@@ -185,31 +186,54 @@ function changedCardCount(tag) {
 //   that content. No automatic "N cards replaced" line: the card headline in
 //   the file covers it.
 //   Fallback (file empty): the labelled commits' Note: lines, no section
-//   headings, at most MAX_BULLETS bullets; anything beyond folds into one
-//   "…and smaller fixes" bullet.
+//   headings, at most MAX_BULLETS bullets. When there are more, the most
+//   recent ones are kept (the card-count line, if any, always stays first)
+//   and the rest fold into one "…and smaller fixes" bullet.
 const MAX_BULLETS = 5;
 const NOTES_FILE = fileURLToPath(new URL('../RELEASE-NOTES-NEXT.md', import.meta.url));
 const SIZE_LABEL = { small: 'Small update', medium: 'Medium update', large: 'Large update' };
 
+// Throws if a comment is opened and never closed: that file is half-written,
+// and publishing its text as notes would be worse than using the fallback.
 export function headlinesFromFile(text) {
-  return text.replace(/<!--[\s\S]*?-->/g, '').split('\n').map((l) => l.trimEnd()).filter((l) => l.trim()).join('\n');
+  const stripped = text.replace(/<!--[\s\S]*?-->/g, '');
+  if (stripped.includes('<!--')) throw new Error('RELEASE-NOTES-NEXT.md has a "<!--" comment that is never closed.');
+  return stripped.split('\n').map((l) => l.trimEnd()).filter((l) => l.trim()).join('\n');
 }
 
+// The file with everything after its leading header comment removed.
+// Throws if the file does not start with a properly closed comment.
+export function resetNotesText(text) {
+  const header = /^\s*<!--[\s\S]*?-->/.exec(text)?.[0];
+  if (!header) throw new Error('RELEASE-NOTES-NEXT.md must start with a closed "<!-- … -->" header comment; not touching it.');
+  return `${header.trimStart()}\n`;
+}
+
+// '' for a missing file or an unusable one (with a warning); other read errors surface.
 export function readHeadlines(file = NOTES_FILE) {
-  try { return headlinesFromFile(readFileSync(file, 'utf8')); } catch { return ''; }
+  let text;
+  try { text = readFileSync(file, 'utf8'); } catch (e) {
+    if (e.code === 'ENOENT') return '';
+    throw e;
+  }
+  try { return headlinesFromFile(text); } catch (e) {
+    console.warn(`Warning: ${e.message} Using the commits' Note: lines instead.`);
+    return '';
+  }
 }
 
 export function renderNotes(commits, size, cards, headlines = '') {
   const out = [`**${SIZE_LABEL[size]}.**`, ''];
   if (headlines) return [...out, headlines].join('\n');
-  const items = [];
-  if (cards) items.push(`${cards} card${cards === 1 ? '' : 's'} replaced or reworded`);
+  const lead = cards ? [`${cards} card${cards === 1 ? '' : 's'} replaced or reworded`] : [];
   const seen = new Set();
-  const add = (c) => { if (!seen.has(c.blurb)) { seen.add(c.blurb); items.push(c.blurb); } };
+  const notes = [];
+  const add = (c) => { if (!seen.has(c.blurb)) { seen.add(c.blurb); notes.push(c.blurb); } };
   commits.filter((c) => c.labelled && c.area !== 'Cards').forEach(add);
   commits.filter((c) => !c.labelled && c.area !== 'Cards' && !isNoise(c.subject)).forEach(add);
-  const shown = items.length > MAX_BULLETS ? items.slice(0, MAX_BULLETS - 1).concat('…and smaller fixes') : items;
-  return [...out, ...shown.map((i) => `- ${i}`)].join('\n');
+  const room = MAX_BULLETS - lead.length;
+  const items = notes.length > room ? [...lead, ...notes.slice(-(room - 1)), '…and smaller fixes'] : [...lead, ...notes];
+  return [...out, ...items.map((i) => `- ${i}`)].join('\n');
 }
 
 export function plan({ now = new Date(), lastDate, force = false } = {}) {
@@ -237,6 +261,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes('--print-last-tag')) {
     console.log(latestTag(candidateTags()) || '');
+    process.exit(0);
+  }
+  if (args.includes('--reset-notes')) {
+    try { writeFileSync(NOTES_FILE, resetNotesText(readFileSync(NOTES_FILE, 'utf8'))); } catch (e) {
+      console.error(`--reset-notes failed: ${e.message}`);
+      process.exit(1);
+    }
     process.exit(0);
   }
   const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };

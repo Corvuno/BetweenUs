@@ -72,7 +72,11 @@ jobs:
 
       - name: Remember which version of the notes file was published
         id: hash
-        run: echo "hash=$(git hash-object RELEASE-NOTES-NEXT.md)" >> "$GITHUB_OUTPUT"
+        run: |
+          # No file means no headlines, so the plan used the fallback; leave the hash empty.
+          HASH=""
+          [ -f RELEASE-NOTES-NEXT.md ] && HASH=$(git hash-object RELEASE-NOTES-NEXT.md)
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
 
   publish:
     needs: plan
@@ -97,21 +101,38 @@ jobs:
         with:
           ref: main
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Empty RELEASE-NOTES-NEXT.md back to its header comment
         env:
           PUBLISHED_HASH: ${{ needs.plan.outputs.notes_file_hash }}
+          VERSION: ${{ needs.plan.outputs.version }}
         run: |
+          if [ ! -f RELEASE-NOTES-NEXT.md ]; then
+            echo "No notes file; nothing to reset."
+            exit 0
+          fi
           # If someone added headlines after the release was planned, leave
           # them for the next release rather than wiping them.
           if [ "$(git hash-object RELEASE-NOTES-NEXT.md)" != "$PUBLISHED_HASH" ]; then
             echo "Notes file changed since the release was planned; leaving it alone."
             exit 0
           fi
-          # Keep everything up to and including the closing comment marker.
-          awk '{ print } /-->/ { exit }' RELEASE-NOTES-NEXT.md > notes.tmp
-          mv notes.tmp RELEASE-NOTES-NEXT.md
+          node scripts/release-plan.mjs --reset-notes
           if git diff --quiet; then echo "Nothing to reset."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "Reset release notes after ${{ needs.plan.outputs.version }}"
-          git push origin HEAD:main
+          git commit -am "Reset release notes after $VERSION"
+          # Other commits may land on main meanwhile: rebase onto them and try again.
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            echo "Push attempt $attempt failed."
+            sleep $((attempt * 5))
+          done
+          echo "::error::Release $VERSION was published, but resetting RELEASE-NOTES-NEXT.md on main failed after 3 attempts. Empty the file back to its header comment by hand, or the next release repeats these notes."
+          exit 1
