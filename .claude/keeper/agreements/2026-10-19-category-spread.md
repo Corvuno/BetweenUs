@@ -28,3 +28,15 @@ alternatives at the time, so this was not a pass running out.
 - Simulated: with a varied unseen pool, no hand of 5 holds 3+ of one category; with only one or
   two categories selected, hands still fill to the size picked.
 - Tester (line by line), reviewer and full test run clean.
+
+## As built (2026-10-19)
+Four rounds, each checked by tester and reviewer (the first build under the new always-check rule):
+1. ddf1475 — worked, but a ~50-line multi-pass function and avoidable 3+ runs in hands of 20/All.
+2. 59f012a — one pass with an exact look-ahead (does the rest still fit at two per run?); 0 avoidable
+   violations, but a hand of All took ~340 ms on a slow phone, `.with` broke older phones, and the After
+   Dark opener swap broke Arc's shape in 36/600 hands.
+3. 79308d3 — All back to ~30 ms (CPU ×4); `.with` gone; the swap keeps spread and shape (2/600 left).
+4. 6707cdc — negative-room edge fixed, the look-ahead shortcut guarded by a test against the full check
+   (reviewer verified it exact on 2.1M states), comments, `.at` removed. 45/45, static checks clean.
+Keeper calls (named to the owner): draw order stays in charge, a big category is only pulled forward when
+needed to fit later; keep the shortcut for speed and guard it with a test.
