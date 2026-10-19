@@ -1006,8 +1006,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   }
 
   // Re-syncs which toggle buttons are visible/locked (safe mode, in-deck,
-  // backup). It deliberately leaves state.activePreset alone: a tweak on top
-  // of Balanced is still Balanced, so the preset identity survives an edit.
+  // backup). It leaves state.activePreset alone; syncActivePreset() decides
+  // after each selection change whether the deck is still that preset.
   function releasePresetMask(){
     document.querySelectorAll('.toggle-btn').forEach(b => {
       const lvl = b.dataset.level; if (!lvl) return;
@@ -1087,6 +1087,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   }
 
   function commit(){
+    syncActivePreset();
     applyToggleUI();   // calls syncIntentUI() itself
     initDeck();
     if (typeof renderShell === 'function') renderShell();

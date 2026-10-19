@@ -441,12 +441,9 @@ function renderShell() {
   const tokCats = document.getElementById('tokCats');
   if (vCats) {
     const presetBtn = document.querySelector('.mode-btn[data-mode="' + state.activePreset + '"]');
-    // Toggling an individual category directly (outside a preset's own bulk
-    // toggle) clears state.activePreset to '' — no button matches that, so
-    // presetBtn is null and the label used to fall through to the empty
-    // string itself, leaving just the dropdown chevron with nothing to
-    // anchor to. "Custom" names what's actually true instead of showing
-    // nothing at all.
+    // A selection that is not exactly a preset's set leaves
+    // state.activePreset '' (see syncActivePreset), so no button matches and
+    // the deck reads "Custom".
     const label = state.activePreset === 'colbertmode' ? 'Colbert'
       : (presetBtn ? presetBtn.textContent.trim() : (state.activePreset || 'Custom'));
     const cs = presetBtn && getComputedStyle(presetBtn);

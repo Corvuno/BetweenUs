@@ -332,6 +332,33 @@ async function run() {
     }
   });
 
+  await check('the deck reads "Custom" when the selection leaves the preset, undoing the edit brings the preset back, None is Custom, and picking a preset names it', async () => {
+    try {
+      await openCategorySheet();
+      const token = () => page.locator('#valCats').textContent().then(s => s.trim());
+      await page.locator('.mode-btn[data-mode="balanced"]').click();
+      await page.waitForTimeout(300);
+      assert((await token()) === 'Balanced', 'Balanced did not name the deck');
+      await page.evaluate(() => document.querySelector('.chapter[data-chapter="surface"] .ch-fold')?.classList.contains('open') ||
+        document.querySelector('.chapter[data-chapter="surface"] .ch-fold').click());
+      await page.waitForTimeout(450);
+      const cat = page.locator('.chapter-panel[data-chapter="surface"] .toggle-btn:visible').first();
+      await cat.click(); await page.waitForTimeout(300);
+      assert((await token()) === 'Custom', 'one category tap did not make the deck Custom');
+      assert((await page.locator('.mode-btn.active').count()) === 0, 'a preset stayed highlighted while Custom');
+      await cat.click(); await page.waitForTimeout(300);
+      assert((await token()) === 'Balanced', 'undoing the tap did not bring Balanced back');
+      assert(await page.locator('.mode-btn[data-mode="balanced"]').evaluate(el => el.classList.contains('active')), 'Balanced not highlighted again');
+      await page.locator('#deselectAll').click(); await page.waitForTimeout(300);
+      assert((await token()) === 'Custom', 'None did not make the deck Custom');
+      await page.locator('.mode-btn[data-mode="friends"]').click(); await page.waitForTimeout(300);
+      assert((await token()) === 'Friends', 'picking Friends did not name the deck');
+      await page.locator('.mode-btn[data-mode="balanced"]').click(); await page.waitForTimeout(300);
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
   // ── G. Draw-three picker ─────────────────────────────────────────────────
   await check('draw-three picker opens instantly on toggle and choosing an option advances to it', async () => {
     await closeCategorySheet(); // idempotent — guards against a sheet left open by a prior step

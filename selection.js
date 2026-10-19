@@ -32,11 +32,43 @@ function applyToggleUI() {
 // or drawing from at random, which an ordered sequence never is.
 const FIXED_SEQ_PRESETS = ['colbertmode', 'aronmode'];
 
+// The categories a preset turns on, given the current After Dark state.
+// After Dark is opt-in: adult categories stay reachable but are never
+// pre-activated unless this build ships with spice on (editor), which keeps
+// them on in every mode that reaches them (OPT_IN_ONLY ones excepted).
+function presetSelection(preset) {
+  const on = new Set(preset.on.filter(l => DECK_LEVELS.has(l)));
+  if (state.safeMode || !window.SPICE_MODE) SAFE_BLOCKED_LEVELS.forEach(l => on.delete(l));
+  if (window.SPICE_MODE && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE) {
+    SAFE_BLOCKED_LEVELS
+      .filter(l => !OPT_IN_ONLY.includes(l) && DECK_LEVELS.has(l) && (preset.on.includes(l) || preset.available.includes(l)))
+      .forEach(l => on.add(l));
+  }
+  return on;
+}
+
+// The last preset applied. Going Custom keeps it, so undoing the edits can
+// bring the preset back; it is not saved with sessions.
+let _lastPreset = '';
+
+// The deck carries a preset's name only while the selection is exactly that
+// preset's set (the active one, or the last applied after going Custom);
+// any other selection is "Custom" (activePreset ''). Fixed Sets are ordered
+// lists with no editable selection, so they keep their own behaviour.
+function syncActivePreset() {
+  if (FIXED_SEQ_PRESETS.includes(state.activePreset)) return;
+  const preset = FIXED_SEQ_PRESETS.includes(_lastPreset) ? undefined : PRESETS[_lastPreset];
+  const set = preset && presetSelection(preset);
+  const matches = !!set && set.size === state.activeToggles.size && [...set].every(l => state.activeToggles.has(l));
+  state.activePreset = matches ? _lastPreset : '';
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === state.activePreset));
+}
+
 let _prevSafeModeHS = null;   // remembers your After Dark state across hard-safe modes
 function applyPreset(mode) {
   const preset = PRESETS[mode];
   if (!preset) return;
-  state.activePreset = mode;
+  state.activePreset = _lastPreset = mode;
   const isFixedSeq = FIXED_SEQ_PRESETS.includes(mode);
   document.body.classList.toggle('fixed-seq-mode', isFixedSeq);
   if (isFixedSeq) {
@@ -77,10 +109,7 @@ function applyPreset(mode) {
     _prevSafeModeHS = null;
   }
   const sub = document.getElementById('subtitle'); if (sub) sub.textContent = preset.subtitle;
-  state.activeToggles = new Set(preset.on.filter(l => DECK_LEVELS.has(l)));
-  // After Dark is opt-in: adult categories stay reachable but are never
-  // pre-activated by a preset unless this build ships with spice on (editor).
-  if (state.safeMode || !window.SPICE_MODE) SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
+  state.activeToggles = presetSelection(preset);
 
   document.querySelectorAll('.toggle-btn').forEach(btn => {
     const lvl = btn.dataset.level;
@@ -91,14 +120,6 @@ function applyPreset(mode) {
     const locked = !hidden && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl);
     btn.classList.toggle('hard-locked', locked);
   });
-  // Dev default: SPICE_MODE keeps adult categories switched on in every mode that reaches them,
-  // not just at page load — otherwise leaving and returning to a mode silently drops them.
-  if (window.SPICE_MODE && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE) {
-    SAFE_BLOCKED_LEVELS.forEach(lvl => {
-      if (OPT_IN_ONLY.includes(lvl)) return;
-      if (DECK_LEVELS.has(lvl) && (preset.on.includes(lvl) || preset.available.includes(lvl))) state.activeToggles.add(lvl);
-    });
-  }
   if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
 
   const glyphBtn = document.getElementById('spiceGlyphBtn');
@@ -147,8 +168,7 @@ document.getElementById('chapters').addEventListener('click', e => {
   if (btn._longPressed) { btn._longPressed = false; return; }   // long-press reads, never toggles
   const lvl = btn.dataset.level;
   state.activeToggles[state.activeToggles.has(lvl) ? 'delete' : 'add'](lvl);
-  // activePreset deliberately survives this — a category tweak on top of
-  // Balanced is still "Balanced," not nothing. See releasePresetMask().
+  syncActivePreset();   // a tweak that leaves the preset's set makes the deck Custom
   applyToggleUI();
   initDeck();
   // Show tooltip briefly then fade
@@ -162,8 +182,7 @@ document.getElementById('chapters').addEventListener('click', e => {
 
 document.getElementById('deselectAll').addEventListener('click', () => {
   state.activeToggles.clear();
-  state.activePreset = '';
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  syncActivePreset();
   applyToggleUI();
   initDeck();
 });
