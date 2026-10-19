@@ -254,3 +254,10 @@ Round 2 card picks, 2026-10-19:
   you were scared of it?" picked, owner asks whether it's really Wish). Work 5/7/11, Spirit
   2/3/7/9/10, Body 2/9 shown, picks after this batch.
 - Keeper decision: build the round in one go once every slot is decided.
+Picks 2026-10-19 (second):
+- Roots 10 → "What's the oldest thing you still own from your childhood?"
+- Roots 12 → "Which of your grandparents' lives would make a good film?"
+- Wish 4 → "What did little you think your life would look like by now?"
+- Wish 5 → owner wrote "What are you saving up for right now?", already picked for Wish 6 —
+  asked which slot it goes to.
+- Culture 12: trend dropped; new subjects shown.
