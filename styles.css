@@ -1082,6 +1082,8 @@ body.tok-taught .tok-hint{display:none;}
 .tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
+/* Custom with 2+ categories: the name is a soft gradient of the first 2-3 picked colours (--tokg, set in renderShell) */
+.tok-multi .tok-val{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
 /* no dropdown caret on this token — the hairlines and underline already say it opens something */
 .tok-preset .tok-val::after{content:none;}
 
