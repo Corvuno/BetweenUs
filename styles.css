@@ -72,23 +72,9 @@ body{
 .preset-outer.in{opacity:1;}
 .preset-wrap{flex:1;overflow-x:auto;}
 .preset-row{display:inline-flex;min-width:100%;justify-content:center;}
-.mode-btn{
-  flex:0 0 auto;background:transparent;border:none;
-  /* a dimmed version of the mode's own colour at rest, not flat cream —
-     the dot alone wasn't enough presence to read as "colour-coded" */
-  color:color-mix(in srgb, var(--mc,var(--gold)) 42%, rgba(240,232,216,.5));
-  font-family:'Jost',sans-serif;font-size:.75rem;font-weight:300;
-  letter-spacing:.09em;text-transform:uppercase;padding:15px 16px 15px 23px;cursor:pointer;
-  transition:color .2s;white-space:nowrap;position:relative;
-}
-.mode-btn:hover{color:rgba(240,232,216,.9);}
-/* every mode carries its colour as a small dot, at rest. Excludes the list
-   buttons (Colbert/The 36), which carry their own ☰ marker
-   (.mode-btn--list::before below). */
-.mode-btn:not(.mode-btn--list)::before{content:'';position:absolute;left:9px;top:50%;transform:translateY(-50%);
-  width:5px;height:5px;border-radius:50%;background:var(--mc,var(--gold));opacity:.5;
-  transition:opacity .2s,box-shadow .2s;}
-.mode-btn.active:not(.mode-btn--list)::before{opacity:1;box-shadow:0 0 6px var(--mc,var(--gold));}
+/* Presets, categories, Fixed Sets, Shuffle and Cards share one picked / not-picked
+   look, defined once under "THE ONE PICKED LOOK" further down. */
+.mode-btn{--pc:var(--mc,var(--gold));--pick-h:49px;flex:none;}
 /* Per-mode colour, reused from the category colours those modes draw from
    (levelColor in config.js): "Friends" is the Friendship gold-tan, "Dating"
    the Romance rose, and so on. Everything/Balanced get their own hues — an
@@ -166,19 +152,10 @@ body{
 .deselect-btn:hover{color:var(--gold);}
 .deselect-btn:first-child::after{content:'·';margin-left:8px;opacity:.25;pointer-events:none;}
 
-/* Mode bar active state — stronger signal */
-.mode-btn.active{color:var(--mc,var(--gold));font-weight:400;}
-.mode-btn.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--mc,var(--gold));opacity:.7;}
-
 /* category grid */
 .cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
 .cat-grid-wrap.open{display:block;}
-.toggle-btn{
-  flex:0 0 auto;cursor:pointer;
-  font-family:'Jost',sans-serif;font-size:.75rem;text-transform:uppercase;
-  transition:all .18s;color:var(--cream);
-  white-space:nowrap;
-}
+.toggle-btn{--pc:var(--c);flex:none;}
 .toggle-btn.hard-locked{opacity:.12;cursor:default;pointer-events:none;}
 
 /* ── CARD ── */
@@ -482,9 +459,6 @@ body.showing-hand-summary .card-question{
 /* pressed-and-holding feedback on the end-of-draw button */
 .btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
-.limit-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;color:var(--btn-quiet);cursor:pointer;padding:15px 10px;transition:all .2s;opacity:.55;}
-.limit-btn.active{color:var(--gold);opacity:1;}
-.limit-btn:hover{color:var(--gold);opacity:.85;}
 .draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:all .2s;display:none;}
 .draw-more-btn.visible{display:block;}
 .draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
@@ -968,12 +942,11 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 @media(min-width:768px){
   .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.twist-sentence.twist{font-size:.98rem;}
   .btn-sq{width:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;}
-  .limit-btn{font-size:.8rem;padding:15px 10px;}.mode-btn{font-size:.82rem;padding:15px 18px;}
-  .cat-toggle-lbl{font-size:.8rem;}.toggle-btn{font-size:.8rem;}
+  .cat-toggle-lbl{font-size:.8rem;}
 }
 @media(min-width:1024px){
   .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.twist-sentence.twist{font-size:1.05rem;}
-  .limit-btn{font-size:.85rem;}.mode-btn{font-size:.88rem;padding:15px 20px;}.btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
+  .btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
   /* chrome sized for a 364px mobile card reads thin at 720px — scale the rail,
      corner brackets and star (mobile 3px rail/24px corners/.9rem star).
      Rail is 5px: desktop uses the hard-edged "intense" gilt.js derivation (see
@@ -1097,7 +1070,6 @@ body.tok-taught .tok-hint{display:none;}
 .tray .preset-wrap{overflow:visible;}
 .tray .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 .tray .limit-row{justify-content:center;}
-.tray .limit-btn{font-size:.8rem;padding:15px 12px;letter-spacing:.1em;}
 
 /* ── CATEGORY DRAWER — same species as the menu drawer ── */
 .cat-scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
@@ -1160,9 +1132,6 @@ body.tok-taught .tok-hint{display:none;}
 .preset-host.open .preset-outer{max-height:260px;padding:6px 24px 10px;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
-.preset-host .mode-btn{font-size:.8rem;padding:15px 11px 15px 18px;}
-.preset-host .mode-btn--list{padding:15px 10px;}
-.preset-host .mode-btn:not(.mode-btn--list)::before{left:6px;width:4px;height:4px;}
 /* Colbert/The 36 aren't chapters, so picking one leaves "What kind of
    evening?" with nothing under it to show — expected, not a bug, but the
    empty space is exactly where a description of what's actually playing
@@ -1171,29 +1140,8 @@ body.tok-taught .tok-hint{display:none;}
   font-size:.85rem;line-height:1.5;color:rgba(240,232,216,.75);padding:8px 10px 4px;}
 
 /* suggested: in this room, not yet chosen — the exploration hint */
-.toggle-btn.suggested{opacity:.6;border-bottom:1px dotted currentColor;}
-.toggle-btn.suggested:hover{opacity:.9;}
 
-/* category chips — de-pilled: text, underline when chosen */
-.toggle-btn{border:none;border-radius:0;background:none;padding:15px 10px 13px;
-  border-bottom:1px solid transparent;letter-spacing:.09em;opacity:.8;}
-.toggle-btn:hover{opacity:.95;}
-.toggle-btn.on{background:none;border:none;border-bottom:1px solid currentColor;opacity:1;
-  text-shadow:0 0 9px color-mix(in srgb, currentColor 45%, transparent);}
-
-/* question lists — Colbert and The 36 are sequences, not filters: marked, and in their own colour */
-.toggle-btn--list::before{content:'\25B8';margin-right:5px;font-size:.85em;opacity:.45;}
-.toggle-btn--list.on::before{opacity:.9;}
-.mode-btn--list{color:rgba(240,232,216,.5);padding-left:16px;}
-/* a list plays start-to-finish in a fixed order — a different KIND of thing
-   from the filter modes next to it, so it gets a different kind of glyph
-   (a small stack, not the triangle every other affordance in the app uses
-   to mean "this opens/points onward") */
-.mode-btn--list::before{content:'\2630';margin-right:6px;font-size:.8em;opacity:.55;}
-.mode-btn--list:hover{color:var(--list-col);}
-.mode-btn--list.active{color:var(--list-col);}
-.mode-btn--list.active::before{opacity:1;}
-.mode-btn--list.active::after{background:var(--list-col);}
+.mode-btn--list{--pc:var(--list-col);--pick-h:44px;}
 
 /* ── MAIN COLUMN ── */
 .card-wrap{margin-top:20px;}
@@ -1328,8 +1276,7 @@ body.tok-taught .tok-hint{display:none;}
   .d-label{font-size:.85rem;} .d-sub{font-size:.85rem;} .d-icon{font-size:.95rem;}
   .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.85rem;}
   .session-btn{font-size:.85rem;padding:15px 18px;}
-  .toggle-btn{font-size:.85rem;padding:15px 14px 13px;}
-  .preset-host .mode-btn{font-size:.88rem;padding:15px 14px;}
+  .cat-area{--pick-size:.85rem;}
   .help-content p{font-size:1.1rem;}
 }
 @media(min-width:1180px){
@@ -1349,7 +1296,6 @@ body.tok-taught .tok-hint{display:none;}
   .tok{font-size:.85rem;}
   .btn-draw{font-size:.9rem;}
   .btn-sq{width:54px;}
-  .toggle-btn{font-size:.88rem;padding:15px 15px;}
 }
 @media(min-width:1600px){
   .app{max-width:1000px;}
@@ -1392,20 +1338,10 @@ body.tok-taught .tok-hint{display:none;}
    can't actually shrink a box below its own padding (padding is a fixed
    length, not something the browser will squeeze), so a bare .padding
    here left a permanent ~24px sliver visible even while "closed". */
-.fixed-seq-options{overflow:hidden;max-height:0;padding:0 4px;}
-.fixed-seq-options.open{padding:10px 4px 14px;}
-.fixed-seq-btn{display:flex;width:100%;justify-content:center;padding:9px 10px;margin-bottom:5px;
-  border:1px solid var(--border);border-radius:3px;}
-.fixed-seq-btn:last-child{margin-bottom:0;}
-.fixed-seq-btn::after{display:none;}
 
-/* Arc/Wild — a straight two-way switch, not a picker (the active-option fill is set in the Round rail below). */
-.shuffle-toggle{display:flex;width:100%;max-width:320px;margin:10px auto 0;
-  border:1px solid rgba(240,232,216,.16);border-radius:20px;overflow:hidden;padding:3px;}
-.shuffle-toggle-opt{flex:1;text-align:center;padding:15px 0;font-family:'Jost',sans-serif;
-  font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.5);
-  background:none;border:none;border-radius:16px;cursor:pointer;transition:background .2s,color .2s;}
-.shuffle-toggle-opt[data-mode="arc"].active{text-shadow:0 1px 3px rgba(0,0,0,.5);}
+/* Arc / Random: a plain row of choices, picked like everything else in the sheet. */
+.shuffle-toggle,.limit-row{display:flex;}
+.shuffle-toggle-opt,.limit-btn{--pc:var(--celadon);--pick-h:48px;flex:none;}
 
 .pane{display:none;}
 .pane.on{display:block;}
@@ -1491,14 +1427,8 @@ body.tok-taught .tok-hint{display:none;}
   border-left-color:color-mix(in srgb, var(--ch) 40%, transparent);
   background:color-mix(in srgb, var(--ch) 3%, transparent);}
 .chapter-panel.open{padding:2px 6px 6px 8px;border-width:0 1px 1px 3px;}
-.chapter-panel .toggle-btn{display:flex;align-items:center;gap:7px;min-height:44px;padding:0 9px;
-  color:rgba(240,232,216,.64)!important;border-bottom:none;opacity:1;text-shadow:none;}
-.chapter-panel .toggle-btn .cat-dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--c);flex-shrink:0;}
-.chapter-panel .toggle-btn.on{color:var(--cream)!important;border-bottom:none;}
-.chapter-panel .toggle-btn.on .cat-dot{background:var(--c);}
-.chapter-panel .toggle-btn.on .cat-name{box-shadow:0 1px 0 0 var(--c);padding-bottom:3px;margin-bottom:-3px;}
 .chapter-panel .toggle-btn.hard-locked{pointer-events:auto;cursor:pointer;opacity:.75;}
-.chapter-panel .toggle-btn.suggested{border-bottom:none;opacity:1;}
+.chapter-panel .toggle-btn.suggested{opacity:1;}
 /* Fixed Sets: the whole row is the fold */
 .ch-fold--row{width:100%;min-height:49px;flex-direction:row;gap:12px;padding:0 0 0 13px;
   border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;color:var(--celadon);}
@@ -1506,21 +1436,12 @@ body.tok-taught .tok-hint{display:none;}
 .ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
 .ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
 .chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
-.ch-fold--row .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
+.ch-fold--row .ch-name,.seg-head span{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
   color:rgba(240,232,216,.68);white-space:nowrap;}
 .ch-fold--row .ch-desc{flex:1;text-align:left;font-size:.8rem;color:var(--muted-l);}
 .chapter-group--fixed{--ch:var(--cream);}
-.chapter-group--fixed .chapter-panel.fixed-seq-options{display:flex;border-width:0 1px 1px 3px;border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
+.chapter-group--fixed .chapter-panel.fixed-seq-options{border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
 .chapter-group--fixed .chapter-panel.fixed-seq-options:not(.open){border-width:0;}
-.chapter-group--fixed .chapter-panel.fixed-seq-options.open{padding:2px 6px 6px 8px;}
-/* Colbert / The 36: picked like categories, no box. Cream word, list colour on the mark and underline when on. */
-.chapter-panel .fixed-seq-btn{display:flex;width:auto;margin:0;justify-content:flex-start;border:none;border-radius:0;
-  min-height:44px;padding:0 9px;font-size:.8rem;letter-spacing:.08em;color:rgba(240,232,216,.64);}
-.chapter-panel .fixed-seq-btn::before{color:var(--list-col);opacity:.9;margin-right:7px;}
-.chapter-panel .fixed-seq-btn:hover{color:var(--cream);}
-.chapter-panel .fixed-seq-btn.active{color:var(--cream);}
-.chapter-panel .fixed-seq-btn::after{display:block;content:'';position:absolute;left:9px;right:9px;bottom:10px;height:1px;background:var(--list-col);opacity:0;}
-.chapter-panel .fixed-seq-btn.active::after{opacity:1;}
 .cat-grid-wrap.chapter-wrap{max-height:none;border-top:none;overflow:visible;padding:0 0 6px;}
 .chapter.ch-hidden{display:none;}
 
@@ -1533,22 +1454,49 @@ body.tok-taught .tok-hint{display:none;}
    set, rather than the neutral grey every other .sect-lbl (Start from,
    Round) still uses. */
 #chaptersLbl{color:#7a6e60;}
-/* Shuffle and Cards: ONE line, no boxes, no rails. A quiet word, then the choices; the
-   picked choice is celadon with a 1px celadon underline. Each choice is 48px tall. */
-.seg-row{display:flex;align-items:center;justify-content:space-between;gap:8px;white-space:nowrap;margin:6px 0 22px;}
-.seg{display:flex;align-items:center;flex:none;min-width:0;}
-.seg-head{padding:0 2px 0 0;text-align:left;}
-.seg-head span{font-family:'Federo',sans-serif;font-size:.9rem;letter-spacing:.02em;text-transform:none;
-  color:rgba(240,232,216,.62);}
-.seg .shuffle-toggle,
-.limit-row--drawer{display:flex;margin:0;width:auto;max-width:none;padding:0;border:none;border-radius:0;overflow:visible;gap:0;}
-.seg .shuffle-toggle-opt,
-.limit-row--drawer .limit-btn{position:relative;flex:none;min-height:48px;border:none;border-radius:0;padding:0 6px;background:none;
-  font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:rgba(240,232,216,.5);opacity:1;text-shadow:none;}
-.seg .shuffle-toggle-opt.active,
-.limit-row--drawer .limit-btn.active{background:none;color:var(--celadon);opacity:1;text-shadow:none;}
-.seg .shuffle-toggle-opt.active::after,
-.limit-row--drawer .limit-btn.active::after{content:'';position:absolute;left:6px;right:6px;bottom:11px;height:1px;background:var(--celadon);}
+/* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
+   chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
+.seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 22px;white-space:nowrap;}
+.seg{display:flex;align-items:center;}
+.seg-head{flex:none;width:5.5rem;}
+
+/* ── THE ONE PICKED LOOK ──
+   Everything you can pick in The Deck: presets, categories in open chapters, Colbert and The 36,
+   Shuffle and Cards. A small dot, then the word, both in the item's own colour.
+   Not picked = dimmer; picked = full colour, a full dot and a thin underline. No glow, no box.
+   --pc  the item's own colour (dot, underline source). Set per kind above and in config/markup.
+   --tc  the colour of the word. Same as --pc, except where --pc is too dark to read as small
+         text on the sheet: those get a lighter version of their own colour (list below). */
+.cat-area{--pick-size:.8rem;}
+.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){
+  --tc:var(--pc);
+  position:relative;display:flex;align-items:center;gap:7px;min-height:var(--pick-h,44px);padding:0 9px;
+  background:none;border:none;border-radius:0;opacity:1;text-shadow:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:var(--pick-size);font-weight:300;letter-spacing:.09em;
+  text-transform:uppercase;white-space:nowrap;
+  color:color-mix(in srgb, var(--tc) 42%, rgba(240,232,216,.5));transition:color .2s;}
+.cat-area :is(.mode-btn,.shuffle-toggle-opt,.limit-btn)::before,
+.cat-area .cat-dot{content:'';flex:none;width:5px;height:5px;border-radius:50%;
+  background:var(--pc);opacity:.5;transition:opacity .2s;}
+.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{content:'';position:absolute;
+  inset-inline:9px;top:calc(50% + 1em);height:1px;background:var(--tc);opacity:0;transition:opacity .2s;}
+.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active){color:var(--tc);font-weight:400;}
+.cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active)::before,
+.cat-area .toggle-btn.on .cat-dot{opacity:1;}
+.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active)::after{opacity:.7;}
+/* word colours lightened for this sheet only (owner-approved 2026-10-19); the real colours stay in
+   config.js and everywhere else. Each is the least lightening that reaches 4.5:1 on the sheet (#161310). */
+.toggle-btn[data-level="world"]{--tc:#3b8c68;}
+.toggle-btn[data-level="roots"]{--tc:#9f7755;}
+.toggle-btn[data-level="deep"]{--tc:#6979c3;}
+.toggle-btn[data-level="raw"]{--tc:#008b9d;}
+.toggle-btn[data-level="shadow"]{--tc:#837899;}
+.toggle-btn[data-level="usintimate"]{--tc:#cd5861;}
+.toggle-btn[data-level="flesh"]{--tc:#c45b81;}
+.toggle-btn[data-level="carnal"]{--tc:#db4b52;}
+.toggle-btn[data-level="bare"]{--tc:#dc3b96;}
+.toggle-btn[data-level="kinks"]{--tc:#ce4d9e;}
+.mode-btn[data-mode="latenight"]{--tc:#8875aa;}
 
 /* ── Sentence case for the words people read ──
    Names of things (BALANCED, the chapter names, a card's category) stay in

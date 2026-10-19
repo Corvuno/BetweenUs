@@ -67,7 +67,6 @@
   "selection.js | TS2339 | Property 'style' does not exist on type 'Element'.": 2,
   "selection.js | no-empty | Empty block statement.": 1,
   "selection.js | no-unused-vars | 'e' is defined but never used.": 1,
-  "selection.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed.": 1,
   "selection.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 1,
   "session.js | TS2339 | Property 'LOG_PERSIST' does not exist on type 'Window & typeof globalThis'.": 6,
   "session.js | TS2339 | Property 'dataset' does not exist on type 'Element'.": 1,

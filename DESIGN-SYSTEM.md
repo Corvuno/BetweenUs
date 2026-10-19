@@ -326,20 +326,40 @@ line, Draw Cards fixed. Chapter and category colours stay content colour, set fr
 - **Panel** (`.chapter-panel`, the unfolded categories): left line 3px in the chapter colour at 40%
   (`--ch` is set on `.chapter-group` by `ui.js` for this), `--dim` on the other sides, tint `--ch`
   3%. Each category is a 44px tap target.
-- **Category chip marks**: the word is always cream (`rgba(240,232,216,.64)` unpicked, `--cream`
-  picked) so every colour stays readable. The category colour is carried by the dot and the
-  underline only: picked = filled 7px dot plus a 1px underline in the exact colour; unpicked =
-  hollow 1.5px ring. A locked After Dark category stays at .75 opacity so it is still readable.
+- **Category chip marks**: see "The one picked look" below (superseded 2026-10-19: the cream word and
+  hollow ring are gone).
 - **Fixed Sets** (`.ch-fold--row`, 49px): the whole row is the fold. Name in `.68` cream, hint in
   `--muted-l`, a 1px `--border` hairline (inset 10px) and a celadon chevron in a 60px cell on the
-  right. Inside, Colbert and The 36 are picked like categories (no box): a list glyph in the set's
-  colour, cream word, underline in the set's colour when picked.
+  right. Inside, Colbert and The 36 are built exactly like category items (same dot, word, 44px height,
+  padding), in a panel padded like a chapter panel, so they start at the same left edge.
 - **None** (`#deselectAll`, at the Chapters heading, right): quiet text button (`--btn-quiet`,
   .75rem, caps). There is no All here.
-- **Shuffle and Cards** (`.seg-row`): one line, no boxes or rails, no headings. A quiet Federo word
-  (.9rem, cream .62), then the choices in .78rem caps (cream .5); the picked one is celadon with a
-  1px celadon underline. Each choice is 48px tall. The spice mark's "on" state is colour only
-  (no glow).
+- **Shuffle and Cards** (`.seg-row`): two lines, labels SHUFFLE and CARDS in the same row-label
+  style as FIXED SETS (`.82rem`, `.09em`, caps, cream .68; no Federo). The label starts at the
+  chapter-name inset (16px) and has a fixed 5.5rem column so the choices of both lines align. The
+  choices are picked items (celadon word and dot), 48px tall, no boxes. The spice mark's "on"
+  state is colour only (no glow).
+
+### The one picked look (owner, 2026-10-19)
+`.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)`: presets, categories in open
+chapters, Colbert, The 36, Shuffle and Cards all pick the same way. Reason: the owner liked how the
+presets read picked / not picked and wanted one look for everything pickable.
+- A 5px dot, then the word (`--pick-size` .8rem, .85rem from 1024px; Jost 300, .09em, caps), 7px
+  apart, `0 9px` padding. Not picked: word is the item colour mixed 42% into cream .5, dot at .5
+  opacity. Picked: full word colour, dot at full opacity, 1px underline (.7 opacity) 1em under the
+  text centre, inset 9px. No glow, no box, no ring, no outline.
+- Variables per item: `--pc` the item's own colour (dot; set per kind: `--mc` presets, `--c`
+  categories, `--list-col` fixed sets, `--celadon` Shuffle/Cards), `--tc` the word and underline
+  colour (default `--pc`), `--pick-h` tap height (presets 49px, categories and fixed sets 44px,
+  Shuffle/Cards 48px).
+- **Lightened word colours (text only, this sheet only, owner-approved).** Too dark to read as small
+  text (below 4.5:1 on the sheet colour #161310), so `--tc` is a lighter version of the same hue:
+  World #3b8c68 (real #2d6a4f), Roots #9f7755 (#866448), Deep #6979c3 (#4e60b8), Raw #008b9d
+  (#008495), Shadow #837899 (#615874), Us: Intimate #cd5861 (#a13039), Flesh #c45b81 (#832f4d),
+  Carnal #db4b52 (#8d1c22), Bare #dc3b96 (#b52074), Kink #ce4d9e (#742055), Close friends preset
+  #8875aa (#75609c). The dot, chapter lines, cards and everything outside the sheet keep the real
+  colours; `config.js` is unchanged. The dimmed (not picked) state of these sits at about 4.2 to
+  4.6:1, by design quieter than picked.
 
 ## The Deck sheet heading (added 2026-10-19)
 The evening chooser sheet (`#cat-area`, aria-label "The Deck") is named **The Deck**: a

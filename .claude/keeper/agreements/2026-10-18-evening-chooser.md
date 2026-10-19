@@ -73,3 +73,6 @@ Landed on main. Shuffle/Cards one-line fix and spice-glow removal sent back once
 ## Name 2026-10-19
 Owner: the sheet is called **The Deck** (heading of the sheet; the time-of-day question stays as the line under it). The card screen's label "Selected" becomes "Selected deck" (the " · tap to change" hint stays as today, hiding once learned).
 - Round 3 (2026-10-19): https://claude.ai/artifact/QkFmv98CuXm1duJVUyepH3 — one picked look: A cream words + coloured dot, B words in own colour (lightens 11 colours, needs owner OK); Fixed Sets aligned; Shuffle/Cards as two labelled lines.
+
+## One picked look 2026-10-19
+Owner: keep the presets' picked/not-picked look as the style for everything in the sheet. Built: word + dot in own colour, dim when off, full + underline when on, no glow; eleven dark colours lightened as text only in the sheet (owner OK); Fixed Sets aligned like categories; Shuffle/Cards as two labelled lines. Custom rule built the same day: Custom as soon as the deck differs from its starting preset, undo restores it. Open: tagline under the logo when Custom.
