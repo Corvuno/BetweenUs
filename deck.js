@@ -199,21 +199,26 @@ function _sittingOut(c){ return (state.sitOut[c.question] || 0) > state.handNo; 
 const RUN = 5;      // a run: five consecutive cards of a hand, the unit of an Arc and of the spread
 const RUN_CAP = 2;  // most cards of one category in a run
 
-/* The later runs of a hand (`places` places after the current run), summed once per run for _canFillRuns: `outside[k]`
-   is the places in all but the first k later runs, `cap[k]` how many cards of
-   one category those first k runs can take (a short final run takes fewer). */
+/* The later runs of a hand (`places` places after the current run), summed
+   once per run for _canFillRuns: `outside[k]` is the places in all but the
+   first k later runs, `cap[k]` how many cards of one category those first k
+   runs can take (a short final run takes fewer). */
 function _laterRunsPlan(places) {
   const sizes = Array.from({ length: Math.ceil(places / RUN) }, (_, i) => Math.min(RUN, places - i * RUN));
   const outside = new Array(sizes.length + 1).fill(0);
   for (let k = sizes.length - 1; k >= 0; k--) outside[k] = outside[k + 1] + sizes[k];
-  const cap = sizes.reduce((sums, size) => [...sums, sums.at(-1) + Math.min(RUN_CAP, size)], [0]);
+  const cap = sizes.reduce((sums, size) => [...sums, sums[sums.length - 1] + Math.min(RUN_CAP, size)], [0]);
   return { outside, cap };
 }
 
-/* Which numbers k of later runs _canFillRuns has to try. The later runs are all
-   five places but the last, so the cut value is concave in k up to the last
-   full run (a falling straight line plus a category supply that only flattens)
-   and its lowest point is at an end: k = 0, the last full run, or all runs. */
+/* Which numbers k of later runs (the k largest) _canFillRuns has to try. All
+   later runs have five places except the last, which may be shorter. While the
+   runs are full the cut value is concave in k (a falling straight line plus a
+   category supply that only flattens), so its lowest point is at an end, and
+   only the last run can break that. So: k = 0; k = last - 1 (all later runs
+   but the final one: when the final run is short these are exactly the full
+   runs, when it is full it is the second-to-last run's count); and k = last
+   (all later runs, final one included). */
 function _cutPoints(plan) {
   const last = plan.cap.length - 1;
   return new Set([0, Math.max(0, last - 1), last]);
@@ -227,7 +232,7 @@ function _cutPoints(plan) {
    outside the cut plus what the categories can supply into it must reach
    `places`. */
 function _canFillRuns(left, places, runRoom, inRun, plan) {
-  const roomIn = level => Math.min(RUN_CAP - (inRun.get(level) ?? 0), runRoom);
+  const roomIn = level => Math.max(0, Math.min(RUN_CAP - (inRun.get(level) ?? 0), runRoom));
   const holds = (k, withCurrent) => {
     let supply = plan.outside[k] + (withCurrent ? 0 : runRoom);
     for (const [level, n] of left) supply += Math.min(n, plan.cap[k] + (withCurrent ? roomIn(level) : 0));

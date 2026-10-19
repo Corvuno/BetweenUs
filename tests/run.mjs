@@ -982,12 +982,11 @@ async function run() {
       const savedToggles = new Set(state.activeToggles), savedSpice = state.spiceMode, savedSafe = state.safeMode;
       SPICY_LEVELS.forEach(l => state.activeToggles.add(l));
       state.spiceMode = true; state.safeMode = false; intentOn = false; state.randomMode = 'arc'; state.cardLimit = 5;
-      const shaped = (run) => { const d = run.map(c => levelDepth(c.level)); let i = 0; while (i < d.length - 1 && d[i] <= d[i + 1]) i++; while (i < d.length - 1 && d[i] >= d[i + 1]) i++; return i >= d.length - 1; };
       out.shape = { hands: 400, broken: 0 };
       for (let i = 0; i < out.shape.hands; i++) {
         state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {}; state.handNo++;
         const b = buildFullDeck();
-        if (!shaped(sliceVisibleDeck(b.deck, b.unseen))) out.shape.broken++;
+        if (!_isArcShaped(sliceVisibleDeck(b.deck, b.unseen))) out.shape.broken++;
       }
       state.activeToggles = savedToggles; state.spiceMode = savedSpice; state.safeMode = savedSafe;
       /* only two categories selected: hands still fill to the size picked */
@@ -1005,6 +1004,37 @@ async function run() {
     assert(r.threeBad === 0, `${r.threeBad} Three options would stack a third card of a category`);
     assert(r.cappedOnly.got === Math.min(10, r.cappedOnly.n), `two-category selection did not fill: ${JSON.stringify(r.cappedOnly)}`);
     await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });
+  });
+
+  await check('spread look-ahead: _canFillRuns (three cut points) agrees with trying every k, on random states incl. short final runs, mid-run states and an inRun of 3', async () => {
+    const r = await page.evaluate(() => {
+      const every = (left, places, runRoom, inRun, plan) => {
+        const roomIn = level => Math.max(0, Math.min(RUN_CAP - (inRun.get(level) ?? 0), runRoom));
+        const holds = (k, withCurrent) => {
+          let supply = plan.outside[k] + (withCurrent ? 0 : runRoom);
+          for (const [level, n] of left) supply += Math.min(n, plan.cap[k] + (withCurrent ? roomIn(level) : 0));
+          return supply >= places;
+        };
+        return plan.cap.every((_, k) => holds(k, false) && holds(k, true));
+      };
+      const rnd = (n) => Math.floor(Math.random() * (n + 1));
+      let states = 0, disagree = 0, firstBad = null, fillable = 0;
+      for (let i = 0; i < 4000; i++) {
+        const after = rnd(40), runRoom = rnd(5);
+        const left = new Map(), inRun = new Map();
+        const cats = 1 + rnd(8);
+        for (let c = 0; c < cats; c++) { left.set('c' + c, rnd(14)); inRun.set('c' + c, rnd(3)); }
+        if (i % 7 === 0) inRun.set('c0', 3);
+        const plan = _laterRunsPlan(after);
+        const places = Math.max(0, runRoom + after - rnd(3));
+        const a = _canFillRuns(left, places, runRoom, inRun, plan), b = every(left, places, runRoom, inRun, plan);
+        states++; if (b) fillable++;
+        if (a !== b) { disagree++; firstBad ??= JSON.stringify({ after, runRoom, places, left: [...left], inRun: [...inRun] }); }
+      }
+      return { states, disagree, firstBad, fillable };
+    });
+    assert(r.disagree === 0, `${r.disagree} of ${r.states} states differ; first: ${r.firstBad}`);
+    assert(r.fillable > 200 && r.fillable < r.states - 200, `the random states are one-sided (${r.fillable} of ${r.states} fillable)`);
   });
 
   await check('Three is live right after the first draw (button and Spotlight not dimmed) and the 3 key toggles it on the main screen', async () => {
