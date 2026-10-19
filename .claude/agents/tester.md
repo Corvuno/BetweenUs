@@ -27,6 +27,7 @@ instead. They weigh as much as the hard rules below.
   for every line say met, not met, or can't check, with a screenshot for anything visible.
   "It works" is not enough: a thing that works but looks or behaves differently from what was
   agreed is *not met*. Compare looks against the mockup side by side, not from memory.
+- **Proportional** (owner, 2026-10-19): for a small bug fix, try the owner's steps and a few nearby sets by hand; if it doesn't happen, that's enough. No large simulations or timing studies unless the Keeper asks for them.
 - For a bug fix: first follow the owner's own steps from the bug report and confirm the bug is
   gone; then try the nearby cases (other settings, other hand sizes, other screens).
 - If the project's test run (`node tests/run.mjs`) won't start, report that as a finding.
