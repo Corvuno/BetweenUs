@@ -1054,6 +1054,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     });
     updateListModeNote();
     syncFoldAll();
+    $('deselectAll').textContent = state.activeToggles.size ? 'None' : 'All';
   }
   window.syncIntentUI = syncIntentUI;
 
@@ -1104,6 +1105,19 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     syncCategoryButtons();   // After Dark may just have opened
     intentOn = true;
     setLevels(levels, turningOn);
+    commit();
+  });
+
+  /* None / All at the Chapters heading: None while anything is on, All once nothing is.
+     All switches on every category the sheet shows under the current limits, After Dark
+     included when its gate opens; opt-in-only categories are never swept up. */
+  $('deselectAll').addEventListener('click', () => {
+    if (state.activeToggles.size) state.activeToggles.clear();
+    else {
+      const levels = Object.keys(CHAPTERS).flatMap(visibleLevels).filter(l => !OPT_IN_ONLY.includes(l));
+      if (state.safeMode && levels.some(l => SAFE_BLOCKED_LEVELS.includes(l)) && openAfterDark()) syncCategoryButtons();
+      setLevels(levels, true);
+    }
     commit();
   });
 

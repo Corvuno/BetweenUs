@@ -1,8 +1,8 @@
 // ── SELECTION ────────────────────────────────────────────────────────────────
 // Category/preset selection: applyToggleUI/applyPreset, the category-count
-// display, and the listeners for the preset row, category grid, and select-
-// all/none — the event wiring that's directly part of this domain. (Cross-
-// cutting wiring and the app's boot sequence live in ui.js.)
+// display, and the listeners for the preset row and category grid — the event
+// wiring that's directly part of this domain. (Cross-cutting wiring and the
+// app's boot sequence live in ui.js.)
 
 function applyToggleUI() {
   const preset = PRESETS[state.activePreset];
@@ -191,14 +191,6 @@ document.getElementById('chapters').addEventListener('click', e => {
     setTimeout(() => btn.classList.remove('tip-fade'), 1900);
   }
 });
-
-document.getElementById('deselectAll').addEventListener('click', () => {
-  state.activeToggles.clear();
-  syncActivePreset();
-  applyToggleUI();
-  initDeck();
-});
-
 
 function updateCatCounts() {
   const counts = {};
