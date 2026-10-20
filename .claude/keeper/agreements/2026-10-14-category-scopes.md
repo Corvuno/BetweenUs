@@ -344,3 +344,5 @@ check:static clean. Body 2 still open. Found while building: since the evening c
 (17fa066, 2026-10-19) the app lines show only as a hover tooltip on the category buttons — the
 "Tap or hold a category to see what it does" line is gone, so on a phone nobody sees them.
 Raised with the owner.
+2026-10-20: owner asked more Body 2 options, and a review of the first-round app lines
+(Life, Home, World, Attract, Flesh, Carnal, Kink, Us: Intimate). Review shown in chat.
