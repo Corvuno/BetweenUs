@@ -268,3 +268,17 @@ Picks 2026-10-19 (third):
 - Wish 5 → "What's the oddest thing on your someday list?" (owner). That card was picked for
   Wish 8 before. Keeper decision: it moves to Wish 5; Wish 6 keeps "What are you saving up for
   right now?"; Wish 8 is open again — new options shown.
+Picks 2026-10-20:
+- Work 5 → "When did you first ask for a raise — and how did it go?"
+- Work 7 → "Which colleague would you start a company with tomorrow?"; bench "Who was the best boss
+  you ever had — and what did they do that others didn't?"
+- Work 11 → "What part of your job would surprise someone who followed you around for a day?"
+- Spirit 2 → "Which superstition do you follow even though you know better?"
+- Spirit 3 → "If you could ask one question about what happens after we die, what would it be?";
+  bench "Where do you want to end up when you're gone — buried, scattered, somewhere specific?"
+- Spirit 7 → "Which religious ceremony that wasn't yours has stayed with you?"
+- Spirit 9 → "use the bench card" — three Spirit bench cards exist; asked which.
+- Spirit 10 → "What have you given up on purpose for a while — and what did it give you?"
+- Body 9 → owner's rewrite of alt 1: "What's the best physical feeling you know that's not sexual?"
+  (owner: "isn't sex" assumes the answer would be sex). No hands cards in Body.
+- Body 2: owner didn't feel the options; new ones shown. Wish 8 still open.
