@@ -359,6 +359,38 @@ async function run() {
     }
   });
 
+  await check('the None control turns into All once nothing is on, and All switches on every category the limits allow (After Dark included, Coworkers stays within its limits)', async () => {
+    try {
+      await openCategorySheet();
+      const label = () => page.locator('#deselectAll').textContent().then(s => s.trim());
+      const click = async () => { await page.locator('#deselectAll').click(); await page.waitForTimeout(300); };
+      const shownCats = () => page.evaluate(() => [...document.querySelectorAll('.toggle-btn')]
+        .filter(b => b.dataset.level && b.style.display !== 'none' && !OPT_IN_ONLY.includes(b.dataset.level)).map(b => b.dataset.level));
+      const onCats = () => page.evaluate(() => [...state.activeToggles]);
+      await page.locator('.mode-btn[data-mode="balanced"]').click(); await page.waitForTimeout(300);
+      assert((await label()) === 'None', 'label was not None while categories are on');
+      await click();
+      assert((await label()) === 'All' && (await onCats()).length === 0, 'None did not clear everything and read All');
+      await click();
+      assert((await label()) === 'None', 'All did not flip the label back to None');
+      const shown = await shownCats(), on = await onCats();
+      assert(shown.every(l => on.includes(l)), 'All left a shown category off');
+      assert(await page.evaluate(() => SAFE_BLOCKED_LEVELS.some(l => state.activeToggles.has(l))), 'All did not switch After Dark categories on');
+      assert((await page.locator('#subtitle').textContent()).trim() === 'Off script.', 'All did not leave the deck Custom');
+      // switching the last category off by hand also reads All
+      await page.evaluate(() => { state.activeToggles.clear(); applyToggleUI(); });
+      assert((await label()) === 'All', 'an empty selection did not read All');
+      await page.locator('.mode-btn[data-mode="work"]').click(); await page.waitForTimeout(300);
+      await click(); await click();
+      const workOn = await onCats();
+      assert(workOn.length > 0 && !workOn.includes('deep') && !(await page.evaluate(() => SAFE_BLOCKED_LEVELS.some(l => state.activeToggles.has(l)))), 'All in Coworkers went past its limits');
+      assert(await page.evaluate(() => state.safeMode), 'All in Coworkers opened After Dark');
+      await page.locator('.mode-btn[data-mode="balanced"]').click(); await page.waitForTimeout(300);
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
   await check('presets limit the sheet: Coworkers hides Into the Deep and After Dark, Family hides After Dark, Custom keeps the limits and reads "Off script.", Open all opens the shown chapters', async () => {
     try {
       await openCategorySheet();
