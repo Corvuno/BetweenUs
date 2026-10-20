@@ -359,6 +359,51 @@ async function run() {
     }
   });
 
+  await check('presets limit the sheet: Coworkers hides Into the Deep and After Dark, Family hides After Dark, Custom keeps the limits and reads "Off script.", Open all opens the shown chapters', async () => {
+    try {
+      await openCategorySheet();
+      const shown = ch => page.locator(`.chapter-group[data-group="${ch}"]`).evaluate(el => getComputedStyle(el).display !== 'none' && !el.classList.contains('ch-hidden'));
+      const subtitle = () => page.locator('#subtitle').textContent().then(s => s.trim());
+      const visibleCats = () => page.evaluate(() => [...document.querySelectorAll('.toggle-btn')].filter(b => b.style.display !== 'none').map(b => b.dataset.level));
+      await page.locator('.mode-btn[data-mode="work"]').click(); await page.waitForTimeout(300);
+      assert(!(await shown('deeper')) && !(await shown('afterdark')), 'Coworkers still shows Into the Deep or After Dark');
+      assert((await shown('surface')) && (await shown('warmup')), 'Coworkers lost a chapter it can reach');
+      assert((await subtitle()) === 'Professional, mostly.', 'Coworkers subtitle missing');
+      const allowedOff = await page.evaluate(() => PRESETS.work.available.filter(l => DECK_LEVELS.has(l) && !SAFE_BLOCKED_LEVELS.includes(l) && document.querySelector(`.toggle-btn[data-level="${l}"]`)));
+      const vis = await visibleCats();
+      assert(allowedOff.length > 0 && allowedOff.every(l => vis.includes(l)), 'allowed-but-off categories are not shown');
+      assert(!vis.includes('deep') && !vis.includes('carnal'), 'a category outside Coworkers is shown');
+      // one change: the deck is Custom, the limits stay, the preset's tagline gives way
+      const row = page.locator('.chapter[data-chapter="surface"]');
+      await row.locator('.ch-hit').click({ force: true }); await page.waitForTimeout(300);
+      assert((await page.locator('#valCats').textContent()).trim() === 'Custom', 'a change from Coworkers did not make the deck Custom');
+      assert((await subtitle()) === 'Off script.', `Custom subtitle was "${await subtitle()}"`);
+      assert(!(await shown('deeper')) && !(await shown('afterdark')), 'going Custom lifted the Coworkers limits');
+      assert(!(await visibleCats()).includes('deep'), 'a chapter tap unhid a locked category');
+      await row.locator('.ch-hit').click({ force: true }); await page.waitForTimeout(300);
+      assert((await subtitle()) === 'Professional, mostly.', 'undoing the change did not bring the Coworkers subtitle back');
+      // Open all / Close all
+      const folds = () => page.evaluate(() => [...document.querySelectorAll('.chapter-group:not(.ch-hidden):not(.chapter-group--fixed) .ch-fold')].map(f => f.classList.contains('open')));
+      const foldAll = page.locator('#foldAll');
+      if ((await foldAll.textContent()) === 'Close all') { await foldAll.click(); await page.waitForTimeout(450); }
+      assert((await foldAll.textContent()) === 'Open all', 'fold control should offer Open all');
+      await foldAll.click(); await page.waitForTimeout(450);
+      const opened = await folds();
+      assert(opened.length === 3 && opened.every(Boolean), `Open all left shown chapters shut: ${opened}`);
+      assert((await page.locator('.chapter-group[data-group="deeper"] .chapter-panel.open').count()) === 0, 'Open all opened a hidden chapter');
+      assert((await foldAll.textContent()) === 'Close all', 'control should read Close all once everything is open');
+      await foldAll.click(); await page.waitForTimeout(450);
+      assert((await folds()).every(o => !o), 'Close all left a chapter open');
+      await page.locator('.mode-btn[data-mode="family_p"]').click(); await page.waitForTimeout(300);
+      assert(!(await shown('afterdark')) && (await shown('deeper')), 'Family should hide only After Dark');
+      await page.locator('.mode-btn[data-mode="open"]').click(); await page.waitForTimeout(300);
+      assert(await shown('deeper'), 'Everything lost Into the Deep');
+    } finally {
+      await page.locator('.mode-btn[data-mode="balanced"]').click(); await page.waitForTimeout(300);
+      await closeCategorySheet();
+    }
+  });
+
   // ── G. Draw-three picker ─────────────────────────────────────────────────
   await check('draw-three picker opens instantly on toggle and choosing an option advances to it', async () => {
     await closeCategorySheet(); // idempotent — guards against a sheet left open by a prior step

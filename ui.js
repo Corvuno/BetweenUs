@@ -994,6 +994,9 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   });
   const inDeck = l => DECK_LEVELS.has(l);
   const chapterLevels = id => (CHAPTERS[id] || []).filter(inDeck);
+  // the chapter's categories the sheet shows under the current preset limits
+  const visibleLevels = id => chapterLevels(id).filter(l =>
+    document.querySelector('.toggle-btn[data-level="' + l + '"]')?.style.display !== 'none');
   /* A bucket can hold opt-in-only members (Ease In has the ordered lists)
      that a bulk click deliberately never turns on. Judging a bucket's
      on/off state against ALL its members meant it could never reach "on" —
@@ -1010,20 +1013,6 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     return on === 0 ? 'off' : (on === pool.length ? 'on' : 'part');
   }
 
-  // Re-syncs which toggle buttons are visible/locked (safe mode, in-deck,
-  // backup). It leaves state.activePreset alone; syncActivePreset() decides
-  // after each selection change whether the deck is still that preset.
-  function releasePresetMask(){
-    document.querySelectorAll('.toggle-btn').forEach(b => {
-      const lvl = b.dataset.level; if (!lvl) return;
-      const lockedOut = (MASTER_SAFE || WORKPLACE_MODE) && SAFE_BLOCKED_LEVELS.includes(lvl);
-      const hide = lockedOut || !inDeck(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
-      b.style.display = hide ? 'none' : '';
-      b.classList.toggle('hard-locked', !hide && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl));
-    });
-    if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
-  }
-
   function openAfterDark(){
     if (MASTER_SAFE || WORKPLACE_MODE) return false;
     if (state.safeMode) { state.safeMode = false; state.spiceMode = true; updateAfterDarkBtn(); }
@@ -1031,7 +1020,6 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   }
 
   window.openAfterDark = openAfterDark;
-  window.releasePresetMask = releasePresetMask;
 
   function setLevels(levels, on){
     levels.forEach(l => {
@@ -1042,11 +1030,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
 
   function syncIntentUI(){
     document.querySelectorAll('.chapter').forEach(btn => {
-      const levels  = chapterLevels(btn.dataset.chapter);
-      const visible = levels.filter(l => {
-        const b = document.querySelector('.toggle-btn[data-level="'+l+'"]');
-        return b && b.style.display !== 'none';
-      });
+      const visible = visibleLevels(btn.dataset.chapter);
       const st = stateOf(visible);
       btn.classList.toggle('on',   st === 'on');
       btn.classList.toggle('part', st === 'part');
@@ -1063,6 +1047,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
       if (ct) ct.textContent = visible.filter(l => state.activeToggles.has(l)).length + ' / ' + visible.length;
     });
     updateListModeNote();
+    syncFoldAll();
   }
   window.syncIntentUI = syncIntentUI;
 
@@ -1107,11 +1092,12 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     if (e.target.closest('.spice-glyph, .ch-fold')) return;   // the spice toggle and the fold target handle themselves
     const btn = e.target.closest('.chapter'); if (!btn) return;
     const id = btn.dataset.chapter;
-    const turningOn = stateOf(controllable(chapterLevels(id))) !== 'on';
+    const levels = visibleLevels(id);
+    const turningOn = stateOf(controllable(levels)) !== 'on';
     if (id === 'afterdark' && turningOn && !openAfterDark()) return;
-    releasePresetMask();
+    syncCategoryButtons();   // After Dark may just have opened
     intentOn = true;
-    setLevels(chapterLevels(id), turningOn);
+    setLevels(levels, turningOn);
     commit();
   });
 
@@ -1132,7 +1118,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
       // claim to be Balanced (or anything else) here.
       state.activePreset = '';
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-      releasePresetMask();
+      _lastPreset = '';   // not any preset: no limits
+      syncCategoryButtons();
       state.activeToggles.clear();
       if (d.mode === 'all') {
         document.querySelectorAll('.toggle-btn').forEach(b => {
@@ -1199,22 +1186,40 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   /* ── folds: a chapter's count + chevron (and the whole Fixed Sets row) opens its
      panel in place. Several can be open at once; looking is not choosing, so
      opening or closing never touches the selection or the hand. ── */
-  function toggleFold(btn){
+  function setFold(btn, open){
     const grp = btn.closest('.chapter-group');
     const panel = grp && grp.querySelector('.chapter-panel');
-    if (!panel) return;
-    const open = !panel.classList.contains('open');
+    if (!panel || panel.classList.contains('open') === open) return;
     panel.classList.toggle('open', open);
     grp.classList.toggle('open', open);
     btn.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    btn.setAttribute('aria-expanded', String(open));
+    const calm = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     window.slideFold(panel, open, calm ? 1 : 320);
     if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
+
+  /* "Open all" at the Chapters heading: every chapter the sheet shows (not Fixed Sets). */
+  function shownChapterFolds(){
+    return [...document.querySelectorAll('.chapter-group:not(.ch-hidden):not(.chapter-group--fixed) .chapter .ch-fold')];
+  }
+  function syncFoldAll(){
+    const folds = shownChapterFolds();
+    const allOpen = folds.length > 0 && folds.every(f => f.classList.contains('open'));
+    $('foldAll').textContent = allOpen ? 'Close all' : 'Open all';
+  }
+  $('foldAll').addEventListener('click', () => {
+    const folds = shownChapterFolds();
+    const open = !folds.every(f => f.classList.contains('open'));
+    folds.forEach(f => setFold(f, open));
+    syncFoldAll();
+  });
+
   $('chapters').addEventListener('click', e => {
     const f = e.target.closest('.ch-fold');
-    if (f) toggleFold(f);
+    if (!f) return;
+    setFold(f, !f.classList.contains('open'));
+    syncFoldAll();
   });
 
   /* ── move the re-homed presets into Play, where they belong ── */

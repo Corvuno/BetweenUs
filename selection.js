@@ -50,6 +50,7 @@ function presetSelection(preset) {
 // The last preset applied. Going Custom keeps it, so undoing the edits can
 // bring the preset back; it is not saved with sessions.
 let _lastPreset = '';
+const CUSTOM_SUBTITLE = 'Off script.';
 
 // The deck carries a preset's name only while the selection is exactly that
 // preset's set (the active one, or the last applied after going Custom);
@@ -61,7 +62,27 @@ function syncActivePreset() {
   const set = preset && presetSelection(preset);
   const matches = !!set && set.size === state.activeToggles.size && [...set].every(l => state.activeToggles.has(l));
   state.activePreset = matches ? _lastPreset : '';
+  const sub = document.getElementById('subtitle');
+  if (sub) sub.textContent = matches ? preset.subtitle : CUSTOM_SUBTITLE;
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === state.activePreset));
+}
+
+// Which category buttons the sheet shows and which are locked behind After
+// Dark. A preset limits the sheet to its own on + available categories; the
+// limits belong to the last preset applied (_lastPreset), so going Custom
+// keeps them and only tapping another preset changes them.
+function syncCategoryButtons() {
+  const limits = PRESETS[_lastPreset];
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    const lvl = btn.dataset.level;
+    if (!lvl) return;
+    const lockedOut = (MASTER_SAFE || WORKPLACE_MODE) && SAFE_BLOCKED_LEVELS.includes(lvl);
+    const outsideLimits = !!limits && !limits.on.includes(lvl) && !limits.available.includes(lvl);
+    const hidden = lockedOut || outsideLimits || !DECK_LEVELS.has(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
+    btn.style.display = hidden ? 'none' : '';
+    btn.classList.toggle('hard-locked', !hidden && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl));
+  });
+  if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
 }
 
 let _prevSafeModeHS = null;   // remembers your After Dark state across hard-safe modes
@@ -111,16 +132,7 @@ function applyPreset(mode) {
   const sub = document.getElementById('subtitle'); if (sub) sub.textContent = preset.subtitle;
   state.activeToggles = presetSelection(preset);
 
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    const lvl = btn.dataset.level;
-    const lockedOut = (MASTER_SAFE || WORKPLACE_MODE) && SAFE_BLOCKED_LEVELS.includes(lvl);
-    /* the sheet's panels always list every category of a chapter, whatever the preset */
-    const hidden = lockedOut || !DECK_LEVELS.has(lvl) || (lvl === 'backup' && !window.SHOW_BACKUP);
-    btn.style.display = hidden ? 'none' : '';
-    const locked = !hidden && state.safeMode && SAFE_BLOCKED_LEVELS.includes(lvl);
-    btn.classList.toggle('hard-locked', locked);
-  });
-  if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
+  syncCategoryButtons();
 
   const glyphBtn = document.getElementById('spiceGlyphBtn');
   const reachable = hasAfterDark && !state.safeMode && !MASTER_SAFE && !WORKPLACE_MODE;
@@ -163,7 +175,7 @@ document.getElementById('chapters').addEventListener('click', e => {
     // A locked After Dark category opens After Dark (same gate as its chapter row)
     // and switches on only itself, not the rest of the chapter.
     if (typeof openAfterDark !== 'function' || !openAfterDark()) return;
-    if (typeof releasePresetMask === 'function') releasePresetMask();
+    syncCategoryButtons();
   }
   if (btn._longPressed) { btn._longPressed = false; return; }   // long-press reads, never toggles
   const lvl = btn.dataset.level;
