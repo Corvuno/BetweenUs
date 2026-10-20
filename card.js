@@ -362,7 +362,9 @@ function fitPartyPicker() {
   const ov = document.getElementById('partyOverlay'), pk = document.getElementById('partyPicker');
   const bar = ov && ov.querySelector('.party-bottom');
   if (!pk || !bar) return;
-  const need = ov.getBoundingClientRect().bottom - bar.getBoundingClientRect().top;
+  const o = ov.getBoundingClientRect(), b = bar.getBoundingClientRect();
+  // in a turned Spotlight the content's bottom edge is the screen's right (ccw) or left (cw) edge
+  const need = { ccw: o.right - b.left, cw: b.right - o.left }[ov.dataset.turn] ?? o.bottom - b.top;
   const pad = parseFloat(getComputedStyle(pk).paddingBottom) || 0;
   pk.style.setProperty('--pk-x', Math.max(0, need - pad) + 'px');
 }

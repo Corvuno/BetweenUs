@@ -1204,23 +1204,13 @@ body.tok-taught .tok-hint{display:none;}
   .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:18px;}
   .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:12px;}
   .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
-}
-/* Sideways forced on an upright (tall, narrow) phone: the count needs room from the top edge.
-   Draw three there stacks exactly like upright Draw three (options one above the other, horizontal
-   dividers, same label and question sizes), so nothing a player reads is smaller than on the card. */
-@media (max-width:899px) and (min-height:501px){
-  .party-overlay.orient-landscape .party-top{padding-top:max(58px,env(safe-area-inset-top));}
-}
-@media (max-width:899px) and (min-height:501px) and (orientation:portrait){
-  .party-overlay.orient-landscape .party-picker{padding:calc(max(58px,env(safe-area-inset-top)) + 70px) 44px max(34px,env(safe-area-inset-bottom)) 26px;}
-  .party-overlay.orient-landscape .party-picker::before,.party-overlay.orient-landscape .party-picker::after{width:24px;height:24px;}
-  .party-overlay.orient-landscape .party-picker::before{top:12px;left:12px;} .party-overlay.orient-landscape .party-picker::after{bottom:12px;right:12px;}
-  .party-overlay.orient-landscape .party-picker .picker-options{display:flex;flex-direction:column;column-gap:0;align-content:normal;overflow-y:auto;}
-  .party-overlay.orient-landscape .party-picker .pick-opt{padding:18px 4px;justify-content:center;}
-  .party-overlay.orient-landscape .party-picker .pick-div{left:50%;top:0;width:190px;transform:translate(-50%,-50%);opacity:1;}
-  .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:20px;gap:12px;}
-  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:12px;letter-spacing:.3em;}
-  .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:25px;line-height:1.18;overflow-wrap:normal;}
+
+  /* turned a quarter on a screen the browser keeps upright: the overlay takes the swapped
+     screen size, so the sideways layout above fits exactly, then swings round its corner */
+  .party-overlay[data-turn]{inset:0 auto auto 0;width:100dvh;height:100dvw;transform-origin:0 0;}
+  .party-overlay[data-turn="ccw"]{transform:translateY(100dvh) rotate(-90deg);}
+  .party-overlay[data-turn="cw"]{transform:translateX(100dvw) rotate(90deg);}
+  .party-overlay.auto-turn .party-orient{display:none;}   /* tilt readings turn it: no word */
 }
 /* real landscape already gets the layout above from its own media query;
    the toggle only matters for a portrait-locked phone, so hide it once the

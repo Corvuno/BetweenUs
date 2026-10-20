@@ -1308,21 +1308,22 @@ async function run() {
     await page.locator('#partyOrientBtn').click();
     o = await vis();
     assert(!o.land && o.word === 'Sideways', `after Upright: ${JSON.stringify(o)}`);
-    // forced sideways on an upright phone with Three up: stacked like upright Three, same text sizes, horizontal undimmed dividers
+    // the word really turns the content: the overlay takes the swapped screen size and is rotated a quarter
+    await page.locator('#partyOrientBtn').click();
+    const turned = await page.evaluate(() => { const ov = document.getElementById('partyOverlay'); return { turn: ov.dataset.turn, w: ov.offsetWidth, h: ov.offsetHeight, tf: getComputedStyle(ov).transform }; });
+    assert(turned.turn === 'ccw' && turned.w === 844 && turned.h === 390 && turned.tf !== 'none', `Sideways did not turn the content a quarter: ${JSON.stringify(turned)}`);
+    // Three up in the turned frame: three columns, vertical dividers, like a real sideways phone
     await page.locator('#partyPick').click();
     await waitPicker(true);
     await page.waitForTimeout(300);
-    const stk = await page.evaluate(() => {
-      const opts = [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => { const r = e.getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom }; });
-      const lv = getComputedStyle(document.querySelector('#partyPickerOptions .pick-opt-level')).fontSize;
-      const q = getComputedStyle(document.querySelector('#partyPickerOptions .pick-opt-q')).fontSize;
-      const d = document.querySelector('#partyPickerOptions .pick-div');
-      return { opts, lv, q, div: d ? { tf: getComputedStyle(d).transform, op: getComputedStyle(d).opacity } : null };
+    const cols = await page.evaluate(() => {
+      const opts = [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => ({ w: e.offsetWidth, x: e.offsetLeft, y: e.offsetTop }));
+      return { opts, q: getComputedStyle(document.querySelector('#partyPickerOptions .pick-opt-q')).fontSize, div: getComputedStyle(document.querySelector('#partyPickerOptions .pick-div')).opacity };
     });
-    assert(stk.opts.length === 3 && stk.opts[0].b <= stk.opts[1].t + 1 && stk.opts[1].b <= stk.opts[2].t + 1 && stk.opts.every(c => c.l >= 0 && c.r <= 390), `forced sideways Three is not stacked: ${JSON.stringify(stk.opts)}`);
-    assert(stk.lv === '12px' && stk.q === '25px', `forced sideways Three text sizes: ${stk.lv} / ${stk.q}`);
-    assert(stk.div && stk.div.op === '1' && /^matrix\(1, 0, 0, 1,/.test(stk.div.tf), `forced sideways Three dividers: ${JSON.stringify(stk.div)}`);
+    assert(cols.opts.length === 3 && cols.opts[0].x < cols.opts[1].x && cols.opts[1].x < cols.opts[2].x && cols.opts.every(c => c.y === cols.opts[0].y), `turned Three is not three columns: ${JSON.stringify(cols.opts)}`);
+    assert(cols.q === '21px' && cols.div === '0.65', `turned Three sizes: ${cols.q} / ${cols.div}`);
     await page.locator('#partyOrientBtn').click();
+    assert(await page.evaluate(() => !document.getElementById('partyOverlay').dataset.turn), 'Upright did not drop the turn');
     await page.locator('#partyPick').click();
     await page.waitForTimeout(400);
     // PC: no switch, options stacked one above the other
@@ -1655,6 +1656,98 @@ async function run() {
       assert(shown.customInDeck === 0, `${label}: custom cards leaked into the deck`);
       await damagedPage.context().close();
     }
+  });
+
+  // ── Spotlight turning: tilt readings, no permission phones, swipes in the turned frame ──
+  const tiltPage = async (initScript) => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const pg = await ctx.newPage();
+    if (initScript) await pg.addInitScript(initScript);
+    await pg.goto(`http://127.0.0.1:${port}/${TARGET}`);
+    await pg.waitForSelector('#card', { state: 'visible' });
+    await pg.locator('#card').click();
+    await pg.waitForFunction(() => state.currentIndex >= 0);
+    await pg.waitForTimeout(1200);
+    await pg.locator('#btnParty').click();
+    await pg.waitForTimeout(400);
+    return pg;
+  };
+  const tilt = (pg, beta, gamma) => pg.evaluate(([beta, gamma]) => window.dispatchEvent(Object.assign(new Event('deviceorientation'), { beta, gamma, alpha: 0 })), [beta, gamma]);
+  const spot = pg => pg.evaluate(() => { const o = document.getElementById('partyOverlay'), w = document.getElementById('partyOrient'); return { turn: o.dataset.turn ?? null, land: o.classList.contains('orient-landscape'), wordShown: getComputedStyle(w).display !== 'none' }; });
+
+  await check('Spotlight tilt: on its side turns the content (towards the tilt) after a moment, upright turns it back, flat and in-between change nothing; the word hides', async () => {
+    const pg = await tiltPage();
+    assert((await spot(pg)).wordShown, 'the word is hidden before any reading arrived');
+    await tilt(pg, null, null);   // a desktop browser's empty reading proves nothing
+    assert((await spot(pg)).wordShown, 'an empty reading hid the word');
+    await tilt(pg, 85, 2);        // upright
+    assert(!(await spot(pg)).wordShown, 'the word is still shown after a real reading');
+    await tilt(pg, 2, -82);       // on its side, left edge down: top to the left
+    assert((await spot(pg)).turn === null, 'turned at once, without waiting for the tilt to hold');
+    await pg.waitForTimeout(600);
+    let s = await spot(pg);
+    assert(s.turn === 'ccw' && s.land, `tilt left: ${JSON.stringify(s)}`);
+    await tilt(pg, 3, 0);         // flat on the table
+    await tilt(pg, 40, -45);      // somewhere in between
+    await pg.waitForTimeout(600);
+    assert((await spot(pg)).turn === 'ccw', 'flat / in-between readings changed the turn');
+    await tilt(pg, 80, 3);        // upright again
+    await pg.waitForTimeout(600);
+    s = await spot(pg);
+    assert(s.turn === null && !s.land, `back upright: ${JSON.stringify(s)}`);
+    await tilt(pg, 2, 82);        // the other side
+    await pg.waitForTimeout(600);
+    assert((await spot(pg)).turn === 'cw', 'tilt right did not turn the other way');
+    await tilt(pg, 85, 0); await tilt(pg, 2, 85);   // a dip upright that does not hold
+    await pg.waitForTimeout(600);
+    assert((await spot(pg)).turn === 'cw', 'a flicker that never held changed the turn');
+    await pg.locator('#partyExit').click();
+    await pg.waitForTimeout(400);
+    assert((await spot(pg)).turn === null, 'closing Spotlight did not return to upright');
+    await pg.context().close();
+  });
+
+  await check('Spotlight tilt: readings while Spotlight is closed turn nothing; a phone that needs a permission popup is never turned by itself and keeps the word', async () => {
+    const ios = await tiltPage(() => { window.DeviceOrientationEvent = Object.assign(function () {}, { requestPermission: () => Promise.resolve('granted') }); });
+    await tilt(ios, 2, -85);
+    await ios.waitForTimeout(600);
+    const s = await spot(ios);
+    assert(s.turn === null && s.wordShown, `permission-style phone: ${JSON.stringify(s)}`);
+    await ios.locator('#partyOrientBtn').click();
+    assert((await spot(ios)).turn === 'ccw', 'the word does not turn on a permission-style phone');
+    await ios.context().close();
+    const pg = await tiltPage();
+    await pg.locator('#partyExit').click();
+    await pg.waitForTimeout(400);
+    await tilt(pg, 2, -85);
+    await pg.waitForTimeout(600);
+    assert((await spot(pg)).turn === null, 'tilt turned a closed Spotlight');
+    await pg.context().close();
+  });
+
+  await check('Spotlight turned: a swipe is read in the turned frame, a real sideways screen is left alone', async () => {
+    const pg = await tiltPage();
+    await pg.locator('#partyOrientBtn').click();   // ccw: content right = screen up
+    await pg.evaluate(() => { state.currentIndex = 2; updatePartyDisplay(state.visibleDeck[2]); });
+    const swipe = (from, to) => pg.evaluate(([from, to]) => {
+      const t = (x, y) => new Touch({ identifier: 1, target: document.querySelector('#partyOverlay .party-card'), clientX: x, clientY: y });
+      const fire = (type, x, y) => document.querySelector('#partyOverlay .party-card').dispatchEvent(new TouchEvent(type, { bubbles: true, cancelable: true, touches: type === 'touchend' ? [] : [t(x, y)], changedTouches: [t(x, y)] }));
+      fire('touchstart', ...from); fire('touchend', ...to);
+    }, [from, to]);
+    await swipe([195, 600], [195, 400]);   // finger up the screen = to the content's right = back
+    await pg.waitForTimeout(500);
+    assert(await pg.evaluate(() => state.currentIndex) === 1, 'a swipe up the screen did not go back in the turned Spotlight');
+    await swipe([195, 400], [195, 600]);   // down = to the content's left = forward
+    await pg.waitForTimeout(500);
+    assert(await pg.evaluate(() => state.currentIndex) === 2, 'a swipe down the screen did not go forward in the turned Spotlight');
+    await swipe([100, 400], [300, 400]);   // across the screen is up/down for the content: not a swipe, counts as a tap (forward)
+    await pg.waitForTimeout(500);
+    assert(await pg.evaluate(() => state.currentIndex) === 3, 'a drag across the screen was read as a swipe back in the turned Spotlight');
+    await pg.setViewportSize({ width: 844, height: 390 });   // the browser turns the screen itself
+    await pg.waitForTimeout(400);
+    const real = await pg.evaluate(() => { const o = document.getElementById('partyOverlay'); return { turn: o.dataset.turn ?? null, land: o.classList.contains('orient-landscape'), tf: getComputedStyle(o).transform, w: o.offsetWidth }; });
+    assert(real.turn === null && real.land && real.tf === 'none' && real.w === 844, `real sideways screen: ${JSON.stringify(real)}`);
+    await pg.context().close();
   });
 
   await check('no uncaught page errors were raised during the run', async () => {

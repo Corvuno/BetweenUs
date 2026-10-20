@@ -268,11 +268,14 @@ function spotlightBrightenOnce() {
     ptsy = e.touches[0].clientY;
   }, { passive: true });
 
+  /* movement of the finger since touchstart, as the (possibly turned) content sees it */
+  const touchDelta = e => contentDelta(e.changedTouches[0].clientX - ptsx, e.changedTouches[0].clientY - ptsy, newOv.dataset.turn);
+
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
     /* scrolling the hand's list is not a tap or a swipe of the card */
     if (e.target.closest('.hd-list')) {
-      const sdx = e.changedTouches[0].clientX - ptsx, sdy = e.changedTouches[0].clientY - ptsy;
+      const [sdx, sdy] = touchDelta(e);
       if (Math.abs(sdy) > 10 && Math.abs(sdy) >= Math.abs(sdx)) return;
     }
     /* a hold just continued the draw — its release must not advance again.
@@ -283,8 +286,7 @@ function spotlightBrightenOnce() {
        it at the top of the next press. */
     if (window._endHoldFired) { e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
-    const dx = e.changedTouches[0].clientX - ptsx;
-    const dy = e.changedTouches[0].clientY - ptsy;
+    const [dx, dy] = touchDelta(e);
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
       // swipe left = next, swipe right = prev
       if (dx < 0) partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
@@ -310,31 +312,85 @@ function spotlightBrightenOnce() {
   });
 })();
 
-// ── Fullscreen phone orientation switch ── mirrors actual device rotation
-// (resize/orientationchange) so it stays true even for someone who never
-// touches it, but the word on the right edge ("Sideways" / "Upright") sets it
-// directly too — the point is anyone whose phone is orientation-locked can
-// still reach the wide layout without physically rotating anything.
+// ── Spotlight turned sideways ── For a phone whose screen is locked upright, Spotlight
+// can turn its whole content a quarter (data-turn on the overlay: "ccw" = the phone's
+// top to the left, "cw" = top to the right). The turned frame is sized like a real
+// sideways screen, and the sideways layout is the `.orient-landscape` class, which is
+// also what a real sideways screen gets (the browser turns that one itself, no extra turn).
+// Who turns it: tilt readings where the browser gives them freely (no word shown then),
+// otherwise the word on the right edge ("Sideways" / "Upright").
+const SETTLE_MS = 350;   // how long a tilt must hold before the content follows it
+
+/** Which way is up, in the screen's plane, from the beta/gamma tilt (degrees):
+ *  'ccw' / 'cw' while clearly on its side, null while clearly upright; otherwise `current`
+ *  (flat on a table, upside down, or between: the hysteresis). */
+function turnFromTilt(beta, gamma, current) {
+  const rad = Math.PI / 180;
+  const x = -Math.cos(beta * rad) * Math.sin(gamma * rad);
+  const y = Math.sin(beta * rad);
+  if (Math.hypot(x, y) < 0.5) return current;
+  const off = Math.abs(Math.atan2(x, y)) / rad;   // 0 = upright, 90 = on its side
+  if (off < 30) return null;
+  if (off > 60 && off < 120) return x > 0 ? 'ccw' : 'cw';
+  return current;
+}
+
+/** A movement on the screen (dx, dy) seen from inside the turned Spotlight content. */
+function contentDelta(dx, dy, turn) {
+  if (turn === 'ccw') return [-dy, dx];
+  if (turn === 'cw') return [dy, -dx];
+  return [dx, dy];
+}
+
 (function(){
   const orient = document.getElementById('partyOrient');
   if (!orient) return;
   const overlay = document.getElementById('partyOverlay');
   const btn = document.getElementById('partyOrientBtn');
-  function setPartyOrientation(mode){
-    overlay.classList.toggle('orient-landscape', mode === 'landscape');
-    orient.dataset.land = mode === 'landscape' ? '1' : '0';
+  const realLandscape = matchMedia('(orientation: landscape)');
+  const phoneWidth = matchMedia('(max-width: 899px)');
+  let turn = null, wanted = null, settleTimer = 0;
+
+  function setTurn(next) {
+    turn = realLandscape.matches ? null : next;   // a screen the browser turned needs no extra turn
+    overlay.classList.toggle('orient-landscape', realLandscape.matches || turn !== null);
+    if (turn) overlay.dataset.turn = turn; else delete overlay.dataset.turn;
+    orient.dataset.land = turn ? '1' : '0';
     // the layout changed under the options: keep them clear of the bottom row
     if (state.pickerOpen && state.partyMode) fitPartyPicker();
   }
   if (btn) btn.addEventListener('click', e => {
     e.stopPropagation();
-    setPartyOrientation(overlay.classList.contains('orient-landscape') ? 'portrait' : 'landscape');
+    setTurn(turn ? null : 'ccw');   // the common way: phone turned counter-clockwise
   });
-  const syncToDevice = () => setPartyOrientation(
-    matchMedia('(orientation: landscape)').matches ? 'landscape' : 'portrait');
+  const syncToDevice = () => setTurn(turn);
   syncToDevice();
   window.addEventListener('resize', syncToDevice);
   window.addEventListener('orientationchange', syncToDevice);
+
+  // Leaving Spotlight always returns to upright.
+  new MutationObserver(() => {
+    if (overlay.classList.contains('open') || !turn) return;
+    clearTimeout(settleTimer);
+    wanted = null;
+    setTurn(null);
+  }).observe(overlay, { attributes: true, attributeFilter: ['class'] });
+
+  // iPhone only gives tilt after a permission popup: none is asked, the word stays.
+  const needsPermission = typeof DeviceOrientationEvent !== 'undefined'
+    && 'requestPermission' in DeviceOrientationEvent;
+  if (needsPermission) return;
+  window.addEventListener('deviceorientation', e => {
+    if (e.beta == null || e.gamma == null) return;
+    overlay.classList.add('auto-turn');   // this device sends readings: the word is not needed
+    if (!overlay.classList.contains('open') || realLandscape.matches || !phoneWidth.matches) return;
+    const next = turnFromTilt(e.beta, e.gamma, turn);
+    if (next === turn) { clearTimeout(settleTimer); wanted = turn; return; }
+    if (next === wanted) return;
+    wanted = next;
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => setTurn(next), SETTLE_MS);
+  });
 })();
 
 
