@@ -1459,6 +1459,52 @@ async function run() {
     assert(/^(Draw Card|Next Card|Summary|Hold to continue)$/.test(draw), `unexpected draw button text: ${draw}`);
   });
 
+  await check('new version: picked up at a between-hands moment only (not mid-hand, not offline, not twice for the same version)', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const upd = await ctx.newPage();
+    let served = null;   // the stamp a page fetch finds; page navigations always get the real file
+    await upd.route(`http://127.0.0.1:${port}/${TARGET}`, async route => {
+      const res = await route.fetch();
+      const body = await res.text();
+      const fetched = route.request().resourceType() === 'fetch';
+      await route.fulfill({ response: res, body: fetched && served ? body.replace(/\?v=[\w.-]+/g, `?v=${served}`) : body });
+    });
+    await upd.goto(`http://127.0.0.1:${port}/${TARGET}`);
+    await upd.waitForSelector('#card', { state: 'visible' });
+    const mark = () => upd.evaluate(() => { window.__same = true; });
+    const alive = () => upd.evaluate(() => window.__same === true).catch(() => false);
+    const backToFront = async () => {   // a minute later, the app comes to the front
+      await upd.evaluate(() => { const t = Date.now(); Date.now = () => t + 6e7 * (window.__tick = (window.__tick || 0) + 1); document.dispatchEvent(new Event('visibilitychange')); });
+    };
+    await mark();
+    await backToFront();   // same version served: nothing happens
+    await upd.waitForTimeout(500);
+    assert(await alive(), 'reloaded although the version is unchanged');
+
+    served = 'NEWVERSION';
+    await upd.locator('#card').click();   // mid-hand: a card on screen
+    await upd.waitForFunction(() => state.currentIndex >= 0);
+    await backToFront();
+    await upd.waitForTimeout(4500);   // longer than one retry
+    assert(await alive(), 'reloaded in the middle of a hand');
+
+    await ctx.setOffline(true);
+    await upd.evaluate(() => { state.handSide = 'intermezzo'; });   // a between-hands moment, but offline
+    await upd.waitForTimeout(3800);
+    assert(await alive(), 'reloaded while offline');
+
+    await ctx.setOffline(false);
+    await upd.waitForFunction(() => window.__same !== true, null, { timeout: 8000 });   // online at a between-hands moment: it reloads
+    await upd.waitForSelector('#card', { state: 'visible' });
+    assert(await upd.evaluate(() => sessionStorage.getItem('bu-reloaded-for')) === 'NEWVERSION', 'the reload was not recorded');
+
+    await mark();   // the same version is still being served: no second reload
+    await backToFront();
+    await upd.waitForTimeout(3800);
+    assert(await alive(), 'reloaded twice for the same version');
+    await ctx.close();
+  });
+
   await check('damaged saved favourites / custom cards: the app still loads and both drawers show empty', async () => {
     const damaged = [
       ['null', 'null'],

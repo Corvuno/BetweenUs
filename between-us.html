@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261020c">
+<link rel="stylesheet" href="styles.css?v=20261020d">
 </head>
 <body>
 <div class="app">
@@ -562,22 +562,62 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261020c"></script>
-<script src="config.js?v=20261020c"></script>
-<script src="gilt.js?v=20261020c"></script>
-<script src="state.js?v=20261020c"></script>
-<script src="deck.js?v=20261020c"></script>
-<script src="card.js?v=20261020c"></script>
-<script src="library.js?v=20261020c"></script>
-<script src="session.js?v=20261020c"></script>
-<script src="selection.js?v=20261020c"></script>
-<script src="presentation.js?v=20261020c"></script>
-<script src="ui.js?v=20261020c"></script>
+<script src="questions.js?v=20261020d"></script>
+<script src="config.js?v=20261020d"></script>
+<script src="gilt.js?v=20261020d"></script>
+<script src="state.js?v=20261020d"></script>
+<script src="deck.js?v=20261020d"></script>
+<script src="card.js?v=20261020d"></script>
+<script src="library.js?v=20261020d"></script>
+<script src="session.js?v=20261020d"></script>
+<script src="selection.js?v=20261020d"></script>
+<script src="presentation.js?v=20261020d"></script>
+<script src="ui.js?v=20261020d"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+
+// A new version is picked up while the app stays open. On open and whenever the
+// app comes back to the front (online only, at most once a minute) the page is
+// fetched fresh and its ?v= stamp compared with the running one. The reload is
+// silent and happens only between hands (start screen, Intermezzo, hand list):
+// never mid-hand, never offline, never twice for the same version.
+if (/^https?:$/.test(location.protocol)) {
+  const CHECK_EVERY_MS = 60000;
+  const RETRY_MS = 3000;
+  const RELOADED_KEY = 'bu-reloaded-for';
+  const stampOf = text => text.match(/styles\.css\?v=([\w.-]+)/)?.[1];
+  const running = stampOf(document.querySelector('link[href^="styles.css"]')?.href ?? '');
+  const reloadedFor = () => { try { return sessionStorage.getItem(RELOADED_KEY); } catch { return null; } };
+  const betweenHands = () => state.handSide !== null || (state.currentIndex < 0 && !state.pickerOpen && !state.partyMode);
+  let lastCheck = 0;
+  let retryTimer = 0;
+
+  const reloadBetweenHands = latest => {
+    clearTimeout(retryTimer);
+    if (navigator.onLine && betweenHands()) {
+      try { sessionStorage.setItem(RELOADED_KEY, latest); } catch { /* the guard is best effort */ }
+      location.reload();
+    } else {
+      retryTimer = setTimeout(reloadBetweenHands, RETRY_MS, latest);
+    }
+  };
+
+  const checkForNewVersion = async () => {
+    if (!navigator.onLine || Date.now() - lastCheck < CHECK_EVERY_MS) return;
+    lastCheck = Date.now();
+    try {
+      const response = await fetch(location.href, { cache: 'no-cache' });
+      const latest = response.ok ? stampOf(await response.text()) : undefined;
+      if (latest && latest !== running && latest !== reloadedFor()) reloadBetweenHands(latest);
+    } catch { /* offline or unreachable: try again at the next return */ }
+  };
+
+  window.addEventListener('load', checkForNewVersion);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkForNewVersion(); });
 }
 </script>
 </body>
