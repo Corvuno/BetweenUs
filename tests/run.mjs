@@ -1757,6 +1757,21 @@ async function run() {
     await pg.context().close();
   });
 
+  await check('Spotlight tilt: closing within the hold time leaves no stray turn behind, and a phone still on its side turns again on reopening', async () => {
+    const pg = await tiltPage();
+    await tilt(pg, 2, -85);
+    await pg.locator('#partyExit').click();
+    await pg.waitForTimeout(700);   // longer than the hold time
+    await pg.locator('#btnParty').click();
+    await pg.waitForTimeout(100);
+    assert((await spot(pg)).turn === null, 'the closed Spotlight was turned by a tilt that was still settling');
+    await tilt(pg, 2, -85);
+    await pg.waitForTimeout(600);
+    assert((await spot(pg)).turn === 'ccw', 'on reopening with the phone on its side, the first reading did not turn it');
+    assert(await pg.evaluate(() => document.getElementById('partyOrientBtn').getAttribute('aria-pressed')) === 'true', 'the switch does not say it is pressed while turned');
+    await pg.context().close();
+  });
+
   await check('Spotlight turned: a swipe is read in the turned frame, a real sideways screen is left alone', async () => {
     const pg = await tiltPage();
     await pg.locator('#partyOrientBtn').click();   // ccw: content right = screen up

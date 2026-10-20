@@ -356,6 +356,7 @@ function contentDelta(dx, dy, turn) {
     overlay.classList.toggle('orient-landscape', realLandscape.matches || turn !== null);
     if (turn) overlay.dataset.turn = turn; else delete overlay.dataset.turn;
     orient.dataset.land = turn ? '1' : '0';
+    btn?.setAttribute('aria-pressed', String(turn !== null));
     // the layout changed under the options: keep them clear of the bottom row
     if (state.pickerOpen && state.partyMode) fitPartyPicker();
   }
@@ -368,29 +369,36 @@ function contentDelta(dx, dy, turn) {
   window.addEventListener('resize', syncToDevice);
   window.addEventListener('orientationchange', syncToDevice);
 
-  // Leaving Spotlight always returns to upright.
-  new MutationObserver(() => {
-    if (overlay.classList.contains('open') || !turn) return;
-    clearTimeout(settleTimer);
-    wanted = null;
-    setTurn(null);
-  }).observe(overlay, { attributes: true, attributeFilter: ['class'] });
-
   // iPhone only gives tilt after a permission popup: none is asked, the word stays.
   const needsPermission = typeof DeviceOrientationEvent !== 'undefined'
     && 'requestPermission' in DeviceOrientationEvent;
-  if (needsPermission) return;
-  window.addEventListener('deviceorientation', e => {
+  let readingsProven = false;
+  function onTilt(e) {
     if (e.beta == null || e.gamma == null) return;
-    overlay.classList.add('auto-turn');   // this device sends readings: the word is not needed
-    if (!overlay.classList.contains('open') || realLandscape.matches || !phoneWidth.matches) return;
+    if (!readingsProven) {
+      readingsProven = true;
+      overlay.classList.add('auto-turn');   // this device sends readings: the word is not needed
+    }
+    if (realLandscape.matches || !phoneWidth.matches) return;
     const next = turnFromTilt(e.beta, e.gamma, turn);
     if (next === turn) { clearTimeout(settleTimer); wanted = turn; return; }
     if (next === wanted) return;
     wanted = next;
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => setTurn(next), SETTLE_MS);
-  });
+  }
+
+  // Tilt is only listened to while Spotlight is open; leaving it always returns to upright.
+  new MutationObserver(() => {
+    if (overlay.classList.contains('open')) {
+      if (!needsPermission) window.addEventListener('deviceorientation', onTilt);
+      return;
+    }
+    window.removeEventListener('deviceorientation', onTilt);
+    clearTimeout(settleTimer);
+    wanted = null;
+    if (turn) setTurn(null);
+  }).observe(overlay, { attributes: true, attributeFilter: ['class'] });
 })();
 
 

@@ -1209,9 +1209,9 @@ body.tok-taught .tok-hint{display:none;}
 
   /* turned a quarter on a screen the browser keeps upright: the overlay takes the swapped
      screen size, so the sideways layout above fits exactly, then swings round its corner */
-  .party-overlay[data-turn]{inset:0 auto auto 0;width:100dvh;height:100dvw;transform-origin:0 0;}
-  .party-overlay[data-turn="ccw"]{transform:translateY(100dvh) rotate(-90deg);}
-  .party-overlay[data-turn="cw"]{transform:translateX(100dvw) rotate(90deg);}
+  .party-overlay[data-turn]{inset:0 auto auto 0;width:100vh;height:100vw;width:100dvh;height:100dvw;transform-origin:0 0;}
+  .party-overlay[data-turn="ccw"]{transform:translateY(100vh) rotate(-90deg);transform:translateY(100dvh) rotate(-90deg);}
+  .party-overlay[data-turn="cw"]{transform:translateX(100vw) rotate(90deg);transform:translateX(100dvw) rotate(90deg);}
   .party-overlay.auto-turn .party-orient{display:none;}   /* tilt readings turn it: no word */
 }
 /* real landscape already gets the layout above from its own media query;
