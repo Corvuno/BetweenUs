@@ -469,8 +469,7 @@ function drawMore() {
      The hand is always the size you picked (5) — it never becomes 10 or 15.
      initDeck() draws unseen cards first, so a new hand doesn't repeat what this
      session already showed. Same behaviour as Continue on the end screen. */
-  initDeck(true);
-  _nextCardBase();
+  startNewHand();
   updateDeckInfo();
   updateDrawMore();
   renderProgress();
@@ -665,6 +664,23 @@ function decideNextCardAction() {
 // Everything below is the execution side: run the DOM/side-effect step the
 // decision calls for. nextCard() itself is just a dispatcher.
 
+/* One step of a hand drawn the Three way: the options when the selection can
+   supply two besides the planned card, otherwise just the planned card. */
+function drawStep(step) {
+  const options = buildPickOptions(step);
+  if (options.length < 2) _nextCardBase();
+  else openPicker(options, step);
+}
+
+/* Same settings, next hand (hold-to-continue and Draw more), drawn straight
+   into its first card — no draw animation, no blank card. With Three on that
+   first card is offered as three like every other step. */
+function startNewHand() {
+  initDeck(true);
+  if (pickMode) drawStep(0);
+  else _nextCardBase();
+}
+
 function nextCard() {
   const action = decideNextCardAction();
   switch (action.type) {
@@ -675,15 +691,11 @@ function nextCard() {
       return;
     case 'reshuffle':
       if (action.consumeHold) window._endHoldOK = false;
-      initDeck(true);   /* same settings, next hand — no draw animation */
-      _nextCardBase();   /* draw straight into the next hand — no blank card */
+      startNewHand();
       return;
-    case 'pick3': {
-      const options = buildPickOptions(action.step);
-      if (options.length < 2) { _nextCardBase(); return; }   // nothing to set beside the planned card: the single card
-      openPicker(options, action.step);
+    case 'pick3':
+      drawStep(action.step);
       return;
-    }
     case 'advance':
       _nextCardBase();
       if (action.wasAtEnd) {

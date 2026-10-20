@@ -1133,6 +1133,45 @@ async function run() {
     assert(r.h3 && !r.h3sit, 'passed-over cards are not drawable again from the hand after');
   });
 
+  // A 5-card Arc hand with Three on, played to its last card through the real controls.
+  async function playHandWithThree() {
+    await freshHand({ three: true });
+    for (let i = 0; i < 5; i++) {
+      if (i === 0) await page.locator('#card').click(); else await page.locator('#btn-next').click();
+      await waitPicker(true);
+      await page.locator('#cardPicker .pick-opt').nth(0).click();
+      await waitForCardIndex(page, i + 1);
+    }
+  }
+  const newHandPick = () => page.evaluate(() => ({ open: state.pickerOpen, step: state.pickOptions?.step, n: state.pickOptions?.options.length, idx: state.currentIndex, hand: state.handNo, sit: Object.keys(state.sitOut).length }));
+
+  await check('Three on: the first card of the next hand is three options too, after hold-to-continue and after Draw more', async () => {
+    await playHandWithThree();
+    const handBefore = await page.evaluate(() => state.handNo);
+    await page.locator('#card').click();   // past the last card: end message, then Intermezzo
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+    await page.evaluate(() => { window._endHoldOK = true; nextCard(); });   // what a completed hold does
+    await waitPicker(true);
+    let r = await newHandPick();
+    assert(r.step === 0 && r.n === 3 && r.idx === -1 && r.hand === handBefore + 1, `after hold-to-continue: ${JSON.stringify(r)}`);
+    assert(r.sit === 10, `the first hand's ten unpicked cards should sit out the new hand: ${r.sit}`);
+    await page.locator('#cardPicker .pick-opt').nth(1).click();
+    await waitForCardIndex(page, 1);
+    assert(!(await page.evaluate(() => state.pickerOpen)), 'picker still open after choosing at step 1');
+    // Draw more, mid-hand
+    await page.evaluate(() => drawMore());
+    await waitPicker(true);
+    r = await newHandPick();
+    assert(r.step === 0 && r.n === 3 && r.idx === -1 && r.hand === handBefore + 2, `after Draw more: ${JSON.stringify(r)}`);
+    // With Three off the first card of the next hand stays a single card
+    await page.locator('#pickToggle').click();
+    assert(!(await page.evaluate(() => state.pickerOpen)) && (await page.evaluate(() => state.currentIndex)) === 0, 'Three off with step 1 options up: the planned card should take the step');
+    await page.evaluate(() => drawMore());
+    await page.waitForTimeout(300);
+    r = await newHandPick();
+    assert(!r.open && r.idx === 0, `Three off, Draw more: ${JSON.stringify(r)}`);
+  });
+
   await check('Spotlight open/close with Three options up: the options move along, Next stays put, Close/Back/Twist/Three/Next are tappable over them', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();

@@ -13,3 +13,4 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+- Smaller fixes throughout, including: with Three on, the first card after the pause between hands now comes as three too.
