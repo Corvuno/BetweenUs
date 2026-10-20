@@ -736,8 +736,11 @@ async function run() {
     assert(!/Arc complete|Draw complete/.test(await ov.innerText()), 'old fullscreen summary text is still there');
     assert(/Tap to flip card/.test(await page.locator('#endHint').textContent()), 'fullscreen hint does not say Tap to flip card');
     const cardPt = await ov.locator('.party-card').evaluate(el => { const r = el.getBoundingClientRect(); return [r.x + r.width * 0.7, r.y + r.height / 2]; });
+    /* the card turns for 0.9s (TURN_END_MS); the stars only hold still once it has */
+    const turnDone = () => page.waitForFunction(() => !document.querySelector('#partyOverlay .party-card').classList.contains('turning'), null, { timeout: 3000 });
     await page.touchscreen.tap(cardPt[0], cardPt[1]); await page.waitForTimeout(500);
     assert((await imSide()) === 'list', 'a tap in fullscreen did not flip to the list');
+    await turnDone();
     assert(await ov.locator('.hd-row').count() === await page.evaluate(() => state.visibleDeck.length), 'fullscreen list rows differ from the hand');
     const q0 = await page.evaluate(() => state.visibleDeck[0].question);
     const was = await page.evaluate(q => state.favourites.some(f => f.question === q), q0);
@@ -746,7 +749,7 @@ async function run() {
     assert(await page.evaluate(q => state.favourites.some(f => f.question === q), q0) === !was, 'tapping a fullscreen star did not toggle the favourite');
     assert((await imSide()) === 'list', 'a star tap in fullscreen moved the card');
     await page.touchscreen.tap(pt[0], pt[1]); await page.waitForTimeout(300);
-    await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo');
+    await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo'); await turnDone();
     await page.mouse.click(cardPt[0], cardPt[1]); await page.waitForTimeout(500);   // mouse tap flips too
     assert((await imSide()) === 'list', 'a mouse click in fullscreen did not flip to the list');
     await pointerHold(page, '#partyOverlay', 700); await waitForCardIndex(page, 1);
@@ -1477,7 +1480,8 @@ async function run() {
       const t = Date.now(); Date.now = () => t + 6e7;
       document.dispatchEvent(new Event('visibilitychange'));
     });
-    const reloaded = () => upd.waitForFunction(() => window.__same !== true, null, { timeout: 5000 }).then(() => upd.waitForSelector('#card', { state: 'visible' }));
+    /* the new page counts as loaded only when its scripts have all run (the restore is the last of them) */
+    const reloaded = () => upd.waitForFunction(() => window.__same !== true && document.readyState === 'complete', null, { timeout: 5000 });
     await mark();
     await backToFront();   // same version served: nothing happens
     await upd.waitForTimeout(500);
