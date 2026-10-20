@@ -282,3 +282,58 @@ Picks 2026-10-20:
 - Body 9 → owner's rewrite of alt 1: "What's the best physical feeling you know that's not sexual?"
   (owner: "isn't sex" assumes the answer would be sex). No hands cards in Body.
 - Body 2: owner didn't feel the options; new ones shown. Wish 8 still open.
+
+Picks 2026-10-20 (second): Wish 8 → "What's something you own or do mainly because you once
+thought you'd want it?". Spirit 9 → "Where do you want to end up when you're gone — buried,
+scattered, somewhere specific?" (taken off the bench, so not benched). Body 2 still open.
+
+# FINAL AGREEMENT — Round 2 (built 2026-10-20)
+
+Keeper decisions, each named to the owner: build now with every decided slot; Body 2 keeps its
+current card until the owner picks, then a small follow-up. Wish brief drops "what you want for the
+people you love" (owner: becomes generic). Body brief drops hands (owner: no hands in Body). Roots
+brief gets the "works without vivid childhood memories" rule.
+
+## A) Deck — card swaps (exact words; number = position in the category's block)
+
+- Culture 6: "Do you use music to feel more, or to feel less?" → "Which everyday object is so well made it makes you happy every time you use it?"
+- Culture 10: "When did beauty catch you completely unprepared?" → "Which building in the world would you most like to spend a night in?"
+- Culture 12: "What's a story you've stretched out on purpose, just to keep it going a little longer?" → "What's the best thing you've ever seen live — a concert, a play, a match?"
+- Roots 5: "What did your upbringing give you that you're glad of?" → "Where did your family go on holiday — and what always went wrong?"
+- Roots 10: "What did you learn about love from watching your parents?" → "What's the oldest thing you still own from your childhood?"
+- Roots 12: "Which adult from your childhood were you never quite safe with?" → "Which of your grandparents' lives would make a good film?"
+- Wish 4: "Which longing have you domesticated into a hobby?" → "What did little you think your life would look like by now?"
+- Wish 5: "What's the gap between your current life and the one part of you expects?" → "What's the oddest thing on your someday list?"
+- Wish 6: "What have you been quietly rooting for, in your own life?" → "What are you saving up for right now?"
+- Wish 8: "What's a life you've seen from the outside and thought: "how did they end up there?"" → "What's something you own or do mainly because you once thought you'd want it?"
+- Wish 10: "What do you want for someone else that you can't give them?" → "Which person you admire are you secretly trying to become a bit more like?"
+- Work 2: "What would you do professionally if status played no role at all?" → "What would you do for a living if money and status played no role at all?"
+- Work 5: "Has your idea of success survived contact with reality?" → "When did you first ask for a raise — and how did it go?"
+- Work 7: "Is ambition something you have or something that has you?" → "Which colleague would you start a company with tomorrow?"
+- Work 11: "Stop working today, or never be allowed to stop — which scares you more?" → "What part of your job would surprise someone who followed you around for a day?"
+- Spirit 2: "Is your life meaningful right now — and how do you know?" → "Which superstition do you follow even though you know better?"
+- Spirit 3: "What's your working relationship with death, right now?" → "If you could ask one question about what happens after we die, what would it be?"
+- Spirit 7: "Who did something special for you recently that you never properly thanked them for?" → "Which religious ceremony that wasn't yours has stayed with you?"
+- Spirit 9: "When were you last completely present — nothing to fix, nothing to plan?" → "Where do you want to end up when you're gone — buried, scattered, somewhere specific?"
+- Spirit 10: "What physical practice has brought you closest to something spiritual?" → "What have you given up on purpose for a while — and what did it give you?"
+- Body 9: "What is your body better at now than it has ever been?" → "What's the best physical feeling you know that's not sexual?"
+
+Replaced cards are removed, not benched. Bench (owner asked): Culture "Which cover version is
+better than the original?"; Culture "Which video online have you watched more times than you'd
+admit?"; Work "Who was the best boss you ever had — and what did they do that others didn't?".
+
+Writer briefs for Culture, Roots, Wish, Work, Spirit, Body, Unwind: text in
+`.claude/keeper/agreements/round2-briefs.md`, added to the WRITER BRIEFS section.
+
+## C) App lines (config.js desc)
+- Culture: "Everything you love that someone else made — from a song to a building"
+- Roots: unchanged
+- Wish: "Dreams kept, dreams outgrown"
+- Work: "The job you have, and the ones that got you here"
+- Spirit: "What you believe when no one is asking"
+- Body: "How you treat the only body you'll get"
+- Unwind: "What you do when nothing has to be done"
+
+## Done when
+21 cards swapped word for word, three bench cards added, seven briefs readable, six new lines
+on screen, tests pass, live on main.
