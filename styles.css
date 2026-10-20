@@ -1644,7 +1644,9 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   .card{width:100%;height:100%;aspect-ratio:auto;max-width:none;margin:0;container-type:inline-size;overflow:hidden;}
   /* the card's details grow with the card, in the phone card's proportions (376px card: 3px stripe,
      24px brackets 20px in, 1px line, .9rem star) */
-  .c-accent{height:.8cqw;}
+  /* the bar thins toward its ends and fades over a longer run, so it reads as the phone's tapering hairline */
+  .c-accent{height:.8cqw;-webkit-mask:linear-gradient(to right,transparent 0%,#000 25% 75%,transparent 100%);mask:linear-gradient(to right,transparent 0%,#000 25% 75%,transparent 100%);
+    clip-path:polygon(0 0,100% 0,100% 12%,88% 45%,68% 100%,32% 100%,12% 45%,0 12%);}
   .card::before,.card::after{width:6.4cqw;height:6.4cqw;border-width:0;}
   .card::before{top:5.3cqw;left:5.3cqw;border-top-width:.27cqw;border-left-width:.27cqw;}
   .card::after{bottom:5.3cqw;right:5.3cqw;border-bottom-width:.27cqw;border-right-width:.27cqw;}
