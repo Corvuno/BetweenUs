@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261020e">
+<link rel="stylesheet" href="styles.css?v=20261020f">
 </head>
 <body>
 <div class="app">
@@ -562,17 +562,17 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261020e"></script>
-<script src="config.js?v=20261020e"></script>
-<script src="gilt.js?v=20261020e"></script>
-<script src="state.js?v=20261020e"></script>
-<script src="deck.js?v=20261020e"></script>
-<script src="card.js?v=20261020e"></script>
-<script src="library.js?v=20261020e"></script>
-<script src="session.js?v=20261020e"></script>
-<script src="selection.js?v=20261020e"></script>
-<script src="presentation.js?v=20261020e"></script>
-<script src="ui.js?v=20261020e"></script>
+<script src="questions.js?v=20261020f"></script>
+<script src="config.js?v=20261020f"></script>
+<script src="gilt.js?v=20261020f"></script>
+<script src="state.js?v=20261020f"></script>
+<script src="deck.js?v=20261020f"></script>
+<script src="card.js?v=20261020f"></script>
+<script src="library.js?v=20261020f"></script>
+<script src="session.js?v=20261020f"></script>
+<script src="selection.js?v=20261020f"></script>
+<script src="presentation.js?v=20261020f"></script>
+<script src="ui.js?v=20261020f"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.
@@ -594,6 +594,7 @@ if (updateStore && /^https?:$/.test(location.protocol)) {
   const CHECK_EVERY_MS = 60000;
   const RELOADED_KEY = 'bu-reloaded-for';
   const SIDE_KEY = 'bu-reload-side';
+  const THREE_KEY = 'bu-reload-three';   // Three is not part of the saved session; only this reload carries it
   const stampOf = text => text.match(/styles\.css\?v=([\w.-]+)/)?.[1];
   const running = stampOf(document.querySelector('link[href^="styles.css"]')?.href ?? '');
   const somethingOpen = () => document.querySelector('.drawer.open, .sub-drawer.open, .cat-area.sheet-open')
@@ -606,16 +607,25 @@ if (updateStore && /^https?:$/.test(location.protocol)) {
   // The hand has ended: the app comes back on the Intermezzo or the list it was on.
   const side = updateStore.getItem(SIDE_KEY);
   updateStore.removeItem(SIDE_KEY);
+  const threeWasOn = updateStore.getItem(THREE_KEY) === '1';
+  updateStore.removeItem(THREE_KEY);
   if (side && state.visibleDeck.length && state.currentIndex === state.visibleDeck.length - 1) {
     state.currentIndex = state.visibleDeck.length;
     showHandSummary();
     if (side === 'list') flipHandList();
+    if (threeWasOn) {
+      pickMode = true;
+      document.getElementById('pickToggle').classList.add('on');
+      updateDrawMore();
+      renderShell();
+    }
   }
 
   const reloadIfBetweenHands = () => {
     if (!pending || !navigator.onLine || !betweenHands()) return;
     updateStore.setItem(RELOADED_KEY, pending);
     if (state.handSide) updateStore.setItem(SIDE_KEY, state.handSide);
+    if (pickMode) updateStore.setItem(THREE_KEY, '1');
     location.reload();
   };
 

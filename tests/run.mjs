@@ -1490,6 +1490,7 @@ async function run() {
     assert(await alive(), 'reloaded in the middle of a hand');
 
     await upd.evaluate(() => { while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); });
+    await upd.locator('#pickToggle').click();   // Three on: it has to survive the reload
     await ctx.setOffline(true);
     await upd.evaluate(() => showHandSummary());   // Intermezzo, but offline
     await upd.waitForTimeout(500);
@@ -1505,6 +1506,10 @@ async function run() {
     await reloaded();
     let at = await upd.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, len: state.visibleDeck.length, body: document.body.classList.contains('showing-hand-summary'), recorded: sessionStorage.getItem('bu-reloaded-for') }));
     assert(at.side === 'intermezzo' && at.idx === at.len && at.body && at.recorded === 'NEWVERSION', `after the reload: ${JSON.stringify(at)}`);
+    assert(await upd.evaluate(() => pickMode && document.getElementById('pickToggle').classList.contains('on')), 'Three was not on after the reload');
+    await upd.evaluate(() => { window._endHoldOK = true; nextCard(); });   // a completed hold
+    await upd.waitForFunction(() => state.pickerOpen && state.pickOptions.step === 0 && state.pickOptions.options.length === 3, null, { timeout: 3000 });
+    await upd.evaluate(() => { closePicker(); state.pickOptions = null; state.handSide = null; while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); showHandSummary(); });   // back to an Intermezzo for the list case below
 
     await mark();   // the same version is still being served: no second reload
     await backToFront();
