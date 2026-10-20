@@ -29,3 +29,13 @@ its look-through; the Keeper decides and reports it.
 
 Done when: a simulated new version is picked up after the app returns to the front, the
 player's hand and place survive, and nothing reloads while offline.
+
+## Part 2 decided by the Keeper (2026-10-20, after the builder's look-through)
+- Detection: on open and when the app comes back to the front (online only, at most once a
+  minute), fetch the page fresh and compare its `?v=` stamp with the running one.
+- The reload happens only at a between-hands moment: the start screen before the first draw,
+  the end-of-hand screen / Intermezzo / the hand list. Never mid-hand, also not while hidden —
+  a mid-hand restore isn't proven, so it isn't risked. A pending version waits for the next such
+  moment.
+- No prompt to the player; the reload is silent. Never offline, never twice in a row.
+- `session.js` is not widened for this.
