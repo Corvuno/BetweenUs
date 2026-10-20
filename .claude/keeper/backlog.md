@@ -54,3 +54,11 @@ have their own Play links and README rows, next to the real game. Kept so the ow
 show where it came from. Before the site goes public: decide how they're reachable, so a
 visitor who finds those links doesn't take an old, unfinished version for the game, and so
 more old versions don't pile up as loose pages next to it.
+
+## PC layout code tidy-up (reviewer, 2026-10-20)
+
+Not bugs; for the next looks job that touches the wide-screen block: card ratio 556/360 written
+twice; Spotlight's 88px margin duplicated; repeated calc(var(--k)*Npx) could use helper
+variables; "click/tap to change", "Menu" and "Back" live in CSS content (not read by screen
+readers — check aria-labels); setWideScale's numbers need names and could sit with the other
+resize code; a comment near the old desktop .c-accent rules pointing to the WIDE SCREENS block.
