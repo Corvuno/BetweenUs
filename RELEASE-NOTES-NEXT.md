@@ -16,5 +16,5 @@ Rules:
 - New layout for PC and tablet: a big card with the controls around it.
 - The Deck, where you choose your evening, is reworked: chapters unfold into their categories, and Custom shows its categories' colours.
 - Hands mix better: no more three or four cards from one category, and Three works in every hand.
-- Abyss is retired and its cards moved into Kink and Bare; seven questions are new or reworded, mostly in After Dark.
+- Abyss is retired and its cards moved into Kink and Bare; 28 questions are new or reworded, across After Dark, Culture, Roots, Wish, Work, Spirit and Body.
 - Spotlight now matches the main screen, plus smaller fixes throughout (damaged saved favourites or custom cards no longer break the app).
