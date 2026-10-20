@@ -1750,6 +1750,43 @@ async function run() {
     await pg.context().close();
   });
 
+  await check('end of hand: from the first frame of the end message, the button, --im-color and --im-target carry THIS hand\'s last card colour (not the previous hand\'s); the last-card button reads End of hand', async () => {
+    let lastLabel = '';
+    const playHand = async (levels) => {
+      await page.evaluate((lv) => {
+        const by = {}; ALL_CARDS.forEach(c => { (by[c.level] = by[c.level] || []).push(c); });
+        hideHandSummary(); try { pickMode = false; } catch (e) {} state.pickerOpen = false; state.visibleDeck = lv.map((l, i) => by[l][i + 3]); state.currentIndex = -1; state.handSide = null; updateDrawMore();
+      }, levels);
+      for (let i = 0; i < levels.length; i++) {
+        await page.locator('#btn-next').click({ force: true });
+        await page.waitForTimeout(450);
+        if (i === levels.length - 1) { await page.waitForFunction(() => state.currentIndex === state.visibleDeck.length - 1, null, { timeout: 3000 }); await page.waitForTimeout(1200); lastLabel = await imBtn(); }
+      }
+      await page.locator('#btn-next').click({ force: true });
+      // the first frame of the end message
+      await page.waitForFunction(() => document.querySelector('#card-question .end-msg'), null, { timeout: 3000 });
+      const first = await page.evaluate(() => {
+        const last = state.visibleDeck[state.visibleDeck.length - 1];
+        return {
+          want: labelColor(levelColor(last.level)).toLowerCase(),
+          tgt: getComputedStyle(document.getElementById('btn-next')).getPropertyValue('--im-target').trim().toLowerCase(),
+          im: document.body.style.getPropertyValue('--im-color').trim().toLowerCase(),
+        };
+      });
+      await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+      await page.waitForTimeout(900);
+      return first;
+    };
+    const a = await playHand(['life', 'life', 'life']);
+    assert(a.tgt === a.want && a.im === a.want, `hand 1 end message: --im-target ${a.tgt}, --im-color ${a.im}, want ${a.want}`);
+    await imHold('#btn-next');
+    const b = await playHand(['work', 'work', 'work']);
+    assert(b.want !== a.want, 'the test hands must end in different colours');
+    assert(b.tgt === b.want && b.im === b.want, `hand 2 end message still holds the previous hand's colour: --im-target ${b.tgt}, --im-color ${b.im}, want ${b.want} (hand 1 was ${a.want})`);
+    await imHold('#btn-next');
+    assert(lastLabel === 'End of hand', `the button on the last card reads "${lastLabel}"`);
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

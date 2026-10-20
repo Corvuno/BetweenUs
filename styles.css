@@ -449,12 +449,14 @@ body.showing-hand-summary .card-question{
 /* ── LIMIT ── */
 /* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
 /* End of a hand: the button takes the pause colour (--im-color, the last drawn card's category colour,
-   set on <body> by presentation.js paintHandSide) — a gradient of it, dark text, the gold button's size and type.
+   set on <body> by presentation.js setPauseColour, from the moment the end message appears) — a gradient of it, dark text, the gold button's size and type.
    It reads --im-target (the same colour, set without easing) because --im-color already eases on <body>:
    reading that would ease the button twice and lag it behind the diamond. */
 .btn-draw.hold-mode{
   --bd-a:color-mix(in srgb,var(--im-target) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-target) 76%,#000);
   color:var(--bg);letter-spacing:.1em;}
+/* a pointer resting on the button (desktop, or a phone's sticky hover) must not cut the gold-to-chapter-colour ease short */
+.btn-draw.hold-mode:hover{transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;}
 /* the very first draw of a hand — before any card has been drawn, or right
    after a settings change reset the deck. Sized up (no glow — see change
    log) to make this the obvious "start" tap instead of looking like every

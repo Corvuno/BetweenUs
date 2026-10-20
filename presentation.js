@@ -527,6 +527,7 @@ function updateDrawMore() {
   if (!nextBtn) return;
 
   if (atSummary) {
+    setPauseColour();   // the button, the diamond and the rule are this hand's last card colour from the first frame
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
     // pile 10 extra cards onto the finished hand instead of drawing a new one).
     // This is the only state that skips straight to a new hand, and it always
@@ -548,11 +549,11 @@ function updateDrawMore() {
     }
   } else {
     nextBtn.classList.remove('hold-mode');
-    // On the last card, the tap ahead lands on the summary, not another
+    // On the last card, the tap ahead lands on the end of the hand, not another
     // card — say so, instead of promising "Next Card" and surprising people.
     const atLastCard = state.currentIndex >= 0 && state.currentIndex === state.visibleDeck.length - 1;
     nextBtn.textContent = atLastCard
-      ? 'Summary'
+      ? 'End of hand'
       : begun ? 'Next Card' : 'Draw Card';
     nextBtn.classList.toggle('btn-draw--start', !begun);
   }
@@ -614,6 +615,19 @@ function handEndColors() {
   return { raw: base, label: labelColor(base) };
 }
 
+// The pause colour on <body>: --im-color (eased there: diamond, rule) and --im-target (not eased: the
+// button eases itself). One place, called the moment a hand's end begins (the end message appears, see
+// deck.js _nextCardBase and updateDrawMore) and again when Intermezzo is painted, so nothing at the
+// end of a hand reads the previous hand's colour.
+function setPauseColour() {
+  const col = handEndColors();
+  if (col.label) {
+    document.body.style.setProperty('--im-color', col.label);
+    document.body.style.setProperty('--im-target', col.label);
+  }
+  return col;
+}
+
 const HAND_STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.6l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 
 function isFavouriteCard(c) { return !!c && state.favourites.some(f => f.question === c.question); }
@@ -666,11 +680,7 @@ function paintHandSide() {
   const side = state.handSide;
   if (!side) return;
   const isList = side === 'list';
-  const col = handEndColors();
-  if (col.label) {
-    document.body.style.setProperty('--im-color', col.label);    // eased on <body>: diamond, rule
-    document.body.style.setProperty('--im-target', col.label);   // not eased: the button eases itself
-  }
+  const col = setPauseColour();
 
   // — the card on the main screen
   const el = document.getElementById('card');
