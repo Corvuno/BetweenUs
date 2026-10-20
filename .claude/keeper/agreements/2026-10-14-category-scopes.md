@@ -337,3 +337,10 @@ Writer briefs for Culture, Roots, Wish, Work, Spirit, Body, Unwind: text in
 ## Done when
 21 cards swapped word for word, three bench cards added, seven briefs readable, six new lines
 on screen, tests pass, live on main.
+
+**BUILT 2026-10-20** — live on main (60f7c5e): 21 cards swapped (checked word for word by script),
+three bench cards, seven writer briefs, six new app lines, ?v=20261020a, 47/47 checks,
+check:static clean. Body 2 still open. Found while building: since the evening chooser rework
+(17fa066, 2026-10-19) the app lines show only as a hover tooltip on the category buttons — the
+"Tap or hold a category to see what it does" line is gone, so on a phone nobody sees them.
+Raised with the owner.
