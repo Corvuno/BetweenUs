@@ -76,3 +76,6 @@ Owner: the sheet is called **The Deck** (heading of the sheet; the time-of-day q
 
 ## One picked look 2026-10-19
 Owner: keep the presets' picked/not-picked look as the style for everything in the sheet. Built: word + dot in own colour, dim when off, full + underline when on, no glow; eleven dark colours lightened as text only in the sheet (owner OK); Fixed Sets aligned like categories; Shuffle/Cards as two labelled lines. Custom rule built the same day: Custom as soon as the deck differs from its starting preset, undo restores it. Open: tagline under the logo when Custom.
+
+## Feedback 2026-10-20
+Owner: design good. Build: (1) preset lockouts back — a preset shows only categories in its on+available lists; chapters with nothing reachable hidden (Coworkers: no Into the Deep/After Dark; Family: no After Dark; etc.). Allowed-but-off categories stay selectable. Going Custom keeps the starting preset's limits; Everything/Balanced are the open starts. (2) Visible link between preset tap and chapters changing: changed rows ease into their new state, counts update visibly (Keeper's reading). (3) Open all / close all next to None. (4) Partly-on chapter clearer. (5) Custom tagline: "Off script."
