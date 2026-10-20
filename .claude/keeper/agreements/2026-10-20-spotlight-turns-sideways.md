@@ -43,3 +43,12 @@ sideways layout and back; with simulated tilt readings the content turns and ret
 itself and the word hides; a real sideways screen behaves as today; pick-three, a Twist card
 and end of hand all read correctly turned. Tester line by line, reviewer on the code, Keeper
 on the screenshots; tests pass.
+
+## Built — 2026-10-20
+
+Live on main (5fc4f14 + review fixes ea0d66e). Tester: every point met (tilt and iPhone only
+simulated). Reviewer: one bug (closing during the 350 ms hold could leave the next open turned),
+sensor read while closed, missing vh/vw fallback, switch state for screen readers — all fixed,
+re-review clean. Tests 58/58 on the final merge. Still to watch on a real phone: the tilt
+direction mapping and the feel of the turn (no animation). Open on main, not from this build:
+`npm run check:static` flags two findings in presentation.js (from ce3b300).
