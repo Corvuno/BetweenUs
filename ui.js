@@ -585,6 +585,14 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
 
 let pickMode = false;
 
+/* Three on or off: the flag, the button's lit state, and everything that mirrors it */
+function setPickMode(on) {
+  pickMode = on;
+  document.getElementById('pickToggle')?.classList.toggle('on', on);
+  updateDrawMore();   // start screen: Three off dims again, until the first card
+  renderShell();      // mirror the toggle onto the fullscreen Three button
+}
+
 
 (function(){
   const btn = document.getElementById('pickToggle');
@@ -597,10 +605,7 @@ let pickMode = false;
      now and the other two go back (no pick, so nothing sits out). */
   btn.addEventListener('click', () => {
     if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
-    pickMode = !pickMode;
-    btn.classList.toggle('on', pickMode);
-    updateDrawMore();   // start screen: Three off dims again, until the first card
-    renderShell();  // mirror the toggle onto the fullscreen Three button
+    setPickMode(!pickMode);
 
     if (pickMode) {
       hintRetire('three');

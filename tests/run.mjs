@@ -1539,6 +1539,27 @@ async function run() {
     await ctx.close();
   });
 
+  await check('new version: a reload at the start screen keeps Three on', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    let served = null;
+    await ctx.route(`http://127.0.0.1:${port}/${TARGET}`, async route => {
+      const res = await route.fetch();
+      const body = await res.text();
+      await route.fulfill({ response: res, body: route.request().resourceType() === 'fetch' && served ? body.replace(/\?v=[\w.-]+/g, `?v=${served}`) : body });
+    });
+    const upd = await ctx.newPage();
+    await upd.goto(`http://127.0.0.1:${port}/${TARGET}`);
+    await upd.waitForFunction(() => document.readyState === 'complete');
+    await upd.evaluate(() => setPickMode(true));   // Three on, nothing drawn yet
+    assert(await upd.evaluate(() => state.currentIndex === -1 && pickMode), 'not at the start screen with Three on');
+    served = 'NEWVERSION';
+    await upd.evaluate(() => { window.__same = true; const t = Date.now(); Date.now = () => t + 6e7; document.dispatchEvent(new Event('visibilitychange')); });
+    await upd.waitForFunction(() => window.__same !== true && document.readyState === 'complete', null, { timeout: 5000 });
+    const r = await upd.evaluate(() => ({ on: pickMode, lit: document.getElementById('pickToggle').classList.contains('on'), idx: state.currentIndex, side: state.handSide }));
+    assert(r.on && r.lit && r.idx === -1 && r.side === null, `after the reload at the start screen: ${JSON.stringify(r)}`);
+    await ctx.close();
+  });
+
   await check('Spotlight opened with the first card\'s Three options up (after the intermezzo): nothing is drawn, the options move along and back', async () => {
     await playHandWithThree();
     await page.locator('#card').click();
