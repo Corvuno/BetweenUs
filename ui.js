@@ -1028,6 +1028,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     });
   }
 
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
+
   function syncIntentUI(){
     document.querySelectorAll('.chapter').forEach(btn => {
       const visible = visibleLevels(btn.dataset.chapter);
@@ -1039,12 +1041,16 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
          follows (bkt-hidden), applied one level up. Applies to any chapter
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. */
-      btn.classList.toggle('ch-hidden', visible.length === 0);
-      const grp = btn.closest('.chapter-group');
-      if (grp) grp.classList.toggle('ch-hidden', visible.length === 0);
-      /* "n / total": how many of this chapter's categories are on, of those reachable here */
+      btn.closest('.chapter-group')?.classList.toggle('ch-hidden', visible.length === 0);
+      /* "n / total": how many of this chapter's categories are on, of those reachable here;
+         a number that changed fades in softly, so a preset tap visibly reaches the rows */
       const ct = btn.querySelector('.ch-ct');
-      if (ct) ct.textContent = visible.filter(l => state.activeToggles.has(l)).length + ' / ' + visible.length;
+      const count = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
+      if (ct && ct.textContent !== count) {
+        const fromBlank = !ct.textContent;
+        ct.textContent = count;
+        if (!fromBlank && !REDUCED_MOTION.matches) ct.animate({ opacity: [0.2, 1] }, { duration: 450, easing: 'ease-out' });
+      }
     });
     updateListModeNote();
     syncFoldAll();
@@ -1194,7 +1200,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     grp.classList.toggle('open', open);
     btn.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
-    const calm = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const calm = REDUCED_MOTION.matches;
     window.slideFold(panel, open, calm ? 1 : 320);
     if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }

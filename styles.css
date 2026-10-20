@@ -150,7 +150,11 @@ body{
   display:flex;align-items:center;justify-content:center;text-align:center;
 }
 .deselect-btn:hover{color:var(--gold);}
-.deselect-btn:first-child::after{content:'·';margin-left:8px;opacity:.25;pointer-events:none;}
+.deselect-btn{padding-inline:10px;}
+/* None and Open all: one quiet pair at the right of the Chapters heading, a faint dot between */
+#deselectAll{margin-inline-start:auto;}
+#deselectAll::after{content:'·';margin-inline-start:14px;opacity:.4;pointer-events:none;}
+#foldAll{padding-inline-end:0;}
 
 /* category grid */
 .cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
@@ -1381,16 +1385,18 @@ body.tok-taught .tok-hint{display:none;}
    lines of .ch-desc at its current font-size/line-height plus the row's
    own 15px top/bottom padding; align-items:center (not baseline) so a
    one-line row centers inside that height instead of sitting at the top. */
-.chapter{--ch:var(--gold);position:relative;
+.chapter{--ch:var(--gold);--ch-ease:.4s ease-out;position:relative;
   display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
-  transition:background .2s,border-color .2s;}
+  transition:background var(--ch-ease),border-color var(--ch-ease);}
 /* the left rail: one continuous line down the whole row. A vertical metal sweep
    (same gilt.js gradient as the card accent, at 190deg instead of 100deg) once a
-   chapter is fully on; a partly-on chapter keeps a line of its colour, paler,
-   along the same full length. --ch-rail is written by JS from each chapter's
-   colour — see ui.js. */
-.chapter{border-image-slice:1;border-image-width:0 0 0 3px;border-image-repeat:stretch;border-image-source:none;}
+   chapter is fully on, drawn by ::before over the 3px border so it can fade in and
+   out; a partly-on chapter keeps a flat line of its colour, in between, along the
+   same full length. --ch-rail is written by JS from each chapter's colour — see ui.js. */
+.chapter::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
+  background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
+.chapter.on::before{opacity:1;}
 .chapter:hover{border-color:var(--border);}
 /* the row is one tap target for the whole chapter: the name button stretches over
    it (::after), and the fold target and spice mark sit above that. */
@@ -1400,26 +1406,34 @@ body.tok-taught .tok-hint{display:none;}
 .ch-hit::after{content:'';position:absolute;inset:0;}
 .spice-glyph--inline{position:relative;z-index:1;flex-shrink:0;align-self:center;padding:8px 8px;}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
-  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color .2s;}
+  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color var(--ch-ease);}
 .chapter .ch-desc{font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
 /* fold target: count over a chevron, set off by a hairline */
 .ch-fold{position:relative;z-index:1;width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:7px;background:none;border:none;cursor:pointer;color:var(--celadon);}
 .ch-fold::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:1px;background:var(--border);}
-.ch-ct{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--muted-l);}
-.chapter.part .ch-ct{color:var(--cream);}
+.ch-ct{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--muted-l);transition:color var(--ch-ease);}
+.chapter.part .ch-ct{color:var(--ch);}
 .ch-chev{display:block;transition:transform .22s ease;}
 .ch-fold.open .ch-chev{transform:rotate(180deg);}
 .chapter-group.open .chapter{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
-/* partly on: the same line, paler, the whole length; a paler tint on the row */
-.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 45%, var(--dim) 55%);
-  background:color-mix(in srgb, var(--ch) 4.5%, transparent);}
+/* partly on: halfway between off and on. Line and tint sit midway between the off value
+   and the fully-on one (line: chapter colour 70% into --dim; tint 6.5% against on's 9%),
+   so the row is clearly lit but not "on". */
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 70%, var(--dim));
+  background:color-mix(in srgb, var(--ch) 6.5%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
-.chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);border-image-source:var(--ch-rail);}
+.chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);}
 .chapter.on .ch-name{color:var(--ch);}
-.chapter-group{display:block;}
-.chapter-group.ch-hidden{display:none;}
+.chapter-group{display:block;max-height:30rem;transition:max-height .4s ease-out,opacity .3s ease-out,margin-block-end .4s ease-out,visibility 0s;}
+/* a chapter with nothing reachable under the current preset fades and collapses (the
+   gap of .chapters goes with it) instead of jumping out; visibility keeps it out of reach */
+.chapter-group.ch-hidden{max-height:0;opacity:0;overflow:hidden;visibility:hidden;margin-block-end:-4px;
+  transition:max-height .4s ease-out,opacity .25s ease-out,margin-block-end .4s ease-out,visibility 0s .4s;}
+@media (prefers-reduced-motion:reduce){
+  .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden{transition:none;}
+}
 /* the unfolded panel: categories, each its own tap target */
 .chapter-group{--ch:var(--gold);}
 .chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0 6px 0 8px;
@@ -1443,7 +1457,6 @@ body.tok-taught .tok-hint{display:none;}
 .chapter-group--fixed .chapter-panel.fixed-seq-options{border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
 .chapter-group--fixed .chapter-panel.fixed-seq-options:not(.open){border-width:0;}
 .cat-grid-wrap.chapter-wrap{max-height:none;border-top:none;overflow:visible;padding:0 0 6px;}
-.chapter.ch-hidden{display:none;}
 
 /* section headings shared by Start from / Chapters / Tune / Round — one
    small-caps label style used everywhere instead of each section

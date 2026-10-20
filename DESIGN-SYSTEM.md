@@ -313,11 +313,18 @@ None, six chapter rows that unfold in place, Fixed Sets as the last row, Shuffle
 line, Draw Cards fixed. Chapter and category colours stay content colour, set from `config.js`.
 
 - **Chapter row** (`.chapter`, 65px): one continuous left line (3px) down the whole row, as in
-  the app before. Off: `--dim` line, no tint. Fully on: the gilt sweep (`--ch-rail`), row tint
-  `--ch` 9%, name in the chapter colour. Partly on (`.part`): the same line the whole length in
-  the chapter colour mixed 45% into `--dim` (paler), row tint 4.5%, name `--ch` 70% into `--muted`.
-  Names carry **no glow** (the old text-shadow on a fully-on chapter name was removed, hard rule).
+  the app before. Off: `--dim` line, no tint. Fully on: the gilt sweep (`--ch-rail`, now painted by
+  a `::before` over the 3px border so it can fade; it was a `border-image`), row tint `--ch` 9%, name
+  in the chapter colour. Partly on (`.part`, reworked 2026-10-20 because it read too close to off):
+  a flat line of the chapter colour 70% into `--dim`, row tint 6.5%, name `--ch` 70% into `--muted`,
+  count "n / total" in `--ch`; measured halfway between off and on. Names carry **no glow**.
   The row is one tap target (name button stretched over it) that switches the chapter.
+- **Chapters change gently** (2026-10-20): tint, line, name and count colour ease over `--ch-ease`
+  (.4s ease-out, a local variable on `.chapter`); only rows whose state class changed move. A count
+  whose text changed fades its number in (`ui.js`, Web Animations `opacity .2 to 1`, 450ms). A chapter
+  a preset hides (`.chapter-group.ch-hidden`) fades and collapses (`max-height` to 0, opacity,
+  the 4px gap) instead of disappearing at once. No glow, flash or extra colour. With
+  `prefers-reduced-motion` every one of these is instant.
 - **Fold target** (`.ch-fold`, right of the row, 60px wide): the count "n / total" in `--muted-l`
   (`--cream` when partly on) over a celadon chevron, 7px apart, set off from the row by a 1px
   `--border` hairline inset 14px top and bottom. No box, no outline. The chevron turns over when
@@ -332,8 +339,10 @@ line, Draw Cards fixed. Chapter and category colours stay content colour, set fr
   `--muted-l`, a 1px `--border` hairline (inset 10px) and a celadon chevron in a 60px cell on the
   right. Inside, Colbert and The 36 are built exactly like category items (same dot, word, 44px height,
   padding), in a panel padded like a chapter panel, so they start at the same left edge.
-- **None** (`#deselectAll`, at the Chapters heading, right): quiet text button (`--btn-quiet`,
-  .75rem, caps). There is no All here.
+- **None and Open all** (`#deselectAll`, `#foldAll`, at the Chapters heading, right): one quiet pair,
+  both in the `.deselect-btn` style (`--btn-quiet`, .75rem, caps, hover gold), a faint middle dot
+  (opacity .4) between them, the pair's right edge level with the chapter rows. "Open all" reads
+  "Close all" once every shown chapter is open. There is no All here.
 - **Shuffle and Cards** (`.seg-row`): two lines, labels SHUFFLE and CARDS in the same row-label
   style as FIXED SETS (`.82rem`, `.09em`, caps, cream .68; no Federo). The label starts at the
   chapter-name inset (16px) and has a fixed 5.5rem column so the choices of both lines align. The
