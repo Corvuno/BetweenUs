@@ -346,3 +346,10 @@ check:static clean. Body 2 still open. Found while building: since the evening c
 Raised with the owner.
 2026-10-20: owner asked more Body 2 options, and a review of the first-round app lines
 (Life, Home, World, Attract, Flesh, Carnal, Kink, Us: Intimate). Review shown in chat.
+2026-10-20 picks: Life "Everything that has to be done"; Home "Your four walls, and everything
+around them"; Attract "Who you notice first"; Kink "What does it for you, exactly ✦". World:
+"as you see it" is the direction, without repeating the category name — options shown. Body 2:
+"What's the longest you've ever kept going — a walk, a shift, a night without sleep?" with a less
+threefold ending — rephrasings shown. Owner asked alternatives for every app line that uses a
+list of three or a dash-and-twist, especially both. Keeper decision: all line changes and Body 2
+built together once the pass is decided.
