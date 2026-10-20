@@ -91,3 +91,4 @@ need a sharp scene from childhood (a smell, a bedroom, a dinner table) shut thos
 Give Roots angles that work anyway: stories the family tells about you, things you kept, where
 the family comes from, grandparents, words and habits from where you grew up, what people
 expected of you.
+- **2026-10-20** — Said: "the point of the others is that they are double-edged — about who and what kind of cards." / I did: proposed a Custom tagline that only described the mix. / Meant: every preset tagline speaks to both the people at the table and the cards at once. / Next time: check each preset or mode line for both edges before proposing it.
