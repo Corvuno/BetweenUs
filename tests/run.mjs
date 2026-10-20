@@ -1459,50 +1459,93 @@ async function run() {
     assert(/^(Draw Card|Next Card|Summary|Hold to continue)$/.test(draw), `unexpected draw button text: ${draw}`);
   });
 
-  await check('new version: picked up at a between-hands moment only (not mid-hand, not offline, not twice for the same version)', async () => {
+  await check('new version: picked up at a between-hands moment only (not mid-hand, offline, with a drawer open, or twice for the same version), and the player lands on the same screen', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
-    const upd = await ctx.newPage();
     let served = null;   // the stamp a page fetch finds; page navigations always get the real file
-    await upd.route(`http://127.0.0.1:${port}/${TARGET}`, async route => {
+    await ctx.route(`http://127.0.0.1:${port}/${TARGET}`, async route => {
       const res = await route.fetch();
       const body = await res.text();
       const fetched = route.request().resourceType() === 'fetch';
       await route.fulfill({ response: res, body: fetched && served ? body.replace(/\?v=[\w.-]+/g, `?v=${served}`) : body });
     });
+    const upd = await ctx.newPage();
     await upd.goto(`http://127.0.0.1:${port}/${TARGET}`);
     await upd.waitForSelector('#card', { state: 'visible' });
     const mark = () => upd.evaluate(() => { window.__same = true; });
     const alive = () => upd.evaluate(() => window.__same === true).catch(() => false);
-    const backToFront = async () => {   // a minute later, the app comes to the front
-      await upd.evaluate(() => { const t = Date.now(); Date.now = () => t + 6e7 * (window.__tick = (window.__tick || 0) + 1); document.dispatchEvent(new Event('visibilitychange')); });
-    };
+    const backToFront = () => upd.evaluate(() => {   // a minute later, the app comes to the front
+      const t = Date.now(); Date.now = () => t + 6e7;
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    const reloaded = () => upd.waitForFunction(() => window.__same !== true, null, { timeout: 5000 }).then(() => upd.waitForSelector('#card', { state: 'visible' }));
     await mark();
     await backToFront();   // same version served: nothing happens
     await upd.waitForTimeout(500);
     assert(await alive(), 'reloaded although the version is unchanged');
 
     served = 'NEWVERSION';
-    await upd.locator('#card').click();   // mid-hand: a card on screen
-    await upd.waitForFunction(() => state.currentIndex >= 0);
+    await upd.evaluate(() => _nextCardBase());   // mid-hand: a card on screen
     await backToFront();
-    await upd.waitForTimeout(4500);   // longer than one retry
+    await upd.waitForTimeout(800);
     assert(await alive(), 'reloaded in the middle of a hand');
 
+    await upd.evaluate(() => { while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); });
     await ctx.setOffline(true);
-    await upd.evaluate(() => { state.handSide = 'intermezzo'; });   // a between-hands moment, but offline
-    await upd.waitForTimeout(3800);
+    await upd.evaluate(() => showHandSummary());   // Intermezzo, but offline
+    await upd.waitForTimeout(500);
     assert(await alive(), 'reloaded while offline');
 
     await ctx.setOffline(false);
-    await upd.waitForFunction(() => window.__same !== true, null, { timeout: 8000 });   // online at a between-hands moment: it reloads
-    await upd.waitForSelector('#card', { state: 'visible' });
-    assert(await upd.evaluate(() => sessionStorage.getItem('bu-reloaded-for')) === 'NEWVERSION', 'the reload was not recorded');
+    await upd.evaluate(() => document.getElementById('logDrawer').classList.add('open'));
+    await upd.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); updateDrawMore(); });
+    await upd.waitForTimeout(500);
+    assert(await alive(), 'reloaded with a drawer open');
+
+    await upd.evaluate(() => { document.getElementById('logDrawer').classList.remove('open'); updateDrawMore(); });   // the next screen change at Intermezzo applies it
+    await reloaded();
+    let at = await upd.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, len: state.visibleDeck.length, body: document.body.classList.contains('showing-hand-summary'), recorded: sessionStorage.getItem('bu-reloaded-for') }));
+    assert(at.side === 'intermezzo' && at.idx === at.len && at.body && at.recorded === 'NEWVERSION', `after the reload: ${JSON.stringify(at)}`);
 
     await mark();   // the same version is still being served: no second reload
     await backToFront();
-    await upd.waitForTimeout(3800);
+    await upd.waitForTimeout(800);
     assert(await alive(), 'reloaded twice for the same version');
+
+    served = 'NEWVERSION2';   // another version, picked up from the list side
+    await upd.evaluate(() => flipHandList());
+    await upd.waitForTimeout(300);
+    await backToFront();
+    await reloaded();
+    at = await upd.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, len: state.visibleDeck.length }));
+    assert(at.side === 'list' && at.idx === at.len, `after the reload from the list: ${JSON.stringify(at)}`);
+
+    // no sessionStorage, no loop guard: no update check at all
+    const bare = await ctx.newPage();
+    await bare.addInitScript(() => Object.defineProperty(window, 'sessionStorage', { get() { throw new Error('blocked'); } }));
+    await bare.goto(`http://127.0.0.1:${port}/${TARGET}`);
+    await bare.waitForSelector('#card', { state: 'visible' });
+    await bare.evaluate(() => { window.__same = true; });
+    await bare.waitForTimeout(1200);
+    assert(await bare.evaluate(() => window.__same === true), 'reloaded without sessionStorage');
     await ctx.close();
+  });
+
+  await check('Spotlight opened with the first card\'s Three options up (after the intermezzo): nothing is drawn, the options move along and back', async () => {
+    await playHandWithThree();
+    await page.locator('#card').click();
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+    await page.evaluate(() => { window._endHoldOK = true; nextCard(); });
+    await waitPicker(true);
+    const read = () => page.evaluate(() => ({ idx: state.currentIndex, count: document.getElementById('progCountNum').textContent.replace(/\s+/g, ''), open: state.pickerOpen, step: state.pickOptions?.step, inParty: document.getElementById('partyPicker').classList.contains('open'), main: document.getElementById('cardPicker').classList.contains('open') }));
+    const before = await read();
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(400);
+    let r = await read();
+    assert(r.idx === -1 && r.count === before.count && r.open && r.step === 0 && r.inParty && !r.main, `in Spotlight: ${JSON.stringify(r)} (before ${JSON.stringify(before)})`);
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(400);
+    r = await read();
+    assert(r.idx === -1 && r.count === before.count && r.open && r.step === 0 && !r.inParty && r.main, `back on the main screen: ${JSON.stringify(r)}`);
   });
 
   await check('damaged saved favourites / custom cards: the app still loads and both drawers show empty', async () => {

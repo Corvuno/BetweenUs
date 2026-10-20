@@ -494,6 +494,7 @@ function updateDrawMore() {
   // choosePick, …), so the end-of-hand hint updates from here too — no need
   // to separately observe the DOM for it.
   hint(atEnd());
+  document.dispatchEvent(new Event('deckchange'));   // the between-hands moments (see the update check in between-us.html) follow from here
   // Always hide the standalone draw-more button — it floats awkwardly
   const standalone = document.getElementById('drawMoreBtn');
   if (standalone) standalone.classList.remove('visible');
