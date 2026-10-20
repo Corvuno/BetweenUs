@@ -514,7 +514,10 @@ function updateDrawMore() {
   const pickBtn = document.getElementById('pickToggle');
   if (pickBtn) pickBtn.classList.toggle('disabled', state.currentIndex < 0 && !pickBtn.classList.contains('on'));
   const spotBtn = document.getElementById('btnParty');
-  if (spotBtn) spotBtn.classList.toggle('disabled', state.currentIndex < 0);
+  /* Options up for the first card of a hand: the hand has begun, so nothing on
+     screen shows the start state */
+  const begun = state.currentIndex >= 0 || state.pickerOpen;
+  if (spotBtn) spotBtn.classList.toggle('disabled', !begun);
   // Back waits for the first card too (it has nothing to go back to).
   const prevBtn = document.getElementById('btn-prev');
   if (prevBtn) prevBtn.classList.toggle('disabled', state.currentIndex < 0);
@@ -549,7 +552,8 @@ function updateDrawMore() {
     const atLastCard = state.currentIndex >= 0 && state.currentIndex === state.visibleDeck.length - 1;
     nextBtn.textContent = atLastCard
       ? 'Summary'
-      : state.currentIndex >= 0 ? 'Next Card' : 'Draw Card';
+      : begun ? 'Next Card' : 'Draw Card';
+    nextBtn.classList.toggle('btn-draw--start', !begun);
   }
 };
 

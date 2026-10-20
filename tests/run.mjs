@@ -1154,6 +1154,10 @@ async function run() {
     await waitPicker(true);
     let r = await newHandPick();
     assert(r.step === 0 && r.n === 3 && r.idx === -1 && r.hand === handBefore + 1, `after hold-to-continue: ${JSON.stringify(r)}`);
+    const chrome = await page.evaluate(() => ({ label: document.getElementById('btn-next').textContent.trim(), start: document.getElementById('btn-next').classList.contains('btn-draw--start'), count: document.getElementById('progCountNum').textContent.replace(/\s+/g, ''), spot: document.getElementById('btnParty').classList.contains('disabled') }));
+    assert(chrome.label === 'Next Card' && !chrome.start && !chrome.spot, `first-card options show the start state: ${JSON.stringify(chrome)}`);
+    await page.keyboard.press('ArrowLeft');
+    assert(await page.evaluate(() => state.pickerOpen), 'Back with the first card\'s options up closed them and left the start card showing');
     assert(r.sit === 10, `the first hand's ten unpicked cards should sit out the new hand: ${r.sit}`);
     await page.locator('#cardPicker .pick-opt').nth(1).click();
     await waitForCardIndex(page, 1);
@@ -1165,7 +1169,7 @@ async function run() {
     assert(r.step === 0 && r.n === 3 && r.idx === -1 && r.hand === handBefore + 2, `after Draw more: ${JSON.stringify(r)}`);
     // With Three off the first card of the next hand stays a single card
     await page.locator('#pickToggle').click();
-    assert(!(await page.evaluate(() => state.pickerOpen)) && (await page.evaluate(() => state.currentIndex)) === 0, 'Three off with step 1 options up: the planned card should take the step');
+    assert(!(await page.evaluate(() => state.pickerOpen)) && (await page.evaluate(() => state.currentIndex)) === 0, 'Three off with the first card of the hand\'s options up: the planned card should take the step');
     await page.evaluate(() => drawMore());
     await page.waitForTimeout(300);
     r = await newHandPick();

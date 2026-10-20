@@ -335,6 +335,7 @@ function openPicker(options, step) {
   state.pickOptions = { step, options, planned: state.visibleDeck[step] };
   document.getElementById('partyOverlay')?.classList.toggle('picking', inParty);
   if (inParty) fitPartyPicker(); else fitPicker(optsEl);
+  updateDrawMore();
 }
 
 function closePicker() {

@@ -567,6 +567,7 @@ function _nextCardBase() {
 function prevCard() {
   /* Three options on screen: Back leaves them (no pick, nothing sits out) and
      is the card behind them again — the card of the step before. */
+  if (state.pickerOpen && state.currentIndex < 0) return;   // first card of a hand: no card behind the options, they stay
   if (state.pickerOpen) { closePicker(); state.pickOptions = null; return; }
   /* The hand's list is up: Back turns the card over to Intermezzo (nothing else). */
   if (state.handSide === 'list') { showHandIntermezzo(); return; }
