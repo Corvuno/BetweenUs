@@ -552,6 +552,7 @@ function _nextCardBase() {
       ? [`Th${n===1?'at was':'ose were'} your ${n} ${n===1?'card':'cards'}.`]
       : [`You've drawn all ${state.fullDeck.length} cards in your selection.`, `Add categories to keep going.`];
     _endMsgLines = lines.length;
+    setPauseColour();   // this hand's last card colour, before the message and the button show it (presentation.js)
     const html = `<span class="end-msg">${lines.map((l,i) => `<span style="display:block${i?';margin-top:1.4em':''}">${l}</span>`).join('')}</span>`;
     renderEndMessage(html);
     // fullscreen: the same message, centred in the fullscreen card
