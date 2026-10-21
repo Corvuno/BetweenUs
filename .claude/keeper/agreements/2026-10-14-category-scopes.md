@@ -377,3 +377,9 @@ are picked up when each category's own round comes, so content and line can be m
 - Self: "The person under all the parts you play"
 - Values: "Your principles, tested"
 The writer briefs' "App line:" rows for these categories follow the new lines.
+**BUILT 2026-10-21** (88efc3b): three cards, eleven lines, brief rows, ?v=20261021f, 58/58 checks.
+
+## Round 3 (Connect, Friendship, Romance, Family) — started 2026-10-21
+Keeper decision: next group is the relationship cluster, because it has the known overlaps
+(first move: Connect 4 / Romance 9) and the biggest gaps (no siblings, exes, weddings, first
+dates, group chats anywhere in the deck). Definitions shown in chat.

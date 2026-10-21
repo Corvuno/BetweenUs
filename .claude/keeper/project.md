@@ -71,7 +71,7 @@ The Keeper. Started with `/keeper`.
 
 **Finding things:** when the owner asks whether something has been done, agreed, or is
 being worked on in another thread, hand the question to the `searcher` agent (read-only,
-on Sonnet). It looks in the Keeper notes, the project and its history, and the owner's
+on Haiku since 2026-10-21: finding is lookup work, not judgment). It looks in the Keeper notes, the project and its history, and the owner's
 Claude Code conversations of the last two months; further back only when the owner asks.
 Only on request, never on its own.
 
