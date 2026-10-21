@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Card swap side by side</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Poiret+One&family=Jost:wght@200;300;400&family=Bodoni+Moda:ital,wght@1,400&family=Federo&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/styles.css"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="sbs.css">
+</head><body>
+<div class="sbs">
+  <h1 class="sbs-title">The card swap, side by side</h1>
+  <div class="sbs-grid">
+      <div class="stage">
+        <p class="stage-cap"><i>Current</i><b>Live app swap</b></p>
+        <div class="card-area">
+          <div class="card">
+            <div class="c-accent"></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage" data-take="breath">
+        <p class="stage-cap"><i>A</i><b>The card breathes</b></p>
+        <div class="card-area">
+          <div class="card split">
+            <div class="frame-group" aria-hidden="true"><i class="fr-bg"></i><i class="br br-a"></i><i class="br br-b"></i><div class="c-accent"></div><i class="hair"></i><i class="lift"></i></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage" data-take="rail">
+        <p class="stage-cap"><i>B</i><b>The gold line leads</b></p>
+        <div class="card-area">
+          <div class="card split">
+            <div class="frame-group" aria-hidden="true"><i class="fr-bg"></i><i class="br br-a"></i><i class="br br-b"></i><div class="c-accent"></div><i class="hair"></i><i class="lift"></i></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage" data-take="answer">
+        <p class="stage-cap"><i>C</i><b>Text leads, card answers</b></p>
+        <div class="card-area">
+          <div class="card split">
+            <div class="frame-group" aria-hidden="true"><i class="fr-bg"></i><i class="br br-a"></i><i class="br br-b"></i><div class="c-accent"></div><i class="hair"></i><i class="lift"></i></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage" data-take="spring">
+        <p class="stage-cap"><i>D</i><b>Bolder: the card dips and springs</b></p>
+        <div class="card-area">
+          <div class="card split">
+            <div class="frame-group" aria-hidden="true"><i class="fr-bg"></i><i class="br br-a"></i><i class="br br-b"></i><div class="c-accent"></div><i class="hair"></i><i class="lift"></i></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <dl class="sbs-legend">
+    <div><dt><i>Current</i> Live app swap</dt><dd>The live app: the card stays still and the text fades out and back with a small drift.</dd></div>
+    <div><dt><i>A</i> The card breathes</dt><dd>The whole card takes a tiny breath in, then settles under the new text.</dd></div>
+    <div><dt><i>B</i> The gold line leads</dt><dd>The card stays still; the gold line flares from the centre and the text follows it.</dd></div>
+    <div><dt><i>C</i> Text leads, card answers</dt><dd>The text leaves first; the card tightens a hair, then eases back under the new text.</dd></div>
+    <div><dt><i>D</i> Bolder: the card dips and springs</dt><dd>The card dips and dims, then springs up past its size and settles.</dd></div>
+  </dl>
+  <div class="sbs-nav"><div class="nav-row">
+    <button class="btn-sq" id="btn-prev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M21 12H10"/><path d="M13 6 4 12l9 6z" fill="currentColor"/></svg></button>
+    <button class="btn-draw" id="btn-next">Next Card</button>
+    <span class="btn-sq" style="visibility:hidden"></span>
+  </div></div>
+</div>
+<script src="shared/cards.js"></script><script src="shared/gilt.js"></script><script src="shared/swap.js"></script>
+<script>initSwapMockAll();</script>
+</body></html>
