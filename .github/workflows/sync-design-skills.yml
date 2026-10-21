@@ -1,0 +1,49 @@
+name: Update Emil Kowalski's skills
+
+# Keeps the eleven skills copied from github.com/emilkowalski/skills (MIT) in
+# .claude/skills/ up to date with their source, so every session uses the
+# newest version. Owner's choice, 2026-10-21: update automatically.
+# Runs every Monday; also by hand from the Actions tab. Only those eleven
+# folders are touched; nothing else in the project changes. .claude/ doesn't
+# count for releases, so an update never triggers one.
+
+on:
+  schedule:
+    - cron: "20 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Fetch the source
+        run: git clone --depth 1 https://github.com/emilkowalski/skills /tmp/emil
+      - name: Copy the eleven skills
+        run: |
+          for s in mobile-native break-ui animate review-animations animation-performance \
+                   find-animation-opportunities improve-animations apple-design prototype \
+                   emil-design-eng animation-vocabulary; do
+            if [ -d "/tmp/emil/skills/$s" ]; then
+              rm -rf ".claude/skills/$s"
+              cp -r "/tmp/emil/skills/$s" ".claude/skills/$s"
+            else
+              echo "::warning::$s no longer exists upstream; kept the old copy"
+            fi
+          done
+      - name: Commit if anything changed
+        run: |
+          if [ -n "$(git status --porcelain .claude/skills)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .claude/skills
+            git commit -m "Update Emil Kowalski's skills from their source ($(git -C /tmp/emil rev-parse --short HEAD))"
+            git push origin HEAD:main
+          else
+            echo "No changes."
+          fi
