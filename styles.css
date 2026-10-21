@@ -1657,18 +1657,17 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
     display:flex;align-items:center;justify-content:center;}
   .card-area{width:min(100cqw, calc(100cqh * 556 / 360));aspect-ratio:556/360;flex:none;}
   .card{width:100%;height:100%;aspect-ratio:auto;max-width:none;margin:0;container-type:inline-size;overflow:hidden;}
-  /* the card's details grow with the card, in the phone card's proportions (376px card: 3px stripe,
-     24px brackets 20px in, 1px line, .9rem star) */
-  /* polished metal: the phone rail's dark-light-dark sheen along the length, plus shading across the height
-     (a fine light edge along the top, darker toward the bottom), all from --rail-d/-m/-l; the 14% end fade is the phone's */
-  .c-accent{height:.8cqw;
-    background:
-      linear-gradient(to bottom,color-mix(in oklab,var(--rail-l) 85%,transparent) 0,color-mix(in oklab,var(--rail-l) 85%,transparent) 8%,transparent 38%,transparent 55%,color-mix(in oklab,var(--rail-d) 70%,transparent) 100%),
-      linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
-  .card::before,.card::after{width:6.4cqw;height:6.4cqw;border-width:0;}
-  .card::before{top:5.3cqw;left:5.3cqw;border-top-width:.27cqw;border-left-width:.27cqw;}
-  .card::after{bottom:5.3cqw;right:5.3cqw;border-bottom-width:.27cqw;border-right-width:.27cqw;}
-  .card-star{font-size:3.8cqw;top:1.4cqw;right:1.8cqw;padding:1cqw;opacity:.35;}
+  /* the card's details on a big card (owner's option C, 2026-10-21): a heavier top line with a sharp glint at the sheen's
+     peak and ends fading over a fixed run, 1.5px corner marks with longer arms, a slightly bigger star */
+  .c-accent{height:clamp(5px,.48cqw,6px);
+    -webkit-mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
+    mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
+    background:linear-gradient(to right,transparent 38%,var(--rail-l) 46% 54%,transparent 62%) 0 2px / 100% 1px no-repeat,
+      linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 55%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
+  .card::before,.card::after{width:clamp(44px,4.3cqw,54px);height:clamp(44px,4.3cqw,54px);}
+  .card::before{top:clamp(32px,3.1cqw,40px);left:clamp(32px,3.1cqw,40px);border-top-width:1.5px;border-left-width:1.5px;}
+  .card::after{bottom:clamp(32px,3.1cqw,40px);right:clamp(32px,3.1cqw,40px);border-bottom-width:1.5px;border-right-width:1.5px;}
+  .card-star{font-size:clamp(22px,2.2cqw,28px);top:clamp(12px,1.1cqw,14px);right:clamp(16px,1.4cqw,18px);padding:10px;opacity:.35;}
   @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.75;}}.card-star.active{opacity:1;}
   .card-ad-mark{font-size:38.4cqw;}
   .card-body-inner{padding:calc(var(--k)*14px) 7cqw 0;gap:2cqw;}
