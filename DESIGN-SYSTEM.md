@@ -37,6 +37,7 @@ contrast on a real device than they had any right to from the numbers alone
 --cream:   #f0e8d8   /* primary — card questions, full-strength labels */
 --muted:   #7a6e60   /* quiet warm-brown label, disabled state */
 --muted-l: #9c8f7e   /* a step lighter than --muted — its own tone, not --muted's duplicate */
+--text-helper: #8c8071   /* helper lines that explain a control or section: The Deck sheet's "Start from" and "Chapters" headings. Between --muted (3.9:1) and --muted-l (6.2:1); 5.1:1 on the dark ground (owner 2026-10-21, helper-text look B). The title subtitle uses --muted-l; "Selected deck · tap to change" stays --muted */
 ```
 Every other cream-alpha text value (help body copy, the sheet heading,
 section labels, chapter names off-state, etc.) is back to its original
@@ -94,7 +95,8 @@ chapter row (was `#6e1719`) needed to move onto them.
 --copper:        #C67B28   /* the deck's own frame: the logo's centre diamond only (no longer Custom) */
 --celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
   /* also marks the chosen option in a choice row: Shuffle (Arc/Random) and Cards (5/10/20/All) in the categories sheet */
---celadon-hint:  #5b6b63   /* the hint lines under that row; also the sub-lines in the main menu (its labels are celadon, icons stay gold) */
+--celadon-hint:  #5b6b63   /* the sub-lines in the main menu (its labels are celadon, icons stay gold) */
+--row-hint:      #6f8579   /* the hint lines under Three / Spotlight / Twist (`.row-hint`): one step lighter than --celadon-hint (3.5:1 → 4.9:1 on the dark ground) so they read on a phone; 15px (.95rem), max-width 112px so they fit under each label at 360px. PC hover hints use --celadon, unchanged */
 --preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name. Strangers #8fd14f, Family #ee7a35 (--mc in styles.css) */
 --preset-a/-b:  (set from renderShell, Custom with 2+ categories only) /* first and second picked category colour: the logo's inner line pairs split left/right (gradient #trP) */
 --preset-deep:   (set from renderShell) /* the preset a shade deeper (same hue/saturation, lightness -7 points, floor 45%, already-darker colours unchanged): for filled areas, i.e. the start-card diamond and its rule, which read paler than thin letters */
@@ -189,7 +191,7 @@ flip card" on Intermezzo, "Hold to continue" on the list.
 `body.showing-hand-summary`): the same row as Three / Spotlight / Twist, not a copy of it.
 The `#screenRow` rules in styles.css ("The play-style row") list `#handActionsRow` as a
 second selector, so rules above and below, `--celadon` capitals (Jost, `.72rem`, `.22em`),
-17px icon, gold on hover/press and the italic `.row-hint` line (`--celadon-hint`) are one
+17px icon, gold on hover/press and the italic `.row-hint` line (`--row-hint`) are one
 definition. Markup is the same pattern: `button > .row-top (svg + .row-lbl)` then
 `.row-hint`. Two items, no separator diamond. Icons: 24x24 viewBox, `fill:none`, stroke
 `currentColor` 1.7, miter, butt (as Twist).

@@ -35,7 +35,7 @@
   /* the bottom of the screen (see DESIGN-SYSTEM.md "Frame colours"):
      copper = the deck's own frame, celadon = the play-style row,
      --preset = the active preset's colour (set from renderShell). */
-  --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--celadon-bright:#eef7f1;
+  --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--row-hint:#6f8579;--text-helper:#8c8071;--celadon-bright:#eef7f1;
   --preset:var(--gold);
   --preset-deep:var(--preset); /* a shade deeper, for filled areas (start-card diamond + rule); set in renderShell */
 }
@@ -68,7 +68,7 @@ body{
   width:min(100%,320px);margin:12px auto 0;}
 .tr-svg{display:block;width:100%;height:auto;overflow:visible;}
 .tr-svg path{vector-effect:non-scaling-stroke;}
-.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
+.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-l);margin-top:10px;}
 
 /* ── PRESET ROW ── */
 .preset-outer{width:100%;display:flex;align-items:stretch;opacity:0;transition:opacity .4s .08s ease;}
@@ -1473,11 +1473,7 @@ body.tok-taught .tok-hint{display:none;}
    small-caps label style used everywhere instead of each section
    inventing its own header treatment. */
 .sect-lbl{display:flex;align-items:center;justify-content:space-between;position:relative;
-  color:rgba(240,232,216,.45);margin:0 0 12px;}
-/* Chapters/Tune headers drop to the warm muted tone used across the card
-   set, rather than the neutral grey every other .sect-lbl (Start from,
-   Round) still uses. */
-#chaptersLbl{color:#7a6e60;}
+  color:var(--text-helper);margin:0 0 12px;}
 /* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
    chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
 .seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 22px;white-space:nowrap;}
@@ -1570,7 +1566,7 @@ body.tok-taught .tok-hint{display:none;}
 #screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
 #screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
 #screenRow .row-hint,#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
-  font-size:.88rem;line-height:1.15;color:var(--celadon-hint);white-space:normal;max-width:104px;text-align:center;}
+  font-size:.95rem;line-height:1.15;color:var(--row-hint);white-space:normal;max-width:112px;text-align:center;}
 #screenRow .row-sep,#handActionsRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
 #screenRow > button.on .row-lbl,#handActionsRow > button.on .row-lbl,#screenRow > button.active .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
 /* Not usable yet (before the first card; Twist also on the end screen): only the
