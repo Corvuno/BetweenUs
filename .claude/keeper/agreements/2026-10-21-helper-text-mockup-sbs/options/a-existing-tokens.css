@@ -1,0 +1,6 @@
+/* A: tone only, existing tokens, nothing new, no size change */
+.subtitle,.tok-hint,#chaptersLbl,.sect-lbl{color:var(--btn-quiet);}
+/* the hint lines under Three / Spotlight / Twist, on the phone layout; the PC layout already shows them in full celadon on hover */
+@media not ((min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4)){
+  #screenRow .row-hint,#handActionsRow .row-hint{color:var(--celadon-soft);}
+}

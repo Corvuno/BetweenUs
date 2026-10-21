@@ -30,5 +30,20 @@
         ]
       }
     ]
+  },
+  "extraKnownMarketplaces": {
+    "designer-skills": {
+      "source": {
+        "source": "github",
+        "repo": "Owl-Listener/designer-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "ui-design@designer-skills": true,
+    "interaction-design@designer-skills": true,
+    "visual-critique@designer-skills": true,
+    "cognitive-accessibility@designer-skills": true,
+    "prototyping-testing@designer-skills": true
   }
 }

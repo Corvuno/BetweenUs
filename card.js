@@ -227,7 +227,21 @@ function setCardDisplay(card) {
 
 // flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
 
+/* The first-draw landing (styles.css .card.drawing-in: 520ms, ghosts 520ms after a 60ms delay; a 250ms
+   fade under reduced motion). The question swaps in at ~60% so its fade overlaps the landing; the
+   animation classes and ghosts stay until `done`, so the landing is never cut short. */
+const DRAW_TIMING = {
+  full:    { backFade: 60, swap: 310, done: 580 },
+  reduced: { backFade: 0,  swap: 150, done: 250 },
+};
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+/* The timers of the card currently changing, and how to undo its animation. A fast tap
+   cancels the previous card's timers so only the latest card ever lands. */
+let pendingFlip = null;
+
 function flipToCard(card, isFirstDraw) {
+  pendingFlip?.cancel();
   hideHandSummary();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
@@ -246,26 +260,31 @@ function flipToCard(card, isFirstDraw) {
   const animClass = isFirstDraw ? 'drawing-in' : 'flipping';
   el.classList.add(animClass);
   // The start card's back dissolves instead of cutting: on the first draw it
-  // starts fading as the card lands (~55% of the 1050ms drop) and is gone
-  // exactly when the face arrives; on a plain flip it fades straight away.
-  if (el.classList.contains('is-start')) setTimeout(() => setStartBack(''), isFirstDraw ? 600 : 0);
+  // starts fading as the card drops and is gone as it lands; on a plain flip
+  // it fades straight away.
+  const timing = prefersReducedMotion.matches ? DRAW_TIMING.reduced : DRAW_TIMING.full;
+  const timers = [];
+  if (el.classList.contains('is-start')) timers.push(setTimeout(() => setStartBack(''), isFirstDraw ? timing.backFade : 0));
   let ghosts = [];
   if (isFirstDraw) {
     const area = el.parentElement;
     ghosts = [0, 1].map(i => {
       const g = document.createElement('div');
       g.className = 'draw-ghost';
-      g.style.animationDelay = (i * 40) + 'ms';
+      g.style.animationDelay = (i * 60) + 'ms';
       area.insertBefore(g, el);
       return g;
     });
   }
-  setTimeout(() => {
+  const endAnimation = () => {
+    el.classList.remove(animClass, 'face-in');
+    ghosts.forEach(g => g.remove());
+  };
+  timers.push(setTimeout(() => {
     /* Three can now be used during the first draw's animation: if another card
        has taken this step meanwhile, this late face swap must not overwrite it */
     if (state.currentIndex < state.visibleDeck.length && state.visibleDeck[state.currentIndex] !== card) {
-      el.classList.remove(animClass);
-      ghosts.forEach(g => g.remove());
+      pendingFlip.cancel();
       return;
     }
     setStartBack('');   // the back turns over with the face swap, not before
@@ -287,13 +306,15 @@ function flipToCard(card, isFirstDraw) {
       if (lvlEl) lvlEl.classList.add('in');
       if (qEl2)  qEl2.classList.add('in');
     });
-    el.classList.remove(animClass);
-    ghosts.forEach(g => g.remove());
+    if (isFirstDraw) el.classList.add('face-in');   // the question may show now; the landing runs on to `done`
+    else { endAnimation(); pendingFlip = null; }
     renderProgress();
     updatePartyDisplay(card);
     // Auto-save on every card
     autoSaveSession();
-  }, isFirstDraw ? 1050 : 175);   // 1050ms matches the .card.drawing-in animation-duration in styles.css
+  }, isFirstDraw ? timing.swap : 175));
+  if (isFirstDraw) timers.push(setTimeout(() => { endAnimation(); pendingFlip = null; }, timing.done));
+  pendingFlip = { cancel: () => { timers.forEach(clearTimeout); endAnimation(); pendingFlip = null; } };
 }
 
 function openPicker(options, step) {

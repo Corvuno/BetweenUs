@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Swap B: The gold line leads</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Poiret+One&family=Jost:wght@200;300;400&family=Bodoni+Moda:ital,wght@1,400&family=Federo&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/styles.css"><link rel="stylesheet" href="shared/mock.css">
+</head><body>
+<a class="back-link" href="index.html">&lsaquo; Overview</a>
+<div class="mock">
+  <div class="stages">
+      <div class="stage" id="stage-current">
+        <p class="stage-cap">Current <b>live app swap</b></p>
+        <div class="card-area">
+          <div class="card">
+            <div class="c-accent"></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage" id="stage-take">
+        <p class="stage-cap">B <b>The gold line leads</b></p>
+        <div class="card-area">
+          <div class="card split">
+            <div class="frame-group" aria-hidden="true"><i class="fr-bg"></i><i class="br br-a"></i><i class="br br-b"></i><div class="c-accent"></div><i class="hair"></i><i class="lift"></i></div>
+            <button class="card-star" tabindex="-1">&#9733;</button>
+            <div class="card-body-inner">
+              <div class="card-level"></div>
+              <div class="card-question" aria-live="polite" aria-atomic="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="nav-row mock-nav">
+    <button class="btn-sq" id="btn-prev" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M21 12H10"/><path d="M13 6 4 12l9 6z" fill="currentColor"/></svg></button>
+    <button class="btn-draw" id="btn-next">Next Card</button>
+    <span class="btn-sq" style="visibility:hidden"></span>
+  </div>
+  <p class="mock-note">Tap Next, Back or either card. Both swap together; tap fast to see the restart.</p>
+</div>
+<script src="shared/cards.js"></script><script src="shared/gilt.js"></script><script src="shared/swap.js"></script>
+<script>initSwapMock('rail');</script>
+</body></html>

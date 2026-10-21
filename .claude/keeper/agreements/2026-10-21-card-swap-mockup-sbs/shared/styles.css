@@ -1,0 +1,1607 @@
+/* COPY of the app styles.css at main f19b2e5, for the swap mockups. Only change: the PC-grid layout blocks (2 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4)) are removed, because these pages show the phone card at phone size on any window. */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+*{scrollbar-width:none;-ms-overflow-style:none;}
+*::-webkit-scrollbar{display:none;}
+/* Colour changes in the chrome ease (~.6s), never snap (DESIGN-SYSTEM.md). Gradients and
+   color-mix() can only ease when built from registered custom properties, so these are registered:
+   --im-color (the pause colour, set on <body>), the rails' three stops, the gold button's two. */
+@property --im-color{syntax:'<color>';inherits:true;initial-value:#c9a84c;}
+@property --rail-d{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --rail-m{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --rail-l{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --bd-a{syntax:'<color>';inherits:false;initial-value:#c9a84c;}
+@property --bd-b{syntax:'<color>';inherits:false;initial-value:#a07830;}
+:root{
+  --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
+  --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
+  --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
+  --border-strong:rgba(201,168,76,0.38);
+  /* the drawn card's own deck-identity marking (corners/border, After Dark's
+     also a wash + watermark) — separate from --ad-red above, which the
+     existing mode-toggle button already owns; kept apart so this doesn't
+     change that button's colour. */
+  --mark-afterdark:#c1272d;
+
+  /* design-system tokens (see DESIGN-SYSTEM.md)
+     --dim / --border / --border-strong are the 3-tier line system, gold only:
+     every hairline, card edge and divider reads off one of the three.
+     --btn-quiet is the one resting colour for every plain text-button (Three,
+     Full Screen, Twist, Change, Save, After Dark, All/None, Explore
+     categories…); they go to --gold on hover/active. --muted-l stays its own,
+     lighter tone, and the cream-alpha text values stay per-element. */
+  --btn-quiet:#8f8171;
+  /* the bottom of the screen (see DESIGN-SYSTEM.md "Frame colours"):
+     copper = the deck's own frame, celadon = the play-style row,
+     --preset = the active preset's colour (set from renderShell). */
+  --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--celadon-bright:#eef7f1;
+  --preset:var(--gold);
+  --preset-deep:var(--preset); /* a shade deeper, for filled areas (start-card diamond + rule); set in renderShell */
+}
+html,body{height:100%;}
+/* stops the browser's pull-to-refresh from firing when a swipe on a sheet/drawer
+   overshoots its scroll boundary; a bigger handle only makes a miss less likely */
+html{overscroll-behavior-y:contain;}
+body{
+  background:var(--bg);color:var(--cream);
+  font-family:'Jost',sans-serif;font-weight:300;
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100%;padding-bottom:60px;overflow-x:hidden;
+  /* thin (weight 300), light-on-near-black text — exactly what this whole
+     app is set in — is the case where a browser's default subpixel/ClearType
+     anti-aliasing shows up as visible red/cyan fringing on letter edges
+     instead of clean strokes. Forcing grayscale AA fixes it everywhere at
+     once instead of per-element. text-rendering nudges the same browsers
+     toward better letter-spacing/kerning at these small sizes too. */
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  transition:--im-color .6s ease;   /* the pause diamond, rule and button follow it */
+}
+.app{position:relative;z-index:1;width:100%;max-width:460px;padding:0 18px;display:flex;flex-direction:column;align-items:center;}
+
+/* ── HEADER ── */
+.header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .5s .15s ease,transform .5s .15s ease;}
+.header.in{opacity:1;transform:none;}
+.title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
+.title-rule{display:flex;align-items:center;justify-content:center;
+  width:min(100%,320px);margin:12px auto 0;}
+.tr-svg{display:block;width:100%;height:auto;overflow:visible;}
+.tr-svg path{vector-effect:non-scaling-stroke;}
+.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
+
+/* ── PRESET ROW ── */
+.preset-outer{width:100%;display:flex;align-items:stretch;opacity:0;transition:opacity .4s .08s ease;}
+.preset-outer.in{opacity:1;}
+.preset-wrap{flex:1;overflow-x:auto;}
+.preset-row{display:inline-flex;min-width:100%;justify-content:center;}
+/* Presets, categories, Fixed Sets, Shuffle and Cards share one picked / not-picked
+   look, defined once under "THE ONE PICKED LOOK" further down. */
+.mode-btn{--pc:var(--mc,var(--gold));--pick-h:49px;flex:none;}
+/* Per-mode colour, reused from the category colours those modes draw from
+   (levelColor in config.js): "Friends" is the Friendship gold-tan, "Dating"
+   the Romance rose, and so on. Everything/Balanced get their own hues — an
+   open indigo and a muted steel-blue (a toned-down World) — since gold is the
+   CTA/brand colour, not a mode. */
+.mode-btn[data-mode="open"]{--mc:#6f8fd8;}
+.mode-btn[data-mode="balanced"]{--mc:#4a95b8;}
+.mode-btn[data-mode="newpeople"]{--mc:#8fd14f;}
+.mode-btn[data-mode="friends"]{--mc:#6bb36e;}
+/* dating/partner nudged more saturated than their Romance/Us:Love twins
+   below — a "tad more intense", kept in sync with config.js so the preset
+   button and the actual card category still match exactly. */
+.mode-btn[data-mode="dating"]{--mc:#e35c82;}
+.mode-btn[data-mode="partner"]{--mc:#e35c5c;}
+.mode-btn[data-mode="latenight"]{--mc:#75609c;}
+.mode-btn[data-mode="solo"]{--mc:#669bbb;}
+.mode-btn[data-mode="work"]{--mc:#4dbebe;}
+.mode-btn[data-mode="family_p"]{--mc:#ee7a35;}
+
+/* Grouping without extra chrome. Who's-here just needs breathing room
+   before it, not its own line — a bigger gap after Balanced is enough of a
+   seam. Context (Work/Late night/Solo) gets a hard line break at every
+   width, same mechanism the desktop label already uses (flex-basis:100%)
+   — collapsed to zero height so it costs nothing on mobile, and the same
+   element becomes the visible caption once there's room to spare. */
+.mode-btn--group-start{margin-left:14px;}
+.mode-group-lbl{display:none;}
+.mode-group-lbl--break{display:block;flex-basis:100%;height:0;overflow:hidden;}
+@media(min-width:768px){
+  .mode-btn--group-start{margin-left:0;}
+  .mode-group-lbl{display:block;flex-basis:100%;text-align:center;
+    font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+    color:rgba(240,232,216,.4);padding:6px 0 1px;}
+  .mode-group-lbl--break{height:auto;overflow:visible;}
+}
+
+/* ── CATEGORIES ── */
+.cat-topbar{display:flex;align-items:center;gap:8px;}
+.cat-toggle-lbl{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;padding:15px 0;outline:none;}
+.cat-toggle-lbl:hover,.cat-toggle-lbl.open{color:var(--gold);}
+.cat-chevron{display:inline-block;font-size:.5rem;transition:none;}
+.cat-controls{display:flex;align-items:center;flex-shrink:0;}
+.cat-count-lbl{font-size:.75rem;letter-spacing:.08em;color:rgba(240,232,216,.35);}
+
+/* Spice glyph toggle */
+.spice-glyph{
+  background:none;border:none;
+  color:rgba(240,232,216,.3);
+  font-size:.72rem;padding:15px 4px;cursor:pointer;
+  transition:color .2s,text-shadow .2s;line-height:1;
+}
+.spice-glyph:hover{color:rgba(240,232,216,.7);}
+.spice-glyph.on{color:#e8a040;}
+
+/* After Dark — text link, no border */
+.after-dark-btn{
+  background:none;border:none;border-bottom:1px solid transparent;
+  color:var(--btn-quiet);
+  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:15px 0;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.after-dark-btn:hover{color:rgba(240,232,216,.85);}
+.after-dark-btn.on{color:var(--ad-red);border-bottom-color:rgba(193,39,45,.5);text-shadow:0 0 10px rgba(193,39,45,.55);}
+.after-dark-btn.hidden{display:none;}
+
+/* None — a minimal text link at the right of the Chapters heading */
+.deselect-btn{
+  background:none;border:none;
+  color:var(--btn-quiet);
+  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:15px 7px;cursor:pointer;transition:color .2s;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.deselect-btn:hover{color:var(--gold);}
+.deselect-btn{padding-inline:10px;}
+/* None and Open all: one quiet pair at the right of the Chapters heading, a faint dot between */
+#deselectAll{margin-inline-start:auto;}
+#deselectAll::after{content:'·';margin-inline-start:14px;opacity:.4;pointer-events:none;}
+#foldAll{padding-inline-end:0;}
+
+/* category grid */
+.cat-grid-wrap{display:none;width:100%;padding:2px 0 6px;border-top:1px solid var(--dim);max-height:38vh;overflow-y:auto;}
+.cat-grid-wrap.open{display:block;}
+.toggle-btn{--pc:var(--c);flex:none;}
+.toggle-btn.hard-locked{opacity:.12;cursor:default;pointer-events:none;}
+
+/* ── CARD ── */
+.card-wrap{width:100%;opacity:0;transform:translateY(10px);transition:opacity .55s .05s ease,transform .55s .05s ease;}
+.card-wrap.in{opacity:1;transform:none;}
+/* .card itself is the ratio'd box (in normal flow, no inset:0), so
+   aspect-ratio acts as a *default* height that a flex column grows past when a
+   long question + Twist text needs more room; .card-area, an unstyled wrapper,
+   just follows along. */
+.card-area{width:100%;position:relative;}
+.card{
+  position:relative;width:100%;aspect-ratio:12/7;background:var(--card-bg);border:1px solid var(--border);
+  box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;touch-action:manipulation;
+}
+.card:active{transform:scale(.997);}
+.card::before,.card::after{
+  content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;
+  border-color:var(--gold);opacity:.35;pointer-events:none;
+}
+.card::before{top:20px;left:20px;border-width:1px 0 0 1px;}
+.card::after{bottom:20px;right:20px;border-width:0 1px 1px 0;}
+/* Deck-identity marking, set via --mark and a class from card.js:
+   .mark-full  — After Dark cards: corners + border tint + radial wash + watermark
+   .mark-border — Colbert / The 36: corners + border tint only, no wash/watermark */
+.card.mark-full::before,.card.mark-full::after,
+.card.mark-border::before,.card.mark-border::after,
+.party-frame.mark-full i,.party-frame.mark-border i{   /* Spotlight's corners take the same mark (card.js applyCardMark runs on both) */
+  border-color:var(--mark);
+  opacity:.55;
+}
+.card.mark-full,.card.mark-border{
+  border-color:color-mix(in srgb, var(--mark) 40%, transparent);
+}
+.card.mark-full{
+  background:
+    radial-gradient(120% 100% at 50% 100%, color-mix(in srgb, var(--mark) 9%, transparent), transparent 62%),
+    var(--card-bg);
+}
+.card-ad-mark{
+  display:none;
+  position:absolute;inset:0;z-index:0;
+  align-items:center;justify-content:center;
+  font-size:9rem;color:var(--mark);opacity:.055;
+  line-height:1;pointer-events:none;
+}
+.card.mark-full .card-ad-mark{display:flex;}
+.c-accent{
+  position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
+  background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
+  transition:--rail-d .6s ease,--rail-m .6s ease,--rail-l .6s ease;
+  -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+  mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+}
+.accent-bloom{animation:accentReveal 1s ease forwards;}
+@keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
+.card-star{
+  position:absolute;top:9px;right:11px;z-index:4;
+  background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
+}
+.card-star:hover{opacity:.65;}.card-star.active{opacity:1;}
+
+/* ── START CARD ── the back of the card, shown before the first draw
+   (card.js setStartBack toggles .is-start on #card).
+   Owner's "B · Lattice" back, redrawn to sit on the card itself: the lattice
+   runs out to the card edge and a calm window in the card's own ground colour
+   is cut out of it, with a double line (one outer, one thin inner). No corner brackets — those belong to the front. Sizes scale off
+   the card's height (cqh); the lattice tile steps up with the card so the
+   hairlines stay hairlines. Decorative only — clicks pass through. */
+.card-back{
+  position:absolute;inset:0;z-index:5;overflow:hidden;
+  container-type:size;background:var(--card-bg);color:var(--gold);pointer-events:none;
+  opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s;
+}
+/* dissolves in and out (opacity), so the first draw doesn't cut from the back to the face */
+.card.is-start .card-back{opacity:1;visibility:visible;transition:opacity .45s ease;}
+.card.is-start .card-body-inner,.card.is-start .card-star{visibility:hidden;}
+.cb-lattice{
+  position:absolute;inset:0;opacity:.7;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M0 0 18 18M18 0 0 18' fill='none' stroke='%23c9a84c' stroke-width='.6' opacity='.42'/%3E%3Ccircle cx='9.0' cy='9.0' r='.9' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='.7' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") center/18px 18px;
+}
+@container (min-height:400px){.cb-lattice{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cpath d='M0 0 28 28M28 0 0 28' fill='none' stroke='%23c9a84c' stroke-width='0.8' opacity='.42'/%3E%3Ccircle cx='14.0' cy='14.0' r='1.1' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='0.86' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") center/28px 28px;opacity:.82;}}
+@container (min-height:600px){.cb-lattice{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Cpath d='M0 0 36 36M36 0 0 36' fill='none' stroke='%23c9a84c' stroke-width='0.95' opacity='.42'/%3E%3Ccircle cx='18.0' cy='18.0' r='1.3' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='1.01' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") center/36px 36px;opacity:.85;}}
+@container (min-height:900px){.cb-lattice{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M0 0 44 44M44 0 0 44' fill='none' stroke='%23c9a84c' stroke-width='1.1' opacity='.42'/%3E%3Ccircle cx='22.0' cy='22.0' r='1.5' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='1.17' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") center/44px 44px;opacity:.88;}}
+.cb-frame{
+  position:absolute;top:15cqh;bottom:15cqh;left:19%;right:19%;
+  background:var(--card-bg);border:1px solid rgba(201,168,76,.55);
+}
+.cb-frame::after{content:"";position:absolute;inset:3.5cqh;border:1px solid rgba(201,168,76,.28);}
+.cb-plate{
+  --d:58cqh;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--d)*.05);
+}
+.cb-mark{display:block;width:calc(var(--d)*.45);height:auto;overflow:visible;color:var(--gold);}
+.cb-rule{width:calc(var(--d)*.5);height:2px;background:linear-gradient(90deg,transparent,var(--preset-deep),transparent);}
+.cb-mark path[fill]{fill:var(--preset-deep);}
+.cb-text{
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;
+  font-size:calc(var(--d)*.135);line-height:1.25;text-align:center;color:var(--cream);
+  white-space:nowrap;
+}
+.card-body-inner{position:relative;z-index:1;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 36px 10px;gap:10px;}
+.card-level{font-family:'Jost',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:0;transition:color .5s ease,opacity .35s ease;}
+.card-level.in{opacity:.95;}
+.card-question{
+  font-size:1.38rem;
+  line-height:1.52;text-align:center;color:var(--cream);
+  opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
+  /* .card locks selection down so the whole surface can be tapped/swiped
+     without text catching a drag — but that lock isn't all-or-nothing:
+     re-enabling it here, on just the question itself, doesn't reopen it
+     anywhere else on the card. touch-callout back to default too, or
+     iOS suppresses the long-press selection bubble even with select:text. */
+  user-select:text;-webkit-user-select:text;-webkit-touch-callout:default;
+  cursor:text;
+}
+.card-question.in{opacity:1;transform:none;}
+/* The message after the last card of a hand: INTERMEZZO's lettering (Federo, spaced capitals, --muted-l) at its own size, centred on the card (both
+   surfaces); it fades out before the card turns to Intermezzo. */
+.end-msg{display:block;font-family:'Federo',sans-serif;font-style:normal;font-size:1rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted-l);text-align:center;line-height:1.6;transition:opacity .45s ease;}
+.end-msg>span{padding-left:.32em;}   /* the last letter's trailing space would push the line off-centre */
+.end-msg.out{opacity:0;}
+@media (prefers-reduced-motion:reduce){.end-msg{transition:none;}}
+.card-body-inner:has(.end-msg){padding-bottom:18px;}      /* even padding, so the message sits in the middle of the card */
+.card-body-inner:has(.end-msg) .card-level{display:none;}
+.party-inner:has(.is-end-msg) .twist-div{display:none;}
+.party-question.is-end-msg{align-self:stretch;text-align:center;font-size:clamp(1.1rem,1.6vw,1.5rem);line-height:1.5;}
+/* The one place that selectable text is a problem, not a feature: the
+   end-of-hand summary reuses this same element (showHandSummary() in
+   presentation.js writes the hand list into #card-question),
+   and that screen's whole interaction is holding the card to continue —
+   a hold that starts on selectable text tries to select it instead. Locked
+   back down for exactly this one screen, same as the rest of the card. */
+body.showing-hand-summary .card-question{
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;
+}
+/* Phones: the card is a real playing card laid on its side (the owner's reference
+   card, 556×360) and never grows. Text is sized
+   so every normal card fits; anything longer (The 36) scrolls inside the
+   card instead of stretching it. overflow:hidden on .card is what stops
+   aspect-ratio's automatic min-height from growing it past the ratio;
+   "safe center" keeps an overflowing question scrollable from its top. */
+@media(max-width:559px){
+  .card{aspect-ratio:556/360;overflow:hidden;}
+  .card-body-inner{min-height:0;overflow-y:auto;justify-content:safe center;overscroll-behavior:contain;}
+  .card-level{font-size:1rem;}
+  .card-question{font-size:1.656rem;}
+}
+/* PC: the same King of Clubs shape. The desktop card is much wider than
+   the phone one, so on a short window that shape alone would push the
+   controls below the fold — max-width caps the card by window height
+   (380px ≈ everything on screen that isn't the card), which only kicks in
+   when the window is too short; on a normal full-HD or larger window the
+   card is its full width. The 640px floor stops a very short window (e.g. a
+   laptop at 150% scaling) shrinking it to a sliver — that one scrolls. */
+@media(min-width:768px){
+  /* --card-max is the card's widest size; the logo, the Selected line and the
+     controls below the card are capped to the same value, so the card is the
+     widest thing on the main screen */
+  :root{--card-max:max(640px, calc((100dvh - 380px) * 556 / 360));}
+  .card{aspect-ratio:556/360;max-width:var(--card-max);margin-left:auto;margin-right:auto;}
+}
+.header,.tok-line,.controls-wrap{max-width:var(--card-max,none);}
+/* ── Twist: a modifier layered onto the drawn card, not written into it ──
+   The trigger lives in the control row. Tapping it doesn't add anything to the
+   card: this element, at the bottom of the card underneath the question, shows
+   the modifier — nothing else on the card is replaced. Default palette only —
+   this has nothing to do with which category is showing, so it never borrows
+   the category accent. Never survives a new card; flipToCard resets it every
+   draw. In-flow (not position:absolute) like .party-number, so a long modifier
+   sentence pushes the question's flex area to make room instead of floating
+   over it or the card's corner marks. */
+.twist-sentence{display:none;flex:0 0 auto;width:100%;text-align:center;padding:0 28px 12px;}
+.twist-sentence.twist{
+  display:block;color:var(--celadon);
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
+  letter-spacing:.01em;opacity:1;
+}
+.twist-trigger.disabled{opacity:.32;}   /* still takes the tap, so it can shake */
+.party-twist.disabled{opacity:.32;pointer-events:none;}
+/* card flip animation */
+.card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
+
+/* the first draw of a hand — plays instead of the plain flip, whether this
+   is the very first card of the session or a fresh hand after the
+   categories/dials/chapters changed, so a settings change visibly *does*
+   something instead of just quietly rebuilding a list. Reads as a card
+   being thrown down onto the table: it drops in from above at an angle
+   with a couple of trailing ghost cards (real elements, inserted/removed
+   by flipToCard in card.js), then settles flat. */
+.card.drawing-in{animation:cardDrawIn 1.05s cubic-bezier(.22,.68,0,1.1) both;}
+.card.drawing-in .card-level,.card.drawing-in .card-question{opacity:0;}
+@keyframes cardDrawIn{
+  0%{transform:translateY(-190px) rotate(-6deg) scale(.92);opacity:0;}
+  55%{transform:translateY(10px) rotate(1.5deg) scale(1.01);opacity:1;}
+  78%{transform:translateY(-4px) rotate(-.5deg) scale(1);}
+  100%{transform:translateY(0) rotate(0deg) scale(1);opacity:1;}
+}
+.draw-ghost{position:absolute;inset:0;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:2px;z-index:1;animation:cardDrawGhost 1.1s ease-in both;pointer-events:none;}
+@keyframes cardDrawGhost{
+  0%{transform:translateY(-210px) rotate(-8deg);opacity:0;}
+  35%{opacity:.5;}
+  80%{transform:translateY(6px) rotate(2deg);opacity:.25;}
+  100%{transform:translateY(40px) rotate(3deg);opacity:0;}
+}
+
+/* ── CONTROLS ── */
+.controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
+.controls-wrap.in{opacity:1;transform:none;}
+/* the progress dots: one per card, up to 20 on screen at once — past that
+   the window slides to keep the current card visible, everything scrolled
+   out of frame simply isn't drawn (not compressed or shown differently).
+   Real shape/size/colour never changes based on position in that window;
+   only which dots are shown does. width per dot is computed in JS
+   (renderProgress) and applied inline; --dot-gap likewise. */
+.progress{
+  display:flex;align-items:center;justify-content:flex-start;
+  flex-wrap:nowrap;height:6px;overflow:visible;
+  width:100%;
+  gap:var(--dot-gap,4px);
+  /* padding gives the edge fade (mask) room around the scaled current tick
+     and the end diamond; the negative margin cancels it so spacing is unchanged */
+  box-sizing:content-box;padding:7px 0;margin:-7px 0;
+}
+/* hands over 20 cards: the line fades out on any side where it carries on
+   past the card (renderProgress sets these); no fade where the hand really
+   starts or ends */
+.progress.fade-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%);mask-image:linear-gradient(90deg,transparent,#000 9%);}
+.progress.fade-r{-webkit-mask-image:linear-gradient(270deg,transparent,#000 9%);mask-image:linear-gradient(270deg,transparent,#000 9%);}
+.progress.fade-l.fade-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 9% 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9% 91%,transparent);}
+.progress-tick{flex:0 0 auto;height:6px;border-radius:1.5px;
+  background:#5c4f37;opacity:.5;
+  transition:opacity .22s ease,background-color .22s ease,transform .22s ease;}
+/* seen/current carry the card's own category colour — everything still
+   ahead (i > cur) stays the flat, deliberately uninformative #5c4f37 above
+   so the bar never spoils what's coming up. */
+.progress-tick.seen{opacity:.42;background:var(--tick-color,var(--gold));}
+.progress-tick.current{opacity:1;background:var(--tick-color,var(--gold));transform:scaleY(1.4);}
+/* the extra tick past the last card, standing for the summary screen — an
+   outline diamond instead of a fill so it doesn't read as just another
+   card. Only rendered when the real last card is inside the visible
+   window (see renderProgress) — a slid-away window has nothing to cap yet. */
+.progress-tick.end{flex:0 0 auto;width:8px;height:8px;border:1px solid var(--gold);
+  background:transparent;transform:rotate(45deg);margin:0 2px 0 6px;}
+.progress-tick.end.current{background:var(--gold-l);border-color:var(--gold-l);}
+@media (prefers-reduced-motion:reduce){.progress-tick{transition:none;}}
+
+/* ── Count line, under the bar — separate from the dot row above so the
+   two can never say conflicting things: always digits, "n / total". Fixed-width
+   flanking rules (not flex) so a long count pushes them outward instead of
+   squeezing the numerals. */
+.prog-count{display:flex;align-items:center;justify-content:center;gap:9px;}
+.prog-count-rule,.pc-rule::before{    /* shared with Spotlight's count (.pc-rule): one strength and shape; Spotlight sets its own length */
+  width:44px;height:1px;flex:0 0 auto;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 30%,transparent));
+}
+.prog-count-rule:last-child,.pc-rule--r::before{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 30%,transparent),transparent);
+}
+.prog-count-num{
+  font-family:'Poiret One',cursive;font-size:15px;letter-spacing:.22em;
+  line-height:1;color:var(--gold);white-space:nowrap;
+}
+.nav-row{display:flex;align-items:center;gap:10px;width:100%;}
+.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
+.btn-sq:hover{border-color:var(--border-strong);color:var(--cream);}
+.nav-row .btn-sq{border-color:rgba(201,168,76,.2);color:var(--celadon);}
+.nav-row .btn-sq:active,.nav-row .btn-sq:focus-visible{border-color:var(--gold);color:var(--gold);}
+@media (hover:hover){.nav-row .btn-sq:hover{border-color:var(--gold);color:var(--gold);}}
+/* Back before the first card: whole button (frame + symbol) dimmed like the play row, no gold. */
+.nav-row #btn-prev.disabled{opacity:.32;}
+.nav-row #btn-prev.disabled:active,.nav-row #btn-prev.disabled:focus-visible{border-color:rgba(201,168,76,.2);color:var(--celadon);}
+@media (hover:hover){.nav-row #btn-prev.disabled:hover{border-color:rgba(201,168,76,.2);color:var(--celadon);}}
+.btn-sq svg{width:19px;height:19px;}
+.btn-draw{flex:1;--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+/* Hover answers in .2s (a transition runs with the style it moves to, so this is the way in only). */
+.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;transition:all .2s;}
+.btn-draw:active{transform:scale(.98);}
+.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-fullscreen svg{width:16px;height:16px;flex-shrink:0;}
+.btn-fullscreen:hover{color:var(--gold);border-bottom-color:var(--border-strong);}
+
+/* ── LIMIT ── */
+/* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
+/* End of a hand: the button takes the pause colour (--im-color, the last drawn card's category colour,
+   set on <body> by presentation.js setPauseColour, from the moment the end message appears) — a gradient of it, dark text, the gold button's size and type.
+   It reads --im-target (the same colour, set without easing) because --im-color already eases on <body>:
+   reading that would ease the button twice and lag it behind the diamond. */
+.btn-draw.hold-mode{
+  --bd-a:color-mix(in srgb,var(--im-target) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-target) 76%,#000);
+  color:var(--bg);letter-spacing:.1em;}
+/* a pointer resting on the button (desktop, or a phone's sticky hover) must not cut the gold-to-chapter-colour ease short */
+.btn-draw.hold-mode:hover{transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;}
+/* the very first draw of a hand — before any card has been drawn, or right
+   after a settings change reset the deck. Sized up (no glow — see change
+   log) to make this the obvious "start" tap instead of looking like every
+   other "next" tap. */
+.btn-draw--start{font-size:.82rem;letter-spacing:.16em;}
+/* pressed-and-holding feedback on the end-of-draw button */
+.btn-draw.holding{opacity:.72;}
+.limit-row{display:flex;align-items:center;}
+.draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:all .2s;display:none;}
+.draw-more-btn.visible{display:block;}
+.draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
+.deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
+
+/* ── END OF HAND: INTERMEZZO ── (presentation.js; hooks listed there)
+   Side 1: the card's back with the pause mark and INTERMEZZO in the window
+   (#card.is-start.is-intermezzo). Side 2: the hand's list on the card face
+   (#card.is-hand-list). --im-color is the last drawn card's category colour. */
+.cb-fermata,.cb-caption{display:none;}
+.card.is-intermezzo .cb-mark:not(.cb-fermata),.card.is-intermezzo .cb-text{display:none;}
+.card.is-intermezzo .cb-fermata{display:block;width:calc(var(--d)*.62);}
+.card.is-intermezzo .cb-caption{
+  display:block;font-family:'Federo',sans-serif;font-size:calc(var(--d)*.075);letter-spacing:.32em;
+  text-transform:uppercase;color:var(--muted-l);margin-top:calc(var(--d)*.02);white-space:nowrap;
+}
+.cb-fermata .dm,.im-wrap .dm{fill:var(--im-color);stroke:none;}
+.card.is-intermezzo .cb-rule{background:linear-gradient(90deg,transparent,var(--im-color),transparent);}
+/* the list side */
+.card.is-hand-list .card-level{display:none;}
+.card.is-hand-list .card-star{display:none;}
+.card.is-hand-list .card-body-inner{padding:18px 30px 14px 36px;align-items:stretch;justify-content:stretch;overflow:hidden;}
+.card.is-hand-list .card-question{flex:1;min-height:0;width:100%;font-size:1rem;text-align:left;cursor:pointer;}
+.hd-box{position:relative;width:100%;height:100%;}
+.hd-list{
+  list-style:none;margin:0;padding:8px 18px 14px 0;box-sizing:border-box;height:100%;width:100%;
+  display:flex;flex-direction:column;gap:.75em;text-align:left;font-size:var(--hd-fs);
+  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(transparent,#000 10px,#000 calc(100% - 22px),transparent);
+  mask-image:linear-gradient(transparent,#000 10px,#000 calc(100% - 22px),transparent);
+}
+.hd-list::-webkit-scrollbar{width:0;}
+.hd-list{--hd-fs:1.02rem;}
+@media(min-width:768px){.hd-list{--hd-fs:1.3rem;}}
+@media(min-width:1024px){.hd-list{--hd-fs:1.45rem;}}
+@media(min-width:1500px){.hd-list{--hd-fs:1.65rem;}}
+/* everything in a row is sized from the question's own size, so diamonds and stars grow with it */
+.hd-row{font-size:var(--hd-fs);display:grid;grid-template-columns:.5em 1fr 2em;gap:.7em;align-items:start;}
+.hd-d{width:.42em;height:.42em;transform:rotate(45deg);display:block;margin-top:.46em;}
+.hd-q{font-family:'Bodoni Moda',serif;font-style:italic;font-size:1em;line-height:1.35;color:var(--cream);user-select:none;-webkit-user-select:none;}
+.hd-star{
+  background:none;border:none;padding:0;margin:-6px -6px -6px 0;width:max(34px,2.2em);height:max(34px,2.2em);display:flex;align-items:center;justify-content:center;
+  color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.hd-star svg{width:1.1em;height:1.1em;fill:none;stroke:currentColor;}
+.hd-star.on{color:var(--gold-l);}
+.hd-star.on svg{fill:currentColor;}
+.hd-track{position:absolute;right:2px;top:10px;bottom:10px;width:1px;background:rgba(201,168,76,.18);pointer-events:none;}
+.hd-thumb{position:absolute;left:-1px;width:3px;background:rgba(232,201,122,.7);}
+/* Motion (mockup b3): the card fades to its back, the two arches draw in one after the
+   other, the diamond appears, the flanking hairlines fade in, the diamond keeps breathing.
+   Plays whenever Intermezzo appears (the animation names only apply while it shows). On
+   return from the list (.im-still / .still) the finished mark shows and only breathes. */
+@keyframes imDraw{to{stroke-dashoffset:0;}}
+@keyframes imFade{to{opacity:.9;}}
+@keyframes imBreathe{0%,100%{opacity:.9;}50%{opacity:.45;}}
+/* the bar under the mark echoes the diamond: same timing, half the dip */
+@keyframes imEcho{0%,100%{opacity:.9;}50%{opacity:.675;}}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata :is(.a1,.a2){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s .5s ease-out forwards;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .a2{animation-delay:.8s;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .fl{opacity:0;animation:imFade .8s 1.9s forwards;}
+:is(.card.is-start.is-intermezzo.im-still,.party-overlay.open .im-wrap.still) .cb-fermata .dm{animation:imBreathe 3.2s ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo.im-still,.party-overlay.open .im-wrap.still) .cb-fermata .fl{opacity:.9;}
+/* the start card's logo: draws itself, then its diamond breathes — every time that back appears */
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s .5s ease-out forwards;}
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-b{animation-delay:.8s;}
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-fl path{animation-duration:1s;animation-delay:1.4s;}
+.card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
+/* the bar under the mark appears with the diamond and breathes in step with it (softer): start card, pause card, Spotlight */
+:is(.card.is-start:not(.is-intermezzo),.card.is-start.is-intermezzo:not(.im-still)) .cb-rule,.party-overlay.open .im-wrap:not(.still) .im-rule{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imEcho 3.2s 2.4s ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo.im-still .cb-rule,.party-overlay.open .im-wrap.still .im-rule){animation:imEcho 3.2s ease-in-out infinite;}
+.card.is-start.logo-wait:not(.is-intermezzo) .cb-rule{animation:none;}
+/* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
+.card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
+/* the card turns over on its side, like a real card: 0.9s, soft perspective, a slight dip in size at
+   the edge. Edge-on at 450ms is the face swap (the JS swaps then, never at another moment); it slows
+   in to the edge and eases out of it. The back is there instantly at the edge (no fade of the lattice).
+   One shared turn: message to Intermezzo and Intermezzo to list use cardTurn, back to Intermezzo
+   turns the other way (cardTurnBack). */
+@keyframes cardTurn{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(-90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
+@keyframes cardTurnBack{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(-90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
+.card.turning,.party-card.turning{animation:cardTurn .9s linear both;}
+.card.turning-back,.party-card.turning-back{animation:cardTurnBack .9s linear both;}
+.card.turning .card-back,.card.turning-back .card-back{transition:none;}
+@media (prefers-reduced-motion:reduce){
+  .card.turning,.card.turning-back,.party-card.turning,.party-card.turning-back{animation:none;}
+  .cb-fermata :is(.a1,.a2),.cb-mark :is(.lg-a,.lg-b,.lg-fl path){animation:none !important;stroke-dasharray:none !important;stroke-dashoffset:0 !important;}
+  .cb-fermata .dm,.cb-mark .lg-dm{animation:none !important;opacity:.9 !important;}
+  .cb-fermata .fl{animation:none !important;opacity:.9 !important;}
+  .cb-rule,.im-rule{animation:none !important;opacity:.9 !important;}
+}
+/* fullscreen: the same two sides in the overlay's own layout */
+.party-overlay.is-hand-end .party-star{visibility:hidden;}
+.party-overlay.is-hand-end .twist-div{display:none;}
+.im-wrap{display:flex;flex-direction:column;align-items:center;gap:clamp(14px,2vw,28px);width:100%;color:var(--gold);}
+.im-wrap .cb-fermata{display:block;width:clamp(230px,30vw,440px);height:auto;}
+.im-rule{width:clamp(150px,19vw,280px);height:2px;background:linear-gradient(90deg,transparent,var(--im-color),transparent);}
+.im-word{font-family:'Federo',sans-serif;font-size:clamp(.8rem,.9vw + .4rem,1.2rem);letter-spacing:.32em;text-transform:uppercase;color:var(--muted-l);font-style:normal;}
+.party-overlay.is-hand-list .party-zone-prev,.party-overlay.is-hand-list .party-zone-next{pointer-events:none;}
+.party-overlay.open.is-hand-list .party-inner{pointer-events:auto;}
+.party-overlay.is-hand-list .party-inner{align-items:stretch;padding-top:70px;padding-bottom:80px;justify-content:stretch;}
+.party-overlay.is-hand-list .party-question{flex:1;min-height:0;width:100%;font-size:1.05rem;line-height:1.35;}
+.party-overlay.is-hand-list .twist-div,.party-overlay.is-hand-list .party-level{display:none;}
+.party-overlay.is-hand-list .party-question{max-width:820px;align-self:center;}
+.party-overlay.is-hand-list .hd-list{--hd-fs:clamp(1.25rem,1.1vw + .95rem,1.8rem);}
+/* fullscreen hint at hand end: a quiet line just above the bottom row, same words as the phone button */
+.party-end-hint{display:none;position:absolute;left:0;right:0;bottom:100%;margin-bottom:-4px;justify-content:center;pointer-events:none;
+  font-family:'Federo','Jost',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.party-end-hint b{font-weight:400;color:var(--gold-l);margin-right:.4em;}
+.party-overlay.is-hand-end .party-end-hint{display:flex;}
+@media (min-width:900px) and (min-height:501px){.party-end-hint{font-size:.85rem;margin-bottom:0;}}
+@media (orientation:landscape) and (max-height:500px){.party-overlay.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}}
+.party-overlay.orient-landscape.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}
+.party-overlay.is-hand-list .hd-list{gap:clamp(10px,1.6vh,22px);}
+.party-overlay.is-hand-list .hd-track{right:0;}
+.party-overlay.is-hand-end .party-inner{align-items:center;}
+.party-overlay.is-hand-list .party-inner{align-items:stretch;}
+.party-overlay.open .hd-star{pointer-events:auto;}
+.party-overlay:not(.open) .hd-star{pointer-events:none;}
+
+/* ── DRAWER SYSTEM ── */
+.overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
+.overlay.open{display:block;}
+.drawer{
+  position:fixed;bottom:0;left:0;right:0;z-index:160;
+  background:var(--surface);border-top:1px solid var(--border);
+  transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  max-height:80vh;overflow-y:auto;
+}
+.drawer.open{transform:translateY(0);}
+/* same enlarged-target treatment as the category sheet's handle — the
+   visible bar stays thin, the drag/tap box around it is much bigger */
+.drawer-handle{display:flex;justify-content:center;align-items:center;
+  padding:14px 0;touch-action:none;}
+.handle-bar{width:36px;height:3px;border-radius:2px;background:rgba(201,168,76,.25);}
+.drawer-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:14px;transition:color .2s;}
+.drawer-close:hover{color:var(--cream);}
+.drawer-title{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-align:center;padding:4px 0 16px;}
+.drawer-body{padding:4px 0 max(20px,env(safe-area-inset-bottom));}
+.d-item{display:flex;align-items:center;width:100%;background:none;border:none;cursor:pointer;transition:background .15s;text-align:left;}
+.d-item:hover{background:rgba(255,255,255,.035);}
+.d-icon{flex-shrink:0;transition:all .2s;}
+.d-text{display:flex;flex-direction:column;gap:2px;}
+.d-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);}
+.d-sub{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted-l);}
+.d-divider{height:1px;background:var(--dim);margin:4px 0;}
+/* secondary drawers (log, favs, custom, help) */
+.sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
+.sub-drawer.open{transform:translateY(0);}
+.drawer-empty{font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-align:center;padding:24px 0;opacity:.6;}
+.drawer-item{padding:12px 0;border-bottom:1px solid var(--dim);font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--cream);line-height:1.5;}
+.drawer-item:last-child{border-bottom:none;}
+.drawer-item-meta{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-style:normal;}
+.drawer-item--custom{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.drawer-remove-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;flex-shrink:0;padding:14px;transition:color .2s;}
+.drawer-remove-btn:hover{color:var(--cream);}
+.session-btn{background:none;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;padding:15px 14px;cursor:pointer;transition:all .2s;}
+.session-btn:hover{border-color:var(--border);color:var(--gold);}
+.drawer-item--session{display:flex;align-items:center;justify-content:space-between;gap:4px;cursor:pointer;}
+.drawer-item--session.drawer-item--active{border-left:2px solid var(--gold);padding-left:9px;}
+.session-item-main{flex:1;min-width:0;}
+.session-item-name{font-size:.95rem;}
+.session-live-tag{font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);font-style:normal;}
+.session-rename-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;flex-shrink:0;padding:14px 6px;transition:color .2s;}
+.session-rename-btn:hover{color:var(--cream);}
+.custom-input{width:100%;background:var(--card-bg);border:1px solid var(--border);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;padding:12px;resize:none;min-height:80px;outline:none;}
+.custom-select{width:100%;background:var(--card-bg);border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;padding:15px 8px;outline:none;cursor:pointer;margin-top:8px;}
+.custom-add-btn{width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;margin-top:8px;transition:all .2s;text-align:center;}
+.custom-add-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+.custom-add-btn:active{transform:scale(.98);}
+.help-content p{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:rgba(240,232,216,.8);margin-bottom:12px;}
+.help-content h4{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+.help-content strong{color:var(--cream);}
+.help-content em{font-style:italic;color:rgba(240,232,216,.9);}
+.help-content .hp-lead{font-size:1.3rem;font-style:italic;line-height:1.45;color:var(--gold-l);margin-bottom:16px;}
+.help-content h4{position:relative;padding-top:15px;margin:30px 0 10px;}
+.help-content h4::before{content:'';position:absolute;top:0;left:0;width:24px;height:1px;background:var(--border);}
+.help-content .hp-ways{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 10px;}
+.help-content .hp-tile{border:1px solid var(--dim);background:rgba(255,255,255,.014);padding:13px 14px 12px;}
+.help-content .hp-tile svg{display:block;width:100%;max-width:168px;height:auto;margin:0 auto 9px;color:#8b8175;}
+.help-content .hp-name{display:block;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-l);margin-bottom:5px;}
+.help-content .hp-tile .hp-name{text-align:center;}
+.help-content .hp-tile p{margin-bottom:0;font-size:.95rem;}
+.help-content .hp-step{display:flex;gap:12px;margin-bottom:16px;}
+.help-content .hp-body{flex:1;min-width:0;}
+.help-content .hp-num{flex:0 0 23px;height:23px;margin-top:5px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:.7rem;color:var(--gold);opacity:.85;}
+.help-content .hp-step p{margin-bottom:0;}
+.help-content .hp-sub{margin-top:8px;font-size:.9rem;color:rgba(240,232,216,.55);font-style:italic;}
+.help-content .ui{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);border:1px solid var(--dim);padding:2px 7px 1px;white-space:nowrap;}
+.help-content .hp-gest{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 2px;}
+.help-content .hp-g{text-align:center;color:rgba(240,232,216,.55);}
+.help-content .hp-g svg{display:block;width:100%;max-width:46px;height:auto;margin:0 auto;}
+.help-content .hp-g span{display:block;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.help-content .hp-shuf{display:flex;align-items:center;gap:14px;margin-bottom:13px;}
+.help-content .hp-shuf svg{flex:0 0 88px;width:88px;height:auto;color:rgba(240,232,216,.55);}
+.help-content .hp-shuf-t{font-family:'Cormorant Garamond',serif;font-size:.95rem;line-height:1.5;color:rgba(240,232,216,.8);}
+.help-content .hp-shuf-t b{display:block;font-family:'Jost',sans-serif;font-weight:400;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-l);margin-bottom:3px;}
+.help-content figure{margin:16px 0 14px;}
+.help-content figure svg{display:block;width:100%;height:auto;color:rgba(240,232,216,.65);}
+.help-content figcaption{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px;}
+.help-content .hp-colbert{color:#f3c33c;}
+.help-content .hp-aron{color:#e75783;}
+.help-content .hp-note{font-style:italic;color:rgba(240,232,216,.55);}
+.help-content .hp-close{margin-top:28px;padding-top:20px;border-top:1px solid var(--dim);text-align:center;font-style:italic;color:var(--gold-l);opacity:.85;}
+@media(min-width:560px){.help-content .hp-ways{grid-template-columns:1fr 1fr;}}
+
+/* ── FULLSCREEN · Proscenium (6b) ── */
+.party-overlay{position:fixed;inset:0;z-index:900;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease;}
+.party-overlay.open{opacity:1;pointer-events:all;}
+.party-card{position:absolute;inset:0;display:flex;flex-direction:column;}
+.party-card::before,.party-card::after{content:none;}
+.party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:6;background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);transition:--rail-d .6s ease,--rail-m .6s ease,--rail-l .6s ease;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);}
+
+/* two card corners: top-left, bottom-right */
+.party-frame{--fi:12px;--fs:24px;position:absolute;inset:0;pointer-events:none;z-index:1;}
+.party-frame i{position:absolute;width:var(--fs);height:var(--fs);border:solid var(--gold);border-width:0;opacity:.35;}
+.party-frame i:nth-child(1){top:var(--fi);left:var(--fi);border-width:1px 0 0 1px;}
+.party-frame i:nth-child(2){bottom:var(--fi);right:var(--fi);border-width:0 1px 1px 0;}
+
+/* chrome */
+.party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .5s ease;}
+.party-overlay.idle .party-chrome{opacity:.28;}
+/* grid (not space-between) so the count is centred on the screen regardless of Close/★ widths */
+/* L2: Twist top-left, Three top-right, the count between them with the star under it (the count needs room from the top edge) */
+.party-top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;padding:max(58px,env(safe-area-inset-top)) 26px 0;}
+.party-top .party-count-wrap{justify-self:center;}
+.party-top .party-twist{justify-self:start;padding:0 !important;}
+.party-top .party-pick{justify-self:end;padding:0 !important;}
+/* L2: back and next in the bottom corners, Close in gold between them, where Spotlight opened */
+.party-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
+.party-prev-btn{justify-self:start;} .party-next-btn{justify-self:end;}
+.party-chrome button{height:44px;min-width:44px;background:none;border:none;padding:0 6px;cursor:pointer;
+  color:var(--celadon);font:400 12px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;gap:6px;}
+/* Spotlight's controls follow the main screen's play row / nav row: celadon at rest, gold on hover
+   (mouse only), press and keyboard focus; "on" is an underline under the word, colour unchanged. */
+.party-chrome button:not(:disabled):active,.party-chrome button:not(:disabled):focus-visible{color:var(--gold);}
+@media (hover:hover){.party-chrome button:not(:disabled):not(.disabled):hover{color:var(--gold);}}
+.party-chrome .party-exit{justify-self:center;gap:9px;padding:0 12px;}
+.party-exit svg{width:16px;height:16px;}
+.party-prev-btn,.party-next-btn,.party-star{font:400 17px/1 'Jost',sans-serif !important;letter-spacing:0 !important;padding:0 !important;}
+.party-prev-btn:disabled{opacity:.32;pointer-events:none;}   /* as the main screen's disabled back: .32 */
+/* the star: as #cardStar - gold, .18 off, .65 on hover (mouse only), 1 when starred */
+.party-chrome .party-star{color:var(--gold);opacity:.18;transition:opacity .2s;}
+@media (hover:hover){.party-chrome .party-star:hover{color:var(--gold);opacity:.65;}}
+.party-chrome .party-star.on{opacity:1;}
+.party-twist.active .row-lbl,.party-pick.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* same underline as #screenRow .on */
+.party-twist svg,.party-pick svg{width:16px;height:16px;flex-shrink:0;}
+.party-key{display:none;color:var(--muted);margin-left:6px;}
+
+/* count: a short rule each side (hidden on phone portrait), the star underneath */
+.party-count-wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 10px;}
+.party-count-wrap .party-star{flex:0 0 100%;height:28px;margin-top:2px;}
+.party-count{font:400 15px/1 'Poiret One',sans-serif;letter-spacing:.22em;color:var(--gold);white-space:nowrap;}
+.pc-rule{display:none;align-items:center;gap:10px;}
+.pc-rule::before{content:'';width:20px;}   /* strength and shape from the shared .prog-count-rule rule */
+.pc-rule--r{flex-direction:row-reverse;}
+
+/* tap zones */
+.party-zone-prev,.party-zone-next{position:absolute;top:90px;bottom:90px;z-index:4;cursor:pointer;}
+.party-zone-prev{left:0;width:28%;} .party-zone-next{right:0;width:72%;}
+
+/* the question: left-aligned, vertically centred */
+.party-inner{flex:1;min-height:0;position:relative;z-index:3;pointer-events:none;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:24px;padding:0 26px;text-align:left;}
+.party-level{display:flex;align-items:center;gap:12px;font:600 17px/1 'Jost',sans-serif;letter-spacing:.16em;text-transform:uppercase;} /* tracking as the main card-level label (.16em phone, .2em PC); size stays larger */
+.party-level::before{content:'';width:30px;height:3px;background:currentColor;flex-shrink:0;} /* the app's category bar, keep */
+.party-level:empty{display:none;}
+.party-question{
+  font-size:clamp(2.75rem,12.8vw,3.125rem);line-height:1.12;color:var(--cream);text-wrap:balance;
+  transition:opacity .22s ease,transform .32s cubic-bezier(.2,.7,.2,1);}
+.party-question.entering{opacity:0;transform:translateY(10px);}
+
+/* the divider between question and Twist text: only on a Twist card (the plain card has no line under the question).
+   Same flourish as the pick dividers (.pick-div): a hairline with a short bar either side. --pd-a (question side)
+   is the card's category colour, set per card in updatePartyDisplay (presentation.js), the same source as the pick
+   dividers; --pd-b (twist side) is --celadon-soft. Horizontal, starting at the text's left edge, hairline fading
+   out to the right; vertical (sideways) in the landscape rules below. */
+.twist-div{display:none;--pd-b:var(--celadon-soft);}
+.party-inner:has(.party-number.twist) .twist-div{display:block;position:relative;width:190px;height:1px;margin:14px 0;align-self:flex-start;pointer-events:none;
+  background:linear-gradient(90deg,rgba(201,168,76,.5) 0,rgba(201,168,76,.5) 78%,transparent);}
+.twist-div::before,.twist-div::after{content:'';position:absolute;left:0;width:32px;height:3px;}
+.twist-div::before{bottom:3px;background:var(--pd-a,var(--gold));}
+.twist-div::after{top:3px;background:var(--pd-b);}
+
+/* Twist */
+.party-number{display:none;}
+.party-number.twist{display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  font:italic 400 24px/1.28 'Cormorant Garamond',serif;letter-spacing:.01em;color:var(--celadon);text-wrap:balance;max-width:26ch;}   /* celadon like .twist-sentence.twist */
+.party-number.twist::before{content:'TWIST';font:600 12px/1 'Jost',sans-serif;font-style:normal;letter-spacing:.3em;color:var(--celadon);}
+
+/* Draw three */
+.party-picker{position:absolute;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;
+  padding:calc(max(58px,env(safe-area-inset-top)) + 70px) 26px max(34px,env(safe-area-inset-bottom));}
+.party-picker.open{display:flex;}
+/* same two corners as the frame */
+.party-picker::before,.party-picker::after{content:'';position:absolute;width:24px;height:24px;border:solid var(--gold);opacity:.35;pointer-events:none;}
+.party-picker::before{top:12px;left:12px;border-width:1px 0 0 1px;}
+.party-picker::after{bottom:12px;right:12px;border-width:0 1px 1px 0;}
+.party-picker .picker-options{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
+.party-picker .pick-opt{flex:1 0 auto;position:relative;display:flex;flex-direction:column;justify-content:center;
+  padding:18px 4px;background:none;cursor:pointer;transition:background .15s;}
+.party-picker .pick-opt:hover{background:#15120f;}
+/* divider between options: a hairline straight through, a short bar in each neighbouring option's category
+   colour on either side of it (--pd-a: the option before, --pd-b: this one). Added by openPicker() in card.js. */
+.party-picker .pick-div{position:absolute;left:50%;top:0;width:190px;height:1px;transform:translate(-50%,-50%);pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.5) 22%,rgba(201,168,76,.5) 78%,transparent);}
+.party-picker .pick-div::before,.party-picker .pick-div::after{content:'';position:absolute;left:50%;width:32px;height:3px;margin-left:-16px;}
+.party-picker .pick-div::before{bottom:3px;background:var(--pd-a,var(--gold));}
+.party-picker .pick-div::after{top:3px;background:var(--pd-b,var(--gold));}
+.party-picker .pick-opt-accent{display:none;}
+/* the faded category side line, exactly as tall as label + question */
+.party-picker .pick-opt-text{position:relative;display:flex;flex-direction:column;gap:12px;padding-left:20px;text-align:left;}
+.party-picker .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
+.party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.16em;text-transform:uppercase;} /* same as category */
+.party-picker .pick-opt-q{font:italic 300 25px/1.18 'Cormorant Garamond',serif;color:var(--cream);text-wrap:pretty;}
+/* With the three up, Close, Back, Twist, Three and Next stay usable: the chrome
+   rows sit above the picker and only their buttons take taps (the rows span the
+   screen). The count and star stay on show, Three reads gold (it switches Three
+   off, which is how you get back to one card), and the options stop above the
+   bottom row (--pk-x, set by fitPartyPicker() in card.js). */
+.party-overlay.picking .party-chrome{z-index:31;pointer-events:none;}
+.party-overlay.picking .party-chrome button{pointer-events:auto;}
+.party-picker .picker-options{margin-bottom:var(--pk-x,0px);}
+
+/* ── phone landscape ── */
+@media (orientation:landscape) and (max-height:500px){
+  .party-frame{--fi:10px;--fs:20px;}
+  .party-top{padding:14px 48px 0;}
+  .pc-rule{display:flex;}
+  .party-bottom{padding:0 48px 12px;}
+
+  .party-inner{padding:0 48px;gap:18px;}
+  .party-level{font-size:15px;}
+  .party-question{font-size:46px;line-height:1.1;max-width:none;}
+
+  /* with Twist: question | vertical rule | Twist */
+  .party-inner:has(.party-number.twist){display:grid;grid-template-columns:minmax(0,1.35fr) auto minmax(0,1fr);
+    grid-template-areas:"level orn twist" "q orn twist";align-content:center;column-gap:30px;row-gap:16px;}
+  .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
+  .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
+  .party-inner:has(.party-number.twist) .twist-div{grid-area:orn;width:1px;height:auto;margin:0;padding:0;align-self:stretch;opacity:.65;
+    background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 22%,rgba(201,168,76,.5) 78%,transparent);}
+  .twist-div::before,.twist-div::after{top:50%;bottom:auto;left:auto;width:3px;height:32px;margin-top:-16px;}
+  .twist-div::before{right:3px;} .twist-div::after{left:3px;}
+  .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
+
+  /* Draw three: three columns, vertical rules between */
+  .party-picker{padding:64px 48px 20px;}
+  .party-picker::before,.party-picker::after{width:20px;height:20px;}
+  .party-picker::before{top:10px;left:10px;} .party-picker::after{bottom:10px;right:10px;}
+  .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:44px;overflow:visible;}
+  .party-picker .pick-opt{padding:0;justify-content:center;}
+  /* sideways: the divider stands upright in the gap between columns, a little dimmer */
+  .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
+  .party-picker .pick-opt-text{padding-left:18px;}
+  .party-picker .pick-opt-level{font-size:12px;}
+  .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
+}
+
+/* ── desktop ── */
+@media (min-width:900px) and (min-height:501px){
+  .party-frame{--fi:24px;--fs:40px;}
+  .party-top{padding:44px 88px 0;}
+  .party-top .party-twist,.party-top .party-pick{gap:10px;}
+  .pc-rule{display:flex;} .pc-rule::before{width:40px;}
+  .party-count{font-size:18px;letter-spacing:.24em;}
+  .party-bottom{padding:16px 88px 46px;}
+  .party-chrome button{font-size:15px;} /* readable on desktop */
+  .party-key{display:inline;}
+  .party-exit svg{width:18px;height:18px;}
+  .party-prev-btn,.party-next-btn{font-size:18px !important;}
+
+  .party-inner{padding:0 88px;gap:34px;}
+  .party-level{font-size:16px;gap:16px;letter-spacing:.2em;}
+  .party-level::before{width:36px;}
+  .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
+  .party-inner:has(.party-number.twist) .twist-div{width:300px;margin:18px 0;}
+  .twist-div::before,.twist-div::after{width:44px;height:4px;} .twist-div::before{bottom:4px;} .twist-div::after{top:4px;}
+  .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
+  .party-number.twist::before{font-size:13px;}
+
+  /* the three options stacked in a centred column, one above the other */
+  .party-picker{padding:104px 88px 56px;}
+  .party-picker::before,.party-picker::after{width:40px;height:40px;}
+  .party-picker::before{top:24px;left:24px;} .party-picker::after{bottom:24px;right:24px;}
+  .party-picker .picker-options{display:flex;flex-direction:column;overflow:visible;}
+  .party-picker .pick-opt{flex:1 1 0;padding:10px 0;justify-content:center;}
+  .party-picker .pick-opt-text{width:100%;max-width:980px;margin:0 auto;gap:22px;padding-left:28px;}
+  .party-picker .pick-opt-level{font-size:13px;letter-spacing:.2em;}
+  .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
+  .party-picker .pick-div{width:300px;}
+  .party-picker .pick-div::before,.party-picker .pick-div::after{width:44px;margin-left:-22px;height:4px;}
+  .party-picker .pick-div::before{bottom:4px;} .party-picker .pick-div::after{top:4px;}
+}
+
+.drawer-item--lvl{padding-left:11px;border-left:2px solid var(--lvl);}
+.drawer-item--lvl .drawer-item-meta{color:var(--lvl);opacity:.85;}
+
+
+
+/* Draw Three, Full Screen (which is also how Twist's party-mode double
+   normally gets reached) and Twist itself all assume a hand you're mixing
+   or drawing from at random — none of that applies to Colbert/The 36's
+   fixed, in-order sequence, so the whole row disappears rather than
+   leaving three now-meaningless buttons in place. */
+body.fixed-seq-mode .screen-row{display:none;}
+
+/* ── PICK-3 MODE ── */
+.screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
+
+/* ── HAND SUMMARY ── the row under the draw button at the end of a
+   hand: same slot .screen-row occupies while a card is showing, swapped
+   in via body.showing-hand-summary instead of stacked on top of it, so
+   only one of the two is ever in the layout at once. */
+.screen-row--hand{display:none;}
+body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
+body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
+/* Change and Save look and behave like Three / Spotlight / Twist: they share the #screenRow rules (see "The play-style row" below). */
+.pick-toggle{
+  background:transparent;border:none;border-bottom:1px solid transparent;
+  color:var(--btn-quiet);
+  padding:15px 8px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:var(--border-strong);}
+.pick-toggle.on{color:var(--gold);border-bottom-color:var(--border-strong);}
+.pick-toggle .pt-card{width:16px;height:16px;flex-shrink:0;}
+
+/* ── DRAW THREE · normal screen: one card split three ways ──
+   The whole picker is a single card on the drawn card's own surface, border and gold
+   corner marks (once, top-left + bottom-right). Three equal parts split by a thin plain
+   line; each part has Full screen's faded category line in front of category + question
+   and a small category-coloured arrow at the right edge (--pc / --pc-solid set in openPicker). */
+.card-area .card-picker{display:none;position:absolute;inset:0;z-index:20;background:var(--bg);}
+.card-area .card-picker.open{display:flex;}
+.card-area .picker-options{flex:1;min-height:0;display:flex;flex-direction:column;gap:0;position:relative;
+  background:var(--card-bg);border:1px solid var(--border);
+  box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);
+  font-size:1.12rem;}                                   /* question size; fitPicker overrides via --pq */
+.card-area .picker-options::before,.card-area .picker-options::after{content:'';position:absolute;width:14px;height:14px;
+  border:solid var(--gold);opacity:.35;pointer-events:none;z-index:2;}
+.card-area .picker-options::before{top:6px;left:6px;border-width:1px 0 0 1px;}
+.card-area .picker-options::after{bottom:6px;right:6px;border-width:0 1px 1px 0;}
+.card-area .pick-opt{flex:1 1 0;min-height:0;position:relative;
+  display:flex;align-items:center;justify-content:flex-start;padding:4px 40px 4px 26px;text-align:left;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s;}
+.card-area .pick-opt+.pick-opt{border-top:1px solid var(--border);}
+.card-area .pick-opt-accent{display:none;}
+/* tap cue: thin arrow at the right edge, in the part's own colour, dim until hovered/pressed */
+.card-area .pick-opt::after{content:'';position:absolute;right:18px;top:50%;width:9px;height:9px;
+  border:solid var(--pc-solid,var(--muted));border-width:1px 1px 0 0;transform:translateY(-50%) rotate(45deg);
+  opacity:.55;transition:opacity .15s;pointer-events:none;}
+/* wash: no token is this faint (--dim is .12), so a raw gold .07 */
+.card-area .pick-opt:hover,.card-area .pick-opt:active{background:rgba(201,168,76,.07);}
+.card-area .pick-opt:hover::after,.card-area .pick-opt:active::after{opacity:1;}
+.card-area .pick-opt-text{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-left:16px;}
+/* Full screen's faded category line, in front of the text */
+.card-area .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
+.card-area .pick-opt-level{font:600 .64rem/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.card-area .pick-opt-q{
+  font-size:var(--pq,1em);line-height:1.16;color:var(--cream);text-wrap:pretty;}
+
+@media(min-width:768px){
+  .card-area .picker-options{font-size:1.75rem;}
+  .card-area .picker-options::before{top:20px;left:20px;width:30px;height:30px;}
+  .card-area .picker-options::after{bottom:20px;right:20px;width:30px;height:30px;}
+  .card-area .pick-opt{padding:14px 90px 14px 64px;}
+  .card-area .pick-opt::after{right:40px;width:12px;height:12px;}
+  .card-area .pick-opt-text{gap:10px;padding-left:26px;}
+  .card-area .pick-opt-level{font-size:.82rem;}
+  .card-area .pick-opt-q{line-height:1.22;max-width:34ch;}
+}
+
+/* ── RESPONSIVE ── */
+@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:.88rem;}}
+@media(min-width:768px){
+  .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.twist-sentence.twist{font-size:.98rem;}
+  .btn-sq{width:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;}
+  .cat-toggle-lbl{font-size:.8rem;}
+}
+@media(min-width:1024px){
+  .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.twist-sentence.twist{font-size:1.05rem;}
+  .btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
+  /* chrome sized for a 364px mobile card reads thin at 720px — scale the rail,
+     corner brackets and star (mobile 3px rail/24px corners/.9rem star).
+     Rail is 5px: desktop uses the hard-edged "intense" gilt.js derivation (see
+     giltRail()), which reads as a warning bar at anything thinner.
+     filter:none is explicit: nothing sets a filter on .c-accent, and nothing
+     should. */
+  .c-accent{height:5px;filter:none;}
+  .card::before,.card::after{width:30px;height:30px;}
+  .card::before{top:26px;left:26px;}
+  .card::after{bottom:26px;right:26px;}
+  .card-star{font-size:1.05rem;top:12px;right:15px;}
+}
+
+/* ── CATEGORY TOOLTIP ── */
+.cat-grid-wrap{scrollbar-width:none;}
+.cat-grid-wrap::-webkit-scrollbar{display:none;width:0;height:0;}
+.grid-fade{position:sticky;bottom:-1px;left:0;right:0;height:34px;margin-top:-34px;pointer-events:none;opacity:0;transition:opacity .25s;background:linear-gradient(to bottom,rgba(14,12,10,0),#0e0c0a 85%);display:block;z-index:2;}
+.cat-grid-wrap.can-scroll .grid-fade{opacity:1;}
+
+/* ── SKIP UNDO ── */
+.skip-undo{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%) translateY(6px);z-index:30;
+  background:var(--card-bg);border:1px solid rgba(201,168,76,.5);
+  color:var(--gold-l);font-family:'Jost',sans-serif;font-size:.75rem;
+  letter-spacing:.12em;text-transform:uppercase;padding:15px 32px;
+  cursor:pointer;z-index:300;opacity:0;pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;white-space:nowrap;
+  box-shadow:0 4px 24px rgba(0,0,0,.5);
+}
+.skip-undo.visible{
+  opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* hide spice glyph when SPICE_AVAILABLE=false */
+.spice-hidden{display:none!important;}
+
+
+
+/* ═════════ APP SHELL — token line, trays, category drawer, fullscreen stage, desktop ═════════ */
+
+/* ── TOKEN LINE — three symmetric words, ember only when lit ── */
+/* optically balanced, not equal: the card's solid border and the token's colour
+   underline read heavier than plain dim text, so an equal gap above and below
+   looks closer to the card. Bottom padding is sized up so the token sits
+   visually centred between the subtitle and the card. */
+.tok-line{display:flex;align-items:flex-start;justify-content:center;gap:22px;width:100%;padding:4px 0 11px;margin-top:-1.5px;
+  opacity:0;transform:translateY(-4px);transition:opacity .5s .12s ease,transform .5s .12s ease;}
+.tok-line.in{opacity:1;transform:none;}
+/* Visible at rest, not just on hover — a bare label with no border or fill
+   reads as plain text, not a button, until you touch it. Underline + caret
+   is the same "this opens something" cue used elsewhere, no pill/box (that
+   read as web-chrome, not part of this deck). --tokc, when a token sets it
+   (renderShell(), presentation.js), is what's actually happening right now:
+   Mood takes the colour of the room the selection is in, Shuffle the colour
+   of its bias. Cards has no "kind" to colour, so it stays neutral gold. */
+.tok{background:none;border:none;cursor:pointer;position:relative;
+  font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 14px 12px;transition:opacity .2s;white-space:nowrap;}
+.tok-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-l);transition:color .2s;}
+/* the word itself stays centred in the token — the caret is taken out of
+   the text's own box (not just appended after it) and floated just past
+   its edge, so a longer word doesn't drag the whole label off-centre */
+/* line-height:1 tightens the line box to hug the glyphs — without it the
+   box size (and so how far cap-height sits from its centre) depends on the
+   browser's own font metrics for Jost, which can differ enough device to
+   device that a hand-tuned pixel nudge on .tok-rule (elsewhere) that looks
+   right in one browser doesn't in another. Shrinking the box itself is the
+   fix that doesn't depend on guessing a constant per renderer. */
+.tok-val{position:relative;font-size:.8rem;line-height:1;letter-spacing:.1em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
+.tok-val::after{content:'\25BE';position:absolute;left:100%;top:50%;transform:translateY(-50%);
+  margin-left:4px;font-size:.85em;opacity:.55;transition:transform .2s;color:var(--tokc,var(--gold));}
+/* underline as its own inset bar instead of a full-width border — spanning
+   the whole padded box read as heavier than the word it sits under */
+.tok::after{content:'';position:absolute;left:16px;right:16px;bottom:0;height:2px;
+  background:color-mix(in srgb, var(--tokc,var(--gold)) 45%, transparent);transition:background .2s;}
+.tok:hover{opacity:.95;}
+.tok:hover::after{background:var(--tokc,var(--gold));}
+.tok:hover .tok-lbl{color:var(--cream);}
+.tok.open .tok-lbl{color:var(--cream);}
+.tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
+.tok.open{opacity:1;}
+.tok.open::after{background:var(--tokc,var(--gold));}
+.tok.open .tok-val::after{transform:translateY(-50%) rotate(180deg);}
+
+/* The token row is a single entry point — the active preset. Flanking
+   hairlines (.tok-rule, the same "— end —" rule-and-word device the card uses,
+   colour-matched via --tokc) mark it as primary without pill/box chrome; a
+   subtle border-bottom adds the "this opens something" cue. */
+.tok-preset{gap:5px;padding:10px 16px;border-bottom:1px solid color-mix(in srgb, var(--tokc,var(--gold)) 30%, transparent);}
+/* turns off .tok::after's inset bar — the border-bottom above is the one underline */
+.tok-preset::after{content:none;}
+/* the hairlines are real elements in a row wrapping just the value, so they
+   centre against "Balanced" itself, not the label+value stack */
+.tok-val-row{display:flex;align-items:center;gap:7px;}
+/* align-items:center lines the rule up with .tok-val's full line box, but
+   an all-caps word has no descenders — the glyphs sit in the top portion
+   of that box, empty space piles up underneath, and centring on the box
+   reads as centring above the letters. Nudged down to split the cap-height
+   itself instead of the box around it. */
+.tok-rule{width:18px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;transform:translateY(3px);}
+.tok-rule--l{background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
+.tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
+.tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
+.tok-hint{color:var(--muted);transition:opacity .35s ease;}
+body.tok-taught .tok-hint{display:none;}
+.tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
+.tok-preset:active{opacity:.7;}
+.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
+/* Custom with 2+ categories: the name is a soft gradient of the first 2-3 picked colours (--tokg, set in renderShell) */
+.tok-multi .tok-val{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
+/* no dropdown caret on this token — the hairlines and underline already say it opens something */
+.tok-preset .tok-val::after{content:none;}
+
+/* ── TRAYS — the slidy things, one open at a time ── */
+.tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
+.tray.open{max-height:290px;overflow-y:auto;}
+
+/* mode buttons: original text style, wrapped + centered */
+.tray .preset-outer{display:block;width:100%;opacity:1;}
+.tray .preset-wrap{overflow:visible;}
+.tray .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
+.tray .limit-row{justify-content:center;}
+
+/* ── CATEGORY DRAWER — same species as the menu drawer ── */
+.cat-scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
+  z-index:290;opacity:0;pointer-events:none;transition:opacity .25s;}
+.cat-scrim.on{opacity:1;pointer-events:all;}
+.cat-area{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:295;margin:0;width:auto;height:88dvh;
+  background:var(--surface);border-top:1px solid var(--border);
+  transform:translateY(102%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;opacity:1;padding:0 18px;}
+.cat-area.in{opacity:1;}
+.cat-area:not(.sheet-open){pointer-events:none;}
+.cat-area.sheet-open{transform:none;}
+/* the visible bar stays a thin 3px line — background-clip keeps the
+   drag/tap target much bigger without fattening the bar. A missed handle would
+   land the touch on the sheet body, which the browser could read as a
+   pull-to-refresh drag (see the overscroll-behavior fix above). */
+.cat-sheet-handle{width:88px;height:36px;padding:16.5px 10px;box-sizing:border-box;
+  background-color:rgba(201,168,76,.3);background-clip:content-box;border-radius:2px;
+  margin:0 auto;flex-shrink:0;touch-action:none;}
+/* the sheet's own title — playLeadFirst, driven by updateTimeOfDayHeading()
+   — sits in this row next to Close. */
+.cat-sheet-head{position:relative;padding:4px 0 16px;flex-shrink:0;}
+.cat-sheet-head-title{text-align:center;color:rgba(240,232,216,.6);}
+.cat-sheet-name{padding:0 0 6px;}
+/* padding carries the tap target up toward the ~44px minimum — the glyph
+   itself stays the same visual size, the invisible hit area just grows
+   around it instead of stopping a few px past the "x" */
+.cat-close{position:absolute;top:4px;right:6px;background:none;border:none;color:var(--muted);
+  font-size:1rem;cursor:pointer;padding:14px;transition:color .2s;z-index:2;
+  display:flex;align-items:center;justify-content:center;}
+.cat-close:hover{color:var(--cream);}
+#catLabel{display:none;}
+.cat-topbar{flex-shrink:0;justify-content:center;padding:0 0 6px;}
+.cat-topbar--legacy{display:none!important;}   /* logic kept, row no longer shown */
+
+/* Not shown on screen — the draw button already reads "Hold to continue"
+   at the end of a hand, so this second copy at the bottom of the viewport
+   was redundant. Left in the DOM (display:none, not removed) because
+   updateDrawMore()/hint() still toggle its "visible" class as the explicit
+   end-of-hand signal the hold-to-continue tests check. */
+.end-hint{display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
+  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);opacity:0;pointer-events:none;transition:opacity .3s ease;}
+.end-hint.visible{opacity:.75;}
+.end-hint.nudge{animation:endNudge .32s ease;}
+@keyframes endNudge{0%,100%{transform:translateX(-50%) scale(1);}40%{transform:translateX(-50%) scale(1.12);opacity:1;}}
+
+/* presets (former modes) at the top of the categories drawer, as a wrapped
+   grid — never a scrolling bar. */
+.preset-host{flex-shrink:0;padding:2px 0 4px;border-bottom:1px solid var(--dim);margin-bottom:20px;}
+/* slides open, same max-height technique the trays already use elsewhere
+   (see .tray) — not an instant display toggle */
+/* target close to the real content height (~97px measured), not a big
+   buffer — a much larger target than the actual box made opening reach
+   full height early and then keep "animating" invisibly past it, so open
+   read as a fast snap while closing (which travels the same real
+   distance) read as the properly-paced one. */
+.preset-host .preset-outer{max-height:0;overflow:hidden;width:100%;opacity:1;
+  padding:0 24px;transition:max-height .32s ease,padding .32s ease;}
+.preset-host.open .preset-outer{max-height:260px;padding:6px 24px 10px;}
+.preset-host .preset-wrap{overflow:visible;}
+.preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
+/* Colbert/The 36 aren't chapters, so picking one leaves "What kind of
+   evening?" with nothing under it to show — expected, not a bug, but the
+   empty space is exactly where a description of what's actually playing
+   belongs instead (see #listModeNote / updateListModeNote in ui.js). */
+.list-mode-note{display:none;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.85rem;line-height:1.5;color:rgba(240,232,216,.75);padding:8px 10px 4px;}
+
+/* suggested: in this room, not yet chosen — the exploration hint */
+
+.mode-btn--list{--pc:var(--list-col);--pick-h:44px;}
+
+/* ── MAIN COLUMN ── */
+.card-wrap{margin-top:20px;}
+
+/* Next Card's little shimmy when a hold-gated tap needs nudging into view */
+.btn-draw.nudge{animation:drawNudge .3s ease;}
+@keyframes drawNudge{0%,100%{transform:none;}30%{transform:translateX(-3px);}60%{transform:translateX(3px);}}
+
+.party-orient{display:none;}  /* phone only, see below */
+/* ── FULLSCREEN — phone orientation toggle ──
+   For anyone whose phone is orientation-locked: mirrors the CSS landscape
+   layout above via a class instead of an actual media query, so the
+   composition matches what a real rotation would produce. */
+@media(max-width:899px){
+  /* the switch: a word set upright along the right edge between two short fading hairlines.
+     "Sideways" in portrait, "Upright" once switched (ui.js sets data-land). Above the picker (z-index 30). */
+  .party-orient{display:block;position:fixed;right:6px;bottom:112px;width:34px;height:170px;z-index:40;transition:opacity .5s ease;}
+  .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
+  .party-orient-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:34px;height:170px;
+    background:none;border:0;padding:0;cursor:pointer;color:var(--celadon);font-family:'Jost',sans-serif;-webkit-tap-highlight-color:transparent;}
+  .party-orient-btn:active,.party-orient-btn:focus-visible{color:var(--gold);}
+  @media (hover:hover){.party-orient-btn:hover{color:var(--gold);}}
+  .party-orient-btn .ln{flex:1;width:1px;display:block;}
+  .party-orient-btn .ln:first-child{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}   /* celadon lines, same 42% as the play row's rules */
+  .party-orient-btn .ln:last-child{background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}
+  .party-orient-btn .tx{font:400 12px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;writing-mode:vertical-rl;margin-right:-.22em;}
+  .party-orient-btn [data-s]{display:none;}
+  .party-orient[data-land="0"] [data-s="p"],.party-orient[data-land="1"] [data-s="l"]{display:block;}
+  .party-overlay:not(.orient-landscape) .party-picker{padding-right:44px;}
+
+  .party-overlay.orient-landscape .party-frame{--fi:10px;--fs:20px;}
+  .party-overlay.orient-landscape .party-top{padding:14px 48px 0;}
+  .party-overlay.orient-landscape .pc-rule{display:flex;}
+  .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;}
+
+  .party-overlay.orient-landscape .party-inner{padding:0 48px;gap:18px;}
+  .party-overlay.orient-landscape .party-level{font-size:15px;}
+  .party-overlay.orient-landscape .party-question{font-size:46px;line-height:1.1;max-width:none;}
+
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist){display:grid;grid-template-columns:minmax(0,1.35fr) auto minmax(0,1fr);
+    grid-template-areas:"level orn twist" "q orn twist";align-content:center;column-gap:30px;row-gap:16px;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
+  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .twist-div{grid-area:orn;width:1px;height:auto;margin:0;padding:0;align-self:stretch;opacity:.65;
+    background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 22%,rgba(201,168,76,.5) 78%,transparent);}
+  .party-overlay.orient-landscape .twist-div::before,.party-overlay.orient-landscape .twist-div::after{top:50%;bottom:auto;left:auto;width:3px;height:32px;margin-top:-16px;}
+  .party-overlay.orient-landscape .twist-div::before{right:3px;} .party-overlay.orient-landscape .twist-div::after{left:3px;}
+  .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
+
+  .party-overlay.orient-landscape .party-picker{padding:64px 48px 20px;}
+  .party-overlay.orient-landscape .party-picker::before,.party-overlay.orient-landscape .party-picker::after{width:20px;height:20px;}
+  .party-overlay.orient-landscape .party-picker::before{top:10px;left:10px;} .party-overlay.orient-landscape .party-picker::after{bottom:10px;right:10px;}
+  .party-overlay.orient-landscape .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:44px;overflow:visible;}
+  .party-overlay.orient-landscape .party-picker .pick-opt{padding:0;justify-content:center;}
+  .party-overlay.orient-landscape .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:18px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:12px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
+
+  /* turned a quarter on a screen the browser keeps upright: the overlay takes the swapped
+     screen size, so the sideways layout above fits exactly, then swings round its corner */
+  .party-overlay[data-turn]{inset:0 auto auto 0;width:100vh;height:100vw;width:100dvh;height:100dvw;transform-origin:0 0;}
+  .party-overlay[data-turn="ccw"]{transform:translateY(100vh) rotate(-90deg);transform:translateY(100dvh) rotate(-90deg);}
+  .party-overlay[data-turn="cw"]{transform:translateX(100vw) rotate(90deg);transform:translateX(100dvw) rotate(90deg);}
+  .party-overlay.auto-turn .party-orient{display:none;}   /* tilt readings turn it: no word */
+}
+/* real landscape already gets the layout above from its own media query;
+   the toggle only matters for a portrait-locked phone, so hide it once the
+   viewport is genuinely landscape instead of leaving redundant chrome. */
+@media (max-width:899px) and (orientation:landscape) and (max-height:500px){
+  .party-orient{display:none;}
+}
+
+/* menu drawer: de-boxed, text-first; icons are one stroke-SVG set, muted→gold on hover */
+.d-icon{width:auto;height:auto;border:none;border-radius:0;font-family:'Jost',sans-serif;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;align-items:center;display:flex;}
+.d-icon svg{width:16px;height:16px;}
+.d-item{padding:15px 26px;gap:16px;}
+.d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}
+#menuDrawer .d-label{color:var(--celadon);}
+#menuDrawer .d-sub{color:var(--celadon-hint);}
+
+/* ── DESKTOP — a room, not a stretched phone ── */
+@media(min-width:768px){
+  .tok{font-size:.8rem;}
+  .tray.open{max-height:330px;}
+  .app{max-width:680px;}
+
+  /* drawers become centered panels */
+  .drawer,.sub-drawer{
+    left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
+    border:1px solid var(--border);border-radius:12px;
+    transform:translate(-50%,-46%);opacity:0;pointer-events:none;
+    transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease;}
+  .drawer.open,.sub-drawer.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
+  .drawer-handle{display:none;}
+  .cat-area{
+    /* fixed, not auto — Shape's content is much shorter than Explore's,
+       and height:auto meant the whole modal visibly grew and shrank when
+       switching tabs. Same fixed-height-with-internal-scroll approach the
+       mobile sheet already uses above (88dvh). */
+    left:50%;right:auto;bottom:auto;top:50%;width:min(640px,94vw);height:84vh;
+    border:1px solid var(--border);border-radius:12px;padding:6px 22px 0;
+    transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease;}
+  .cat-area:not(.sheet-open){transform:translate(-50%,-46%);opacity:0!important;pointer-events:none;}
+  .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
+  .cat-sheet-handle{display:none;}
+  .cat-sheet-head{padding-top:16px;}
+}
+@media(min-width:768px){
+  /* centre the whole composition in the viewport instead of hanging from the top */
+  body{justify-content:safe center;padding-bottom:0;min-height:100dvh;}
+  .app{padding-top:0;padding-bottom:0;}
+  .header{padding:0 0 18px;}
+  .tok-line{padding:4px 0 2px;}
+  .card-wrap{margin-top:26px;}
+  .controls-wrap{margin-top:18px;gap:14px;}
+}
+@media(min-width:1024px){
+  /* small surfaces were phone-sized on a monitor */
+  .pick-toggle,.btn-fullscreen{padding:15px 6px;}
+  .drawer-title{font-size:.85rem;}
+  .d-label{font-size:.85rem;} .d-sub{font-size:.85rem;} .d-icon{font-size:.95rem;}
+  .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.85rem;}
+  .session-btn{font-size:.85rem;padding:15px 18px;}
+  .cat-area{--pick-size:.85rem;}
+  .help-content p{font-size:1.1rem;}
+}
+@media(min-width:1180px){
+  .app{max-width:900px;}
+  /* readable at arm's length on a monitor */
+  .drawer-item{font-size:1.2rem;padding:16px 0;}
+  .drawer-item-meta{font-size:.88rem;}
+  .drawer-title{font-size:.9rem;}
+  .d-label{font-size:.9rem;} .d-sub{font-size:.9rem;}
+  .session-btn{font-size:.9rem;padding:15px 18px;}
+  .help-content p{font-size:1.15rem;}
+  .card-question{line-height:1.42;}
+  .card-body-inner{padding:30px 64px 20px;gap:22px;}
+  .card-question{font-size:2.6rem;}
+  .twist-sentence.twist{font-size:1.15rem;}
+  .card-level{font-size:1.05rem;letter-spacing:.2em;}
+  .tok{font-size:.85rem;}
+  .btn-draw{font-size:.9rem;}
+  .btn-sq{width:54px;}
+}
+@media(min-width:1600px){
+  .app{max-width:1000px;}
+  .card-question{font-size:2.85rem;}
+  .twist-sentence.twist{font-size:1.2rem;}
+  .card-level{font-size:1.1rem;}
+}
+
+/* short desktop windows: keep everything on one screen */
+@media(min-width:768px) and (max-height:820px){
+  .app{max-width:820px;}
+  .card-question{font-size:2.1rem;}
+  .card-level{font-size:1rem;}
+  .twist-sentence.twist{font-size:.98rem;}
+}
+
+/* Desktop windows up to ~960px tall: the whole main screen (header to the
+   Three / Spotlight / Twist hints) must fit without scrolling. Spacing is trimmed
+   a little (the two gaps around the preset line stay equal); the card's height
+   follows the window: 424px = everything on screen that isn't the card. */
+@media(min-width:768px) and (max-height:960px){
+  .header{padding-bottom:14px;}
+  .card-wrap{margin-top:22px;}
+  .controls-wrap{margin-top:12px;gap:10px;}
+  :root{--card-max:max(500px, calc((100dvh - 424px) * 556 / 360));}
+}
+/* the smaller card on short windows: question a touch smaller so the longest ones still fit */
+@media(min-width:768px) and (max-height:820px){
+  .card-question{font-size:1.8rem;}
+  .card-body-inner{padding:20px 40px 12px;gap:14px;}
+}
+
+/* ══ PLAY · EXPLORE ══════════════════════════════════════════════════════
+   Two ways into the same deck. Play asks what kind of evening this is and
+   lets the dials shape it; Explore is the whole cabinet, drawer by drawer.
+   The dials weight the draw — steep, but never to zero — they don't filter it. */
+
+/* height is animated from JS (slideFold). Vertical
+   padding has to live on .open only, not the base rule — max-height:0
+   can't actually shrink a box below its own padding (padding is a fixed
+   length, not something the browser will squeeze), so a bare .padding
+   here left a permanent ~24px sliver visible even while "closed". */
+
+/* Arc / Random: a plain row of choices, picked like everything else in the sheet. */
+.shuffle-toggle,.limit-row{display:flex;}
+.shuffle-toggle-opt,.limit-btn{--pc:var(--celadon);--pick-h:48px;flex:none;}
+
+.pane{display:none;}
+.pane.on{display:block;}
+/* the Shape sheet's one scroll surface — Explore unfolds inside it now
+   instead of swapping in as a separate pane with its own scroll */
+.pane-play{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;}
+.pane-play.on{display:block;}
+.pane-play::-webkit-scrollbar{display:none;width:0;height:0;}
+
+/* Shape's sections are different KINDS of decision — text only, no numbering —
+   a coloured rule is enough to tell them apart at a glance. */
+.play-sect{border-left:2px solid transparent;padding-left:12px;margin-left:-12px;}
+.play-sect--1{border-left-color:var(--border-strong);}
+.play-sect--2{border-left-color:rgba(101,201,176,.35);}
+.play-sect+.play-sect{margin-top:8px;padding-top:2px;}
+
+/* "start" bar at the foot of the sheet — .cat-area is itself the flex column
+   (the panes scroll internally, flex:1), so a plain flex child here just
+   sits pinned below them, always visible regardless of scroll position.
+   Closes the sheet and draws straight into the first hand, so finishing
+   here never dead-ends into "now what?" */
+.cat-go-bar{flex-shrink:0;padding:12px 0 max(14px,env(safe-area-inset-bottom));
+  background:linear-gradient(to top, var(--surface) 60%, transparent);}
+.cat-go-btn{display:block;width:100%;
+  background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
+  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:14px 0;text-align:center;cursor:pointer;transition:all .2s;}
+.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+.cat-go-btn:active{transform:scale(.98);}
+
+/* ── the five chapters ── */
+.chapters{display:flex;flex-direction:column;gap:4px;}
+/* min-height keeps every row the same size whether its description wraps
+   to one line or two — the wrap point depends on how long each chapter's
+   own name is (name + desc share one row), so without this the rows were
+   visibly different heights from chapter to chapter. Sized to fit two
+   lines of .ch-desc at its current font-size/line-height plus the row's
+   own 15px top/bottom padding; align-items:center (not baseline) so a
+   one-line row centers inside that height instead of sitting at the top. */
+.chapter{--ch:var(--gold);--ch-ease:.4s ease-out;position:relative;
+  display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
+  background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
+  transition:background var(--ch-ease),border-color var(--ch-ease);}
+/* the left rail: one continuous line down the whole row. A vertical metal sweep
+   (same gilt.js gradient as the card accent, at 190deg instead of 100deg) once a
+   chapter is fully on, drawn by ::before over the 3px border so it can fade in and
+   out; a partly-on chapter keeps a flat line of its colour, in between, along the
+   same full length. --ch-rail is written by JS from each chapter's colour — see ui.js. */
+.chapter::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
+  background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
+.chapter.on::before{opacity:1;}
+.chapter:hover{border-color:var(--border);}
+/* the row is one tap target for the whole chapter: the name button stretches over
+   it (::after), and the fold target and spice mark sit above that. */
+.ch-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 8px 8px 13px;}
+.ch-title{display:flex;align-items:center;gap:2px;}
+.ch-hit{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left;}
+.ch-hit::after{content:'';position:absolute;inset:0;}
+.spice-glyph--inline{position:relative;z-index:1;flex-shrink:0;align-self:center;padding:8px 8px;}
+.chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
+  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color var(--ch-ease);}
+.chapter .ch-desc{font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
+  line-height:1.35;}
+/* fold target: count over a chevron, set off by a hairline */
+.ch-fold{position:relative;z-index:1;width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:7px;background:none;border:none;cursor:pointer;color:var(--celadon);}
+.ch-fold::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:1px;background:var(--border);}
+.ch-ct{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--muted-l);transition:color var(--ch-ease);}
+.chapter.part .ch-ct{color:var(--ch);}
+.ch-chev{display:block;transition:transform .22s ease;}
+.ch-fold.open .ch-chev{transform:rotate(180deg);}
+.chapter-group.open .chapter{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
+/* partly on: halfway between off and on. Line and tint sit midway between the off value
+   and the fully-on one (line: chapter colour 70% into --dim; tint 6.5% against on's 9%),
+   so the row is clearly lit but not "on". */
+.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 70%, var(--dim));
+  background:color-mix(in srgb, var(--ch) 6.5%, transparent);}
+.chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
+.chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);}
+.chapter.on .ch-name{color:var(--ch);}
+.chapter-group{display:block;max-height:30rem;transition:max-height .4s ease-out,opacity .3s ease-out,margin-block-end .4s ease-out,visibility 0s;}
+/* a chapter with nothing reachable under the current preset fades and collapses (the
+   gap of .chapters goes with it) instead of jumping out; visibility keeps it out of reach */
+.chapter-group.ch-hidden{max-height:0;opacity:0;overflow:hidden;visibility:hidden;margin-block-end:-4px;
+  transition:max-height .4s ease-out,opacity .25s ease-out,margin-block-end .4s ease-out,visibility 0s .4s;}
+@media (prefers-reduced-motion:reduce){
+  .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden{transition:none;}
+}
+/* the unfolded panel: categories, each its own tap target */
+.chapter-group{--ch:var(--gold);}
+.chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0 6px 0 8px;
+  border:1px solid var(--dim);border-top:none;border-radius:0 0 2px 2px;border-width:0 1px 0 3px;
+  border-left-color:color-mix(in srgb, var(--ch) 40%, transparent);
+  background:color-mix(in srgb, var(--ch) 3%, transparent);}
+.chapter-panel.open{padding:2px 6px 6px 8px;border-width:0 1px 1px 3px;}
+.chapter-panel .toggle-btn.hard-locked{pointer-events:auto;cursor:pointer;opacity:.75;}
+.chapter-panel .toggle-btn.suggested{opacity:1;}
+/* Fixed Sets: the whole row is the fold */
+.ch-fold--row{width:100%;min-height:49px;flex-direction:row;gap:12px;padding:0 0 0 13px;
+  border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;color:var(--celadon);}
+.ch-fold--row::before{display:none;}
+.ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
+.ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
+.chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
+.ch-fold--row .ch-name,.seg-head span{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(240,232,216,.68);white-space:nowrap;}
+.ch-fold--row .ch-desc{flex:1;text-align:left;font-size:.8rem;color:var(--muted-l);}
+.chapter-group--fixed{--ch:var(--cream);}
+.chapter-group--fixed .chapter-panel.fixed-seq-options{border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
+.chapter-group--fixed .chapter-panel.fixed-seq-options:not(.open){border-width:0;}
+.cat-grid-wrap.chapter-wrap{max-height:none;border-top:none;overflow:visible;padding:0 0 6px;}
+
+/* section headings shared by Start from / Chapters / Tune / Round — one
+   small-caps label style used everywhere instead of each section
+   inventing its own header treatment. */
+.sect-lbl{display:flex;align-items:center;justify-content:space-between;position:relative;
+  color:rgba(240,232,216,.45);margin:0 0 12px;}
+/* Chapters/Tune headers drop to the warm muted tone used across the card
+   set, rather than the neutral grey every other .sect-lbl (Start from,
+   Round) still uses. */
+#chaptersLbl{color:#7a6e60;}
+/* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
+   chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
+.seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 22px;white-space:nowrap;}
+.seg{display:flex;align-items:center;}
+.seg-head{flex:none;width:5.5rem;}
+
+/* ── THE ONE PICKED LOOK ──
+   Everything you can pick in The Deck: presets, categories in open chapters, Colbert and The 36,
+   Shuffle and Cards. A small dot, then the word, both in the item's own colour.
+   Not picked = dimmer; picked = full colour, a full dot and a thin underline. No glow, no box.
+   --pc  the item's own colour (dot, underline source). Set per kind above and in config/markup.
+   --tc  the colour of the word. Same as --pc, except where --pc is too dark to read as small
+         text on the sheet: those get a lighter version of their own colour (list below). */
+.cat-area{--pick-size:.8rem;}
+.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){
+  --tc:var(--pc);
+  position:relative;display:flex;align-items:center;gap:7px;min-height:var(--pick-h,44px);padding:0 9px;
+  background:none;border:none;border-radius:0;opacity:1;text-shadow:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:var(--pick-size);font-weight:300;letter-spacing:.09em;
+  text-transform:uppercase;white-space:nowrap;
+  color:color-mix(in srgb, var(--tc) 42%, rgba(240,232,216,.5));transition:color .2s;}
+.cat-area :is(.mode-btn,.shuffle-toggle-opt,.limit-btn)::before,
+.cat-area .cat-dot{content:'';flex:none;width:5px;height:5px;border-radius:50%;
+  background:var(--pc);opacity:.5;transition:opacity .2s;}
+.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{content:'';position:absolute;
+  inset-inline:9px;top:calc(50% + 1em);height:1px;background:var(--tc);opacity:0;transition:opacity .2s;}
+.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active){color:var(--tc);font-weight:400;}
+.cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active)::before,
+.cat-area .toggle-btn.on .cat-dot{opacity:1;}
+.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active)::after{opacity:.7;}
+/* word colours lightened for this sheet only (owner-approved 2026-10-19); the real colours stay in
+   config.js and everywhere else. Each is the least lightening that reaches 4.5:1 on the sheet (#161310). */
+.toggle-btn[data-level="world"]{--tc:#3b8c68;}
+.toggle-btn[data-level="roots"]{--tc:#9f7755;}
+.toggle-btn[data-level="deep"]{--tc:#6979c3;}
+.toggle-btn[data-level="raw"]{--tc:#008b9d;}
+.toggle-btn[data-level="shadow"]{--tc:#837899;}
+.toggle-btn[data-level="usintimate"]{--tc:#cd5861;}
+.toggle-btn[data-level="flesh"]{--tc:#c45b81;}
+.toggle-btn[data-level="carnal"]{--tc:#db4b52;}
+.toggle-btn[data-level="bare"]{--tc:#dc3b96;}
+.toggle-btn[data-level="kinks"]{--tc:#ce4d9e;}
+.mode-btn[data-mode="latenight"]{--tc:#8875aa;}
+
+/* ── Sentence case for the words people read ──
+   Names of things (BALANCED, the chapter names, a card's category) stay in
+   spaced capitals; hints, section headings, link text and the Three / Full
+   screen / Twist row are written normally. */
+.tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
+.sect-lbl,.sect-lbl span,.cat-sheet-head-title{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
+.pick-toggle,.btn-fullscreen{text-transform:none;letter-spacing:.03em;font-size:.95rem;}
+@media(min-width:1024px){
+  .pick-toggle,.btn-fullscreen,.sect-lbl,.sect-lbl span{font-size:1rem;}
+  .cat-sheet-head-title{font-size:1rem;}
+}
+
+/* ── Type: Bodoni Moda for the questions, Federo for the sentence-case labels ──
+   font-size-adjust sizes Bodoni by its
+   lowercase height and carries through every breakpoint's font-size without
+   touching them. 0.36 is the largest value where no card, in English or Dutch,
+   that fitted in Cormorant stops fitting (card, full screen, both Draw-three
+   views, 320-480px wide); Bodoni is wider than Cormorant, so 0.40 or above
+   pushes the longest questions out of the fixed-shape card. Only the question itself changes: the card, the full-
+   screen view and both Draw-three pickers. Twist sentences, drawers, the hand
+   summary and help copy stay Cormorant. Federo has the same lowercase height
+   as Jost (0.46), so labels keep their size; caps names stay Jost. */
+.card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
+.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.pick-toggle,.btn-fullscreen,
+.d-sub,#menuDrawer .d-sub,.chapter .ch-desc,.drawer-empty{
+  font-family:'Federo','Jost',sans-serif;}
+
+/* ── Logo ornament: centre diamond copper, inner line pairs take the preset ── */
+.tr-svg path:nth-of-type(4){stroke:url(#trP);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
+.tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
+
+/* ── The play-style row: Three · Spotlight · Twist (also the end-of-hand row Change · Save, #handActionsRow) ──
+   One celadon, one strength, no boxes. Two fading rules above and below,
+   rotated-square separators between items, hint line under each. Active =
+   underline under the word only. Placed last so it wins over the quiet
+   text-button rules above. */
+#screenRow,#handActionsRow{position:relative;gap:4px;padding:4px 0 6px;align-items:flex-start;}
+#screenRow::before,#handActionsRow::before,#screenRow::after,#handActionsRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent) 30%,color-mix(in srgb,var(--celadon) 42%,transparent) 70%,transparent);}
+#screenRow::before,#handActionsRow::before{top:0;}
+#screenRow::after,#handActionsRow::after{bottom:0;}
+#screenRow > button,#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
+  font-family:'Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
+#screenRow > button:hover,#handActionsRow > button:hover{color:var(--celadon);}
+#screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
+#screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
+#screenRow .row-hint,#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
+  font-size:.88rem;line-height:1.15;color:var(--celadon-hint);white-space:normal;max-width:104px;text-align:center;}
+#screenRow .row-sep,#handActionsRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
+#screenRow > button.on .row-lbl,#handActionsRow > button.on .row-lbl,#screenRow > button.active .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
+/* Not usable yet (before the first card; Twist also on the end screen): only the
+   symbol + word dim — the hint under them stays at full strength. */
+#screenRow > button.disabled,#handActionsRow > button.disabled{opacity:1;}
+#screenRow > button.disabled .row-top,#handActionsRow > button.disabled .row-top{opacity:.32;}
+/* Hover (pointer devices only), press and keyboard focus light up gold, like the
+   nav row's back and menu. Not while dimmed. Hint keeps its own tone. */
+#screenRow > button:not(.disabled):active,
+#handActionsRow > button:not(.disabled):active,
+#screenRow > button:not(.disabled):focus-visible,#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
+@media (hover:hover){#screenRow > button:not(.disabled):hover,#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
+/* Hints retire per control once it has worked (see HINTS in state.js). */
+body.hint-three-taught #pickToggle .row-hint,
+body.hint-spot-taught #btnParty .row-hint,
+body.hint-twist-taught #btnTwist .row-hint,
+body.hint-change-taught #btnChange .row-hint,
+body.hint-save-taught #btnSave .row-hint{display:none;}
+/* Twist can't be used: a short horizontal shake, no words. */
+@keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
+@keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
+#screenRow > button.row-shake,#btn-prev.row-shake{animation:twistShake .35s ease-in-out;}
+@media (prefers-reduced-motion:reduce){#screenRow > button.row-shake,#btn-prev.row-shake{animation:none;}
+  #btn-prev.row-shake{animation:twistBlink .35s ease-in-out;}
+  #screenRow > button.row-shake .row-top{animation:twistBlink .35s ease-in-out;}}
+/* Twist landed: the word and the card's new line light up together, then settle. */
+@keyframes twistLit{from{color:var(--celadon-bright)}}
+.twist-lit{animation:twistLit .5s ease-out;}
+/* Spotlight, provisional: brightens to near white once, then settles. No glow. */
+@keyframes spotBright{0%,55%{color:var(--celadon-bright)}100%{color:var(--celadon)}}
+#screenRow > button.spot-bright{animation:spotBright 1s ease-out;}
+
+/* fullscreen, end of a hand: the count slot is empty — no rules around nothing */
+.party-overlay.is-hand-end .pc-rule{display:none;}
+
+/* ══ WIDE SCREENS — PC, laptop, tablet landscape (agreement 2026-10-18-pc-layout, round 12) ══
+   Not the phone. The card is a real card as large as the window allows; the controls sit
+   outside it, aligned to its edges: logo + tagline top centre, Selected + Menu top left,
+   Three / Spotlight / Twist (end of a hand: Change / Save) top right, Back left, the gold
+   bar centred, progress + count right. Nothing here changes what a control does.
+   --pcW is the card's width; the 262px is everything on screen that isn't the card. */
+
+
+/* Spotlight on wide screens: Three / Close / Twist take the same places as on the main screen's
+   top-right stack (Three, Spotlight, Twist), Close in Spotlight's own slot. Close leaves the
+   bottom centre, Twist leaves the top left. Phone and sideways phone are untouched. */
+
+
+/* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */
+@media (prefers-reduced-motion:reduce){
+  body,.btn-draw,.c-accent,.party-c-accent{transition:none;}
+}

@@ -1,0 +1,32 @@
+/* Side-by-side page only. Every card is a real-text, smaller-than-real-size copy of the phone card: the card is
+   sized by its column, and everything inside it (question, label, brackets, padding) follows the card's width
+   through container units, with the same proportions as the app's phone card (354px wide: question 1.656rem,
+   label 1rem). Real font sizes, never a transform. Hairlines and the rail keep their weight. */
+body{padding:20px 0 0;min-height:100dvh;justify-content:flex-start;}
+.sbs{width:100%;max-width:1500px;padding:0 12px;display:flex;flex-direction:column;gap:16px;flex:1;}
+.sbs-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.5rem;letter-spacing:.04em;color:var(--cream);}
+.sbs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px;row-gap:14px;align-items:start;}
+.sbs .stage{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:6px;}
+.sbs .stage-cap{display:block;margin:0;font-size:.72rem;line-height:1.3;}
+.sbs .stage-cap b{display:inline;color:var(--cream);letter-spacing:.02em;text-transform:none;font-size:.78rem;margin-left:4px;}
+.sbs .stage-cap i{font-style:normal;color:var(--gold);}
+.sbs-legend{display:grid;gap:10px;padding:6px 0 14px;font-size:.82rem;line-height:1.5;}
+.sbs-legend dt{color:var(--cream);}
+.sbs-legend dt i{font-style:normal;color:var(--gold);letter-spacing:.12em;}
+.sbs-legend dd{color:var(--muted-l);}
+
+.sbs .card-area{container-type:inline-size;}
+.sbs .card{aspect-ratio:556/360;max-width:none;margin:0;overflow:visible;}
+.sbs .card-body-inner{padding:5cqw 10cqw 2.8cqw;gap:2.8cqw;min-height:0;overflow:visible;}
+.sbs .card-level{font-size:max(9px,4.52cqw);letter-spacing:.16em;}
+.sbs .card-question{font-size:7.49cqw;line-height:1.52;}
+.sbs .card-star{top:2.5cqw;right:3.1cqw;padding:2.8cqw;font-size:max(9px,4.07cqw);}
+.sbs .c-accent,.sbs .lift{height:3px;filter:none;}
+.sbs .card::before,.sbs .card::after,.sbs .br{width:6.8cqw;height:6.8cqw;}
+.sbs .card::before,.sbs .br-a{top:5.6cqw;left:5.6cqw;}
+.sbs .card::after,.sbs .br-b{bottom:5.6cqw;right:5.6cqw;}
+
+.sbs-nav{position:sticky;bottom:0;z-index:5;margin:0 -12px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--dim);display:flex;justify-content:center;}
+.sbs-nav .nav-row{max-width:460px;}
+@media(min-width:700px){.sbs-grid{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:20px;}}
+@media(min-width:1100px){.sbs-grid{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:16px;}.sbs{padding:0 24px;}.sbs-nav{margin:0 -24px;}}

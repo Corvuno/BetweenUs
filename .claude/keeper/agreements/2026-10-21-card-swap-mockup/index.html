@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Card swap takes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+ body{padding:28px 0 48px;}
+ .wrap{width:100%;max-width:560px;padding:0 18px;}
+ h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.9rem;letter-spacing:.04em;color:var(--cream);}
+ .lead{margin-top:10px;font-size:.95rem;line-height:1.6;color:var(--muted-l);}
+ .take{display:block;margin-top:16px;padding:16px 16px 18px;border:1px solid var(--border);text-decoration:none;color:var(--cream);transition:border-color .2s;}
+ .take:hover,.take:active{border-color:var(--border-strong);}
+ .take b{display:block;font-weight:400;font-size:1.05rem;letter-spacing:.04em;}
+ .take b i{font-style:normal;color:var(--gold);letter-spacing:.16em;font-size:.75rem;margin-right:8px;}
+ .take span{display:block;margin-top:6px;font-size:.88rem;line-height:1.55;color:var(--muted-l);}
+ .rules{margin-top:26px;font-size:.8rem;line-height:1.6;color:var(--btn-quiet);}
+</style></head><body><div class="wrap">
+<h1>The card swap, four takes</h1>
+<p class="lead">Direction 2, "the card breathes". Every page runs the live app's swap (Current) next to one take, on the same cards, at phone size. Next, Back or a tap on either card moves both.</p>
+<a class="take" href="take-breath.html"><b><i>A</i>The card breathes</b><span>The whole card takes a tiny breath in: it grows about 1.4% while its hairline border and corner brackets lift, the text goes out, changes unseen, and the card settles as the new text rises in. About 320 ms.</span></a>
+<a class="take" href="take-rail.html"><b><i>B</i>The gold line leads</b><span>The card stays still. The category rail flares lighter from the centre first, the text follows it out, changes unseen, and rises back in as the rail settles. About 340 ms.</span></a>
+<a class="take" href="take-answer.html"><b><i>C</i>Text leads, card answers</b><span>The text leaves first. The card tightens a hair while it is empty, then eases back out under the new text, its corners lifting for a moment. About 330 ms.</span></a>
+<a class="take" href="take-spring.html"><b><i>D</i>Bolder: the card dips and springs</b><span>The card visibly dips and dims, the text changes at the bottom of the dip, and the card springs up past its size and settles; border and rail flash. About 360 ms. Built to stand apart.</span></a>
+<p class="rules"><b>Question size:</b> the question never changes size in any take. Every scale and movement of the frame runs on a layer holding only the card background, border, brackets and rail; the text sits above it and only fades and rises a few pixels. <br><br>All takes: transform and opacity only, no glow, hairlines stay one pixel, the text changes while invisible. Under reduced motion each becomes a plain quick fade. Current is the live swap: the card is still and the text fades with a 6 px drift over .38 s, replaced at 175 ms while still about a third visible (about 500 ms in all), and the rail replays its 1 s bloom.</p>
+</div></body></html>

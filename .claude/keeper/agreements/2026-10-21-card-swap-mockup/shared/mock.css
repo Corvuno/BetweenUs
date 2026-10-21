@@ -1,0 +1,40 @@
+/* Mockup-only styles (the app's own CSS is shared/styles.css, unchanged apart from the note at its top). */
+body{padding-bottom:24px;min-height:100dvh;}
+.mock{width:100%;max-width:460px;padding:0 18px;display:flex;flex-direction:column;align-items:center;gap:14px;margin:0 auto;}
+.stages{width:100%;display:flex;flex-direction:column;gap:18px;padding-top:44px;}
+.stage{width:100%;}
+.stage-cap{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--btn-quiet);margin:0 0 8px;display:flex;justify-content:space-between;gap:10px;}
+.stage-cap b{font-weight:400;color:var(--gold);}
+.stage .card-area{width:100%;position:relative;}
+.stage .card{overflow:visible;}
+/* take stages: the card's background, border, brackets and rail live in one layer that the take moves and scales; the text sits above it and is never scaled */
+.card.split{background:transparent;border-color:transparent;box-shadow:none;}
+.card.split::before,.card.split::after{display:none;}
+.frame-group{position:absolute;inset:0;z-index:0;pointer-events:none;will-change:transform;}
+.fr-bg{position:absolute;inset:-1px;background:var(--card-bg);border:1px solid var(--border);box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);}
+.br{position:absolute;width:24px;height:24px;border:solid var(--gold);opacity:.35;}
+.br-a{top:20px;left:20px;border-width:1px 0 0 1px;}
+.br-b{bottom:20px;right:20px;border-width:0 1px 1px 0;}
+.card.split .card-body-inner{z-index:1;}
+/* the two lines the takes lift: a 1px border overlay (opacity only) and a lighter copy of the rail */
+.hair{position:absolute;inset:-1px;border:1px solid var(--gold-l);opacity:0;pointer-events:none;z-index:3;}
+.lift{position:absolute;top:0;left:0;right:0;height:3px;z-index:4;opacity:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,color-mix(in oklab,var(--lift,var(--gold-l)) 45%,#fff) 50%,transparent);}
+.mock-nav{width:100%;margin-top:4px;}
+.mock-note{font-size:.75rem;letter-spacing:.06em;color:var(--btn-quiet);text-align:center;line-height:1.5;}
+.back-link{position:fixed;top:10px;left:14px;z-index:50;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.1em;color:var(--btn-quiet);text-decoration:none;padding:10px 8px;opacity:0;transition:opacity .3s ease;}
+.back-link.show{opacity:1;}
+.back-link:hover{color:var(--gold);}
+@media (min-width:900px){
+  .mock{max-width:980px;}
+  .stages{flex-direction:row;gap:28px;align-items:flex-start;}
+  .stage{flex:1;}
+  .mock-nav{max-width:460px;}
+}
+/* same bracket size and inset as the app's .card::before/::after at this width (styles.css, min-width:1024px) */
+@media(min-width:1024px){
+  .br{width:30px;height:30px;}
+  .br-a{top:26px;left:26px;}
+  .br-b{bottom:26px;right:26px;}
+  .lift{height:5px;}
+}

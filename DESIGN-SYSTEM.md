@@ -67,7 +67,7 @@ lightening), and one with no press feedback at all. All three are now the
 same spec — Next Card's, by explicit pick:
 ```
 font-size: .8rem (12.8px)   letter-spacing: .14em   padding: 14px 0
-hover: linear-gradient(135deg,#ddb85c,#b08840)   active: scale(.98)
+hover: linear-gradient(135deg,#ddb85c,#b08840)   active: scale(.98) (Draw and the square buttons press to .97, see "Motion")
 corners: square
 ```
 
@@ -380,3 +380,31 @@ line directly under it, in its existing quieter tone (cream at .6, Federo, sente
 Close (✕) is unchanged. No new box, line or glow. Reason: the sheet had no name, only a
 question. The card screen's label reads "Selected deck" (was "Selected"); the
 " · tap to change" / "click to change" hint is unchanged.
+
+## Motion (added 2026-10-21, animation fixes)
+
+Two curves, defined once on `:root`: `--ease-out: cubic-bezier(.23,1,.32,1)` (things that enter or
+respond: starts fast, settles soft) and `--ease-sheet: cubic-bezier(.32,.72,0,1)` (drawers and sheets
+sliding in). Plain `ease` / `ease-in-out` are not used for entering things.
+- **First draw of a hand:** one 520ms landing (`cardDrawIn`, single keyframe segment on `--ease-out`,
+  no bounce); two ghosts ease-out, delays 0 and 60ms; the question swaps in at 310ms (card.js
+  `DRAW_TIMING`) so its fade overlaps the landing. Reduce motion: no drop, no ghosts, a 250ms opacity
+  fade, swap at 150ms.
+- **The turn** (message to Intermezzo, to the hand list, and back): 560ms, edge-on and face swap at 280ms
+  (`TURN_MID_MS` / `TURN_END_MS` in deck.js follow the CSS).
+- **Drawers, sub-drawer, The Deck sheet, scrims:** open 320ms on `--ease-sheet`, close 210ms; the base
+  selector carries the close timing, `.open` the open timing. Desktop modals: open 280ms `--ease-out`,
+  close 200ms ease-out, opacity 200ms.
+- **Fold-outs:** chapter panels open 260ms / close 200ms on `--ease-out` (ui.js `slideFold`); a chapter
+  hiding under a preset the same pair. (`.tray` and the Start-from preset host carry the same pair but
+  do not animate today: no `.tray` element exists and the preset host is always open.)
+- **Entrance:** header, card, controls, party overlay, party chrome and the token hint use `--ease-out`
+  at about 340-380ms; the stagger (header 100ms, card 50ms, controls 200ms) stays.
+- **Buttons never use `transition: all`:** name the properties. Draw's gold (`--bd-a/--bd-b`) moves in
+  .2s like the rest of the button; only the end-of-hand colour (`.hold-mode`) eases in .6s. Draw and the
+  square buttons press in with `:active{transform:scale(.97)}`, 160ms `--ease-out`.
+- **Hover is only for real hover devices:** every `:hover` rule sits in
+  `@media (hover:hover) and (pointer:fine)` so nothing stays lit after a phone tap. Keyboard
+  `:focus-visible` styles are separate and unchanged.
+- **Question text** balances its lines (`text-wrap:balance`) on the card, in Spotlight, and Three
+  uses `pretty`; the font size is never touched by wrapping. The hand list stays normal wrapping.

@@ -1,0 +1,7 @@
+/* B: the smallest tone step that passes (two new values) plus a little more presence on the lines themselves */
+:root{--celadon-hint:#6f8579;--text-helper:#8c8071;}   /* --celadon-hint also colours the main menu's sub-lines */
+.subtitle,.tok-hint,#chaptersLbl,.sect-lbl{color:var(--text-helper);}
+.subtitle{font-weight:400;}
+@media not ((min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4)){
+  #screenRow .row-hint,#handActionsRow .row-hint{font-size:.95rem;max-width:112px;}
+}
