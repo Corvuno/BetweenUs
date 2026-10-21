@@ -57,3 +57,21 @@ a possible later conversation.
 Every fault above is gone when tried as a player on phone and PC, reduce motion included;
 nothing else looks or behaves differently; the tester confirms line by line, the reviewer reads
 the code; the two mockup rounds are published, each on its own link.
+
+---
+
+## Owner's picks, 2026-10-21 (later the same day)
+
+**Helper text (build now, looks-builder):**
+- Hint lines under Three / Spotlight / Twist: look B — tone `--celadon-hint` step (#6f8579, scoped to these hints only:
+  the main menu's sub-lines that share the token stay as they are, the owner hasn't seen them change) and the hints a
+  touch larger (14 → 15px), phone layout only (PC hints unchanged).
+- "Selected deck · tap to change": stays as it is (owner: the hint must keep its difference from "Selected deck", and
+  it reads fine today).
+- The Deck sheet's "Start from" and "Chapters": look B (new `--text-helper`, #8c8071).
+- Title subtitle ("Just enough edge."): look C (`--muted-l`), weight unchanged.
+- Context from the owner: the hints exist because people didn't know what Three / Spotlight / Twist do; they
+  disappear after each control is used once. They stay.
+
+**Card swap:** A and D are too flashy. Owner likes B and C and asks whether they can be combined. Next: a mockup of
+B+C next to B and C, side by side, before anything is built.
