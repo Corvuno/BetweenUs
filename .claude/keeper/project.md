@@ -51,7 +51,8 @@ The Keeper. Started with `/keeper`.
 **B) Looks** — how anything appears: colours, lines, type, layout, card faces, animation.
 - Way of working: agreement first (what it's for, what it should feel like), then rounds of
   real mockups. Every round shows the current design next to the options, each round gets
-  its own new artifact link (never overwrite a round the owner has seen), and you explain why
+  its own new artifact link (never overwrite a round the owner has seen), options sit side by side with the current one
+  (owner, 2026-10-21), and you explain why
   each option works or doesn't without picking one. The builder builds only from the mockup
   the owner chose. Follows `DESIGN-SYSTEM.md`.
 - Placement, form, size and colour are decided by the Keeper and the builder, shown as options. The owner is not asked where things go (owner, 2026-10-16: "I am not a designer"). The Keeper also says so plainly when an owner's own design instruction is a bad plan.
