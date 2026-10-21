@@ -122,7 +122,7 @@ never by copying what its cards already ask.*
 drunk sex-talk trivia. That holds for every After Dark category, Bare included.*
 
 ### Life
-**App line:** How your days actually get done — and the habits that make them yours
+**App line:** Everything that has to be done
 **About:** Ordinary daily life. The things that have to be done, and how this person does them.
 Nothing special, and still unmistakably them.
 **Lines of thought:** mornings and bedtimes, sleep · cooking, food, groceries · cleaning, laundry,
@@ -137,7 +137,7 @@ principles are Values' · Warm and Quick touch daily life in one line; a Life ca
 deeper.
 
 ### Home
-**App line:** Your rooms, your street, your town — and the next one
+**App line:** Your four walls, and everything around them
 **About:** The place you live, from the chair you sit in to the town around it, why it's that
 one, and where you'd go next.
 **Lines of thought:** your corner, your chair, your room · the objects in it · how it's furnished,
@@ -150,7 +150,7 @@ in the house are Life's · travel is Unwind's · a Home card is about the place,
 belonging as a feeling.
 
 ### World
-**App line:** Past, future, and everything out there in between
+**App line:** Everything out there, through your eyes
 **About:** The world out there: how it works, where it came from, where it's going, and where you
 stand in it. Systems over blame — curious and neutral, not bashing.
 **Lines of thought:** history · the future · technology and the internet · science and discoveries
@@ -161,7 +161,7 @@ your own · nature and climate · the news · big open questions a table can arg
 faith are Spirit's · how people tick inside is Mind's and Self's.
 
 ### Attract
-**App line:** Crushes, chemistry, and whoever catches your eye
+**App line:** Who you notice first
 **About:** Attraction both ways — what pulls you to someone, in looks and in character, and what
 it's like to be wanted. Light and fun; the safe side of After Dark's edge: just acceptable without
 being After Dark. A card here can be answered honestly without telling anything about sex.
@@ -224,7 +224,7 @@ stretch · taboos and confessions · who knows what about you.
 lead-up is Flesh's.
 
 ### Kink ✦
-**App line:** What makes you tick — and how far you'd take it
+**App line:** What does it for you, exactly
 **About:** What turns you on in particular and why, and how far you'd take it. Your taste and your
 edges — not one specific night (that's Carnal).
 **Lines of thought:** what turns you on, and where that comes from · the first spark: how you found
@@ -253,7 +253,7 @@ what's hard to ask each other.
 the non-physical side of your relationship is Us: Love's.
 
 ### Culture
-**App line:** Everything you love that someone else made — from a song to a building
+**App line:** Everything you love or hate that someone else made
 **About:** Your taste, and what it says about you. Everything people make, as taste: buildings,
 design, art, music, film, books, games, food, fashion, humour, the internet. What you love, what
 leaves you cold, and how your taste formed and changed. Culture is the "what", the tangible thing.
@@ -486,6 +486,21 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.19 — Bare 1, Kink 4, Body 2
+
+- **Bare 1**
+  - Old: "Who in your normal life knows about this side of you — do they understand, and who will never find out?"
+  - New: "How many toys do you own — and which one actually gets used?"
+  - Why: "this side of you" lost its meaning when Abyss retired, so the card moved to Kink in the owner's wording ("the kinky side of you"); toys return to Bare as a facts card.
+- **Kink 4**
+  - Old: "Alone or with someone — what does a toy give you that you otherwise wouldn't get?"
+  - New: "Who in your normal life knows about the kinky side of you — do they understand, and who will never find out?"
+  - Why: the toy card was a feeling rather than a confession; the old Bare 1 card moves here in the owner's wording. The old card is removed, not benched.
+- **Body 2**
+  - Old: "When did you last trust your body completely — what were you doing?"
+  - New: "When did you keep going long after your body wanted to stop?"
+  - Why: it was one of four "what my body can or can't do" cards; the new one is endurance.
 
 ## Patch v7.18 — category scope rework round 2: Culture, Roots, Wish, Work, Spirit, Body
 

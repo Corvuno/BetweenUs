@@ -313,8 +313,8 @@ function spotlightBrightenOnce() {
 })();
 
 // ── Spotlight turned sideways ── For a phone whose screen is locked upright, Spotlight
-// can turn its whole content a quarter (data-turn on the overlay: "ccw" = the phone's
-// top to the left, "cw" = top to the right). The turned frame is sized like a real
+// can turn its whole content a quarter (data-turn on the overlay: "cw" = turned
+// clockwise, for a phone held with its top to the left; "ccw" = the other way). The turned frame is sized like a real
 // sideways screen, and the sideways layout is the `.orient-landscape` class, which is
 // also what a real sideways screen gets (the browser turns that one itself, no extra turn).
 // Who turns it: tilt readings where the browser gives them freely (no word shown then),
@@ -360,8 +360,8 @@ function contentDelta(dx, dy, turn) {
   const overlay = document.getElementById('partyOverlay');
   const btn = document.getElementById('partyOrientBtn');
   const realLandscape = matchMedia('(orientation: landscape)');
-  const phoneWidth = matchMedia('(max-width: 899px)');
-  const phoneLandscape = matchMedia('(orientation: landscape) and (max-height: 500px)');
+  const phoneWidth = matchMedia('(max-width: 899px)');   // the app's phone layouts (styles.css uses the same limit)
+  const phoneLandscape = matchMedia('(orientation: landscape) and (max-height: 500px)');   // the app's phone-landscape rule, as in styles.css
   let turn = null, wanted = null, settleTimer = 0, screenRotates = readScreenRotates();
 
   function setTurn(next) {

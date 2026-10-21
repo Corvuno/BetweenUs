@@ -152,7 +152,7 @@ const NEWDECK_CARDS = [
 
   // ─── BODY ───
   { level: "body", question: "When did your body surprise you with what it could do?" },
-  { level: "body", question: "When did you last trust your body completely — what were you doing?" },
+  { level: "body", question: "When did you keep going long after your body wanted to stop?" },
   { level: "body", question: "When did you last move purely for the joy of it — no goal, no fitness?" },
   { level: "body", question: "What music reaches your body before it reaches your head — and what happens?" },
   { level: "body", question: "Point to where you carry your tension right now." },
@@ -460,7 +460,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?" },
 
   // ─── BLUNT ───
-  { level: "bare", question: "Who in your normal life knows about this side of you — do they understand, and who will never find out?" },
+  { level: "bare", question: "How many toys do you own — and which one actually gets used?" },
   { level: "bare", question: "Is solo sex, for you, self-care or an escape hatch — and how often do you reach for it?" },
   { level: "bare", question: "When has your body not done what you wanted in bed — and what did you do?" },
   { level: "bare", question: "The most sexually bold text you've sent that landed exactly right — care to repeat it?" },
@@ -477,7 +477,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "What's it feel like to be completely at someone's mercy — or to have them at yours?" },
   { level: "kinks", question: "Watching, or being watched — which does more for you?" },
   { level: "kinks", question: "What's a specific time pain, given or taken, brought pleasure along with it?" },
-  { level: "kinks", question: "Alone or with someone — what does a toy give you that you otherwise wouldn't get?" },
+  { level: "kinks", question: "Who in your normal life knows about the kinky side of you — do they understand, and who will never find out?" },
   { level: "kinks", question: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
   { level: "kinks", question: "What kind of words instantly turn you on?" },
