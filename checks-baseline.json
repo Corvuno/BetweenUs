@@ -22,7 +22,6 @@
   "gilt.js | TS2339 | Property 'giltRailPaint' does not exist on type 'Window & typeof globalThis'.": 1,
   "gilt.js | TS2339 | Property 'giltStops' does not exist on type 'Window & typeof globalThis'.": 1,
   "gilt.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 2,
-  "library.js | TS2339 | Property 'value' does not exist on type 'HTMLElement'.": 3,
   "presentation.js | TS2304 | Cannot find name 'giltRailPaint'.": 4,
   "presentation.js | TS2339 | Property 'animationName' does not exist on type 'Animation'.": 1,
   "presentation.js | TS2339 | Property 'classList' does not exist on type 'EventTarget'.": 4,
@@ -90,10 +89,9 @@
   "ui.js | TS2339 | Property 'catsBusy' does not exist on type 'Window & typeof globalThis'.": 1,
   "ui.js | TS2339 | Property 'changedTouches' does not exist on type 'Event'.": 2,
   "ui.js | TS2339 | Property 'closeCats' does not exist on type 'Window & typeof globalThis'.": 1,
-  "ui.js | TS2339 | Property 'closest' does not exist on type 'EventTarget'.": 16,
+  "ui.js | TS2339 | Property 'closest' does not exist on type 'EventTarget'.": 15,
   "ui.js | TS2339 | Property 'dataset' does not exist on type 'Element'.": 6,
   "ui.js | TS2339 | Property 'disabled' does not exist on type 'Element'.": 1,
-  "ui.js | TS2339 | Property 'files' does not exist on type 'EventTarget'.": 1,
   "ui.js | TS2339 | Property 'lockBodyScroll' does not exist on type 'Window & typeof globalThis'.": 1,
   "ui.js | TS2339 | Property 'openAfterDark' does not exist on type 'Window & typeof globalThis'.": 1,
   "ui.js | TS2339 | Property 'openCats' does not exist on type 'Window & typeof globalThis'.": 1,
@@ -112,7 +110,6 @@
   "ui.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 4,
   "ui.js | sonarjs/no-nested-assignment | Extract the assignment of \"CHAPTERS[ch]\" from this expression.": 1,
   "ui.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 1,
-  "ui.js | sonarjs/no-nested-functions | Refactor this code to not nest functions more than 4 levels deep.": 1,
   "ui.js | sonarjs/no-unenclosed-multiline-block | This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.": 3,
   "ui.js | sonarjs/void-use | Remove this use of the \"void\" operator.": 1
 }

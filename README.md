@@ -49,7 +49,7 @@ config.js             build profile + static lookup tables (colors, depth, label
 state.js               the app's mutable, cross-cutting state
 deck.js                 filtering, shuffling, building and advancing through the deck
 card.js                 the card in front of you: question text, face render, Twist, star, picker
-library.js              favourites and custom cards — load/persist/render their drawers
+library.js              favourites — load/persist/render the drawer
 session.js              the session log and save/restore
 selection.js            category/preset selection
 presentation.js         mood engine, progress, shell chrome, party display, summaries
