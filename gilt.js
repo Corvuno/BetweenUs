@@ -3,7 +3,7 @@
 // Metal appears on the accent RAIL only; chips, dots and labels stay flat.
 //
 // Plain script, not a module (between-us.html loads it via a bare <script
-// src>, same as every other app file) — so giltStops/giltRail/labelColor
+// src>, same as every other app file) — so giltStops/giltRailPaint/labelColor
 // attach to window instead of using `export`.
 
 (function () {
@@ -85,28 +85,6 @@
     return intense ? giltStopsIntense(baseHex) : giltStopsSoft(baseHex);
   }
 
-  // Five-stop sweep: dark → mid → light → mid → dark, off-axis at 100deg so the
-  // highlight crosses the rail diagonally the way rolled metal does.
-  // Stops are deliberately tight (34/50/66 — a 32-point spread, not 46). On a
-  // wide card a broad highlight stretches until it reads as a soft wash; the
-  // narrow band keeps a visible gleam at any rail length. angle defaults to
-  // 100deg (horizontal card rails); the chapter drawer's vertical rail passes
-  // 190deg instead.
-  //
-  // Same colour, different confidence: soft below 1024px, hard-edged
-  // intense above it, decided here rather than by each caller so every
-  // rail in the app — the main card, the chapter drawer, fullscreen's
-  // party accent — switches together the moment the window crosses the
-  // breakpoint, matching the corresponding CSS breakpoint on .c-accent.
-  // Interpolating "in oklab" (not the gradient's default sRGB space) keeps
-  // the sweep perceptually even instead of dipping through a muddy mid-mix.
-  function giltRail(baseHex, angle) {
-    const intense = typeof matchMedia === 'function' && matchMedia('(min-width: 1024px)').matches;
-    const { dark, light, mid } = giltStops(baseHex, intense);
-    const a = angle == null ? 100 : angle;
-    return `linear-gradient(in oklab ${a}deg, ${dark} 0%, ${mid} 34%, ${light} 50%, ${mid} 66%, ${dark} 100%)`;
-  }
-
   // Label colour. Deep lacquer categories cannot carry 11px text on #1a1612,
   // so any base below this luminance lifts to a lighter tone of the SAME hue.
   // (Carnal #8d1c22 -> #c2453f.) Everything else uses its base hex flat.
@@ -117,11 +95,11 @@
   }
 
   window.giltStops = giltStops;
-  window.giltRail = giltRail;
 
-  // Rails that ease between colours: the same five-stop sweep as giltRail(), but the three stop
-  // colours go in as registered custom properties (--rail-d/-m/-l, see styles.css) which
-  // CSS transitions; gradients themselves cannot be transitioned. No colour = transparent.
+  // The rail's three stop colours go in as custom properties (--rail-d/-m/-l, registered in styles.css so
+  // they can be transitioned; gradients themselves cannot). The sweep is five-stop, dark → mid → light →
+  // mid → dark, built in CSS: soft stops below 1024px, hard-edged intense stops above it, decided here
+  // so every rail in the app switches together at the breakpoint. No colour = transparent.
   function giltRailPaint(el, baseHex) {
     if (!el) return;
     if (!baseHex) { ['d', 'm', 'l'].forEach(k => el.style.removeProperty('--rail-' + k)); return; }

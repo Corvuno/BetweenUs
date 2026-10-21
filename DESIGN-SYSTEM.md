@@ -122,8 +122,9 @@ Gradients and `color-mix()` cannot transition on their own, so build them from r
 properties (`@property`, syntax `<color>`) and put the `transition` on those properties:
 - `--im-color` (inherits, initial gold): the pause colour on `<body>`; `body{transition:--im-color .6s ease}`
   so the diamond, the rule and the Spotlight copies, all reading `var(--im-color)`, follow it.
-- `--rail-d` / `--rail-m` / `--rail-l` (initial transparent): the three stops of a rail's five-stop
-  gilt sweep. `.c-accent` and `.party-c-accent` draw the gradient from them and transition them;
+- `--rail-d` / `--rail-m` / `--rail-l` (inherit, initial transparent; inheriting lets the swap's `.c-lift` child read the rail's colour): the three stops of a rail's five-stop
+  gilt sweep. `.c-accent`, `.party-c-accent` and the chapter rows (`--ch-rail`, composed in CSS from them)
+  draw the gradient from them; the first two transition them;
   set them with `giltRailPaint(el, hex)` in `gilt.js`, never with an inline `background`.
 - `--bd-a` / `--bd-b` (initial = the gold button's two stops): the gold button's gradient;
   `.btn-draw` transitions them (hover and the end-of-hand colour set them, not `background`).
@@ -392,6 +393,17 @@ sliding in). Plain `ease` / `ease-in-out` are not used for entering things.
   no bounce); two ghosts ease-out, delays 0 and 60ms; the question swaps in at 310ms (card.js
   `DRAW_TIMING`) so its fade overlaps the landing. Reduce motion: no drop, no ghosts, a 250ms opacity
   fade, swap at 150ms.
+- **Next/Back swap on the card** (owner's "B+C", 2026-10-21; card.js `playSwapOut`/`playSwapIn`, Web
+  Animations, transform and opacity only, no glow): out 110ms, the rail flares lighter from the centre
+  (`.c-lift`, a child of `.c-accent` so it takes the phone rail's and the PC top line's height and
+  faded ends; opacity 0 to 1, `scaleX` .5 to 1), the card tightens to .992, the corner marks lift to .6,
+  label and question fade out with a 2px lift (80ms after a 30ms delay, ease-in `cubic-bezier(.4,0,1,1)`).
+  The text changes while invisible. In 230ms: flare, card and corners settle back, the new label (delay
+  20ms) and question (delay 40ms) rise from 8px below over 190ms; ease-out `cubic-bezier(.16,1,.3,1)`.
+  Frame only: the question is never scaled, because the text block carries the exact inverse of the
+  card's scale. The rail's colour still eases to the new category (the `--rail-*` transition). Reduce
+  motion: 80ms linear fade out, 120ms in, no movement. A fast tap during the out beat just retargets it;
+  during the in beat it restarts the swap. The flare is the rail's gilt light stop (`--rail-l`) at peak .95, no blend, no glow. Next, Back and a card chosen in Three all use this swap. The 1s `accent-bloom` replay is not part of it; the bloom stays on the first draw of a hand (card.js first-draw face swap), the Intermezzo turn and the Spotlight/presentation face changes (presentation.js). `.card.flipping` now only serves the end-of-hand message fade.
 - **The turn** (message to Intermezzo, to the hand list, and back): 560ms, edge-on and face swap at 280ms
   (`TURN_MID_MS` / `TURN_END_MS` in deck.js follow the CSS).
 - **Drawers, sub-drawer, The Deck sheet, scrims:** open 320ms on `--ease-sheet`, close 210ms; the base
@@ -410,3 +422,19 @@ sliding in). Plain `ease` / `ease-in-out` are not used for entering things.
   `:focus-visible` styles are separate and unchanged.
 - **Question text** balances its lines (`text-wrap:balance`) on the card, in Spotlight, and Three
   uses `pretty`; the font size is never touched by wrapping. The hand list stays normal wrapping.
+
+## Side rails and chapter rails on wide screens (added 2026-10-21)
+`gilt.js` switches every rail to its intense stops from 1024px; the phone's rails are untouched by all of this.
+- **Chapter rows, 1024px and up**: the sheen's centre stop is `--rail-l` 70% into `--rail-m`
+  (`color-mix(in oklab)`), a pinch back from the near-white intense stop; ends, width (3px), colours, tint all
+  as before. The same pull-back the card's top line got, gentler because the line is only 3px. The rule sits in
+  its own `@media(min-width:1024px)` next to the chapter rules' end of file; if `giltStopsIntense` changes, look here.
+- **Three and Spotlight's pick-three rails** (`.card-area .pick-opt-text::before`, `.party-picker .pick-opt-text::before`),
+  in the WIDE SCREENS query: 5px wide (the phone's is 3px beside text a fifth the size), a vertical sweep
+  dark (`--pc-solid` 60% into black) → `--pc-solid` at 30% → sheen (`--pc-solid` 62% into white) at 50% → back,
+  plus a crisp 1px lit edge (the sheen colour) down the left, for a rolled-metal edge. No glow, no blur.
+  The same top and bottom fade mask as on the phone. Built from `--pc-solid`, which `openPicker()` sets per option,
+  so it follows every category colour without new stored values.
+- **The Deck on a mouse** (`min-width:1024px`, `hover:hover`, `pointer:fine`): every pick in the sheet
+  (presets, who's here, categories, dials) is 38px high (`--pick-h`) instead of the touch 44-49px, so the
+  presets no longer take a third of the sheet and push Chapters below the fold. Touch devices and the phone keep 44-49px.

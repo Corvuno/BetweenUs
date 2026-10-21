@@ -1,0 +1,73 @@
+# Tidies up the branches Claude Code sessions leave behind (owner, 2026-10-21).
+#
+# Every session works on its own branch and lands its work on main, so after a while
+# the branch list fills up with branches that hold nothing new. This job removes them.
+#
+# - A branch whose work is all on main already (merging it would change nothing) is
+#   deleted once it has been quiet for 2 days.
+# - A branch that still holds something main doesn't have is never simply deleted.
+#   Once it has been quiet for 7 days it is saved as a tag (archive/<branch name>),
+#   which keeps every commit and can be turned back into a branch, and then removed
+#   from the branch list. The run summary lists these, so nothing goes unseen.
+# - Anything touched in the last 2 days is left alone: a session may still be on it.
+# - main is never touched.
+#
+# Runs every day, and can be started by hand from the Actions tab.
+name: Clean up old branches
+
+on:
+  schedule:
+    - cron: "40 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clean-branches
+  cancel-in-progress: false
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove finished branches, archive stale unfinished ones
+        run: |
+          set -u
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+          now=$(date +%s)
+          main_tree=$(git rev-parse origin/main^{tree})
+          deleted=""; archived=""; kept=""
+          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin); do
+            b=${ref#origin/}
+            case "$b" in main|HEAD|origin) continue ;; esac
+            age_days=$(( (now - $(git log -1 --format=%ct "$ref")) / 86400 ))
+            # Would merging this branch into main change anything?
+            if merged_tree=$(git merge-tree --write-tree origin/main "$ref" 2>/dev/null) \
+               && [ "$(echo "$merged_tree" | head -1)" = "$main_tree" ]; then
+              done_already=yes
+            else
+              done_already=no
+            fi
+            if [ "$done_already" = yes ] && [ "$age_days" -ge 2 ]; then
+              git push origin --delete "$b" && deleted="$deleted\n- $b (quiet $age_days days)"
+            elif [ "$done_already" = no ] && [ "$age_days" -ge 7 ]; then
+              if git push origin "$ref:refs/tags/archive/$b"; then
+                git push origin --delete "$b" && archived="$archived\n- $b → tag archive/$b (quiet $age_days days)"
+              fi
+            else
+              kept="$kept\n- $b ($( [ "$done_already" = yes ] && echo 'all on main' || echo 'holds unlanded work'), quiet $age_days days)"
+            fi
+          done
+          {
+            echo "## Branch clean-up"
+            echo; echo "### Deleted (everything already on main)"; printf "${deleted:-\n- none}\n"
+            echo; echo "### Saved as a tag, then removed (held work not on main)"; printf "${archived:-\n- none}\n"
+            echo; echo "### Left alone (recent)"; printf "${kept:-\n- none}\n"
+          } >> "$GITHUB_STEP_SUMMARY"

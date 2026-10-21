@@ -89,3 +89,6 @@ Owner: "we are doing B+C" (round 2, https://claude.ai/artifact/77EFUumvT28VWTEiC
   eases to the new category colour.
 - Frame only: the question text is never scaled while visible; no glow; hairlines stay hairlines.
 - Reduced motion: a plain quick fade. Fast taps land on the latest card.
+- Clarified by the Keeper (review, 2026-10-21): "not Three" meant Three's own picker; a card chosen in Three
+  lands on the card with the same B+C swap, so there is one swap on the card screen. The first draw keeps its
+  accent bloom (only the Next/Back bloom goes).
