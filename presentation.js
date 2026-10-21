@@ -380,12 +380,19 @@ function customPicks() {
   return Object.keys(CATEGORIES).filter(k => state.activeToggles.has(k) && DECK_LEVELS.has(k) &&
     !(safe && SAFE_BLOCKED_LEVELS.includes(k)) && CATEGORIES[k].color).map(k => CATEGORIES[k].color);
 }
-// Which 2-3 picks are shown (logo line pairs, name gradient, --preset): the pick
-// furthest (Lab distance) from gold #c9a84c first, then each next the one furthest
-// from everything chosen so far, so a warm-heavy selection never reads gold.
+// Which 2-3 picks are shown (logo line pairs, name gradient, --preset). With more
+// than three picks they are chosen at random but kept readable and distinct: the
+// first among the picks farther (Lab distance) from gold #c9a84c than the nearer
+// half, so the line never reads gold; each next among the farther half of the
+// remaining picks by distance to those already chosen. The choice is cached by the
+// sorted picks, so it stays put until the set of picked categories changes.
 // Returned in CATEGORIES order. With 3 or fewer picks all are shown.
+const SHOWN_COUNT = 3;
+let shownCache = { key: '', shown: [] };
 function shownPicks(picks) {
-  if (picks.length <= 3) return picks.slice();
+  if (picks.length <= SHOWN_COUNT) return picks.slice();
+  const key = [...picks].sort().join();
+  if (shownCache.key === key) return shownCache.shown;
   const lab = hex => {
     const h = hex.replace('#', ''), c = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255)
       .map(v => v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
@@ -393,12 +400,19 @@ function shownPicks(picks) {
     const f = t => t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116;
     return [116 * f(y) - 16, 500 * (f(x) - f(y)), 200 * (f(y) - f(z))];
   };
-  const d = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
-  const L = picks.map(lab), chosen = [], gold = lab('#c9a84c');
-  const far = ref => { let best = -1, bi = -1; L.forEach((l, i) => { if (chosen.includes(i)) return; const m = Math.min(...ref.map(r => d(l, r))); if (m > best) { best = m; bi = i; } }); return bi; };
-  chosen.push(far([gold]));
-  while (chosen.length < 3) chosen.push(far(chosen.map(i => L[i])));
-  return chosen.sort((a, b) => a - b).map(i => picks[i]);
+  const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const labs = picks.map(lab), gold = lab('#c9a84c');
+  const chosen = [];
+  // random index among the farther half of the unchosen picks, ranked by distance to the references
+  const pickFar = refs => {
+    const ranked = labs.map((l, i) => ({ i, d: Math.min(...refs.map(r => dist(l, r))) }))
+      .filter(({ i }) => !chosen.includes(i)).sort((a, b) => b.d - a.d);
+    return ranked[Math.floor(Math.random() * Math.ceil(ranked.length / 2))].i;
+  };
+  chosen.push(pickFar([gold]));
+  while (chosen.length < SHOWN_COUNT) chosen.push(pickFar(chosen.map(i => labs[i])));
+  shownCache = { key, shown: chosen.sort((a, b) => a - b).map(i => picks[i]) };
+  return shownCache.shown;
 }
 // The start card's diamond (and the rule under it, which share --preset-deep on
 // #card) takes the next picked colour at the faint point of each breath, so the

@@ -84,6 +84,7 @@ function restoreSessionData(data) {
     if (MASTER_SAFE) SAFE_BLOCKED_LEVELS.forEach(l => state.activeToggles.delete(l));
     // restore preset highlight
     state.activePreset = data.activePreset || '';
+    showSubtitle(PRESETS[state.activePreset]);
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.activePreset));
     // restore session log
     if (window.LOG_PERSIST && Array.isArray(data.sessionLog)) {

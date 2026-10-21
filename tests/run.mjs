@@ -1869,6 +1869,33 @@ async function run() {
     assert(lastLabel === 'End of hand', `the button on the last card reads "${lastLabel}"`);
   });
 
+  await check('a restored session shows its own subtitle: Custom "Off script.", a preset its own line', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    const reload = async () => { await p.reload(); await p.waitForSelector('#card', { state: 'visible' }); await p.waitForTimeout(500); };
+    const read = () => p.evaluate(() => ({ token: document.getElementById('valCats').textContent, sub: document.getElementById('subtitle').textContent }));
+    try {
+      await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await p.waitForSelector('#card', { state: 'visible' });
+      await p.waitForTimeout(500);
+      const balanced = (await read()).sub;
+      await p.evaluate(() => document.getElementById('deselectAll').click());   // None
+      await p.evaluate(() => document.getElementById('deselectAll').click());   // All = Custom
+      assert((await read()).sub === 'Off script.', 'All did not read Custom');
+      await p.locator('#card').click();
+      await p.waitForFunction(() => localStorage.getItem('bu-session'));
+      await reload();
+      const after = await read();
+      assert(after.token === 'Custom' && after.sub === 'Off script.', `restored Custom deck reads ${JSON.stringify(after)}`);
+      await p.evaluate(() => applyPreset('balanced'));
+      await p.locator('#card').click();
+      await p.waitForTimeout(600);
+      await reload();
+      const preset = await read();
+      assert(preset.token === 'Balanced' && preset.sub === balanced, `restored Balanced deck reads ${JSON.stringify(preset)}, want subtitle "${balanced}"`);
+    } finally { await ctx.close(); }
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });
