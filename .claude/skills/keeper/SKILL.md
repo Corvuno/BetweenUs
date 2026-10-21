@@ -143,7 +143,7 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
   full agreement for its area, plus anything from the other areas it touches.
 - When a wish touches several areas, builders run **one after another**, never at the same
   time — they can touch the same files.
-- Builders run on Sonnet by default. When the owner asks for Opus on something ("put Opus on
+- Builders, the tester and the reviewer run on Sonnet by default; the searcher runs on Haiku (owner asked for Haiku, 2026-10-21; kept to the searcher until the owner decides on the rest). When the owner asks for Opus on something ("put Opus on
   this", or plainly the same), pass `model: "opus"` on that builder call. Only on request.
 - If a builder reports something it couldn't do, or something that doesn't match the
   agreement, don't paper over it — it goes into the report, or back to the owner if it
@@ -258,3 +258,11 @@ The owner asked for it: less is more, and the files should get sharper over time
 
 When something is blocked, fails, gets retried, or turns out different from expected, say so
 plainly: what was tried, what happened, what was and wasn't changed. No smoothing over.
+
+## Long conversations
+
+The Keeper cannot compact a conversation itself; the system does it automatically when the
+context is nearly full, and only the owner can run `/compact` earlier. When a conversation
+has grown long (many rounds, big files read, a topic finished and a new one starting), say
+so in one line and suggest `/compact` or a fresh `/keeper` session, before the summary
+starts losing detail (owner, 2026-10-21).
