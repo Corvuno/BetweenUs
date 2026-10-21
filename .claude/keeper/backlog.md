@@ -62,3 +62,9 @@ twice; Spotlight's 88px margin duplicated; repeated calc(var(--k)*Npx) could use
 variables; "click/tap to change", "Menu" and "Back" live in CSS content (not read by screen
 readers — check aria-labels); setWideScale's numbers need names and could sit with the other
 resize code; a comment near the old desktop .c-accent rules pointing to the WIDE SCREENS block.
+
+## Wildcard: "ask your own question" (owner, 2026-10-21)
+
+An idea, not to build yet. Instead of custom cards (removed 2026-10-21), a wildcard card in the
+deck that tells the player to ask a question of their own. Brings the same wish into play where
+it actually comes up, rather than hiding it in a menu.

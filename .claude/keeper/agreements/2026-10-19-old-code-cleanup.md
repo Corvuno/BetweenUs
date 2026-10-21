@@ -18,3 +18,14 @@ not knowing which kind of element something is) last, as its own round after all
 ## Done when
 - Every file's behaviour findings are gone, then the type noise, and the baseline is empty
   (or holds only findings the owner agreed to keep).
+
+## 2026-10-21 — custom cards removed (owner)
+After the library.js round the open question was whether a failed save of a custom card should
+tell the player. Owner: remove the custom cards instead — no one uses them, among 400+ cards one
+barely shows up, and it's a lot of upkeep for a seldom-used feature. "1 yes."
+- Goes: the "Custom card" menu row, its drawer (add, list, remove, export, import), and the code
+  behind it in every file. The menu just loses the row; nothing takes its place.
+- Stays: favourites exactly as they are. The Classic edition (`between-us-classic.html`) is
+  untouched. Saved custom cards in a player's browser are left alone, just no longer read.
+- Done when: no trace of custom cards in the main app, tests and checks green, the menu and
+  every drawer still open and close.

@@ -35,7 +35,7 @@
   /* the bottom of the screen (see DESIGN-SYSTEM.md "Frame colours"):
      copper = the deck's own frame, celadon = the play-style row,
      --preset = the active preset's colour (set from renderShell). */
-  --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--celadon-bright:#eef7f1;
+  --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--row-hint:#6f8579;--text-helper:#8c8071;--celadon-bright:#eef7f1;
   --preset:var(--gold);
   --preset-deep:var(--preset); /* a shade deeper, for filled areas (start-card diamond + rule); set in renderShell */
 }
@@ -68,7 +68,7 @@ body{
   width:min(100%,320px);margin:12px auto 0;}
 .tr-svg{display:block;width:100%;height:auto;overflow:visible;}
 .tr-svg path{vector-effect:non-scaling-stroke;}
-.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
+.subtitle{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-l);margin-top:10px;}
 
 /* ── PRESET ROW ── */
 .preset-outer{width:100%;display:flex;align-items:stretch;opacity:0;transition:opacity .4s .08s ease;}
@@ -1473,11 +1473,7 @@ body.tok-taught .tok-hint{display:none;}
    small-caps label style used everywhere instead of each section
    inventing its own header treatment. */
 .sect-lbl{display:flex;align-items:center;justify-content:space-between;position:relative;
-  color:rgba(240,232,216,.45);margin:0 0 12px;}
-/* Chapters/Tune headers drop to the warm muted tone used across the card
-   set, rather than the neutral grey every other .sect-lbl (Start from,
-   Round) still uses. */
-#chaptersLbl{color:#7a6e60;}
+  color:var(--text-helper);margin:0 0 12px;}
 /* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
    chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
 .seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 22px;white-space:nowrap;}
@@ -1570,7 +1566,7 @@ body.tok-taught .tok-hint{display:none;}
 #screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
 #screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
 #screenRow .row-hint,#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
-  font-size:.88rem;line-height:1.15;color:var(--celadon-hint);white-space:normal;max-width:104px;text-align:center;}
+  font-size:.95rem;line-height:1.15;color:var(--row-hint);white-space:normal;max-width:112px;text-align:center;}
 #screenRow .row-sep,#handActionsRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
 #screenRow > button.on .row-lbl,#handActionsRow > button.on .row-lbl,#screenRow > button.active .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
 /* Not usable yet (before the first card; Twist also on the end screen): only the
@@ -1661,18 +1657,17 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
     display:flex;align-items:center;justify-content:center;}
   .card-area{width:min(100cqw, calc(100cqh * 556 / 360));aspect-ratio:556/360;flex:none;}
   .card{width:100%;height:100%;aspect-ratio:auto;max-width:none;margin:0;container-type:inline-size;overflow:hidden;}
-  /* the card's details grow with the card, in the phone card's proportions (376px card: 3px stripe,
-     24px brackets 20px in, 1px line, .9rem star) */
-  /* polished metal: the phone rail's dark-light-dark sheen along the length, plus shading across the height
-     (a fine light edge along the top, darker toward the bottom), all from --rail-d/-m/-l; the 14% end fade is the phone's */
-  .c-accent{height:.8cqw;
-    background:
-      linear-gradient(to bottom,color-mix(in oklab,var(--rail-l) 85%,transparent) 0,color-mix(in oklab,var(--rail-l) 85%,transparent) 8%,transparent 38%,transparent 55%,color-mix(in oklab,var(--rail-d) 70%,transparent) 100%),
-      linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
-  .card::before,.card::after{width:6.4cqw;height:6.4cqw;border-width:0;}
-  .card::before{top:5.3cqw;left:5.3cqw;border-top-width:.27cqw;border-left-width:.27cqw;}
-  .card::after{bottom:5.3cqw;right:5.3cqw;border-bottom-width:.27cqw;border-right-width:.27cqw;}
-  .card-star{font-size:3.8cqw;top:1.4cqw;right:1.8cqw;padding:1cqw;opacity:.35;}
+  /* the card's details on a big card (owner's option C, 2026-10-21): a heavier top line with a sharp glint at the sheen's
+     peak and ends fading over a fixed run, 1.5px corner marks with longer arms, a slightly bigger star */
+  .c-accent{height:clamp(5px,.48cqw,6px);
+    -webkit-mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
+    mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
+    background:linear-gradient(to right,transparent 38%,var(--rail-l) 46% 54%,transparent 62%) 0 2px / 100% 1px no-repeat,
+      linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 55%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
+  .card::before,.card::after{width:clamp(44px,4.3cqw,54px);height:clamp(44px,4.3cqw,54px);}
+  .card::before{top:clamp(32px,3.1cqw,40px);left:clamp(32px,3.1cqw,40px);border-top-width:1.5px;border-left-width:1.5px;}
+  .card::after{bottom:clamp(32px,3.1cqw,40px);right:clamp(32px,3.1cqw,40px);border-bottom-width:1.5px;border-right-width:1.5px;}
+  .card-star{font-size:clamp(22px,2.2cqw,28px);top:clamp(12px,1.1cqw,14px);right:clamp(16px,1.4cqw,18px);padding:10px;opacity:.35;}
   @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.75;}}.card-star.active{opacity:1;}
   .card-ad-mark{font-size:38.4cqw;}
   .card-body-inner{padding:calc(var(--k)*14px) 7cqw 0;gap:2cqw;}
