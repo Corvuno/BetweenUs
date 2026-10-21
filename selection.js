@@ -51,6 +51,11 @@ function presetSelection(preset) {
 // bring the preset back; it is not saved with sessions.
 let _lastPreset = '';
 const CUSTOM_SUBTITLE = 'Off script.';
+// A preset's own line under the logo; no preset means a Custom deck.
+const showSubtitle = preset => {
+  const sub = document.getElementById('subtitle');
+  if (sub) sub.textContent = preset?.subtitle ?? CUSTOM_SUBTITLE;
+};
 
 // The deck carries a preset's name only while the selection is exactly that
 // preset's set (the active one, or the last applied after going Custom);
@@ -62,8 +67,7 @@ function syncActivePreset() {
   const set = preset && presetSelection(preset);
   const matches = !!set && set.size === state.activeToggles.size && [...set].every(l => state.activeToggles.has(l));
   state.activePreset = matches ? _lastPreset : '';
-  const sub = document.getElementById('subtitle');
-  if (sub) sub.textContent = matches ? preset.subtitle : CUSTOM_SUBTITLE;
+  showSubtitle(matches ? preset : null);
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === state.activePreset));
 }
 
@@ -129,7 +133,7 @@ function applyPreset(mode) {
     state.safeMode = _prevSafeModeHS;
     _prevSafeModeHS = null;
   }
-  const sub = document.getElementById('subtitle'); if (sub) sub.textContent = preset.subtitle;
+  showSubtitle(preset);
   state.activeToggles = presetSelection(preset);
 
   syncCategoryButtons();

@@ -353,3 +353,33 @@ around them"; Attract "Who you notice first"; Kink "What does it for you, exactl
 threefold ending — rephrasings shown. Owner asked alternatives for every app line that uses a
 list of three or a dash-and-twist, especially both. Keeper decision: all line changes and Body 2
 built together once the pass is decided.
+
+# FINAL AGREEMENT — line pass + three cards (built 2026-10-21)
+
+Owner, 2026-10-21: the remaining three/twist lines (Friendship, Raw, Shadow, Bare, Warm, Past)
+are picked up when each category's own round comes, so content and line can be matched.
+
+## A) Deck
+- Bare 1: "Who in your normal life knows about this side of you — do they understand, and who will never find out?" → "How many toys do you own — and which one actually gets used?"
+- Kink 4: "Alone or with someone — what does a toy give you that you otherwise wouldn't get?" → "Who in your normal life knows about the kinky side of you — do they understand, and who will never find out?" (owner's own wording; the old Bare 1 card moves here, reworded; the toy card is removed, not benched)
+- Body 2: "When did you last trust your body completely — what were you doing?" → "When did you keep going long after your body wanted to stop?"
+
+## C) App lines (config.js desc)
+- Life: "Everything that has to be done"
+- Home: "Your four walls, and everything around them"
+- World: "Everything out there, through your eyes"
+- Attract: "Who you notice first"
+- Kink: "What does it for you, exactly ✦"
+- Mind: "Your mind's habits, good and strange"
+- Romance: "How you do love"
+- Family: "The family you have now"
+- Culture: "Everything you love or hate that someone else made"
+- Self: "The person under all the parts you play"
+- Values: "Your principles, tested"
+The writer briefs' "App line:" rows for these categories follow the new lines.
+**BUILT 2026-10-21** (88efc3b): three cards, eleven lines, brief rows, ?v=20261021f, 58/58 checks.
+
+## Round 3 (Connect, Friendship, Romance, Family) — started 2026-10-21
+Keeper decision: next group is the relationship cluster, because it has the known overlaps
+(first move: Connect 4 / Romance 9) and the biggest gaps (no siblings, exes, weddings, first
+dates, group chats anywhere in the deck). Definitions shown in chat.

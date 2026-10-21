@@ -1343,7 +1343,7 @@ async function run() {
     // the word really turns the content: the overlay takes the swapped screen size and is rotated a quarter
     await page.locator('#partyOrientBtn').click();
     const turned = await page.evaluate(() => { const ov = document.getElementById('partyOverlay'); return { turn: ov.dataset.turn, w: ov.offsetWidth, h: ov.offsetHeight, tf: getComputedStyle(ov).transform }; });
-    assert(turned.turn === 'ccw' && turned.w === 844 && turned.h === 390 && turned.tf !== 'none', `Sideways did not turn the content a quarter: ${JSON.stringify(turned)}`);
+    assert(turned.turn === 'cw' && turned.w === 844 && turned.h === 390 && turned.tf !== 'none', `Sideways did not turn the content a quarter: ${JSON.stringify(turned)}`);
     // Three up in the turned frame: three columns, vertical dividers, like a real sideways phone
     await page.locator('#partyPick').click();
     await waitPicker(true);
@@ -1716,23 +1716,23 @@ async function run() {
     assert(!(await spot(pg)).wordShown, 'the word is still shown after a real reading');
     await tilt(pg, 2, -82);       // on its side, left edge down: top to the left
     assert((await spot(pg)).turn === null, 'turned at once, without waiting for the tilt to hold');
-    await pg.waitForTimeout(600);
+    await pg.waitForTimeout(1000);
     let s = await spot(pg);
-    assert(s.turn === 'ccw' && s.land, `tilt left: ${JSON.stringify(s)}`);
+    assert(s.turn === 'cw' && s.land, `tilt left: ${JSON.stringify(s)}`);
     await tilt(pg, 3, 0);         // flat on the table
     await tilt(pg, 40, -45);      // somewhere in between
-    await pg.waitForTimeout(600);
-    assert((await spot(pg)).turn === 'ccw', 'flat / in-between readings changed the turn');
+    await pg.waitForTimeout(1000);
+    assert((await spot(pg)).turn === 'cw', 'flat / in-between readings changed the turn');
     await tilt(pg, 80, 3);        // upright again
-    await pg.waitForTimeout(600);
+    await pg.waitForTimeout(1000);
     s = await spot(pg);
     assert(s.turn === null && !s.land, `back upright: ${JSON.stringify(s)}`);
     await tilt(pg, 2, 82);        // the other side
-    await pg.waitForTimeout(600);
-    assert((await spot(pg)).turn === 'cw', 'tilt right did not turn the other way');
+    await pg.waitForTimeout(1000);
+    assert((await spot(pg)).turn === 'ccw', 'tilt right did not turn the other way');
     await tilt(pg, 85, 0); await tilt(pg, 2, 85);   // a dip upright that does not hold
-    await pg.waitForTimeout(600);
-    assert((await spot(pg)).turn === 'cw', 'a flicker that never held changed the turn');
+    await pg.waitForTimeout(1000);
+    assert((await spot(pg)).turn === 'ccw', 'a flicker that never held changed the turn');
     await pg.locator('#partyExit').click();
     await pg.waitForTimeout(400);
     assert((await spot(pg)).turn === null, 'closing Spotlight did not return to upright');
@@ -1742,17 +1742,17 @@ async function run() {
   await check('Spotlight tilt: readings while Spotlight is closed turn nothing; a phone that needs a permission popup is never turned by itself and keeps the word', async () => {
     const ios = await tiltPage(() => { window.DeviceOrientationEvent = Object.assign(function () {}, { requestPermission: () => Promise.resolve('granted') }); });
     await tilt(ios, 2, -85);
-    await ios.waitForTimeout(600);
+    await ios.waitForTimeout(1000);
     const s = await spot(ios);
     assert(s.turn === null && s.wordShown, `permission-style phone: ${JSON.stringify(s)}`);
     await ios.locator('#partyOrientBtn').click();
-    assert((await spot(ios)).turn === 'ccw', 'the word does not turn on a permission-style phone');
+    assert((await spot(ios)).turn === 'cw', 'the word does not turn on a permission-style phone');
     await ios.context().close();
     const pg = await tiltPage();
     await pg.locator('#partyExit').click();
     await pg.waitForTimeout(400);
     await tilt(pg, 2, -85);
-    await pg.waitForTimeout(600);
+    await pg.waitForTimeout(1000);
     assert((await spot(pg)).turn === null, 'tilt turned a closed Spotlight');
     await pg.context().close();
   });
@@ -1761,35 +1761,70 @@ async function run() {
     const pg = await tiltPage();
     await tilt(pg, 2, -85);
     await pg.locator('#partyExit').click();
-    await pg.waitForTimeout(700);   // longer than the hold time
+    await pg.waitForTimeout(1000);   // longer than the hold time
     await pg.locator('#btnParty').click();
     await pg.waitForTimeout(100);
     assert((await spot(pg)).turn === null, 'the closed Spotlight was turned by a tilt that was still settling');
     await tilt(pg, 2, -85);
-    await pg.waitForTimeout(600);
-    assert((await spot(pg)).turn === 'ccw', 'on reopening with the phone on its side, the first reading did not turn it');
+    await pg.waitForTimeout(1000);
+    assert((await spot(pg)).turn === 'cw', 'on reopening with the phone on its side, the first reading did not turn it');
     assert(await pg.evaluate(() => document.getElementById('partyOrientBtn').getAttribute('aria-pressed')) === 'true', 'the switch does not say it is pressed while turned');
+    await pg.context().close();
+  });
+
+  await check('Spotlight on a phone that turns its own screen: never an own turn on top of the browser\'s, and none from tilt afterwards', async () => {
+    const pg = await tiltPage();
+    await tilt(pg, 2, -82);                                    // phone goes on its side: the tilt arrives first
+    await pg.waitForTimeout(300);
+    await pg.setViewportSize({ width: 844, height: 390 });     // ...then the browser turns the screen
+    await pg.evaluate(() => window.dispatchEvent(new Event('orientationchange')));
+    await pg.waitForTimeout(1200);                             // past the hold time: a late own turn would show now
+    let s = await spot(pg);
+    assert(s.turn === null && s.land, `after the browser turned the screen: ${JSON.stringify(s)}`);
+    assert(await pg.evaluate(() => getComputedStyle(document.getElementById('partyOverlay')).transform) === 'none', 'the overlay is still turned on a screen the browser turned');
+    assert(await pg.evaluate(() => localStorage.getItem('bu-screen-rotates')) === '1', 'the phone was not remembered as turning its own screen');
+    await pg.setViewportSize({ width: 390, height: 844 });     // phone back upright
+    await pg.waitForTimeout(300);
+    await tilt(pg, 85, 0);
+    await tilt(pg, 2, -82);                                    // on its side again, this time the screen stays upright for a while
+    await pg.waitForTimeout(1300);
+    assert((await spot(pg)).turn === null, 'a tilt turned the content on a phone that turns its own screen');
+    await pg.waitForTimeout(1200);                             // held long enough: the rotation lock must be on now
+    assert((await spot(pg)).turn === 'cw', 'a long tilt with the screen staying upright did not allow own turning again');
+    await pg.context().close();
+  });
+
+  await check('Spotlight word then the browser turns the screen: one sideways view, no turn left over', async () => {
+    const pg = await tiltPage();
+    await pg.locator('#partyOrientBtn').click();
+    assert((await spot(pg)).turn === 'cw', 'the word did not turn');
+    await pg.setViewportSize({ width: 844, height: 390 });
+    const s = await spot(pg);
+    assert(s.turn === null && s.land, `right after the browser turned the screen: ${JSON.stringify(s)}`);
+    await pg.setViewportSize({ width: 390, height: 844 });
+    await pg.waitForTimeout(300);
+    assert((await spot(pg)).turn === null, 'a turn came back when the screen turned upright again');
     await pg.context().close();
   });
 
   await check('Spotlight turned: a swipe is read in the turned frame, a real sideways screen is left alone', async () => {
     const pg = await tiltPage();
-    await pg.locator('#partyOrientBtn').click();   // ccw: content right = screen up
+    await pg.locator('#partyOrientBtn').click();   // cw: content right = screen down, content left = screen up
     await pg.evaluate(() => { state.currentIndex = 2; updatePartyDisplay(state.visibleDeck[2]); });
     const swipe = (from, to) => pg.evaluate(([from, to]) => {
       const t = (x, y) => new Touch({ identifier: 1, target: document.querySelector('#partyOverlay .party-card'), clientX: x, clientY: y });
       const fire = (type, x, y) => document.querySelector('#partyOverlay .party-card').dispatchEvent(new TouchEvent(type, { bubbles: true, cancelable: true, touches: type === 'touchend' ? [] : [t(x, y)], changedTouches: [t(x, y)] }));
       fire('touchstart', ...from); fire('touchend', ...to);
     }, [from, to]);
-    await swipe([195, 600], [195, 400]);   // finger up the screen = to the content's right = back
+    await swipe([195, 600], [195, 400]);   // finger up the screen = to the content's left = forward
     await pg.waitForTimeout(500);
-    assert(await pg.evaluate(() => state.currentIndex) === 1, 'a swipe up the screen did not go back in the turned Spotlight');
-    await swipe([195, 400], [195, 600]);   // down = to the content's left = forward
+    assert(await pg.evaluate(() => state.currentIndex) === 3, 'a swipe up the screen did not go forward in the turned Spotlight');
+    await swipe([195, 400], [195, 600]);   // down = to the content's right = back
     await pg.waitForTimeout(500);
-    assert(await pg.evaluate(() => state.currentIndex) === 2, 'a swipe down the screen did not go forward in the turned Spotlight');
+    assert(await pg.evaluate(() => state.currentIndex) === 2, 'a swipe down the screen did not go back in the turned Spotlight');
     await swipe([100, 400], [300, 400]);   // across the screen is up/down for the content: not a swipe, counts as a tap (forward)
     await pg.waitForTimeout(500);
-    assert(await pg.evaluate(() => state.currentIndex) === 3, 'a drag across the screen was read as a swipe back in the turned Spotlight');
+    assert(await pg.evaluate(() => state.currentIndex) === 3, 'a drag across the screen was read as a swipe in the turned Spotlight');
     await pg.setViewportSize({ width: 844, height: 390 });   // the browser turns the screen itself
     await pg.waitForTimeout(400);
     const real = await pg.evaluate(() => { const o = document.getElementById('partyOverlay'); return { turn: o.dataset.turn ?? null, land: o.classList.contains('orient-landscape'), tf: getComputedStyle(o).transform, w: o.offsetWidth }; });
@@ -1832,6 +1867,33 @@ async function run() {
     assert(b.tgt === b.want && b.im === b.want, `hand 2 end message still holds the previous hand's colour: --im-target ${b.tgt}, --im-color ${b.im}, want ${b.want} (hand 1 was ${a.want})`);
     await imHold('#btn-next');
     assert(lastLabel === 'End of hand', `the button on the last card reads "${lastLabel}"`);
+  });
+
+  await check('a restored session shows its own subtitle: Custom "Off script.", a preset its own line', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    const reload = async () => { await p.reload(); await p.waitForSelector('#card', { state: 'visible' }); await p.waitForTimeout(500); };
+    const read = () => p.evaluate(() => ({ token: document.getElementById('valCats').textContent, sub: document.getElementById('subtitle').textContent }));
+    try {
+      await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await p.waitForSelector('#card', { state: 'visible' });
+      await p.waitForTimeout(500);
+      const balanced = (await read()).sub;
+      await p.evaluate(() => document.getElementById('deselectAll').click());   // None
+      await p.evaluate(() => document.getElementById('deselectAll').click());   // All = Custom
+      assert((await read()).sub === 'Off script.', 'All did not read Custom');
+      await p.locator('#card').click();
+      await p.waitForFunction(() => localStorage.getItem('bu-session'));
+      await reload();
+      const after = await read();
+      assert(after.token === 'Custom' && after.sub === 'Off script.', `restored Custom deck reads ${JSON.stringify(after)}`);
+      await p.evaluate(() => applyPreset('balanced'));
+      await p.locator('#card').click();
+      await p.waitForTimeout(600);
+      await reload();
+      const preset = await read();
+      assert(preset.token === 'Balanced' && preset.sub === balanced, `restored Balanced deck reads ${JSON.stringify(preset)}, want subtitle "${balanced}"`);
+    } finally { await ctx.close(); }
   });
 
   await check('no uncaught page errors were raised during the run', async () => {
