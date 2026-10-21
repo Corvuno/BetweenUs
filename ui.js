@@ -32,15 +32,6 @@
 });
 
 
-// Delegated remove handler — inline onclick breaks on quotes in the question text
-document.getElementById('customList').addEventListener('click', e => {
-  const btn = e.target.closest('.drawer-remove-btn');
-  if (!btn) return;
-  const card = state.customCards[parseInt(btn.dataset.idx, 10)];
-  if (card) removeCustomCard(card.question);
-});
-
-
 // ── INIT ──────────────────────────────────────────────────────────────────────
 if (MASTER_SAFE || WORKPLACE_MODE) {
   state.safeMode = true;
@@ -84,7 +75,6 @@ if (DEFAULT_COLLAPSED) {
 }
 
 loadFavourites();
-loadCustomCards();
 
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 
@@ -586,50 +576,6 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
   });
 })();
 
-
-// ═══════════════════════════════════════════════════════════
-// CUSTOM CARDS — export / import
-// ═══════════════════════════════════════════════════════════
-(function() {
-  const expBtn = document.getElementById('customExportBtn');
-  const impBtn = document.getElementById('customImportBtn');
-  if (expBtn) {
-    expBtn.addEventListener('click', () => {
-      if (!state.customCards.length) return;
-      const blob = new Blob([JSON.stringify(state.customCards, null, 2)], {type:'application/json'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'between-us-custom-cards.json';
-      a.click();
-    });
-  }
-  if (impBtn) {
-    impBtn.addEventListener('click', () => {
-      const inp = document.createElement('input');
-      inp.type = 'file'; inp.accept = '.json';
-      inp.onchange = async e => {
-        try {
-          const text = await e.target.files[0]?.text();
-          if (!text) return;
-          const imported = JSON.parse(text);
-          if (!Array.isArray(imported)) return;
-          imported.forEach(c => {
-            if (!c.question || !c.level) return;
-            if (state.customCards.find(x => x.question === c.question)) return; // skip dupes
-            const card = { level: c.level, question: c.question, custom: true };
-            state.customCards.push(card);
-            ALL_CARDS.push(card);
-          });
-          localStorage.setItem('bu-custom-cards', JSON.stringify(state.customCards));
-          renderCustomList();
-          updateCatCounts();
-          initDeck();
-        } catch(err) { console.warn('Import failed:', err); }
-      };
-      inp.click();
-    });
-  }
-})();
 
 // ═══════════════════════════════════════════════════════════
 // SPICE_AVAILABLE — hide spice glyph if configured off

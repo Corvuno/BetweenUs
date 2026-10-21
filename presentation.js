@@ -154,7 +154,7 @@ function exitParty() {
 // is already closed by the time a sub-drawer closes, so focusing them back
 // would land focus inside a hidden dialog.
 
-const DRAWER_TRIGGER_IDS = ['btn-menu', 'd-log', 'd-favs', 'd-custom', 'd-help', 'd-sessions'];
+const DRAWER_TRIGGER_IDS = ['btn-menu', 'd-log', 'd-favs', 'd-help', 'd-sessions'];
 function openDrawer(id, triggerEl) {
   document.getElementById('overlay').classList.add('open');
   const el = document.getElementById(id);
@@ -172,7 +172,7 @@ function openDrawer(id, triggerEl) {
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
   if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
-  ['menuDrawer','logDrawer','favsDrawer','customDrawer','helpDrawer','sessionsDrawer'].forEach(id=>{
+  ['menuDrawer','logDrawer','favsDrawer','helpDrawer','sessionsDrawer'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
   });
@@ -316,12 +316,6 @@ document.getElementById('sessionsList').addEventListener('click', e => {
   }
 });
 
-
-// ── Custom cards ──
-document.getElementById('d-custom').addEventListener('click',(e)=>{ closeAllDrawers(); renderCustomList(); openDrawer('customDrawer', e.currentTarget); });
-document.getElementById('closeCustom').addEventListener('click',()=>closeAllDrawers());
-document.getElementById('customAddBtn').addEventListener('click',addCustomCard);
-document.getElementById('customText').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addCustomCard();}});
 
 // ── Help ──
 document.getElementById('d-help').addEventListener('click',(e)=>{ closeAllDrawers(); openDrawer('helpDrawer', e.currentTarget); });

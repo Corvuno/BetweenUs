@@ -46,7 +46,6 @@ const state = {
                             // favourite from an earlier session doesn't count as "starred"
                             // for this hand's end-of-set summary unless the star was
                             // actually tapped this time.
-  customCards: [],
   categoriesCollapsed: DEFAULT_COLLAPSED,
   skipDrawAnim: false,   // set by initDeck(isContinuation) — true while drawing a fresh
                           // hand under unchanged settings (Draw more, hold-to-continue),

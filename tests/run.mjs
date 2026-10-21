@@ -1656,7 +1656,7 @@ async function run() {
     assert(r.idx === -1 && r.count === before.count && r.open && r.step === 0 && !r.inParty && r.main, `back on the main screen: ${JSON.stringify(r)}`);
   });
 
-  await check('damaged saved favourites / custom cards: the app still loads and both drawers show empty', async () => {
+  await check('damaged saved favourites: the app still loads and the drawer shows empty', async () => {
     const damaged = [
       ['null', 'null'],
       ['an object', '{"a":1}'],
@@ -1669,23 +1669,17 @@ async function run() {
       damagedPage.on('pageerror', (e) => errors.push(e.message));
       await damagedPage.addInitScript((v) => {
         localStorage.setItem('bu-favourites', v);
-        localStorage.setItem('bu-custom-cards', v);
       }, value);
       await damagedPage.goto(`http://127.0.0.1:${port}/${TARGET}`);
       await damagedPage.waitForSelector('#card', { state: 'visible' });
       assert(errors.length === 0, `${label}: page errors on load: ${errors.join(' | ')}`);
       const shown = await damagedPage.evaluate(() => {
         renderFavourites();
-        renderCustomList();
         return {
           favs: document.querySelector('#favsList').textContent.trim(),
-          custom: document.querySelector('#customList').textContent.trim(),
-          customInDeck: ALL_CARDS.filter(c => c.custom).length,
         };
       });
       assert(/No favourites yet/.test(shown.favs), `${label}: favourites drawer not empty: ${shown.favs}`);
-      assert(/No custom cards yet/.test(shown.custom), `${label}: custom drawer not empty: ${shown.custom}`);
-      assert(shown.customInDeck === 0, `${label}: custom cards leaked into the deck`);
       await damagedPage.context().close();
     }
   });

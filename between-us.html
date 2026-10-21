@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261021f">
+<link rel="stylesheet" href="styles.css?v=20261021g">
 </head>
 <body>
 <div class="app">
@@ -298,10 +298,6 @@
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 19h14"/></svg></div>
       <div class="d-text"><span class="d-label">Sessions</span><span class="d-sub">Keep separate sessions going</span></div>
     </button>
-    <button class="d-item" id="d-custom" aria-haspopup="dialog" aria-expanded="false">
-      <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="14" height="18" rx="1.5"/><path d="M8 12h6"/><path d="M11 9v6"/></svg></div>
-      <div class="d-text"><span class="d-label">Custom card</span><span class="d-sub">Add your own question</span></div>
-    </button>
     <div class="d-divider"></div>
     <button class="d-item" id="d-reshuffle">
       <div class="d-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg></div>
@@ -348,56 +344,6 @@
     <button class="session-btn" id="storeSessionBtn">Store current session</button>
   </div>
   <div id="sessionsList"><div class="drawer-empty">No stored sessions yet.</div></div>
-</div>
-
-<!-- CUSTOM CARD DRAWER -->
-<div class="sub-drawer" id="customDrawer" role="dialog" aria-modal="true" aria-label="Add your own card" tabindex="-1" aria-hidden="true">
-  <div class="drawer-handle"><div class="handle-bar"></div></div>
-  <button class="drawer-close" id="closeCustom">&#10005;</button>
-  <div class="drawer-title">Add your own card</div>
-  <div style="width:100%;max-width:380px;margin:0 auto;">
-    <textarea class="custom-input" id="customText" placeholder="Question (English)..."></textarea>
-    <select class="custom-select" id="customLevel">
-      <option value="quick">Quick</option>
-      <option value="warm">Warm</option>
-      <option value="culture">Culture</option>
-      <option value="unwind">Unwind</option>
-      <option value="life">Life</option>
-      <option value="home">Home</option>
-      <option value="roots">Roots</option>
-      <option value="past">Past</option>
-      <option value="self">Self</option>
-      <option value="body">Body</option>
-      <option value="mind">Mind</option>
-      <option value="spirit">Spirit</option>
-      <option value="connect">Connect</option>
-      <option value="friends">Friends</option>
-      <option value="date">Romance</option>
-      <option value="attract">Attract</option>
-      <option value="values">Values</option>
-      <option value="world">World</option>
-      <option value="work">Work</option>
-      <option value="deep">Deep</option>
-      <option value="raw">Raw</option>
-      <option value="grief">Grief</option>
-      <option value="family">Family</option>
-      <option value="shadow">Shadow</option>
-      <option value="wish">Wish</option>
-      <option value="us">Between Us</option>
-      <option value="usfriend">Us: Friends</option>
-      <option value="uslove">Us: Love</option>
-      <option value="flesh">Flesh &#10022;</option>
-      <option value="carnal">Carnal &#10022;</option>
-      <option value="kinks">Kinks &#10022;</option>
-      <option value="usintimate">Us: Intimate &#10022;</option>
-    </select>
-    <button class="custom-add-btn" id="customAddBtn">Add to deck</button>
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <button class="session-btn" id="customExportBtn" style="flex:1;">Export cards</button>
-      <button class="session-btn" id="customImportBtn" style="flex:1;">Import cards</button>
-    </div>
-    <div id="customList" style="margin-top:24px;"></div>
-  </div>
 </div>
 
 <!-- HELP DRAWER -->
@@ -562,17 +508,17 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261021f"></script>
-<script src="config.js?v=20261021f"></script>
-<script src="gilt.js?v=20261021f"></script>
-<script src="state.js?v=20261021f"></script>
-<script src="deck.js?v=20261021f"></script>
-<script src="card.js?v=20261021f"></script>
-<script src="library.js?v=20261021f"></script>
-<script src="session.js?v=20261021f"></script>
-<script src="selection.js?v=20261021f"></script>
-<script src="presentation.js?v=20261021f"></script>
-<script src="ui.js?v=20261021f"></script>
+<script src="questions.js?v=20261021g"></script>
+<script src="config.js?v=20261021g"></script>
+<script src="gilt.js?v=20261021g"></script>
+<script src="state.js?v=20261021g"></script>
+<script src="deck.js?v=20261021g"></script>
+<script src="card.js?v=20261021g"></script>
+<script src="library.js?v=20261021g"></script>
+<script src="session.js?v=20261021g"></script>
+<script src="selection.js?v=20261021g"></script>
+<script src="presentation.js?v=20261021g"></script>
+<script src="ui.js?v=20261021g"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.
