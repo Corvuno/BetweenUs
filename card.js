@@ -225,7 +225,8 @@ function setCardDisplay(card) {
   renderTwist();   // same modifier, re-rendered for the new card
 }
 
-// flipToCard — animates the flip and updates accent, arc indicator, fullscreen sync
+// flipToCard — shows a card: the first draw of a hand lands (CSS, styles.css .drawing-in), every card after
+// swaps with the "B+C" beat below. Both update accent, arc indicator, fullscreen sync.
 
 /* The first-draw landing (styles.css .card.drawing-in: 520ms, ghosts 520ms after a 60ms delay; a 250ms
    fade under reduced motion). The question swaps in at ~60% so its fade overlaps the landing; the
@@ -236,84 +237,159 @@ const DRAW_TIMING = {
 };
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
+/* Next/Back swap (owner's "B+C", 2026-10-21), Web Animations on transform and opacity only.
+   Out (110ms): the rail flares lighter from the centre, the card tightens a hair, the corners lift, the label
+   and question fade out with a 2px lift. The text changes while invisible. In (230ms): the rail settles, the
+   card eases back, the new text rises from 8px below. Under reduced motion: an 80ms fade out, 120ms fade in.
+   The question is never scaled: the card tightens as a whole and the text block carries the exact inverse
+   scale, so the text's own scale stays 1. */
+const SWAP_EASE = { leave: 'cubic-bezier(.4,0,1,1)', settle: 'cubic-bezier(.16,1,.3,1)', breath: 'cubic-bezier(.3,0,.4,1)' };
+const FRAME_TIGHT = .992;
+const CORNER_LIFT = .6;
+
+const swapParts = () => ({
+  card: document.getElementById('card'),
+  body: document.querySelector('#card .card-body-inner'),
+  lift: document.getElementById('c-lift'),
+  text: [document.getElementById('card-level'), document.getElementById('card-question')],
+});
+
+/* The out beat starts from `from`: by default the resting look (flare hidden), or, on a restart during the in beat,
+   the look at that moment, so a fast tap never snaps. A keyframe left empty starts from the element's resting value;
+   a single keyframe on the in beat, with offset 0, ends there. */
+const currentLook = ({ card, body, lift, text }) => {
+  const look = (e, ...props) => Object.fromEntries(props.map(p => [p, getComputedStyle(e)[p]]));
+  return {
+    lift: look(lift, 'opacity', 'transform'),
+    card: look(card, 'transform'),
+    body: look(body, 'transform'),
+    corners: { opacity: getComputedStyle(card, '::before').opacity },
+    text: text.map(e => look(e, 'opacity', 'transform')),
+  };
+};
+const RESTING_LOOK = { lift: { opacity: 0, transform: 'scaleX(.5)' }, card: {}, body: {}, corners: {}, text: [{}, {}] };
+
+function playSwapOut({ card, body, lift, text }, reduced, from = RESTING_LOOK) {
+  if (reduced) return text.map((e, i) => e.animate([from.text[i], { opacity: 0 }], { duration: 80, easing: 'linear', fill: 'forwards' }));
+  const hold = { duration: 110, easing: SWAP_EASE.breath, fill: 'forwards' };
+  return [
+    lift.animate([from.lift, { opacity: 1, transform: 'scaleX(1)' }], { ...hold, easing: SWAP_EASE.settle }),
+    card.animate([from.card, { transform: `scale(${FRAME_TIGHT})` }], hold),
+    body.animate([from.body, { transform: `scale(${1 / FRAME_TIGHT})` }], hold),
+    ...['::before', '::after'].map(pseudoElement => card.animate([from.corners, { opacity: CORNER_LIFT }], { ...hold, pseudoElement })),
+    ...text.map((e, i) => e.animate([from.text[i], { opacity: 0, transform: 'translateY(-2px)' }], { duration: 80, delay: 30, easing: SWAP_EASE.leave, fill: 'both' })),
+  ];
+}
+
+function playSwapIn({ card, body, lift, text }, reduced) {
+  if (reduced) return text.map(e => e.animate([{ offset: 0, opacity: 0 }], { duration: 120, easing: 'linear', fill: 'backwards' }));
+  const settle = { duration: 230, easing: SWAP_EASE.settle };
+  const rise = delay => ({ duration: 190, delay, easing: SWAP_EASE.settle, fill: 'backwards' });
+  return [
+    lift.animate([{ offset: 0, opacity: 1 }], settle),
+    card.animate([{ offset: 0, transform: `scale(${FRAME_TIGHT})` }], settle),
+    body.animate([{ offset: 0, transform: `scale(${1 / FRAME_TIGHT})` }], settle),
+    ...['::before', '::after'].map(pseudoElement => card.animate([{ offset: 0, opacity: CORNER_LIFT }], { ...settle, pseudoElement })),
+    ...text.map((e, i) => e.animate([{ offset: 0, opacity: 0, transform: 'translateY(8px)' }], rise(20 * (i + 1)))),   // label slightly ahead of the question
+  ];
+}
+
+const settled = animations => Promise.all(animations.map(a => a.finished));
+
+/* The swap currently going out or in: { card, phase, animations }. A tap while it is still going out only retargets it. */
+let swap = null;
+
 /* The timers of the card currently changing, and how to undo its animation. A fast tap
    cancels the previous card's timers so only the latest card ever lands. */
 let pendingFlip = null;
 
 function flipToCard(card, isFirstDraw) {
+  if (!isFirstDraw && swap?.phase === 'out') { swap.card = card; return; }   // fast tap: the swap already leaving lands on the newest card
+  const from = swap ? currentLook(swapParts()) : undefined;   // a restart during the in beat continues from what is on screen
   pendingFlip?.cancel();
   hideHandSummary();
   clearTwist();   // a Twist never survives a new draw — it's a layer on this card, not the deck
   const el      = document.getElementById('card');
   const lvlEl   = document.getElementById('card-level');
+  const qEl     = document.getElementById('card-question');
   const accent  = document.getElementById('c-accent');
   const nextBtn = document.getElementById('btn-next');
   if (nextBtn) nextBtn.classList.remove('btn-draw--start');
-  if (lvlEl) lvlEl.classList.remove('in');
-  const qEl = document.getElementById('card-question');
-  if (qEl)  qEl.classList.remove('in');
-  // The first draw of a hand gets thrown onto the table — two ghost cards
-  // trail behind the real one as it drops in at an angle (shows the
-  // settings that were just chosen are actually taking effect); every card
-  // after that gets the plain, quicker flip. Ghosts are real, temporary
-  // elements (not a pure-CSS trick) — removed once the animation is done.
-  const animClass = isFirstDraw ? 'drawing-in' : 'flipping';
-  el.classList.add(animClass);
   // The start card's back dissolves instead of cutting: on the first draw it
-  // starts fading as the card drops and is gone as it lands; on a plain flip
+  // starts fading as the card drops and is gone as it lands; on a plain swap
   // it fades straight away.
   const timing = prefersReducedMotion.matches ? DRAW_TIMING.reduced : DRAW_TIMING.full;
   const timers = [];
   if (el.classList.contains('is-start')) timers.push(setTimeout(() => setStartBack(''), isFirstDraw ? timing.backFade : 0));
-  let ghosts = [];
-  if (isFirstDraw) {
-    const area = el.parentElement;
-    ghosts = [0, 1].map(i => {
-      const g = document.createElement('div');
-      g.className = 'draw-ghost';
-      g.style.animationDelay = (i * 60) + 'ms';
-      area.insertBefore(g, el);
-      return g;
-    });
-  }
-  const endAnimation = () => {
-    el.classList.remove(animClass, 'face-in');
-    ghosts.forEach(g => g.remove());
-  };
-  timers.push(setTimeout(() => {
-    /* Three can now be used during the first draw's animation: if another card
-       has taken this step meanwhile, this late face swap must not overwrite it */
-    if (state.currentIndex < state.visibleDeck.length && state.visibleDeck[state.currentIndex] !== card) {
-      pendingFlip.cancel();
-      return;
-    }
+  /* The face changes here: during the first draw's landing, or while a swap's text is invisible. If another
+     card has taken this step meanwhile (Three can be used during the first draw's animation), this late
+     face change must not overwrite it. */
+  const paintFace = shown => {
     setStartBack('');   // the back turns over with the face swap, not before
-    applyCardMark(el, card);
-    const color = levelColor(card.level);
-    if (accent) {
-      giltRailPaint(accent, color);
-      accent.classList.remove('accent-bloom');
-      void accent.offsetWidth;
-      accent.classList.add('accent-bloom');
-    }
-    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[card.level] || ''; lvlEl.style.color = labelColor(color); }
-    const qEl2 = document.getElementById('card-question');
-    if (qEl2) qEl2.textContent = translateQ(card);
+    applyCardMark(el, shown);
+    const color = levelColor(shown.level);
+    giltRailPaint(accent, color);
+    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[shown.level] || ''; lvlEl.style.color = labelColor(color); }
+    if (qEl)   qEl.textContent = translateQ(shown);
+    lvlEl?.classList.add('in');
+    qEl?.classList.add('in');
     /* let updateDrawMore own the button label — hard-coding "Next Card" here
        ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
     updateDrawMore();
-    requestAnimationFrame(() => {
-      if (lvlEl) lvlEl.classList.add('in');
-      if (qEl2)  qEl2.classList.add('in');
-    });
-    if (isFirstDraw) el.classList.add('face-in');   // the question may show now; the landing runs on to `done`
-    else { endAnimation(); pendingFlip = null; }
+  };
+  const isStale = shown => state.currentIndex < state.visibleDeck.length && state.visibleDeck[state.currentIndex] !== shown;
+  const finishFace = shown => {
     renderProgress();
-    updatePartyDisplay(card);
-    // Auto-save on every card
-    autoSaveSession();
-  }, isFirstDraw ? timing.swap : 175));
-  if (isFirstDraw) timers.push(setTimeout(() => { endAnimation(); pendingFlip = null; }, timing.done));
+    updatePartyDisplay(shown);
+    autoSaveSession();   // auto-save on every card
+  };
+
+  if (!isFirstDraw) {
+    const parts = swapParts();
+    const reduced = prefersReducedMotion.matches;
+    const run = swap = { card, phase: 'out', animations: playSwapOut(parts, reduced, from) };
+    pendingFlip = { cancel: () => { timers.forEach(clearTimeout); run.animations.forEach(a => a.cancel()); swap = pendingFlip = null; } };
+    settled(run.animations).then(() => {
+      if (swap !== run) return;   // cancelled
+      if (isStale(run.card)) { pendingFlip.cancel(); return; }
+      paintFace(run.card);
+      const entering = playSwapIn(parts, reduced);
+      run.animations.forEach(a => a.cancel());   // the out end-state hands over to the in animation's start
+      run.animations = entering;
+      run.phase = 'in';
+      finishFace(run.card);
+      settled(entering).then(() => { if (swap === run) swap = pendingFlip = null; }).catch(() => {});
+    }).catch(() => {});   // a cancelled animation rejects its promise
+    return;
+  }
+
+  // The first draw of a hand gets thrown onto the table — two ghost cards
+  // trail behind the real one as it drops in at an angle (shows the
+  // settings that were just chosen are actually taking effect). Ghosts are
+  // real, temporary elements (not a pure-CSS trick) — removed once the
+  // animation is done.
+  lvlEl?.classList.remove('in');   // invisible until the face swap gives them `in` back
+  qEl?.classList.remove('in');
+  el.classList.add('drawing-in');
+  const area = el.parentElement;
+  const ghosts = [0, 1].map(i => {
+    const g = document.createElement('div');
+    g.className = 'draw-ghost';
+    g.style.animationDelay = (i * 60) + 'ms';
+    area.insertBefore(g, el);
+    return g;
+  });
+  const endAnimation = () => {
+    el.classList.remove('drawing-in', 'face-in');
+    ghosts.forEach(g => g.remove());
+  };
+  timers.push(setTimeout(() => {
+    if (isStale(card)) { pendingFlip.cancel(); return; }
+    paintFace(card);
+    el.classList.add('face-in');   // the question may show now; the landing runs on to `done`
+    finishFace(card);
+  }, timing.swap));
+  timers.push(setTimeout(() => { endAnimation(); pendingFlip = null; }, timing.done));
   pendingFlip = { cancel: () => { timers.forEach(clearTimeout); endAnimation(); pendingFlip = null; } };
 }
 

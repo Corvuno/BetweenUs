@@ -5,9 +5,9 @@
    color-mix() can only ease when built from registered custom properties, so these are registered:
    --im-color (the pause colour, set on <body>), the rails' three stops, the gold button's two. */
 @property --im-color{syntax:'<color>';inherits:true;initial-value:#c9a84c;}
-@property --rail-d{syntax:'<color>';inherits:false;initial-value:transparent;}
-@property --rail-m{syntax:'<color>';inherits:false;initial-value:transparent;}
-@property --rail-l{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --rail-d{syntax:'<color>';inherits:true;initial-value:transparent;}
+@property --rail-m{syntax:'<color>';inherits:true;initial-value:transparent;}
+@property --rail-l{syntax:'<color>';inherits:true;initial-value:transparent;}
 @property --bd-a{syntax:'<color>';inherits:false;initial-value:#c9a84c;}
 @property --bd-b{syntax:'<color>';inherits:false;initial-value:#a07830;}
 :root{
@@ -220,6 +220,10 @@ body{
   -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
   mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
+/* the swap's flare (card.js playSwapOut): a lighter copy of whatever rail it sits in, so it follows the phone rail's and the PC top line's
+   height and ends; it reads the rail's colour through the inheriting --rail-l */
+.c-lift{position:absolute;inset:0;opacity:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,color-mix(in oklab,var(--rail-l) 45%,#fff) 50%,transparent);}
 .accent-bloom{animation:accentReveal 1s ease forwards;}
 @keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
 .card-star{
@@ -351,7 +355,7 @@ body.showing-hand-summary .card-question{
 }
 .twist-trigger.disabled{opacity:.32;}   /* still takes the tap, so it can shake */
 .party-twist.disabled{opacity:.32;pointer-events:none;}
-/* card flip animation */
+/* end-of-hand message fade (deck.js renderEndMessage); the Next/Back swap is Web Animations in card.js */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
 /* the first draw of a hand — plays instead of the plain flip, whether this

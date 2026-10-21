@@ -122,7 +122,7 @@ Gradients and `color-mix()` cannot transition on their own, so build them from r
 properties (`@property`, syntax `<color>`) and put the `transition` on those properties:
 - `--im-color` (inherits, initial gold): the pause colour on `<body>`; `body{transition:--im-color .6s ease}`
   so the diamond, the rule and the Spotlight copies, all reading `var(--im-color)`, follow it.
-- `--rail-d` / `--rail-m` / `--rail-l` (initial transparent): the three stops of a rail's five-stop
+- `--rail-d` / `--rail-m` / `--rail-l` (inherit, initial transparent; inheriting lets the swap's `.c-lift` child read the rail's colour): the three stops of a rail's five-stop
   gilt sweep. `.c-accent` and `.party-c-accent` draw the gradient from them and transition them;
   set them with `giltRailPaint(el, hex)` in `gilt.js`, never with an inline `background`.
 - `--bd-a` / `--bd-b` (initial = the gold button's two stops): the gold button's gradient;
@@ -392,6 +392,18 @@ sliding in). Plain `ease` / `ease-in-out` are not used for entering things.
   no bounce); two ghosts ease-out, delays 0 and 60ms; the question swaps in at 310ms (card.js
   `DRAW_TIMING`) so its fade overlaps the landing. Reduce motion: no drop, no ghosts, a 250ms opacity
   fade, swap at 150ms.
+- **Next/Back swap on the card** (owner's "B+C", 2026-10-21; card.js `playSwapOut`/`playSwapIn`, Web
+  Animations, transform and opacity only, no glow): out 110ms, the rail flares lighter from the centre
+  (`.c-lift`, a child of `.c-accent` so it takes the phone rail's and the PC top line's height and
+  faded ends; opacity 0 to 1, `scaleX` .5 to 1), the card tightens to .992, the corner marks lift to .6,
+  label and question fade out with a 2px lift (80ms after a 30ms delay, ease-in `cubic-bezier(.4,0,1,1)`).
+  The text changes while invisible. In 230ms: flare, card and corners settle back, the new label (delay
+  20ms) and question (delay 40ms) rise from 8px below over 190ms; ease-out `cubic-bezier(.16,1,.3,1)`.
+  Frame only: the question is never scaled, because the text block carries the exact inverse of the
+  card's scale. The rail's colour still eases to the new category (the `--rail-*` transition). Reduce
+  motion: 80ms linear fade out, 120ms in, no movement. A fast tap during the out beat just retargets it;
+  during the in beat it restarts the swap. The old 1s `accent-bloom` replay is gone from this swap
+  (Intermezzo and Deck still use it). `.card.flipping` now only serves the end-of-hand message fade.
 - **The turn** (message to Intermezzo, to the hand list, and back): 560ms, edge-on and face swap at 280ms
   (`TURN_MID_MS` / `TURN_END_MS` in deck.js follow the CSS).
 - **Drawers, sub-drawer, The Deck sheet, scrims:** open 320ms on `--ease-sheet`, close 210ms; the base
