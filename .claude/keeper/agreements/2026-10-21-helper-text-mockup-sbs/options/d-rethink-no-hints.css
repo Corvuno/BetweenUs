@@ -1,0 +1,7 @@
+/* D: the hint lines are not there. A small caret after the preset name says "tap to change"; the labels Three / Spotlight / Twist carry themselves.
+   What stays is a label or a tagline, lifted to the A tones. */
+.subtitle,#chaptersLbl,.sect-lbl{color:var(--btn-quiet);}
+.tok-hint,#screenRow .row-hint,#handActionsRow .row-hint{display:none;}
+.tok-preset .tok-val::after{content:'\25BE';color:var(--btn-quiet);}
+
+.tok-preset .tok-val::after{display:block;}

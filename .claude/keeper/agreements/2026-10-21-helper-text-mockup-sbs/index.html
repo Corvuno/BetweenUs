@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helper text, side by side</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--gold:#c9a84c;--cream:#f0e8d8;--muted-l:#9c8f7e;--btn-quiet:#8f8171;--border:rgba(201,168,76,.22);--bad:#d98a7a;--good:#8fc79a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--cream);font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;padding:24px 7px 64px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto}
+h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2rem;letter-spacing:.03em;padding-inline:9px}
+h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:1.4rem;margin-bottom:4px}
+p,li{color:var(--muted-l);font-size:.95rem;max-width:70ch}
+section{margin-top:34px;padding:22px 9px 0;border-top:1px solid var(--border)}
+.lead{margin-top:8px;padding-inline:9px}
+/* a strip: crops at real size (CSS px = screenshot px / 2), wrapping, Current first */
+.strip{display:flex;flex-wrap:wrap;gap:14px 4px;margin:14px -9px 0}
+.strip figure{flex:0 0 auto}
+.strip img{display:block;width:calc(var(--w) * 1px);height:auto}
+.strip figcaption,.screens figcaption{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);margin-bottom:5px;padding-left:2px}
+.strip figcaption small,.screens figcaption small{display:block;letter-spacing:.04em;text-transform:none;color:var(--btn-quiet);font-size:.78rem}
+.stack img+img{margin-top:6px}
+.looks{margin-top:10px;padding-left:18px}.looks li{margin-top:7px}.looks b{color:var(--cream);font-weight:400}
+.screens{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px 8px;margin-top:14px}
+.screens img{width:100%;height:auto;display:block;border:1px solid var(--border)}
+table{border-collapse:collapse;margin:12px 0 6px;font-size:.85rem;width:100%;max-width:760px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid rgba(201,168,76,.12);font-weight:300}
+th{color:var(--btn-quiet);font-weight:400;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+td.n{font-variant-numeric:tabular-nums}.pass{color:var(--good)}.fail{color:var(--bad)}.gone{color:var(--btn-quiet)}
+.tablewrap{overflow-x:auto}
+.small{font-size:.85rem;color:var(--btn-quiet);margin-top:8px}
+code{font-size:.85em;color:var(--cream)}
+a{color:var(--gold)}
+.strip.tight{gap:0}.strip.tight figure{flex:0 0 100%}.strip.tight figcaption{margin:8px 0 2px}
+</style></head><body><div class="wrap">
+<h1>Helper text, side by side</h1>
+<p class="lead">The same five looks, next to each other: Current first, then A, B, C and D.</p>
+
+<section><h2>1. Three / Spotlight / Twist and their hint lines</h2>
+<div class="strip tight" style="--w:362">
+<figure><figcaption>Current</figcaption><img src="shots/current-hints.png" alt="Current: three hint lines"></figure>
+<figure><figcaption>A</figcaption><img src="shots/a-hints.png" alt="Look A: three hint lines"></figure>
+<figure><figcaption>B</figcaption><img src="shots/b-hints.png" alt="Look B: three hint lines"></figure>
+<figure><figcaption>C</figcaption><img src="shots/c-hints.png" alt="Look C: three hint lines"></figure>
+<figure><figcaption>D</figcaption><img src="shots/d-hints.png" alt="Look D: hints removed"></figure>
+</div></section>
+
+<section><h2>2. Title subtitle and "Selected deck &middot; tap to change"</h2>
+<div class="strip" style="--w:186">
+<figure><figcaption>Current</figcaption><img src="shots/current-title.png" alt="Current: subtitle and selected deck line"></figure>
+<figure><figcaption>A</figcaption><img src="shots/a-title.png" alt="Look A: subtitle and selected deck line"></figure>
+<figure><figcaption>B</figcaption><img src="shots/b-title.png" alt="Look B: subtitle and selected deck line"></figure>
+<figure><figcaption>C</figcaption><img src="shots/c-title.png" alt="Look C: subtitle and selected deck line"></figure>
+<figure><figcaption>D</figcaption><img src="shots/d-title.png" alt="Look D: subtitle, no tap line, caret"></figure>
+</div></section>
+
+<section><h2>3. The Deck sheet: "Start from" and "Chapters"</h2>
+<p>Each look shows the "Start from" label above the "Chapters" label, cropped from the same sheet.</p>
+<div class="strip stack" style="--w:176">
+<figure><figcaption>Current</figcaption><img src="shots/current-start.png" alt="Current: Start from"><img src="shots/current-chapters.png" alt="Current: Chapters"></figure>
+<figure><figcaption>A</figcaption><img src="shots/a-start.png" alt="Look A: Start from"><img src="shots/a-chapters.png" alt="Look A: Chapters"></figure>
+<figure><figcaption>B</figcaption><img src="shots/b-start.png" alt="Look B: Start from"><img src="shots/b-chapters.png" alt="Look B: Chapters"></figure>
+<figure><figcaption>C</figcaption><img src="shots/c-start.png" alt="Look C: Start from"><img src="shots/c-chapters.png" alt="Look C: Chapters"></figure>
+<figure><figcaption>D</figcaption><img src="shots/d-start.png" alt="Look D: Start from"><img src="shots/d-chapters.png" alt="Look D: Chapters"></figure>
+</div></section>
+
+<section><h2>What each look is</h2>
+<ul class="looks">
+<li><b>Current</b>: what the app shows now. Nothing changes.</li>
+<li><b>A</b>: every helper line moves to a tone the app already has (--btn-quiet; the three hints to the soft celadon). No size or weight change, no new value.</li>
+<li><b>B</b>: the smallest tone step that passes (two new values), the hints a little larger (14 to 15 px) and the subtitle a little heavier. The main menu's sub-lines get lighter with it.</li>
+<li><b>C</b>: every helper line, the hints included, in the one lighter warm grey that already exists (--muted-l). The hints leave the celadon family.</li>
+<li><b>D</b>: the hint lines and "tap to change" are removed; a small caret after the deck name says it opens. The subtitle, "Start from" and "Chapters" are lifted to the A tone.</li>
+</ul>
+<p class="small">PC: the hints only show on hover there and already read well; no look changes them, so PC is left out.</p></section>
+
+<section><h2>The phone main screen, all five</h2>
+<p>For the overall feel: the real main screen at phone size with a card drawn.</p>
+<div class="screens">
+<figure><figcaption>Current</figcaption><img src="shots/current-phone-main.png" alt="Current, phone main screen"></figure>
+<figure><figcaption>A</figcaption><img src="shots/a-phone-main.png" alt="Look A, phone main screen"></figure>
+<figure><figcaption>B</figcaption><img src="shots/b-phone-main.png" alt="Look B, phone main screen"></figure>
+<figure><figcaption>C</figcaption><img src="shots/c-phone-main.png" alt="Look C, phone main screen"></figure>
+<figure><figcaption>D</figcaption><img src="shots/d-phone-main.png" alt="Look D, phone main screen"></figure>
+</div></section>
+
+<section><h2>Measurements</h2>
+<p class="small">Contrast against the real background of each line (goal 4.5:1 or better), unchanged from the first round.</p>
+<div class="tablewrap"><table>
+<tr><th>Line</th><th>Current</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+<tr><td>Subtitle</td><td class="n fail">3.93</td><td class="n pass">5.16</td><td class="n pass">5.06</td><td class="n pass">6.18</td><td class="n pass">5.16</td></tr>
+<tr><td>"&middot; tap to change"</td><td class="n fail">3.93</td><td class="n pass">5.16</td><td class="n pass">5.06</td><td class="n pass">6.18</td><td class="n gone">removed</td></tr>
+<tr><td>Three / Spotlight / Twist hints</td><td class="n fail">3.47</td><td class="n pass">6.21</td><td class="n pass">4.93</td><td class="n pass">6.18</td><td class="n gone">removed</td></tr>
+<tr><td>"Start from"</td><td class="n fail">3.92</td><td class="n pass">4.89</td><td class="n pass">4.80</td><td class="n pass">5.85</td><td class="n pass">4.89</td></tr>
+<tr><td>"Chapters"</td><td class="n fail">3.72</td><td class="n pass">4.89</td><td class="n pass">4.80</td><td class="n pass">5.85</td><td class="n pass">4.89</td></tr>
+</table></div>
+<p class="small">Stylesheets: <a href="options/a-existing-tokens.css">A</a>, <a href="options/b-step-and-presence.css">B</a>, <a href="options/c-one-warm-tone.css">C</a>, <a href="options/d-rethink-no-hints.css">D</a>. The first round's page is untouched in <code>../2026-10-21-helper-text-mockup/</code>.</p></section>
+</div></body></html>
