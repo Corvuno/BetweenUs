@@ -1130,15 +1130,9 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. */
       btn.closest('.chapter-group')?.classList.toggle('ch-hidden', visible.length === 0);
-      /* "n / total": how many of this chapter's categories are on, of those reachable here;
-         a number that changed fades in softly, so a preset tap visibly reaches the rows */
+      /* "n / total": how many of this chapter's categories are on, of those reachable here */
       const ct = btn.querySelector('.ch-ct');
-      const count = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
-      if (ct && ct.textContent !== count) {
-        const fromBlank = !ct.textContent;
-        ct.textContent = count;
-        if (!fromBlank && !prefersReducedMotion.matches) ct.animate({ opacity: [0.2, 1] }, { duration: 450, easing: 'ease-out' });
-      }
+      if (ct) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
     });
     updateListModeNote();
     syncFoldAll();
