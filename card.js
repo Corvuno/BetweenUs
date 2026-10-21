@@ -139,6 +139,15 @@ function applyCardMark(el, card) {
   }
 }
 
+/* The Intermezzo look is a variant of the back, so it stays while the back fades out and goes with it
+   (at once when no back is showing, as on the list side). */
+function dropIntermezzoWhenBackIsGone(el) {
+  const back = el.querySelector('.card-back');
+  const drop = () => { if (!el.classList.contains('is-start')) el.classList.remove('is-intermezzo'); };
+  if (back && +getComputedStyle(back).opacity > 0) back.addEventListener('transitionend', drop, { once: true });
+  else drop();
+}
+
 // The start card: the card's back with the "begin" text, shown only before
 // the first draw. Pass the text to show it, or nothing to put the face back.
 function setStartBack(text) {
@@ -160,7 +169,25 @@ function setStartBack(text) {
   // Intermezzo itself stays on while the back fades out, so its mark doesn't
   // change under the dissolve.
   if (text) el.classList.remove('is-intermezzo');
+  else dropIntermezzoWhenBackIsGone(el);
   el.classList.remove('is-hand-list');
+}
+
+/* The card between two hands of the same session (hold-to-continue, Draw more): the ended hand's
+   face is emptied, and nothing else is painted. The card is not "back at the start", so the start
+   card (logo, "A place to begin…") must not show: whatever back is up (Intermezzo) stays until the
+   first card's flip dissolves it, and the list side just empties. The rails keep their colour until
+   that card's face swap repaints them. */
+function clearCardFace() {
+  hideHandSummary();
+  clearTwist();
+  applyCardMark(document.getElementById('card'), null);
+  const lvlEl = document.getElementById('card-level');
+  if (lvlEl) { lvlEl.textContent = ''; lvlEl.classList.remove('in'); }
+  const qEl = document.getElementById('card-question');
+  if (qEl) { qEl.textContent = ''; qEl.classList.remove('in'); }
+  ['party-question', 'party-level', 'party-count'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
+  document.getElementById('party-question')?.classList.remove('is-end-msg');
 }
 
 function setCardDisplay(card) {

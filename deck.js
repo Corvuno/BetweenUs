@@ -143,18 +143,10 @@ function initDeck(isContinuation) {
   state.currentIndex = -1;
   state.visibleDeck = sliceVisibleDeck(state.fullDeck, state.drawUnseen);
   renderProgress();
-  setCardDisplay(null);
+  if (isContinuation) clearCardFace(); else setCardDisplay(null);
   updateDeckInfo();
   updateDrawMore();
-  // clear accent on fresh deck
-  const accent=document.getElementById('c-accent');
-  if(accent){ giltRailPaint(accent, null); accent.classList.remove('accent-bloom'); }
-  // init level
-  const lv=document.getElementById('card-level');
-  if(lv){ lv.classList.remove('in'); lv.textContent=''; }
-  const qEl=document.getElementById('card-question');
-  if(qEl){ qEl.classList.remove('in'); }
-  setTimeout(()=>{ if(qEl) qEl.classList.add('in'); },20);
+  document.getElementById('c-accent')?.classList.remove('accent-bloom');   // the face itself was cleared above
   renderShell();
 }
 
