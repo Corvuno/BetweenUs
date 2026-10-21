@@ -1020,11 +1020,11 @@ applyToggleUI();
     partyWasOpen=isOpen;
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
-// Chapter rail: same gilt.js metal sweep as the card accent, run vertically
-// (190deg) off CHAPTERS_META's colour for each chapter — computed once at
+// Chapter rail: same gilt.js metal stops as the card accent, painted on each row
+// (--rail-d/-m/-l) off CHAPTERS_META's colour — computed once at
 // boot since, unlike a card's category, a chapter's colour never changes
-// at runtime. Stored in --ch-rail rather than written straight to
-// border-image-source, since styles.css only paints it on .on (see
+// at runtime. styles.css composes the vertical (190deg) sweep from them into --ch-rail,
+// which it paints only on .on (see
 // the on/part/off rule there) — .part and the base/off state use a flat
 // --ch-derived colour instead. CHAPTERS_META (config.js) is the one
 // stored copy of these colours — the end-of-set screen reads the same
@@ -1035,7 +1035,7 @@ applyToggleUI();
 document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   const meta = CHAPTERS_META[el.dataset.chapter];
   if (!meta) return;
-  el.style.setProperty('--ch-rail', giltRail(meta.color, 190));
+  giltRailPaint(el, meta.color);
   el.style.setProperty('--ch', labelColor(meta.color));
   if (el.parentElement) el.parentElement.style.setProperty('--ch', labelColor(meta.color)); // the unfolded panel's paled left line
 });
