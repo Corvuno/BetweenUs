@@ -5,9 +5,9 @@
    color-mix() can only ease when built from registered custom properties, so these are registered:
    --im-color (the pause colour, set on <body>), the rails' three stops, the gold button's two. */
 @property --im-color{syntax:'<color>';inherits:true;initial-value:#c9a84c;}
-@property --rail-d{syntax:'<color>';inherits:false;initial-value:transparent;}
-@property --rail-m{syntax:'<color>';inherits:false;initial-value:transparent;}
-@property --rail-l{syntax:'<color>';inherits:false;initial-value:transparent;}
+@property --rail-d{syntax:'<color>';inherits:true;initial-value:transparent;}
+@property --rail-m{syntax:'<color>';inherits:true;initial-value:transparent;}
+@property --rail-l{syntax:'<color>';inherits:true;initial-value:transparent;}
 @property --bd-a{syntax:'<color>';inherits:false;initial-value:#c9a84c;}
 @property --bd-b{syntax:'<color>';inherits:false;initial-value:#a07830;}
 :root{
@@ -220,6 +220,10 @@ body{
   -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
   mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
+/* the swap's flare (card.js playSwapOut): the rail's own light stop (gilt `light`) over its centre, so it follows the phone rail's and the PC top line's
+   height and ends; it reads the rail's colour through the inheriting --rail-l */
+.c-lift{position:absolute;inset:0;opacity:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--rail-l) 50%,transparent);}
 .accent-bloom{animation:accentReveal 1s ease forwards;}
 @keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
 .card-star{
@@ -351,7 +355,7 @@ body.showing-hand-summary .card-question{
 }
 .twist-trigger.disabled{opacity:.32;}   /* still takes the tap, so it can shake */
 .party-twist.disabled{opacity:.32;pointer-events:none;}
-/* card flip animation */
+/* end-of-hand message fade (deck.js renderEndMessage); the Next/Back swap is Web Animations in card.js */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
 /* the first draw of a hand — plays instead of the plain flip, whether this
@@ -972,7 +976,7 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
   /* chrome sized for a 364px mobile card reads thin at 720px — scale the rail,
      corner brackets and star (mobile 3px rail/24px corners/.9rem star).
      Rail is 5px: desktop uses the hard-edged "intense" gilt.js derivation (see
-     giltRail()), which reads as a warning bar at anything thinner.
+     giltRailPaint() in gilt.js), which reads as a warning bar at anything thinner.
      filter:none is explicit: nothing sets a filter on .c-accent, and nothing
      should. */
   .c-accent{height:5px;filter:none;}
@@ -1397,14 +1401,15 @@ body.tok-taught .tok-hint{display:none;}
    own 15px top/bottom padding; align-items:center (not baseline) so a
    one-line row centers inside that height instead of sitting at the top. */
 .chapter{--ch:var(--gold);--ch-ease:.4s ease-out;position:relative;
+  --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
   display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
   transition:background var(--ch-ease),border-color var(--ch-ease);}
 /* the left rail: one continuous line down the whole row. A vertical metal sweep
-   (same gilt.js gradient as the card accent, at 190deg instead of 100deg) once a
+   (same gilt.js stops as the card accent, at 190deg instead of 100deg) once a
    chapter is fully on, drawn by ::before over the 3px border so it can fade in and
    out; a partly-on chapter keeps a flat line of its colour, in between, along the
-   same full length. --ch-rail is written by JS from each chapter's colour — see ui.js. */
+   same full length. gilt.js paints the stop colours (--rail-d/-m/-l) on the row from each chapter's colour — see ui.js. */
 .chapter::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
   background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
 .chapter.on::before{opacity:1;}
@@ -1720,6 +1725,31 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   .party-chrome .party-pick svg,.party-chrome .party-twist svg,.party-chrome .party-exit svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
   .party-chrome .party-pick .party-key,.party-chrome .party-twist .party-key,.party-chrome .party-exit .party-key{margin:0 calc(var(--k)*4px) 0 0;}
   .party-top .party-twist,.party-top .party-pick{font-size:max(11px,calc(var(--k)*14px));}
+}
+
+/* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;
+   pulled a pinch back toward the chapter colour, everything else as it was. */
+@media (min-width:1024px){
+  .chapter{--ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 70%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
+}
+
+/* Side rails on wide screens (owner, 2026-10-21): Three and Spotlight's pick-three rails were the phone's 3px beside
+   text five times as big. 5px with a vertical sweep, dark ends, the sheen pulled toward the category colour, and one
+   crisp 1px lit edge: metal, no glow. Same ends fade as on the phone. */
+@media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
+  .card-area .pick-opt-text,.party-picker .pick-opt-text{
+    --pc-dark:color-mix(in oklab,var(--pc-solid) 60%,#000);
+    --pc-sheen:color-mix(in oklab,var(--pc-solid) 62%,#fff);}
+  .card-area .pick-opt-text::before,.party-picker .pick-opt-text::before{width:5px;
+    background:linear-gradient(90deg,var(--pc-sheen) 0 1px,transparent 1px),
+      linear-gradient(in oklab 180deg,var(--pc-dark) 0%,var(--pc-solid) 30%,var(--pc-sheen) 50%,var(--pc-solid) 70%,var(--pc-dark) 100%);}
+}
+
+/* The Deck on a mouse (design look-through 2026-10-21): the picks (presets, who's here, categories, dials) keep their
+   44-49px touch height, so the presets alone take a third of the sheet and push the chapters, the point of the sheet,
+   below the fold. A pointer needs less: the same picks at 38px, everything else as it was. */
+@media (min-width:1024px) and (hover:hover) and (pointer:fine){
+  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){--pick-h:38px;}
 }
 
 /* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */

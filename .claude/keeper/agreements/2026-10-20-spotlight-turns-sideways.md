@@ -52,3 +52,13 @@ sensor read while closed, missing vh/vw fallback, switch state for screen reader
 re-review clean. Tests 58/58 on the final merge. Still to watch on a real phone: the tilt
 direction mapping and the feel of the turn (no animation). Open on main, not from this build:
 `npm run check:static` flags two findings in presentation.js (from ce3b300).
+
+## Double-turn fix — 2026-10-21
+
+Owner (Android, rotation lock off): tapping Sideways and then turning the phone turned it twice.
+Fixed (34c8042, tidy-up cd45030): own turns wait for the browser's rotation; a phone that rotates
+by itself is remembered and Spotlight stops turning there (a 2 s sideways hold with the screen
+still upright re-enables it); turn direction corrected (top to the left = cw). Tester: double
+turn gone in every simulated case; reviewer clean. Landed on main by another session
+(3ea10cc, cache stamp h) while this one was stopped by the spend limit; branch and main
+identical afterwards, tests 61/61. Real-phone confirmation pending from the owner.
