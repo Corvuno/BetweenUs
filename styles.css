@@ -15,6 +15,9 @@
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
   --border-strong:rgba(201,168,76,0.38);
+  /* motion: strong ease-out for things entering or responding (starts fast, settles soft); --ease-sheet is the
+     fast-start, soft-settle curve of drawers and sheets sliding in */
+  --ease-out:cubic-bezier(.23,1,.32,1);--ease-sheet:cubic-bezier(.32,.72,0,1);
   /* the drawn card's own deck-identity marking (corners/border, After Dark's
      also a wash + watermark) — separate from --ad-red above, which the
      existing mode-toggle button already owns; kept apart so this doesn't
@@ -58,7 +61,7 @@ body{
 .app{position:relative;z-index:1;width:100%;max-width:460px;padding:0 18px;display:flex;flex-direction:column;align-items:center;}
 
 /* ── HEADER ── */
-.header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .5s .15s ease,transform .5s .15s ease;}
+.header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .38s .1s var(--ease-out),transform .38s .1s var(--ease-out);}
 .header.in{opacity:1;transform:none;}
 .title{font-family:'Poiret One',cursive;font-size:1.85rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;}
 .title-rule{display:flex;align-items:center;justify-content:center;
@@ -114,7 +117,8 @@ body{
 /* ── CATEGORIES ── */
 .cat-topbar{display:flex;align-items:center;gap:8px;}
 .cat-toggle-lbl{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;padding:15px 0;outline:none;}
-.cat-toggle-lbl:hover,.cat-toggle-lbl.open{color:var(--gold);}
+.cat-toggle-lbl.open{color:var(--gold);}
+@media (hover:hover) and (pointer:fine){.cat-toggle-lbl:hover{color:var(--gold);}}
 .cat-chevron{display:inline-block;font-size:.5rem;transition:none;}
 .cat-controls{display:flex;align-items:center;flex-shrink:0;}
 .cat-count-lbl{font-size:.75rem;letter-spacing:.08em;color:rgba(240,232,216,.35);}
@@ -126,7 +130,7 @@ body{
   font-size:.72rem;padding:15px 4px;cursor:pointer;
   transition:color .2s,text-shadow .2s;line-height:1;
 }
-.spice-glyph:hover{color:rgba(240,232,216,.7);}
+@media (hover:hover) and (pointer:fine){.spice-glyph:hover{color:rgba(240,232,216,.7);}}
 .spice-glyph.on{color:#e8a040;}
 
 /* After Dark — text link, no border */
@@ -134,10 +138,10 @@ body{
   background:none;border:none;border-bottom:1px solid transparent;
   color:var(--btn-quiet);
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
-  padding:15px 0;cursor:pointer;transition:all .2s;
+  padding:15px 0;cursor:pointer;transition:color .2s,border-bottom-color .2s,text-shadow .2s;
   display:flex;align-items:center;gap:5px;white-space:nowrap;
 }
-.after-dark-btn:hover{color:rgba(240,232,216,.85);}
+@media (hover:hover) and (pointer:fine){.after-dark-btn:hover{color:rgba(240,232,216,.85);}}
 .after-dark-btn.on{color:var(--ad-red);border-bottom-color:rgba(193,39,45,.5);text-shadow:0 0 10px rgba(193,39,45,.55);}
 .after-dark-btn.hidden{display:none;}
 
@@ -149,7 +153,7 @@ body{
   padding:15px 7px;cursor:pointer;transition:color .2s;
   display:flex;align-items:center;justify-content:center;text-align:center;
 }
-.deselect-btn:hover{color:var(--gold);}
+@media (hover:hover) and (pointer:fine){.deselect-btn:hover{color:var(--gold);}}
 .deselect-btn{padding-inline:10px;}
 /* None and Open all: one quiet pair at the right of the Chapters heading, a faint dot between */
 #deselectAll{margin-inline-start:auto;}
@@ -163,7 +167,7 @@ body{
 .toggle-btn.hard-locked{opacity:.12;cursor:default;pointer-events:none;}
 
 /* ── CARD ── */
-.card-wrap{width:100%;opacity:0;transform:translateY(10px);transition:opacity .55s .05s ease,transform .55s .05s ease;}
+.card-wrap{width:100%;opacity:0;transform:translateY(10px);transition:opacity .38s .05s var(--ease-out),transform .38s .05s var(--ease-out);}
 .card-wrap.in{opacity:1;transform:none;}
 /* .card itself is the ratio'd box (in normal flow, no inset:0), so
    aspect-ratio acts as a *default* height that a flex column grows past when a
@@ -222,7 +226,7 @@ body{
   position:absolute;top:9px;right:11px;z-index:4;
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
 }
-.card-star:hover{opacity:.65;}.card-star.active{opacity:1;}
+@media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.65;}}.card-star.active{opacity:1;}
 
 /* ── START CARD ── the back of the card, shown before the first draw
    (card.js setStartBack toggles .is-start on #card).
@@ -239,6 +243,10 @@ body{
 /* dissolves in and out (opacity), so the first draw doesn't cut from the back to the face */
 .card.is-start .card-back{opacity:1;visibility:visible;transition:opacity .45s ease;}
 .card.is-start .card-body-inner,.card.is-start .card-star{visibility:hidden;}
+/* first draw: the start back is an exit that must be gone before the question shows (card.js swaps at 310ms,
+   the dissolve starts at 60ms), or old and new smudge together */
+.card.drawing-in .card-back{transition:opacity .22s ease-in,visibility 0s linear .22s;}
+@media (prefers-reduced-motion:reduce){.card.drawing-in .card-back{transition:opacity .1s ease-in,visibility 0s linear .1s;}}
 .cb-lattice{
   position:absolute;inset:0;opacity:.7;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M0 0 18 18M18 0 0 18' fill='none' stroke='%23c9a84c' stroke-width='.6' opacity='.42'/%3E%3Ccircle cx='9.0' cy='9.0' r='.9' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='.7' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") center/18px 18px;
@@ -269,7 +277,7 @@ body{
 .card-level.in{opacity:.95;}
 .card-question{
   font-size:1.38rem;
-  line-height:1.52;text-align:center;color:var(--cream);
+  line-height:1.52;text-align:center;color:var(--cream);text-wrap:balance;
   opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .38s ease;
   /* .card locks selection down so the whole surface can be tapped/swiped
      without text catching a drag — but that lock isn't all-or-nothing:
@@ -352,26 +360,31 @@ body.showing-hand-summary .card-question{
    something instead of just quietly rebuilding a list. Reads as a card
    being thrown down onto the table: it drops in from above at an angle
    with a couple of trailing ghost cards (real elements, inserted/removed
-   by flipToCard in card.js), then settles flat. */
-.card.drawing-in{animation:cardDrawIn 1.05s cubic-bezier(.22,.68,0,1.1) both;}
-.card.drawing-in .card-level,.card.drawing-in .card-question{opacity:0;}
+   by flipToCard in card.js), then settles flat: one 520ms ease-out landing, the question
+   swapped in at ~60% of it so its fade overlaps the landing. */
+.card.drawing-in{animation:cardDrawIn .52s var(--ease-out) both;}
+/* the face is hidden until card.js adds face-in (the swap), while the landing runs on */
+.card.drawing-in:not(.face-in) .card-level,.card.drawing-in:not(.face-in) .card-question{opacity:0;}
 @keyframes cardDrawIn{
-  0%{transform:translateY(-190px) rotate(-6deg) scale(.92);opacity:0;}
-  55%{transform:translateY(10px) rotate(1.5deg) scale(1.01);opacity:1;}
-  78%{transform:translateY(-4px) rotate(-.5deg) scale(1);}
-  100%{transform:translateY(0) rotate(0deg) scale(1);opacity:1;}
+  from{transform:translateY(-190px) rotate(-6deg) scale(.92);opacity:0;}
+  to{transform:none;opacity:1;}
 }
 .draw-ghost{position:absolute;inset:0;background:var(--card-bg);border:1px solid var(--border);
-  border-radius:2px;z-index:1;animation:cardDrawGhost 1.1s ease-in both;pointer-events:none;}
+  border-radius:2px;z-index:1;animation:cardDrawGhost .52s ease-out both;pointer-events:none;}
 @keyframes cardDrawGhost{
-  0%{transform:translateY(-210px) rotate(-8deg);opacity:0;}
-  35%{opacity:.5;}
-  80%{transform:translateY(6px) rotate(2deg);opacity:.25;}
-  100%{transform:translateY(40px) rotate(3deg);opacity:0;}
+  from{transform:translateY(-210px) rotate(-8deg);opacity:0;}
+  30%{opacity:.5;}
+  to{transform:translateY(24px) rotate(3deg);opacity:0;}
 }
+/* reduce motion: no drop, no ghosts, just a short fade (card.js swaps the face at 150ms; classes stay until the fade is done) */
+@media (prefers-reduced-motion:reduce){
+  .card.drawing-in{animation:cardDrawFade .25s ease-out both;}
+  .draw-ghost{display:none;}
+}
+@keyframes cardDrawFade{from{opacity:0;}to{opacity:1;}}
 
 /* ── CONTROLS ── */
-.controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .5s .32s ease,transform .5s .32s ease;}
+.controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .34s .2s var(--ease-out),transform .34s .2s var(--ease-out);}
 .controls-wrap.in{opacity:1;transform:none;}
 /* the progress dots: one per card, up to 20 on screen at once — past that
    the window slides to keep the current card visible, everything scrolled
@@ -428,23 +441,24 @@ body.showing-hand-summary .card-question{
   line-height:1;color:var(--gold);white-space:nowrap;
 }
 .nav-row{display:flex;align-items:center;gap:10px;width:100%;}
-.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
-.btn-sq:hover{border-color:var(--border-strong);color:var(--cream);}
+.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:border-color .2s,color .2s,opacity .2s,transform .16s var(--ease-out);}
+.btn-sq:active{transform:scale(.97);}
+@media (hover:hover) and (pointer:fine){.btn-sq:hover{border-color:var(--border-strong);color:var(--cream);}}
 .nav-row .btn-sq{border-color:rgba(201,168,76,.2);color:var(--celadon);}
 .nav-row .btn-sq:active,.nav-row .btn-sq:focus-visible{border-color:var(--gold);color:var(--gold);}
-@media (hover:hover){.nav-row .btn-sq:hover{border-color:var(--gold);color:var(--gold);}}
+@media (hover:hover) and (pointer:fine){.nav-row .btn-sq:hover{border-color:var(--gold);color:var(--gold);}}
 /* Back before the first card: whole button (frame + symbol) dimmed like the play row, no gold. */
 .nav-row #btn-prev.disabled{opacity:.32;}
 .nav-row #btn-prev.disabled:active,.nav-row #btn-prev.disabled:focus-visible{border-color:rgba(201,168,76,.2);color:var(--celadon);}
-@media (hover:hover){.nav-row #btn-prev.disabled:hover{border-color:rgba(201,168,76,.2);color:var(--celadon);}}
+@media (hover:hover) and (pointer:fine){.nav-row #btn-prev.disabled:hover{border-color:rgba(201,168,76,.2);color:var(--celadon);}}
 .btn-sq svg{width:19px;height:19px;}
-.btn-draw{flex:1;--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
-/* Hover answers in .2s (a transition runs with the style it moves to, so this is the way in only). */
-.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;transition:all .2s;}
-.btn-draw:active{transform:scale(.98);}
-.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);padding:15px 8px;cursor:pointer;transition:all .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-draw{flex:1;--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:opacity .2s,color .2s,font-size .2s,letter-spacing .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+/* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
+@media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
+.btn-draw:active{transform:scale(.97);}
+.btn-fullscreen{background:transparent;border:none;border-bottom:1px solid transparent;color:var(--btn-quiet);padding:15px 8px;cursor:pointer;transition:color .2s,border-bottom-color .2s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-fullscreen svg{width:16px;height:16px;flex-shrink:0;}
-.btn-fullscreen:hover{color:var(--gold);border-bottom-color:var(--border-strong);}
+@media (hover:hover) and (pointer:fine){.btn-fullscreen:hover{color:var(--gold);border-bottom-color:var(--border-strong);}}
 
 /* ── LIMIT ── */
 /* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
@@ -454,9 +468,9 @@ body.showing-hand-summary .card-question{
    reading that would ease the button twice and lag it behind the diamond. */
 .btn-draw.hold-mode{
   --bd-a:color-mix(in srgb,var(--im-target) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-target) 76%,#000);
-  color:var(--bg);letter-spacing:.1em;}
-/* a pointer resting on the button (desktop, or a phone's sticky hover) must not cut the gold-to-chapter-colour ease short */
-.btn-draw.hold-mode:hover{transition:all .2s,--bd-a .6s ease,--bd-b .6s ease;}
+  color:var(--bg);letter-spacing:.1em;
+  transition:opacity .2s,color .2s,font-size .2s,letter-spacing .2s,transform .16s var(--ease-out),--bd-a .6s ease,--bd-b .6s ease;}
+/* the slow gold-to-chapter-colour ease is on .hold-mode itself, so a pointer resting on the button (hover) does not cut it short */
 /* the very first draw of a hand — before any card has been drawn, or right
    after a settings change reset the deck. Sized up (no glow — see change
    log) to make this the obvious "start" tap instead of looking like every
@@ -465,9 +479,9 @@ body.showing-hand-summary .card-question{
 /* pressed-and-holding feedback on the end-of-draw button */
 .btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
-.draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:all .2s;display:none;}
+.draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:border-color .2s,color .2s;display:none;}
 .draw-more-btn.visible{display:block;}
-.draw-more-btn:hover{border-color:var(--border);color:var(--gold);}
+@media (hover:hover) and (pointer:fine){.draw-more-btn:hover{border-color:var(--border);color:var(--gold);}}
 .deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
 
 /* ── END OF HAND: INTERMEZZO ── (presentation.js; hooks listed there)
@@ -487,7 +501,7 @@ body.showing-hand-summary .card-question{
 .card.is-hand-list .card-level{display:none;}
 .card.is-hand-list .card-star{display:none;}
 .card.is-hand-list .card-body-inner{padding:18px 30px 14px 36px;align-items:stretch;justify-content:stretch;overflow:hidden;}
-.card.is-hand-list .card-question{flex:1;min-height:0;width:100%;font-size:1rem;text-align:left;cursor:pointer;}
+.card.is-hand-list .card-question{flex:1;min-height:0;width:100%;font-size:1rem;text-align:left;text-wrap:wrap;cursor:pointer;}
 .hd-box{position:relative;width:100%;height:100%;}
 .hd-list{
   list-style:none;margin:0;padding:8px 18px 14px 0;box-sizing:border-box;height:100%;width:100%;
@@ -540,15 +554,15 @@ body.showing-hand-summary .card-question{
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-rule{animation:none;}
 /* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
-/* the card turns over on its side, like a real card: 0.9s, soft perspective, a slight dip in size at
-   the edge. Edge-on at 450ms is the face swap (the JS swaps then, never at another moment); it slows
+/* the card turns over on its side, like a real card: 0.56s, soft perspective, a slight dip in size at
+   the edge. Edge-on at 280ms is the face swap (the JS swaps then, never at another moment); it slows
    in to the edge and eases out of it. The back is there instantly at the edge (no fade of the lattice).
    One shared turn: message to Intermezzo and Intermezzo to list use cardTurn, back to Intermezzo
    turns the other way (cardTurnBack). */
 @keyframes cardTurn{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(-90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
 @keyframes cardTurnBack{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(-90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
-.card.turning,.party-card.turning{animation:cardTurn .9s linear both;}
-.card.turning-back,.party-card.turning-back{animation:cardTurnBack .9s linear both;}
+.card.turning,.party-card.turning{animation:cardTurn .56s linear both;}
+.card.turning-back,.party-card.turning-back{animation:cardTurnBack .56s linear both;}
 .card.turning .card-back,.card.turning-back .card-back{transition:none;}
 @media (prefers-reduced-motion:reduce){
   .card.turning,.card.turning-back,.party-card.turning,.party-card.turning-back{animation:none;}
@@ -592,49 +606,49 @@ body.showing-hand-summary .card-question{
 .drawer{
   position:fixed;bottom:0;left:0;right:0;z-index:160;
   background:var(--surface);border-top:1px solid var(--border);
-  transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  transform:translateY(100%);transition:transform .21s var(--ease-out);
   max-height:80vh;overflow-y:auto;
 }
-.drawer.open{transform:translateY(0);}
+.drawer.open{transform:translateY(0);transition:transform .32s var(--ease-sheet);}
 /* same enlarged-target treatment as the category sheet's handle — the
    visible bar stays thin, the drag/tap box around it is much bigger */
 .drawer-handle{display:flex;justify-content:center;align-items:center;
   padding:14px 0;touch-action:none;}
 .handle-bar{width:36px;height:3px;border-radius:2px;background:rgba(201,168,76,.25);}
 .drawer-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:14px;transition:color .2s;}
-.drawer-close:hover{color:var(--cream);}
+@media (hover:hover) and (pointer:fine){.drawer-close:hover{color:var(--cream);}}
 .drawer-title{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-align:center;padding:4px 0 16px;}
 .drawer-body{padding:4px 0 max(20px,env(safe-area-inset-bottom));}
 .d-item{display:flex;align-items:center;width:100%;background:none;border:none;cursor:pointer;transition:background .15s;text-align:left;}
-.d-item:hover{background:rgba(255,255,255,.035);}
-.d-icon{flex-shrink:0;transition:all .2s;}
+@media (hover:hover) and (pointer:fine){.d-item:hover{background:rgba(255,255,255,.035);}}
+.d-icon{flex-shrink:0;transition:color .2s,opacity .2s;}
 .d-text{display:flex;flex-direction:column;gap:2px;}
 .d-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);}
 .d-sub{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted-l);}
 .d-divider{height:1px;background:var(--dim);margin:4px 0;}
 /* secondary drawers (log, favs, custom, help) */
-.sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
-.sub-drawer.open{transform:translateY(0);}
+.sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .21s var(--ease-out);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
+.sub-drawer.open{transform:translateY(0);transition:transform .32s var(--ease-sheet);}
 .drawer-empty{font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-align:center;padding:24px 0;opacity:.6;}
 .drawer-item{padding:12px 0;border-bottom:1px solid var(--dim);font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--cream);line-height:1.5;}
 .drawer-item:last-child{border-bottom:none;}
 .drawer-item-meta{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-style:normal;}
 .drawer-item--custom{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
 .drawer-remove-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;flex-shrink:0;padding:14px;transition:color .2s;}
-.drawer-remove-btn:hover{color:var(--cream);}
-.session-btn{background:none;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;padding:15px 14px;cursor:pointer;transition:all .2s;}
-.session-btn:hover{border-color:var(--border);color:var(--gold);}
+@media (hover:hover) and (pointer:fine){.drawer-remove-btn:hover{color:var(--cream);}}
+.session-btn{background:none;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;padding:15px 14px;cursor:pointer;transition:border-color .2s,color .2s;}
+@media (hover:hover) and (pointer:fine){.session-btn:hover{border-color:var(--border);color:var(--gold);}}
 .drawer-item--session{display:flex;align-items:center;justify-content:space-between;gap:4px;cursor:pointer;}
 .drawer-item--session.drawer-item--active{border-left:2px solid var(--gold);padding-left:9px;}
 .session-item-main{flex:1;min-width:0;}
 .session-item-name{font-size:.95rem;}
 .session-live-tag{font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);font-style:normal;}
 .session-rename-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;flex-shrink:0;padding:14px 6px;transition:color .2s;}
-.session-rename-btn:hover{color:var(--cream);}
+@media (hover:hover) and (pointer:fine){.session-rename-btn:hover{color:var(--cream);}}
 .custom-input{width:100%;background:var(--card-bg);border:1px solid var(--border);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;padding:12px;resize:none;min-height:80px;outline:none;}
 .custom-select{width:100%;background:var(--card-bg);border:1px solid var(--border);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;padding:15px 8px;outline:none;cursor:pointer;margin-top:8px;}
-.custom-add-btn{width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;margin-top:8px;transition:all .2s;text-align:center;}
-.custom-add-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+.custom-add-btn{width:100%;background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;margin-top:8px;transition:transform .16s var(--ease-out);text-align:center;}
+@media (hover:hover) and (pointer:fine){.custom-add-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}}
 .custom-add-btn:active{transform:scale(.98);}
 .help-content p{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:rgba(240,232,216,.8);margin-bottom:12px;}
 .help-content h4{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
@@ -673,7 +687,7 @@ body.showing-hand-summary .card-question{
 @media(min-width:560px){.help-content .hp-ways{grid-template-columns:1fr 1fr;}}
 
 /* ── FULLSCREEN · Proscenium (6b) ── */
-.party-overlay{position:fixed;inset:0;z-index:900;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease;}
+.party-overlay{position:fixed;inset:0;z-index:900;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s var(--ease-out);}
 .party-overlay.open{opacity:1;pointer-events:all;}
 .party-card{position:absolute;inset:0;display:flex;flex-direction:column;}
 .party-card::before,.party-card::after{content:none;}
@@ -687,7 +701,7 @@ body.showing-hand-summary .card-question{
 .party-frame i:nth-child(2){bottom:var(--fi);right:var(--fi);border-width:0 1px 1px 0;}
 
 /* chrome */
-.party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .5s ease;}
+.party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .38s var(--ease-out);}
 .party-overlay.idle .party-chrome{opacity:.28;}
 /* grid (not space-between) so the count is centred on the screen regardless of Close/★ widths */
 /* L2: Twist top-left, Three top-right, the count between them with the star under it (the count needs room from the top edge) */
@@ -704,14 +718,14 @@ body.showing-hand-summary .card-question{
 /* Spotlight's controls follow the main screen's play row / nav row: celadon at rest, gold on hover
    (mouse only), press and keyboard focus; "on" is an underline under the word, colour unchanged. */
 .party-chrome button:not(:disabled):active,.party-chrome button:not(:disabled):focus-visible{color:var(--gold);}
-@media (hover:hover){.party-chrome button:not(:disabled):not(.disabled):hover{color:var(--gold);}}
+@media (hover:hover) and (pointer:fine){.party-chrome button:not(:disabled):not(.disabled):hover{color:var(--gold);}}
 .party-chrome .party-exit{justify-self:center;gap:9px;padding:0 12px;}
 .party-exit svg{width:16px;height:16px;}
 .party-prev-btn,.party-next-btn,.party-star{font:400 17px/1 'Jost',sans-serif !important;letter-spacing:0 !important;padding:0 !important;}
 .party-prev-btn:disabled{opacity:.32;pointer-events:none;}   /* as the main screen's disabled back: .32 */
 /* the star: as #cardStar - gold, .18 off, .65 on hover (mouse only), 1 when starred */
 .party-chrome .party-star{color:var(--gold);opacity:.18;transition:opacity .2s;}
-@media (hover:hover){.party-chrome .party-star:hover{color:var(--gold);opacity:.65;}}
+@media (hover:hover) and (pointer:fine){.party-chrome .party-star:hover{color:var(--gold);opacity:.65;}}
 .party-chrome .party-star.on{opacity:1;}
 .party-twist.active .row-lbl,.party-pick.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* same underline as #screenRow .on */
 .party-twist svg,.party-pick svg{width:16px;height:16px;flex-shrink:0;}
@@ -769,7 +783,7 @@ body.showing-hand-summary .card-question{
 .party-picker .picker-options{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
 .party-picker .pick-opt{flex:1 0 auto;position:relative;display:flex;flex-direction:column;justify-content:center;
   padding:18px 4px;background:none;cursor:pointer;transition:background .15s;}
-.party-picker .pick-opt:hover{background:#15120f;}
+@media (hover:hover) and (pointer:fine){.party-picker .pick-opt:hover{background:#15120f;}}
 /* divider between options: a hairline straight through, a short bar in each neighbouring option's category
    colour on either side of it (--pd-a: the option before, --pd-b: this one). Added by openPicker() in card.js. */
 .party-picker .pick-div{position:absolute;left:50%;top:0;width:190px;height:1px;transform:translate(-50%,-50%);pointer-events:none;
@@ -890,10 +904,10 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 .pick-toggle{
   background:transparent;border:none;border-bottom:1px solid transparent;
   color:var(--btn-quiet);
-  padding:15px 8px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+  padding:15px 8px;cursor:pointer;transition:color .2s,border-bottom-color .2s;white-space:nowrap;flex-shrink:0;
   display:inline-flex;align-items:center;gap:5px;
 }
-.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:var(--border-strong);}
+@media (hover:hover) and (pointer:fine){.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:var(--border-strong);}}
 .pick-toggle.on{color:var(--gold);border-bottom-color:var(--border-strong);}
 .pick-toggle .pt-card{width:16px;height:16px;flex-shrink:0;}
 
@@ -922,8 +936,10 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
   border:solid var(--pc-solid,var(--muted));border-width:1px 1px 0 0;transform:translateY(-50%) rotate(45deg);
   opacity:.55;transition:opacity .15s;pointer-events:none;}
 /* wash: no token is this faint (--dim is .12), so a raw gold .07 */
-.card-area .pick-opt:hover,.card-area .pick-opt:active{background:rgba(201,168,76,.07);}
-.card-area .pick-opt:hover::after,.card-area .pick-opt:active::after{opacity:1;}
+.card-area .pick-opt:active{background:rgba(201,168,76,.07);}
+@media (hover:hover) and (pointer:fine){.card-area .pick-opt:hover{background:rgba(201,168,76,.07);}}
+.card-area .pick-opt:active::after{opacity:1;}
+@media (hover:hover) and (pointer:fine){.card-area .pick-opt:hover::after{opacity:1;}}
 .card-area .pick-opt-text{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-left:16px;}
 /* Full screen's faded category line, in front of the text */
 .card-area .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
@@ -1029,9 +1045,9 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
    the whole padded box read as heavier than the word it sits under */
 .tok::after{content:'';position:absolute;left:16px;right:16px;bottom:0;height:2px;
   background:color-mix(in srgb, var(--tokc,var(--gold)) 45%, transparent);transition:background .2s;}
-.tok:hover{opacity:.95;}
-.tok:hover::after{background:var(--tokc,var(--gold));}
-.tok:hover .tok-lbl{color:var(--cream);}
+@media (hover:hover) and (pointer:fine){.tok:hover{opacity:.95;}}
+@media (hover:hover) and (pointer:fine){.tok:hover::after{background:var(--tokc,var(--gold));}}
+@media (hover:hover) and (pointer:fine){.tok:hover .tok-lbl{color:var(--cream);}}
 .tok.open .tok-lbl{color:var(--cream);}
 .tok b{font-weight:400;color:var(--gold);letter-spacing:.18em;}
 .tok.open{opacity:1;}
@@ -1056,10 +1072,12 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 .tok-rule{width:18px;height:1px;flex-shrink:0;opacity:.6;transition:opacity .2s;transform:translateY(3px);}
 .tok-rule--l{background:linear-gradient(90deg,transparent,var(--tokc,var(--gold)));}
 .tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
-.tok-preset:hover .tok-rule,.tok-preset.open .tok-rule{opacity:.9;}
-.tok-hint{color:var(--muted);transition:opacity .35s ease;}
+.tok-preset.open .tok-rule{opacity:.9;}
+@media (hover:hover) and (pointer:fine){.tok-preset:hover .tok-rule{opacity:.9;}}
+.tok-hint{color:var(--muted);transition:opacity .35s var(--ease-out);}
 body.tok-taught .tok-hint{display:none;}
-.tok-preset:hover,.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
+.tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
+@media (hover:hover) and (pointer:fine){.tok-preset:hover{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}}
 .tok-preset:active{opacity:.7;}
 .tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
 /* Custom with 2+ categories: the name is a soft gradient of the first 2-3 picked colours (--tokg, set in renderShell) */
@@ -1068,7 +1086,8 @@ body.tok-taught .tok-hint{display:none;}
 .tok-preset .tok-val::after{content:none;}
 
 /* ── TRAYS — the slidy things, one open at a time ── */
-.tray{width:100%;max-height:0;overflow:hidden;transition:max-height .32s ease;}
+.tray{width:100%;max-height:0;overflow:hidden;transition:max-height .2s var(--ease-out);}
+.tray.open{transition-duration:.26s;}
 .tray.open{max-height:290px;overflow-y:auto;}
 
 /* mode buttons: original text style, wrapped + centered */
@@ -1079,15 +1098,15 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── CATEGORY DRAWER — same species as the menu drawer ── */
 .cat-scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
-  z-index:290;opacity:0;pointer-events:none;transition:opacity .25s;}
-.cat-scrim.on{opacity:1;pointer-events:all;}
+  z-index:290;opacity:0;pointer-events:none;transition:opacity .21s ease-out;}
+.cat-scrim.on{opacity:1;pointer-events:all;transition-duration:.32s;}
 .cat-area{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:295;margin:0;width:auto;height:88dvh;
   background:var(--surface);border-top:1px solid var(--border);
-  transform:translateY(102%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  transform:translateY(102%);transition:transform .21s var(--ease-out);
   display:flex;flex-direction:column;opacity:1;padding:0 18px;}
 .cat-area.in{opacity:1;}
 .cat-area:not(.sheet-open){pointer-events:none;}
-.cat-area.sheet-open{transform:none;}
+.cat-area.sheet-open{transform:none;transition:transform .32s var(--ease-sheet);}
 /* the visible bar stays a thin 3px line — background-clip keeps the
    drag/tap target much bigger without fattening the bar. A missed handle would
    land the touch on the sheet body, which the browser could read as a
@@ -1106,7 +1125,7 @@ body.tok-taught .tok-hint{display:none;}
 .cat-close{position:absolute;top:4px;right:6px;background:none;border:none;color:var(--muted);
   font-size:1rem;cursor:pointer;padding:14px;transition:color .2s;z-index:2;
   display:flex;align-items:center;justify-content:center;}
-.cat-close:hover{color:var(--cream);}
+@media (hover:hover) and (pointer:fine){.cat-close:hover{color:var(--cream);}}
 #catLabel{display:none;}
 .cat-topbar{flex-shrink:0;justify-content:center;padding:0 0 6px;}
 .cat-topbar--legacy{display:none!important;}   /* logic kept, row no longer shown */
@@ -1134,8 +1153,8 @@ body.tok-taught .tok-hint{display:none;}
    read as a fast snap while closing (which travels the same real
    distance) read as the properly-paced one. */
 .preset-host .preset-outer{max-height:0;overflow:hidden;width:100%;opacity:1;
-  padding:0 24px;transition:max-height .32s ease,padding .32s ease;}
-.preset-host.open .preset-outer{max-height:260px;padding:6px 24px 10px;}
+  padding:0 24px;transition:max-height .2s var(--ease-out),padding .2s var(--ease-out);}
+.preset-host.open .preset-outer{max-height:260px;padding:6px 24px 10px;transition-duration:.26s;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 /* Colbert/The 36 aren't chapters, so picking one leaves "What kind of
@@ -1169,7 +1188,7 @@ body.tok-taught .tok-hint{display:none;}
   .party-orient-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:34px;height:170px;
     background:none;border:0;padding:0;cursor:pointer;color:var(--celadon);font-family:'Jost',sans-serif;-webkit-tap-highlight-color:transparent;}
   .party-orient-btn:active,.party-orient-btn:focus-visible{color:var(--gold);}
-  @media (hover:hover){.party-orient-btn:hover{color:var(--gold);}}
+  @media (hover:hover) and (pointer:fine){.party-orient-btn:hover{color:var(--gold);}}
   .party-orient-btn .ln{flex:1;width:1px;display:block;}
   .party-orient-btn .ln:first-child{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}   /* celadon lines, same 42% as the play row's rules */
   .party-orient-btn .ln:last-child{background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}
@@ -1225,7 +1244,7 @@ body.tok-taught .tok-hint{display:none;}
 .d-icon{width:auto;height:auto;border:none;border-radius:0;font-family:'Jost',sans-serif;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;align-items:center;display:flex;}
 .d-icon svg{width:16px;height:16px;}
 .d-item{padding:15px 26px;gap:16px;}
-.d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}
+@media (hover:hover) and (pointer:fine){.d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}}
 #menuDrawer .d-label{color:var(--celadon);}
 #menuDrawer .d-sub{color:var(--celadon-hint);}
 
@@ -1240,8 +1259,8 @@ body.tok-taught .tok-hint{display:none;}
     left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
     border:1px solid var(--border);border-radius:12px;
     transform:translate(-50%,-46%);opacity:0;pointer-events:none;
-    transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease;}
-  .drawer.open,.sub-drawer.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
+    transition:transform .2s ease-out,opacity .2s ease-out;}
+  .drawer.open,.sub-drawer.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .28s var(--ease-out),opacity .2s ease-out;}
   .drawer-handle{display:none;}
   .cat-area{
     /* fixed, not auto — Shape's content is much shorter than Explore's,
@@ -1250,9 +1269,9 @@ body.tok-taught .tok-hint{display:none;}
        mobile sheet already uses above (88dvh). */
     left:50%;right:auto;bottom:auto;top:50%;width:min(640px,94vw);height:84vh;
     border:1px solid var(--border);border-radius:12px;padding:6px 22px 0;
-    transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .24s ease;}
+    transition:transform .2s ease-out,opacity .2s ease-out;}
   .cat-area:not(.sheet-open){transform:translate(-50%,-46%);opacity:0!important;pointer-events:none;}
-  .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
+  .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .28s var(--ease-out),opacity .2s ease-out;}
   .cat-sheet-handle{display:none;}
   .cat-sheet-head{padding-top:16px;}
 }
@@ -1364,8 +1383,8 @@ body.tok-taught .tok-hint{display:none;}
 .cat-go-btn{display:block;width:100%;
   background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
   border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;
-  text-transform:uppercase;padding:14px 0;text-align:center;cursor:pointer;transition:all .2s;}
-.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}
+  text-transform:uppercase;padding:14px 0;text-align:center;cursor:pointer;transition:transform .16s var(--ease-out);}
+@media (hover:hover) and (pointer:fine){.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}}
 .cat-go-btn:active{transform:scale(.98);}
 
 /* ── the five chapters ── */
@@ -1389,7 +1408,7 @@ body.tok-taught .tok-hint{display:none;}
 .chapter::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
   background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
 .chapter.on::before{opacity:1;}
-.chapter:hover{border-color:var(--border);}
+@media (hover:hover) and (pointer:fine){.chapter:hover{border-color:var(--border);}}
 /* the row is one tap target for the whole chapter: the name button stretches over
    it (::after), and the fold target and spice mark sit above that. */
 .ch-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 8px 8px 13px;}
@@ -1418,11 +1437,11 @@ body.tok-taught .tok-hint{display:none;}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 .chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);}
 .chapter.on .ch-name{color:var(--ch);}
-.chapter-group{display:block;max-height:30rem;transition:max-height .4s ease-out,opacity .3s ease-out,margin-block-end .4s ease-out,visibility 0s;}
+.chapter-group{display:block;max-height:30rem;transition:max-height .26s var(--ease-out),opacity .26s ease-out,margin-block-end .26s var(--ease-out),visibility 0s;}
 /* a chapter with nothing reachable under the current preset fades and collapses (the
    gap of .chapters goes with it) instead of jumping out; visibility keeps it out of reach */
 .chapter-group.ch-hidden{max-height:0;opacity:0;overflow:hidden;visibility:hidden;margin-block-end:-4px;
-  transition:max-height .4s ease-out,opacity .25s ease-out,margin-block-end .4s ease-out,visibility 0s .4s;}
+  transition:max-height .2s var(--ease-out),opacity .2s ease-out,margin-block-end .2s var(--ease-out),visibility 0s .2s;}
 @media (prefers-reduced-motion:reduce){
   .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden{transition:none;}
 }
@@ -1547,7 +1566,7 @@ body.tok-taught .tok-hint{display:none;}
 #screenRow::after,#handActionsRow::after{bottom:0;}
 #screenRow > button,#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
   font-family:'Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
-#screenRow > button:hover,#handActionsRow > button:hover{color:var(--celadon);}
+@media (hover:hover) and (pointer:fine){#screenRow > button:hover,#handActionsRow > button:hover{color:var(--celadon);}}
 #screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
 #screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
 #screenRow .row-hint,#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
@@ -1563,7 +1582,7 @@ body.tok-taught .tok-hint{display:none;}
 #screenRow > button:not(.disabled):active,
 #handActionsRow > button:not(.disabled):active,
 #screenRow > button:not(.disabled):focus-visible,#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
-@media (hover:hover){#screenRow > button:not(.disabled):hover,#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
+@media (hover:hover) and (pointer:fine){#screenRow > button:not(.disabled):hover,#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
 /* Hints retire per control once it has worked (see HINTS in state.js). */
 body.hint-three-taught #pickToggle .row-hint,
 body.hint-spot-taught #btnParty .row-hint,
@@ -1617,7 +1636,7 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   .tok-preset .tok-rule{display:none;}
   .tok-preset .tok-val{font-size:max(16px,calc(var(--k)*20px));letter-spacing:.14em;}
   .tok-preset .tok-val::after{display:none;}
-  .tok-preset:hover .tok-val{filter:brightness(1.25);}
+  @media (hover:hover) and (pointer:fine){.tok-preset:hover .tok-val{filter:brightness(1.25);}}
   @media (hover:hover) and (pointer:fine){
     #tokHint{font-size:0;}
     #tokHint::after{content:" \00b7  click to change";font-size:max(11px,calc(var(--k)*14px));}
@@ -1635,7 +1654,7 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   #screenRow > button svg,#handActionsRow > button svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
   #screenRow .row-hint,#handActionsRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin-right:calc(var(--k)*18px);
     max-width:none;white-space:nowrap;text-align:right;font-size:max(13px,calc(var(--k)*16px));line-height:1.15;color:var(--celadon);opacity:0;transition:opacity .2s;pointer-events:none;}
-  @media (hover:hover){#screenRow > button:hover .row-hint,#handActionsRow > button:hover .row-hint{opacity:.9;}}
+  @media (hover:hover) and (pointer:fine){#screenRow > button:hover .row-hint,#handActionsRow > button:hover .row-hint{opacity:.9;}}
 
   /* the card */
   .card-wrap{grid-column:1 / -1;grid-row:3;align-self:stretch;margin:0 0 calc(var(--k)*30px);width:100%;min-height:0;container-type:size;
@@ -1654,7 +1673,7 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
   .card::before{top:5.3cqw;left:5.3cqw;border-top-width:.27cqw;border-left-width:.27cqw;}
   .card::after{bottom:5.3cqw;right:5.3cqw;border-bottom-width:.27cqw;border-right-width:.27cqw;}
   .card-star{font-size:3.8cqw;top:1.4cqw;right:1.8cqw;padding:1cqw;opacity:.35;}
-  .card-star:hover{opacity:.75;}.card-star.active{opacity:1;}
+  @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.75;}}.card-star.active{opacity:1;}
   .card-ad-mark{font-size:38.4cqw;}
   .card-body-inner{padding:calc(var(--k)*14px) 7cqw 0;gap:2cqw;}
   .card-level{font-size:2cqw;}

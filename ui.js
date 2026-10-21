@@ -751,7 +751,7 @@ applyToggleUI();
      isn't clipped by a stale measurement; closing re-measures the real
      height first so it always starts the animation from where the box
      actually is, not from "none". ── */
-  function slideFold(el, opening, ms, ease){
+  function slideFold(el, opening, ms){
     if (!el) return;
     el.style.transition = 'none';
     if (opening) {
@@ -761,7 +761,7 @@ applyToggleUI();
       el.style.maxHeight = el.scrollHeight + 'px';   // re-measure, then snap the start point to it
     }
     el.offsetHeight; // force layout so the jump above doesn't itself animate
-    el.style.transition = 'max-height ' + (ms || 320) + 'ms ' + (ease || 'ease');
+    el.style.transition = `max-height ${ms ?? 260}ms var(--ease-out)`;
     requestAnimationFrame(() => {
       el.style.maxHeight = opening ? el.scrollHeight + 'px' : '0px';
     });
@@ -1092,8 +1092,6 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     });
   }
 
-  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
-
   function syncIntentUI(){
     document.querySelectorAll('.chapter').forEach(btn => {
       const visible = visibleLevels(btn.dataset.chapter);
@@ -1113,7 +1111,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
       if (ct && ct.textContent !== count) {
         const fromBlank = !ct.textContent;
         ct.textContent = count;
-        if (!fromBlank && !REDUCED_MOTION.matches) ct.animate({ opacity: [0.2, 1] }, { duration: 450, easing: 'ease-out' });
+        if (!fromBlank && !prefersReducedMotion.matches) ct.animate({ opacity: [0.2, 1] }, { duration: 450, easing: 'ease-out' });
       }
     });
     updateListModeNote();
@@ -1278,8 +1276,8 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     grp.classList.toggle('open', open);
     btn.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
-    const calm = REDUCED_MOTION.matches;
-    window.slideFold(panel, open, calm ? 1 : 320);
+    const ms = open ? 260 : 200;
+    window.slideFold(panel, open, prefersReducedMotion.matches ? 1 : ms);
     if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
 

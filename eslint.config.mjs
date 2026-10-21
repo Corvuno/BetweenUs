@@ -6,7 +6,7 @@ import js from '@eslint/js';
 // (see between-us.html). So: sourceType "script", and no-undef / cross-file unused-name
 // checks are left to the type check (jsconfig.json), which sees all files together.
 export default [
-  { ignores: ['node_modules/**', 'tests/**', 'dist/**', 'scripts/**', '**/*.mjs'] },
+  { ignores: ['node_modules/**', 'tests/**', 'dist/**', 'scripts/**', '**/*.mjs', '.claude/**'] },
   js.configs.recommended,
   sonarjs.configs.recommended,
   {
