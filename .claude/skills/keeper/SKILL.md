@@ -143,7 +143,15 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
   full agreement for its area, plus anything from the other areas it touches.
 - When a wish touches several areas, builders run **one after another**, never at the same
   time — they can touch the same files.
-- Builders, the tester and the reviewer run on Sonnet by default; the searcher runs on Haiku (owner asked for Haiku, 2026-10-21; kept to the searcher until the owner decides on the rest). When the owner asks for Opus on something ("put Opus on
+- Builders, the tester and the reviewer run on Sonnet by default; the searcher runs on Haiku.
+- Simple, repetitive jobs go to Haiku (owner, 2026-10-21: "it's good at simple tasks, let it do
+  those"): pass `model: "haiku"` on that agent call. Haiku jobs: finding things and read-only
+  sweeps of the repo or history, checking proposed card text against the whole deck for
+  collisions, taking screenshots of given screens, sorting and tidying notes in the monthly upkeep,
+  listing commits or changes for release notes, and other work with one obvious right answer.
+  Building, testing, reviewing and writing cards stay on Sonnet: they need judgment, and a
+  miss there costs the owner a round trip. If a Haiku job comes back thin or wrong, redo it on
+  Sonnet and say so. When the owner asks for Opus on something ("put Opus on
   this", or plainly the same), pass `model: "opus"` on that builder call. Only on request.
 - If a builder reports something it couldn't do, or something that doesn't match the
   agreement, don't paper over it — it goes into the report, or back to the owner if it
