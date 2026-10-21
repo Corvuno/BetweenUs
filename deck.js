@@ -119,7 +119,7 @@ function syncLimitButtons() {
 }
 
 function initDeck(isContinuation) {
-  // isContinuation: true only from drawMore() (Draw more / hold-to-continue),
+  // isContinuation: true only from startNewHand() (Draw more / hold-to-continue),
   // which draws a fresh hand under the SAME settings — the draw animation is
   // reserved for a hand that starts because something actually changed.
   state.skipDrawAnim = !!isContinuation;

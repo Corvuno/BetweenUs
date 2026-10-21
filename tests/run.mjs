@@ -1962,6 +1962,27 @@ async function run() {
     }
   });
 
+  await check('hold to continue in Spotlight with Three on: while the first picker is open, the old hand\'s deck mark, star and Prev state are gone', async () => {
+    await freshHand({ three: true });
+    await page.locator('#card').click(); await waitPicker(true); await page.waitForTimeout(400); await page.locator('#pickerOptions .pick-opt').first().click();
+    await waitForCardIndex(page, 1); await page.waitForTimeout(800);
+    await page.locator('#btnParty').click(); await page.waitForTimeout(500);
+    await page.evaluate(() => { const on = pickMode; pickMode = false; while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); pickMode = on; });
+    await page.evaluate(() => nextCard());
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+    await page.waitForTimeout(1200);
+    // the last card's marks, as an After Dark card would leave them
+    await page.evaluate(() => { applyCardMark(document.querySelector('.party-frame'), { level: 'colbert' }); document.getElementById('partyStar').classList.add('on'); });
+    await page.evaluate(() => { window._endHoldOK = true; nextCard(); });
+    await waitPicker(true); await page.waitForTimeout(600);
+    const st = await page.evaluate(() => ({
+      mark: document.querySelector('.party-frame').className, star: document.getElementById('partyStar').classList.contains('on'), prev: document.getElementById('partyPrevBtn').disabled,
+      start: /Draw a card to begin/.test(document.getElementById('party-question').textContent),
+    }));
+    assert(!/mark-/.test(st.mark) && !st.star && st.prev && !st.start, `Spotlight picker after hold to continue: ${JSON.stringify(st)}`);
+    await page.evaluate(() => exitParty());
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

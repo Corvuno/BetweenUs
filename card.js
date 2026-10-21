@@ -144,8 +144,14 @@ function applyCardMark(el, card) {
 function dropIntermezzoWhenBackIsGone(el) {
   const back = el.querySelector('.card-back');
   const drop = () => { if (!el.classList.contains('is-start')) el.classList.remove('is-intermezzo'); };
-  if (back && +getComputedStyle(back).opacity > 0) back.addEventListener('transitionend', drop, { once: true });
-  else drop();
+  if (back && +getComputedStyle(back).opacity > 0) {
+    // transitionend bubbles from descendants too; only the back's own fade ends the Intermezzo look
+    back.addEventListener('transitionend', function onEnd(e) {
+      if (e.target !== back || e.propertyName !== 'opacity') return;
+      back.removeEventListener('transitionend', onEnd);
+      drop();
+    });
+  } else drop();
 }
 
 // The start card: the card's back with the "begin" text, shown only before
@@ -188,6 +194,11 @@ function clearCardFace() {
   if (qEl) { qEl.textContent = ''; qEl.classList.remove('in'); }
   ['party-question', 'party-level', 'party-count'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('party-question')?.classList.remove('is-end-msg');
+  // Spotlight: no card is up, so the old hand's deck mark, star and Prev state go too.
+  applyCardMark(document.querySelector('.party-frame'), null);
+  document.getElementById('partyStar')?.classList.remove('on');
+  const prev = /** @type {HTMLButtonElement | null} */ (document.getElementById('partyPrevBtn'));
+  if (prev) prev.disabled = true;
 }
 
 function setCardDisplay(card) {
@@ -203,8 +214,7 @@ function setCardDisplay(card) {
   const accent = document.getElementById('c-accent');
 
   if (!card) {
-    applyCardMark(el, null);
-    if (lvlEl)    { lvlEl.textContent=''; lvlEl.classList.remove('in'); }
+    clearCardFace();
     if (accent)   { giltRailPaint(accent, null); }
     if (qEl)      { qEl.textContent = state.visibleDeck.length===0
       ? 'Select at least one category.'
@@ -223,7 +233,6 @@ function setCardDisplay(card) {
     }
     // Update party display too
     updatePartyDisplay(null);
-    clearTwist();
     return;
   }
   setStartBack('');
