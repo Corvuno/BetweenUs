@@ -143,7 +143,15 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
   full agreement for its area, plus anything from the other areas it touches.
 - When a wish touches several areas, builders run **one after another**, never at the same
   time — they can touch the same files.
-- Builders run on Sonnet by default. When the owner asks for Opus on something ("put Opus on
+- Builders, the tester and the reviewer run on Sonnet by default; the searcher runs on Haiku.
+- Simple, repetitive jobs go to Haiku (owner, 2026-10-21: "it's good at simple tasks, let it do
+  those"): pass `model: "haiku"` on that agent call. Haiku jobs: finding things and read-only
+  sweeps of the repo or history, checking proposed card text against the whole deck for
+  collisions, taking screenshots of given screens, sorting and tidying notes in the monthly upkeep,
+  listing commits or changes for release notes, and other work with one obvious right answer.
+  Building, testing, reviewing and writing cards stay on Sonnet: they need judgment, and a
+  miss there costs the owner a round trip. If a Haiku job comes back thin or wrong, redo it on
+  Sonnet and say so. When the owner asks for Opus on something ("put Opus on
   this", or plainly the same), pass `model: "opus"` on that builder call. Only on request.
 - If a builder reports something it couldn't do, or something that doesn't match the
   agreement, don't paper over it — it goes into the report, or back to the owner if it
@@ -179,6 +187,10 @@ off. Don't ship a near miss.
 ### 6. Land it and report
 
 - Everything finished lands on `main`, following the repo's rules (commit labels, pushing).
+- After pushing, check that the project's automatic checks on `main` went green (owner, 2026-10-21:
+  they had been red on 30+ pushes in a row without anyone noticing). Red is work now: find out
+  why and fix it, or tell the owner what is failing and why it isn't fixed yet.
+- Before leaving a session, make sure nothing finished sits only on a side branch.
 - Then report to the owner, split by the same areas A), B), C):
   - what changed, in plain words, checked against the agreement;
   - before/after screenshots for anything visible;
@@ -258,3 +270,11 @@ The owner asked for it: less is more, and the files should get sharper over time
 
 When something is blocked, fails, gets retried, or turns out different from expected, say so
 plainly: what was tried, what happened, what was and wasn't changed. No smoothing over.
+
+## Long conversations
+
+The Keeper cannot compact a conversation itself; the system does it automatically when the
+context is nearly full, and only the owner can run `/compact` earlier. When a conversation
+has grown long (many rounds, big files read, a topic finished and a new one starting), say
+so in one line and suggest `/compact` or a fresh `/keeper` session, before the summary
+starts losing detail (owner, 2026-10-21).

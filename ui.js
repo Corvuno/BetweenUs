@@ -313,16 +313,20 @@ function spotlightBrightenOnce() {
 })();
 
 // ── Spotlight turned sideways ── For a phone whose screen is locked upright, Spotlight
-// can turn its whole content a quarter (data-turn on the overlay: "ccw" = the phone's
-// top to the left, "cw" = top to the right). The turned frame is sized like a real
+// can turn its whole content a quarter (data-turn on the overlay: "cw" = turned
+// clockwise, for a phone held with its top to the left; "ccw" = the other way). The turned frame is sized like a real
 // sideways screen, and the sideways layout is the `.orient-landscape` class, which is
 // also what a real sideways screen gets (the browser turns that one itself, no extra turn).
 // Who turns it: tilt readings where the browser gives them freely (no word shown then),
 // otherwise the word on the right edge ("Sideways" / "Upright").
-const SETTLE_MS = 350;   // how long a tilt must hold before the content follows it
+const SETTLE_MS = 800;   // a tilt must hold this long, so a browser that turns the screen itself gets there first
+const LOCK_MS = 2000;   // on a phone known to turn its own screen: how long "on its side while the screen stays upright" must hold
+                        // before we believe the rotation lock is on now
+const ROTATES_KEY = 'bu-screen-rotates';
 
 /** Which way is up, in the screen's plane, from the beta/gamma tilt (degrees):
- *  'ccw' / 'cw' while clearly on its side, null while clearly upright; otherwise `current`
+ *  how the content must turn so its top points up: 'cw' when the phone's top is to the left,
+ *  'ccw' when it is to the right; null while clearly upright; otherwise `current`
  *  (flat on a table, upside down, or between: the hysteresis). */
 function turnFromTilt(beta, gamma, current) {
   const rad = Math.PI / 180;
@@ -331,8 +335,16 @@ function turnFromTilt(beta, gamma, current) {
   if (Math.hypot(x, y) < 0.5) return current;
   const off = Math.abs(Math.atan2(x, y)) / rad;   // 0 = upright, 90 = on its side
   if (off < 30) return null;
-  if (off > 60 && off < 120) return x > 0 ? 'ccw' : 'cw';
+  if (off > 60 && off < 120) return x > 0 ? 'cw' : 'ccw';
   return current;
+}
+
+/** True once this phone has been seen turning its own screen (rotation lock off). */
+function readScreenRotates() {
+  try { return localStorage.getItem(ROTATES_KEY) === '1'; } catch { return false; }
+}
+function writeScreenRotates(rotates) {
+  try { localStorage.setItem(ROTATES_KEY, rotates ? '1' : '0'); } catch { /* private mode: only this visit remembers */ }
 }
 
 /** A movement on the screen (dx, dy) seen from inside the turned Spotlight content. */
@@ -348,11 +360,17 @@ function contentDelta(dx, dy, turn) {
   const overlay = document.getElementById('partyOverlay');
   const btn = document.getElementById('partyOrientBtn');
   const realLandscape = matchMedia('(orientation: landscape)');
-  const phoneWidth = matchMedia('(max-width: 899px)');
-  let turn = null, wanted = null, settleTimer = 0;
+  const phoneWidth = matchMedia('(max-width: 899px)');   // the app's phone layouts (styles.css uses the same limit)
+  const phoneLandscape = matchMedia('(orientation: landscape) and (max-height: 500px)');   // the app's phone-landscape rule, as in styles.css
+  let turn = null, wanted = null, settleTimer = 0, screenRotates = readScreenRotates();
 
   function setTurn(next) {
     turn = realLandscape.matches ? null : next;   // a screen the browser turned needs no extra turn
+    if (realLandscape.matches) {
+      clearTimeout(settleTimer);
+      wanted = null;
+      if (phoneLandscape.matches && !screenRotates) { screenRotates = true; writeScreenRotates(true); }
+    }
     overlay.classList.toggle('orient-landscape', realLandscape.matches || turn !== null);
     if (turn) overlay.dataset.turn = turn; else delete overlay.dataset.turn;
     orient.dataset.land = turn ? '1' : '0';
@@ -362,12 +380,13 @@ function contentDelta(dx, dy, turn) {
   }
   if (btn) btn.addEventListener('click', e => {
     e.stopPropagation();
-    setTurn(turn ? null : 'ccw');   // the common way: phone turned counter-clockwise
+    setTurn(turn ? null : 'cw');   // the common way: phone turned counter-clockwise, so the content turns clockwise
   });
   const syncToDevice = () => setTurn(turn);
   syncToDevice();
   window.addEventListener('resize', syncToDevice);
   window.addEventListener('orientationchange', syncToDevice);
+  realLandscape.addEventListener('change', syncToDevice);
 
   // iPhone only gives tilt after a permission popup: none is asked, the word stays.
   const needsPermission = typeof DeviceOrientationEvent !== 'undefined'
@@ -385,7 +404,14 @@ function contentDelta(dx, dy, turn) {
     if (next === wanted) return;
     wanted = next;
     clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => setTurn(next), SETTLE_MS);
+    settleTimer = setTimeout(() => settle(next), screenRotates ? LOCK_MS : SETTLE_MS);
+  }
+  // A tilt that held while the screen stayed upright. On a phone that turns its own screen
+  // that can only mean the rotation lock is on now, so own turning is allowed again.
+  function settle(next) {
+    if (realLandscape.matches) return;
+    if (next && screenRotates) { screenRotates = false; writeScreenRotates(false); }
+    setTurn(next);
   }
 
   // Tilt is only listened to while Spotlight is open; leaving it always returns to upright.
@@ -1104,15 +1130,9 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. */
       btn.closest('.chapter-group')?.classList.toggle('ch-hidden', visible.length === 0);
-      /* "n / total": how many of this chapter's categories are on, of those reachable here;
-         a number that changed fades in softly, so a preset tap visibly reaches the rows */
+      /* "n / total": how many of this chapter's categories are on, of those reachable here */
       const ct = btn.querySelector('.ch-ct');
-      const count = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
-      if (ct && ct.textContent !== count) {
-        const fromBlank = !ct.textContent;
-        ct.textContent = count;
-        if (!fromBlank && !prefersReducedMotion.matches) ct.animate({ opacity: [0.2, 1] }, { duration: 450, easing: 'ease-out' });
-      }
+      if (ct) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
     });
     updateListModeNote();
     syncFoldAll();
