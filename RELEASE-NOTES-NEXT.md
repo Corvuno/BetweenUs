@@ -14,4 +14,4 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 
-- Smaller fixes throughout, including Flesh now showing under Everything.
+- Smaller fixes throughout, including Flesh now showing under Everything, and the custom card option is gone from the menu.
