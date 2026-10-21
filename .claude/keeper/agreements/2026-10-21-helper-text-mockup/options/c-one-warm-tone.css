@@ -1,0 +1,5 @@
+/* C: every helper line, the three hints included, in the one existing lighter warm tone --muted-l */
+.subtitle,.tok-hint,#chaptersLbl,.sect-lbl{color:var(--muted-l);}
+@media not ((min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4)){
+  #screenRow .row-hint,#handActionsRow .row-hint{color:var(--muted-l);}
+}
