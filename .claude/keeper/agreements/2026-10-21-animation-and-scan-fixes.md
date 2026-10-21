@@ -75,3 +75,17 @@ the code; the two mockup rounds are published, each on its own link.
 
 **Card swap:** A and D are too flashy. Owner likes B and C and asks whether they can be combined. Next: a mockup of
 B+C next to B and C, side by side, before anything is built.
+
+## Card swap decided, 2026-10-21
+
+Owner: "we are doing B+C" (round 2, https://claude.ai/artifact/77EFUumvT28VWTEiCPxpFn, mockup in
+`2026-10-21-card-swap-round2-sbs/`, take `railanswer` in its shared/swap.js).
+- Build B+C exactly as the mockup: one beat of about 350ms. Out: the rail flares lighter from the centre
+  as the text leaves, the frame tightens a hair. In: the rail settles, the frame eases back, the new text
+  rises. The text changes while invisible.
+- Applies to Next and Back on the card screen, phone and PC. Not to the first draw (keeps its landing), the
+  Intermezzo turn, Three, or Spotlight (its own question change stays).
+- The old 1s accent bloom on every swap goes (the chosen mockup doesn't have it); the rail's colour still
+  eases to the new category colour.
+- Frame only: the question text is never scaled while visible; no glow; hairlines stay hairlines.
+- Reduced motion: a plain quick fade. Fast taps land on the latest card.
