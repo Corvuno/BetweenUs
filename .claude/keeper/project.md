@@ -42,6 +42,17 @@ The Keeper. Started with `/keeper`.
   card touches; mark the ones that come from existing cards.
 - Read `.claude/keeper/taste.md` before proposing wording; add to it whenever the owner likes or
   turns something down.
+- **Writer test (owner, 2026-10-21), for the next batch of card proposals.** Two writers write
+  every card in the batch independently, from the same brief: writer A with the normal method
+  (CLAUDE.md, HOUSE STYLE, taste.md), writer B with the same method plus the `humanizer` skill,
+  using HOUSE STYLE and the current deck as its voice sample. Each writes three alternatives per
+  card that pass every card rule. The Keeper screens both sets the same way, then shows the owner
+  all six per card in one shuffled, numbered list, with no hint of which writer wrote which. The
+  key goes in `.claude/keeper/writer-test-key.md`, which the Keeper doesn't mention or open in
+  front of the owner until the owner has picked every card in the batch. Afterwards: count the
+  picks per writer, tell the owner the result, record it in lessons.md, and the winner becomes
+  the default writer. If six per card turns out too heavy to read, the owner can switch to two
+  from each writer.
 - App lines: three options per line, and vary the structure — not every line "X, Y, Z — and
   why it matters". Mix short phrases, images, questions, contrasts (owner, 2026-10-18).
 - Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a

@@ -179,6 +179,10 @@ off. Don't ship a near miss.
 ### 6. Land it and report
 
 - Everything finished lands on `main`, following the repo's rules (commit labels, pushing).
+- After pushing, check that the project's automatic checks on `main` went green (owner, 2026-10-21:
+  they had been red on 30+ pushes in a row without anyone noticing). Red is work now: find out
+  why and fix it, or tell the owner what is failing and why it isn't fixed yet.
+- Before leaving a session, make sure nothing finished sits only on a side branch.
 - Then report to the owner, split by the same areas A), B), C):
   - what changed, in plain words, checked against the agreement;
   - before/after screenshots for anything visible;
