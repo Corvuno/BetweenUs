@@ -63,3 +63,5 @@ permission to…", "If I were my own best friend…". Turned down: three rounds 
 specific objects, places, body parts or skills (too narrow, not the feeling).
 2026-10-22: "This morning my body is asking me to…" and "A wish for myself, for today…" — "spot on".
 "What I'm leaving on the dance floor…" — "too… leaving something. What are you getting on that dance floor, that's the point!"
+
+2026-10-22: Be Free posters — chose round 1 option C (co-brand): "I like C, it's clearly both".
