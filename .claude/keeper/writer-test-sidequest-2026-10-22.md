@@ -25,3 +25,18 @@ Set 4: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
 
 ## Picks
 (fill in when the owner picks; tally per writer; do not report the tally to the owner)
+
+## Round 2 (owner: "the options don't have to follow the same subjects, those were just examples — more diverse")
+Same four territories, widened: 1 tonight/here, 2 letting yourself, 3 how you see yourself, 4 wild card.
+Screening (same for both): B used the owner's two stems as-is (set 2 and set 3) — dropped, they are the
+originals shown above the options. Overlaps across writers left in and flagged to the owner without
+saying who wrote what.
+
+Key round 2 (shown order -> writer)
+Set 1: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
+Set 2: 1 A, 2 B, 3 A, 4 B, 5 A
+Set 3: 1 B, 2 A, 3 B, 4 A, 5 A
+Set 4: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
+
+## Picks round 2
+(fill in when the owner picks; do not report the tally to the owner)
