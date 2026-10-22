@@ -383,3 +383,9 @@ The writer briefs' "App line:" rows for these categories follow the new lines.
 Keeper decision: next group is the relationship cluster, because it has the known overlaps
 (first move: Connect 4 / Romance 9) and the biggest gaps (no siblings, exes, weddings, first
 dates, group chats anywhere in the deck). Definitions shown in chat.
+Round 3 definitions agreed 2026-10-22 (texts in round3-briefs.md): Connect "The way you let
+people in"; Friendship "The people you picked yourself"; Romance "From the first date to the
+last goodbye"; Family "The family you have now" (stays). Owner notes: Connect covers connecting
+with anyone, friends/partners/family included; "inside jokes, rituals, the yearly trip" read as
+frat-boy — reworded; Family cards must work for people without siblings (guardrail added).
+Stay/go proposal shown.
