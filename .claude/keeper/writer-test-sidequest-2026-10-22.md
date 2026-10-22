@@ -65,3 +65,20 @@ Set 4: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
 
 ## Picks round 3
 (fill in when the owner picks; do not report the tally to the owner)
+
+## Round 4 (owner gave target answers: "fully let go, have fun, go wild, connect with others, find peace,
+dance like there is no tomorrow" / "relax more, worry less, see the beauty of things"; liked the Keeper's
+"This morning my body is asking me to…" and "A wish for myself, for today…"; all four prompts new;
+the dance floor is about getting, not leaving). Deck card rules dropped from the brief.
+Spots: 1 letting yourself, 2 being kind to yourself, 3 what the dance gives you, 4 a wish for yourself.
+Screening: both wrote "My intention for this morning is…" word for word — taken out, both replaced
+(A: "I'm turning myself toward…", B: "Dear me, today I hope you…"). Shown to the owner outside the test.
+
+Key round 4 (shown order -> writer)
+Set 1: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
+Set 2: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
+Set 3: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
+Set 4: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
+
+## Picks round 4
+(fill in when the owner picks; do not report the tally to the owner)
