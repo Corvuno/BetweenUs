@@ -82,3 +82,8 @@ Set 4: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
 
 ## Picks round 4
 (fill in when the owner picks; do not report the tally to the owner)
+Owner's picks round 4 (2026-10-22): set 1 none (owner's own permission line as backup), set 2 #5 (B),
+set 3 #4 (B), set 4 #4 (A) and #5 (B) — owner took two from set 4.
+Tally round 4: A 1, B 3. Backups: owner's own two stems. Not reported to the owner.
+Final wall prompts: "A seed I'm planting in myself today is…", "Today I'm giving myself the gift of…",
+"When the music takes me, I become…", "Dear me, today I hope you…".
