@@ -40,3 +40,11 @@ Set 4: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
 
 ## Picks round 2
 (fill in when the owner picks; do not report the tally to the owner)
+
+## Round 2, corrected (owner: uneven counts gave one writer a lesser chance)
+B wrote one replacement each for sets 2 and 3. Sets 1 and 4 unchanged. Final key round 2:
+Set 1: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
+Set 2: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B  (6 = "This week I'll say yes to…", new)
+Set 3: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A  (5 = "The last compliment that stuck with me:", new; underrated talent moved to 6)
+Set 4: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
+Round 1 also had uneven sets (1 and 3); its picks, if any, are weighted accordingly.
