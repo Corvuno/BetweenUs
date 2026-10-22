@@ -389,3 +389,15 @@ last goodbye"; Family "The family you have now" (stays). Owner notes: Connect co
 with anyone, friends/partners/family included; "inside jokes, rituals, the yearly trip" read as
 frat-boy — reworded; Family cards must work for people without siblings (guardrail added).
 Stay/go proposal shown.
+Round 3 stay/go agreed 2026-10-22:
+- Connect goes: 2, 6, 8, 10 (owner: 6 and 8 go, 7 stays). Connect 1 "How do you show someone they
+  matter to you — the actual method?" becomes a story card (new wording to approve).
+- Friendship goes: 6, 9, 10, 12. Romance goes: 4, 5, 9. Family goes: 1, 3, 10. Family 7 stays
+  (owner: works in a different way if parents have died).
+Keeper slot subjects: Connect 1 story of showing someone they matter; Connect 2 small talk with a
+stranger turning real; Connect 6 texting/calling/voice notes; Connect 8 the people you see every
+day and barely know; Connect 10 picking up with someone after years. Friendship 6 how you met
+your closest friends; 9 the group; 10 the things only your friendship has; 12 old friends who
+knew you before. Romance 4 first dates; 5 exes; 9 weddings, proposals, anniversaries (own or
+witnessed). Family 1 family gatherings; 3 family news, who tells whom; 10 looking after each
+other. Cards go through the writer test (project.md).
