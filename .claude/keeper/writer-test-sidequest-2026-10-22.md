@@ -48,3 +48,20 @@ Set 2: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B  (6 = "This week I'll say yes to…", new)
 Set 3: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A  (5 = "The last compliment that stuck with me:", new; underrated talent moved to 6)
 Set 4: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
 Round 1 also had uneven sets (1 and 3); its picks, if any, are weighted accordingly.
+
+## Round 3 (owner: morning ecstatic dance, no talking, wall is for connecting, feeling, vibing through
+introspection; before, during and after; still Between Us — personal and positive)
+Spots set by the Keeper: 1 letting yourself, 2 caring for yourself like a friend, 3 what the body and
+dance show you, 4 something true and good a stranger would never guess.
+Screening: both writers used "Today I give myself permission to…" verbatim as their first option;
+both replaced on request (A: "Today I let myself ask for…", B: "Something I've stopped apologising for…").
+Many near-twins across writers (same idea from both); left in, flagged to the owner without attribution.
+
+Key round 3 (shown order -> writer)
+Set 1: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
+Set 2: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
+Set 3: 1 B, 2 A, 3 B, 4 A, 5 B, 6 A
+Set 4: 1 A, 2 B, 3 A, 4 B, 5 A, 6 B
+
+## Picks round 3
+(fill in when the owner picks; do not report the tally to the owner)
