@@ -118,3 +118,38 @@ Do not open or mention in front of the owner until every card is picked. A = nor
 4. B — Who in your family do you call when something needs fixing?
 5. B — Who in your family pays when you eat out together, and was that ever discussed?
 
+
+## Redo 2026-10-22 — four slots had an identical card from both writers; each writer replaced it. These numbers replace the earlier ones for these four slots.
+
+### Connect 2
+1. A — When did you let small talk with a stranger keep going, instead of putting your headphones back in?
+2. B — When did you tell a stranger something you hadn't told the people close to you?
+3. A — Where were you when a conversation with someone you'd just met went far deeper than either of you planned?
+4. B — Where did you have your best conversation with someone whose name you never learned?
+5. B — When did being stuck somewhere with strangers turn into the best part of your day?
+6. A — What do you ask people you've just met to get past the weather?
+
+### Friendship 9
+1. B — Which role in your group of friends is always yours, whether you want it or not?
+2. A — Which role do you play in your group of friends that you never actually signed up for?
+3. A — When did the newest person in your group of friends stop being new?
+4. B — Which plan has your group of friends been talking about for years without ever doing it?
+5. A — What did your group chat last get completely carried away about?
+6. B — What's your friends' group chat called, and how did it get that name?
+
+### Romance 5
+1. A — Which habit you picked up from an ex do you still have?
+2. A — Can you really stay friends with an ex, and what's your own track record?
+3. B — Who's the one that got away, and would it have worked?
+4. B — Which ex could you still have a drink with, and which one could you not?
+5. B — What habit did you pick up from an ex and never drop?
+6. A — Which ex do you still wonder about now and then?
+
+### Family 10
+1. B — Who in your family do you call when something needs fixing?
+2. B — Who in your family pays when you eat out together, and was that ever discussed?
+3. A — When did money last change hands in your family, and did anyone keep count?
+4. A — Who in your family is the one everyone calls when something goes wrong?
+5. B — What help from your family have you turned down, and why?
+6. A — What help does your family keep offering that you have to politely turn down?
+
