@@ -61,3 +61,5 @@ spend a night in, saving up, someday list, the person you're trying to become.
 tomorrow", "relax more", "worry less", "see the beauty of things". Prompts: "Today I give myself
 permission to…", "If I were my own best friend…". Turned down: three rounds of prompts asking for
 specific objects, places, body parts or skills (too narrow, not the feeling).
+2026-10-22: "This morning my body is asking me to…" and "A wish for myself, for today…" — "spot on".
+"What I'm leaving on the dance floor…" — "too… leaving something. What are you getting on that dance floor, that's the point!"
