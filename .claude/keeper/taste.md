@@ -55,3 +55,13 @@ a light category; "belonging" as a feeling; subject lists copied from the cards.
 dinner sounds, bedroom walls, food you were made to eat) — "not feeling them"; the owner has no
 childhood memories. Liked: holiday-that-went-wrong, well-made everyday object, a building to
 spend a night in, saving up, someday list, the person you're trying to become.
+
+2026-10-22 (rave wall sidequest): wanted wall answers are open, uplifting intentions in a few words —
+"fully let go", "have fun", "go wild", "connect with others", "find peace", "dance like there is no
+tomorrow", "relax more", "worry less", "see the beauty of things". Prompts: "Today I give myself
+permission to…", "If I were my own best friend…". Turned down: three rounds of prompts asking for
+specific objects, places, body parts or skills (too narrow, not the feeling).
+2026-10-22: "This morning my body is asking me to…" and "A wish for myself, for today…" — "spot on".
+"What I'm leaving on the dance floor…" — "too… leaving something. What are you getting on that dance floor, that's the point!"
+
+2026-10-22: Be Free posters — chose round 1 option C (co-brand): "I like C, it's clearly both".
