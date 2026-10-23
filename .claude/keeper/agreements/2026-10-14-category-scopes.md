@@ -417,3 +417,8 @@ Round 3 picks 2026-10-23:
 - Redo: Connect 6 (communication preferences, more open and answerable, less leading), Friendship 9
   (friend groups without assuming a big group with roles; owner's groups are at most four),
   Family 3 (news angle too narrow). Connect 2 not picked yet.
+Picks 2026-10-23 (2): Connect 6 → owner's rewrite "What do you say easily in a message or a phone
+call that you'd never get out face to face?" (Keeper wrote the owner's "message/phonecall" out in
+full). Friendship 9 → "How did the friends you see together end up as a group?". Family 3 →
+"What surprised you most the first time you spent real time with someone else's family?".
+Only Connect 2 left; writer-test result after it.
