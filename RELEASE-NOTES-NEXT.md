@@ -13,3 +13,4 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+- Fifteen questions are new, in Connect, Friendship, Romance and Family: more stories, fewer questions about what kind of friend or partner you are.
