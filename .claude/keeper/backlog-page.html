@@ -104,7 +104,7 @@ function parse(md){
     if ((m = line.match(/^\*\*Status note:\*\*\s*(.*)/))){ story.note = m[1]; field='note'; continue; }
     if ((m = line.match(/^\s*\d+\.\s+(.*)/)) && field==='criteria'){ story.criteria.push(m[1]); continue; }
     if (line.trim()==='') continue;
-    if (field==='criteria' && story.criteria.length && /^\s+/.test(raw)) { story.criteria[story.criteria.length-1] += ' ' + line.trim(); continue; }
+    if (field==='criteria' && story.criteria.length && /^\s+/.test(raw)) { story.criteria[story.criteria.length-1] += '\n' + line.trim(); continue; }
     if (field==='story') { story.story += ' ' + line.trim(); continue; }
     if (field==='note') { story.note += ' ' + line.trim(); continue; }
     story.extra.push(line.trim());
@@ -114,7 +114,8 @@ function parse(md){
 
 function chips(title){
   const m = title.match(/\((?:Area\s*)?([ABC](?:\s*[\/+,&]\s*[ABC])*)[^)]*\)\s*$/);
-  const clean = m ? title.slice(0, m.index).trim() : title;
+  let clean = m ? title.slice(0, m.index).trim() : title;
+  clean = clean.replace(/^(Decision|Task|Story):\s*/i, '');
   const names = {A:'A · Deck', B:'B · Looks', C:'C · App'};
   const areas = m ? [...new Set(m[1].match(/[ABC]/g))] : [];
   return {clean, html: areas.map(a => `<span class="chip ${a}">${names[a]}</span>`).join('')};
@@ -126,7 +127,7 @@ function card(s, color){
     ${(c.html || s.kind) ? `<div class="chips">${s.kind ? `<span class="kind ${s.kind}">${s.kind}</span>` : ''}${c.html}</div>` : ''}
     <h3>${inline(c.clean)}</h3>
     ${s.story ? `<p class="story">${inline(s.story)}</p>` : ''}
-    ${s.criteria.length ? `<p class="label">${s.kind==='Decision' ? 'Options' : 'Done when'}</p><ol>${s.criteria.map(x=>`<li>${inline(x)}</li>`).join('')}</ol>` : ''}
+    ${s.criteria.length ? `<p class="label">${s.kind==='Decision' ? 'Options' : 'Done when'}</p><ol>${s.criteria.map(x=>`<li>${x.split('\n').map(inline).join('<br>')}</li>`).join('')}</ol>` : ''}
     ${s.note ? `<p class="note">${inline(s.note)}</p>` : ''}
     ${s.extra.length ? s.extra.map(x=>`<p class="meta">${inline(x)}</p>`).join('') : ''}
     ${s.touches ? `<p class="meta">Touches: ${inline(s.touches)}</p>` : ''}
