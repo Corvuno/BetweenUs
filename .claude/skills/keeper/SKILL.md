@@ -179,7 +179,9 @@ the change** (owner, same day: "proportional — small bug, test a few sets; doe
    yourself against the agreement (screenshots, the chosen mockup, the approved words).
 
 Run the tester and the reviewer after the builder, one after another or side by side (they
-don't edit files). If the project's own test run is broken, that is a finding, not a skip.
+don't edit files). Don't rerun the full test suite yourself unless `main` changed
+under the build before landing (owner, 2026-10-23: one run each by the builder and the tester is
+enough). If the project's own test run is broken, that is a finding, not a skip.
 
 If the result doesn't match the agreement, send it back to the builder with exactly what's
 off. Don't ship a near miss.
