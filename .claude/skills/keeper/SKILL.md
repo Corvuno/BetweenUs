@@ -148,7 +148,7 @@ Every item gets:
 - **Area** (A deck / B looks / C app), and **Touches:** the files it will likely change.
 
 Show it in the chat. Nothing gets built until the owner says yes. Once approved, add it to
-`backlog.md` under Next (or Building now) and commit. The acceptance criteria are what the
+`backlog.md` under Next and commit. The acceptance criteria are what the
 builder builds to and what the tester checks, one by one.
 
 ### The backlog, and one build at a time
@@ -166,6 +166,9 @@ the owner can move anything. After every change to it, republish the backlog pag
   share no file with the one already building; otherwise it waits, and you tell the owner in
   one line which story it waits for. When you take a story, move it to Building now with the
   session link and date, commit and push *before* the builder starts, so other sessions see it.
+- **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
+  sat there unwritten). A story goes there only when a builder starts on it. Proposals still
+  to write or picks still to make keep it in Next or Waiting on the owner.
 - **Finish what you take.** A story leaves Building now when it lands on `main` (to Done, with
   the commit) or is handed back (to Next or Waiting, with why). A story sitting in Building
   now for over a day with no new commits on `main` is stale: check its session; if it stopped,

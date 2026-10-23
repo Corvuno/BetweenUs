@@ -6,6 +6,10 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 
 ## Building now
 
+_Nothing is being built right now._
+
+## Next
+
 ### Round 4: Self, Mind and Values (Area A deck)
 **Story:** As a player who draws a Self card, I get a question I can answer with a moment from my own life (a compliment I brushed off, a time I acted unlike myself, what I am stubborn about), not a summary of my personality. As a player who draws a Mind card, I get a question about something my head really does (the song stuck in it, where my best ideas turn up, what it takes to change my mind), never about mental health. As a player who draws a Values card, I get a choice from an ordinary day (the wrong change in a shop, a white lie, a promise) or an open dilemma to take a side on, never party politics. So the table hears stories and positions instead of self-summaries.
 **Acceptance criteria:**
@@ -27,11 +31,7 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 6. The change log in questions/between-us-deck.md has one entry per swapped card: old text, new text, why.
 **Touches:** questions.js, config.js, questions/between-us-deck.md
 **Source:** agreements/round4-briefs.md (briefs and stay/go agreed 2026-10-23); same method as rounds 1 to 3
-**Status note:** The ten new cards are not written yet; they come as proposals for the owner, with the writer test (two writers, picked blind). Once approved, one Haiku builder writes all ten in one go.
-
-## Next
-
-_Nothing queued. The old-code clean-up moved to Parked (owner, 2026-10-23)._
+**Status note:** Not started. The ten new cards are not written yet. Next step: the Keeper writes the proposals with the writer test (two writers, mixed, unlabelled), and the item moves to Waiting on the owner for your picks. Once approved, one Haiku builder writes all ten in one go. (Was wrongly listed under Building now until 23 October.)
 
 ## Waiting on the owner
 

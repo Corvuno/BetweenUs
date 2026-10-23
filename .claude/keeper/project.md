@@ -122,7 +122,8 @@ On top of the general report: any card that changed is cited in full, old and ne
 ## The backlog page
 
 The owner reads the backlog on phone and PC at https://claude.ai/artifact/67V3Fw68avj2944kjZ71zS
-(set up 2026-10-23). The page renders `.claude/keeper/backlog.md`, published next to it as
+(set up 2026-10-23; a kanban board since the same day: columns Waiting on you, Next, Building
+now, Done, Parked; side by side on PC, one per screen on a phone). The page renders `.claude/keeper/backlog.md`, published next to it as
 `backlog.md`. After changing `backlog.md`, update the page from any session: read the artifact
 once (`action: "read"` with that url), then publish with `url` set to it and
 `files: {"backlog.md": ".claude/keeper/backlog.md"}` and no other file, so the page itself stays
