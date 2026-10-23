@@ -401,3 +401,19 @@ your closest friends; 9 the group; 10 the things only your friendship has; 12 ol
 knew you before. Romance 4 first dates; 5 exes; 9 weddings, proposals, anniversaries (own or
 witnessed). Family 1 family gatherings; 3 family news, who tells whom; 10 looking after each
 other. Cards go through the writer test (project.md).
+Round 3 picks 2026-10-23:
+- Connect 1 → "What's the smallest thing you've done for someone that they still bring up years later?"
+- Connect 8 → "What story have you made up about someone you see every day but have never really spoken to?"
+- Connect 10 → "Who did you pick straight back up with after years apart, as if no time had passed?"
+- Friendship 6 → "How did you meet your closest friend, and how close did you come to never meeting at all?"
+- Friendship 10 → "What do you always do with one particular friend that you'd never do with anyone else?"
+- Friendship 12 → "What still holds you together with the friend who has known you the longest?"
+- Bench (owner asked, reworded to "friends from different contexts"): "What happened when friends from different parts of your life finally met?"
+- Romance 4 → "Tell about your best first date, and the moment you knew it was going well."
+- Romance 5 → "What habit did you pick up from an ex and never drop?"
+- Romance 9 → "What's the best wedding speech you've ever heard, or the worst?"
+- Family 1 → "What happens at every family get-together, without fail?"
+- Family 10 → "What help from your family have you turned down, and why?"
+- Redo: Connect 6 (communication preferences, more open and answerable, less leading), Friendship 9
+  (friend groups without assuming a big group with roles; owner's groups are at most four),
+  Family 3 (news angle too narrow). Connect 2 not picked yet.
