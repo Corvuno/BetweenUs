@@ -6,51 +6,28 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 
 ## Building now
 
-### Self: questions about who you are, answered with a moment (Area A deck)
-**Story:** As a player who draws a Self card, I get a question about my character that I can answer with a moment from my own life (a compliment I brushed off, a time I acted unlike myself, what I am stubborn about), not a summary of my personality, so that the table hears a story and learns something about me it did not know.
+### Round 4: Self, Mind and Values (Area A deck)
+**Story:** As a player who draws a Self card, I get a question I can answer with a moment from my own life (a compliment I brushed off, a time I acted unlike myself, what I am stubborn about), not a summary of my personality. As a player who draws a Mind card, I get a question about something my head really does (the song stuck in it, where my best ideas turn up, what it takes to change my mind), never about mental health. As a player who draws a Values card, I get a choice from an ordinary day (the wrong change in a shop, a white lie, a promise) or an open dilemma to take a side on, never party politics. So the table hears stories and positions instead of self-summaries.
 **Acceptance criteria:**
-1. Five Self cards are gone from the deck, not benched. Self, 6, "When has having power over someone made you kinder, not crueler?"
+1. Ten cards are gone from the deck, not benched:
+   Self, 6, "When has having power over someone made you kinder, not crueler?"
    Self, 8, "A time you completely lost your footing — what held, and what did you rebuild first?"
    Self, 9, "What have you had to accept that you never chose?"
    Self, 11, "What's something true about you that took far too long to notice?"
    Self, 12, "What do you come back to after everything else falls away?"
-2. The seven other Self cards are word for word as they are now, Self, 3, "When are you most lonely — and is anyone around when it happens?" and Self, 5, "Who decided they didn't like you — and did you let it go?" included.
-3. Each of the five open slots holds a new card that the owner saw and approved in its exact words before it went in, and each one sits inside the Self brief's "About" (character, temper, pride, stubbornness, how you see yourself against how others see you).
-4. No new Self card assumes a job, a partner or a big circle of friends (the brief's guardrail), and none asks about how your head works (Mind), how you became this person (Past), what you hide (Shadow) or right and wrong (Values).
-5. The Self app line still reads "The person under all the parts you play", and the Self colour is unchanged.
-6. The change log in questions/between-us-deck.md has one entry per swapped Self card with old text, new text and why.
-**Touches:** questions.js, questions/between-us-deck.md
-**Source:** agreements/round4-briefs.md "Self" and "Stay/go" (agreed 2026-10-23); same method as rounds 1 to 3
-**Status note:** Brief and stay/go agreed. The five new cards are not written yet. Writer test (two writers, owner picks blind) applies.
-
-### Mind: questions about how your head actually works (Area A deck)
-**Story:** As a player who draws a Mind card, I get a question about something my head really does (the song stuck in it, where my best ideas turn up, what it takes to change my mind), so that I answer with a quirk I never said out loud, and the table finds out how I think without anyone being asked about their mental health.
-**Acceptance criteria:**
-1. Three Mind cards are gone from the deck, not benched. Mind, 4, "Which of your memories do you suspect you've quietly rewritten over the years?"
+   Mind, 4, "Which of your memories do you suspect you've quietly rewritten over the years?"
    Mind, 8, "What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?"
    Mind, 10, "What do you keep understanding differently each time you think you've worked it out?"
-2. The nine other Mind cards are word for word as they are now, Mind, 2, "What do you consistently resist — and when does that break down?" included.
-3. Each of the three open slots holds a new card that the owner saw and approved in its exact words before it went in, and each one sits inside the Mind brief's "About" (thinking, remembering, noticing, deciding, learning, worrying, daydreaming).
-4. No new Mind card mentions mental illness, therapy or medication (the brief's guardrail), and none is about what you do to relax (Unwind), feelings right now (Raw), superstition (Spirit) or putting things off (Life).
-5. In the app, the Mind line under the category name reads "How your head actually works" (it now reads "Your mind's habits, good and strange"). Mind's colour and position in the chapters are unchanged.
-6. The change log has one entry per swapped Mind card with old text, new text and why.
-**Touches:** questions.js, config.js, questions/between-us-deck.md
-**Source:** agreements/round4-briefs.md "Mind" and "Stay/go" (agreed 2026-10-23)
-**Status note:** Brief, app line and stay/go agreed. The three new cards and the config.js line change are not done yet. Writer test applies.
-
-### Values: questions that test a principle in an everyday situation (Area A deck)
-**Story:** As a player who draws a Values card, I get a question about a choice I made or would make in an ordinary situation (the wrong change in a shop, a white lie, a promise), or an open dilemma we can take a side on, so that the table sees what I hold to be right without the evening turning into a political fight.
-**Acceptance criteria:**
-1. Two Values cards are gone from the deck, not benched. Values, 2, "Which of your values survives worst under pressure?"
+   Values, 2, "Which of your values survives worst under pressure?"
    Values, 8, "What can having money make disappear that not having it can't?"
-2. The ten other Values cards are word for word as they are now, Values, 6, "What's something you pretend to have a strong opinion on, but don't care about at all?" included.
-3. Each of the two open slots holds a new card that the owner saw and approved in its exact words before it went in, and each one sits inside the Values brief's "About" (right and wrong, where you got it, how it holds up in everyday situations).
-4. No new Values card is about party politics or a hot-button issue, and none is about money as a story from your past (Past), belief and meaning (Spirit) or separating art from the artist (Culture).
-5. The Values line under the category name still reads "Your principles, tested", and the money overlap with Roots and Past is gone from the deck because Values 8 is gone.
-6. The change log has one entry per swapped Values card with old text, new text and why.
-**Touches:** questions.js, questions/between-us-deck.md
-**Source:** agreements/round4-briefs.md "Values" and "Stay/go" (agreed 2026-10-23)
-**Status note:** Brief and stay/go agreed. The two new cards are not written yet. Writer test applies.
+2. Every other card in the three categories is word for word as it is now.
+3. Each of the ten open slots holds a new card the owner saw and approved in its exact words before it went in, inside its category's brief (Self: character, temper, pride, how you see yourself against how others see you; Mind: thinking, remembering, noticing, deciding, daydreaming; Values: right and wrong in everyday situations).
+4. No new card breaks a guardrail: Self assumes no job, partner or big circle of friends; Mind never mentions mental illness, therapy or medication; Values has no party politics or hot-button issue. None strays into a neighbour (Past, Shadow, Unwind, Raw, Spirit, Life, Culture).
+5. In the app, Mind's line under the category name reads "How your head actually works"; Self ("The person under all the parts you play") and Values ("Your principles, tested") are unchanged.
+6. The change log in questions/between-us-deck.md has one entry per swapped card: old text, new text, why.
+**Touches:** questions.js, config.js, questions/between-us-deck.md
+**Source:** agreements/round4-briefs.md (briefs and stay/go agreed 2026-10-23); same method as rounds 1 to 3
+**Status note:** The ten new cards are not written yet; they come as proposals for the owner, with the writer test (two writers, picked blind). Once approved, one Haiku builder writes all ten in one go.
 
 ## Next
 
@@ -194,7 +171,7 @@ _Nothing queued. The old-code clean-up moved to Parked (owner, 2026-10-23)._
 5. If a fix would need a new message or choice for the player, it goes back to the owner as a question and is not done.
 **Touches:** card.js, presentation.js, ui.js, deck.js, other .js files, checks-baseline.json
 **Source:** agreements/2026-10-19-old-code-cleanup.md, 2026-10-19-code-checks.md; 2026-10-20 note on two open findings in the screen-turning code
-**Status note:** Runs on a Friday from 10:00 (Amsterdam) only when more than 15% of the week's usage is left; otherwise it waits. Harms no one meanwhile (owner, 2026-10-23).
+**Status note:** Runs on its own every Friday at 09:42 (Amsterdam), with a fixer of some technical depth, to use the week's leftover usage; a phone notification says what it did (owner, 2026-10-23). Harms no one meanwhile.
 
 ### Tidy the wide-screen code (Area C app)
 **Task:** Name the repeated values in the wide-screen code once and make "click/tap to change", "Menu" and "Back" readable by screen readers, with the screen looking identical, ready for the next looks job.

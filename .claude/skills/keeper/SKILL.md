@@ -192,8 +192,13 @@ the owner can move anything. After every change to it, republish the backlog pag
   those"): pass `model: "haiku"` on that agent call. Haiku jobs: finding things and read-only
   sweeps of the repo or history, checking proposed card text against the whole deck for
   collisions, taking screenshots of given screens, sorting and tidying notes in the monthly upkeep,
-  listing commits or changes for release notes, and other work with one obvious right answer.
-  Building, testing, reviewing and writing cards stay on Sonnet: they need judgment, and a
+  listing commits or changes for release notes, writing owner-approved card text into the deck
+  (owner, 2026-10-23: "a simple replace job, find X, replace with Y": the exact old and new words,
+  the change-log entries and app lines go in a full list, and the tests must pass), and other
+  work with one obvious right answer.
+- One builder per agreed piece of work, not one per sub-item (owner, 2026-10-23: starting three
+  agents costs more than one). Related stories in one area go to the same builder in one call.
+  Building, testing, reviewing and proposing new card text stay on Sonnet: they need judgment, and a
   miss there costs the owner a round trip. If a Haiku job comes back thin or wrong, redo it on
   Sonnet and say so. When the owner asks for Opus on something ("put Opus on
   this", or plainly the same), pass `model: "opus"` on that builder call. Only on request.
