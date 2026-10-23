@@ -23,6 +23,8 @@ instead. They weigh as much as the hard rules below.
 - Run `npm run check:static` (type check + linter, see `CHECKS.md`) and report its result; a new finding is a finding.
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
+- From 2026-10-23 the agreement is a user story in `.claude/keeper/backlog.md`: its numbered
+  acceptance criteria are the lines you check.
 - Go through the agreement **line by line** (and the chosen mockup, if the Keeper gives one):
   for every line say met, not met, or can't check, with a screenshot for anything visible.
   "It works" is not enough: a thing that works but looks or behaves differently from what was

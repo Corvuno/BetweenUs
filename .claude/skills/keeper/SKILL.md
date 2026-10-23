@@ -20,7 +20,9 @@ this project lives in `.claude/keeper/`:
 - `project.md` — the project's name for you, its areas, its builders, where things live.
 - `vision.md` — what the project is and where it is heading, agreed with the owner.
 - `lessons.md` — what you have learned about how this owner means things.
-- `agreements/` — one file per agreed wish.
+- `backlog.md` — the one queue of work, written as user stories with acceptance criteria
+  (owner, 2026-10-23). An agreed story *is* the agreement.
+- `agreements/` — agreements written before 2026-10-23, kept as the record behind older stories.
 - `builders/` — one notes file per builder: corrections that builder learns from.
 - `upkeep.md` — when the monthly upkeep last ran, and what it found.
 
@@ -35,7 +37,8 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    happening and why, in one line). A wish they already typed is noted and taken up
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
-   the last session.
+   the last session. Read `backlog.md`, and tell the owner in one line what is being built
+   now and what is next.
 4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, say so
    in one line and ask the owner to start it in its own thread (`/keeper upkeep`). Never run
    the upkeep inside a wish conversation (owner, 2026-10-19): it needs a whole session to go
@@ -121,11 +124,36 @@ letter for the owner to confirm.
 
 ### 3. The agreement
 
-When it's clear, write a short agreement, per area: what changes, what deliberately does
-not change, how the areas affect each other, and how you'll know it's done. Show it in the
-chat in plain words. Nothing gets built until the owner says yes.
+When it's clear, write it as a user story (owner, 2026-10-23: "the easiest to read for me"):
 
-Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` and commit it.
+- **Story:** As a <player / host / first-time visitor / the owner>, I want <what>, so that <why>.
+- **Acceptance criteria:** numbered, 3–6, each one thing a person can see or do and check,
+  in plain words. Include what deliberately does *not* change when that matters.
+- **Area** (A deck / B looks / C app), and **Touches:** the files it will likely change.
+
+Show it in the chat. Nothing gets built until the owner says yes. Once approved, add it to
+`backlog.md` under Next (or Building now) and commit. The acceptance criteria are what the
+builder builds to and what the tester checks, one by one.
+
+### The backlog, and one build at a time
+
+`backlog.md` is the single queue: Building now, Next, Waiting on the owner, Parked, Done
+(last 14 days). Every Keeper session reads it at the start and writes to it when a story is
+agreed, started, landed, parked or dropped. You keep Next in order, following the vision;
+the owner can move anything. After every change to it, republish the backlog page (link in
+`project.md`) from the file, to the same link: this page is meant to change.
+
+- **Talking runs in parallel** (owner, 2026-10-23: "multi topic is good"): any number of
+  sessions may talk wishes through, run card rounds and make mockups. They only *add* stories.
+- **Building is one at a time, two at most.** Before building, pull `main` and read Building
+  now. If nothing is there, take the story. A second build may start only if its Touches
+  share no file with the one already building; otherwise it waits, and you tell the owner in
+  one line which story it waits for. When you take a story, move it to Building now with the
+  session link and date, commit and push *before* the builder starts, so other sessions see it.
+- **Finish what you take.** A story leaves Building now when it lands on `main` (to Done, with
+  the commit) or is handed back (to Next or Waiting, with why). A story sitting in Building
+  now for over a day with no new commits on `main` is stale: check its session; if it stopped,
+  land its finished branch work or move the story back, and say which.
 
 ### Fast path
 
