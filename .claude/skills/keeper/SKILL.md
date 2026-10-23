@@ -124,11 +124,27 @@ letter for the owner to confirm.
 
 ### 3. The agreement
 
-When it's clear, write it as a user story (owner, 2026-10-23: "the easiest to read for me"):
+When it's clear, write it as a backlog item (owner, 2026-10-23: "the easiest to read for me").
+There are three kinds:
 
-- **Story:** As a <player / host / first-time visitor / the owner>, I want <what>, so that <why>.
-- **Acceptance criteria:** numbered, 3–6, each one thing a person can see or do and check,
-  in plain words. Include what deliberately does *not* change when that matters.
+- **Story** — a change someone *using* the game will notice. Always from a player, a host, a
+  first-time visitor or a colleague at a work session; **never from the owner** (owner,
+  2026-10-23: "I as owner can not want anything"). It names a concrete moment and a concrete
+  change: where they are, what they see or do now, what will be different.
+  *Too empty:* "As a player, I want Self to be a wide category so that every card earns its slot"
+  — almost anything fits it. *Right:* "As a player who draws a Self card, I get a question I
+  can answer with something that happened to me, not a description of my personality, so that
+  the table hears a story instead of a self-summary." Test before showing it: if the sentence
+  would fit almost any change in that area, rewrite it.
+- **Task** — work no player notices (code clean-up, tooling, files). One plain line of what
+  and why, no "As a…".
+- **Decision** — a question only the owner can answer, written as that question, with the
+  options and what each would mean.
+
+Every item gets:
+- **Acceptance criteria** ("Done when"), numbered, 3–6: each one concrete thing a tester can
+  see or do and tick off — a screen, a number, a card, a tap. Include what deliberately does
+  *not* change when that matters. Nothing a tester couldn't check.
 - **Area** (A deck / B looks / C app), and **Touches:** the files it will likely change.
 
 Show it in the chat. Nothing gets built until the owner says yes. Once approved, add it to

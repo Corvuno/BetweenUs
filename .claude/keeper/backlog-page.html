@@ -45,6 +45,8 @@ article h3{margin:0;font-size:1.15rem;line-height:1.35;text-wrap:balance}
 .chip{font-size:.8rem;letter-spacing:.04em;padding:2px 9px;border-radius:999px;border:1px solid currentColor;font-weight:700}
 .chip.A{color:var(--a)} .chip.B{color:var(--b)} .chip.C{color:var(--c)}
 .story{margin:0}
+.kind{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:999px;background:var(--gold-soft);color:var(--fg);font-weight:700}
+.kind.Decision{background:var(--wait);color:var(--surface)}
 .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700;margin:0}
 ol{margin:0;padding-left:1.6em;display:flex;flex-direction:column;gap:6px}
 ol li::marker{color:var(--gold);font-weight:700}
@@ -91,11 +93,11 @@ function parse(md){
     }
     if (!sec) { if ((m = line.match(/^_Updated (.+)_$/))) out.updated = m[1]; continue; }
     if ((m = line.match(/^### (.+)/))){
-      story = {title:m[1].trim(), story:'', criteria:[], touches:'', source:'', note:'', extra:[]};
+      story = {title:m[1].trim(), kind:'', story:'', criteria:[], touches:'', source:'', note:'', extra:[]};
       out[sec.id].push(story); field = null; continue;
     }
     if (!story) continue;
-    if ((m = line.match(/^\*\*Story:\*\*\s*(.*)/))){ story.story = m[1]; field='story'; continue; }
+    if ((m = line.match(/^\*\*(Story|Task|Decision):\*\*\s*(.*)/))){ story.kind = m[1]; story.story = m[2]; field='story'; continue; }
     if (/^\*\*Acceptance criteria:\*\*/.test(line)){ field='criteria'; continue; }
     if ((m = line.match(/^\*\*Touches:\*\*\s*(.*)/))){ story.touches = m[1]; field=null; continue; }
     if ((m = line.match(/^\*\*Source:\*\*\s*(.*)/))){ story.source = m[1]; field=null; continue; }
@@ -121,10 +123,10 @@ function chips(title){
 function card(s, color){
   const c = chips(s.title);
   return `<article style="--k:var(${color})">
-    ${c.html ? `<div class="chips">${c.html}</div>` : ''}
+    ${(c.html || s.kind) ? `<div class="chips">${s.kind ? `<span class="kind ${s.kind}">${s.kind}</span>` : ''}${c.html}</div>` : ''}
     <h3>${inline(c.clean)}</h3>
     ${s.story ? `<p class="story">${inline(s.story)}</p>` : ''}
-    ${s.criteria.length ? `<p class="label">Done when</p><ol>${s.criteria.map(x=>`<li>${inline(x)}</li>`).join('')}</ol>` : ''}
+    ${s.criteria.length ? `<p class="label">${s.kind==='Decision' ? 'Options' : 'Done when'}</p><ol>${s.criteria.map(x=>`<li>${inline(x)}</li>`).join('')}</ol>` : ''}
     ${s.note ? `<p class="note">${inline(s.note)}</p>` : ''}
     ${s.extra.length ? s.extra.map(x=>`<p class="meta">${inline(x)}</p>`).join('') : ''}
     ${s.touches ? `<p class="meta">Touches: ${inline(s.touches)}</p>` : ''}
