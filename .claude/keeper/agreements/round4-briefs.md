@@ -9,12 +9,12 @@ courage that became routine · the part of you that should never change · a mom
 of yourself and told no one · a time you acted completely unlike yourself · the nickname that
 stuck · what people get wrong on first meeting you · what you're quietly vain about · what you're
 stubborn about · the age you feel inside · who you are alone, when no one sees · small victories
-over yourself · your reputation in the places you go · introducing yourself without your job ·
+over yourself · loneliness as a feeling · being disliked, and letting it go · your reputation in the places you go · introducing yourself without your job ·
 surprising someone who thought they knew you.
 **Where it stops:** how your head works is Mind's · turning points and how you became this person
 are Past's · what you hide and what it costs others is Shadow's (Self holds the whole person, the
-good parts too) · right and wrong is Values' · how you are with other people, loneliness included,
-is Connect's · looks are Body's and Attract's.
+good parts too) · right and wrong is Values' · how you are with other people is Connect's
+(loneliness as a feeling is Self's; company that still feels lonely stays Connect's) · looks are Body's and Attract's.
 **Guardrail:** no card assumes a job, a partner or a big circle.
 
 ### Mind
@@ -27,7 +27,7 @@ at night, and the one that comes back · where your best ideas turn up · the tr
 asleep · deciding fast or slowly · rabbit holes and short obsessions · what you notice that nobody
 else does · losing all sense of time in something · useless things you remember perfectly · the
 song stuck in your head · changing your mind, and what it takes · gut feeling against thinking it
-through.
+through · willpower: giving in, swearing off, starting again.
 **Where it stops:** who you are as a person is Self's · what you do to relax is Unwind's · feelings
 right now are Raw's · superstition and the unexplained are Spirit's · learning on the job is Work's
 · deciding what's right or wrong is Values' · putting things off (admin, chores, unread messages)
@@ -51,3 +51,8 @@ are Spirit's · what home taught you in general is Roots' (Values takes it only 
 money as a story from your past is Past's · separating art from the artist is Culture's.
 **Guardrail:** no party politics or hot-button issues that turn the table into a fight; debate
 cards are open dilemmas, not tribal ones.
+
+## Stay/go (agreed 2026-10-23)
+Go: Self 6, 8, 9, 11, 12 · Mind 4, 8, 10 · Values 2, 8. Everything else stays.
+Owner: Self 3 stays (inner world is Self); Self 5 stays; Mind 2 stays (resilience: the candy
+binge-and-swear-off is an answer); Values 6 stays (faking a value is integrity, so Values).
