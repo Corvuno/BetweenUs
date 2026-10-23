@@ -153,3 +153,30 @@ Do not open or mention in front of the owner until every card is picked. A = nor
 5. B — What help from your family have you turned down, and why?
 6. A — What help does your family keep offering that you have to politely turn down?
 
+
+## Redo 2 — 2026-10-23 (Connect 6, Friendship 9, Family 3; six distinct subjects, 3 per writer; the identical 'opposite of yours' card counted for A)
+
+### Connect 6
+1. A — Whose way of keeping in touch is the complete opposite of yours?
+2. B — What do you say easily in a message that you'd never get out face to face?
+3. A — How do you most like people to get hold of you, and why that way?
+4. B — Which conversation would you always rather have face to face than over a screen?
+5. B — What have you kept that someone once wrote to you?
+6. A — When you go quiet on someone for a while, what's usually going on?
+
+### Friendship 9
+1. B — How did the friends you see together end up as a group?
+2. A — What happens with three or four friends together that never happens with just one?
+3. B — Which friendship changed when someone new joined in?
+4. B — Which group of friends from an earlier part of your life drifted apart, or somehow didn't?
+5. A — Do you do friendship better one on one, or in a group?
+6. A — Which friend do you only ever see in one setting, and what happens when you meet somewhere else?
+
+### Family 3
+1. B — Which relative outside your closest family would you happily see more of?
+2. A — What surprised you most the first time you spent real time with someone else's family?
+3. B — Which part of your family do you hardly ever see, and what do you know about them?
+4. B — What do you and your brother or sister, or whoever comes closest to one, still do the way you did as kids?
+5. A — Which relative from a different generation do you get on with best?
+6. A — Which family story gets told every time, and how much of it is actually true?
+
