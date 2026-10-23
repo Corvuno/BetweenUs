@@ -450,3 +450,4 @@ Writer briefs for Connect, Friendship, Romance, Family: text in `.claude/keeper/
 - Friendship (friends): "The people you picked yourself"
 - Romance (date): "From the first date to the last goodbye"
 - Family: unchanged ("The family you have now")
+**BUILT 2026-10-23** — 15 cards (checked word for word), bench card, four briefs, three lines, ?v=20261023a, 64/64 checks.
