@@ -13,4 +13,4 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- Twenty-four questions are new, in Connect, Friendship, Romance, Family, Self, Mind and Values: more stories and moments, fewer questions about what kind of person you are.
+- Twenty-five questions are new, in Connect, Friendship, Romance, Family, Self, Mind and Values: more stories and moments, fewer questions about what kind of person you are.

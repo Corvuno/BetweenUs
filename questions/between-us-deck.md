@@ -17,24 +17,18 @@ The card text itself lives only in `questions.js` — that is the single source 
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
-*2026-10-24 clean-up (owner): 64 cards removed that were benched automatically under the old "bench every displaced card" rule (patches v6.68–v7.03), with no sign the owner wanted them kept. They stay in git history (commit before this note).*
+*2026-10-24 clean-up (owner): 71 cards removed that were benched automatically under the old "bench every displaced card" rule (patches v6.68–v7.03) with no sign the owner wanted them kept, plus 7 the owner reviewed and tossed as stale or weak. They stay in git history (commit before this note).*
 - **Work** — "Which colleague taught you the most without ever meaning to?" (independently approved for Work 1 in a different session while this branch was still open; owner resolved the collision by keeping this session's "office drama" card instead — see the merge note in the change log)
-- **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
-- **Attract** — "Tell me about a moment of chemistry with a total stranger that went absolutely nowhere." (proposed for Flesh 11 during the v6.86 Flesh-11 search; owner called it a strong Attract card, not Flesh — pre-attraction chemistry belongs to Attract's territory, not Flesh's prelude-to-sex one. No Attract slot open yet.)
-- **Flesh** — "Tell me about the best pickup line — good or bad — that's ever actually worked on you." (proposed for Flesh 11 in place of the "how do you make what you want known" mechanics card in v6.86; owner kept it in reserve, held for a future slot rather than used here)
 - **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
-- **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
-- **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
-- **Deep** — "When were you last truly seen?"
 - **Deep** — "When did you last let someone see you struggling?"
-- **Deep** — "What's the one thing you most want someone to understand about you?"
 - **Grief** — "Which grief do you carry that isn't yours?"
 - **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (bumped from Bare 9 when the age-gap card moved in from 11; still approved, just unslotted again)
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 - **Romance** — "Is there a version of 'cheating' you don't actually think counts?" (approved, no slot yet — Romance is the likely home, already runs relationship rules and patterns)
-- **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle, parked pending a softer take — the harder framing read as consent territory, not Connect's register)
+- **Life** — "What's a small luxury that's become completely non-negotiable for you?" (an alternative the owner liked for Life 8 in v6.74; kept 2026-10-24 when the card it was noted under was tossed)
+- **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle; first parked pending a softer take because it read as consent territory. Owner, 2026-10-24: keep it as it is)
 - **Life** — "What happens on your daily commute that nobody else would notice?" (an alternative for Life 10 in the 2026-10-16 Life rework; owner liked it — "it's also fun" — but chose the public-transport card for the slot)
 - **Flesh** — "When did sex last feel like play — and what made it that way?" (written 2026-10-18 for laughing and play in bed; owner: "play is exactly the word I'd look for" — it is what they call that feeling. Fulfils a need; no slot yet.)
 - **Flesh** — "Who have you had the most fun with in bed?" (written 2026-10-18 alongside the play card; the owner dropped the "not the best sex, the most fun" contrast from the draft — "the fun can be the best". Fulfils a need; no slot yet.)
@@ -644,7 +638,10 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
   - Why: Cryptic, and one of three money cards (with Roots 3 and Past 5). The old card is removed, not benched.
 - Mind app line: "Your mind's habits, good and strange" → "How your head actually works".
 - Writer briefs added for Self, Mind and Values (WRITER BRIEFS).
-- Self 8 still open.
+- **Self 8**
+  - Old: "A time you completely lost your footing — what held, and what did you rebuild first?"
+  - New: "How old do you expect the face in the mirror to be?"
+  - Why: A turning point, which is Past's ground, and it doubled Past 3. The new card is the owner's own idea: most people feel younger than they look. The old card is removed, not benched.
 
 ## Patch v7.19 — Bare 1, Kink 4, Body 2
 

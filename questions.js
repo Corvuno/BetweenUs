@@ -144,7 +144,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "Who decided they didn't like you — and did you let it go?" },
   { level: "self", question: "Which moment do you replay because you handled it exactly right?" },
   { level: "self", question: "What's something that used to take courage that's now just routine for you?" },
-  { level: "self", question: "A time you completely lost your footing — what held, and what did you rebuild first?" },
+  { level: "self", question: "How old do you expect the face in the mirror to be?" },
   { level: "self", question: "Which small battle with yourself have you finally won?" },
   { level: "self", question: "What's a part of your character you hope never changes, even when it makes life harder?" },
   { level: "self", question: "If you couldn't mention what you do all day, how would you introduce yourself?" },

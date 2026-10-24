@@ -67,4 +67,5 @@ binge-and-swear-off is an answer); Values 6 stays (faking a value is integrity, 
 - Mind 10 → "What small decision takes you far longer than it should?"
 - Values 2 → "Who's the most decent person you know, and what makes them so?"
 - Values 8 → "Who did you judge harshly and turn out to be completely wrong about?" (2026-10-24)
-- Open: Self 8, owner picked "How old do you expect to see when you look in the mirror?" with the grammar fixed; fixed wording to be approved.
+- Self 8 → "How old do you expect the face in the mirror to be?" (2026-10-24, owner picked the grammar-fixed alt 2)
+**BUILT 2026-10-24** — all 10 cards, Mind line, three briefs.
