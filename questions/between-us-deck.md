@@ -351,6 +351,58 @@ argues about · chosen family · children: wanting them, having them, not having
 **Where it stops:** growing up and childhood are Roots' · a romantic partner is Romance's · family at
 the table is the Us categories'.
 
+### Self
+**App line:** The person under all the parts you play
+**About:** Who you are as a person: your character, temper, pride and stubbornness, how you see
+yourself against how others see you, and the moments you felt most yourself, or not at all.
+**Lines of thought:** contradictions in your character · compliments and how you take them ·
+courage that became routine · the part of you that should never change · a moment you were proud
+of yourself and told no one · a time you acted completely unlike yourself · the nickname that
+stuck · what people get wrong on first meeting you · what you're quietly vain about · what you're
+stubborn about · the age you feel inside · who you are alone, when no one sees · small victories
+over yourself · loneliness as a feeling · being disliked, and letting it go · your reputation in the places you go · introducing yourself without your job ·
+surprising someone who thought they knew you.
+**Where it stops:** how your head works is Mind's · turning points and how you became this person
+are Past's · what you hide and what it costs others is Shadow's (Self holds the whole person, the
+good parts too) · right and wrong is Values' · how you are with other people is Connect's
+(loneliness as a feeling is Self's; company that still feels lonely stays Connect's) · looks are Body's and Attract's.
+**Guardrail:** no card assumes a job, a partner or a big circle.
+
+### Mind
+**App line:** How your head actually works
+**About:** How your head works: thinking, remembering, noticing, deciding, learning, worrying,
+daydreaming, getting stuck, and the odd things your brain does that you've never told anyone.
+**Lines of thought:** habits that stick or don't · thought loops · rewritten and earliest memories ·
+silence and boredom · your inner voice · learning and unlearning · who you are at 3 a.m. · dreams
+at night, and the one that comes back · where your best ideas turn up · the tricks you use to fall
+asleep · deciding fast or slowly · rabbit holes and short obsessions · what you notice that nobody
+else does · losing all sense of time in something · useless things you remember perfectly · the
+song stuck in your head · changing your mind, and what it takes · gut feeling against thinking it
+through · willpower: giving in, swearing off, starting again.
+**Where it stops:** who you are as a person is Self's · what you do to relax is Unwind's · feelings
+right now are Raw's · superstition and the unexplained are Spirit's · learning on the job is Work's
+· deciding what's right or wrong is Values' · putting things off (admin, chores, unread messages)
+is Life's.
+**Guardrail:** curiosity, not diagnosis: no mental illness, therapy or medication.
+
+### Values
+**App line:** Your principles, tested
+**About:** What you hold to be right and wrong, where you got it, and how it holds up in everyday
+situations, not only in big dramas. Includes open position cards, the debating kind.
+**Lines of thought:** what you'd refuse whatever it cost · a line someone crossed · the family
+sentence you live by or against · rules you break on purpose · power you never agreed to give ·
+speaking up or staying silent · white lies and when they're fine · the found wallet and the wrong
+change: what you do when no one checks · loyalty against the truth · what you'd do for money, and
+what you wouldn't · fairness, and something that felt deeply unfair · someone you admire for how
+they live · a moral question you changed your mind on · what you'd protest or stand up for ·
+generosity and giving things away · judging others, and being wrong to · open dilemmas (is it ever
+right to lie to a child) · promises and keeping your word.
+**Where it stops:** where you fail others (vices, cruelty, lies) is Shadow's · belief and meaning
+are Spirit's · what home taught you in general is Roots' (Values takes it only as a principle) ·
+money as a story from your past is Past's · separating art from the artist is Culture's.
+**Guardrail:** no party politics or hot-button issues that turn the table into a fight; debate
+cards are open dilemmas, not tribal ones.
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
@@ -550,6 +602,49 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.21 — category scope rework round 4: Self, Mind, Values
+
+- **Self 6**
+  - Old: "When has having power over someone made you kinder, not crueler?"
+  - New: "Which moment do you replay because you handled it exactly right?"
+  - Why: Power over other people is Values' ground; this slot moves to a concrete moment the player handled well. The old card is removed, not benched.
+- **Self 9**
+  - Old: "What have you had to accept that you never chose?"
+  - New: "Which small battle with yourself have you finally won?"
+  - Why: Too heavy for Self, and close to Deep 10 and Values 3. The old card is removed, not benched.
+- **Self 11**
+  - Old: "What's something true about you that took far too long to notice?"
+  - New: "If you couldn't mention what you do all day, how would you introduce yourself?"
+  - Why: An abstract twin of Self 4. The old card is removed, not benched.
+- **Self 12**
+  - Old: "What do you come back to after everything else falls away?"
+  - New: "Which ordinary thing scares you more than it should?"
+  - Why: Too abstract. The old card is removed, not benched.
+- **Mind 4**
+  - Old: "Which of your memories do you suspect you've quietly rewritten over the years?"
+  - New: "What's the strangest dream you still remember?"
+  - Why: Doubled Mind 9's memory card. The old card is removed, not benched.
+- **Mind 8**
+  - Old: "What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?"
+  - New: "What useless thing do you remember perfectly?"
+  - Why: A feeling rather than a story, and it overlapped Raw 8. The old card is removed, not benched.
+- **Mind 10**
+  - Old: "What do you keep understanding differently each time you think you've worked it out?"
+  - New: "What small decision takes you far longer than it should?"
+  - Why: Too abstract. The old card is removed, not benched.
+- **Values 2**
+  - Old: "Which of your values survives worst under pressure?"
+  - New: "Who's the most decent person you know, and what makes them so?"
+  - Why: An abstract audit that overlapped Shadow 10. The old card is removed, not benched.
+
+- **Values 8**
+  - Old: "What can having money make disappear that not having it can't?"
+  - New: "Who did you judge harshly and turn out to be completely wrong about?"
+  - Why: Cryptic, and one of three money cards (with Roots 3 and Past 5). The old card is removed, not benched.
+- Mind app line: "Your mind's habits, good and strange" → "How your head actually works".
+- Writer briefs added for Self, Mind and Values (WRITER BRIEFS).
+- Self 8 still open.
 
 ## Patch v7.19 — Bare 1, Kink 4, Body 2
 

@@ -164,7 +164,7 @@ const CATEGORIES = {
             desc:"The person under all the parts you play",
             chapter:"findout", bucket:"reflection" },
   mind:   { label:"Mind",   color:"#6277d9", band:3, focus:-0.9,
-            desc:"Your mind's habits, good and strange",
+            desc:"How your head actually works",
             chapter:"findout", bucket:"reflection" },
   body:   { label:"Body",   color:"#14bbc0", band:5, focus:-0.8,
             desc:"How you treat the only body you'll get",
