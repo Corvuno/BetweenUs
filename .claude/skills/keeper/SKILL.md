@@ -20,7 +20,9 @@ this project lives in `.claude/keeper/`:
 - `project.md` — the project's name for you, its areas, its builders, where things live.
 - `vision.md` — what the project is and where it is heading, agreed with the owner.
 - `lessons.md` — what you have learned about how this owner means things.
-- `agreements/` — one file per agreed wish.
+- `backlog.md` — the one queue of work, written as user stories with acceptance criteria
+  (owner, 2026-10-23). An agreed story *is* the agreement.
+- `agreements/` — agreements written before 2026-10-23, kept as the record behind older stories.
 - `builders/` — one notes file per builder: corrections that builder learns from.
 - `upkeep.md` — when the monthly upkeep last ran, and what it found.
 
@@ -35,7 +37,8 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    happening and why, in one line). A wish they already typed is noted and taken up
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
-   the last session.
+   the last session. Read `backlog.md`, and tell the owner in one line what is being built
+   now and what is next.
 4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, say so
    in one line and ask the owner to start it in its own thread (`/keeper upkeep`). Never run
    the upkeep inside a wish conversation (owner, 2026-10-19): it needs a whole session to go
@@ -121,11 +124,55 @@ letter for the owner to confirm.
 
 ### 3. The agreement
 
-When it's clear, write a short agreement, per area: what changes, what deliberately does
-not change, how the areas affect each other, and how you'll know it's done. Show it in the
-chat in plain words. Nothing gets built until the owner says yes.
+When it's clear, write it as a backlog item (owner, 2026-10-23: "the easiest to read for me").
+There are three kinds:
 
-Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` and commit it.
+- **Story** — a change someone *using* the game will notice. Always from a player, a host, a
+  first-time visitor or a colleague at a work session; **never from the owner** (owner,
+  2026-10-23: "I as owner can not want anything"). It names a concrete moment and a concrete
+  change: where they are, what they see or do now, what will be different.
+  *Too empty:* "As a player, I want Self to be a wide category so that every card earns its slot"
+  — almost anything fits it. *Right:* "As a player who draws a Self card, I get a question I
+  can answer with something that happened to me, not a description of my personality, so that
+  the table hears a story instead of a self-summary." Test before showing it: if the sentence
+  would fit almost any change in that area, rewrite it.
+- **Task** — work no player notices (code clean-up, tooling, files). One plain line of what
+  and why, no "As a…".
+- **Decision** — a question only the owner can answer, written as that question, with the
+  options and what each would mean.
+
+Every item gets:
+- **Acceptance criteria** ("Done when"), numbered, 3–6: each one concrete thing a tester can
+  see or do and tick off — a screen, a number, a card, a tap. Include what deliberately does
+  *not* change when that matters. Nothing a tester couldn't check.
+- **Area** (A deck / B looks / C app), and **Touches:** the files it will likely change.
+
+Show it in the chat. Nothing gets built until the owner says yes. Once approved, add it to
+`backlog.md` under Next and commit. The acceptance criteria are what the
+builder builds to and what the tester checks, one by one.
+
+### The backlog, and one build at a time
+
+`backlog.md` is the single queue: Building now, Next, Waiting on the owner, Parked, Done
+(last 14 days). Every Keeper session reads it at the start and writes to it when a story is
+agreed, started, landed, parked or dropped. You keep Next in order, following the vision;
+the owner can move anything. After every change to it, republish the backlog page (link in
+`project.md`) from the file, to the same link: this page is meant to change.
+
+- **Talking runs in parallel** (owner, 2026-10-23: "multi topic is good"): any number of
+  sessions may talk wishes through, run card rounds and make mockups. They only *add* stories.
+- **Building is one at a time, two at most.** Before building, pull `main` and read Building
+  now. If nothing is there, take the story. A second build may start only if its Touches
+  share no file with the one already building; otherwise it waits, and you tell the owner in
+  one line which story it waits for. When you take a story, move it to Building now with the
+  session link and date, commit and push *before* the builder starts, so other sessions see it.
+- **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
+  sat there unwritten). A story goes there only when a builder starts on it. Proposals still
+  to write or picks still to make keep it in Next or Waiting on the owner.
+- **Finish what you take.** A story leaves Building now when it lands on `main` (to Done, with
+  the commit) or is handed back (to Next or Waiting, with why). A story sitting in Building
+  now for over a day with no new commits on `main` is stale: check its session; if it stopped,
+  land its finished branch work or move the story back, and say which.
 
 ### Fast path
 
@@ -148,8 +195,13 @@ Once approved, save it to `.claude/keeper/agreements/YYYY-MM-DD-short-name.md` a
   those"): pass `model: "haiku"` on that agent call. Haiku jobs: finding things and read-only
   sweeps of the repo or history, checking proposed card text against the whole deck for
   collisions, taking screenshots of given screens, sorting and tidying notes in the monthly upkeep,
-  listing commits or changes for release notes, and other work with one obvious right answer.
-  Building, testing, reviewing and writing cards stay on Sonnet: they need judgment, and a
+  listing commits or changes for release notes, writing owner-approved card text into the deck
+  (owner, 2026-10-23: "a simple replace job, find X, replace with Y": the exact old and new words,
+  the change-log entries and app lines go in a full list, and the tests must pass), and other
+  work with one obvious right answer.
+- One builder per agreed piece of work, not one per sub-item (owner, 2026-10-23: starting three
+  agents costs more than one). Related stories in one area go to the same builder in one call.
+  Building, testing, reviewing and proposing new card text stay on Sonnet: they need judgment, and a
   miss there costs the owner a round trip. If a Haiku job comes back thin or wrong, redo it on
   Sonnet and say so. When the owner asks for Opus on something ("put Opus on
   this", or plainly the same), pass `model: "opus"` on that builder call. Only on request.
@@ -179,7 +231,9 @@ the change** (owner, same day: "proportional — small bug, test a few sets; doe
    yourself against the agreement (screenshots, the chosen mockup, the approved words).
 
 Run the tester and the reviewer after the builder, one after another or side by side (they
-don't edit files). If the project's own test run is broken, that is a finding, not a skip.
+don't edit files). Don't rerun the full test suite yourself unless `main` changed
+under the build before landing (owner, 2026-10-23: one run each by the builder and the tester is
+enough). If the project's own test run is broken, that is a finding, not a skip.
 
 If the result doesn't match the agreement, send it back to the builder with exactly what's
 off. Don't ship a near miss.

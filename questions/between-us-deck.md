@@ -17,37 +17,14 @@ The card text itself lives only in `questions.js` — that is the single source 
 
 ## BENCH — cards parked for later
 *Cut but worth keeping — available if a slot ever opens.*
-- **Flesh** — "How far do you go in public — what are you okay with people seeing?" (displaced from Flesh 8 in v7.03, owner-approved; it never named affection, and players twice answered it as if it were the Body hide/show card. Replaced by the owner's own wording.)
-- **Body** — "Point to the part of your body you have the most difficult relationship with — then the one you'd defend as beautiful." (displaced from Body 7 in v7.02, owner-approved; players kept answering Flesh 8 as if it were this card, and the owner preferred a hide/show framing. The difficult-body half is gone from the deck. Dutch: "Wijs de plek op je lichaam aan waar je de moeizaamste relatie mee hebt — en dan de plek die je als mooi zou verdedigen.")
+*2026-10-24 clean-up (owner): 64 cards removed that were benched automatically under the old "bench every displaced card" rule (patches v6.68–v7.03), with no sign the owner wanted them kept. They stay in git history (commit before this note).*
 - **Work** — "Which colleague taught you the most without ever meaning to?" (independently approved for Work 1 in a different session while this branch was still open; owner resolved the collision by keeping this session's "office drama" card instead — see the merge note in the change log)
-- **Warm** — "Some small thing you do properly, though nobody would ever check..." (displaced from Warm 1 in v6.88 by "Which chore do you secretly not mind?", moved in from Life 3 — owner's call, both cards occupied the same "quiet care nobody checks on" ground and the Life version was the stronger fit for Warm's register)
 - **Body** — the "turned out harder than expected" concept, tried for Unwind 9 in v6.86 and rejected there (owner: people don't choose challenges going in, something just turns out harder than planned, and they keep going anyway — that's a Body card, not Unwind's leisure/happiness register). No specific wording approved yet; drafts tried were "What's something physical that turned out way harder than you expected — and did you finish it anyway?", "When did a hike, run, or ride go from 'this is fine' to 'this was a mistake' — and how did it end?", and "What's the last time your body hurt way more than you'd planned for, and you kept going regardless?"
 - **Attract** — "Tell me about a moment of chemistry with a total stranger that went absolutely nowhere." (proposed for Flesh 11 during the v6.86 Flesh-11 search; owner called it a strong Attract card, not Flesh — pre-attraction chemistry belongs to Attract's territory, not Flesh's prelude-to-sex one. No Attract slot open yet.)
 - **Flesh** — "Tell me about the best pickup line — good or bad — that's ever actually worked on you." (proposed for Flesh 11 in place of the "how do you make what you want known" mechanics card in v6.86; owner kept it in reserve, held for a future slot rather than used here)
 - **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
-- **Self** — "What's something you used to associate with being \"old\" that you now just call Tuesday?" (displaced from Self 7 in v6.86, owner-approved; too close to Life 9, and the negative "avoid old age" framing undersold it)
-- **Values** — "What does money let you avoid — a conversation, a choice, a person?" (displaced from Values 8 in v6.86, owner-approved; the emdash list narrowed the answer before the player got there)
-- **Culture** — "Is there a piece of culture — book, show, song — you've deliberately not finished, because you don't want it to be over?" (displaced from Culture 12 in v6.86, owner-approved; "song" doesn't have an unfinished state the way a book or show does, so the premise only half-worked)
-- **Spirit** — "Have you ever tried to reach something through your body — breath, fasting, dance, stillness?" (displaced from Spirit 10 in v6.86, owner-approved; the emdash list of practices narrowed the answer)
-- **Flesh** — "In the moment, how do you make what you want known — words, hands, or just taking it?" (displaced from Flesh 11 in v6.86, owner-rejected; wanted insight-into-a-person/story/theory leads instead of a mechanics-of-communication question)
-- **Culture** — "Does great art excuse a terrible artist?" (displaced from Culture 9 in v6.83, owner-approved; kept the dichotomy, added a concrete-example clause rather than replacing it outright)
-- **Home** — "Where would you live if nothing was stopping you — and what would you live in?" (displaced from Home 10 in v6.83, owner-approved; too close to Home 8's kitchen-window card, both purely aspirational)
-- **Attract** — "You tell yourself you have a type. Who do you actually keep ending up with?" (displaced from Attract 4 in v6.83, owner-approved; reworded to a single question with the "does that correspond" turn instead of two sentences)
-- **Self** — "What's a strength of yours that most people still miss — including, until recently, you?" (displaced from Self 12 in v6.83, owner-approved; only lived at Self 12 since v6.82 — owner reconsidered in favour of the "version one" Ground card instead)
 - **Life** — "What are you putting off that you know you'll regret?" (displaced from Life 8 in v6.74, owner-approved; guilt-first framing, and the owner also liked the alternative "What's a small luxury that's become completely non-negotiable for you?" — held for a future slot if one opens)
-- **Connect** — "How can someone tell you're withdrawing before you've said a word?" (displaced from Connect 5 in v6.74, owner-approved; blurred with Connect 6)
 - **Values** — "Who gets authority over you faster than you'd like?" (displaced from Values 6 in v6.74, owner-approved; owner flagged that Values now needs a new card for the power-struggle/authority ground this one leaves empty — proposal pending)
-- **Self** — "Strip away the job, the roles, the routines — what's left standing?" (displaced from Self 10 in v6.81, owner-approved exact text; back on the bench for good this time)
-- **Self** — "What holds you up that isn't a person?" (displaced from Self 12 in v6.82, owner-approved; category needed a positive-register card here more than this one)
-- **Values** — "When did competition make you ugly?" (displaced from Values 12 in v6.77, owner-approved slot for the power-struggle card)
-- **Culture** — "When did you last change your mind about something you'd dismissed on sight?" (displaced from Culture 4 in v6.77, owner-approved)
-- **Culture** — "Is taste something you have or something you build?" (displaced from Culture 7 in v6.77, owner-approved)
-- **World** — "Which room first taught you that class exists?" (displaced from World 6 in v6.77, owner-approved; overlapped World 3's fairness/privilege ground)
-- **World** — "What's a place you've never been that you already feel oddly connected to?" (displaced from World 6 again in v6.78; owner called it correctly — reads as Unwind's register, not World's. World is globalism, politics, how the world works, not personal wanderlust)
-- **Self** — "The headline on your warning label. What does the fine print actually say?" (displaced from Self 10 in v6.78; owner recognised the device from a dating-app profile — not original to this deck, cut on quality)
-- **Self** — "What do you perform even when you're completely alone?" (displaced from Self 10 again in v6.79, owner-rejected, no reason given beyond "not a good question")
-- **Self** — "What do you know about yourself that you've never actually tested?" (displaced from Self 10 in v6.80; picked and pushed unilaterally, same mistake as the previous entry — reverted without the owner ever seeing or approving this text)
-- **Romance** — "What is something love made you do that surprised even you?" (in briefly at Romance 10, reverted v6.52 — the slot wasn't cleared with the owner)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Deep** — "When were you last truly seen?"
@@ -58,46 +35,6 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 - **Romance** — "Is there a version of 'cheating' you don't actually think counts?" (approved, no slot yet — Romance is the likely home, already runs relationship rules and patterns)
 - **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle, parked pending a softer take — the harder framing read as consent territory, not Connect's register)
-- **Unwind** — "What are you looking forward to?" (displaced from Unwind 3 in v6.68; too close to pure conversational lubricant, no identity distinct from Warm)
-- **Unwind** — "What's the first thing you go and find when you get somewhere new?" (displaced from Unwind 9 in v6.68; more observational than revealing)
-- **Self** — "What's the most predictable thing about you?" (displaced from Self 11 in v6.68; topic, not mechanism)
-- **Deep** — "Who do you miss who is still alive?" (displaced from Deep 4 in v6.68; Deep already carries substantial loss elsewhere)
-- **Deep** — "There was a moment you let someone all the way in. What happened next?" (displaced from Deep 9 in v6.68; overlapped the vulnerability register Deep already runs deep on)
-- **Raw** — "What have you already decided about someone here?" (displaced from Raw 7 in v6.68; social-poker register, less insight than the replacement)
-- **Connect** — "Is there something you wish people asked you instead of 'how are you'?" (displaced from Connect 8 in v6.69 by the substance-worry card, finally given a home)
-- **Connect** — "Where are you a regular — and do they know your name?" (displaced from Connect 10 in v6.69 by the ordinary-conflict card)
-- **Culture** — "Which piece of music do you protect — the one you won't play for just anyone?" (displaced from Culture 3 in v6.69)
-- **Culture** — "You collect something, officially or accidentally..." (displaced from Culture 4 in v6.69)
-- **Culture** — "The one you love that everyone else seems to have missed..." (displaced from Culture 8 in v6.69)
-- **Deep** — "You're still waiting for someone to notice..." (displaced from Deep 2 in v6.69)
-- **Friendship** — "What do you say about your friends when they're not there?" (displaced from Friendship 9 in v6.69 by the trust-style card)
-- **Life** — "Is an ordinary life something to fear or to aim for?" (displaced from Life 7 in v6.69)
-- **Life** — "How much of your day runs on autopilot, honestly?" (displaced from Life 10 in v6.69)
-- **Mind** — "What can you still do for three hours without noticing?" (displaced from Mind 5 in v6.69 by the boredom/silence card — finally seats the Boredom gap noted earlier)
-- **Mind** — "Do you decide fast and adjust, or slow and stick?" (displaced from Mind 8 in v6.69)
-- **Self** — "Do you take up space in a room, or fold into it?" (displaced from Self 6 in v6.69 by the power card — finally seats the Power gap noted earlier)
-- **Unwind** — "What hobby have you never gotten tired of, even after years?" (displaced from Unwind 2 in v6.69)
-- **Unwind** — "Some things look like rest and leave you emptier..." (displaced from Unwind 5 in v6.69)
-- **Warm** — "Whose skill do you quietly envy?" (displaced from Warm 8 in v6.69, replaced with a near-identical but sharper phrasing of the same card)
-- **Wish** — "A free year, no obligations — what finally gets done?" (displaced from Wish 9 in v6.69)
-- **Work** — "Tell about your most instructive professional failure." (displaced from Work 6 in v6.69)
-- **Work** — "What does the word \"retirement\" do to you?" (displaced from Work 11 in v6.69)
-- **Work** — "Which colleague changed how you work?" (displaced from Work 4 in v6.69 — the strangest-job card relocated there from Work 1 instead)
-- **Wish** — "Which part of someone else's life do you envy enough to think about more than you'd admit?" (displaced from Wish 8 in v6.69; the replacement was held back in v6.68 for colliding with Life 10, now clear since Life 10 changed too)
-- **Values** — "How much of where you are now is luck?" (displaced from Values 3 in v6.69, replaced with a sharper phrasing of the same card)
-- **Connect** — "In an argument, are you the one who goes quiet or the one who won't stop talking — does the other person know that about you?" (displaced from Connect 10 in v6.70, itself only one patch old)
-- **Culture** — "Which public space taught you something about beauty?" (displaced from Culture 5 in v6.70; the v6.68 replacement was held for colliding with Culture 10, now resolved with fresh wording instead)
-- **Culture** — "What was the last thing you read, watched, or listened to that genuinely changed how you think?" (displaced from Culture 12 in v6.70; same story as Culture 5 — held for colliding with Culture 1, now resolved with fresh wording)
-- **Deep** — "Who changed your idea of what a good person looks like?" (displaced from Deep 9 in v6.70, itself only one patch old)
-- **Friendship** — "What do your friends come to you for — and is it what you'd choose?" (displaced from Friendship 8 in v6.70; held since v6.68 for colliding with Friendship 1, now resolved with fresh wording)
-- **Roots** — "What did a normal evening look like when you were young?" (displaced from Roots 7 in v6.70; held since v6.68 for colliding with Shadow 12, now resolved with fresh wording)
-- **Self** — "What have you had to manage that most people never saw?" (displaced from Self 7 in v6.70; held since v6.68 for colliding with Life 9, now resolved with fresh wording)
-- **Values** — "Would you tell this table what you earn?" (displaced from Values 8 in v6.70; held since v6.68 for colliding with Quick 3, now resolved with fresh wording)
-- **Wish** — "What's a compliment you'd love to earn in the next five years that you haven't earned yet?" (displaced from Wish 9 in v6.70, itself only one patch old)
-- **Work** — "What part of your job might genuinely count as a form of craft, even if nobody would call it that?" (displaced from Work 1 in v6.70, itself only one patch old)
-- **Roots** — "Was there a kid at school whose opinion of you mattered way more than it should have?" (displaced from Roots 7 in v6.71, itself only one patch old)
-- **Deep** — "Something true about you has never had an occasion to be said..." (displaced from Deep 1 in v6.72; the original card, held since it first got flagged)
-- **World** — "What has travel actually taught you — beyond the stories?" (displaced from World 8 in v6.72; freed up the "travel" subject for Unwind 7, which is where it landed instead)
 - **Life** — "What happens on your daily commute that nobody else would notice?" (an alternative for Life 10 in the 2026-10-16 Life rework; owner liked it — "it's also fun" — but chose the public-transport card for the slot)
 - **Flesh** — "When did sex last feel like play — and what made it that way?" (written 2026-10-18 for laughing and play in bed; owner: "play is exactly the word I'd look for" — it is what they call that feeling. Fulfils a need; no slot yet.)
 - **Flesh** — "Who have you had the most fun with in bed?" (written 2026-10-18 alongside the play card; the owner dropped the "not the best sex, the most fun" contrast from the draft — "the fun can be the best". Fulfils a need; no slot yet.)
@@ -105,6 +42,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Culture** — "Which cover version is better than the original?" (owner asked to bench, round 2 2026-10-20)
 - **Culture** — "Which video online have you watched more times than you'd admit?" (owner asked to bench, round 2 2026-10-20)
 - **Work** — "Who was the best boss you ever had — and what did they do that others didn't?" (owner asked to bench, round 2 2026-10-20)
+- **Friendship** — "What happened when friends from different parts of your life finally met?" (owner asked to bench, round 3 2026-10-23)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -353,6 +291,66 @@ that went wrong · collections · festivals · a guilty-pleasure pastime · what
 play as an adult.
 **Where it stops:** media and taste are Culture's · sport as body is Body's · chores are Life's.
 
+### Connect
+**App line:** The way you let people in
+**About:** How you connect with people: strangers, neighbours, colleagues, old acquaintances, and
+your friends, partner and family too. How you start a conversation, how close you let people
+come, how you handle conflict and repair. A Connect card asks about connecting in general, so the
+answer can be about anyone; a card about one kind of relationship belongs to that category.
+**Lines of thought:** small talk with strangers, and the moment it turns into a real conversation ·
+the people you see every day and barely know · starting a conversation, and getting out of one ·
+texting versus calling, voice notes, how fast you reply · who really listens to you, and who you
+really listen to · asking for help, and offering it · staying in touch over distance · picking up
+with someone after years · loneliness, and company that still feels lonely · parties and crowds,
+and the corner you end up in · people you only know through a screen · showing someone they
+matter · conflict, apologies and forgiving · being the one who reaches out first.
+**Where it stops:** a card about friends in particular is Friendship's · about partners, Romance's ·
+about relatives, Family's · the people at this table are the Us categories' · how your head works
+is Mind's.
+
+### Friendship
+**App line:** The people you picked yourself
+**About:** Your friends: how you found them, how you keep them, how you lose them, and what
+friendship is like day to day. The fun of it as much as the loyalty.
+**Lines of thought:** how you met your closest friends · the group: the group chat, the roles in it,
+who organises · the things only your friendship has: a running joke, a standing date, a habit
+nobody else gets · friends from different parts of your life who have never met · old friends who
+knew you before you became you · friends and partners: jealousy, a friend's partner you can't
+stand · friendships across ages, with a colleague, with an ex · falling out, and making up ·
+making friends as an adult · friendships that faded, or ended · the friend who shows up · honesty
+between friends · laughing together.
+**Where it stops:** how you connect with people in general is Connect's · romance is Romance's ·
+the friends at this table are Us: Friends'.
+
+### Romance
+**App line:** From the first date to the last goodbye
+**About:** Love as you've lived it: meeting, dating, falling, staying, ending. The stories as much as
+the patterns.
+**Lines of thought:** how you meet people: apps, friends, chance · first dates, the best and the
+disasters · the moment it became official · exes: the one that got away, staying friends, running
+into them · moving in together · long distance · weddings, proposals, anniversaries · jealousy ·
+love at different ages · what your friends and family thought of your partners · falling in love
+· the patterns you repeat · breaking up, and being left · being single · romantic attempts that
+failed.
+**Where it stops:** crushes and attraction are Attract's · sex is After Dark's · your partner, asked
+directly, is Us: Love's · your family as it is now is Family's.
+
+### Family
+**App line:** The family you have now
+**About:** Your family as it is now, as an adult: parents as people, brothers and sisters, the
+partner's family, children or none, the whole wider circle. Roots is the past; Family is the
+present. Cards must work for everyone at the table — people without siblings, without children,
+without living parents, or with little contact — so ask about the family a player has, not one
+they're assumed to have.
+**Lines of thought:** brothers and sisters, now that you're adults · in-laws and your partner's
+family · family gatherings: birthdays, holidays, the family group chat · cousins, nieces, nephews,
+the wider family · family news: who tells whom, and who hears last · looking after each other:
+care, money, help · family abroad, and family you rarely see · the stories that get told at every
+gathering · parents as people, now that you're grown · the roles everyone plays · what the family
+argues about · chosen family · children: wanting them, having them, not having them.
+**Where it stops:** growing up and childhood are Roots' · a romantic partner is Romance's · family at
+the table is the Us categories'.
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
@@ -486,6 +484,72 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 ---
 
 # Change log
+
+## Patch v7.20 — category scope rework round 3: Connect, Friendship, Romance, Family
+
+- **Connect 1**
+  - Old: "How do you show someone they matter to you — the actual method?"
+  - New: "What's the smallest thing you've done for someone that they still bring up years later?"
+  - Why: Connect looked only inward; round 3 widens it to how you connect with anyone (strangers, neighbours, old acquaintances), so this slot moves from reflection to a concrete story. The old card is removed, not benched.
+- **Connect 2**
+  - Old: "When did being needed stop feeling good?"
+  - New: "Where were you when a conversation with someone you'd just met went far deeper than either of you planned?"
+  - Why: Connect looked only inward; round 3 widens it to how you connect with anyone (strangers, neighbours, old acquaintances), so this slot moves from reflection to a concrete story. The old card is removed, not benched.
+- **Connect 6**
+  - Old: "What do you do when you feel misunderstood — and does it work?"
+  - New: "What do you say easily in a message or a phone call that you'd never get out face to face?"
+  - Why: Connect looked only inward; round 3 widens it to how you connect with anyone (strangers, neighbours, old acquaintances), so this slot moves from reflection to a concrete story. The old card is removed, not benched.
+- **Connect 8**
+  - Old: "What's the one thing someone could do that would make you feel instantly safe with them?"
+  - New: "What story have you made up about someone you see every day but have never really spoken to?"
+  - Why: Connect looked only inward; round 3 widens it to how you connect with anyone (strangers, neighbours, old acquaintances), so this slot moves from reflection to a concrete story. The old card is removed, not benched.
+- **Connect 10**
+  - Old: "Do you apologize first even when you're not sure you're wrong, just to end it?"
+  - New: "Who did you pick straight back up with after years apart, as if no time had passed?"
+  - Why: Connect looked only inward; round 3 widens it to how you connect with anyone (strangers, neighbours, old acquaintances), so this slot moves from reflection to a concrete story. The old card is removed, not benched.
+- **Friendship 6**
+  - Old: "One friend deserves a better version of you..."
+  - New: "How did you meet your closest friend, and how close did you come to never meeting at all?"
+  - Why: Friendship had four "what kind of friend are you" cards; round 3 turns the category toward how friends were found, kept and shared. The old card is removed, not benched.
+- **Friendship 9**
+  - Old: "Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?"
+  - New: "How did the friends you see together end up as a group?"
+  - Why: Friendship had four "what kind of friend are you" cards; round 3 turns the category toward how friends were found, kept and shared. The old card is removed, not benched.
+- **Friendship 10**
+  - Old: "The friend I'd call when I'm in real trouble is..."
+  - New: "What do you always do with one particular friend that you'd never do with anyone else?"
+  - Why: Friendship had four "what kind of friend are you" cards; round 3 turns the category toward how friends were found, kept and shared. The old card is removed, not benched.
+- **Friendship 12**
+  - Old: "Are you a better friend now than ten years ago — by whose measure?"
+  - New: "What still holds you together with the friend who has known you the longest?"
+  - Why: Friendship had four "what kind of friend are you" cards; round 3 turns the category toward how friends were found, kept and shared. The old card is removed, not benched.
+- **Romance 4**
+  - Old: "Previous partners undervalued something you offer in love..."
+  - New: "Tell about your best first date, and the moment you knew it was going well."
+  - Why: Romance was pattern-heavy and had the first-move overlap with Connect 4; round 3 brings in stories (dates, exes, weddings). The old card is removed, not benched.
+- **Romance 5**
+  - Old: "What has a relationship given you that you didn't know you needed?"
+  - New: "What habit did you pick up from an ex and never drop?"
+  - Why: Romance was pattern-heavy and had the first-move overlap with Connect 4; round 3 brings in stories (dates, exes, weddings). The old card is removed, not benched.
+- **Romance 9**
+  - Old: "Do you make the first move, or make sure you get chosen?"
+  - New: "What's the best wedding speech you've ever heard, or the worst?"
+  - Why: Romance was pattern-heavy and had the first-move overlap with Connect 4; round 3 brings in stories (dates, exes, weddings). The old card is removed, not benched.
+- **Family 1**
+  - Old: "Which family relationship costs you the most — and what does it give back?"
+  - New: "What happens at every family get-together, without fail?"
+  - Why: Family was heavy and leaned into Roots' past; round 3 makes it lighter and about the family as it is now. The old card is removed, not benched.
+- **Family 3**
+  - Old: "What did a parent give you that you only learned to value late?"
+  - New: "What surprised you most the first time you spent real time with someone else's family?"
+  - Why: Family was heavy and leaned into Roots' past; round 3 makes it lighter and about the family as it is now. The old card is removed, not benched.
+- **Family 10**
+  - Old: "How much do you choose your family — and how much do you just endure them?"
+  - New: "What help from your family have you turned down, and why?"
+  - Why: Family was heavy and leaned into Roots' past; round 3 makes it lighter and about the family as it is now. The old card is removed, not benched.
+
+- Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
+- Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
 ## Patch v7.19 — Bare 1, Kink 4, Body 2
 

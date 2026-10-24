@@ -383,3 +383,71 @@ The writer briefs' "App line:" rows for these categories follow the new lines.
 Keeper decision: next group is the relationship cluster, because it has the known overlaps
 (first move: Connect 4 / Romance 9) and the biggest gaps (no siblings, exes, weddings, first
 dates, group chats anywhere in the deck). Definitions shown in chat.
+Round 3 definitions agreed 2026-10-22 (texts in round3-briefs.md): Connect "The way you let
+people in"; Friendship "The people you picked yourself"; Romance "From the first date to the
+last goodbye"; Family "The family you have now" (stays). Owner notes: Connect covers connecting
+with anyone, friends/partners/family included; "inside jokes, rituals, the yearly trip" read as
+frat-boy — reworded; Family cards must work for people without siblings (guardrail added).
+Stay/go proposal shown.
+Round 3 stay/go agreed 2026-10-22:
+- Connect goes: 2, 6, 8, 10 (owner: 6 and 8 go, 7 stays). Connect 1 "How do you show someone they
+  matter to you — the actual method?" becomes a story card (new wording to approve).
+- Friendship goes: 6, 9, 10, 12. Romance goes: 4, 5, 9. Family goes: 1, 3, 10. Family 7 stays
+  (owner: works in a different way if parents have died).
+Keeper slot subjects: Connect 1 story of showing someone they matter; Connect 2 small talk with a
+stranger turning real; Connect 6 texting/calling/voice notes; Connect 8 the people you see every
+day and barely know; Connect 10 picking up with someone after years. Friendship 6 how you met
+your closest friends; 9 the group; 10 the things only your friendship has; 12 old friends who
+knew you before. Romance 4 first dates; 5 exes; 9 weddings, proposals, anniversaries (own or
+witnessed). Family 1 family gatherings; 3 family news, who tells whom; 10 looking after each
+other. Cards go through the writer test (project.md).
+Round 3 picks 2026-10-23:
+- Connect 1 → "What's the smallest thing you've done for someone that they still bring up years later?"
+- Connect 8 → "What story have you made up about someone you see every day but have never really spoken to?"
+- Connect 10 → "Who did you pick straight back up with after years apart, as if no time had passed?"
+- Friendship 6 → "How did you meet your closest friend, and how close did you come to never meeting at all?"
+- Friendship 10 → "What do you always do with one particular friend that you'd never do with anyone else?"
+- Friendship 12 → "What still holds you together with the friend who has known you the longest?"
+- Bench (owner asked, reworded to "friends from different contexts"): "What happened when friends from different parts of your life finally met?"
+- Romance 4 → "Tell about your best first date, and the moment you knew it was going well."
+- Romance 5 → "What habit did you pick up from an ex and never drop?"
+- Romance 9 → "What's the best wedding speech you've ever heard, or the worst?"
+- Family 1 → "What happens at every family get-together, without fail?"
+- Family 10 → "What help from your family have you turned down, and why?"
+- Redo: Connect 6 (communication preferences, more open and answerable, less leading), Friendship 9
+  (friend groups without assuming a big group with roles; owner's groups are at most four),
+  Family 3 (news angle too narrow). Connect 2 not picked yet.
+Picks 2026-10-23 (2): Connect 6 → owner's rewrite "What do you say easily in a message or a phone
+call that you'd never get out face to face?" (Keeper wrote the owner's "message/phonecall" out in
+full). Friendship 9 → "How did the friends you see together end up as a group?". Family 3 →
+"What surprised you most the first time you spent real time with someone else's family?".
+Only Connect 2 left; writer-test result after it.
+Connect 2 → "Where were you when a conversation with someone you'd just met went far deeper than either of you planned?" (2026-10-23). All cards picked.
+
+# FINAL AGREEMENT — Round 3 (built 2026-10-23)
+
+## A) Deck — card swaps (exact words; number = position in the category's block)
+- Connect 1: "How do you show someone they matter to you — the actual method?" → "What's the smallest thing you've done for someone that they still bring up years later?"
+- Connect 2: "When did being needed stop feeling good?" → "Where were you when a conversation with someone you'd just met went far deeper than either of you planned?"
+- Connect 6: "What do you do when you feel misunderstood — and does it work?" → "What do you say easily in a message or a phone call that you'd never get out face to face?"
+- Connect 8: "What's the one thing someone could do that would make you feel instantly safe with them?" → "What story have you made up about someone you see every day but have never really spoken to?"
+- Connect 10: "Do you apologize first even when you're not sure you're wrong, just to end it?" → "Who did you pick straight back up with after years apart, as if no time had passed?"
+- Friendship 6: "One friend deserves a better version of you..." → "How did you meet your closest friend, and how close did you come to never meeting at all?"
+- Friendship 9: "Do you trust by default and sometimes get burned, or trust slowly and rarely get surprised?" → "How did the friends you see together end up as a group?"
+- Friendship 10: "The friend I'd call when I'm in real trouble is..." → "What do you always do with one particular friend that you'd never do with anyone else?"
+- Friendship 12: "Are you a better friend now than ten years ago — by whose measure?" → "What still holds you together with the friend who has known you the longest?"
+- Romance 4: "Previous partners undervalued something you offer in love..." → "Tell about your best first date, and the moment you knew it was going well."
+- Romance 5: "What has a relationship given you that you didn't know you needed?" → "What habit did you pick up from an ex and never drop?"
+- Romance 9: "Do you make the first move, or make sure you get chosen?" → "What's the best wedding speech you've ever heard, or the worst?"
+- Family 1: "Which family relationship costs you the most — and what does it give back?" → "What happens at every family get-together, without fail?"
+- Family 3: "What did a parent give you that you only learned to value late?" → "What surprised you most the first time you spent real time with someone else's family?"
+- Family 10: "How much do you choose your family — and how much do you just endure them?" → "What help from your family have you turned down, and why?"
+Replaced cards are removed, not benched. Bench (owner asked): Friendship "What happened when friends from different parts of your life finally met?".
+Writer briefs for Connect, Friendship, Romance, Family: text in `.claude/keeper/agreements/round3-briefs.md`, added to WRITER BRIEFS.
+
+## C) App lines (config.js desc)
+- Connect (connect): "The way you let people in"
+- Friendship (friends): "The people you picked yourself"
+- Romance (date): "From the first date to the last goodbye"
+- Family: unchanged ("The family you have now")
+**BUILT 2026-10-23** — 15 cards (checked word for word), bench card, four briefs, three lines, ?v=20261023a, 64/64 checks.

@@ -1896,6 +1896,93 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  // Frame-by-frame look at the card (one sample per animation frame). A frame is "wrong" when a
+  // player could see the start card (its logo, "A place to begin…", Spotlight's "Draw a card to begin.")
+  // or the question / list of a hand that is over.
+  const FRAME_WATCH = (old) => {
+    window.__frames = [];
+    const seen = (el) => { if (!el) return false; const s = getComputedStyle(el); return s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.03; };
+    (function tick() {
+      const c = document.getElementById('card'), q = document.getElementById('card-question'), pq = document.getElementById('party-question');
+      const back = c.querySelector('.card-back');
+      const backOn = seen(back);
+      const wrong = [];
+      if (backOn && (seen(c.querySelector('.cb-text')) || seen(c.querySelector('.cb-mark:not(.cb-fermata)')))) wrong.push('start logo/text');
+      if (seen(q) && seen(q.parentElement) && /A place to begin/.test(q.textContent)) wrong.push('start text');
+      if (seen(q) && !c.classList.contains('is-start') && (q.querySelector('.hd-list') || old.some(t => q.textContent.includes(t)))) wrong.push('old hand: ' + q.textContent.slice(0, 30));
+      if (document.getElementById('partyOverlay').classList.contains('open') && /Draw a card to begin/.test(pq.textContent)) wrong.push('start text in Spotlight');
+      window.__frames.push({ t: Math.round(performance.now()), wrong: wrong.join(' | '), cls: [...c.classList].join(' ') });
+      window.__watch = requestAnimationFrame(tick);
+    })();
+  };
+  const frameReport = async () => {
+    const f = await page.evaluate(() => { cancelAnimationFrame(window.__watch); return window.__frames; });
+    const bad = f.filter(x => x.wrong);
+    return { n: f.length, bad: bad.length, first: bad[0] ? `${bad[0].wrong} @${bad[0].t - f[0].t}ms (${bad[0].cls})` : '' };
+  };
+
+  await check('end of hand: the card turning to Intermezzo never shows the start card, at any frame (phone and Spotlight)', async () => {
+    for (const fs of [false, true]) {
+      await freshHand({ three: false });
+      await page.locator('#btn-next').click(); await waitForCardIndex(page, 1);
+      await page.waitForTimeout(800);
+      if (fs) { await page.locator('#btnParty').click(); await page.waitForTimeout(500); }
+      await page.evaluate(() => { while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); });
+      await page.waitForTimeout(700);
+      await page.evaluate(FRAME_WATCH, []);
+      await page.evaluate(() => { window.__frames.length = 0; nextCard(); });
+      await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+      await page.waitForTimeout(500);
+      const r = await frameReport();
+      assert(r.bad === 0 && r.n > 60, `${fs ? 'Spotlight' : 'phone'}: ${r.bad} wrong frames of ${r.n}, first: ${r.first}`);
+      if (fs) await page.evaluate(() => exitParty());
+    }
+  });
+
+  await check('hold to continue (from Intermezzo or the list, Three off or on, phone and Spotlight): no frame shows the start card or the previous hand\'s questions on the way to the next hand\'s first card', async () => {
+    for (const [from, three, fs] of [['intermezzo', false, false], ['list', false, false], ['intermezzo', true, false], ['list', true, false], ['intermezzo', false, true], ['list', false, true]]) {
+      await freshHand({ three });
+      if (three) { await page.locator('#card').click(); await waitPicker(true); await page.waitForTimeout(400); await page.locator('#pickerOptions .pick-opt').first().click(); }
+      else await page.locator('#btn-next').click();
+      await waitForCardIndex(page, 1); await page.waitForTimeout(800);
+      if (fs) { await page.locator('#btnParty').click(); await page.waitForTimeout(500); }
+      await page.evaluate(() => { const on = pickMode; pickMode = false; while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); pickMode = on; });
+      await page.evaluate(() => nextCard());
+      await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+      await page.waitForTimeout(1200);
+      if (from === 'list') { await page.evaluate(() => flipHandList()); await page.waitForTimeout(1200); }
+      const old = await page.evaluate(() => state.visibleDeck.map(c => translateQ(c).slice(0, 25)));
+      await page.evaluate(FRAME_WATCH, old);
+      await page.evaluate(() => { window.__frames.length = 0; window._endHoldOK = true; nextCard(); });   // a completed hold; frames count from here
+      if (three) { await waitPicker(true); await page.waitForTimeout(600); await page.locator(fs ? '#partyPickerOptions .pick-opt' : '#pickerOptions .pick-opt').first().click(); }
+      await page.waitForTimeout(1500);
+      const r = await frameReport();
+      assert(r.bad === 0 && r.n > 40, `from ${from}, Three ${three ? 'on' : 'off'}, ${fs ? 'Spotlight' : 'phone'}: ${r.bad} wrong frames of ${r.n}, first: ${r.first}`);
+      if (fs) await page.evaluate(() => exitParty());
+    }
+  });
+
+  await check('hold to continue in Spotlight with Three on: while the first picker is open, the old hand\'s deck mark, star and Prev state are gone', async () => {
+    await freshHand({ three: true });
+    await page.locator('#card').click(); await waitPicker(true); await page.waitForTimeout(400); await page.locator('#pickerOptions .pick-opt').first().click();
+    await waitForCardIndex(page, 1); await page.waitForTimeout(800);
+    await page.locator('#btnParty').click(); await page.waitForTimeout(500);
+    await page.evaluate(() => { const on = pickMode; pickMode = false; while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); pickMode = on; });
+    await page.evaluate(() => nextCard());
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+    await page.waitForTimeout(1200);
+    // the last card's marks, as an After Dark card would leave them
+    await page.evaluate(() => { applyCardMark(document.querySelector('.party-frame'), { level: 'colbert' }); document.getElementById('partyStar').classList.add('on'); });
+    await page.evaluate(() => { window._endHoldOK = true; nextCard(); });
+    await waitPicker(true); await page.waitForTimeout(600);
+    const st = await page.evaluate(() => ({
+      mark: document.querySelector('.party-frame').className, star: document.getElementById('partyStar').classList.contains('on'), prev: document.getElementById('partyPrevBtn').disabled,
+      start: /Draw a card to begin/.test(document.getElementById('party-question').textContent),
+    }));
+    assert(!/mark-/.test(st.mark) && !st.star && st.prev && !st.start, `Spotlight picker after hold to continue: ${JSON.stringify(st)}`);
+    await page.evaluate(() => exitParty());
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

@@ -23,10 +23,16 @@ instead. They weigh as much as the hard rules below.
 - Run `npm run check:static` (type check + linter, see `CHECKS.md`) and report its result; a new finding is a finding.
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
+- From 2026-10-23 the agreement is a user story in `.claude/keeper/backlog.md`: its numbered
+  acceptance criteria are the lines you check.
 - Go through the agreement **line by line** (and the chosen mockup, if the Keeper gives one):
   for every line say met, not met, or can't check, with a screenshot for anything visible.
   "It works" is not enough: a thing that works but looks or behaves differently from what was
   agreed is *not met*. Compare looks against the mockup side by side, not from memory.
+- **Scope** (owner, 2026-10-23): you test whether the change works as agreed, plus a few edge
+  cases right next to it (an empty or full hand, Three on, Spotlight, phone and wide where the
+  change shows). Stop there. No tours of the rest of the app, no extra profiles or screen sizes
+  the change can't reach, no repeat runs of the full test suite: run it once.
 - **Proportional** (owner, 2026-10-19): for a small bug fix, try the owner's steps and a few nearby sets by hand; if it doesn't happen, that's enough. No large simulations or timing studies unless the Keeper asks for them.
 - For a bug fix: first follow the owner's own steps from the bug report and confirm the bug is
   gone; then try the nearby cases (other settings, other hand sizes, other screens).
@@ -40,7 +46,7 @@ instead. They weigh as much as the hard rules below.
 2. Open the app in a real browser (Playwright), phone-sized and wide, and walk through the
    changed parts as a player: start an evening, pick chapters/categories, draw, swipe, open
    the drawers — whatever the change touches, plus what sits next to it.
-3. Check every profile the change could affect: `between-us.html`, `?profile=work`
+3. Check the profiles the change can actually reach (the work version only if it touches content, drawers or profiles): `between-us.html`, `?profile=work`
    (no adult content reachable), `?profile=editor`.
 4. Watch the browser console for errors.
 5. Take screenshots of anything that looks wrong; save them in the scratchpad, not the repo.
