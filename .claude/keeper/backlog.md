@@ -306,3 +306,15 @@ _Nothing is being built right now._
 
 ### Release 1.7.0 (C), 2026-10-23
 **Story:** The automatic release published and reset the notes. **Source:** 03f8d29
+
+## When does the app start fresh? (2026-10-24)
+
+The owner thought a different preset was a clean slate. It isn't: seen cards (and skipped
+cards) count across presets, category changes, reloads and days; a fresh pass only starts when
+every card in the current selection is seen, or when the history is cleared by hand
+(deck.js `_startFreshPassIfSpent`, presentation.js `btnClearLog`). On a phone with hundreds of
+hands, that can leave a lopsided unseen pool (e.g. mostly Quick/Warm), giving hands like
+2026-10-24's: five Quick, four Warm, one Grief with Everything + Arc. Owner: "we'd have to look
+into what makes a clean slate and restarts… for now I understand what happens." Open when it
+comes back: what should reset the seen memory (a preset change? a new day? a category running
+out?), and what the player sees of it.
