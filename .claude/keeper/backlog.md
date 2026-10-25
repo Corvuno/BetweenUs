@@ -1,6 +1,6 @@
 # Backlog
 
-_Updated 23 October 2026_
+_Updated 25 October 2026_
 
 The one queue of work. The Keeper keeps it in order; the owner can move anything. Older detailed notes: backlog-notes-before-2026-10-23.md.
 
@@ -10,28 +10,11 @@ _Nothing is being built right now._
 
 ## Next
 
-### Round 4: Self, Mind and Values (Area A deck)
-**Story:** As a player who draws a Self card, I get a question I can answer with a moment from my own life (a compliment I brushed off, a time I acted unlike myself, what I am stubborn about), not a summary of my personality. As a player who draws a Mind card, I get a question about something my head really does (the song stuck in it, where my best ideas turn up, what it takes to change my mind), never about mental health. As a player who draws a Values card, I get a choice from an ordinary day (the wrong change in a shop, a white lie, a promise) or an open dilemma to take a side on, never party politics. So the table hears stories and positions instead of self-summaries.
-**Acceptance criteria:**
-1. Ten cards are gone from the deck, not benched:
-   Self, 6, "When has having power over someone made you kinder, not crueler?"
-   Self, 8, "A time you completely lost your footing — what held, and what did you rebuild first?"
-   Self, 9, "What have you had to accept that you never chose?"
-   Self, 11, "What's something true about you that took far too long to notice?"
-   Self, 12, "What do you come back to after everything else falls away?"
-   Mind, 4, "Which of your memories do you suspect you've quietly rewritten over the years?"
-   Mind, 8, "What's the last thing that annoyed you that you'd be a little embarrassed to admit annoyed you?"
-   Mind, 10, "What do you keep understanding differently each time you think you've worked it out?"
-   Values, 2, "Which of your values survives worst under pressure?"
-   Values, 8, "What can having money make disappear that not having it can't?"
-2. Every other card in the three categories is word for word as it is now.
-3. Each of the ten open slots holds a new card the owner saw and approved in its exact words before it went in, inside its category's brief (Self: character, temper, pride, how you see yourself against how others see you; Mind: thinking, remembering, noticing, deciding, daydreaming; Values: right and wrong in everyday situations).
-4. No new card breaks a guardrail: Self assumes no job, partner or big circle of friends; Mind never mentions mental illness, therapy or medication; Values has no party politics or hot-button issue. None strays into a neighbour (Past, Shadow, Unwind, Raw, Spirit, Life, Culture).
-5. In the app, Mind's line under the category name reads "How your head actually works"; Self ("The person under all the parts you play") and Values ("Your principles, tested") are unchanged.
-6. The change log in questions/between-us-deck.md has one entry per swapped card: old text, new text, why.
+### Round 6: After Dark — Carnal and Bare (Area A deck)
+**Story:** As a player in After Dark, Carnal and Bare cards each stay on their own ground and none reads juvenile.
+**Acceptance criteria:** 1. Definition, stay/go over all 12 of each, new cards in the owner's words (standard method). 2. Bare gets a new app line. 3. The Carnal brief loses "the training wheels come off". 4. Flesh 9 (hands) is settled in the same round.
 **Touches:** questions.js, config.js, questions/between-us-deck.md
-**Source:** agreements/round4-briefs.md (briefs and stay/go agreed 2026-10-23); same method as rounds 1 to 3
-**Status note:** Not started. The ten new cards are not written yet. Next step: the Keeper writes the proposals with the writer test (two writers, mixed, unlabelled), and the item moves to Waiting on the owner for your picks. Once approved, one Haiku builder writes all ten in one go. (Was wrongly listed under Building now until 23 October.)
+**Source:** owner 2026-10-25 ("I don't think we did carnal and bare"); Keeper queued it after round 5.
 
 ## Waiting on the owner
 
@@ -75,15 +58,15 @@ _Nothing is being built right now._
 **Source:** vision.md "Where it's going"
 **Status note:** Nothing is agreed beyond "its own website, free, English". Options are the open parts, not Keeper proposals.
 
-### Decision: which categories get reworked after round 4 (Area A deck)
-**Decision:** Not yet reworked: Quick, Warm, Unwind, Past, Deep, Raw, Shadow, Grief, Between Us, Us: Friends and Us: Love. Which ones come next, and in what order?
-**Acceptance criteria:**
-1. Option: You name the next group — means it gets the same method as rounds 1 to 4: app line and brief first, then stay/go, then new cards.
-2. Option: Unwind goes first — means its old narrow app line is replaced in that round.
-3. Option: No more rounds for now — means the deck stays as it is after round 4 and the vision line "every category is wide enough" is reviewed.
-**Touches:** questions.js, config.js, questions/between-us-deck.md
-**Source:** project.md "standard method"; rounds 1 to 4
-**Status note:** Waiting on the owner's order. Once named, each category becomes a Building-now story of its own.
+### Round 5: Into the Deep — Past, Deep, Raw, Shadow, Grief (Area A deck)
+**Decision:** Stay/go over the 60 cards (12 proposed to go). Briefs and app lines agreed 2026-10-25.
+**Source:** agreements/round5-briefs.md
+**Status note:** Waiting on the owner's stay/go; then new cards.
+
+### Decision: a depth score per card (Area C app, Area A deck)
+**Decision:** Revive the September depth-scoring plan or not. Plan then: an optional depth 1–7 on each card in questions.js, falling back to the category band; Arc orders by card depth; After Dark never below 3. In September only scores in chat (Mind, Self, Past, Body, Deep, Flesh, Abyss, Quick, Warm, Life, Friends, Connect, Carnal); nothing built.
+**Source:** session of 2026-09-20 to 09-22 (branch question-rating-system); owner asked 2026-10-25.
+**Status note:** Waiting on the owner.
 
 ### Decision: the 5 / 10 / 20 / All picker (Area B looks)
 **Decision:** On the card-count row of the sheet, do you want the counter lettering (Poiret One, as under the card) on the numbers, and which of the four mockup versions?
@@ -213,6 +196,9 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Round 4: Self, Mind and Values (A), 2026-10-24
+**Story:** Ten new cards, Mind line "How your head actually works", three briefs; bench cleaned from 89 to 19. **Source:** ddb328b, 3dee66c
 
 ### Players draw cards (C), 2026-10-12
 **Story:** The app only says "draw" for taking a card. **Source:** 451a855
