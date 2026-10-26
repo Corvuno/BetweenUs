@@ -75,3 +75,11 @@ what people said that helped, and what didn't.
 Past's · regret towards people still alive is Deep's · ex stories are Romance's (the ending as a
 loss is Grief's).
 **Guardrail:** someone at the table may be grieving right now; cards invite, never force. Not soft.
+
+## Stay/go (2026-10-26)
+Go: Past 6, 9, 10, 12 · Deep 2, 7, 11 · Raw 7, 8, 12 · Shadow 3, 5, 9 · Grief 6, 7 (15).
+Owner: Past 9 "What's the best trouble you ever got into?" → bench for Warm. Past 10 "Which scar
+still carries the best story?" → bench for Body. Raw 8 goes in this round (out of Raw's band).
+Rest of the stay/go taken as agreed (owner answered only the out-of-band cards).
+Self 6 stays at band 5 ("if this is the only one, it might not be too bad").
+Self 8: owner wants it to reach what the gap means (self-image); new wording to be proposed.
