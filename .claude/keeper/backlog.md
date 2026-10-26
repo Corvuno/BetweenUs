@@ -6,8 +6,7 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 
 ## Building now
 
-### Bug: switching on After Dark turns a preset into Custom (Area C app)
-Owner, 2026-10-26: After Dark is off by default as a safety lock, not a way to customise. Adding or removing After Dark categories a preset offers keeps the preset. Exception: Us: Intimate in Balanced and Everything still turns it Custom.
+_Nothing is being built right now._
 
 ## Next
 
@@ -197,6 +196,9 @@ Owner, 2026-10-26: After Dark is off by default as a safety lock, not a way to c
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Bug: After Dark no longer turns a preset into Custom (C), 2026-10-26
+**Story:** Adding or removing After Dark categories a preset offers keeps the preset; Us: Intimate in Balanced and Everything still turns it Custom. Tested and reviewed clean. **Source:** 9404fce
 
 ### Round 4: Self, Mind and Values (A), 2026-10-24
 **Story:** Ten new cards, Mind line "How your head actually works", three briefs; bench cleaned from 89 to 19. **Source:** ddb328b, 3dee66c
