@@ -59,13 +59,17 @@ const showSubtitle = preset => {
 
 // The deck carries a preset's name only while the selection is exactly that
 // preset's set (the active one, or the last applied after going Custom);
-// any other selection is "Custom" (activePreset ''). Fixed Sets are ordered
+// any other selection is "Custom" (activePreset ''). After Dark categories
+// don't count, except the ones a preset lists in `customisedBy`: opening
+// After Dark is a safety switch, not a customisation. Fixed Sets are ordered
 // lists with no editable selection, so they keep their own behaviour.
 function syncActivePreset() {
   if (FIXED_SEQ_PRESETS.includes(state.activePreset)) return;
   const preset = FIXED_SEQ_PRESETS.includes(_lastPreset) ? undefined : PRESETS[_lastPreset];
-  const set = preset && presetSelection(preset);
-  const matches = !!set && set.size === state.activeToggles.size && [...set].every(l => state.activeToggles.has(l));
+  const counts = l => !SAFE_BLOCKED_LEVELS.includes(l) || !!preset?.customisedBy?.includes(l);
+  const set = preset && [...presetSelection(preset)].filter(counts);
+  const current = [...state.activeToggles].filter(counts);
+  const matches = !!set && set.length === current.length && set.every(l => state.activeToggles.has(l));
   state.activePreset = matches ? _lastPreset : '';
   showSubtitle(matches ? preset : null);
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === state.activePreset));

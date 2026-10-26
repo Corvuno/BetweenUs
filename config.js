@@ -265,10 +265,14 @@ function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
 function levelIntensity(l){ return LEVEL_INTENSITY[l] != null ? LEVEL_INTENSITY[l] : 3; }
 function levelFocus(l){ return LEVEL_FOCUS[l] != null ? LEVEL_FOCUS[l] : 0; }
 
+// After Dark is switched on as a safety gate, not to customise a deck, so
+// adding or removing an After Dark category keeps the preset. `customisedBy`
+// lists the After Dark categories that still make a preset Custom.
 const PRESETS = {
   open: {
     on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","bare"],
     available: ["colbert","aron","magic","carnal","kinks","backup"],
+    customisedBy: ["usintimate"],
     subtitle:  "Everything on the table"
   },
   // The public build's actual opening selection — Beneath the Surface +
@@ -284,6 +288,7 @@ const PRESETS = {
     // a chapter with only some of its categories on shows "part" on load, so
     // a first click would complete it instead of clearing it.
     available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup"],
+    customisedBy: ["usintimate"],
     subtitle:  "Just enough edge."
   },
   // Every preset below is banded: "on" respects the depth ceiling the

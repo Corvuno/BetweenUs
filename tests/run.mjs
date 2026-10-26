@@ -359,6 +359,42 @@ async function run() {
     }
   });
 
+  await check('After Dark keeps the preset (Partner + Flesh stays Partner, Balanced + Flesh stays Balanced); Us: Intimate in Balanced and any other category still make it Custom', async () => {
+    try {
+      await openCategorySheet();
+      const token = () => page.locator('#valCats').textContent().then(s => s.trim());
+      // the same path a category button takes: toggle, then re-read the preset
+      const toggle = lvl => page.evaluate(l => {
+        state.activeToggles[state.activeToggles.has(l) ? 'delete' : 'add'](l);
+        syncActivePreset(); applyToggleUI(); initDeck();
+      }, lvl);
+      const pick = async mode => { await page.locator(`.mode-btn[data-mode="${mode}"]`).click(); await page.waitForTimeout(300); };
+      await pick('partner');
+      await page.evaluate(() => openAfterDark());
+      await toggle('flesh');
+      assert((await token()) === 'Partner', `Partner + Flesh read "${await token()}"`);
+      assert(await page.locator('.mode-btn[data-mode="partner"]').evaluate(el => el.classList.contains('active')), 'Partner lost its active button');
+      await toggle('flesh');
+      assert((await token()) === 'Partner', 'removing Flesh again lost Partner');
+      await toggle('usintimate');
+      assert((await token()) === 'Partner', `Partner + Us: Intimate read "${await token()}"`);
+      await toggle('usintimate');
+      await pick('balanced');
+      await page.evaluate(() => openAfterDark());
+      await toggle('flesh');
+      assert((await token()) === 'Balanced', `Balanced + Flesh read "${await token()}"`);
+      await toggle('usintimate');
+      assert((await token()) === 'Custom', `Balanced + Us: Intimate read "${await token()}"`);
+      await toggle('usintimate');
+      assert((await token()) === 'Balanced', 'removing Us: Intimate did not bring Balanced back');
+      await toggle('culture');
+      assert((await token()) === 'Custom', 'Balanced without Culture did not read Custom');
+      await pick('balanced');
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
   await check('the None control turns into All once nothing is on, and All switches on every category the limits allow (After Dark included, Coworkers stays within its limits)', async () => {
     try {
       await openCategorySheet();
