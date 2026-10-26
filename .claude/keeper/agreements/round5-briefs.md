@@ -92,3 +92,11 @@ Self 8: owner wants it to reach what the gap means (self-image); new wording to 
   current card is also possible. → rework, options to show.
 - Grief 6 goes; its new card keeps the premise "what did you change after a period of grief".
 - Updated complete list to be shown; nothing else decided.
+
+## Owner comments 2026-10-26, second pass
+- Raw 8 and Raw 9 stay (owner: both deeper than 5; Keeper agrees, 6).
+- Shadow 7 stays ("it is the shadow side").
+- Shadow 5 → "What feeling do you cover so well that even the people closest to you have never seen it?"
+- Deep 4: make deeper or bench for another category → options in the Deep 4 slot; if replaced, the old card is benched for Connect (Keeper's call).
+- Past 10 scar card → into Body, replacing its weakest card (Keeper proposes Body 6).
+- Open slots: Past 2, 9, 10, 12 · Deep 2, 4, 6, 7, 11 · Raw 2, 7, 12 · Shadow 3, 9 · Grief 6, 7 · Self 8 · Body swap.
