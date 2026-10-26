@@ -66,7 +66,7 @@ _Nothing is being built right now._
 ### Decision: a depth score per card (Area C app, Area A deck)
 **Decision:** Revive the September depth-scoring plan or not. Plan then: an optional depth 1–7 on each card in questions.js, falling back to the category band; Arc orders by card depth; After Dark never below 3. In September only scores in chat (Mind, Self, Past, Body, Deep, Flesh, Abyss, Quick, Warm, Life, Friends, Connect, Carnal); nothing built.
 **Source:** session of 2026-09-20 to 09-22 (branch question-rating-system); owner asked 2026-10-25.
-**Status note:** Waiting on the owner.
+**Status note:** Decided 2026-10-26: no per-card score. Rule instead: every card within one step of its category's band (project.md).
 
 ### Decision: the 5 / 10 / 20 / All picker (Area B looks)
 **Decision:** On the card-count row of the sheet, do you want the counter lettering (Poiret One, as under the card) on the numbers, and which of the four mockup versions?
