@@ -80,6 +80,6 @@ loss is Grief's).
 Go: Past 6, 9, 10, 12 · Deep 2, 7, 11 · Raw 7, 8, 12 · Shadow 3, 5, 9 · Grief 6, 7 (15).
 Owner: Past 9 "What's the best trouble you ever got into?" → bench for Warm. Past 10 "Which scar
 still carries the best story?" → bench for Body. Raw 8 goes in this round (out of Raw's band).
-Rest of the stay/go taken as agreed (owner answered only the out-of-band cards).
+Correction 2026-10-26: the rest of the stay/go is NOT agreed yet. The Keeper took silence as agreement; the owner had not looked at it yet.
 Self 6 stays at band 5 ("if this is the only one, it might not be too bad").
 Self 8: owner wants it to reach what the gap means (self-image); new wording to be proposed.
