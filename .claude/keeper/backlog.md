@@ -1,12 +1,13 @@
 # Backlog
 
-_Updated 25 October 2026_
+_Updated 26 October 2026_
 
 The one queue of work. The Keeper keeps it in order; the owner can move anything. Older detailed notes: backlog-notes-before-2026-10-23.md.
 
 ## Building now
 
-_Nothing is being built right now._
+### Bug: switching on After Dark turns a preset into Custom (Area C app)
+Owner, 2026-10-26: After Dark is off by default as a safety lock, not a way to customise. Adding or removing After Dark categories a preset offers keeps the preset. Exception: Us: Intimate in Balanced and Everything still turns it Custom.
 
 ## Next
 
