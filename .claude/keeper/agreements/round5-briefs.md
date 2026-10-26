@@ -83,3 +83,12 @@ still carries the best story?" → bench for Body. Raw 8 goes in this round (out
 Correction 2026-10-26: the rest of the stay/go is NOT agreed yet. The Keeper took silence as agreement; the owner had not looked at it yet.
 Self 6 stays at band 5 ("if this is the only one, it might not be too bad").
 Self 8: owner wants it to reach what the gap means (self-image); new wording to be proposed.
+
+## Owner comments 2026-10-26 (stay/go and outliers together)
+- Past 6 stays ("school is fine, we all know school").
+- Past 9 goes, new card (bench for Warm stands).
+- Shadow 5 "Which emotion do you fake best?": there for a reason (people who fake fine); maybe too
+  blunt; wants a subtler version reaching what's underneath that you don't want to show. Keeping the
+  current card is also possible. → rework, options to show.
+- Grief 6 goes; its new card keeps the premise "what did you change after a period of grief".
+- Updated complete list to be shown; nothing else decided.
