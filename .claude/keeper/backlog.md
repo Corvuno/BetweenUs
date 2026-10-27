@@ -58,11 +58,6 @@ _Nothing is being built right now._
 **Source:** vision.md "Where it's going"
 **Status note:** Nothing is agreed beyond "its own website, free, English". Options are the open parts, not Keeper proposals.
 
-### Round 5: Into the Deep — Past, Deep, Raw, Shadow, Grief (Area A deck)
-**Decision:** Stay/go over the 60 cards (12 proposed to go). Briefs and app lines agreed 2026-10-25.
-**Source:** agreements/round5-briefs.md
-**Status note:** Waiting on the owner's stay/go; then new cards.
-
 ### Decision: a depth score per card (Area C app, Area A deck)
 **Decision:** Revive the September depth-scoring plan or not. Plan then: an optional depth 1–7 on each card in questions.js, falling back to the category band; Arc orders by card depth; After Dark never below 3. In September only scores in chat (Mind, Self, Past, Body, Deep, Flesh, Abyss, Quick, Warm, Life, Friends, Connect, Carnal); nothing built.
 **Source:** session of 2026-09-20 to 09-22 (branch question-rating-system); owner asked 2026-10-25.
@@ -196,6 +191,9 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Round 5: Into the Deep (A), 2026-10-27
+**Story:** 17 new cards in Past, Deep, Raw, Shadow, Grief, plus Self 8 and Body 6; four new app lines; five briefs; house style 13 (vary how a card asks); depth rule (cards within one step of the band). **Source:** 4222824
 
 ### Bug: After Dark no longer turns a preset into Custom (C), 2026-10-26
 **Story:** Adding or removing After Dark categories a preset offers keeps the preset; Us: Intimate in Balanced and Everything still turns it Custom. Tested and reviewed clean. **Source:** 9404fce
