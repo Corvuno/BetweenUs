@@ -452,6 +452,10 @@ The subject matter is not what makes a card recognisable — every deck asks abo
     group, or two people depending on the table. *"Tell about the moment..."* is house
     style; *"Tell me about the moment..."* invents an asker that doesn't exist. The
     question is pulled from the player, not given to them by a "me."
+13. **Vary how a card asks.** About four in five cards start with a question word. Mix in "Tell
+    about…", "Quote…", "Name…", "Point to…", an open "…" sentence, or a command. Every proposal
+    slot offers at least one alternative that isn't a question, and a category never loses its
+    non-question cards to a rework (owner, 2026-10-27).
 
 ## Lenses
 

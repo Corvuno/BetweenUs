@@ -57,6 +57,12 @@ The Keeper. Started with `/keeper`.
   why it matters". Mix short phrases, images, questions, contrasts (owner, 2026-10-18).
 - Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a
   command are all fine — variety in how cards ask is welcome.
+- **Vary how a card asks — a rule, not a wish** (owner, 2026-10-27: "all questions start with a W
+  or H"). In every slot at least one of the alternatives uses another form: "Tell about…",
+  "Quote…", "Name…", "Describe…", "Point to…", an open "…" sentence to finish, or a command. A
+  round's new cards are not all questions, and a category never ends a round with fewer
+  non-question cards than it started with. (The deck is about 80% question words; rounds 1–4
+  replaced several open prompts with questions.)
 - **Depth stays per category** (owner, 2026-10-26): no per-card depth score. Every card in a
   category sits at most one depth step either side of the category's band (config.js `band`, 1–7),
   so Arc works on categories and nobody notices. Every round checks each card against this; a card

@@ -100,3 +100,10 @@ Self 8: owner wants it to reach what the gap means (self-image); new wording to 
 - Deep 4: make deeper or bench for another category → options in the Deep 4 slot; if replaced, the old card is benched for Connect (Keeper's call).
 - Past 10 scar card → into Body, replacing its weakest card (Keeper proposes Body 6).
 - Open slots: Past 2, 9, 10, 12 · Deep 2, 4, 6, 7, 11 · Raw 2, 7, 12 · Shadow 3, 9 · Grief 6, 7 · Self 8 · Body swap.
+
+## Picks (2026-10-27)
+- Body 6 → "Which scar still carries the best story?" (moved from Past 10)
+- Self 8 → "What do you keep expecting the mirror to show you?"
+- Past 2 → "Which chance meeting sent your life in a direction you'd never have picked?"
+- Past 9 → "Which bridge did you burn on purpose, and do you regret it?"
+- Owner: almost every proposal starts with W or H; rule added for varied card forms. Remaining 14 slots re-offered in mixed forms.
