@@ -92,3 +92,19 @@ Owner: "we are doing B+C" (round 2, https://claude.ai/artifact/77EFUumvT28VWTEiC
 - Clarified by the Keeper (review, 2026-10-21): "not Three" meant Three's own picker; a card chosen in Three
   lands on the card with the same B+C swap, so there is one swap on the card screen. The first draw keeps its
   accent bloom (only the Next/Back bloom goes).
+
+## Tempo, 2026-10-27
+
+Owner found everything too quick ("the draw is over before it starts"; menus and the card flip "almost
+imperceptible"). Picked from the tempo page (https://claude.ai/artifact/EqKn8x42fDmjHpiRaFjZrE,
+`2026-10-24-tempo-sbs/`):
+- Menu: 2× slower (open and close). The Deck sheet, the sub-drawer, desktop modals and their backdrops follow
+  the same factor so every sliding panel shares one tempo (Keeper's call).
+- Card turn (Intermezzo and the hand list, both ways): 1.5× slower; the face still swaps at the exact midpoint.
+- First draw of a hand: 2.5× slower, everything in it scaled together (drop, ghosts, back dissolve, question
+  appearing, clean-up); the shape stays (no bounce).
+- Card change (B+C): "make it as the preview I picked from" (round 2 side-by-side). The preview's cards were
+  about half the real card's width, so the same pixel movements read twice as large there. Make the app's swap
+  look like the preview on the real card: movements in proportion to the card's size, verified side by side
+  against the preview. Timing stays as is unless the comparison shows it differs.
+- Unchanged: button presses (feedback for the finger), reduced motion (plain quick fades), the entrance.
