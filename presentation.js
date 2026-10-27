@@ -757,7 +757,7 @@ function renderHandSide(animate) {
   };
   if (animate && el) {
     setTimeout(swap, TURN_MID_MS);
-    // The card turns over on its side (styles.css .turning, 0.56s): edge-on at 280ms, which is
+    // The card turns over on its side (styles.css .turning, 0.84s): edge-on at 420ms, which is
     // when the face swaps (no .flipping text fade here: the edge hides the swap). Back to
     // Intermezzo turns the other way round.
     const turn = isList ? 'turning' : 'turning-back';

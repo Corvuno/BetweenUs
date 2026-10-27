@@ -220,10 +220,10 @@ body{
   -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
   mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
 }
-/* the swap's flare (card.js playSwapOut): the rail's own light stop (gilt `light`) over its centre, so it follows the phone rail's and the PC top line's
+/* the swap's flare (card.js playSwapOut): the rail's own light stop (gilt `light`, lightened 45% toward white as in the chosen preview) over its centre, so it follows the phone rail's and the PC top line's
    height and ends; it reads the rail's colour through the inheriting --rail-l */
 .c-lift{position:absolute;inset:0;opacity:0;pointer-events:none;
-  background:linear-gradient(90deg,transparent,var(--rail-l) 50%,transparent);}
+  background:linear-gradient(90deg,transparent,color-mix(in oklab,var(--rail-l) 45%,#fff) 50%,transparent);}
 .accent-bloom{animation:accentReveal 1s ease forwards;}
 @keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
 .card-star{
@@ -247,9 +247,9 @@ body{
 /* dissolves in and out (opacity), so the first draw doesn't cut from the back to the face */
 .card.is-start .card-back{opacity:1;visibility:visible;transition:opacity .45s ease;}
 .card.is-start .card-body-inner,.card.is-start .card-star{visibility:hidden;}
-/* first draw: the start back is an exit that must be gone before the question shows (card.js swaps at 310ms,
-   the dissolve starts at 60ms), or old and new smudge together */
-.card.drawing-in .card-back{transition:opacity .22s ease-in,visibility 0s linear .22s;}
+/* first draw: the start back is an exit that must be gone before the question shows (card.js swaps at 775ms,
+   the dissolve starts at 150ms), or old and new smudge together */
+.card.drawing-in .card-back{transition:opacity .55s ease-in,visibility 0s linear .55s;}
 @media (prefers-reduced-motion:reduce){.card.drawing-in .card-back{transition:opacity .1s ease-in,visibility 0s linear .1s;}}
 .cb-lattice{
   position:absolute;inset:0;opacity:.7;
@@ -364,9 +364,9 @@ body.showing-hand-summary .card-question{
    something instead of just quietly rebuilding a list. Reads as a card
    being thrown down onto the table: it drops in from above at an angle
    with a couple of trailing ghost cards (real elements, inserted/removed
-   by flipToCard in card.js), then settles flat: one 520ms ease-out landing, the question
+   by flipToCard in card.js), then settles flat: one 1300ms ease-out landing, the question
    swapped in at ~60% of it so its fade overlaps the landing. */
-.card.drawing-in{animation:cardDrawIn .52s var(--ease-out) both;}
+.card.drawing-in{animation:cardDrawIn 1.3s var(--ease-out) both;}
 /* the face is hidden until card.js adds face-in (the swap), while the landing runs on */
 .card.drawing-in:not(.face-in) .card-level,.card.drawing-in:not(.face-in) .card-question{opacity:0;}
 @keyframes cardDrawIn{
@@ -374,7 +374,7 @@ body.showing-hand-summary .card-question{
   to{transform:none;opacity:1;}
 }
 .draw-ghost{position:absolute;inset:0;background:var(--card-bg);border:1px solid var(--border);
-  border-radius:2px;z-index:1;animation:cardDrawGhost .52s ease-out both;pointer-events:none;}
+  border-radius:2px;z-index:1;animation:cardDrawGhost 1.3s ease-out both;pointer-events:none;}
 @keyframes cardDrawGhost{
   from{transform:translateY(-210px) rotate(-8deg);opacity:0;}
   30%{opacity:.5;}
@@ -558,15 +558,15 @@ body.showing-hand-summary .card-question{
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-rule{animation:none;}
 /* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-mark:not(.cb-fermata) :is(.lg-a,.lg-b,.lg-fl path,.lg-dm){animation:none;}
-/* the card turns over on its side, like a real card: 0.56s, soft perspective, a slight dip in size at
-   the edge. Edge-on at 280ms is the face swap (the JS swaps then, never at another moment); it slows
+/* the card turns over on its side, like a real card: 0.84s, soft perspective, a slight dip in size at
+   the edge. Edge-on at 420ms is the face swap (the JS swaps then, never at another moment); it slows
    in to the edge and eases out of it. The back is there instantly at the edge (no fade of the lattice).
    One shared turn: message to Intermezzo and Intermezzo to list use cardTurn, back to Intermezzo
    turns the other way (cardTurnBack). */
 @keyframes cardTurn{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(-90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
 @keyframes cardTurnBack{0%{transform:perspective(1600px) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}49.9%{transform:perspective(1600px) rotateY(-90deg) scale(.94);}50%{transform:perspective(1600px) rotateY(90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}100%{transform:perspective(1600px) rotateY(0) scale(1);}}
-.card.turning,.party-card.turning{animation:cardTurn .56s linear both;}
-.card.turning-back,.party-card.turning-back{animation:cardTurnBack .56s linear both;}
+.card.turning,.party-card.turning{animation:cardTurn .84s linear both;}
+.card.turning-back,.party-card.turning-back{animation:cardTurnBack .84s linear both;}
 .card.turning .card-back,.card.turning-back .card-back{transition:none;}
 @media (prefers-reduced-motion:reduce){
   .card.turning,.card.turning-back,.party-card.turning,.party-card.turning-back{animation:none;}
@@ -610,10 +610,10 @@ body.showing-hand-summary .card-question{
 .drawer{
   position:fixed;bottom:0;left:0;right:0;z-index:160;
   background:var(--surface);border-top:1px solid var(--border);
-  transform:translateY(100%);transition:transform .21s var(--ease-out);
+  transform:translateY(100%);transition:transform .42s var(--ease-out);
   max-height:80vh;overflow-y:auto;
 }
-.drawer.open{transform:translateY(0);transition:transform .32s var(--ease-sheet);}
+.drawer.open{transform:translateY(0);transition:transform .64s var(--ease-sheet);}
 /* same enlarged-target treatment as the category sheet's handle — the
    visible bar stays thin, the drag/tap box around it is much bigger */
 .drawer-handle{display:flex;justify-content:center;align-items:center;
@@ -631,8 +631,8 @@ body.showing-hand-summary .card-question{
 .d-sub{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted-l);}
 .d-divider{height:1px;background:var(--dim);margin:4px 0;}
 /* secondary drawers (log, favs, custom, help) */
-.sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .21s var(--ease-out);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
-.sub-drawer.open{transform:translateY(0);transition:transform .32s var(--ease-sheet);}
+.sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .42s var(--ease-out);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
+.sub-drawer.open{transform:translateY(0);transition:transform .64s var(--ease-sheet);}
 .drawer-empty{font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-align:center;padding:24px 0;opacity:.6;}
 .drawer-item{padding:12px 0;border-bottom:1px solid var(--dim);font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;color:var(--cream);line-height:1.5;}
 .drawer-item:last-child{border-bottom:none;}
@@ -1102,15 +1102,15 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── CATEGORY DRAWER — same species as the menu drawer ── */
 .cat-scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
-  z-index:290;opacity:0;pointer-events:none;transition:opacity .21s ease-out;}
-.cat-scrim.on{opacity:1;pointer-events:all;transition-duration:.32s;}
+  z-index:290;opacity:0;pointer-events:none;transition:opacity .42s ease-out;}
+.cat-scrim.on{opacity:1;pointer-events:all;transition-duration:.64s;}
 .cat-area{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:295;margin:0;width:auto;height:88dvh;
   background:var(--surface);border-top:1px solid var(--border);
-  transform:translateY(102%);transition:transform .21s var(--ease-out);
+  transform:translateY(102%);transition:transform .42s var(--ease-out);
   display:flex;flex-direction:column;opacity:1;padding:0 18px;}
 .cat-area.in{opacity:1;}
 .cat-area:not(.sheet-open){pointer-events:none;}
-.cat-area.sheet-open{transform:none;transition:transform .32s var(--ease-sheet);}
+.cat-area.sheet-open{transform:none;transition:transform .64s var(--ease-sheet);}
 /* the visible bar stays a thin 3px line — background-clip keeps the
    drag/tap target much bigger without fattening the bar. A missed handle would
    land the touch on the sheet body, which the browser could read as a
@@ -1263,8 +1263,8 @@ body.tok-taught .tok-hint{display:none;}
     left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
     border:1px solid var(--border);border-radius:12px;
     transform:translate(-50%,-46%);opacity:0;pointer-events:none;
-    transition:transform .2s ease-out,opacity .2s ease-out;}
-  .drawer.open,.sub-drawer.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .28s var(--ease-out),opacity .2s ease-out;}
+    transition:transform .4s ease-out,opacity .4s ease-out;}
+  .drawer.open,.sub-drawer.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .56s var(--ease-out),opacity .4s ease-out;}
   .drawer-handle{display:none;}
   .cat-area{
     /* fixed, not auto — Shape's content is much shorter than Explore's,
@@ -1273,9 +1273,9 @@ body.tok-taught .tok-hint{display:none;}
        mobile sheet already uses above (88dvh). */
     left:50%;right:auto;bottom:auto;top:50%;width:min(640px,94vw);height:84vh;
     border:1px solid var(--border);border-radius:12px;padding:6px 22px 0;
-    transition:transform .2s ease-out,opacity .2s ease-out;}
+    transition:transform .4s ease-out,opacity .4s ease-out;}
   .cat-area:not(.sheet-open){transform:translate(-50%,-46%);opacity:0!important;pointer-events:none;}
-  .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .28s var(--ease-out),opacity .2s ease-out;}
+  .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .56s var(--ease-out),opacity .4s ease-out;}
   .cat-sheet-handle{display:none;}
   .cat-sheet-head{padding-top:16px;}
 }

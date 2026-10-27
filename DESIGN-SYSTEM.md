@@ -389,26 +389,33 @@ question. The card screen's label reads "Selected deck" (was "Selected"); the
 Two curves, defined once on `:root`: `--ease-out: cubic-bezier(.23,1,.32,1)` (things that enter or
 respond: starts fast, settles soft) and `--ease-sheet: cubic-bezier(.32,.72,0,1)` (drawers and sheets
 sliding in). Plain `ease` / `ease-in-out` are not used for entering things.
-- **First draw of a hand:** one 520ms landing (`cardDrawIn`, single keyframe segment on `--ease-out`,
-  no bounce); two ghosts ease-out, delays 0 and 60ms; the question swaps in at 310ms (card.js
-  `DRAW_TIMING`) so its fade overlaps the landing. Reduce motion: no drop, no ghosts, a 250ms opacity
+- **Tempo (owner, 2026-10-27, from the tempo page):** menu and every sliding panel 2x slower than the
+  2026-10-21 pass, the card turn 1.5x slower, the first draw 2.5x slower. Curves unchanged, only
+  durations and delays. The card's moments (draw, change, turn) are the game, not menu chrome.
+- **First draw of a hand:** one 1300ms landing (`cardDrawIn`, single keyframe segment on `--ease-out`,
+  no bounce); two ghosts ease-out, 1300ms, delays 0 and 150ms; the start-back dissolve starts at 150ms
+  and takes 550ms (gone before the question); the question swaps in at 775ms and clean-up is at 1450ms
+  (card.js `DRAW_TIMING`) so the question's fade overlaps the landing. The accent bloom stays. Reduce motion: no drop, no ghosts, a 250ms opacity
   fade, swap at 150ms.
 - **Next/Back swap on the card** (owner's "B+C", 2026-10-21; card.js `playSwapOut`/`playSwapIn`, Web
   Animations, transform and opacity only, no glow): out 110ms, the rail flares lighter from the centre
   (`.c-lift`, a child of `.c-accent` so it takes the phone rail's and the PC top line's height and
   faded ends; opacity 0 to 1, `scaleX` .5 to 1), the card tightens to .992, the corner marks lift to .6,
-  label and question fade out with a 2px lift (80ms after a 30ms delay, ease-in `cubic-bezier(.4,0,1,1)`).
+  label and question fade out with a lift of 2/178 of the card's width (80ms after a 30ms delay, ease-in `cubic-bezier(.4,0,1,1)`).
   The text changes while invisible. In 230ms: flare, card and corners settle back, the new label (delay
-  20ms) and question (delay 40ms) rise from 8px below over 190ms; ease-out `cubic-bezier(.16,1,.3,1)`.
-  Frame only: the question is never scaled, because the text block carries the exact inverse of the
+  20ms) and question (delay 40ms) rise from 8/178 of the card's width below over 190ms; ease-out `cubic-bezier(.16,1,.3,1)`.
+  Lift and rise are shares of the card's width (`TEXT_LIFT_SHARE`, `TEXT_RISE_SHARE`, measured on the
+  178px card of the chosen preview), so they read the same on a 354px phone card and a 1062px PC card;
+  the frame's tighten (.992) is already a ratio. The rail and flare keep their weight (a stroke, not a
+  distance). Frame only: the question is never scaled, because the text block carries the exact inverse of the
   card's scale. The rail's colour still eases to the new category (the `--rail-*` transition). Reduce
   motion: 80ms linear fade out, 120ms in, no movement. A fast tap during the out beat just retargets it;
-  during the in beat it restarts the swap. The flare is the rail's gilt light stop (`--rail-l`) at peak .95, no blend, no glow. Next, Back and a card chosen in Three all use this swap. The 1s `accent-bloom` replay is not part of it; the bloom stays on the first draw of a hand (card.js first-draw face swap), the Intermezzo turn and the Spotlight/presentation face changes (presentation.js). `.card.flipping` now only serves the end-of-hand message fade.
-- **The turn** (message to Intermezzo, to the hand list, and back): 560ms, edge-on and face swap at 280ms
+  during the in beat it restarts the swap. The flare is the rail's gilt light stop (`--rail-l`) mixed 45% toward white (`color-mix(in oklab,var(--rail-l) 45%,#fff)`, as the chosen preview), peak .95, thickness equal to the rail, no glow. Next, Back and a card chosen in Three all use this swap. The 1s `accent-bloom` replay is not part of it; the bloom stays on the first draw of a hand (card.js first-draw face swap), the Intermezzo turn and the Spotlight/presentation face changes (presentation.js). `.card.flipping` now only serves the end-of-hand message fade.
+- **The turn** (message to Intermezzo, to the hand list, and back): 840ms, edge-on and face swap at 420ms
   (`TURN_MID_MS` / `TURN_END_MS` in deck.js follow the CSS).
-- **Drawers, sub-drawer, The Deck sheet, scrims:** open 320ms on `--ease-sheet`, close 210ms; the base
-  selector carries the close timing, `.open` the open timing. Desktop modals: open 280ms `--ease-out`,
-  close 200ms ease-out, opacity 200ms.
+- **Drawers, sub-drawer, The Deck sheet, scrims:** open 640ms on `--ease-sheet`, close 420ms; the base
+  selector carries the close timing, `.open` the open timing. Desktop modals: open 560ms `--ease-out`,
+  close 400ms ease-out, opacity 400ms. The scrim follows the sheet (420ms / 640ms).
 - **Fold-outs:** chapter panels open 260ms / close 200ms on `--ease-out` (ui.js `slideFold`); a chapter
   hiding under a preset the same pair. (`.tray` and the Start-from preset host carry the same pair but
   do not animate today: no `.tray` element exists and the preset host is always open.)

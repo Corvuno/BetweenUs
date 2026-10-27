@@ -493,7 +493,7 @@ function renderEndMessage(html) {
    meantime (hold-to-continue, a settings change) cancels the pending turn —
    hideHandSummary() calls clearEndTimers(). */
 const END_MSG_READ_MS = { 1: 1100, 2: 1900 };   // from the start of the swap to the start of the turn
-const TURN_MID_MS = 280, TURN_END_MS = 580;     // the turn: 0.56s, edge-on at 280ms (matches styles.css cardTurn)
+const TURN_MID_MS = 420, TURN_END_MS = 870;     // the turn: 0.84s, edge-on at 420ms (matches styles.css cardTurn)
 let _endTimers = [];
 let _endMsgLines = 1;
 let _endTurnNodes = [];

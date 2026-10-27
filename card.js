@@ -264,25 +264,28 @@ function setCardDisplay(card) {
 // flipToCard — shows a card: the first draw of a hand lands (CSS, styles.css .drawing-in), every card after
 // swaps with the "B+C" beat below. Both update accent, arc indicator, fullscreen sync.
 
-/* The first-draw landing (styles.css .card.drawing-in: 520ms, ghosts 520ms after a 60ms delay; a 250ms
+/* The first-draw landing (styles.css .card.drawing-in: 1300ms, ghosts 1300ms after a 150ms delay; a 250ms
    fade under reduced motion). The question swaps in at ~60% so its fade overlaps the landing; the
    animation classes and ghosts stay until `done`, so the landing is never cut short. */
 const DRAW_TIMING = {
-  full:    { backFade: 60, swap: 310, done: 580 },
+  full:    { backFade: 150, swap: 775, done: 1450 },
   reduced: { backFade: 0,  swap: 150, done: 250 },
 };
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 /* Next/Back swap (owner's "B+C", 2026-10-21), Web Animations on transform and opacity only.
    Out (110ms): the rail flares lighter from the centre, the card tightens a hair, the corners lift, the label
-   and question fade out with a 2px lift. The text changes while invisible. In (230ms): the rail settles, the
-   card eases back, the new text rises from 8px below. Under reduced motion: an 80ms fade out, 120ms fade in.
+   and question fade out with a small lift. The text changes while invisible. In (230ms): the rail settles, the
+   card eases back, the new text rises from below. The lift and the rise are shares of the card's width, so they read the same on every
+   card size (the chosen preview's 178px card: 2px and 8px). Under reduced motion: an 80ms fade out, 120ms fade in.
    The question is never scaled: the card tightens as a whole and the text block carries the exact inverse
    scale, so the text's own scale stays 1. */
 const SWAP_EASE = { leave: 'cubic-bezier(.4,0,1,1)', settle: 'cubic-bezier(.16,1,.3,1)', breath: 'cubic-bezier(.3,0,.4,1)' };
 const FRAME_TIGHT = .992;
 const CORNER_LIFT = .6;
 const FLARE_PEAK = .95;
+const TEXT_LIFT_SHARE = 2 / 178;
+const TEXT_RISE_SHARE = 8 / 178;
 
 /* The out beat starts from `from`: by default the resting look (flare hidden), or, on a restart during the in beat,
    the look at that moment, so a fast tap never snaps. A keyframe left empty starts from the element's resting value;
@@ -307,7 +310,7 @@ function playSwapOut({ card, body, lift, text }, reduced, from = RESTING_LOOK) {
     card.animate([from.card, { transform: `scale(${FRAME_TIGHT})` }], hold),
     body.animate([from.body, { transform: `scale(${1 / FRAME_TIGHT})` }], hold),
     ...['::before', '::after'].map(pseudoElement => card.animate([from.corners, { opacity: CORNER_LIFT }], { ...hold, pseudoElement })),
-    ...text.map((e, i) => e.animate([from.text[i], { opacity: 0, transform: 'translateY(-2px)' }], { duration: 80, delay: 30, easing: SWAP_EASE.leave, fill: 'both' })),
+    ...text.map((e, i) => e.animate([from.text[i], { opacity: 0, transform: `translateY(${-TEXT_LIFT_SHARE * card.offsetWidth}px)` }], { duration: 80, delay: 30, easing: SWAP_EASE.leave, fill: 'both' })),
   ];
 }
 
@@ -320,7 +323,7 @@ function playSwapIn({ card, body, lift, text }, reduced) {
     card.animate([{ offset: 0, transform: `scale(${FRAME_TIGHT})` }], settle),
     body.animate([{ offset: 0, transform: `scale(${1 / FRAME_TIGHT})` }], settle),
     ...['::before', '::after'].map(pseudoElement => card.animate([{ offset: 0, opacity: CORNER_LIFT }], { ...settle, pseudoElement })),
-    ...text.map((e, i) => e.animate([{ offset: 0, opacity: 0, transform: 'translateY(8px)' }], rise(20 * (i + 1)))),   // label slightly ahead of the question
+    ...text.map((e, i) => e.animate([{ offset: 0, opacity: 0, transform: `translateY(${TEXT_RISE_SHARE * card.offsetWidth}px)` }], rise(20 * (i + 1)))),   // label slightly ahead of the question
   ];
 }
 
@@ -407,7 +410,7 @@ function flipToCard(card, isFirstDraw) {
   const ghosts = [0, 1].map(i => {
     const g = document.createElement('div');
     g.className = 'draw-ghost';
-    g.style.animationDelay = (i * 60) + 'ms';
+    g.style.animationDelay = (i * 150) + 'ms';
     area.insertBefore(g, el);
     return g;
   });

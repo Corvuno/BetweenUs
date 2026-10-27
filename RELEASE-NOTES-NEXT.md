@@ -15,4 +15,5 @@ Rules:
 -->
 
 - Nineteen questions are new, most of them in Past, Deep, Raw, Shadow and Grief: more real moments, and more ways of asking than just a question.
+- The game takes its time again: the first card of a hand lands more slowly, the turn to the pause and the menus move calmer, and changing card is easier to see.
 - Smaller fixes throughout: switching on After Dark no longer turns your preset into Custom.
