@@ -22,7 +22,6 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Spirit** — "Who are you overdue to thank — and what for?" (displaced from Spirit 7 in v6.86, owner's own rewrite)
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
-- **Deep** — "When did you last let someone see you struggling?"
 - **Grief** — "Which grief do you carry that isn't yours?"
 - **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (bumped from Bare 9 when the age-gap card moved in from 11; still approved, just unslotted again)
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
@@ -37,6 +36,9 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Culture** — "Which video online have you watched more times than you'd admit?" (owner asked to bench, round 2 2026-10-20)
 - **Work** — "Who was the best boss you ever had — and what did they do that others didn't?" (owner asked to bench, round 2 2026-10-20)
 - **Friendship** — "What happened when friends from different parts of your life finally met?" (owner asked to bench, round 3 2026-10-23)
+- **Warm** — "What's the best trouble you ever got into?" (from Past 9, below Past's band; owner asked to bench for Warm, round 5 2026-10-27)
+- **Connect** — "Who left your life better than they found it?" (from Deep 4, below Deep's band; owner liked it, benched for Connect, round 5 2026-10-27)
+- **Shadow** — "Name someone you used, and what you got out of it." (alternative for Shadow 9; owner asked to bench, round 5 2026-10-27)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -397,6 +399,83 @@ money as a story from your past is Past's · separating art from the artist is C
 **Guardrail:** no party politics or hot-button issues that turn the table into a fight; debate
 cards are open dilemmas, not tribal ones.
 
+
+### Past
+**App line:** The chapters that made you
+**About:** Your story as an adult: the decisions, turning points, phases, risks and lucky breaks,
+what you survived, and the years that changed the plot.
+**Lines of thought:** the decision you almost didn't make · the phase you're in now · what you
+survived · staying too long · a failure · the best trouble · scars · the year that vanished · the
+first place you lived on your own · something you quit · moving to a new city or country · a lucky
+break · your best year · a chance meeting that changed the direction · a risk that paid off, or
+didn't · a bridge you burned · starting over · advice you ignored · the night everything changed ·
+an old photo you barely recognise yourself in.
+**Where it stops:** growing up is Roots' · exes and old relationships are Romance's · jobs and
+career are Work's · people you lost are Grief's · what it still does to you, and what's unsaid, is
+Deep's · the future is Wish's.
+**Guardrail:** works for players in their twenties and for people with few childhood memories.
+
+### Deep
+**App line:** What you need, and who you let see it
+**About:** The questions that need trust: what you need from people, being seen and known, regret,
+forgiveness, love as you give and need it, what you've never said, what you want to leave behind.
+**Lines of thought:** what you'd say if someone asked the right question · crying · what you need
+to hear · rerunning a conversation · being forgiven · making peace · what should be said about you ·
+a message you wrote and never sent · kindness you got when you didn't deserve it · what you're
+still proving, and to whom · asking for help, and what it cost · the first time you felt completely
+safe with someone · when you stopped needing someone's approval · what love looks like in practice
+for you (any kind of love) · being braver than you felt · what you've only ever told one person.
+**Where it stops:** what happened is Past's (Deep is what it still does to you) · feelings tonight
+are Raw's · harm you do to others is Shadow's · loss is Grief's · your character in general is
+Self's · day-to-day connecting is Connect's · falling in love and dating are Romance's.
+
+### Raw
+**App line:** Tonight, unfiltered
+**About:** Right now: this evening, this week, this room. What you feel, want and think at the
+moment, said before you soften it. Present tense only. Not a fun category: the point is that it
+costs something to say. A card may land on something good (a want, an excitement) only when saying
+it still exposes you.
+**Lines of thought:** what you censored tonight · what you want right now · jealousy · anger under
+another name · pretending to be fine · performing · pettiness · what you got away with this week ·
+being unfair lately · fear of this game · what's been on your mind since you woke up · who you're
+avoiding right now · what you'd rather be doing than this · what's keeping you awake lately · what
+you nearly said no to tonight · what you're secretly hoping for this week · what tired you out today.
+**Where it stops:** anything not happening now belongs to its own category · the people at this
+table are the Us categories' · your worst side over time is Shadow's.
+**Guardrail:** no card makes one player judge another player out loud.
+
+### Shadow
+**App line:** The side of you that does the damage
+**About:** Your worst side and what it does to others: lies, cruelty, vices, envy, getting your
+way, the harm you did (often without meaning to), and whether you put it right. Honest, not
+self-flagellating; cards may ask why, systems over blame.
+**Lines of thought:** lying · the cruellest thing you said · you at your worst · what your
+presentation lets you do · faked emotion · hurting without meaning to · a vice · anger · comfort
+over integrity · what you despise in others and recognise in yourself · an apology you owe · a
+grudge you keep on purpose · enjoying someone else's failure · revenge, small or big · getting your
+way by working on people · taking credit · ghosting · a rumour you spread or let stand · being the
+bully, or the one who watched · the excuse you use most · winning ugly.
+**Where it stops:** what you hold to be right is Values' · feelings tonight are Raw's · what you
+need and being seen are Deep's · what turns you on is After Dark's, never Shadow's.
+
+### Grief
+**App line:** Loss, and the shape it left
+**About:** Anything that can be mourned: people, relationships, friendships, places, health, a
+future you'd counted on, a version of yourself. How it hit, what you did with it, what stayed.
+It does not go soft.
+**Lines of thought:** a loss you're not finished with · grieving in advance · talking to the dead ·
+how you grieved · who showed up · objects · habits you kept from them · what you haven't mourned yet ·
+losses that weren't a person · who you had to become · a relationship you mourned · a friendship
+that ended without a fight · a pet · a house or place that's gone · a funeral that made you laugh ·
+what they left you (a recipe, a saying, a voicemail) · the day you still mark · grieving someone you
+didn't get on with · being far away when it happened · the goodbye you got, or didn't · losing
+someone while they were still alive · a future that won't happen · helping someone else grieve ·
+what people said that helped, and what didn't.
+**Where it stops:** death and what comes after, and close calls, are Spirit's · turning points are
+Past's · regret towards people still alive is Deep's · ex stories are Romance's (the ending as a
+loss is Grief's).
+**Guardrail:** someone at the table may be grieving right now; cards invite, never force. Not soft.
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
@@ -600,6 +679,89 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.22 — category scope rework round 5: Past, Deep, Raw, Shadow, Grief (plus Self 8, Body 6)
+
+- **Self 8**
+  - Old: "How old do you expect the face in the mirror to be?"
+  - New: "What do you keep expecting the mirror to show you?"
+  - Why: Owner: reach what the gap means (self-image), not just the age.
+- **Body 6**
+  - Old: "What did pain teach you that you couldn't have learned any other way?"
+  - New: "Which scar still carries the best story?"
+  - Why: A lesson, not a moment. The scar card moves in from Past 10.
+- **Past 2**
+  - Old: "What phase are you in that you can already tell you'll look back on?"
+  - New: "Which chance meeting sent your life in a direction you'd never have picked?"
+  - Why: Below Past's band.
+- **Past 9**
+  - Old: "What's the best trouble you ever got into?"
+  - New: "Which bridge did you burn on purpose, and do you regret it?"
+  - Why: Below Past's band. Old card benched for Warm (owner).
+- **Past 10**
+  - Old: "Which scar still carries the best story?"
+  - New: "The night everything changed, though you didn't know it yet..."
+  - Why: Moves to Body 6 (owner).
+- **Past 12**
+  - Old: "If your younger self could see your life right now, what would surprise them most?"
+  - New: "The move to a new place that changed who you were..."
+  - Why: Doubled Wish 4.
+- **Deep 2**
+  - Old: "What do you do differently the moment you know you're being watched?"
+  - New: "The regret you've never said out loud..."
+  - Why: One of three performing cards (with Raw 6 and Shadow 4).
+- **Deep 4**
+  - Old: "Who left your life better than they found it?"
+  - New: "Name the person who changed your life just by believing in you."
+  - Why: Below Deep's band; owner wanted it deeper. Old card benched for Connect.
+- **Deep 6**
+  - Old: "If you could rerun one conversation from your life, which one?"
+  - New: "When did you last let someone see you struggling?"
+  - Why: Below Deep's band. New card comes off the bench.
+- **Deep 7**
+  - Old: "What did failing teach you that success couldn't have?"
+  - New: "Tell about a kindness you got when you didn't think you deserved it."
+  - Why: Doubled Past 8.
+- **Deep 11**
+  - Old: "Which conversation do you keep having — in different rooms, with different people?"
+  - New: "What are you afraid people would leave over, if they really knew you?"
+  - Why: Close to Deep 6, and abstract.
+- **Raw 2**
+  - Old: "Right now you want — first answer, no editing."
+  - New: "Name what you're carrying this week that nobody here knows about."
+  - Why: Below Raw's band.
+- **Raw 7**
+  - Old: "Whose way of living makes you question your own choices?"
+  - New: "Say what you're most afraid is true about your life right now."
+  - Why: Not about right now.
+- **Raw 12**
+  - Old: "What's something you've decided isn't worth saying — but haven't fully let go of?"
+  - New: "What are you hoping nobody here notices about you tonight?"
+  - Why: Doubled Raw 1.
+- **Shadow 3**
+  - Old: "The you that comes out at your worst — honestly..."
+  - New: "Someone's failure you secretly enjoyed..."
+  - Why: The general version of Shadow 2 and Shadow 8.
+- **Shadow 5**
+  - Old: "Which emotion do you fake best?"
+  - New: "What feeling do you cover so well that even the people closest to you have never seen it?"
+  - Why: Owner: subtler, reaching what's underneath that you don't want to show.
+- **Shadow 9**
+  - Old: "What would make you safeword out of life, if life had one?"
+  - New: "When did you win in a way you're not proud of?"
+  - Why: Borrowed device from Kink, cryptic, despair rather than harm.
+- **Grief 6**
+  - Old: "What did grief change about what you find important?"
+  - New: "Tell about something a loss finally pushed you to do."
+  - Why: A summary rather than a moment; keeps the owner's premise of what you changed after grief.
+- **Grief 7**
+  - Old: "What do you do with grief — do you move through it, around it, or does it move through you?"
+  - New: "Who did you lose while they were still alive?"
+  - Why: Doubled Grief 4, and a list of three.
+- App lines: Past "The chapters that made you", Deep "What you need, and who you let see it", Raw "Tonight, unfiltered", Shadow "The side of you that does the damage". Grief unchanged.
+- Writer briefs added for Past, Deep, Raw, Shadow and Grief (WRITER BRIEFS).
+- Bench: three cards added (Warm, Connect, Shadow), Deep struggling card taken off (now Deep 6).
+- Other replaced cards are removed, not benched.
 
 ## Patch v7.21 — category scope rework round 4: Self, Mind, Values
 

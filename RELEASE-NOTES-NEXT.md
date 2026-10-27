@@ -14,4 +14,5 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 
+- Nineteen questions are new, most of them in Past, Deep, Raw, Shadow and Grief: more real moments, and more ways of asking than just a question.
 - Smaller fixes throughout: switching on After Dark no longer turns your preset into Custom.

@@ -120,3 +120,7 @@ Self 8: owner wants it to reach what the gap means (self-image); new wording to 
 - Grief 6 → "Tell about something a loss finally pushed you to do."
 - Grief 7 → "Who did you lose while they were still alive?"
 - Open: Deep 11 ("Deep needs something else"), Shadow 9 ("don't feel them").
+- Deep 11 → "What are you afraid people would leave over, if they really knew you?"
+- Deep 2 changed by the owner → "The regret you've never said out loud..." (the message card is dropped, not benched)
+- Shadow 9 → "When did you win in a way you're not proud of?"; bench "Name someone you used, and what you got out of it." (owner)
+**BUILT 2026-10-27** — 19 cards (17 Into the Deep, Self 8, Body 6), four app lines, five briefs, bench +3 −1, ?v=20261027a, 65/65 checks.
