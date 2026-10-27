@@ -107,3 +107,16 @@ Self 8: owner wants it to reach what the gap means (self-image); new wording to 
 - Past 2 → "Which chance meeting sent your life in a direction you'd never have picked?"
 - Past 9 → "Which bridge did you burn on purpose, and do you regret it?"
 - Owner: almost every proposal starts with W or H; rule added for varied card forms. Remaining 14 slots re-offered in mixed forms.
+- Past 10 → "The night everything changed, though you didn't know it yet..."
+- Past 12 → "The move to a new place that changed who you were..."
+- Deep 2 → "Quote the message you wrote and never sent."
+- Deep 4 → "Name the person who changed your life just by believing in you." (old Deep 4 to the bench for Connect)
+- Deep 6 → "When did you last let someone see you struggling?" (comes off the bench)
+- Deep 7 → "Tell about a kindness you got when you didn't think you deserved it."
+- Raw 2 → "Name what you're carrying this week that nobody here knows about."
+- Raw 7 → "Say what you're most afraid is true about your life right now."
+- Raw 12 → "What are you hoping nobody here notices about you tonight?"
+- Shadow 3 → "Someone's failure you secretly enjoyed..."
+- Grief 6 → "Tell about something a loss finally pushed you to do."
+- Grief 7 → "Who did you lose while they were still alive?"
+- Open: Deep 11 ("Deep needs something else"), Shadow 9 ("don't feel them").
