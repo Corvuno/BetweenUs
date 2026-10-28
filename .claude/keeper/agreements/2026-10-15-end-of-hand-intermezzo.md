@@ -147,3 +147,18 @@ works best, but slower ("it looks weird this way"). Keeper decisions, named to t
 - Every turn of this card (message → Intermezzo, Intermezzo ↔ list) takes 0.9 s instead of
   0.35 s, with a softer perspective and a slight dip in size at the edge, so it reads as a card
   turning rather than a squash.
+
+## From the message into Intermezzo: the card closes (owner, 2026-10-28)
+
+Owner: two identical turns (message → Intermezzo, Intermezzo → list) read as the same move for different
+things. Compared in round 1 (https://claude.ai/artifact/52TCLFktiFP9rrXWrtHejM) and round 2
+(https://claude.ai/artifact/8P88KZeC8YzFXyjYa8gXSe). Owner: "It's gonna be 4. That's the best feeling one."
+Replaces the 2026-10-18 turn for this one moment.
+- Build version "The card closes" exactly as `2026-10-28-end-of-hand-sbs/` version 4 (`closes`, lead .85):
+  the message fades; the back's woven lattice grows in from the card's edges and its double frame draws round
+  from the top centre (the back's own parts, no new ornament); the finished back holds with an empty window
+  (the held empty beat the owner singled out — keep it exactly); then the pause mark draws as before; the
+  INTERMEZZO word fades in after the back is up.
+- Applies on phone, PC and Spotlight (same Intermezzo everywhere; Keeper's call).
+- Unchanged: the message's dwell, the tap flip to the list and back (sideways turn, 0.84s), Back behaviour.
+- Reduced motion: a calm fade to a finished Intermezzo.
