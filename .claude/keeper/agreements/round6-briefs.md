@@ -37,3 +37,10 @@ it's been.
 - Bare 8 stays ("we put it here because Kink had no space. I like the card"). Bare brief: a taboo can be a Bare confession.
 - Bare 9 moves to Romance 9 (replacing the wedding-speech card). Bare 9 slot opens.
 - Open to confirm: Carnal 7, 9, 12 going; the rest of Carnal and Bare staying.
+
+## Owner comments 2026-10-28, second pass
+- Silent = agreed: Carnal 3, 7, 9, 12 go; the rest of Carnal and Bare stay; one-touch-card rule for Flesh agreed.
+- Flesh 7 goes (too close to Flesh 1); new card.
+- Flesh 9 → "When did sex last feel like play — and what made it that way?" (off the bench). Hands card to the bench.
+- Flesh 4 and 6: owner doesn't feel the "me" problem ("a me that's not a person") and "us" feels weird. Options without either to show.
+- Kink 5: Keeper treats it as a single-question rework (its comment said the first half is the card).
