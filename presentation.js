@@ -593,6 +593,9 @@ let handSideToken = 0;   // a swap still waiting on its timer drops out if the h
 // Looks: true while Intermezzo is shown again after the list (Back): the pause mark
 // then appears finished and breathing, without drawing itself in once more.
 let handStill = false;
+// True only for the paint that ends the closing (deck.js endMessageToIntermezzo): Spotlight's panel then joins
+// the closing's beat (styles.css .im-wrap.closing).
+let handClosing = false;
 
 // ── TEST SWITCH: pause colour (temporary — remove this block, its menu row #d-pausecolour in
 // between-us.html, and the mode check in handEndColors() once the owner has decided) ──
@@ -690,6 +693,13 @@ function bindHandList(root) {
   requestAnimationFrame(place);
 }
 
+// Spotlight's Intermezzo: the pause mark, its rule and the word, built from the card back's own mark.
+function imWrapHTML() {
+  const mark = document.querySelector('#cardBack .cb-fermata');
+  const flags = [handStill && 'still', handClosing && 'closing'].filter(Boolean).join(' ');
+  return `<div class="im-wrap ${flags}">${mark?.outerHTML ?? ''}<span class="im-rule"></span><span class="im-word">Intermezzo</span></div>`;
+}
+
 function paintHandSide() {
   const side = state.handSide;
   if (!side) return;
@@ -717,7 +727,11 @@ function paintHandSide() {
     qEl.classList.add('in');
   }
 
-  // — fullscreen
+  paintSpotlightSide(isList, col);
+}
+
+// — fullscreen: the same side in the overlay
+function paintSpotlightSide(isList, col) {
   const pq = document.getElementById('party-question');
   const pl = document.getElementById('party-level');
   const pc = document.getElementById('party-count');
@@ -725,14 +739,10 @@ function paintHandSide() {
   if (pa) giltRailPaint(pa, col.raw || getComputedStyle(document.documentElement).getPropertyValue('--gold-l').trim());
   if (pl) { pl.textContent = ''; pl.style.color = ''; }
   if (pc) pc.textContent = '';   // the count slot stays empty at the end of a hand
-  if (pq) {
-    pq.classList.remove('is-end-msg');
-    if (isList) { pq.innerHTML = handListHTML(); bindHandList(pq); }
-    else {
-      const mark = document.querySelector('#cardBack .cb-fermata');
-      pq.innerHTML = `<div class="im-wrap${handStill ? ' still' : ''}">${mark ? mark.outerHTML : ''}<span class="im-rule"></span><span class="im-word">Intermezzo</span></div>`;
-    }
-  }
+  if (!pq) return;
+  pq.classList.remove('is-end-msg');
+  if (isList) { pq.innerHTML = handListHTML(); bindHandList(pq); }
+  else pq.innerHTML = imWrapHTML();
 }
 
 // Brings both surfaces to state.handSide. animate: the swap rides the card's
@@ -768,17 +778,30 @@ function renderHandSide(animate) {
   else swap();
 }
 
-function showHandSummary() {
+function showHandSummary({ closing = false } = {}) {
   clearTwist();
   state.handSide = 'intermezzo';
   handStill = false;
+  handClosing = closing;
   renderHandSide(false);
+  handClosing = false;
   renderProgress(state.visibleDeck.length);
   updateDrawMore();
+}
+// A tap while the closing is still drawing (not after it has finished, when the mark is already breathing): Intermezzo lands finished (mark drawn, nothing masked or
+// delayed) before the card turns, and stays finished when Back returns to it.
+function settleClosing() {
+  const el = document.getElementById('card');
+  if (!el?.classList.contains('mv-live')) return;
+  el.classList.remove('mv-build', 'mv-live');
+  el.classList.add('im-still');
+  handStill = true;
+  document.querySelector('#party-question .im-wrap')?.classList.replace('closing', 'still');
 }
 // A tap on Intermezzo: turn the card over to the list.
 function flipHandList() {
   if (state.handSide !== 'intermezzo') return;
+  settleClosing();
   state.handSide = 'list';
   renderHandSide(true);
   updateDrawMore();

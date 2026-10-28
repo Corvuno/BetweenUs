@@ -808,11 +808,16 @@ async function run() {
       assert(al === 'center', `end message not centred: ${al}`);
       const ms = await page.evaluate(() => window.__x = state.handSide);
       assert(ms === null, 'Intermezzo came up while the message should still be on screen');
-      // the card turns over (no fade): .turning starts, and the face swaps edge-on at ~450ms
-      await page.waitForFunction(() => document.getElementById('card').classList.contains('turning'), null, { timeout: 6000 });
-      assert((await page.evaluate(() => state.handSide)) === null, 'the face swapped before the turn reached the edge');
+      // the card closes (no turn): the back builds over the faded message, the face is painted at 700ms
+      await page.waitForFunction(() => document.getElementById('card').classList.contains('mv-build'), null, { timeout: 6000 });
+      assert((await page.evaluate(() => state.handSide)) === null, 'the face was painted before the closing reached the handover');
+      assert(!(await page.evaluate(() => document.getElementById('card').classList.contains('turning'))), 'the closing turned the card');
       await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 3000 });
-      await page.waitForFunction(() => !document.getElementById('card').classList.contains('turning'), null, { timeout: 3000 });
+      await page.waitForFunction(() => !document.getElementById('card').classList.contains('mv-keep'), null, { timeout: 3000 });
+      // the closing really ends: nothing is left running or held, and the word is up
+      await page.waitForFunction(() => !document.getElementById('card').classList.contains('mv-live'), null, { timeout: 5000 });
+      const end = await page.evaluate(() => ({ cls: [...document.getElementById('card').classList], q: document.getElementById('card-question').className, word: +getComputedStyle(document.querySelector('#card .cb-caption')).opacity }));
+      assert(!end.cls.includes('mv-keep') && !end.q.includes('mv-fade') && end.word === 1, `closing did not end cleanly: ${JSON.stringify(end)}`);
       if (fs) { await page.evaluate(() => document.getElementById('partyOverlay').classList.contains('open')); }
       const left = await page.locator('.end-msg').count();
       assert(left === 0, 'the end message is still in the DOM after Intermezzo came up');
@@ -820,6 +825,35 @@ async function run() {
     }
   });
 
+  // ends a fresh hand on its message, then waits until the closing has started (before the face is painted)
+  const startClosing = async () => {
+    await freshHand({ three: false });
+    await page.locator('#btn-next').click(); await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1200);
+    await page.evaluate(() => { state.currentIndex = state.visibleDeck.length - 2; _nextCardBase(); });
+    await page.waitForTimeout(300);
+    await page.evaluate(() => { nextCard(); });
+    await page.waitForFunction(() => document.getElementById('card').classList.contains('mv-build'), null, { timeout: 6000 });
+  };
+  const closingClasses = () => page.evaluate(() => [...document.getElementById('card').classList, ...document.getElementById('card-question').classList].filter(c => /^mv-/.test(c)));
+  await check('end of hand: a tap during the closing lands on the list, with the Intermezzo finished (im-still) and no closing classes', async () => {
+    await startClosing();
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 3000 });
+    await page.evaluate(() => flipHandList());
+    await page.waitForTimeout(1200);
+    const st = await page.evaluate(() => ({ side: state.handSide, cls: [...document.getElementById('card').classList] }));
+    assert(st.side === 'list' && st.cls.includes('im-still') && st.cls.includes('is-hand-list'), `tap during the closing: ${JSON.stringify(st)}`);
+    assert((await closingClasses()).length === 0, `closing classes left after the tap: ${await closingClasses()}`);
+  });
+  await check('end of hand: Back or a new hand during the closing leaves no closing classes behind', async () => {
+    for (const leave of ['prevCard()', 'startNewHand()']) {
+      await startClosing();
+      await page.waitForTimeout(300);
+      await page.evaluate(leave);
+      await page.waitForTimeout(1500);
+      assert((await closingClasses()).length === 0, `${leave} during the closing left: ${await closingClasses()}`);
+    }
+  });
   await check('end of hand: changing a preset or the card limit from Intermezzo or the list clears the end state', async () => {
     for (const side of ['intermezzo', 'list']) {
       await page.evaluate(() => { const l = state.visibleDeck.length; state.currentIndex = l; showHandSummary(); });

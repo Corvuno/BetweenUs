@@ -411,8 +411,23 @@ sliding in). Plain `ease` / `ease-in-out` are not used for entering things.
   card's scale. The rail's colour still eases to the new category (the `--rail-*` transition). Reduce
   motion: 80ms linear fade out, 120ms in, no movement. A fast tap during the out beat just retargets it;
   during the in beat it restarts the swap. The flare is the rail's gilt light stop (`--rail-l`) mixed 45% toward white (`color-mix(in oklab,var(--rail-l) 45%,#fff)`, as the chosen preview), peak .95, thickness equal to the rail, no glow. Next, Back and a card chosen in Three all use this swap. The 1s `accent-bloom` replay is not part of it; the bloom stays on the first draw of a hand (card.js first-draw face swap), the Intermezzo turn and the Spotlight/presentation face changes (presentation.js). `.card.flipping` now only serves the end-of-hand message fade.
-- **The turn** (message to Intermezzo, to the hand list, and back): 840ms, edge-on and face swap at 420ms
-  (`TURN_MID_MS` / `TURN_END_MS` in deck.js follow the CSS).
+- **The card closes** (message to Intermezzo, owner 2026-10-28, mockup version 4; deck.js `endMessageToIntermezzo`,
+  styles.css "The card closes"): no turn. After the message's dwell (unchanged) the back comes up over it: the
+  message fades 450ms; the back fades in 500ms; the back's own lattice grows in as a ring thickening inward from
+  the card's edges (`closeRing`, 850ms after 300ms; a `clip-path` ring driven by `@property --p`, 19% / 15% at the
+  end); its double frame draws round from the top centre (`closeFrame`, 850ms after 450ms; a conic `mask-image`
+  driven by `@property --a`); the word INTERMEZZO fades in (`closeWord`, 600ms after 900ms). All on `--ease-move`
+  `cubic-bezier(.45,0,.25,1)` (slow start, long soft settle). The finished back then holds with an empty window
+  (the held beat the owner chose; keep it) and the pause mark draws as before, pushed back by `--lead: .85s`
+  (every mark delay is `calc(var(--lead,0s) + ...)`, 0 everywhere else). `.mv-build` carries the closing on
+  `#card`, `.mv-keep` keeps the message visible until the back covers it (removed at 700ms, when
+  `showHandSummary({closing:true})` paints the face; `clearEndTimers` strips both and `.mv-fade`). Hairlines stay
+  hairlines, no glow, no new ornament. Spotlight has no back: its message fades the same way and its panel joins
+  the beat (`.im-wrap.closing`, `--lead:.15s`, word at .2s). A tap during the closing first settles it
+  (`settleClosing`: class removed, `im-still`, mark finished). Reduce motion: the back fades in over 600ms to a
+  finished Intermezzo, nothing drawn.
+- **The turn** (Intermezzo to the hand list, and back): 840ms, edge-on and face swap at 420ms
+  (`TURN_MID_MS` / `TURN_END_MS` in deck.js follow the CSS). The message no longer uses it.
 - **Drawers, sub-drawer, The Deck sheet, scrims:** open 640ms on `--ease-sheet`, close 420ms; the base
   selector carries the close timing, `.open` the open timing. Desktop modals: open 560ms `--ease-out`,
   close 400ms ease-out, opacity 400ms. The scrim follows the sheet (420ms / 640ms).

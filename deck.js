@@ -486,32 +486,39 @@ function renderEndMessage(html) {
   }, 175);
 }
 
-/* The message after the last card of a hand (in the card, and in fullscreen):
-   it stays up long enough to read, then the card turns over on its side to its
-   back (the shared .turning, see styles.css) and showHandSummary() swaps the face
-   at the edge-on midpoint. Timers are kept so a new card or hand shown in the
-   meantime (hold-to-continue, a settings change) cancels the pending turn —
-   hideHandSummary() calls clearEndTimers(). */
-const END_MSG_READ_MS = { 1: 1100, 2: 1900 };   // from the start of the swap to the start of the turn
-const TURN_MID_MS = 420, TURN_END_MS = 870;     // the turn: 0.84s, edge-on at 420ms (matches styles.css cardTurn)
+/* The message after the last card of a hand (in the card, and in fullscreen): it stays up long enough
+   to read, then the card closes into Intermezzo (styles.css "The card closes"): the message fades,
+   the back's lattice and frame draw in over it, and showHandSummary() takes over once the back is up.
+   Timers are kept so a new card or hand shown in the meantime (hold-to-continue, Back, a settings
+   change) cancels the pending closing — hideHandSummary() calls clearEndTimers(). */
+const END_MSG_READ_MS = { 1: 1100, 2: 1900 };   // from the start of the swap to the start of the closing
+const TURN_MID_MS = 420, TURN_END_MS = 870;     // the sideways turn (Intermezzo and the list): 0.84s, edge-on at 420ms (matches styles.css cardTurn)
+const CLOSE_HANDOVER_MS = 700;                  // the back is opaque and the message gone; the face is painted
+const CLOSE_END_MS = 3600;                      // the mark is drawn: the closing is over (styles.css: lead .85s + the mark's 2.7s)
 let _endTimers = [];
 let _endMsgLines = 1;
-let _endTurnNodes = [];
+// Drops the pending closing and everything it put on the card, so a card shown meanwhile is clean.
 function clearEndTimers() {
   _endTimers.forEach(clearTimeout); _endTimers = [];
-  _endTurnNodes.forEach(n => n.classList.remove('turning')); _endTurnNodes = [];   // a cancelled turn must not stay on the card
+  document.getElementById('card')?.classList.remove('mv-build', 'mv-keep', 'mv-live');
+  document.getElementById('card-question')?.classList.remove('mv-fade');
 }
 function endMessageToIntermezzo() {
   clearEndTimers();
-  const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const wait = END_MSG_READ_MS[_endMsgLines] || END_MSG_READ_MS[1];
+  const wait = END_MSG_READ_MS[_endMsgLines] ?? END_MSG_READ_MS[1];
   _endTimers.push(setTimeout(() => {
-    if (reduced) { showHandSummary(); return; }
-    const c = document.getElementById('card'), pc = document.querySelector('#partyOverlay .party-card');
-    const ns = _endTurnNodes = [c, pc].filter(Boolean);
-    ns.forEach(n => { n.classList.remove('turning', 'turning-back'); void n.offsetWidth; n.classList.add('turning'); });
-    _endTimers.push(setTimeout(showHandSummary, TURN_MID_MS));
-    _endTimers.push(setTimeout(() => clearEndTimers(), TURN_END_MS));
+    const card = document.getElementById('card');
+    const question = document.getElementById('card-question');
+    // mv-live: the closing is still drawing (settleClosing only acts then)
+    card?.classList.add('mv-build', 'mv-keep', 'mv-live', 'is-start', 'is-intermezzo');   // the back comes up over the message
+    question?.classList.add('mv-fade');
+    document.querySelector('#party-question .end-msg')?.classList.add('out');
+    _endTimers.push(setTimeout(() => {
+      card?.classList.remove('mv-keep');
+      question?.classList.remove('mv-fade');
+      showHandSummary({ closing: true });
+    }, CLOSE_HANDOVER_MS));
+    _endTimers.push(setTimeout(() => card?.classList.remove('mv-live'), CLOSE_END_MS));
   }, wait));
 }
 

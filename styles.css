@@ -18,6 +18,8 @@
   /* motion: strong ease-out for things entering or responding (starts fast, settles soft); --ease-sheet is the
      fast-start, soft-settle curve of drawers and sheets sliding in */
   --ease-out:cubic-bezier(.23,1,.32,1);--ease-sheet:cubic-bezier(.32,.72,0,1);
+  /* the card's own larger moves (the closing into Intermezzo): slow start, long soft settle */
+  --ease-move:cubic-bezier(.45,0,.25,1);
   /* the drawn card's own deck-identity marking (corners/border, After Dark's
      also a wash + watermark) — separate from --ad-red above, which the
      existing mode-toggle button already owns; kept apart so this doesn't
@@ -501,6 +503,48 @@ body.showing-hand-summary .card-question{
 }
 .cb-fermata .dm,.im-wrap .dm{fill:var(--im-color);stroke:none;}
 .card.is-intermezzo .cb-rule{background:linear-gradient(90deg,transparent,var(--im-color),transparent);}
+/* The card closes (message to Intermezzo; deck.js endMessageToIntermezzo, owner 2026-10-28, mockup version 4).
+   The message fades; the back's own lattice grows in as a ring thickening inward from the card's edges and its
+   double frame draws round from the top centre; the finished back holds with an empty window; then the pause mark
+   draws (--lead pushes its drawing back to that moment) and the word INTERMEZZO fades in after the back is up.
+   .mv-build is the whole closing, .mv-keep holds the message visible until the back covers it. */
+@property --p{syntax:'<number>';inherits:false;initial-value:0;}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg;}
+@keyframes closeRing{to{--p:1;}}
+@keyframes closeFrame{to{--a:180deg;}}
+@keyframes closeWord{from{opacity:0;}to{opacity:1;}}
+.card.mv-build{--lead:.85s;}
+.card.mv-keep .card-body-inner,.card.mv-keep .card-star{visibility:visible;}
+.card-question.mv-fade{opacity:0;transform:none;transition:opacity .45s var(--ease-move);}
+.card.mv-build.is-start .card-back{transition:opacity .5s var(--ease-move);}
+.card.mv-build .cb-lattice{
+  clip-path:polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,
+    calc(var(--p)*19%) calc(var(--p)*15%),calc(var(--p)*19%) calc(100% - var(--p)*15%),
+    calc(100% - var(--p)*19%) calc(100% - var(--p)*15%),calc(100% - var(--p)*19%) calc(var(--p)*15%),
+    calc(var(--p)*19%) calc(var(--p)*15%));
+  animation:closeRing .85s .3s var(--ease-move) both;
+}
+.card.mv-build .cb-frame{
+  --w:calc(var(--a)*2);
+  -webkit-mask-image:conic-gradient(from calc(var(--a)*-1) at 50% 50%,#000 var(--w),transparent var(--w));
+  mask-image:conic-gradient(from calc(var(--a)*-1) at 50% 50%,#000 var(--w),transparent var(--w));
+  animation:closeFrame .85s .45s var(--ease-move) both;
+}
+.card.mv-build .cb-caption{animation:closeWord .6s .9s var(--ease-move) both;}
+/* Spotlight has no back: its message fades the same way and the word and mark follow on the same beat
+   (the panel is painted 700ms into the closing, so the lead is shortened by that) */
+.im-wrap.closing{--lead:.15s;}
+.im-wrap.closing .im-word{animation:closeWord .6s .2s var(--ease-move) both;}
+@media (prefers-reduced-motion:reduce){
+  .card.mv-build.is-start .card-back{transition:opacity .6s ease;}
+  /* the message is gone well before the back is fully up */
+  .card-question.mv-fade,.end-msg.out{transition:opacity .2s ease;}
+  .card.mv-build .cb-lattice,.card.mv-build .cb-frame,.card.mv-build .cb-caption,.im-wrap.closing .im-word{animation:none;}
+  .card.mv-build .cb-lattice{clip-path:none;}
+  .card.mv-build .cb-frame{-webkit-mask-image:none;mask-image:none;}
+  .card.mv-build,.im-wrap.closing{--lead:0s;}
+  .im-wrap.closing{animation:closeWord .6s ease both;}
+}
 /* the list side */
 .card.is-hand-list .card-level{display:none;}
 .card.is-hand-list .card-star{display:none;}
@@ -541,10 +585,10 @@ body.showing-hand-summary .card-question{
 @keyframes imBreathe{0%,100%{opacity:.9;}50%{opacity:.45;}}
 /* the bar under the mark echoes the diamond: same timing, half the dip */
 @keyframes imEcho{0%,100%{opacity:.9;}50%{opacity:.675;}}
-:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata :is(.a1,.a2){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s .5s ease-out forwards;}
-:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .a2{animation-delay:.8s;}
-:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
-:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .fl{opacity:0;animation:imFade .8s 1.9s forwards;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata :is(.a1,.a2){stroke-dasharray:1;stroke-dashoffset:1;animation:imDraw 1.4s calc(var(--lead,0s) + .5s) ease-out forwards;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .a2{animation-delay:calc(var(--lead,0s) + .8s);}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .dm{opacity:0;animation:imFade .6s calc(var(--lead,0s) + 1.7s) ease-out forwards,imBreathe 3.2s calc(var(--lead,0s) + 2.4s) ease-in-out infinite;}
+:is(.card.is-start.is-intermezzo:not(.im-still),.party-overlay.open .im-wrap:not(.still)) .cb-fermata .fl{opacity:0;animation:imFade .8s calc(var(--lead,0s) + 1.9s) forwards;}
 :is(.card.is-start.is-intermezzo.im-still,.party-overlay.open .im-wrap.still) .cb-fermata .dm{animation:imBreathe 3.2s ease-in-out infinite;}
 :is(.card.is-start.is-intermezzo.im-still,.party-overlay.open .im-wrap.still) .cb-fermata .fl{opacity:.9;}
 /* the start card's logo: draws itself, then its diamond breathes — every time that back appears */
@@ -553,7 +597,7 @@ body.showing-hand-summary .card-question{
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-fl path{animation-duration:1s;animation-delay:1.4s;}
 .card.is-start:not(.is-intermezzo) .cb-mark:not(.cb-fermata) .lg-dm{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imBreathe 3.2s 2.4s ease-in-out infinite;}
 /* the bar under the mark appears with the diamond and breathes in step with it (softer): start card, pause card, Spotlight */
-:is(.card.is-start:not(.is-intermezzo),.card.is-start.is-intermezzo:not(.im-still)) .cb-rule,.party-overlay.open .im-wrap:not(.still) .im-rule{opacity:0;animation:imFade .6s 1.7s ease-out forwards,imEcho 3.2s 2.4s ease-in-out infinite;}
+:is(.card.is-start:not(.is-intermezzo),.card.is-start.is-intermezzo:not(.im-still)) .cb-rule,.party-overlay.open .im-wrap:not(.still) .im-rule{opacity:0;animation:imFade .6s calc(var(--lead,0s) + 1.7s) ease-out forwards,imEcho 3.2s calc(var(--lead,0s) + 2.4s) ease-in-out infinite;}
 :is(.card.is-start.is-intermezzo.im-still .cb-rule,.party-overlay.open .im-wrap.still .im-rule){animation:imEcho 3.2s ease-in-out infinite;}
 .card.is-start.logo-wait:not(.is-intermezzo) .cb-rule{animation:none;}
 /* deck sheet still closing: hold the mark undrawn, so the draw-in plays whole once it is gone */
