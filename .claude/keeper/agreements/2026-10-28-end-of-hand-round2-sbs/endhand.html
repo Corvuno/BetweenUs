@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>End of hand, round 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Poiret+One&family=Jost:wght@200;300;400&family=Bodoni+Moda:ital,wght@1,400&family=Federo&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/styles.css"><link rel="stylesheet" href="endhand.css">
+</head><body>
+<main class="sbs">
+  <h1 class="sbs-title">From the message into Intermezzo</h1>
+  <div class="tgrid">
+    <div class="tstage" data-version="current"></div>
+    <div class="tstage" data-version="closes"></div>
+    <div class="tstage" data-version="veilBetween"></div>
+    <div class="tstage" data-version="veilFrame"></div>
+    <div class="ctl">
+      <button class="btn-draw" id="btn-play">Play the end</button>
+      <button class="btn-ghost" id="btn-flip">Flip to list</button>
+    </div>
+  </div>
+  <dl class="legend">
+    <div><dt>1 Current</dt><dd>The sideways turn, as today. Empty moment: none; the mark starts as the back settles.</dd></div>
+    <div><dt>2 The card closes</dt><dd>Lattice and frame draw in, then the mark. Empty moment: after the frame has drawn, before the mark.</dd></div>
+    <div><dt>3 The veil, empty between (5a)</dt><dd>The message fades out, then the back fades up in place. Empty moment: the plain card, before the back.</dd></div>
+    <div><dt>4 The veil, empty frame (5b)</dt><dd>The back fades up over the message, then the mark. Empty moment: the finished back, before the mark.</dd></div>
+    <div><dt>The beat</dt><dd>Versions 2, 3 and 4 hold the same empty beat (0.45s), measured from version 2.</dd></div>
+  </dl>
+</main>
+<template id="tpl-back"><div class="card-back" aria-hidden="true">
+          <span class="cb-lattice"></span>
+          <span class="cb-frame"></span>
+          <div class="cb-plate">
+            <svg class="cb-mark" viewBox="0 56 200 88" fill="none" stroke="currentColor" focusable="false"><defs><linearGradient id="cbmH__U" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".22" stop-color="#fff"/><stop offset=".78" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="cbmK__U" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200"><rect width="200" height="200" fill="url(#cbmH__U)"/></mask></defs><path class="lg-dm" d="M74 100L100 74L126 100L100 126Z" fill="var(--gold-l)" stroke="none"/><path class="lg-a" pathLength="1" d="M54 100L90 64L126 100L90 136Z" stroke-width="3.4"/><path class="lg-b" pathLength="1" d="M74 100L110 64L146 100L110 136Z" stroke-width="3.4"/><g class="lg-fl" mask="url(#cbmK__U)" stroke-width="2.2"><path pathLength="1" d="M54 100H4"/><path pathLength="1" d="M146 100H196"/><path pathLength="1" d="M72 82H20"/><path pathLength="1" d="M128 82H180"/><path pathLength="1" d="M72 118H20"/><path pathLength="1" d="M128 118H180"/><path pathLength="1" d="M90 64H36"/><path pathLength="1" d="M110 64H164"/><path pathLength="1" d="M90 136H36"/><path pathLength="1" d="M110 136H164"/><path pathLength="1" d="M66 91H44" stroke-width="1.2" opacity=".6"/><path pathLength="1" d="M134 91H156" stroke-width="1.2" opacity=".6"/><path pathLength="1" d="M66 109H44" stroke-width="1.2" opacity=".6"/><path pathLength="1" d="M134 109H156" stroke-width="1.2" opacity=".6"/></g></svg>
+            <!-- End of a hand (presentation.js, #card.is-intermezzo): the pause mark and its word
+                 take the window in place of the logo and the "begin" text. -->
+            <svg class="cb-mark cb-fermata" viewBox="0 0 200 110" fill="none" stroke="currentColor" focusable="false"><path class="a1" pathLength="1" stroke-width="2.2" d="M40 96A60 60 0 0 1 160 96"/><path class="a2" pathLength="1" stroke-width="1.2" opacity=".55" d="M56 96A44 44 0 0 1 144 96"/><path class="dm" d="M100 70L112 82L100 94L88 82Z" stroke="none"/><g class="fl" stroke-width="1.2" opacity=".6"><path d="M4 96H34M166 96H196"/></g></svg>
+            <span class="cb-rule"></span>
+            <span class="cb-text"></span>
+            <span class="cb-caption">Intermezzo</span>
+          </div>
+        </div></template>
+<script src="shared/cards.js"></script><script src="shared/gilt.js"></script><script src="endhand.js"></script>
+</body></html>
