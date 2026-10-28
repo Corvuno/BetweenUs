@@ -1,0 +1,119 @@
+/* End-of-hand page only. Small, real-text copies of the phone card (354px wide): everything inside follows the card's
+   width through container units. Hairlines keep their weight. The app's styles.css is used as is (shared/styles.css);
+   only the miniature sizing and the five moves below are added. */
+body{padding:10px 0 0;min-height:100dvh;justify-content:flex-start;}
+.sbs{width:100%;max-width:1500px;padding:0 16px;display:flex;flex-direction:column;gap:10px;}
+.sbs-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.25rem;letter-spacing:.04em;color:var(--cream);}
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px;row-gap:6px;align-items:start;}
+.tstage{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.tcap{font-size:.72rem;letter-spacing:.05em;color:var(--cream);text-align:center;line-height:1.2;}
+.ctl{display:flex;flex-direction:column;justify-content:center;gap:8px;align-self:stretch;padding-bottom:20px;}
+.ctl .btn-draw{flex:none;padding:12px 0;}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:11px 0;cursor:pointer;transition:border-color .2s,color .2s;}
+.btn-ghost:hover{border-color:var(--border-strong);color:var(--gold);}
+.legend{display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--dim);padding-top:8px;}
+.legend>div{display:grid;grid-template-columns:7.2rem 1fr;gap:8px;font-size:.68rem;line-height:1.3;}
+.legend dt{color:var(--cream);letter-spacing:.04em;}
+.legend dd{color:var(--muted-l);}
+@media(min-width:700px){
+  .tgrid{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:20px;}
+  .ctl{grid-column:1/-1;flex-direction:row;justify-content:center;padding:14px 0 8px;}
+  .ctl button{min-width:200px;}
+  .tcap{font-size:.8rem;}
+  .legend>div{font-size:.8rem;grid-template-columns:11rem 1fr;}
+  .sbs-title{font-size:1.5rem;}
+}
+
+/* the small card (same proportions as the phone card) */
+.tstage .card-area{width:100%;aspect-ratio:auto;container-type:inline-size;--ease-move:cubic-bezier(.45,0,.25,1);}
+.tstage .card{aspect-ratio:556/360;max-width:none;margin:0;overflow:visible;}
+.tstage .card-body-inner{padding:5cqw 10cqw 2.8cqw;gap:2.8cqw;min-height:0;overflow:visible;}
+.tstage .card-level{font-size:max(8px,4.52cqw);letter-spacing:.16em;}
+.tstage .card-question{font-size:7.49cqw;line-height:1.52;}
+.tstage .card-star{top:2.5cqw;right:3.1cqw;padding:2.8cqw;font-size:max(8px,4.07cqw);}
+.tstage .c-accent{height:3px;filter:none;}
+.tstage .card::before,.tstage .card::after{width:6.8cqw;height:6.8cqw;}
+.tstage .card::before{top:5.6cqw;left:5.6cqw;}
+.tstage .card::after{bottom:5.6cqw;right:5.6cqw;}
+/* the end message at its real proportion (1rem on the 354px card) */
+.tstage .end-msg{font-size:4.52cqw;}
+.tstage .card-body-inner:has(.end-msg){padding-bottom:2.8cqw;}
+/* the list side, same proportion (1.02rem rows, the card's own paddings) */
+.tstage .card.is-hand-list .card-body-inner{padding:5cqw 8.5cqw 3.5cqw 10cqw;}
+.tstage .hd-list{--hd-fs:4.6cqw;padding-block:2cqw 4cqw;}
+.tstage .hd-star{width:2.2em;height:2.2em;margin:-.3em -.3em -.3em 0;}
+.tstage .card.no-anim,.tstage .card.no-anim *{transition:none !important;animation:none !important;}
+
+/* ── what the app does, kept: the mark draws once the back is up (styles.css, "Motion"). Here its start is moved by --lead
+   (set per version) so each version can hand over to the mark when its own back is ready. ── */
+.tstage .card.is-start.is-intermezzo:not(.im-still) .cb-fermata .a1{animation-delay:calc(var(--lead,0s) + .5s);}
+.tstage .card.is-start.is-intermezzo:not(.im-still) .cb-fermata .a2{animation-delay:calc(var(--lead,0s) + .8s);}
+.tstage .card.is-start.is-intermezzo:not(.im-still) .cb-fermata .dm{animation-delay:calc(var(--lead,0s) + 1.7s),calc(var(--lead,0s) + 2.4s);}
+.tstage .card.is-start.is-intermezzo:not(.im-still) .cb-fermata .fl{animation-delay:calc(var(--lead,0s) + 1.9s);}
+.tstage .card.is-start.is-intermezzo:not(.im-still) .cb-rule{animation-delay:calc(var(--lead,0s) + 1.7s),calc(var(--lead,0s) + 2.4s);}
+
+/* ── the back: how it comes up in each version ── */
+.tstage .card.is-start .card-back{transition:none;}
+.tstage .card.mv-keep .card-body-inner,.tstage .card.mv-keep .card-star{visibility:visible;}   /* the message stays until the move covers it */
+.tstage .card-question.mv-fade{opacity:0;transform:none;transition:opacity .45s var(--ease-move);}
+
+/* 1 Current, 2 Over the top: the face swaps at the edge-on midpoint (the app's .turning). Perspective as a share of the card's width. */
+@keyframes mTurnX{
+  0%{transform:perspective(452cqw) rotateX(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}
+  49.9%{transform:perspective(452cqw) rotateX(90deg) scale(.94);}
+  50%{transform:perspective(452cqw) rotateX(-90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}
+  100%{transform:perspective(452cqw) rotateX(0) scale(1);}
+}
+@keyframes mTurnY{
+  0%{transform:perspective(452cqw) rotateY(0) scale(1);animation-timing-function:cubic-bezier(.45,0,.75,.4);}
+  49.9%{transform:perspective(452cqw) rotateY(90deg) scale(.94);}
+  50%{transform:perspective(452cqw) rotateY(-90deg) scale(.94);animation-timing-function:cubic-bezier(.25,.6,.55,1);}
+  100%{transform:perspective(452cqw) rotateY(0) scale(1);}
+}
+.tstage .card.turning{animation:mTurnY .84s linear both;}
+.tstage .card.turning-x{animation:mTurnX .84s linear both;}
+
+/* 3 Laid down: sinks back, tilts away, soft shadow moves in; then settles */
+@keyframes mLay{
+  0%{transform:perspective(452cqw) rotateX(0) translateY(0) scale(1);box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);}
+  45%{transform:perspective(452cqw) rotateX(7deg) translateY(1.2cqw) scale(.955);box-shadow:0 1.5px 14px rgba(0,0,0,.34),0 1px 2px rgba(0,0,0,.28);animation-timing-function:cubic-bezier(.3,0,.3,1);}
+  100%{transform:perspective(452cqw) rotateX(0) translateY(0) scale(1);box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);}
+}
+.tstage .card.mv-lay{animation:mLay .96s cubic-bezier(.4,0,.2,1) both;}
+.tstage .card.mv-lay.is-start .card-back{transition:opacity .62s var(--ease-move);}
+
+/* 4 The card closes: the lattice grows in from the card's edges (a ring that thickens inward to the frame),
+   the frame draws round from the top centre, then the mark. Same lines as the back, drawn instead of faded. */
+@property --p{syntax:'<number>';inherits:false;initial-value:0;}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg;}
+@keyframes mRing{to{--p:1;}}
+@keyframes mFrame{to{--a:180deg;}}
+@keyframes mCap{from{opacity:0;}to{opacity:1;}}
+.tstage .card.mv-build.is-start .card-back{transition:opacity .5s var(--ease-move);}
+.tstage .card.mv-build .cb-lattice{
+  clip-path:polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,
+    calc(var(--p)*19%) calc(var(--p)*15%),calc(var(--p)*19%) calc(100% - var(--p)*15%),
+    calc(100% - var(--p)*19%) calc(100% - var(--p)*15%),calc(100% - var(--p)*19%) calc(var(--p)*15%),
+    calc(var(--p)*19%) calc(var(--p)*15%));
+  animation:mRing .85s .3s var(--ease-move) both;
+}
+.tstage .card.mv-build .cb-frame{
+  --w:calc(var(--a)*2);
+  -webkit-mask-image:conic-gradient(from calc(var(--a)*-1) at 50% 50%,#000 var(--w),transparent var(--w));
+  mask-image:conic-gradient(from calc(var(--a)*-1) at 50% 50%,#000 var(--w),transparent var(--w));
+  animation:mFrame .85s .45s var(--ease-move) both;
+}
+.tstage .card.mv-build .cb-caption{animation:mCap .6s .9s var(--ease-move) both;}
+/* the word waits until the back is up, so it never sits on the message */
+.tstage .card.mv-lay .cb-caption{animation:mCap .6s .6s var(--ease-move) both;}
+.tstage .card.mv-veil .cb-caption{animation:mCap .6s .6s var(--ease-move) both;}
+
+/* 5 Rethink, a veil: nothing moves; the back fades up over the message */
+.tstage .card.mv-veil.is-start .card-back{transition:opacity .9s var(--ease-move);}
+
+/* reduced motion: every version is a calm fade, the mark shown finished (the app's own rule) */
+@media (prefers-reduced-motion:reduce){
+  .tstage .card.is-start .card-back,.tstage .card.mv-lay.is-start .card-back,.tstage .card.mv-build.is-start .card-back,.tstage .card.mv-veil.is-start .card-back{transition:opacity .6s ease;}
+  .tstage .card.mv-lay,.tstage .card.mv-build .cb-lattice,.tstage .card.mv-build .cb-frame,.tstage .card :is(.cb-caption){animation:none;}
+  .tstage .card.mv-build .cb-lattice,.tstage .card.mv-build .cb-frame{clip-path:none;-webkit-mask-image:none;mask-image:none;}
+}
