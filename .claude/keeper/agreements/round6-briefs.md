@@ -26,3 +26,14 @@ with a friend · the ex you'd go back to for one night · sex dreams about peopl
 it's been.
 **Where it stops:** + what you're into, taboos included, is Kink's.
 **Guardrail:** never juvenile; if a card could appear in a drunk party game, it doesn't belong.
+
+## Owner comments 2026-10-28 (stay/go)
+- Flesh 9 goes, to the bench. Flesh gets a full look in this round, with Carnal and Bare; Kink too ("Kink is good I think").
+- Carnal 4 goes; Carnal needs a "what are you good at, and why" card.
+- Carnal 3 "I find this hard to answer" (Keeper reads: goes — to confirm).
+- Carnal 6 stays in spirit but broader: "men don't make sounds", so not only sounds.
+- Bare 2 goes; Bare or Carnal needs a masturbation card.
+- Bare 3 goes (faking is not failing); Bare needs a "we're just human, not perfect" card.
+- Bare 8 stays ("we put it here because Kink had no space. I like the card"). Bare brief: a taboo can be a Bare confession.
+- Bare 9 moves to Romance 9 (replacing the wedding-speech card). Bare 9 slot opens.
+- Open to confirm: Carnal 7, 9, 12 going; the rest of Carnal and Bare staying.
