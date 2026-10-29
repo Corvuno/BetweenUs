@@ -67,3 +67,4 @@ it's been.
 - Carnal 3 → "Think of the best sex you've had and some you've forgotten. What separated them?"
 - Carnal 4: alt 2 ("strength as a lover") as an open "…" card; exact words to approve.
 - Carnal 12: new angles not felt yet; fallback stands, more angles asked.
+**BUILT 2026-10-29** — 13 cards (Carnal 3, 4, 6, 7, 9, 12; Bare 3, 9; Romance 9; Flesh 4, 6, 7, 9), briefs, bench +3 −2, ?v=20261029b, 67/67 checks.

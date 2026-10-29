@@ -14,4 +14,5 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 
+- Thirteen After Dark and Romance questions are new or reworded: more about sex itself and how it feels, less party game.
 - Smaller fixes throughout, including Flesh now showing under Everything, and the custom card option is gone from the menu.

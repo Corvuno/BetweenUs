@@ -23,13 +23,11 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Warm** — "What do you love that you'd never have found on your own?" (the positive-technology angle, though it reads as discovery rather than tech; owner likes the framing for Warm)
 - **Deep** — "Quote the sentence that has kept you company for years."
 - **Grief** — "Which grief do you carry that isn't yours?"
-- **Bare** — "What's a health conversation you've avoided having, right when you should have had it?" (bumped from Bare 9 when the age-gap card moved in from 11; still approved, just unslotted again)
 - **Life** — "Does your life feel like it's heading somewhere, or just happening?" (written for Wish 7, reads more like a Life card — flagged for a future Life slot rather than used here)
 - **Romance** — "Is there a version of 'cheating' you don't actually think counts?" (approved, no slot yet — Romance is the likely home, already runs relationship rules and patterns)
 - **Life** — "What's a small luxury that's become completely non-negotiable for you?" (an alternative the owner liked for Life 8 in v6.74; kept 2026-10-24 when the card it was noted under was tossed)
 - **Connect** — "Who has gotten closer to you than you were actually comfortable with — and how did you let it happen?" (boundaries angle; first parked pending a softer take because it read as consent territory. Owner, 2026-10-24: keep it as it is)
 - **Life** — "What happens on your daily commute that nobody else would notice?" (an alternative for Life 10 in the 2026-10-16 Life rework; owner liked it — "it's also fun" — but chose the public-transport card for the slot)
-- **Flesh** — "When did sex last feel like play — and what made it that way?" (written 2026-10-18 for laughing and play in bed; owner: "play is exactly the word I'd look for" — it is what they call that feeling. Fulfils a need; no slot yet.)
 - **Flesh** — "Who have you had the most fun with in bed?" (written 2026-10-18 alongside the play card; the owner dropped the "not the best sex, the most fun" contrast from the draft — "the fun can be the best". Fulfils a need; no slot yet.)
 - **Bare** — "How old were you the first time — and did it feel early, late, or right on time?" (written 2026-10-18 for Bare 10; owner: "the first first-time question that makes sense" — kept for a later slot.)
 - **Culture** — "Which cover version is better than the original?" (owner asked to bench, round 2 2026-10-20)
@@ -39,6 +37,9 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Warm** — "What's the best trouble you ever got into?" (from Past 9, below Past's band; owner asked to bench for Warm, round 5 2026-10-27)
 - **Connect** — "Who left your life better than they found it?" (from Deep 4, below Deep's band; owner liked it, benched for Connect, round 5 2026-10-27)
 - **Shadow** — "Name someone you used, and what you got out of it." (alternative for Shadow 9; owner asked to bench, round 5 2026-10-27)
+- **Carnal** — "What's a sound someone's made in bed that you still think about?" (from Carnal 6; owner asked to bench, round 6 2026-10-29)
+- **Flesh** — "Your hands on someone's body — where do they go first, and where do they linger?" (from Flesh 9; owner asked to bench, round 6 2026-10-29)
+- **Bare** — "Name the ex you'd go back to for one night." (alternative for Bare 9; owner asked to bench, round 6 2026-10-29)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -124,11 +125,11 @@ good for you · experiences that surprised you · what trust makes possible · a
 afterwards.
 **Where it stops:** the same subjects can appear in Carnal, Bare or Kink — the split in After Dark
 is how far the answer goes, not the topic. A subject may sit in two categories only if the card
-asks for a different story.
+asks for a different story. At most one Flesh card is about touch itself.
 
 ### Carnal ✦
 **App line:** Sex as you actually have it, up close
-**About:** Flesh's explicit sibling — the training wheels come off. Sex as you actually have it:
+**About:** Flesh's explicit sibling. Sex as you actually have it:
 what you've experienced, what you like and what you don't, told in detail and with insight into
 yourself.
 **Lines of thought:** what you love in bed, and what you can't stand · the best sex and the worst ·
@@ -138,7 +139,9 @@ half-asleep, drunk and sober sex · make-up sex, break-up sex, sex after a fight
 relationship versus with someone new · the first time with a new person, learning each other ·
 asking for something, guiding someone mid-way · what kills it mid-way · the aftermath ·
 how your sex has changed over the years · what sex has taught you about yourself · feeling
-desired · porn and erotica · losing yourself.
+desired · porn and erotica · losing yourself · sex when you were sad, stressed or grieving · what goes
+through your head during it · sex that made you emotional · the moment you realised you'd got
+good at it.
 **Where it stops:** facts, figures and silly stories are Bare's · specific kinks and how far you go
 are Kink's · the lighter version is Flesh's · questions to your partner are Us: Intimate's. If
 Flesh covers the same subject, the Carnal card asks for a different story, not the same one with
@@ -146,16 +149,18 @@ more detail.
 
 ### Bare ✦
 **App line:** (unchanged) Direct to a fault — the questions your friends ask three drinks in
-**About:** Facts, figures and silly stories — the oddest category. Blunt is allowed; answers can be
-short, or the story that makes the whole table laugh. Still grown-up, never juvenile.
-**Lines of thought:** your count, how often, longest and shortest, ages · firsts and lasts · places ·
-where you meet the people you sleep with · getting caught · awkward mornings after · things that
-went wrong, small injuries · faking · solo sex · toys: bought, hidden, found · sexting, nudes sent
+**About:** Facts, figures and confessions, told straight. An answer can be a number, or the story
+that makes the whole table laugh. Blunt is allowed; grown-up, never juvenile. If a card could
+appear in a drunk party game, it doesn't belong here.
+**Lines of thought:** your count, how often, ages · firsts and lasts · places · where you meet the
+people you sleep with · things that went wrong, small injuries · being only human · faking · solo sex · toys: bought, hidden, found · sexting, nudes sent
 and received · apps and hook-ups and how they actually went · myths you believed, sex education ·
 age gaps · what your friends know about your sex life · the longest dry spell, and the busiest
-stretch · taboos and confessions · who knows what about you.
-**Where it stops:** what it was like, in detail, is Carnal's · what you're into is Kink's · the
-lead-up is Flesh's.
+stretch · who knows what about you · health: tests, scares, contraception · sex on alcohol or
+drugs · sleeping with a friend · the ex you'd go back to for one night · sex dreams about people
+you know · how long it's been.
+**Where it stops:** what it was like, in detail, is Carnal's · what you're into is Kink's (a
+taboo can still be a blunt Bare confession) · the lead-up is Flesh's.
 
 ### Kink ✦
 **App line:** What does it for you, exactly
@@ -679,6 +684,64 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.23 — category scope rework round 6: After Dark (Carnal, Bare, Flesh) and Romance 9
+
+- **Carnal 3**
+  - Old: "What's a moment in bed you felt truly desired — not just touched?"
+  - New: "Think of the best sex you've had and some you've forgotten. What separated them?"
+  - Why: Owner found it hard to answer; Carnal is about sex itself, good, bad and between.
+- **Carnal 4**
+  - Old: "What's your sexual superpower — and the night it proved you right?"
+  - New: "Ask anyone you've slept with, and they'd say your strength as a lover is..."
+  - Why: "Superpower" is a borrowed device; owner wanted a quality as a lover, not a technique.
+- **Carnal 6**
+  - Old: "What's a sound someone's made in bed that you still think about?"
+  - New: "Which moment in bed replays in your head more than any other?"
+  - Why: Broadened at the owner's request (not everyone makes sounds). Old card benched.
+- **Carnal 7**
+  - Old: "What's something a partner's done in bed that turned you on in a way you didn't expect — and how did you respond?"
+  - New: "What makes sex feel wrong, even when nothing is technically wrong?"
+  - Why: Same story as Flesh 2.
+- **Carnal 9**
+  - Old: "When does sex stop being about you — and is that a good thing?"
+  - New: "Oral: what do you love most about giving it, or getting it?"
+  - Why: Abstract, no ready answer.
+- **Carnal 12**
+  - Old: "What kind of erotica — written, told, or visual — pulls you in, and what does that tell you about your own taste?"
+  - New: "Tell about the first time with someone new after a long relationship."
+  - Why: Second porn/erotica card, list of three, mirror device.
+- **Bare 3**
+  - Old: "When has your body not done what you wanted in bed — and what did you do?"
+  - New: "Tell about a time in bed when you just couldn't, and how the other person took it."
+  - Why: Owner: Bare needs a "we're only human" card.
+- **Bare 9**
+  - Old: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?"
+  - New: "What's a health conversation you've avoided having, right when you should have had it?"
+  - Why: The age-gap card moves to Romance 9 (owner). New card comes off the bench.
+- **Romance 9**
+  - Old: "What's the best wedding speech you've ever heard, or the worst?"
+  - New: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?"
+  - Why: Far below Romance's band and not about your own love life; owner moved the age-gap card here from Bare 9.
+- **Flesh 4**
+  - Old: "Walk me through undressing someone — the order, the pace, what you notice."
+  - New: "Describe undressing someone — the order, the pace, what you notice."
+  - Why: Without "me" (owner).
+- **Flesh 6**
+  - Old: "A kiss you can still feel when you think of it — take me there."
+  - New: "A kiss you can still feel when you think of it..."
+  - Why: Without "take me there" (owner).
+- **Flesh 7**
+  - Old: "Still fully dressed, nothing removed yet — what's the most charged that moment has ever gotten for you?"
+  - New: "A hotel room, far from home: what comes out in you that stays hidden at home?"
+  - Why: Too close to Flesh 1 (owner).
+- **Flesh 9**
+  - Old: "Your hands on someone's body — where do they go first, and where do they linger?"
+  - New: "When did sex last feel like play — and what made it that way?"
+  - Why: Second pure touch card next to Flesh 1. Old card benched; new card comes off the bench.
+- Writer briefs updated: Carnal loses "the training wheels come off" and gains four lines; Bare is "facts, figures and confessions", loses the party-game lines, gains six; a taboo can be a Bare confession; at most one Flesh card about touch.
+- Bench: three added on the owner's word (Carnal, Flesh, Bare), two taken into the deck (Flesh 9, Bare 9).
+- Other replaced cards are removed, not benched.
 
 ## Patch v7.22 — category scope rework round 5: Past, Deep, Raw, Shadow, Grief (plus Self 8, Body 6)
 
