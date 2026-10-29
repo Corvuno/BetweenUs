@@ -934,7 +934,7 @@ applyToggleUI();
   const outsidePanel=e=>!catArea.contains(e.target);
   ['pointerdown','mousedown','mouseup','touchstart','touchend','click'].forEach(type=>
     document.addEventListener(type,e=>{
-      const closing=type==='pointerdown' && e.button===0 && catArea.classList.contains('sheet-open')
+      const closing=type==='pointerdown' && /** @type {PointerEvent} */(e).button===0 && catArea.classList.contains('sheet-open')
         && dockedQuery.matches && outsidePanel(e);
       if(closing){
         swallowPress=true; closeCats();
