@@ -1,8 +1,10 @@
-# DRAFT — Category scopes: Life, Home, Desire, World, Abyss (+ Kink, Bare)
+# Category scopes: Life, Home, Desire, World, Abyss (+ Kink, Bare), then rounds 2 and 3
 
-**Status: in conversation, not yet approved. Nothing gets built from this file until the
-owner says yes to the whole agreement.** Saved so the decisions so far survive a lost
-session.
+**Status (upkeep 2026-10-29):** approved and built — round 1 on 2026-10-18, round 2 on
+2026-10-20, the line pass on 2026-10-21, round 3 on 2026-10-23 (see each FINAL AGREEMENT
+below). The notes before each final agreement are the record of how it was reached. The live
+writer briefs are in `questions/between-us-deck.md` (WRITER BRIEFS); later app-line changes
+there and in config.js win over the lines quoted here.
 
 ## Standing rule agreed (2026-10-13)
 
@@ -323,7 +325,7 @@ better than the original?"; Culture "Which video online have you watched more ti
 admit?"; Work "Who was the best boss you ever had — and what did they do that others didn't?".
 
 Writer briefs for Culture, Roots, Wish, Work, Spirit, Body, Unwind: text in
-`.claude/keeper/agreements/round2-briefs.md`, added to the WRITER BRIEFS section.
+added to the WRITER BRIEFS section of `questions/between-us-deck.md` (the separate round2-briefs.md copy was removed in the 2026-10-29 upkeep; it is in git history).
 
 ## C) App lines (config.js desc)
 - Culture: "Everything you love that someone else made — from a song to a building"
@@ -383,7 +385,7 @@ The writer briefs' "App line:" rows for these categories follow the new lines.
 Keeper decision: next group is the relationship cluster, because it has the known overlaps
 (first move: Connect 4 / Romance 9) and the biggest gaps (no siblings, exes, weddings, first
 dates, group chats anywhere in the deck). Definitions shown in chat.
-Round 3 definitions agreed 2026-10-22 (texts in round3-briefs.md): Connect "The way you let
+Round 3 definitions agreed 2026-10-22 (texts now in WRITER BRIEFS): Connect "The way you let
 people in"; Friendship "The people you picked yourself"; Romance "From the first date to the
 last goodbye"; Family "The family you have now" (stays). Owner notes: Connect covers connecting
 with anyone, friends/partners/family included; "inside jokes, rituals, the yearly trip" read as
@@ -443,7 +445,7 @@ Connect 2 → "Where were you when a conversation with someone you'd just met we
 - Family 3: "What did a parent give you that you only learned to value late?" → "What surprised you most the first time you spent real time with someone else's family?"
 - Family 10: "How much do you choose your family — and how much do you just endure them?" → "What help from your family have you turned down, and why?"
 Replaced cards are removed, not benched. Bench (owner asked): Friendship "What happened when friends from different parts of your life finally met?".
-Writer briefs for Connect, Friendship, Romance, Family: text in `.claude/keeper/agreements/round3-briefs.md`, added to WRITER BRIEFS.
+Writer briefs for Connect, Friendship, Romance, Family: added to WRITER BRIEFS (the round3-briefs.md copy was removed in the 2026-10-29 upkeep).
 
 ## C) App lines (config.js desc)
 - Connect (connect): "The way you let people in"

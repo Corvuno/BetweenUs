@@ -16,5 +16,5 @@ Area: B (looks). A and C untouched.
   finish", etc.) go to the owner as a list before anything changes.
 
 ## Name
-- The sheet headed "What kind of evening?" (code: #cat-area) is called **the evening chooser**
-  internally, as in vision.md. Not shown in the app.
+- Replaced 2026-10-19: the sheet is called **The Deck** (see `2026-10-18-evening-chooser.md` and
+  project.md, "Names we use").

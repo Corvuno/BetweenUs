@@ -7,5 +7,4 @@ Format: **date** — what happened / what to do instead.
 
 ## Notes
 
-(none yet)
 - **2026-10-21** — Skill added: `verification-before-completion` (obra/superpowers). / Don't trust a builder's "tests pass": check the diff yourself and say what you checked. A build that leaves `node scripts/check.mjs` red is not finished.

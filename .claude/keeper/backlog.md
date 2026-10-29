@@ -1,8 +1,8 @@
 # Backlog
 
-_Updated 26 October 2026_
+_Updated 29 October 2026_
 
-The one queue of work. The Keeper keeps it in order; the owner can move anything. Older detailed notes: backlog-notes-before-2026-10-23.md.
+The one queue of work. The Keeper keeps it in order; the owner can move anything.
 
 ## Building now
 
@@ -35,7 +35,7 @@ _Nothing is being built right now._
 2. Option: Reachable only from one place such as a "Where it came from" page — means no loose links beside the game, and the story of the game stays shown.
 3. Option: Not linked publicly, kept only in the repository — means visitors never meet them, and the classic edition no longer illustrates how the game used to be (vision currently says it stays reachable).
 **Touches:** between-us-first.html, between-us-classic.html, index.html, README.md
-**Source:** backlog-notes-before-2026-10-23.md "Old versions on public links" (2026-10-13); vision.md "Where it's going"
+**Source:** backlog note "Old versions on public links" (2026-10-13); vision.md "Where it's going"
 **Status note:** Options are the Keeper's reading of the 2026-10-13 note, not yet shown to the owner. Needs a call before the site goes public.
 
 ### Decision: what the work version should become (Area C app)
@@ -57,11 +57,6 @@ _Nothing is being built right now._
 **Touches:** index.html, README.md, manifest.webmanifest
 **Source:** vision.md "Where it's going"
 **Status note:** Nothing is agreed beyond "its own website, free, English". Options are the open parts, not Keeper proposals.
-
-### Decision: a depth score per card (Area C app, Area A deck)
-**Decision:** Revive the September depth-scoring plan or not. Plan then: an optional depth 1–7 on each card in questions.js, falling back to the category band; Arc orders by card depth; After Dark never below 3. In September only scores in chat (Mind, Self, Past, Body, Deep, Flesh, Abyss, Quick, Warm, Life, Friends, Connect, Carnal); nothing built.
-**Source:** session of 2026-09-20 to 09-22 (branch question-rating-system); owner asked 2026-10-25.
-**Status note:** Decided 2026-10-26: no per-card score. Rule instead: every card within one step of its category's band (project.md).
 
 ### Decision: the 5 / 10 / 20 / All picker (Area B looks)
 **Decision:** On the card-count row of the sheet, do you want the counter lettering (Poiret One, as under the card) on the numbers, and which of the four mockup versions?
@@ -126,7 +121,7 @@ _Nothing is being built right now._
 2. The Custom-card feature stays gone from the menu; the Favourites row stays as it is.
 3. Where the wildcard sits (which category or none), how many there are, and its exact wording are decided with the owner before anything is written.
 **Touches:** questions.js, card.js
-**Source:** backlog-notes-before-2026-10-23.md "Wildcard" (2026-10-21)
+**Source:** owner, 2026-10-21, when the custom cards were removed
 **Status note:** The owner called it an idea, not to build yet. Replaces the removed custom cards.
 
 ### Two cards in different categories asking the same thing (Area A deck)
@@ -136,7 +131,7 @@ _Nothing is being built right now._
 2. Each overlap that is still there goes to the owner as one issue card with three alternatives, the current cards quoted in full.
 3. No card text in questions.js changes until the owner picks the words for that slot.
 **Touches:** questions.js, questions/between-us-deck.md
-**Source:** backlog-notes-before-2026-10-23.md "Category scope check" (2026-10-13)
+**Source:** whole-deck scope check, 2026-10-13 (the card texts as they were then are in git history, file backlog-notes-before-2026-10-23.md)
 **Status note:** Rounds 1 to 3 may have fixed some, and round 4 removes Values 8 (money). Not re-checked, so unsure.
 
 ### Finish the old-code clean-up (Area C app)
@@ -158,8 +153,8 @@ _Nothing is being built right now._
 2. The card ratio and the Spotlight margin each appear once in the wide-screen code.
 3. Screenshots of the PC screen before and after are identical.
 **Touches:** styles.css, ui.js, card.js
-**Source:** backlog-notes-before-2026-10-23.md "PC layout code tidy-up" (reviewer, 2026-10-20)
-**Status note:** Not bugs. Done together with the next looks job that touches the wide-screen block.
+**Source:** reviewer, 2026-10-20 (PC layout review)
+**Status note:** Not bugs. Done together with the next looks job that touches the wide-screen block. The reviewer's smaller points go along: repeated calc(var(--k)*Npx) values could use helper variables; setWideScale's numbers need names and could sit with the other resize code; a comment near the old desktop .c-accent rules pointing to the WIDE SCREENS block.
 
 ### Check the old desktop-fits-window branch (Area B looks)
 **Task:** Look at the current PC screen at common window heights and decide whether the old branch is replaced, so that nothing gets built twice.
@@ -180,6 +175,15 @@ _Nothing is being built right now._
 **Source:** old branch, tag archive/claude/funny-cerf-xj3rr2 (2026-10-08 to 2026-10-09, preview page only)
 **Status note:** Exploration only. The logo is never touched unasked.
 
+### Decision: when does the app start fresh? (Area C app)
+**Decision:** Seen (and skipped) cards count across presets, category changes, reloads and days; a fresh pass only starts when every card in the selection is seen, or when the history is cleared by hand. On a phone with hundreds of hands that can leave a lopsided unseen pool (2026-10-24: five Quick, four Warm, one Grief with Everything + Arc). What should reset the seen memory, and what does the player see of it?
+**Acceptance criteria:**
+1. Option: Leave it as it is — means seen cards keep counting until the selection is used up or cleared.
+2. Option: A reset on a moment you name (a preset change, a new day, a category running out) — means the Keeper turns it into a story with what the player sees.
+**Touches:** deck.js, presentation.js
+**Source:** owner, 2026-10-24: "we'd have to look into what makes a clean slate and restarts… for now I understand what happens." (deck.js `_startFreshPassIfSpent`, presentation.js `btnClearLog`)
+**Status note:** Parked by the owner until it comes back.
+
 ### Decision: a printed deck and an offshoot (Area A deck)
 **Decision:** Vision keeps a printed deck (which could also bring in money) and an offshoot open. Do you want to start talking about either?
 **Acceptance criteria:**
@@ -192,6 +196,18 @@ _Nothing is being built right now._
 
 ## Done (last 14 days)
 
+### Flesh shows under Everything again (A, C), 2026-10-29
+**Story:** Flesh was the one category Everything hid; it now sits with the other After Dark categories, off until chosen. **Source:** 7b06925
+
+### End of a hand: the card closes into Intermezzo (B), 2026-10-28
+**Story:** After the last card's message the card closes itself into the pause, with a held empty beat, instead of turning. **Source:** agreements/2026-10-15-end-of-hand-intermezzo.md (2026-10-28 section), cfcea26
+
+### Slower, calmer motion (B), 2026-10-27
+**Story:** The first draw, the card turn and the menus take their time again; changing card is easier to see. **Source:** agreements/2026-10-21-animation-and-scan-fixes.md ("Tempo"), 1710b9e
+
+### Decision: no depth score per card (A, C), 2026-10-26
+**Story:** No per-card score; every card sits within one step of its category's band instead (project.md). **Source:** 4a658a0
+
 ### Round 5: Into the Deep (A), 2026-10-27
 **Story:** 17 new cards in Past, Deep, Raw, Shadow, Grief, plus Self 8 and Body 6; four new app lines; five briefs; house style 13 (vary how a card asks); depth rule (cards within one step of the band). **Source:** 4222824
 
@@ -200,27 +216,6 @@ _Nothing is being built right now._
 
 ### Round 4: Self, Mind and Values (A), 2026-10-24
 **Story:** Ten new cards, Mind line "How your head actually works", three briefs; bench cleaned from 89 to 19. **Source:** ddb328b, 3dee66c
-
-### Players draw cards (C), 2026-10-12
-**Story:** The app only says "draw" for taking a card. **Source:** 451a855
-
-### Classic edition and first version on their own pages (C), 2026-10-12 to 2026-10-13
-**Story:** The old versions stay playable on their own links. **Source:** 3439013, 1ef7daf
-
-### Remove Dutch (A, C), 2026-10-13
-**Story:** The game is English only; the Dutch text is kept in a notes file. **Source:** agreements/2026-10-13-remove-dutch.md, 567a412
-
-### Bottom of the screen (B, C), 2026-10-13 and 2026-10-14
-**Story:** Back, menu, Three, Spotlight and Twist read clearly, with hints, shaking when not usable and a "Show hints again" row. **Source:** agreements/2026-10-13-bottom-of-the-screen.md, bd4ac1d, ecfb5fb, 2f1dab3
-
-### Card is the widest thing on the main screen (B), 2026-10-14
-**Story:** The progress line and controls line up with the card edges. **Source:** agreements/2026-10-14-card-width-column.md, 8c86c2d
-
-### Hand size, Arc and missing title (C), 2026-10-14
-**Story:** A hand is always the size picked and the category title stays on the card. **Source:** agreements/2026-10-14-hand-size-and-title.md, 5e271d7, acc468c
-
-### Line under the title matches the logo (B), 2026-10-14
-**Story:** The line under the title takes the logo's centre. **Source:** agreements/2026-10-14-title-line-centre.md, 03e758d
 
 ### Category scopes rework, round 1 (A), 2026-10-14 to 2026-10-18
 **Story:** Life, Home, World, Attract and the After Dark categories get new cards and app lines; Abyss is retired. **Source:** agreements/2026-10-14-category-scopes.md, 8fdff93, 85cbc2d, 183b9ed
@@ -286,22 +281,10 @@ _Nothing is being built right now._
 **Story:** The Custom card feature is gone; favourites stay. **Source:** agreements/2026-10-19-old-code-cleanup.md, 27bf352
 
 ### Category scopes rework, round 2: Culture, Wish, Roots, Work, Spirit, Body (A), 2026-10-20
-**Story:** Twenty-one new cards and six new app lines. **Source:** commit 60f7c5e, round2-briefs.md
+**Story:** Twenty-one new cards and six new app lines. **Source:** commit 60f7c5e, agreements/2026-10-14-category-scopes.md
 
 ### Category scopes rework, round 3: Connect, Friendship, Romance, Family (A), 2026-10-23
-**Story:** Fifteen new cards, new app lines and briefs. **Source:** commit 7d0f19e, round3-briefs.md
+**Story:** Fifteen new cards, new app lines and briefs. **Source:** commit 7d0f19e, agreements/2026-10-14-category-scopes.md
 
 ### Release 1.7.0 (C), 2026-10-23
 **Story:** The automatic release published and reset the notes. **Source:** 03f8d29
-
-## When does the app start fresh? (2026-10-24)
-
-The owner thought a different preset was a clean slate. It isn't: seen cards (and skipped
-cards) count across presets, category changes, reloads and days; a fresh pass only starts when
-every card in the current selection is seen, or when the history is cleared by hand
-(deck.js `_startFreshPassIfSpent`, presentation.js `btnClearLog`). On a phone with hundreds of
-hands, that can leave a lopsided unseen pool (e.g. mostly Quick/Warm), giving hands like
-2026-10-24's: five Quick, four Warm, one Grief with Everything + Arc. Owner: "we'd have to look
-into what makes a clean slate and restarts… for now I understand what happens." Open when it
-comes back: what should reset the seen memory (a preset change? a new day? a category running
-out?), and what the player sees of it.
