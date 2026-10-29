@@ -71,7 +71,7 @@ function toggleTwist() {
 function replayClass(el, cls, ms) {
   if (!el) return;
   el.classList.remove(cls);
-  void el.offsetWidth;   // reflow so the animation restarts on a quick second tap
+  el.getBoundingClientRect();   // forces a reflow so the animation restarts on a quick second tap
   el.classList.add(cls);
   setTimeout(() => el.classList.remove(cls), ms);
 }
@@ -102,7 +102,8 @@ async function toggleFavourite(forCard) {
   const idx = state.favourites.findIndex(f => f.question === card.question);
   if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
   else { state.favourites.push({ question: card.question, level: card.level }); state.handStarred.add(card.question); }
-  try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); } catch(e) {}
+  try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); }
+  catch (error) { console.warn('Could not save favourites:', error); }
   updateStarUI();
   renderFavourites();
   if (typeof syncHandStars === 'function') syncHandStars();
@@ -201,6 +202,29 @@ function clearCardFace() {
   if (prev) prev.disabled = true;
 }
 
+// The start face: no card drawn yet (fresh load, settings change) or nothing to draw.
+function showStartFace({ qEl, nextBtn, accent }) {
+  clearCardFace();
+  if (accent)   { giltRailPaint(accent, null); }
+  if (qEl)      { qEl.textContent = state.visibleDeck.length===0
+    ? 'Select at least one category.'
+    : 'A place to begin…';
+    qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
+  }
+  // nothing to draw (no categories) keeps the plain message; otherwise the
+  // start card shows the same "begin" text on the card's back
+  setStartBack(state.visibleDeck.length===0 ? '' : 'A place to begin…');
+  if (nextBtn) {
+    nextBtn.textContent = 'Draw Card';
+    // nothing's been drawn yet (fresh load, or a settings change just
+    // reset the hand) — make this the obvious "start" tap, not just
+    // another "next" tap.
+    nextBtn.classList.add('btn-draw--start');
+  }
+  // Update party display too
+  updatePartyDisplay(null);
+}
+
 function setCardDisplay(card) {
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
@@ -214,25 +238,7 @@ function setCardDisplay(card) {
   const accent = document.getElementById('c-accent');
 
   if (!card) {
-    clearCardFace();
-    if (accent)   { giltRailPaint(accent, null); }
-    if (qEl)      { qEl.textContent = state.visibleDeck.length===0
-      ? 'Select at least one category.'
-      : 'A place to begin…';
-      qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
-    }
-    // nothing to draw (no categories) keeps the plain message; otherwise the
-    // start card shows the same "begin" text on the card's back
-    setStartBack(state.visibleDeck.length===0 ? '' : 'A place to begin…');
-    if (nextBtn) {
-      nextBtn.textContent = 'Draw Card';
-      // nothing's been drawn yet (fresh load, or a settings change just
-      // reset the hand) — make this the obvious "start" tap, not just
-      // another "next" tap.
-      nextBtn.classList.add('btn-draw--start');
-    }
-    // Update party display too
-    updatePartyDisplay(null);
+    showStartFace({ qEl, nextBtn, accent });
     return;
   }
   setStartBack('');
@@ -422,7 +428,7 @@ function flipToCard(card, isFirstDraw) {
     if (isStale(card)) { pendingFlip.cancel(); return; }
     paintFace(card);
     accent?.classList.remove('accent-bloom');   // the rail blooms in as the first card lands (replayed by reflow)
-    void accent?.offsetWidth;
+    accent?.getBoundingClientRect();   // forces a reflow
     accent?.classList.add('accent-bloom');
     el.classList.add('face-in');   // the question may show now; the landing runs on to `done`
     finishFace(card);
