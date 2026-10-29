@@ -37,7 +37,7 @@ _Nothing is being built right now._
 3. Option: Wait until you have used them on your own phone and PC — means this stays here and nothing else about release moves.
 **Touches:** none yet
 **Source:** vision.md "Where it's going"; commit list since 2026-10-12
-**Status note:** Waiting on the owner's answer.
+**Status note:** Waiting on the owner's answer. Partly answered 2026-10-29: The Deck on PC is not settled (owner: it "looks like it came straight out of a phone"); a PC layout for it is being talked through.
 
 ### Decision: how the old versions are reachable (Area C app)
 **Decision:** The first version (between-us-first.html) and the classic edition (between-us-classic.html) have their own Play links next to the real game. When the site goes public, how should a visitor who finds them be sure it is an older version, and where may they live?
@@ -68,17 +68,6 @@ _Nothing is being built right now._
 **Touches:** index.html, README.md, manifest.webmanifest
 **Source:** vision.md "Where it's going"
 **Status note:** Nothing is agreed beyond "its own website, free, English". Options are the open parts, not Keeper proposals.
-
-### Decision: the 5 / 10 / 20 / All picker (Area B looks)
-**Decision:** On the card-count row of the sheet, do you want the counter lettering (Poiret One, as under the card) on the numbers, and which of the four mockup versions?
-**Acceptance criteria:**
-1. Option: Current — means the picker stays as it is today.
-2. Option: Numbers only in the counter lettering — means 5, 10 and 20 change and All stays as it is.
-3. Option: Numbers plus All in the counter lettering — means all four read in that lettering.
-4. Option: One counter-style control — means the four choices become a single control styled like the counter under the card.
-**Touches:** styles.css, ui.js
-**Source:** agreements/2026-10-16-small-type-and-cards-numbers.md ("Still open"); mockup round 1
-**Status note:** Waiting since 2026-10-16. The Deck was reworked after the mockup, so the Keeper re-checks that it is current before showing it again.
 
 ### Decision: small text that sits between two lettering rules (Area B looks)
 **Decision:** The rule is: sentence-case lines in Federo, caps names in Jost. Some small texts fit neither clearly. For each, which lettering should it have?
@@ -206,6 +195,9 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Decision: the 5 / 10 / 20 / All picker stays as it is (B), 2026-10-29
+**Decided:** Owner, 2026-10-29: the picker as it is today is accepted; no counter lettering. Closes the open point from agreements/2026-10-16-small-type-and-cards-numbers.md.
 
 ### Flesh shows under Everything again (A, C), 2026-10-29
 **Story:** Flesh was the one category Everything hid; it now sits with the other After Dark categories, off until chosen. **Source:** 7b06925
