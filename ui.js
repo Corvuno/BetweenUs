@@ -865,9 +865,14 @@ applyToggleUI();
   function flushCloseWaiters(){ catsClosing=false; if(catArea.classList.contains('sheet-open')) return; closeWaiters.splice(0).forEach(fn=>fn()); }
   window.afterCatsClosed=function(fn){ if(catsBusy()) closeWaiters.push(fn); else fn(); };
   window.catsBusy=catsBusy;
+  /* On a wide window with a mouse The Deck is a panel docked beside the card (styles.css, "THE DECK,
+     DOCKED"): no scrim, and the main screen makes room while it is open. */
+  const dockedQuery=matchMedia('(min-width:1024px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine)');
   function openCats(){
     if(!togglesWrap.classList.contains('open')) catLabel.click(); /* keep original state machine in sync */
     catArea.classList.add('sheet-open'); scrim.classList.add('on');
+    document.documentElement.classList.toggle('deck-docked',dockedQuery.matches);
+    catArea.setAttribute('aria-modal',String(!dockedQuery.matches));
     lockBodyScroll();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
     catArea.removeAttribute('aria-hidden');
@@ -883,6 +888,7 @@ applyToggleUI();
   function closeCats(){
     const wasOpen=catArea.classList.contains('sheet-open');
     catArea.classList.remove('sheet-open'); scrim.classList.remove('on');
+    document.documentElement.classList.remove('deck-docked');
     if(wasOpen){
       catsClosing=true;
       const done=e=>{ if(e && (e.target!==catArea || e.propertyName!=='transform')) return;
@@ -916,6 +922,20 @@ applyToggleUI();
   });
   $('catClose').addEventListener('click', closeCats);
   scrim.addEventListener('click', closeCats);
+  /* Docked, there is no scrim to click: a press anywhere outside the panel closes it, and that press
+     does nothing else (no Next card underneath). The rest of the same press (mouse and click events
+     that follow the pointer press) is swallowed too. */
+  let swallowPress=false;
+  const outsidePanel=e=>!catArea.contains(e.target);
+  ['pointerdown','mousedown','mouseup','touchstart','touchend','click'].forEach(type=>
+    document.addEventListener(type,e=>{
+      const closing=type==='pointerdown' && catArea.classList.contains('sheet-open') && dockedQuery.matches && outsidePanel(e);
+      if(closing){ swallowPress=true; closeCats(); setTimeout(()=>{ swallowPress=false; },600); }
+      if(closing || (swallowPress && outsidePanel(e))){
+        e.stopPropagation();
+        if(type==='click'){ e.preventDefault(); swallowPress=false; }
+      }
+    },true));
   $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
 
   /* ── swipe the sheet down to dismiss it, same gesture a bottom sheet is

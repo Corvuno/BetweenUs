@@ -373,6 +373,34 @@ presets read picked / not picked and wanted one look for everything pickable.
   colours; `config.js` is unchanged. The dimmed (not picked) state of these sits at about 4.2 to
   4.6:1, by design quieter than picked.
 
+### The Deck, docked on a computer (owner, 2026-10-29: "the deck menu looks like it came straight out of a phone on pc")
+
+On a wide window with a mouse (min-width 1024px, min-height 560px, aspect 5/4 or wider, hover and
+fine pointer: the same window that gets the app's wide layout) The Deck is a panel docked to the right
+edge, beside the card, instead of a window over it. Below that, or touch only, the phone sheet and the
+centred window are exactly as before. The condition is written twice in `styles.css` (once excluding
+the centred window, once for the dock) and once in `ui.js` (`dockedQuery`).
+- **Panel** (`.cat-area` in the dock block, "THE DECK, DOCKED"): `--dock-w` = `clamp(560px,42vw,640px)`,
+  full height, `--surface`, one `--border-strong` line on its left, and a 3px gold rail on that edge
+  (the chapter rail's dark-light-dark sweep in gold, no glow). No scrim, no radius. Slides in from the
+  right at the sheet's own timing (.64s `--ease-sheet` in, .42s `--ease-out` out); instant under
+  reduced motion.
+- **The main screen makes room**: `html.deck-docked` sets `--dock-open` (a registered `<length>`, so it
+  eases) to `--dock-w`; the app's own card width `--pcW` and the body's right padding read it. The
+  card keeps its size where the window allows and narrows on a short window; the question's font size
+  is the app's, untouched.
+- **Layout**: head on one line (name, question, close at the right); presets stay at the top (sticky,
+  wrap to two or three lines, the "Who's here" caption inline); chapters scroll between; Shuffle and
+  Cards on one line and Draw Cards as a full-width gold bar stay at the foot (sticky). Chapter rows
+  48px, preset buttons 34px (desk-size controls). None and Open all stay at the Chapters heading.
+- **Hover** (this block only, mouse): a pickable shows its picked colour with a faint underline (.35);
+  a chapter row brightens its border to `--border-strong` and its name to cream (or keeps its chapter
+  colour). The close x, None, Open all and Draw keep their existing hovers.
+- **Closing**: the x, Esc, or a press anywhere outside the panel. The outside press only closes; it is
+  swallowed so it does not also press Next card or anything underneath.
+- **No focus ring on the panel itself** (`.cat-area:focus-visible{outline:none}`, all sizes): it takes
+  focus from script as a dialog, not as a control. The controls inside keep their own rings.
+
 ## The Deck sheet heading (added 2026-10-19)
 The evening chooser sheet (`#cat-area`, aria-label "The Deck") is named **The Deck**: a
 `.drawer-title` (the same heading every drawer and panel uses: Jost, uppercase, `.16em`

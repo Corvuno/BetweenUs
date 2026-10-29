@@ -14,4 +14,5 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 
+- On a computer, The Deck now opens as a panel beside the card, so you can choose your evening while the question stays in view.
 - Smaller fixes throughout, including Flesh now showing under Everything.
