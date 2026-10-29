@@ -6,18 +6,7 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 
 ## Building now
 
-### The Deck made for a PC (Area B looks, Area C app)
-**Story:** As a player who opens The Deck on a computer, I get a sheet made for a wide screen and a mouse, where I still only see who's here and the chapters until I open one, so that choosing an evening feels as calm as on a phone without looking like a phone screen in a window.
-**Acceptance criteria:**
-1. In a laptop or desktop window, with every chapter closed, the presets, chapters, Shuffle, Cards and Draw are all visible without the sheet scrolling.
-2. Categories appear only when a chapter is opened; opening one never pushes the presets or Draw out of sight.
-3. Everything is sized for a mouse at desk distance, and everything clickable reacts when the mouse is over it.
-4. It gives the same feeling as The Deck on a phone and fits the app's look; its parts may be drawn new for a mouse and a wide screen, as long as they sit comfortably next to the rest of the app.
-5. On a phone the sheet looks exactly as today; on every screen everything you can pick works as today (presets and their lockouts, Custom, None, Fixed Sets, Shuffle, Cards).
-6. No thick outline appears around the sheet when it opens.
-**Touches:** styles.css, ui.js, between-us.html, DESIGN-SYSTEM.md
-**Source:** owner 2026-10-29 ("the deck menu looks like it came straight out of a phone on pc… without losing the cascading feel"); point 4 rewritten on the owner's correction the same day. Area C only if the sideways option wins.
-**Status note:** Agreed 2026-10-29. Round 1 (Today, Wider, Sideways, Rethink): https://claude.ai/artifact/1HmzTTizJ2isar3oaWy4m7 (built on 6bbc2a1). Owner picked Rethink (the panel beside the card) 2026-10-29; scrolling on a small screen is fine. Building since 2026-10-29, session https://claude.ai/code/session_01Jg2KKEhYbbZNXKj1Kdr6h1.
+_Nothing is being built right now._
 
 ## Next
 
@@ -212,6 +201,9 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### The Deck made for a PC (B, C), 2026-10-29
+**Story:** On a computer The Deck opens as a panel beside the card, presets on top and Draw at the foot, chapters still unfolding; phones and tablets unchanged. **Source:** round 1 https://claude.ai/artifact/1HmzTTizJ2isar3oaWy4m7 (Rethink picked), 94561b4
 
 ### Round 6: After Dark and Romance 9 (A), 2026-10-29
 **Story:** 13 cards in Carnal, Bare, Flesh and Romance; Carnal, Bare and Flesh briefs updated; bench +3 −2. **Source:** round 6 commit on main
