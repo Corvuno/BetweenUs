@@ -895,7 +895,7 @@ applyToggleUI();
   })();
 
   /* ── same swipe-down-to-dismiss on every other bottom-sheet drawer (the
-     hamburger menu, and Log/Favourites/Custom/Help underneath it) — they're
+     hamburger menu, and Log/Favourites/Help underneath it) — they're
      the same kind of sheet as Categories and deserve the same handle, not
      just a small "x" in the corner. ── */
   (function(){

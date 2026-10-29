@@ -1,5 +1,6 @@
 // ── LIBRARY ──────────────────────────────────────────────────────────────────
-// The favourites collection: load from localStorage and render its drawer list. (Starring/unstarring the current card lives
+// The favourites collection: load from localStorage and render its drawer
+// list. (Starring/unstarring the current card lives
 // in card.js — this file owns the saved collections, not the per-card toggle.)
 
 
