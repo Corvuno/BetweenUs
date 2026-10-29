@@ -64,3 +64,6 @@ it's been.
 - Carnal 12 → "Compare sex from your first years with sex this year: what's changed the most?" (owner: weak; find other angles — kept as fallback)
 - Carnal 3: alt 1 direction (fine vs great sex) as a story; wording to settle.
 - Carnal 4: not about technique "in bed" — the broader quality as a lover (owner: "I am sensitive to the wants of the other person").
+- Carnal 3 → "Think of the best sex you've had and some you've forgotten. What separated them?"
+- Carnal 4: alt 2 ("strength as a lover") as an open "…" card; exact words to approve.
+- Carnal 12: new angles not felt yet; fallback stands, more angles asked.
