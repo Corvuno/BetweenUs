@@ -271,7 +271,7 @@ function levelFocus(l){ return LEVEL_FOCUS[l] != null ? LEVEL_FOCUS[l] : 0; }
 const PRESETS = {
   open: {
     on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","bare"],
-    available: ["colbert","aron","magic","carnal","kinks","backup"],
+    available: ["colbert","aron","magic","flesh","carnal","kinks","backup"],
     customisedBy: ["usintimate"],
     subtitle:  "Everything on the table"
   },
