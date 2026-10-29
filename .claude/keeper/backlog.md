@@ -10,6 +10,17 @@ _Nothing is being built right now._
 
 ## Next
 
+### Fix the Spotlight test that fails at random (Area C app)
+**Task:** One automatic check (Spotlight: tapping Sideways, then the browser turns the screen) fails on some runs and passes on others, so the checks on main turn red for no real reason and hide real problems. Find out why it is unreliable and make it reliable, without loosening what it checks.
+**Acceptance criteria:**
+1. The cause is found and named in plain words: a timing problem in the test itself, or a real fault in how Spotlight turns.
+2. If it is a real fault in the app, it is fixed and Spotlight turns exactly once, as agreed for sideways phones.
+3. The check passes on ten runs in a row, locally and on main.
+4. No check is skipped, switched off or made less strict to get there.
+**Touches:** tests/run.mjs, presentation.js
+**Source:** checks red on main three times out of four on 27–29 October, every time on this one check; found in the upkeep; owner said yes.
+**Status note:** Top of Next because red checks on main are urgent.
+
 ### Round 6: After Dark — Carnal and Bare (Area A deck)
 **Story:** As a player in After Dark, Carnal and Bare cards each stay on their own ground and none reads juvenile.
 **Acceptance criteria:** 1. Definition, stay/go over all 12 of each, new cards in the owner's words (standard method). 2. Bare gets a new app line. 3. The Carnal brief loses "the training wheels come off". 4. Flesh 9 (hands) is settled in the same round.

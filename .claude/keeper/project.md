@@ -18,7 +18,9 @@ The Keeper. Started with `/keeper`.
   Card proposals are issue cards (plain text, never a code block), three alternatives that
   differ in substance, the current card quoted in full, cards always cited as
   `Category, number, "question text"`. Before proposing, work out what the card is meant to
-  get out of people, then write the question. The owner approves the exact words of every
+  get out of people, then write the question. Each open card's brief names two or three lines of
+  thought, and its three alternatives spread over them: three alternatives on one subject count as
+  one (owner, 2026-10-29). The owner approves the exact words of every
   card before it is written. No exceptions, including on the fast path.
 - Category descriptions (agreed 2026-10-13/14): every category gets two — an app line
   (short, in the app) and a writer brief in `questions/between-us-deck.md` (what it's about,
@@ -42,7 +44,10 @@ The Keeper. Started with `/keeper`.
   card touches; mark the ones that come from existing cards.
 - Read `.claude/keeper/taste.md` before proposing wording; add to it whenever the owner likes or
   turns something down.
-- **Writer test (owner, 2026-10-21), for the next batch of card proposals.** Two writers write
+- **Writer test — finished 2026-10-23** (owner confirmed 2026-10-29): writer A 8 picks, writer B 7,
+  too close to call, so writer A (the normal method) is the default writer. Not run again unless
+  the owner asks. The rule as it was:
+  **Writer test (owner, 2026-10-21), for the next batch of card proposals.** Two writers write
   every card in the batch independently, from the same brief: writer A with the normal method
   (CLAUDE.md, HOUSE STYLE, taste.md), writer B with the same method plus the `humanizer` skill,
   using HOUSE STYLE and the current deck as its voice sample. Each writes three alternatives per

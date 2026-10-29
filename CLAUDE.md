@@ -38,6 +38,10 @@ above stands as written.
   works (run it, screenshot it, whatever the change calls for), and land it
   on `main` yourself. "Fix it" means finish the job end-to-end, not produce
   something for the owner to go finish.
+- **Keep the backlog current** (owner, 2026-10-29). Every session, Keeper or not: when you land
+  something on `main`, or start or finish a piece of agreed work, update
+  `.claude/keeper/backlog.md` in the same push (to Done, with the commit) and republish its page
+  (link and steps in `.claude/keeper/project.md`, "The backlog page").
 - Push finished work straight to `main`. Don't open a pull request unless
   explicitly asked to — the user doesn't want to be asked "should I open a
   PR?" each time.
