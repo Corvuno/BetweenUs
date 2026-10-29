@@ -1314,7 +1314,7 @@ body.tok-taught .tok-hint{display:none;}
 }
 /* The Deck as a centred window: every wide window except the docked panel (see "THE DECK, DOCKED"
    further down, which holds the same condition). */
-@media(min-width:768px) and (not ((min-width:1024px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine))){
+@media(min-width:768px) and (not ((min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine))){
   .cat-area{
     /* fixed, not auto — Shape's content is much shorter than Explore's,
        and height:auto meant the whole modal visibly grew and shrank when
@@ -1573,18 +1573,20 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── THE DECK, DOCKED (a computer with a mouse, owner 2026-10-29: "the panel beside the card") ──
    On a wide window with a mouse The Deck is a panel docked to the right edge instead of a window
-   over the card. No scrim: the card stays in view and the main screen makes room (--dock-open, which
-   --pcW reads). Same condition as the one the centred window is excluded by, above. Anything
-   narrower, or touch only, keeps the phone sheet / centred window exactly as before. */
-@property --dock-open{syntax:'<length>';inherits:true;initial-value:0px;}
+   over the card. No scrim: the card stays in view and the main screen makes room: the body's right
+   padding grows by the panel's width and the app (width: 100% of that room, --pcW) eases left with the
+   panel, over the same time and curve. 1280px is the width where the header still has its room with
+   the panel open (the card is then 604px, as at 1280x720); narrower, or touch only, keeps the phone
+   sheet / centred window exactly as before. The condition is the one the centred window is excluded by, above. */
 :root{--dock-w:clamp(560px,42vw,640px);}
-@media(min-width:1024px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine){
-  html{transition:--dock-open .42s var(--ease-out);}
-  html.deck-docked{--dock-open:var(--dock-w);transition-duration:.64s;transition-timing-function:var(--ease-sheet);}
-  html.deck-docked body{padding-right:var(--dock-open);}
+@media(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine){
+  /* the panel and the main screen move together: same time, same curve, out and back */
+  body{--dock-ms:.5s;transition:--im-color .6s ease,padding-right var(--dock-ms) var(--ease-sheet);}
+  html.deck-docked body{--dock-ms:.64s;padding-right:var(--dock-w);}
   .cat-scrim{display:none;}
   .cat-area{left:auto;right:0;top:0;bottom:0;width:var(--dock-w);height:100dvh;padding:0 28px;
-    border:0;border-left:1px solid var(--border-strong);transform:translateX(102%);}
+    border:0;border-left:1px solid var(--border-strong);transform:translateX(102%);
+    transition:transform .5s var(--ease-sheet);}
   .cat-area.sheet-open{transform:none;}
   /* the gilt edge: the app's rail line, gold */
   .cat-area::before{content:'';position:absolute;inset:0 auto 0 -1px;width:3px;pointer-events:none;
@@ -1596,13 +1598,13 @@ body.tok-taught .tok-hint{display:none;}
   .cat-close{top:6px;right:-12px;}
   /* presets stay at the top and Shuffle / Cards / Draw at the foot while the chapters scroll between */
   .pane-play.on{display:flex;flex-direction:column;}
-  .preset-host{position:sticky;top:0;z-index:2;background:var(--surface);padding:6px 0 8px;margin:0;}
+  .preset-host{position:sticky;top:0;z-index:2;background:var(--surface);padding:4px 0 6px;margin:0;}
   .preset-host .sect-lbl{margin:0 0 2px;}
   .preset-host.open .preset-outer{max-height:none;padding:0;}
   .preset-host .preset-row{justify-content:flex-start;align-items:center;}
   .mode-group-lbl--break{display:none;}
   .mode-group-lbl{flex:none;padding:0 8px 0 0;margin-inline-start:14px;}
-  .preset-host .mode-btn{--pick-h:34px;}
+  .cat-area .preset-host .mode-btn{--pick-h:34px;}
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){padding:0 8px;}
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{inset-inline:8px;}
   .play-sect--1{flex:1 0 auto;padding-top:6px;}
@@ -1612,21 +1614,19 @@ body.tok-taught .tok-hint{display:none;}
   .chapter,.ch-fold--row{min-height:48px;}
   .ch-main{padding-block:4px;gap:1px;}
   .play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);border-left:0;margin:0;
-    padding:10px 0 0;border-top:1px solid var(--dim);}
+    padding:8px 0 0;border-top:1px solid var(--dim);}
   .seg-row{--row-inset:0;display:flex;align-items:center;gap:22px;margin:0;}
   .seg-head{width:auto;margin-inline-end:6px;}
-  .cat-go-bar{padding:10px 0 14px;background:none;}
+  .cat-go-bar{padding:8px 0 12px;background:none;}
   /* every pickable thing answers the mouse the same way: its picked colour, lightly underlined */
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn):hover{color:var(--tc);}
   .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active)):hover::after{opacity:.35;}
   .chapter:hover .ch-name,.ch-fold--row:hover .ch-name{color:var(--cream);}
   .chapter:is(.on,.part):hover .ch-name{color:var(--ch);}
   .chapter:hover,.ch-fold--row:hover{border-color:var(--border-strong);}
+  @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
 }
-@media(prefers-reduced-motion:reduce){html,html.deck-docked{transition:none;}}
-@media(min-width:1024px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:reduce){
-  .cat-area,.cat-area.sheet-open{transition:none;}
-}
+
 /* the panel is a focus target for the keyboard, not a control: no ring around it (the controls inside keep theirs) */
 .cat-area:focus-visible{outline:none;}
 
@@ -1721,7 +1721,7 @@ body.hint-save-taught #btnSave .row-hint{display:none;}
    bar centred, progress + count right. Nothing here changes what a control does.
    --pcW is the card's width; the 262px is everything on screen that isn't the card. */
 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  :root{--k:1;--pcW:min(calc(100vw - var(--dock-open) - 116px), calc((100dvh - 262px * var(--k)) * 556 / 360));}
+  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 262px * var(--k)) * 556 / 360));}
   body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
   .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
     display:grid;grid-template-columns:1fr calc(var(--k)*300px) 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto;
