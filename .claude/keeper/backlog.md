@@ -10,6 +10,19 @@ _Nothing is being built right now._
 
 ## Next
 
+### The Deck made for a PC (Area B looks, Area C app)
+**Story:** As a player who opens The Deck on a computer, I get a sheet made for a wide screen and a mouse, where I still only see who's here and the chapters until I open one, so that choosing an evening feels as calm as on a phone without looking like a phone screen in a window.
+**Acceptance criteria:**
+1. In a laptop or desktop window, with every chapter closed, the presets, chapters, Shuffle, Cards and Draw are all visible without the sheet scrolling.
+2. Categories appear only when a chapter is opened; opening one never pushes the presets or Draw out of sight.
+3. Everything is sized for a mouse at desk distance, and everything clickable reacts when the mouse is over it.
+4. It gives the same feeling as The Deck on a phone and fits the app's look; its parts may be drawn new for a mouse and a wide screen, as long as they sit comfortably next to the rest of the app.
+5. On a phone the sheet looks exactly as today; on every screen everything you can pick works as today (presets and their lockouts, Custom, None, Fixed Sets, Shuffle, Cards).
+6. No thick outline appears around the sheet when it opens.
+**Touches:** styles.css, ui.js, between-us.html, DESIGN-SYSTEM.md
+**Source:** owner 2026-10-29 ("the deck menu looks like it came straight out of a phone on pc… without losing the cascading feel"); point 4 rewritten on the owner's correction the same day. Area C only if the sideways option wins.
+**Status note:** Agreed 2026-10-29. Mockup round being made (today, Wider, Sideways, a rethink); the build waits for the owner's pick.
+
 ### Fix the Spotlight test that fails at random (Area C app)
 **Task:** One automatic check (Spotlight: tapping Sideways, then the browser turns the screen) fails on some runs and passes on others, so the checks on main turn red for no real reason and hide real problems. Find out why it is unreliable and make it reliable, without loosening what it checks.
 **Acceptance criteria:**
