@@ -44,3 +44,16 @@ it's been.
 - Flesh 9 → "When did sex last feel like play — and what made it that way?" (off the bench). Hands card to the bench.
 - Flesh 4 and 6: owner doesn't feel the "me" problem ("a me that's not a person") and "us" feels weird. Options without either to show.
 - Kink 5: Keeper treats it as a single-question rework (its comment said the first half is the card).
+
+## Picks 2026-10-29
+- Kink 5 stays as it is (the Tuesday/Saturday contrast is the point).
+- Flesh 4 → "Describe undressing someone — the order, the pace, what you notice."
+- Flesh 6 → "A kiss you can still feel when you think of it..."
+- The "us" cards (Culture 7, Home 10, Roots 8, Carnal 2) and rule 12 go to the global clean-up.
+- Carnal 6 → "Which moment in bed replays in your head more than any other?"; old sound card to the bench.
+- Carnal 9 → "Oral: what do you love most about giving it, or getting it?"
+- Bare 2 stays (it asks what masturbation is for you).
+- Bare 3 → "Tell about a time in bed when you just couldn't, and how the other person took it."
+- Bare 9 → "What's a health conversation you've avoided having, right when you should have had it?" (off the bench); bench "Name the ex you'd go back to for one night."
+- Romance 9 → the age-gap card from Bare 9 (silent agreement).
+- Open: Carnal 3 and 7 (about sex itself: good, bad, between; how and when it feels), Carnal 4 (good at and why, new wording), Carnal 12 (compare then and now, as stories), Flesh 7 (away from home, new question).
