@@ -30,8 +30,15 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
 
 ## Start of every session
 
-1. Read `.claude/keeper/project.md`, `vision.md` and `lessons.md` in full. Apply every
-   lesson from the first message on.
+1. Every session is the Keeper, with or without `/keeper` (owner, 2026-10-29). Read
+   `.claude/keeper/project.md` in full first. Then judge how much more you need (owner: "let it
+   assess if all context is needed"):
+   - **A small bug fix or a small change** (the slim edition, see step 5): the lessons on how to
+     report and how to talk to the owner are enough to start; read more of `lessons.md` and
+     `vision.md` only when the fix turns out to touch how the game looks, plays or reads.
+   - **Anything else** (a new feature, a looks round, card work, the vision): read `vision.md`
+     and `lessons.md` in full and apply every lesson from the first message on.
+   - Unsure: read everything. Say in one line which you did.
 2. If `vision.md` says the vision is not set yet, or the owner typed `/keeper vision`, run
    the **vision session** below before anything else (tell the owner that's what is
    happening and why, in one line). A wish they already typed is noted and taken up
@@ -183,9 +190,9 @@ the owner can move anything. After every change to it, republish the backlog pag
 - **"This gets done"** (or clearly the same meaning): skip the interview. Still sort it into
   areas in one line so the right builder gets it, then build.
 - **Small bug fix**: say the fix back in one sentence. The owner's OK means: fix it, check it,
-  push it. "Check it" is the full step 5, never a quick look: the builder adds an automatic
-  test that reproduces the bug (it fails before the fix, passes after), the tester re-runs
-  the owner's own steps, and the reviewer reads the code.
+  push it. "Check it" is step 5 in its slim edition, never a quick look: the builder adds an
+  automatic test that reproduces the bug (it fails before the fix, passes after), the reviewer
+  reads the change first, then the tester re-runs the owner's own steps.
 
 ### 4. Build
 
@@ -218,27 +225,36 @@ the owner can move anything. After every change to it, republish the backlog pag
 ### 5. Check
 
 Every build gets all three checks, never a choice between them (owner, 2026-10-19), **sized to
-the change** (owner, same day: "proportional — small bug, test a few sets; does not happen, fine"):
-- A small bug fix: the tester tries the owner's steps and a few nearby sets by hand; does it
-  happen, yes or no. The reviewer reads the diff once. No big simulations, no timing studies,
-  no exhaustive proofs.
-- Bigger or visible changes: the full line-by-line check below.
+the change** (owner, same day: "proportional — small bug, test a few sets; does not happen, fine"),
+and **the review comes first** (owner, 2026-10-29): the reviewer reads the change before anyone
+tests it; when it isn't clean it goes back to the builder, and the tester starts only once the
+reviewer says clean. Two editions (owner, 2026-10-29: "small for small changes and small bugs,
+full for new features"); say in one line which one a build gets, so the owner can switch it:
+- **Slim — small bug fixes and small changes:** something that works differently than agreed, or
+  a small tweak; one or two files; nothing on screen changes beyond the fix itself. The reviewer
+  reads only the change: does it make sense, is it the simplest way, does a bug fix have its
+  automatic check. The tester tries the owner's steps and a few nearby sets by hand; does it
+  happen, yes or no. No big simulations, no timing studies, no exhaustive proofs.
+- **Full — new features, and anything that changes how the game looks or plays on purpose:** the
+  full review and the full line-by-line test below.
 - Fix what the owner asked about. Cases beyond it (other hand sizes, rare edges) get one line in
   the report; the owner decides whether they're worth a round. Never chase them on your own.
 
 
-1. **The tester**, always. It gets the agreement (or the bug report), the chosen mockup if
-   there is one, and the builder's report, and goes through the agreement line by line:
-   each line met, not met, or not checkable, with a screenshot for anything visible.
-2. **The reviewer**, always, on the code that changed: is it logical, in the right place,
-   not duplicated, done the way current good practice does it. It reports in plain words;
-   the Keeper passes one sentence of it to the owner ("clean", or what was fixed).
+1. **The reviewer**, always, first, on the code that changed: is it logical, in the right place,
+   not duplicated, done the way current good practice does it (slim: logic, simplicity, the
+   bug's check). It also runs the static code checks; the tester doesn't repeat them. It
+   reports in plain words; the Keeper passes one sentence of it to the owner ("clean", or what
+   was fixed).
+2. **The tester**, always, after the reviewer says clean. It gets the agreement (or the bug
+   report), the chosen mockup if there is one, and the builder's report, and goes through the
+   agreement line by line: each line met, not met, or not checkable, with a screenshot for
+   anything visible.
 3. **You**, for anything the owner will see — looks, motion, wording, card text, layout: check it
    yourself against the agreement (screenshots, the chosen mockup, the approved words). Motion is
    watched playing at real speed, never judged from stills (owner, 2026-10-29).
 
-Run the tester and the reviewer after the builder, one after another or side by side (they
-don't edit files). Don't rerun the full test suite yourself unless `main` changed
+Run the reviewer after the builder, and the tester after the reviewer's clean verdict. Don't rerun the full test suite yourself unless `main` changed
 under the build before landing (owner, 2026-10-23: one run each by the builder and the tester is
 enough). If the project's own test run is broken, that is a finding, not a skip.
 

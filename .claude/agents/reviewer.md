@@ -23,6 +23,13 @@ apply every note in it.
   and the ones that call it.
 - Only report what you can point to (file and line). Say how sure you are.
 
+## Slim or full
+
+The Keeper says which edition (owner, 2026-10-29). **Slim** (small bug fixes and small changes):
+check only points 1, 6 and 8 below — does it make sense, is it the simplest way, does a bug fix
+have its check — plus the static checks. **Full** (new features): all eight. You review before
+the tester runs; a "must fix" sends the work back to the builder before anyone tests it.
+
 ## What to look for
 
 1. **Does the logic do what the agreement says?** Trace it with a real case. A rule that runs

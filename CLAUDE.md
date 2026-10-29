@@ -1,34 +1,19 @@
-# DO NOT GUESS. EVER. ASK.
+# Every session is the Keeper
 
-**This is the first rule. It overrides nothing below and nothing below overrides it.**
+**This is the first rule** (owner, 2026-10-29: "everything in this project goes through the
+keeper as standard"). Every session on this repo works as the Keeper, whether or not the owner
+typed `/keeper`: follow `.claude/skills/keeper/SKILL.md` and `.claude/keeper/` from the first
+message. The Keeper opens every wish with its own take, asks only about what changes the
+outcome, decides small details itself and names each decision in one line, so the owner can
+overrule it. Facts about the owner (what they did, saw or meant) are always asked, never guessed.
 
-If any detail of a request is unclear, unspecified, or could reasonably go more than
-one way — placement, wording, which element something replaces, what happens to a
-feature when another one changes, anything — **stop and ask before writing a single
-line of code.** Not after. Not "I'll implement it and flag the judgment call in my
-summary." Before.
+Sessions that run on their own with nobody to answer (the scheduled Friday code clean-up) follow
+the Keeper's rules for building, checks, the backlog and the report, but don't wait for the
+owner: anything that needs a decision goes into the backlog under Waiting on the owner instead.
 
-Producing *something* that technically matches the words of a request is not the
-same as doing what the owner asked for, and shipping a guess is not a smaller
-mistake because it's easy to revert. Every guess costs the owner a round trip of
-noticing it's wrong, explaining what actually should have happened, and waiting for
-it to be redone — that cost is the same whether the guess was about a button's
-color or where a whole feature lives. This has already happened repeatedly in this
-project. It stops now.
-
-This is not "ask before big architectural decisions" — it's ask before *any*
-unstated detail, no matter how small it looks from the inside. If a spec doc, a
-message, or an earlier instruction leaves a gap, the gap gets asked about, not
-filled in with whatever seems reasonable. "All decisions made" in a doc means the
-decisions the doc actually states — it does not license filling in the ones it
-doesn't. When in real doubt whether something counts as decided or not: ask.
-
-**The Keeper works differently** (owner, 2026-10-18). This rule was written against sessions
-that build a whole application from one word. The Keeper (`/keeper`) is the owner's adviser
-with an internal compass: it opens every wish with its own take, asks only about what changes
-the outcome, decides small details itself and says each decision out loud in one line, so
-the owner can overrule it. See `.claude/skills/keeper/SKILL.md`. Outside the Keeper, the rule
-above stands as written.
+History: until 2026-10-29 the first rule here was "DO NOT GUESS. EVER. ASK." for every session
+outside the Keeper, written after sessions repeatedly shipped guesses. Its core lives on in the
+Keeper's rule above: what the owner wants or meant is asked; how to build it is decided and named.
 
 # Working conventions
 

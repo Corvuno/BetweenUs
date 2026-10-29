@@ -20,7 +20,8 @@ instead. They weigh as much as the hard rules below.
 
 ## Rules
 
-- Run `npm run check:static` (type check + linter, see `CHECKS.md`) and report its result; a new finding is a finding.
+- The static code checks (type check + linter) are the reviewer's job, done before you start
+  (owner, 2026-10-29); don't rerun them. You run the player tests (`node tests/run.mjs between-us.html`).
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
 - From 2026-10-23 the agreement is a user story in `.claude/keeper/backlog.md`: its numbered

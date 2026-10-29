@@ -207,6 +207,9 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 
 ## Done (last 14 days)
 
+### Every session is the Keeper; review before test; a slim edition for small fixes (Keeper), 2026-10-29
+**Task:** Every session starts as the Keeper; a small fix reads only the background it needs; the reviewer checks the code before the tester plays it; small fixes get a slim review and test, new features the full one. **Source:** owner, upkeep thread
+
 ### Decision: the 5 / 10 / 20 / All picker stays as it is (B), 2026-10-29
 **Decided:** Owner, 2026-10-29: the picker as it is today is accepted; no counter lettering. Closes the open point from agreements/2026-10-16-small-type-and-cards-numbers.md.
 
