@@ -1,0 +1,117 @@
+/* The Deck made for a PC: mockup round 1. Loaded after the app's own styles.css.
+   Each option is switched on by a class on <html>: opt-wider, opt-sideways, opt-rethink.
+   "Today" has no class and no rule here. Tokens come from styles.css (:root). */
+
+html[class*="opt-"]{--dk-pad:28px;}
+
+/* ── shared: the sheet head, the footer, hover ── */
+html[class*="opt-"] .cat-sheet-handle{display:none;}
+html[class*="opt-"] .cat-area{padding:0 var(--dk-pad);}
+html[class*="opt-"] .cat-sheet-head{display:flex;align-items:baseline;gap:18px;padding:18px 56px 14px 0;}
+html[class*="opt-"] .cat-sheet-name{padding:0;}
+html[class*="opt-"] .cat-sheet-head-title{text-align:left;}
+html[class*="opt-"] .cat-close{top:6px;right:-12px;}
+
+/* the foot: Shuffle and Cards on the left, Draw on the right, always in view */
+.dk-foot{flex:none;display:flex;align-items:center;justify-content:space-between;gap:28px;
+  padding:14px 0 18px;border-top:1px solid var(--dim);}
+.dk-foot .seg-row{display:flex;align-items:center;gap:30px;margin:0;padding:0;}
+.dk-foot .seg-head{width:auto;margin-inline-end:6px;}
+.dk-foot .cat-go-bar{flex:none;padding:0;background:none;}
+.dk-foot .cat-go-btn{width:240px;padding:14px 0;}
+
+/* presets: one line, "Who's here" as a quiet word between the two groups */
+html[class*="opt-"] .preset-host{padding:0 0 8px;margin:0;}
+html[class*="opt-"] .preset-host .sect-lbl{margin:0 0 2px;}
+html[class*="opt-"] .preset-host.open .preset-outer{max-height:none;padding:0;}
+html[class*="opt-"] .preset-host .preset-row{flex-wrap:nowrap;justify-content:flex-start;align-items:center;gap:0;}
+html[class*="opt-"] .mode-group-lbl--break{display:none;}
+html[class*="opt-"] .mode-group-lbl{flex:none;padding:0 8px 0 26px;}
+html[class*="opt-"] .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){padding:0 8px;}
+html[class*="opt-"] .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{inset-inline:8px;}
+
+html[class*="opt-"] .pane-play{padding-top:10px;}
+html[class*="opt-"] .deselect-btn{padding-block:6px;}
+html[class*="opt-"] .sect-lbl{margin:0 0 10px;}
+html[class*="opt-"] #chaptersLbl{padding-inline-end:0;}
+
+/* every pickable thing answers the mouse the same way: it shows its picked colour, lightly underlined */
+@media (hover:hover) and (pointer:fine){
+  html[class*="opt-"] .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn):hover{color:var(--tc);}
+  html[class*="opt-"] .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active)):hover::after{opacity:.35;}
+  html[class*="opt-"] .chapter:hover,
+  html[class*="opt-"] .ch-fold--row:hover{border-color:var(--border-strong);}
+  html[class*="opt-"] .chapter:hover .ch-name,
+  html[class*="opt-"] .ch-fold--row:hover .ch-name{color:var(--cream);}
+  html[class*="opt-"] .chapter.on:hover .ch-name,.chapter.part:hover .ch-name{color:var(--ch);}
+}
+
+/* the quiet way back to the overview (shows on mouse move, not in screenshots) */
+.dk-back{position:fixed;top:8px;left:10px;z-index:9999;font:300 .75rem/1 'Jost',sans-serif;letter-spacing:.08em;
+  color:var(--btn-quiet);text-decoration:none;padding:8px 10px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.dk-back.on{opacity:1;pointer-events:auto;}
+.dk-back:hover{color:var(--gold);}
+
+/* ══ WIDER ══════════════════════════════════════════════════════════════ */
+html.opt-wider{--dk-w:1240px;}
+html.opt-wider .cat-area{
+  left:50%;top:50%;right:auto;bottom:auto;
+  width:min(var(--dk-w),calc(100vw - 48px));height:min(calc(100dvh - 48px),660px);
+  border:1px solid var(--border);border-radius:12px;}
+html.opt-wider .dk-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;align-items:start;}
+html.opt-wider .dk-col{display:flex;flex-direction:column;gap:4px;}
+html.opt-wider .chapter,html.opt-wider .ch-fold--row{min-height:60px;}
+
+/* ══ SIDEWAYS ═══════════════════════════════════════════════════════════ */
+html.opt-sideways{--dk-w:1240px;}
+html.opt-sideways .cat-area{
+  left:50%;top:50%;right:auto;bottom:auto;
+  width:min(var(--dk-w),calc(100vw - 48px));height:min(calc(100dvh - 32px),720px);
+  border:1px solid var(--border);border-radius:12px;}
+html.opt-sideways .pane-play.on{display:grid;grid-template-columns:minmax(380px,440px) 1fr;gap:0 32px;}
+html.opt-sideways .chapter,html.opt-sideways .ch-fold--row{min-height:52px;}
+html.opt-sideways .ch-main{padding-block:6px;}
+html.opt-sideways #deselectAll::after{display:none;}
+html.opt-sideways #deselectAll{padding-inline-end:0;}
+/* the chapters point sideways, the current one is lit */
+html.opt-sideways .ch-chev{transform:rotate(-90deg);}
+html.opt-sideways .chapter-group.is-current .chapter,
+html.opt-sideways .chapter-group.is-current .ch-fold--row{background:color-mix(in srgb,var(--ch) 12%,transparent);border-color:var(--border-strong);}
+html.opt-sideways .chapter-group.is-current .ch-name{color:var(--ch);}
+/* the right column: the opened chapter's categories */
+.dk-detail{--ch:var(--gold);align-self:stretch;display:flex;flex-direction:column;
+  border-left:3px solid var(--dim);padding:2px 0 12px 26px;}
+.dk-detail.has-chapter{border-left-color:color-mix(in srgb,var(--ch) 40%,transparent);
+  background:color-mix(in srgb,var(--ch) 3%,transparent);}
+.dk-detail-head{display:flex;align-items:baseline;gap:16px;padding:14px 24px 10px 0;}
+.dk-detail-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ch);}
+.dk-detail-desc{font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);}
+.dk-detail-ct{margin-inline-start:auto;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--muted-l);}
+.dk-detail-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));justify-items:start;gap:0 10px;padding-inline-end:20px;}
+.dk-detail-hint{margin:auto 0;padding:0 24px 0 0;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.05rem;line-height:1.5;color:rgba(240,232,216,.6);}
+
+/* ══ RETHINK: a panel beside the card ═══════════════════════════════════ */
+html.opt-rethink{--dock-w:clamp(560px,42vw,640px);}
+/* the card makes room: the main screen sizes itself to the window minus the panel (the app's own --pcW, less the panel) */
+html.opt-rethink{--pcW:min(calc(100vw - var(--dock-w) - 116px), calc((100dvh - 262px * var(--k)) * 556 / 360));}
+html.opt-rethink .cat-area,html.opt-rethink .cat-area.sheet-open{transform:none;}
+html.opt-rethink .cat-area{
+  left:auto;right:0;top:0;bottom:0;width:var(--dock-w);height:100dvh;
+  border:0;border-left:1px solid var(--border-strong);border-radius:0;}
+html.opt-rethink .cat-area::before{content:'';position:absolute;inset:0 auto 0 -1px;width:3px;pointer-events:none;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 38%,var(--bg)) 0%,var(--gold) 34%,var(--gold-l) 50%,var(--gold) 66%,color-mix(in srgb,var(--gold) 38%,var(--bg)) 100%);}
+html.opt-rethink .preset-host .preset-row{flex-wrap:wrap;}
+html.opt-rethink .mode-group-lbl{padding-inline:0 8px;margin-inline-start:14px;}
+html.opt-rethink .cat-sheet-head{padding-block:12px 8px;}
+html.opt-rethink .pane-play{padding-top:6px;}
+html.opt-rethink .sect-lbl{margin-bottom:6px;}
+html.opt-rethink .chapters{gap:3px;}
+html.opt-rethink .chapter,html.opt-rethink .ch-fold--row{min-height:48px;}
+html.opt-rethink .ch-main{padding-block:4px;gap:1px;}
+html.opt-rethink #deselectAll::after{display:none;}
+html.opt-rethink #deselectAll{padding-inline-end:0;}
+html.opt-rethink .dk-foot{flex-direction:column;align-items:stretch;gap:10px;padding-block:10px 14px;}
+html.opt-rethink .dk-foot .seg-row{gap:22px;}
+html.opt-rethink .dk-foot .cat-go-btn{width:100%;}
+html.opt-rethink .preset-host .mode-btn{--pick-h:34px;}

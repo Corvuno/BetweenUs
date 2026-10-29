@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Deck for a PC, round 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--surface:#161310;--gold:#c9a84c;--cream:#f0e8d8;--muted:#7a6e60;--muted-l:#9c8f7e;--dim:rgba(201,168,76,.12);--border:rgba(201,168,76,.22);--btn-quiet:#8f8171;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font:300 1rem/1.5 'Jost',sans-serif;padding:32px 16px 64px}
+main{max-width:1500px;margin:0 auto}
+h1{font:300 1.7rem/1.2 'Cormorant Garamond',serif;color:var(--gold);letter-spacing:.04em;margin:0 0 6px}
+h2{font:400 .85rem/1 'Jost',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-l);margin:34px 0 14px}
+p,li{color:rgba(240,232,216,.78)} p{max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px 16px}
+figure{margin:0}
+.thumb{display:block;width:100%;padding:0;border:1px solid var(--border);background:var(--surface);cursor:zoom-in;transition:border-color .2s}
+.thumb:hover,.thumb:focus-visible{border-color:var(--gold);outline:0}
+.thumb img{display:block;width:100%;height:auto}
+figcaption{padding:8px 2px 0;font-size:.95rem;color:var(--cream)}
+ul{padding-left:1.1em;max-width:80ch} li{margin:4px 0}
+table{border-collapse:collapse;margin-top:8px} th,td{padding:8px 18px 8px 0;text-align:left;font-weight:300;border-bottom:1px solid var(--dim)}
+th{color:var(--cream)} thead th{color:var(--muted-l);font-size:.85rem;letter-spacing:.08em}
+.ok{color:#8fd14f} .no{color:#e35c5c}
+#viewer{position:fixed;inset:0;background:rgba(8,7,6,.97);z-index:50;display:none;flex-direction:column}
+#viewer.on{display:flex}
+#viewer header{display:flex;gap:24px;align-items:center;padding:12px 18px;flex:none}
+#viewer button,#viewer a{background:none;border:0;color:var(--btn-quiet);font:300 .85rem 'Jost',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:none;padding:8px 4px}
+#viewer button:hover,#viewer a:hover{color:var(--gold)}
+#viewer .cap{margin-inline-start:auto;color:var(--muted-l);font-size:.85rem}
+#viewer .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:0 18px 18px}
+#viewer img{max-width:100%;max-height:100%;object-fit:contain;border:1px solid var(--border)}
+</style></head><body><main>
+<h1>The Deck, made for a PC. Round 1</h1>
+<p>Four ways to draw The Deck for a mouse and a wide screen. Same app, same colours, same picked look. Two across, current first. Static pictures at 1440 x 900 here; click one to see it large, then open the full-window page. Behind the sheet: a Wish card from the core deck, preset Balanced.</p>
+<h2>All chapters closed</h2><div class="grid"><figure><button type="button" class="thumb" data-img="png/today-closed-1920.png" data-page="today-closed.html" data-cap="Today, all chapters closed"><img src="png/today-closed-1440.png" alt="Today, all chapters closed" loading="lazy"></button><figcaption><b>Today</b></figcaption></figure><figure><button type="button" class="thumb" data-img="png/wider-closed-1920.png" data-page="wider-closed.html" data-cap="Wider, all chapters closed"><img src="png/wider-closed-1440.png" alt="Wider, all chapters closed" loading="lazy"></button><figcaption><b>Wider</b></figcaption></figure><figure><button type="button" class="thumb" data-img="png/sideways-closed-1920.png" data-page="sideways-closed.html" data-cap="Sideways, all chapters closed"><img src="png/sideways-closed-1440.png" alt="Sideways, all chapters closed" loading="lazy"></button><figcaption><b>Sideways</b></figcaption></figure><figure><button type="button" class="thumb" data-img="png/rethink-closed-1920.png" data-page="rethink-closed.html" data-cap="Rethink: beside the card, all chapters closed"><img src="png/rethink-closed-1440.png" alt="Rethink: beside the card, all chapters closed" loading="lazy"></button><figcaption><b>Rethink: beside the card</b></figcaption></figure></div><h2>Beneath the Surface open</h2><div class="grid"><figure><button type="button" class="thumb" data-img="png/today-open-1920.png" data-page="today-open.html" data-cap="Today, beneath the surface open"><img src="png/today-open-1440.png" alt="Today, beneath the surface open" loading="lazy"></button><figcaption><b>Today</b></figcaption></figure><figure><button type="button" class="thumb" data-img="png/wider-open-1920.png" data-page="wider-open.html" data-cap="Wider, beneath the surface open"><img src="png/wider-open-1440.png" alt="Wider, beneath the surface open" loading="lazy"></button><figcaption><b>Wider</b></figcaption></figure><figure><button type="button" class="thumb" data-img="png/sideways-open-1920.png" data-page="sideways-open.html" data-cap="Sideways, beneath the surface open"><img src="png/sideways-open-1440.png" alt="Sideways, beneath the surface open" loading="lazy"></button><figcaption><b>Sideways</b></figcaption></figure><figure><button type="button" class="thumb" data-img="png/rethink-open-1920.png" data-page="rethink-open.html" data-cap="Rethink: beside the card, beneath the surface open"><img src="png/rethink-open-1440.png" alt="Rethink: beside the card, beneath the surface open" loading="lazy"></button><figcaption><b>Rethink: beside the card</b></figcaption></figure></div>
+<h2>What each one is</h2><ul><li><b>Today.</b> The sheet as it is now: a 640px column, scrolls inside.</li><li><b>Wider.</b> One wide window. Presets on one line, chapters in two columns, they still unfold in place. Shuffle, Cards and Draw in a fixed footer.</li><li><b>Sideways.</b> Presets across the top, chapters as a list on the left, the opened chapter’s categories in a column on the right. One chapter at a time, so Open all is gone.</li><li><b>Rethink: beside the card.</b> The Deck as a panel docked beside the card instead of a window over it. The card stays in view. One chapter at a time, so Open all is gone.</li></ul>
+<h2>Does the closed state fit without scrolling</h2>
+<table><thead><tr><th></th><th>1920 x 1080</th><th>1440 x 900</th><th>1280 x 720</th></tr></thead><tbody><tr><th>Today</th><td class="no">scrolls 108 px</td><td class="no">scrolls 259 px</td><td class="no">scrolls 410 px</td></tr><tr><th>Wider</th><td class="ok">fits</td><td class="ok">fits</td><td class="ok">fits</td></tr><tr><th>Sideways</th><td class="ok">fits</td><td class="ok">fits</td><td class="ok">fits</td></tr><tr><th>Rethink: beside the card</th><td class="ok">fits</td><td class="ok">fits</td><td class="ok">fits</td></tr></tbody></table>
+<p>Fits means presets, chapters, Shuffle, Cards and Draw are all in view and the sheet does not scroll.</p>
+</main>
+<div id="viewer" role="dialog" aria-modal="true" aria-label="Picture viewer"><header><button type="button" id="vBack">&#8249; Back to the overview</button><a id="vPage" href="#">Open the full-window page &#8250;</a><span class="cap" id="vCap"></span></header><div class="stage"><img id="vImg" alt=""></div></div>
+<script>
+const v=document.getElementById('viewer'),img=document.getElementById('vImg');
+const close=()=>{v.classList.remove('on');document.body.style.overflow=''};
+document.querySelectorAll('.thumb').forEach(b=>b.addEventListener('click',()=>{img.src=b.dataset.img;img.alt=b.dataset.cap;document.getElementById('vPage').href=b.dataset.page;document.getElementById('vCap').textContent=b.dataset.cap;v.classList.add('on');document.body.style.overflow='hidden'}));
+document.getElementById('vBack').addEventListener('click',close);
+addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+</script></body></html>
