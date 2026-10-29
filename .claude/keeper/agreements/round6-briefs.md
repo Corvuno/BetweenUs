@@ -57,3 +57,10 @@ it's been.
 - Bare 9 → "What's a health conversation you've avoided having, right when you should have had it?" (off the bench); bench "Name the ex you'd go back to for one night."
 - Romance 9 → the age-gap card from Bare 9 (silent agreement).
 - Open: Carnal 3 and 7 (about sex itself: good, bad, between; how and when it feels), Carnal 4 (good at and why, new wording), Carnal 12 (compare then and now, as stories), Flesh 7 (away from home, new question).
+
+## Picks 2026-10-29, second pass
+- Carnal 7 → "What makes sex feel wrong, even when nothing is technically wrong?"
+- Flesh 7 → "A hotel room, far from home: what comes out in you that stays hidden at home?"
+- Carnal 12 → "Compare sex from your first years with sex this year: what's changed the most?" (owner: weak; find other angles — kept as fallback)
+- Carnal 3: alt 1 direction (fine vs great sex) as a story; wording to settle.
+- Carnal 4: not about technique "in bed" — the broader quality as a lover (owner: "I am sensitive to the wants of the other person").
