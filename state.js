@@ -78,7 +78,11 @@ const HINTS = {
   save:      { key: 'bu.hintSaveTaught',  cls: 'hint-save-taught' }      // under Save (end of hand)
 };
 function hintIsTaught(id) {
-  try { return !!localStorage.getItem(HINTS[id].key); } catch (e) { return document.body.classList.contains(HINTS[id].cls); }
+  try { return !!localStorage.getItem(HINTS[id].key); }
+  catch (error) {
+    console.warn(`Could not read hint "${id}" from storage:`, error);
+    return document.body.classList.contains(HINTS[id].cls);   // storage unavailable: this visit's state is all we have
+  }
 }
 function hintsApply() {
   Object.keys(HINTS).forEach(id => document.body.classList.toggle(HINTS[id].cls, hintIsTaught(id)));
@@ -86,13 +90,15 @@ function hintsApply() {
 // The control has worked: the hint goes and stays gone.
 function hintRetire(id) {
   if (!HINTS[id]) return;
-  try { localStorage.setItem(HINTS[id].key, '1'); } catch (e) {}
+  try { localStorage.setItem(HINTS[id].key, '1'); }
+  catch (error) { console.warn(`Could not save hint "${id}":`, error); }
   document.body.classList.add(HINTS[id].cls);
 }
 // Every hint back, whoever's new.
 function hintsReset() {
   Object.keys(HINTS).forEach(id => {
-    try { localStorage.removeItem(HINTS[id].key); } catch (e) {}
+    try { localStorage.removeItem(HINTS[id].key); }
+    catch (error) { console.warn(`Could not reset hint "${id}":`, error); }
     document.body.classList.remove(HINTS[id].cls);
   });
   const t = document.getElementById('tokHint'); if (t) t.style.opacity = '';
