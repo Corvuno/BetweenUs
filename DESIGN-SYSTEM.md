@@ -71,6 +71,8 @@ font-size: .8rem (12.8px)   letter-spacing: .14em   padding: 14px 0
 hover: linear-gradient(135deg,#ddb85c,#b08840)   active: scale(.98) (Draw and the square buttons press to .97, see "Motion")
 corners: square
 ```
+2026-10-29: `.custom-add-btn` went with the custom cards, so the spec is now used twice
+(Next Card and Draw Cards).
 
 ### Corners — Option B (square controls, one soft radius for containers)
 Buttons and the question card stay square — the deck's own shape. Containers
