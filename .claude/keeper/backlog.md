@@ -32,11 +32,17 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 **Source:** checks red on main three times out of four on 27–29 October, every time on this one check; found in the upkeep; owner said yes.
 **Status note:** Top of Next because red checks on main are urgent.
 
-### Round 6: After Dark — Carnal and Bare (Area A deck)
-**Story:** As a player in After Dark, Carnal and Bare cards each stay on their own ground and none reads juvenile.
-**Acceptance criteria:** 1. Definition, stay/go over all 12 of each, new cards in the owner's words (standard method). 2. Bare gets a new app line. 3. The Carnal brief loses "the training wheels come off". 4. Flesh 9 (hands) is settled in the same round.
-**Touches:** questions.js, config.js, questions/between-us-deck.md
-**Source:** owner 2026-10-25 ("I don't think we did carnal and bare"); Keeper queued it after round 5.
+### Round 7: Arrive — Quick and Warm (Area A deck)
+**Story:** Quick and Warm get the standard method: definition and app line (Warm's line is open), stay/go with each card's depth against the band, new cards in the owner's words, varied card forms.
+**Source:** owner 2026-10-29 ("finish the rounds, then a global check")
+
+### Round 8: Between Us, Us: Friends, Us: Love (Area A deck)
+**Story:** The three Us categories get the standard method.
+**Source:** owner 2026-10-29
+
+### Global check of how cards ask (Area A deck)
+**Story:** After the rounds, every category is checked against house style 13 (varied card forms; no category ends with fewer non-question cards) and the depth rule (each card within one step of its band). Also: the "us" cards (Culture 7, Home 10, Roots 8, Carnal 2) and whether house style rule 12 ("no me") stays.
+**Source:** owner 2026-10-27 to 10-29
 
 ## Waiting on the owner
 
@@ -206,6 +212,9 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Round 6: After Dark and Romance 9 (A), 2026-10-29
+**Story:** 13 cards in Carnal, Bare, Flesh and Romance; Carnal, Bare and Flesh briefs updated; bench +3 −2. **Source:** round 6 commit on main
 
 ### Every session is the Keeper; review before test; a slim edition for small fixes (Keeper), 2026-10-29
 **Task:** Every session starts as the Keeper; a small fix reads only the background it needs; the reviewer checks the code before the tester plays it; small fixes get a slim review and test, new features the full one. **Source:** owner, upkeep thread
