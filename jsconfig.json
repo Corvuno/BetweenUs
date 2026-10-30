@@ -9,7 +9,7 @@
     "skipLibCheck": true
   },
   "files": [
-    "questions.js", "config.js", "gilt.js", "state.js", "deck.js", "card.js",
+    "questions.js", "categories.js", "config.js", "gilt.js", "state.js", "deck.js", "card.js",
     "library.js", "session.js", "selection.js", "presentation.js", "ui.js", "globals.d.ts"
   ]
 }

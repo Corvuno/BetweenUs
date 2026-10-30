@@ -308,7 +308,7 @@ one, not a blind sed across the file.
 
 ## Where the values live
 - `styles.css` `:root` — every token above
-- `config.js` — category/chapter colour tables (untouched) and the two
+- `categories.js` — category/chapter colour tables (untouched) and the two
   After Dark reds that now point at the shared tokens' values
 - `between-us.html` — the one remaining inline style (`#dLangIcon`)
 

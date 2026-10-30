@@ -366,7 +366,7 @@ function presetDeep(hex) {
   return 'hsl(' + H.toFixed(1) + ',' + (S * 100).toFixed(1) + '%,' + (L2 * 100).toFixed(1) + '%)';
 }
 // ── CUSTOM: the picked categories' colours ───────────────────────────────────
-// The selected, playable categories in CATEGORIES order (config.js), same filter
+// The selected, playable categories in CATEGORIES order (categories.js), same filter
 // getFilteredCards() applies: switched on, in the deck, and not safe-blocked while
 // safe mode is on.
 function customPicks() {

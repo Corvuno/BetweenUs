@@ -22,6 +22,7 @@ const PRECACHE = [
   'index.html',
   'styles.css',
   'questions.js',
+  'categories.js',
   'config.js',
   'gilt.js',
   'state.js',
