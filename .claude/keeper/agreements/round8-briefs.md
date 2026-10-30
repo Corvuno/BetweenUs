@@ -15,3 +15,4 @@
 - Between Us 11 stays ("ultimately revealing").
 - Silent = agreed: Between Us 12, Us: Friends 7 and 10 go; the rest stays.
 - Open: Us: Love band 4 → 5, or new cards for Love 3 and 10.
+- Us: Love band 4 → 5 (owner, 2026-10-30): "the best option".
