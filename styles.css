@@ -49,6 +49,10 @@ body{
   background:var(--bg);color:var(--cream);
   font-family:'Jost',sans-serif;font-weight:300;
   display:flex;flex-direction:column;align-items:center;
+  /* centred top-to-bottom: on a tall phone (most of all installed, with no
+     address bar) the spare height splits above and below instead of pooling
+     under the buttons. 'safe' falls back to the top when it doesn't fit. */
+  justify-content:safe center;
   min-height:100%;padding-bottom:60px;overflow-x:hidden;
   /* thin (weight 300), light-on-near-black text — exactly what this whole
      app is set in — is the case where a browser's default subpixel/ClearType
