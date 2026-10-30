@@ -11,7 +11,7 @@ The Keeper. Started with `/keeper`.
 
 **A) The deck** — questions, categories and chapters, as one layered whole.
 - Card text lives only in `questions.js`. Categories and chapters are records in
-  `config.js` (the CATEGORIES table: label, colour, band, focus, chapter, bucket, …).
+  `categories.js` since 2026-10-30 (the CATEGORIES table: label, colour, band, focus, chapter, bucket, …).
   The bench, house style, retired names and change log are in
   `questions/between-us-deck.md`.
 - Way of working: CLAUDE.md's card rules apply in full and are the strictest in the repo.
@@ -69,7 +69,7 @@ The Keeper. Started with `/keeper`.
   non-question cards than it started with. (The deck is about 80% question words; rounds 1–4
   replaced several open prompts with questions.)
 - **Depth stays per category** (owner, 2026-10-26): no per-card depth score. Every card in a
-  category sits at most one depth step either side of the category's band (config.js `band`, 1–7),
+  category sits at most one depth step either side of the category's band (categories.js `band`, 1–7),
   so Arc works on categories and nobody notices. Every round checks each card against this; a card
   outside it either goes or the band moves (the owner decides which).
 - Builder: `deck-builder`.
@@ -119,7 +119,7 @@ Make these explicit whenever a wish touches one of them:
   usually needs a colour and a place on screen (B).
 - A looks change (B) can change how something works (C), e.g. moving or hiding a control.
 - A chapter change (A) changes what "Draw" plays by default (C, `DEFAULT_SELECTION` in
-  `config.js`) and the chapter colours (B).
+  `config.js`, which stays there; the chapters themselves are in `categories.js`) and the chapter colours (B).
 
 ## Report extras
 

@@ -1,5 +1,5 @@
 // gilt.js — derives the metallic rail sweep from a category's base hex.
-// The base hex is the ONLY stored value per category (config.js CATEGORIES).
+// The base hex is the ONLY stored value per category (categories.js CATEGORIES).
 // Metal appears on the accent RAIL only; chips, dots and labels stay flat.
 //
 // Plain script, not a module (between-us.html loads it via a bare <script

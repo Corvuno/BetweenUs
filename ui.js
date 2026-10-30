@@ -7,7 +7,7 @@
 // to-bottom, so the boot logic is load-order-sensitive (the double init
 // sequence, the final default-selection draw).
 
-// Each chapter's category buttons are built from CATEGORIES in config.js (the
+// Each chapter's category buttons are built from CATEGORIES in categories.js (the
 // category's own .chapter field says where it goes), into that chapter's panel
 // in the sheet. Runs first, before anything else in this file (or any file that
 // loads after it) can touch a .toggle-btn expecting it to already exist. Order
@@ -1027,7 +1027,7 @@ applyToggleUI();
 // at runtime. styles.css composes the vertical (190deg) sweep from them into --ch-rail,
 // which it paints only on .on (see
 // the on/part/off rule there) — .part and the base/off state use a flat
-// --ch-derived colour instead. CHAPTERS_META (config.js) is the one
+// --ch-derived colour instead. CHAPTERS_META (categories.js) is the one
 // stored copy of these colours — the end-of-set screen reads the same
 // object rather than keeping its own. The label/glow colour reuses --ch
 // (already read by .chapter.on/.part in styles.css) via labelColor(),
@@ -1050,7 +1050,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
 (function(){
   const $ = id => document.getElementById(id);
 
-  // Derived from CATEGORIES' own .chapter field (config.js) rather than
+  // Derived from CATEGORIES' own .chapter field (categories.js) rather than
   // hand-listed here — a category's chapter is set in exactly one place.
   const CHAPTERS = {};
   Object.keys(CATEGORIES).forEach(id => {

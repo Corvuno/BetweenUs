@@ -45,7 +45,8 @@ between-us-work.html   1-line redirect to between-us.html?profile=work, for old 
 between-us-dev.html     1-line redirect to between-us.html?profile=editor, for old links
 styles.css          all CSS
 questions.js          the question deck (content only, no app logic)
-config.js             build profile + static lookup tables (colors, depth, labels, presets)
+categories.js         the deck's structure: categories, chapters, buckets and their lookups (colors, depth, labels)
+config.js             build profile, presets, helpers and other app settings
 state.js               the app's mutable, cross-cutting state
 deck.js                 filtering, shuffling, building and advancing through the deck
 card.js                 the card in front of you: question text, face render, Twist, star, picker
@@ -57,7 +58,7 @@ ui.js                   DOM event wiring and app bootstrap — loads last
 ```
 
 `between-us.html` and `styles.css` are each a single real file — there is no generated copy
-to keep in sync, and no body markup duplicated between profiles. `questions.js` and the 9
+to keep in sync, and no body markup duplicated between profiles. `questions.js` and the 10
 `*.js` app modules load as separate `<script>` tags, in the dependency order listed above
 (each one relies on globals the ones before it declare); edit any of them once and every
 profile picks it up immediately.
@@ -66,7 +67,7 @@ profile picks it up immediately.
 falling back to `"public"`) and applies the matching block from the `PROFILES` object defined
 at its top (shuffle, adult-content locking, spice, backup category, etc.). To
 fine-tune a version, edit its block in `PROFILES`; to change what every version shares, edit
-whichever of the 9 modules owns that behavior.
+whichever of the 10 modules owns that behavior.
 
 Note: because the app is split across files, `between-us.html` is no longer a single file
 you can hand someone to double-click and play offline — you'd need the whole folder, or the
@@ -84,7 +85,7 @@ node scripts/build-single-file.mjs dev        # -> dist/between-us-dev.html
 node scripts/build-single-file.mjs all         # all three
 ```
 
-It inlines `styles.css`, `questions.js`, and the 9 app modules into `between-us.html`, baking
+It inlines `styles.css`, `questions.js`, and the 11 app modules into `between-us.html`, baking
 in the chosen profile as a script tag (there's no URL to read `?profile=` from once it's a
 local file). `dist/` is untracked (see `.gitignore`) — the build is disposable, rebuilt on
 demand, never a copy you keep in sync by hand.
@@ -124,7 +125,7 @@ The full version, with the lens list used to audit a category, is in
 
 ## Updating
 
-App and settings changes go in the 9 `*.js` app modules, `styles.css`, or `questions.js`
+App and settings changes go in the 10 `*.js` app modules, `styles.css`, or `questions.js`
 once — every profile picks them up automatically, since there's only one shell and one copy
 of each file.
 `between-us-work.html` and `between-us-dev.html` should never need touching; they're
