@@ -45,7 +45,7 @@ instead. They weigh as much as the hard rules below.
 
 ## Check before reporting
 
-- Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19).
+- Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19). Never add a new finding to the baseline to make the check pass (owner, 2026-10-30: "builders don't introduce new issues again"); report "check: OK, no new findings" in every report, or say exactly what is still failing.
 - Run `node tests/run.mjs between-us.html` (setup in `tests/README.md`; Playwright's
   Chromium is preinstalled — don't run `playwright install`). Report the result, pass or fail.
 - Re-read every card you wrote against the agreement, character by character.
