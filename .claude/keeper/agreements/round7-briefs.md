@@ -12,3 +12,5 @@ Definitions as proposed 2026-10-29, taken as agreed (owner answered the line que
 - Quick 11 → "Which season fits you best?" (owner: drop the last part); bench "What do you always forget to buy?" (Quick).
 - Warm 7 → "bench card" — which of the two bench cards to confirm.
 - Quick 3: owner likes the question, wants "What's your biggest vice?" — collides with Shadow 7; to settle.
+- Warm 7 → "What's the best trouble you ever got into?" (off the bench)
+- Quick 3: owner wants answers like "my car, my boots, the little shiny things" (what you splurge on).
