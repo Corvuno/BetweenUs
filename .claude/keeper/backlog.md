@@ -1,6 +1,6 @@
 # Backlog
 
-_Updated 29 October 2026_
+_Updated 30 October 2026_
 
 The one queue of work. The Keeper keeps it in order; the owner can move anything.
 
@@ -9,17 +9,6 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 _Nothing is being built right now._
 
 ## Next
-
-### Fix the Spotlight test that fails at random (Area C app)
-**Task:** One automatic check (Spotlight: tapping Sideways, then the browser turns the screen) fails on some runs and passes on others, so the checks on main turn red for no real reason and hide real problems. Find out why it is unreliable and make it reliable, without loosening what it checks.
-**Acceptance criteria:**
-1. The cause is found and named in plain words: a timing problem in the test itself, or a real fault in how Spotlight turns.
-2. If it is a real fault in the app, it is fixed and Spotlight turns exactly once, as agreed for sideways phones.
-3. The check passes on ten runs in a row, locally and on main.
-4. No check is skipped, switched off or made less strict to get there.
-**Touches:** tests/run.mjs, presentation.js
-**Source:** checks red on main three times out of four on 27–29 October, every time on this one check; found in the upkeep; owner said yes.
-**Status note:** Top of Next because red checks on main are urgent.
 
 ### Round 8: Between Us, Us: Friends, Us: Love (Area A deck)
 **Story:** The three Us categories get the standard method.
@@ -147,6 +136,7 @@ _Nothing is being built right now._
 **Touches:** card.js, presentation.js, ui.js, deck.js, other .js files, checks-baseline.json
 **Source:** agreements/2026-10-19-old-code-cleanup.md, 2026-10-19-code-checks.md; 2026-10-20 note on two open findings in the screen-turning code
 **Status note:** Runs on its own every Friday at 09:42 (Amsterdam), with a fixer of some technical depth, to use the week's leftover usage; a phone notification says what it did (owner, 2026-10-23). Harms no one meanwhile.
+**Progress (2026-10-30):** done: library.js, state.js, card.js (behaviour findings). Built and reviewed clean, waiting on the tester: gilt.js, selection.js, deck.js, on branch keeper/cleanup-deck-gilt-selection (stopped at 11:00 by the owner). Left: session.js, ui.js, presentation.js, then the type noise. Checks on main are red since 27f1f02 (Arc follows the number of cards): 2 new type findings in its new deck.js code, to fix or record.
 
 ### Tidy the wide-screen code (Area C app)
 **Task:** Name the repeated values in the wide-screen code once and make "click/tap to change", "Menu" and "Back" readable by screen readers, with the screen looking identical, ready for the next looks job.
@@ -197,6 +187,15 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Categories and chapters in their own file (A, C), 2026-10-30
+**Story:** The categories, their attributes and the chapters moved from config.js to categories.js, next to questions.js; config.js keeps the app's settings. Nothing a player sees changed. **Source:** owner, 2026-10-30; agreements/2026-10-30-categories-file.md; commit 6810260
+
+### Spotlight test no longer fails at random (C), 2026-10-30
+**Story:** The check read the screen one frame before the browser's turn arrived; it now waits for it. Test-only: no player ever saw a wrong frame (checked over 160 runs). Failed about 1 in 14 runs before, 0 in 100 after. **Source:** owner, 2026-10-30; commit 5aeecf7
+
+### Old-code clean-up: state.js and card.js, custom cards removed (C), 2026-10-29
+**Story:** Swallowed storage errors in hints and favourites now logged; one tangled card function split; the custom card option and its drawer removed (no one used it). **Source:** owner, 2026-10-21 and 2026-10-29; commits 4ac2cd3, 628c48e, c320ccf, 48c67ef
 
 ### Arc follows the number of cards (C), 2026-10-30
 **Story:** In Arc a hand of 10 or 20 is one arc, not arcs of five: warm-up 3, deep 5, wind-down 2 for 10; warm-up 4, deep 13, wind-down 3 for 20. Deep means the deepest categories switched on. No category twice in a row unless the selection leaves no way around it. All is Wild-only; arriving in Arc with All lands on 20. Classic and first untouched (legacy). **Source:** owner, 2026-10-30, this thread; commit on main
