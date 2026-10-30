@@ -85,7 +85,7 @@ node scripts/build-single-file.mjs dev        # -> dist/between-us-dev.html
 node scripts/build-single-file.mjs all         # all three
 ```
 
-It inlines `styles.css`, `questions.js`, and the 10 app modules into `between-us.html`, baking
+It inlines `styles.css`, `questions.js`, and the 11 app modules into `between-us.html`, baking
 in the chosen profile as a script tag (there's no URL to read `?profile=` from once it's a
 local file). `dist/` is untracked (see `.gitignore`) — the build is disposable, rebuilt on
 demand, never a copy you keep in sync by hand.
