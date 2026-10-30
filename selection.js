@@ -124,7 +124,7 @@ function applyPreset(mode) {
     try {
       const target = activeBtn.offsetLeft - (strip.clientWidth - activeBtn.clientWidth) / 2;
       strip.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
-    } catch(e) {}
+    } catch (error) { console.warn('Could not centre the active preset button:', error); }
   });
   // A mode is hard-safe when none of its categories — on or merely available —
   // ever reach adult territory; such a mode locks After Dark away.
