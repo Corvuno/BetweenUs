@@ -27,7 +27,7 @@ const NEWDECK_CARDS = [
   // ─── QUICK ───
   { level: "quick", question: "Name the last thing you made with your hands." },
   { level: "quick", question: "What song's been stuck in your head this week?" },
-  { level: "quick", question: "What's your greatest extravagance?" },
+  { level: "quick", question: "Which thing you own cost far too much, and you'd buy it again tomorrow?" },
   { level: "quick", question: "Which drawer in your house is the disgrace?" },
   { level: "quick", question: "You're always late for..." },
   { level: "quick", question: "What smell makes you instantly hungry?" },
@@ -35,7 +35,7 @@ const NEWDECK_CARDS = [
   { level: "quick", question: "What nickname do you go by — and who gave it?" },
   { level: "quick", question: "Which texture can you not stop touching?" },
   { level: "quick", question: "What's the most childish thing that still delights you?" },
-  { level: "quick", question: "Which season fits you best — and how does it show?" },
+  { level: "quick", question: "Which season fits you best?" },
   { level: "quick", question: "What do you quietly fix or straighten in other people's houses?" },
 
   // ─── WARM ───
@@ -45,7 +45,7 @@ const NEWDECK_CARDS = [
   { level: "warm", question: "Point to something you're wearing that has a story." },
   { level: "warm", question: "What do you know a suspiciously specific amount about?" },
   { level: "warm", question: "Which stranger do you still remember fondly?" },
-  { level: "warm", question: "Is there something you're genuinely bad at that you still refuse to stop doing?" },
+  { level: "warm", question: "What's the best trouble you ever got into?" },
   { level: "warm", question: "When's the last time you watched someone do something and thought, I wish I could do that?" },
   { level: "warm", question: "What have you repaired instead of replaced — and why?" },
   { level: "warm", question: "What do you knowingly blow out of proportion?" },
@@ -127,7 +127,7 @@ const NEWDECK_CARDS = [
   { level: "unwind", question: "What's something you do now for fun that would've bored you stiff ten years ago?" },
   { level: "unwind", question: "What reliably gets you out of your own head?" },
   { level: "unwind", question: "The hour of the week that's entirely yours..." },
-  { level: "unwind", question: "What's something you practice that you'll probably never master — and keep doing anyway?" },
+  { level: "unwind", question: "What do you keep doing for the joy of it, knowing you'll never be any good?" },
   { level: "unwind", question: "Is there a place or moment you feel free enough to actually dance, even badly?" },
   { level: "unwind", question: "What does travel give you that staying home never could?" },
   { level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },

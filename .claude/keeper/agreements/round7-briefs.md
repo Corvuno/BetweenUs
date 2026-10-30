@@ -14,3 +14,5 @@ Definitions as proposed 2026-10-29, taken as agreed (owner answered the line que
 - Quick 3: owner likes the question, wants "What's your biggest vice?" — collides with Shadow 7; to settle.
 - Warm 7 → "What's the best trouble you ever got into?" (off the bench)
 - Quick 3: owner wants answers like "my car, my boots, the little shiny things" (what you splurge on).
+- Quick 3 → "Which thing you own cost far too much, and you'd buy it again tomorrow?"
+**BUILT 2026-10-30** — 4 cards (Quick 3, 11; Warm 7; Unwind 5), Quick and Warm briefs, bench +1 −1, ?v=20261030a, 67/67 checks.

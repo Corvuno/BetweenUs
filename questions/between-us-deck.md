@@ -34,12 +34,12 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Culture** — "Which video online have you watched more times than you'd admit?" (owner asked to bench, round 2 2026-10-20)
 - **Work** — "Who was the best boss you ever had — and what did they do that others didn't?" (owner asked to bench, round 2 2026-10-20)
 - **Friendship** — "What happened when friends from different parts of your life finally met?" (owner asked to bench, round 3 2026-10-23)
-- **Warm** — "What's the best trouble you ever got into?" (from Past 9, below Past's band; owner asked to bench for Warm, round 5 2026-10-27)
 - **Connect** — "Who left your life better than they found it?" (from Deep 4, below Deep's band; owner liked it, benched for Connect, round 5 2026-10-27)
 - **Shadow** — "Name someone you used, and what you got out of it." (alternative for Shadow 9; owner asked to bench, round 5 2026-10-27)
 - **Carnal** — "What's a sound someone's made in bed that you still think about?" (from Carnal 6; owner asked to bench, round 6 2026-10-29)
 - **Flesh** — "Your hands on someone's body — where do they go first, and where do they linger?" (from Flesh 9; owner asked to bench, round 6 2026-10-29)
 - **Bare** — "Name the ex you'd go back to for one night." (alternative for Bare 9; owner asked to bench, round 6 2026-10-29)
+- **Quick** — "What do you always forget to buy?" (alternative for Quick 11; owner asked to bench, round 7 2026-10-30)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -481,6 +481,37 @@ Past's · regret towards people still alive is Deep's · ex stories are Romance'
 loss is Grief's).
 **Guardrail:** someone at the table may be grieving right now; cards invite, never force. Not soft.
 
+
+### Quick
+**App line:** Small true things, answered before you can think
+**About:** Tiny facts about you that come out in one breath: objects, habits, senses, small
+preferences, what's in your bag and your drawers. No thinking needed, and still unmistakably you.
+Band 1: every card is light.
+**Lines of thought:** the last thing you made · a song stuck in your head · your splurge · the
+disgrace drawer · what you're always late for · smells · what's in your bag · your nickname ·
+textures · a childish delight · your season · what you fix in other people's houses · the last photo
+on your phone · what you'd order without looking at the menu · your karaoke song · what you always
+forget to buy · the snack you hide · the word you overuse · how you take your coffee or tea · the
+first thing you notice in a room · something you collect without meaning to · your side of the bed.
+**Where it stops:** anything that needs a story is Warm's · taste in things other people made is
+Culture's · daily routines are Life's · fun and free time are Unwind's.
+
+### Warm
+**App line:** The fond, the funny and the faintly ridiculous
+**About:** Light stories with warmth in them: fondness, small pleasures and quirks, the odd things
+you love or can't stop doing, the people and moments you remember with a smile. A short story, not
+a fact. Band 1: every card is light.
+**Lines of thought:** a chore you don't mind · what ruins your morning · cooking you miss · clothes
+with a story · suspiciously specific knowledge · a stranger you remember fondly · "I wish I could do
+that" · repaired, not replaced · blowing things out of proportion · going gloriously too far · the
+sentence everyone's tired of hearing · the best trouble you got into · a tradition you made up
+yourself · something you've kept long past its use · an animal that chose you · a word you said
+wrong for years · the best present you ever gave · a lost-and-found story · the café, shop or bar
+where they know you · a small win this week · a ridiculous fear.
+**Where it stops:** a fact without a story is Quick's · free time and fun are Unwind's · things other
+people made are Culture's · the people in your life are Connect's and Friendship's · anything that
+stings belongs further into the deck.
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
@@ -684,6 +715,28 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.24 — category scope rework round 7: Arrive (Quick, Warm) and Unwind 5
+
+- **Quick 3**
+  - Old: "What's your greatest extravagance?"
+  - New: "Which thing you own cost far too much, and you'd buy it again tomorrow?"
+  - Why: Lifted from the Proust Questionnaire; the owner wanted the same kind of answer (the car, the boots, the shiny things).
+- **Quick 11**
+  - Old: "Which season fits you best — and how does it show?"
+  - New: "Which season fits you best?"
+  - Why: The second half made you stop and think; owner: drop it.
+- **Warm 7**
+  - Old: "Is there something you're genuinely bad at that you still refuse to stop doing?"
+  - New: "What's the best trouble you ever got into?"
+  - Why: Merged with Unwind 5 (owner). New card comes off the bench.
+- **Unwind 5**
+  - Old: "What's something you practice that you'll probably never master — and keep doing anyway?"
+  - New: "What do you keep doing for the joy of it, knowing you'll never be any good?"
+  - Why: Merged with Warm 7, keeping the best of both (owner).
+- App lines unchanged (Warm's alliteration kept by the owner).
+- Writer briefs added for Quick and Warm.
+- Bench: one added (Quick), one taken into the deck (Warm 7).
 
 ## Patch v7.23 — category scope rework round 6: After Dark (Carnal, Bare, Flesh) and Romance 9
 

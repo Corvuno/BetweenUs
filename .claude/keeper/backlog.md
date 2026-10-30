@@ -21,10 +21,6 @@ _Nothing is being built right now._
 **Source:** checks red on main three times out of four on 27–29 October, every time on this one check; found in the upkeep; owner said yes.
 **Status note:** Top of Next because red checks on main are urgent.
 
-### Round 7: Arrive — Quick and Warm (Area A deck)
-**Story:** Quick and Warm get the standard method: definition and app line (Warm's line is open), stay/go with each card's depth against the band, new cards in the owner's words, varied card forms.
-**Source:** owner 2026-10-29 ("finish the rounds, then a global check")
-
 ### Round 8: Between Us, Us: Friends, Us: Love (Area A deck)
 **Story:** The three Us categories get the standard method.
 **Source:** owner 2026-10-29
@@ -201,6 +197,9 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Round 7: Arrive — Quick, Warm and Unwind 5 (A), 2026-10-30
+**Story:** 4 cards; Quick and Warm briefs; Warm 7 and Unwind 5 merged into one Unwind card. **Source:** round 7 commit on main
 
 ### The Deck made for a PC (B, C), 2026-10-29
 **Story:** On a computer The Deck opens as a panel beside the card, presets on top and Draw at the foot, chapters still unfolding; phones and tablets unchanged. **Source:** round 1 https://claude.ai/artifact/1HmzTTizJ2isar3oaWy4m7 (Rethink picked), 94561b4
