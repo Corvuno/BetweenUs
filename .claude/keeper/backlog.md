@@ -10,6 +10,11 @@ _Nothing is being built right now._
 
 ## Next
 
+### Three Spotlight tilt checks fail on main (Area C app)
+**Task:** Three automatic checks fail on every run on main (30 October): "Spotlight tilt: on its side turns the content…", "Spotlight tilt: closing within the hold time…" and "Spotlight on a phone that turns its own screen…". Find out whether the test or the app is wrong, and fix it without loosening what the checks ask.
+**Source:** found 2026-10-30 while landing the phone centring fix; they fail on main without that fix too.
+**Status note:** Not started; the owner hasn't decided yet.
+
 ### Round 8: Between Us, Us: Friends, Us: Love (Area A deck)
 **Story:** The three Us categories get the standard method.
 **Source:** owner 2026-10-29
@@ -187,6 +192,9 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### App centred top-to-bottom on tall phones (B), 2026-10-30
+**Story:** On a tall phone, and above all in the installed app (no address bar), everything hung at the top with an empty band under the buttons. It is now centred, like tablets and computers already were; short phones and landscape are unchanged. **Source:** owner, 2026-10-30 (screenshot, chose "centre" over "pin the buttons to the bottom"); commit ca74f21
 
 ### Arc is the base (C), 2026-10-30
 **Story:** In Arc the shape always wins; every other rule works inside it. No-repeat swaps only within the same depth; the After Dark opener swap only when the shape holds (else the card stays); Three offers cards at the planned depth before anything else, unseen before seen within it. Dials and the After Dark mix only choose cards, never the shape. **Source:** owner, 2026-10-30, this thread; commit on main
