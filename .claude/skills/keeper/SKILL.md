@@ -264,6 +264,11 @@ off. Don't ship a near miss.
 ### 6. Land it and report
 
 - Everything finished lands on `main`, following the repo's rules (commit labels, pushing).
+- **Never land a new check finding** (owner, 2026-10-30: "builders don't introduce new issues again.
+  That's stupid."). Right before every push, on exactly what is being pushed (after any merge or
+  rebase onto main), run the project's static check and read its exit code, not a piped tail. A new
+  finding means no push: it gets fixed first. Never add a new finding to the baseline to get green,
+  and never get round the push lock (see `CHECKS.md`).
 - After pushing, check that the project's automatic checks on `main` went green (owner, 2026-10-21:
   they had been red on 30+ pushes in a row without anyone noticing). Red is work now: find out
   why and fix it, or tell the owner what is failing and why it isn't fixed yet.

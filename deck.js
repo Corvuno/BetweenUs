@@ -114,7 +114,7 @@ function sliceVisibleDeck(fullDeck, unseen) {
 /* Mirrors state.cardLimit onto the limit-button row's active class. All is
    Wild-only (owner, 2026-10-30): Arc hides it, since an arc needs a set length. */
 function syncLimitButtons() {
-  document.querySelectorAll('.limit-btn').forEach(b => {
+  /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('.limit-btn')).forEach(b => {
     b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)));
     if (b.dataset.limit === 'all') b.hidden = state.randomMode === 'arc';
   });

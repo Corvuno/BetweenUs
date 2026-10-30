@@ -136,7 +136,7 @@ _Nothing is being built right now._
 **Touches:** card.js, presentation.js, ui.js, deck.js, other .js files, checks-baseline.json
 **Source:** agreements/2026-10-19-old-code-cleanup.md, 2026-10-19-code-checks.md; 2026-10-20 note on two open findings in the screen-turning code
 **Status note:** Runs on its own every Friday at 09:42 (Amsterdam), with a fixer of some technical depth, to use the week's leftover usage; a phone notification says what it did (owner, 2026-10-23). Harms no one meanwhile.
-**Progress (2026-10-30):** done: library.js, state.js, card.js (behaviour findings). Built and reviewed clean, waiting on the tester: gilt.js, selection.js, deck.js, on branch keeper/cleanup-deck-gilt-selection (stopped at 11:00 by the owner). Left: session.js, ui.js, presentation.js, then the type noise. Checks on main are red since 27f1f02 (Arc follows the number of cards): 2 new type findings in its new deck.js code, to fix or record.
+**Progress (2026-10-30):** done: library.js, state.js, card.js (behaviour findings). Built and reviewed clean, waiting on the tester: gilt.js, selection.js, deck.js, on branch keeper/cleanup-deck-gilt-selection (stopped at 11:00 by the owner). Left: session.js, ui.js, presentation.js, then the type noise.
 
 ### Tidy the wide-screen code (Area C app)
 **Task:** Name the repeated values in the wide-screen code once and make "click/tap to change", "Menu" and "Back" readable by screen readers, with the screen looking identical, ready for the next looks job.
@@ -190,6 +190,9 @@ _Nothing is being built right now._
 
 ### Arc is the base (C), 2026-10-30
 **Story:** In Arc the shape always wins; every other rule works inside it. No-repeat swaps only within the same depth; the After Dark opener swap only when the shape holds (else the card stays); Three offers cards at the planned depth before anything else, unseen before seen within it. Dials and the After Dark mix only choose cards, never the shape. **Source:** owner, 2026-10-30, this thread; commit on main
+
+### No new check findings can land on main (C, Keeper), 2026-10-30
+**Story:** The Arc build had turned main's checks red with 3 new type findings; fixed. A push lock now refuses any push to main with a new finding, switched on in every session, and the rule is in the Keeper's landing step and every builder's instructions. **Source:** owner, 2026-10-30 ("builders don't introduce new issues again"); commits 6b26e05, 2d0496e, b687cb1
 
 ### Categories and chapters in their own file (A, C), 2026-10-30
 **Story:** The categories, their attributes and the chapters moved from config.js to categories.js, next to questions.js; config.js keeps the app's settings. Nothing a player sees changed. **Source:** owner, 2026-10-30; agreements/2026-10-30-categories-file.md; commit 6810260
