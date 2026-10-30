@@ -188,6 +188,9 @@ _Nothing is being built right now._
 
 ## Done (last 14 days)
 
+### Arc is the base (C), 2026-10-30
+**Story:** In Arc the shape always wins; every other rule works inside it. No-repeat swaps only within the same depth; the After Dark opener swap only when the shape holds (else the card stays); Three offers cards at the planned depth before anything else, unseen before seen within it. Dials and the After Dark mix only choose cards, never the shape. **Source:** owner, 2026-10-30, this thread; commit on main
+
 ### Categories and chapters in their own file (A, C), 2026-10-30
 **Story:** The categories, their attributes and the chapters moved from config.js to categories.js, next to questions.js; config.js keeps the app's settings. Nothing a player sees changed. **Source:** owner, 2026-10-30; agreements/2026-10-30-categories-file.md; commit 6810260
 
