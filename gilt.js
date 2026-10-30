@@ -18,9 +18,10 @@
     const d = mx - mn;
     if (!d) return [0, 0, l];
     const s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
-    const h = mx === r ? ((g - b) / d + (g < b ? 6 : 0))
-            : mx === g ? (b - r) / d + 2
-            :            (r - g) / d + 4;
+    let h;
+    if (mx === r) h = (g - b) / d + (g < b ? 6 : 0);
+    else if (mx === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
     return [h * 60, s, l];
   };
 

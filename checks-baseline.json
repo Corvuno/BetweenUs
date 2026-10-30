@@ -16,7 +16,6 @@
   "deck.js | sonarjs/no-nested-template-literals | Refactor this code to not use nested template literals.": 1,
   "gilt.js | TS2339 | Property 'giltRailPaint' does not exist on type 'Window & typeof globalThis'.": 1,
   "gilt.js | TS2339 | Property 'giltStops' does not exist on type 'Window & typeof globalThis'.": 1,
-  "gilt.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 2,
   "presentation.js | TS2304 | Cannot find name 'giltRailPaint'.": 4,
   "presentation.js | TS2339 | Property 'animationName' does not exist on type 'Animation'.": 1,
   "presentation.js | TS2339 | Property 'classList' does not exist on type 'EventTarget'.": 4,
