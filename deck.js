@@ -555,7 +555,10 @@ function applyQueryDeck() {
   const raw = new URLSearchParams(location.search).get('Q');
   if (!raw) return false;
   const byLevel = {};
-  ALL_CARDS.forEach(c => { (byLevel[c.level] = byLevel[c.level] || []).push(c); });
+  for (const c of ALL_CARDS) {
+    byLevel[c.level] ??= [];
+    byLevel[c.level].push(c);
+  }
   const cards = raw.split(',').map(s => s.trim()).filter(Boolean).map(id => {
     const m = id.match(/^([a-zA-Z]+)(\d+)$/);
     if (!m) return null;
@@ -653,6 +656,29 @@ function endMessageToIntermezzo() {
   }, wait));
 }
 
+// The hand's last card is behind us: show the closing message (inline and fullscreen).
+function showEndOfHandMessage() {
+  state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
+  const fresh = _unseenCount(state.fullDeck);
+  /* Each line is its own block. Unseen cards left in the selection: one line.
+     Nothing unseen left: two lines, with M = the whole selection (fullDeck),
+     not the hand. */
+  const n = state.visibleDeck.length;
+  const lines = fresh > 0
+    ? [`Th${n===1?'at was':'ose were'} your ${n} ${n===1?'card':'cards'}.`]
+    : [`You've drawn all ${state.fullDeck.length} cards in your selection.`, `Add categories to keep going.`];
+  _endMsgLines = lines.length;
+  setPauseColour();   // this hand's last card colour, before the message and the button show it (presentation.js)
+  const lineHtml = (l, i) => `<span style="display:block${i ? ';margin-top:1.4em' : ''}">${l}</span>`;
+  const html = `<span class="end-msg">${lines.map(lineHtml).join('')}</span>`;
+  renderEndMessage(html);
+  // fullscreen: the same message, centred in the fullscreen card
+  const pq = document.getElementById('party-question');
+  const pl = document.getElementById('party-level');
+  if (pl) { pl.textContent = ''; pl.style.color = ''; }
+  if (pq) { pq.innerHTML = html; pq.classList.add('is-end-msg'); }
+}
+
 function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
@@ -672,24 +698,7 @@ function _nextCardBase() {
     if (state.currentIndex === 0) ['pickToggle', 'btnParty'].forEach(id => document.getElementById(id)?.classList.remove('disabled'));
     if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();
   } else {
-    state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
-    const fresh = _unseenCount(state.fullDeck);
-    /* Each line is its own block. Unseen cards left in the selection: one line.
-       Nothing unseen left: two lines, with M = the whole selection (fullDeck),
-       not the hand. */
-    const n = state.visibleDeck.length;
-    const lines = fresh > 0
-      ? [`Th${n===1?'at was':'ose were'} your ${n} ${n===1?'card':'cards'}.`]
-      : [`You've drawn all ${state.fullDeck.length} cards in your selection.`, `Add categories to keep going.`];
-    _endMsgLines = lines.length;
-    setPauseColour();   // this hand's last card colour, before the message and the button show it (presentation.js)
-    const html = `<span class="end-msg">${lines.map((l,i) => `<span style="display:block${i?';margin-top:1.4em':''}">${l}</span>`).join('')}</span>`;
-    renderEndMessage(html);
-    // fullscreen: the same message, centred in the fullscreen card
-    const pq = document.getElementById('party-question');
-    const pl = document.getElementById('party-level');
-    if (pl) { pl.textContent = ''; pl.style.color = ''; }
-    if (pq) { pq.innerHTML = html; pq.classList.add('is-end-msg'); }
+    showEndOfHandMessage();
   }
 }
 // nextCard is defined below (APP SHELL section) — it wraps _nextCardBase with
