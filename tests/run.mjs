@@ -1177,7 +1177,7 @@ async function run() {
     assert(r.bad === 0, `${r.bad} of ${r.hands} hands had 3+ cards of one category in a run of five (worst ${r.worst})`);
     assert(r.crowded.short === 0, `crowded hands came out short: ${r.crowded.short}/${r.crowded.hands}`);
     assert(r.crowded.avoidable === 0, `${r.crowded.avoidable} of ${r.crowded.hands} crowded long hands stacked 3+ of a category although the unseen cards could avoid it`);
-    assert(r.shape.broken <= r.shape.hands * 0.02, `${r.shape.broken} of ${r.shape.hands} Arc hands with After Dark lost their up-then-down shape`);
+    assert(r.shape.broken === 0, `${r.shape.broken} of ${r.shape.hands} Arc hands with After Dark lost their up-then-down shape`);
     assert(r.threeBad === 0, `${r.threeBad} Three options would stack a third card of a category`);
     assert(r.cappedOnly.got === Math.min(10, r.cappedOnly.n), `two-category selection did not fill: ${JSON.stringify(r.cappedOnly)}`);
     await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });
@@ -1216,8 +1216,8 @@ async function run() {
     });
     assert(r.out.plans[10] === '3/5/2' && r.out.plans[20] === '4/13/3', `plans are not 3/5/2 and 4/13/3: ${JSON.stringify(r.out.plans)}`);
     assert(r.out.len === 0, `${r.out.len} long Arc hands came out short`);
-    /* the After Dark opener swap may bend a few (the 5-card test allows the same 2%) */
-    assert(r.out.shape <= r.out.hands * 0.03, `${r.out.shape} of ${r.out.hands} long Arc hands were not warm-up, deep middle, wind-down`);
+    /* Arc is the base: nothing may bend the shape, the After Dark opener swap included */
+    assert(r.out.shape === 0, `${r.out.shape} of ${r.out.hands} long Arc hands were not warm-up, deep middle, wind-down`);
     assert(r.out.deepMiddle === 0, `${r.out.deepMiddle} long Arc hands had none of the deepest selected categories in the middle`);
     assert(r.out.repeats === 0, `${r.out.repeats} back-to-back repeats of a category in broad long Arc hands`);
     assert(!r.wild.hidden && r.wild.lim === null, `All is not available in Wild: ${JSON.stringify(r.wild)}`);

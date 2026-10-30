@@ -405,9 +405,9 @@ function _peakInMiddle(cards) {
 /* How many places hold the same category as the card before them. */
 const _repeats = hand => hand.reduce((n, c, i) => n + (i > 0 && c.level === hand[i - 1].level ? 1 : 0), 0);
 
-/* Never the same category twice in a row unless the cards leave no way
-   around it. A repeat is swapped away, first with a card of the same depth
-   (the arc keeps its shape), only then with any card. */
+/* Never the same category twice in a row where the shape allows it: a repeat
+   is swapped away only with a card of the same depth, so the arc keeps its
+   shape. Arc is the base (owner, 2026-10-30); this rule only works inside it. */
 function _breakRepeats(hand) {
   for (let i = 1; i < hand.length; i++) {
     if (hand[i].level !== hand[i - 1].level) continue;
@@ -419,7 +419,7 @@ function _breakRepeats(hand) {
     };
     const others = hand.map((_, j) => j).filter(j => j !== i);
     const sameDepth = j => levelDepth(hand[j].level) === levelDepth(hand[i].level);
-    const j = others.find(k => sameDepth(k) && helps(k)) ?? others.find(helps);
+    const j = others.find(k => sameDepth(k) && helps(k));   // Arc is the base: never at the cost of the shape
     if (j !== undefined) [hand[i], hand[j]] = [hand[j], hand[i]];
   }
   return hand;
@@ -502,17 +502,18 @@ function _arcHand(hand){
     const bump = (idx, survive) => {
       if (!out[idx] || !isAD(out[idx]) || survive) return;
       /* prefer a swap that keeps both the spread and the arc's shape, then one
-         that keeps the spread; the opener rule wins if none does */
+         that keeps the shape */
       const later = out.flatMap((c, i) => (i > idx && !isAD(c) ? [i] : []));
       const keepsAll = run => _spreadHolds(run) && _isArcShaped(run);
-      /* long Arc: a card of the same depth that brings no back-to-back repeat,
-         then any card without a repeat */
+      /* long Arc: a card of the same depth, one that brings no repeat first */
       const noRepeat = i => { const a = out.slice(); [a[idx], a[i]] = [a[i], a[idx]]; return _repeats(a) <= _repeats(out); };
       const sameDepth = i => levelDepth(out[i].level) === levelDepth(out[idx].level);
+      /* Arc is the base (owner, 2026-10-30): only a swap that keeps the shape;
+         if there is none, the After Dark card stays where the arc put it */
       const swapAt = (long
-        ? later.find(i => sameDepth(i) && noRepeat(i)) ?? later.find(noRepeat)
-        : later.find(i => _swapKeeps(out, idx, i, keepsAll)) ?? later.find(i => _swapKeeps(out, idx, i, _spreadHolds)))
-        ?? later[0] ?? -1;
+        ? later.find(i => sameDepth(i) && noRepeat(i)) ?? later.find(sameDepth)
+        : later.find(i => _swapKeeps(out, idx, i, keepsAll)) ?? later.find(i => _swapKeeps(out, idx, i, _isArcShaped)))
+        ?? -1;
       if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
     };
     bump(0, false);        // spot 1: never
@@ -880,17 +881,35 @@ function buildPickOptions(step) {
     : [];
   const full = c => runLevels.filter(level => level === c.level).length >= RUN_CAP || sides.includes(c.level);
   const picked = [];
+  if (isArc) {
+    /* Arc is the base (owner, 2026-10-30): the options sit at the planned
+       card's depth, or the nearest depth there is, before anything else.
+       Within that depth: unseen before seen, then the variety preferences. */
+    const pool = tiers.flatMap((tier, ti) => {
+      if (noADOpener) {
+        const noAD = tier.filter(c => !isAD(c));
+        if (noAD.length >= 2) tier = noAD;
+      }
+      const cand = (ti === 1 || ti === 3) ? shuffle(tier) : orderUnseen(tier, all);
+      return cand.map((c, i) => ({ c, ti, i, k: Math.abs(levelDepth(c.level) - d) }));
+    }).sort((x, y) => x.k - y.k || x.ti - y.ti || x.i - y.i);
+    while (picked.length < 2 && pool.length) {
+      const group = pool.filter(x => x.k === pool[0].k && x.ti === pool[0].ti).map(x => x.c);
+      const used = new Set([planned.level, ...picked.map(c => c.level)]);
+      const card = group.find(c => !used.has(c.level) && !full(c)) ?? group.find(c => !full(c))
+        ?? group.find(c => !used.has(c.level)) ?? group[0];
+      picked.push(card);
+      pool.splice(pool.findIndex(x => x.c === card), 1);
+    }
+    return shuffle([planned, ...picked]);
+  }
   tiers.forEach((tier, ti) => {
     if (picked.length >= 2 || !tier.length) return;
     if (noADOpener) {
       const noAD = tier.filter(c => !isAD(c));
       if (noAD.length >= 2) tier = noAD;
     }
-    let cand = (ti === 1 || ti === 3) ? shuffle(tier) : orderUnseen(tier, all);
-    if (isArc) {
-      cand = cand.map((c, i) => ({ c, i, k: Math.abs(levelDepth(c.level) - d) }))
-                 .sort((x, y) => x.k - y.k || x.i - y.i).map(x => x.c);
-    }
+    const cand = (ti === 1 || ti === 3) ? shuffle(tier) : orderUnseen(tier, all);
     /* Within the tier, take one card at a time: first one that keeps the
        run of five at two per category and brings a category not yet among the
        options (the planned card's included), then one that only keeps the run

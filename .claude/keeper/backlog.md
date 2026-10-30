@@ -188,6 +188,9 @@ _Nothing is being built right now._
 
 ## Done (last 14 days)
 
+### Arc is the base (C), 2026-10-30
+**Story:** In Arc the shape always wins; every other rule works inside it. No-repeat swaps only within the same depth; the After Dark opener swap only when the shape holds (else the card stays); Three offers cards at the planned depth before anything else, unseen before seen within it. Dials and the After Dark mix only choose cards, never the shape. **Source:** owner, 2026-10-30, this thread; commit on main
+
 ### No new check findings can land on main (C, Keeper), 2026-10-30
 **Story:** The Arc build had turned main's checks red with 3 new type findings; fixed. A push lock now refuses any push to main with a new finding, switched on in every session, and the rule is in the Keeper's landing step and every builder's instructions. **Source:** owner, 2026-10-30 ("builders don't introduce new issues again"); commits 6b26e05, 2d0496e, b687cb1
 
