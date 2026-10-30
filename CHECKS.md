@@ -35,3 +35,12 @@ wrapper (e.g. `giltRail`) show up as "Cannot find name" in the files that use th
 - CI runs only `between-us.html`; `between-us-work.html` and `between-us-dev.html` are redirects.
 - A broken check run (bad config, crash) fails the script with exit code 2; it never reads as "no findings".
 - `ts-api-utils` is in devDependencies because eslint-plugin-sonarjs crashes without it (it does not declare it).
+
+## Push lock
+
+`.githooks/pre-push` runs the static check (`node scripts/check.mjs`, about 10 seconds, not the
+browser suite) whenever a push includes `main`. Any new finding refuses the push with one line;
+fix the finding, never the baseline. Pushes of other branches are not checked. A Claude Code
+`SessionStart` hook in `.claude/settings.json` switches it on in every session
+(`git config core.hooksPath .githooks`); anywhere else, run that command once. If `node_modules`
+is missing the hook installs it first. `--no-verify` is never used to get round it.
