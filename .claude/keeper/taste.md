@@ -35,6 +35,8 @@ a light category; "belonging" as a feeling; subject lists copied from the cards.
 - "Tell about a moment of chemistry with a stranger that went absolutely nowhere."
 - The commute card, "it's also fun" (benched).
 
+- "The fond, the funny and the faintly ridiculous" (Warm line, kept 2026-10-30): "too good to remove. It's an alliteration. I like those!" A list of three is fine when it carries alliteration; the formula ban is about the plain list-and-twist.
+
 ## Turned down (with why)
 
 - "Which piece of technology would you happily un-invent?" — cheap answers, Colbert style.

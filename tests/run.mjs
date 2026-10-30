@@ -1905,6 +1905,8 @@ async function run() {
     await pg.locator('#partyOrientBtn').click();
     assert((await spot(pg)).turn === 'cw', 'the word did not turn');
     await pg.setViewportSize({ width: 844, height: 390 });
+    // the browser sends its resize event with the next frame, not as setViewportSize returns: wait for that frame, not a guessed time
+    await pg.waitForFunction(() => document.getElementById('partyOverlay').classList.contains('orient-landscape') && document.getElementById('partyOverlay').dataset.turn === undefined, null, { timeout: 2000 }).catch(() => {});
     const s = await spot(pg);
     assert(s.turn === null && s.land, `right after the browser turned the screen: ${JSON.stringify(s)}`);
     await pg.setViewportSize({ width: 390, height: 844 });
