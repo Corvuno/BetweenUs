@@ -43,6 +43,16 @@ Keeper's rule above: what the owner wants or meant is asked; how to build it is 
   Don't stop to confirm first; that's a separate failure mode from editing without
   permission in the first place, and the owner has said explicitly not to do it.
 
+## Classic and first are frozen legacy versions
+
+`between-us-classic.html` and `between-us-first.html` are legacy versions (owner, 2026-10-30).
+They don't change: no features, no tweaks, no carrying a change made to the main app over to
+them. The only exceptions are a security problem or another real fault (the page breaks or
+loses data), or the owner asking for that specific change. When a request says "all versions",
+it means the main app's versions (main, dev, work), not these two; don't ask about them again.
+Both are self-contained files with their own copy of the code, so work on the shared files
+(`deck.js`, `ui.js`, `styles.css` …) never reaches them.
+
 ## Every commit says how big it is (feeds the automatic release)
 
 Every three nights (Amsterdam time) a GitHub workflow cuts a release if anything
