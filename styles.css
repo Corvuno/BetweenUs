@@ -1403,6 +1403,7 @@ body.tok-taught .tok-hint{display:none;}
 /* Arc / Random: a plain row of choices, picked like everything else in the sheet. */
 .shuffle-toggle,.limit-row{display:flex;}
 .shuffle-toggle-opt,.limit-btn{--pc:var(--celadon);--pick-h:48px;flex:none;}
+.cat-area .limit-btn[hidden]{display:none;}   /* All, hidden in Arc */
 
 .pane{display:none;}
 .pane.on{display:block;}

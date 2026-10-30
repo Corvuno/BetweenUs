@@ -198,6 +198,9 @@ _Nothing is being built right now._
 
 ## Done (last 14 days)
 
+### Arc follows the number of cards (C), 2026-10-30
+**Story:** In Arc a hand of 10 or 20 is one arc, not arcs of five: warm-up 3, deep 5, wind-down 2 for 10; warm-up 4, deep 13, wind-down 3 for 20. Deep means the deepest categories switched on. No category twice in a row unless the selection leaves no way around it. All is Wild-only; arriving in Arc with All lands on 20. Classic and first untouched (legacy). **Source:** owner, 2026-10-30, this thread; commit on main
+
 ### Round 7: Arrive — Quick, Warm and Unwind 5 (A), 2026-10-30
 **Story:** 4 cards; Quick and Warm briefs; Warm 7 and Unwind 5 merged into one Unwind card. **Source:** round 7 commit on main
 
