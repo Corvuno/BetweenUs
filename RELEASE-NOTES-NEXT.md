@@ -16,4 +16,5 @@ Rules:
 
 - Thirteen After Dark and Romance questions are new or reworded: more about sex itself and how it feels, less party game.
 - On a computer, The Deck now opens as a panel that keeps the question in view while you choose your evening.
+- Arc now plays a hand of 10 or 20 as one long arc: a short warm-up, a longer stretch of the deepest questions you chose, and a brief wind-down. All is now only in Wild.
 - Smaller fixes throughout, including Flesh now showing under Everything, and the custom card option is gone from the menu.

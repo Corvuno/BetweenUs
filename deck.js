@@ -111,11 +111,22 @@ function sliceVisibleDeck(fullDeck, unseen) {
   return _sliceDraw(fullDeck, unseen);
 }
 
-/* Mirrors state.cardLimit onto the limit-button row's active class. */
+/* Mirrors state.cardLimit onto the limit-button row's active class. All is
+   Wild-only (owner, 2026-10-30): Arc hides it, since an arc needs a set length. */
 function syncLimitButtons() {
-  document.querySelectorAll('.limit-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)))
-  );
+  document.querySelectorAll('.limit-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.limit === (state.cardLimit === null ? 'all' : String(state.cardLimit)));
+    if (b.dataset.limit === 'all') b.hidden = state.randomMode === 'arc';
+  });
+}
+
+/* Arc has no All: arriving in Arc with All picked (switched over from Wild,
+   a saved session, a profile default) lands on 20. Colbert / The 36 played
+   alone still run their whole list, and give the old number back after. */
+const ARC_ALL_FALLBACK = 20;
+function _arcLimit() {
+  if (state.randomMode === 'arc' && state.cardLimit === null && !orderedSoloLevel()) state.cardLimit = ARC_ALL_FALLBACK;
+  syncLimitButtons();
 }
 
 function initDeck(isContinuation) {
@@ -136,6 +147,7 @@ function initDeck(isContinuation) {
     state.colbertPrevLimit = null;
     syncLimitButtons();
   }
+  _arcLimit();
   _startFreshPassIfSpent();
   const built = buildFullDeck();
   state.fullDeck = built.deck;
@@ -320,7 +332,10 @@ function _unseenFirst(cards){
   let eligible = unseenCards.filter(c => !_sittingOut(c));
   if (!eligible.length) eligible = unseenCards;
   const eligSet = new Set(eligible);
-  const fresh = _spreadRuns(orderUnseen(eligible, cards), state.cardLimit ?? eligible.length, state.randomMode === 'arc');
+  const size = state.cardLimit ?? eligible.length;
+  const fresh = _isLongArc(Math.min(size, eligible.length))
+    ? _longArcRuns(orderUnseen(eligible, cards), size)
+    : _spreadRuns(orderUnseen(eligible, cards), size, state.randomMode === 'arc');
   const used  = shuffle(cards.filter(c => !eligSet.has(c)));
   return {deck: fresh.concat(used), unseen: fresh.length};
 }
@@ -332,8 +347,115 @@ function _sliceDraw(deck, unseen){
   return state.randomMode === 'arc' ? _arcHand(hand) : hand;
 }
 
-/* Arc: the hand plays as consecutive mini arcs of 5 cards (a 5 is one arc, a
-   10 two, All as many as it takes; a short last group is its own small arc).
+/* Long Arc (owner, 2026-10-30): in Arc a hand of 10 or 20 is ONE arc, not
+   arcs of five. It opens with a warm-up, spends most of the hand on deep
+   cards, and winds down over its last two or three. 20 is deeper than 10:
+     10 → 3 warm-up, 5 deep, 2 wind-down
+     20 → 4 warm-up, 13 deep, 3 wind-down
+   "Deep" follows the selection: the categories with the highest depth among
+   the ones switched on, taken from the top down until there are at least
+   three of them and enough cards, never the shallowest depth selected. A
+   hand of five stays the classic small arc (_arcHand). */
+const _isLongArc = size => state.randomMode === 'arc' && size > RUN;
+
+function _longArcPlan(n) {
+  const warm = n >= 15 ? 4 : 3;
+  const cool = n >= 15 ? 3 : 2;
+  return { warm, cool, deep: Math.max(0, n - warm - cool) };
+}
+
+/* The deep categories for this draw: highest depths first, never the lowest. */
+function _deepLevels(cards, need) {
+  const bands = [...new Set(cards.map(c => levelDepth(c.level)))].sort((a, b) => b - a);
+  const deep = new Set();
+  for (const band of bands.slice(0, -1)) {
+    cards.forEach(c => { if (levelDepth(c.level) === band) deep.add(c.level); });
+    if (deep.size >= 3 && cards.filter(c => deep.has(c.level)).length >= need) break;
+  }
+  return deep;
+}
+
+/* `n` cards in draw order, the least-used category first each time, so a
+   stretch takes as many different categories as the pool has. */
+function _pickSpread(cards, n) {
+  const used = new Map();
+  const rest = [...cards];
+  const out = [];
+  while (out.length < n && rest.length) {
+    let best = 0;
+    for (let i = 1; i < rest.length; i++) {
+      if ((used.get(rest[i].level) ?? 0) < (used.get(rest[best].level) ?? 0)) best = i;
+    }
+    const card = rest.splice(best, 1)[0];
+    used.set(card.level, (used.get(card.level) ?? 0) + 1);
+    out.push(card);
+  }
+  return out;
+}
+
+/* Deepest to the middle: shallow to deep, placed alternately front and back. */
+function _peakInMiddle(cards) {
+  const byDepth = cards.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
+  const out = new Array(byDepth.length);
+  let lo = 0, hi = byDepth.length - 1;
+  byDepth.forEach((c, i) => { if (i % 2 === 0) out[lo++] = c; else out[hi--] = c; });
+  return out;
+}
+
+/* How many places hold the same category as the card before them. */
+const _repeats = hand => hand.reduce((n, c, i) => n + (i > 0 && c.level === hand[i - 1].level ? 1 : 0), 0);
+
+/* Never the same category twice in a row unless the cards leave no way
+   around it. A repeat is swapped away, first with a card of the same depth
+   (the arc keeps its shape), only then with any card. */
+function _breakRepeats(hand) {
+  for (let i = 1; i < hand.length; i++) {
+    if (hand[i].level !== hand[i - 1].level) continue;
+    const now = _repeats(hand);
+    const helps = j => {
+      const a = hand.slice();
+      [a[i], a[j]] = [a[j], a[i]];
+      return _repeats(a) < now;
+    };
+    const others = hand.map((_, j) => j).filter(j => j !== i);
+    const sameDepth = j => levelDepth(hand[j].level) === levelDepth(hand[i].level);
+    const j = others.find(k => sameDepth(k) && helps(k)) ?? others.find(helps);
+    if (j !== undefined) [hand[i], hand[j]] = [hand[j], hand[i]];
+  }
+  return hand;
+}
+
+/* The long-Arc hand, already in playing order, followed by the unseen cards
+   it didn't take (in draw order). */
+function _longArcRuns(ordered, handSize) {
+  const n = Math.min(handSize, ordered.length);
+  const plan = _longArcPlan(n);
+  const deepSet = _deepLevels(ordered, plan.deep);
+  const deepPool = ordered.filter(c => deepSet.has(c.level));
+  const endPool = ordered.filter(c => !deepSet.has(c.level));
+  let deep = _pickSpread(deepPool, plan.deep);
+  let ends = _pickSpread(endPool, plan.warm + plan.cool);
+  /* a pool too small for its places borrows from the other one */
+  const taken = () => new Set([...deep, ...ends]);
+  if (ends.length < plan.warm + plan.cool) {
+    const t = taken();
+    ends = ends.concat(_pickSpread(deepPool.filter(c => !t.has(c)), plan.warm + plan.cool - ends.length));
+  }
+  if (deep.length < plan.deep) {
+    const t = taken();
+    deep = deep.concat(_pickSpread(endPool.filter(c => !t.has(c)), plan.deep - deep.length));
+  }
+  /* the lighter end cards open the hand rising, the rest close it falling */
+  const endsByDepth = ends.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
+  const warm = endsByDepth.slice(0, Math.min(plan.warm, endsByDepth.length));
+  const cool = endsByDepth.slice(warm.length).reverse();
+  const hand = _breakRepeats([...warm, ..._peakInMiddle(deep), ...cool]);
+  const inHand = new Set(hand);
+  return [...hand, ...ordered.filter(c => !inHand.has(c))];
+}
+
+/* Arc, hand of five: one small arc. (Hands of 10 and 20 are one long arc,
+   built by _longArcRuns; here they only get the After Dark opener rule.)
    The hand's cards are taken in their draw order, five at a time, and each
    group is shaped on its own:
      - variety: already settled when the hand was chosen (_spreadRuns: each
@@ -343,8 +465,11 @@ function _sliceDraw(deck, unseen){
        around the middle and eases down after it.
    The summary trace plots the same levelDepth, so the line reads as arcs. */
 function _arcHand(hand){
-  const out = [];
-  let rest = hand.slice();
+  /* a long Arc arrives already in playing order (_longArcRuns); only the
+     After Dark opener rule below still applies to it */
+  const long = _isLongArc(hand.length);
+  const out = long ? hand.slice() : [];
+  let rest = long ? [] : hand.slice();
   while (rest.length) {
     const picked = rest.slice(0, RUN);
     rest = rest.slice(picked.length);
@@ -369,7 +494,7 @@ function _arcHand(hand){
   if (out.some(c => !isAD(c))) {
     const keepSecond = Math.random() < 0.05;
     const openOK = () => !isAD(out[0]) && (keepSecond || !isAD(out[1]));
-    if (!openOK()) {
+    if (!openOK() && !long) {
       const n = Math.min(RUN, out.length);
       out.splice(0, n, ...out.slice(0, n).reverse());
       if (!openOK()) out.splice(0, n, ...out.slice(0, n).reverse());   // turn it back
@@ -380,8 +505,14 @@ function _arcHand(hand){
          that keeps the spread; the opener rule wins if none does */
       const later = out.flatMap((c, i) => (i > idx && !isAD(c) ? [i] : []));
       const keepsAll = run => _spreadHolds(run) && _isArcShaped(run);
-      const swapAt = later.find(i => _swapKeeps(out, idx, i, keepsAll))
-        ?? later.find(i => _swapKeeps(out, idx, i, _spreadHolds)) ?? later[0] ?? -1;
+      /* long Arc: a card of the same depth that brings no back-to-back repeat,
+         then any card without a repeat */
+      const noRepeat = i => { const a = out.slice(); [a[idx], a[i]] = [a[i], a[idx]]; return _repeats(a) <= _repeats(out); };
+      const sameDepth = i => levelDepth(out[i].level) === levelDepth(out[idx].level);
+      const swapAt = (long
+        ? later.find(i => sameDepth(i) && noRepeat(i)) ?? later.find(noRepeat)
+        : later.find(i => _swapKeeps(out, idx, i, keepsAll)) ?? later.find(i => _swapKeeps(out, idx, i, _spreadHolds)))
+        ?? later[0] ?? -1;
       if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
     };
     bump(0, false);        // spot 1: never
@@ -743,7 +874,11 @@ function buildPickOptions(step) {
   const runStart = Math.floor(step / RUN) * RUN;
   const runLevels = state.visibleDeck.slice(runStart, runStart + RUN)
     .flatMap((c, k) => (c && runStart + k !== step ? [c.level] : []));
-  const full = c => runLevels.filter(level => level === c.level).length >= RUN_CAP;
+  /* long Arc: also no option of the same category as the cards either side */
+  const sides = _isLongArc(state.visibleDeck.length)
+    ? [state.visibleDeck[step - 1], state.visibleDeck[step + 1]].flatMap(c => (c ? [c.level] : []))
+    : [];
+  const full = c => runLevels.filter(level => level === c.level).length >= RUN_CAP || sides.includes(c.level);
   const picked = [];
   tiers.forEach((tier, ti) => {
     if (picked.length >= 2 || !tier.length) return;
