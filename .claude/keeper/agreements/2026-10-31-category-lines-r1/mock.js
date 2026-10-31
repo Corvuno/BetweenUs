@@ -34,7 +34,7 @@
     hideTimer = setTimeout(() => back.classList.remove('show'), 2200);
   });
   addEventListener('keydown', e => {
-    if (e.key === 'Backspace' || e.key.toLowerCase() === 'b') top.location.href = 'index.html';
+    if (e.key === 'Backspace' || e.key.toLowerCase() === 'b') back.click();
   });
 
   // bring the open chapter into view, as a player would have scrolled it
