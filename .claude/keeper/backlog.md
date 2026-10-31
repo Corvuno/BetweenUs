@@ -15,8 +15,9 @@ _Nothing is being built right now._
 **Source:** found 2026-10-30 while landing the phone centring fix; they fail on main without that fix too.
 **Status note:** Not started; the owner hasn't decided yet.
 
-### Round 8: Between Us, Us: Friends, Us: Love (Area A deck)
-**Story:** The three Us categories get the standard method.
+### Round 8: the Us categories and new Us: Colleagues (Area A deck, Area C app)
+**Story:** The three Us categories get the standard method, and a new category, Us: Colleagues (line "About working together, directly", band 4, on in the Coworkers preset), gets twelve cards.
+**Status note:** Part 1 built 2026-10-31 (e677e18): three cards, Between Us line, Us: Love band 5. Part 2: Us: Colleagues 5 and 7 still to pick, then its colour (shown first) and the build.
 **Source:** owner 2026-10-29
 
 ### Global check of how cards ask (Area A deck)
