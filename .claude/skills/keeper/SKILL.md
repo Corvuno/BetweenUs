@@ -20,8 +20,9 @@ this project lives in `.claude/keeper/`:
 - `project.md` — the project's name for you, its areas, its builders, where things live.
 - `vision.md` — what the project is and where it is heading, agreed with the owner.
 - `lessons.md` — what you have learned about how this owner means things.
-- `backlog.md` — the one queue of work, written as user stories with acceptance criteria
-  (owner, 2026-10-23). An agreed story *is* the agreement.
+- The backlog — the one queue of work, written as user stories with acceptance criteria
+  (owner, 2026-10-23). An agreed story *is* the agreement. Where it lives and how to reach it
+  is in `project.md`, "The backlog".
 - `agreements/` — agreements written before 2026-10-23, kept as the record behind older stories.
 - `builders/` — one notes file per builder: corrections that builder learns from.
 - `upkeep.md` — when the monthly upkeep last ran, and what it found.
@@ -44,7 +45,8 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    happening and why, in one line). A wish they already typed is noted and taken up
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
-   the last session. Read `backlog.md`, and tell the owner in one line what is being built
+   the last session. Read the open backlog (`project.md`, "The backlog"), sort any item the owner added that has
+   no status yet, and tell the owner in one line what is being built
    now and what is next.
 4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, say so
    in one line and ask the owner to start it in its own thread (`/keeper upkeep`). Never run
@@ -159,16 +161,18 @@ Every item gets:
 - **Area** (A deck / B looks / C app), and **Touches:** the files it will likely change.
 
 Show it in the chat. Nothing gets built until the owner says yes. Once approved, add it to
-`backlog.md` under Next and commit. The acceptance criteria are what the
+the backlog under Next. Search the open and closed items first: if it is already there, update
+that item instead of adding a second one. The acceptance criteria are what the
 builder builds to and what the tester checks, one by one.
 
 ### The backlog, and one build at a time
 
-`backlog.md` is the single queue: Building now, Next, Waiting on the owner, Parked, Done
-(last 14 days). Every Keeper session reads it at the start and writes to it when a story is
-agreed, started, landed, parked or dropped. You keep Next in order, following the vision;
-the owner can move anything. After every change to it, republish the backlog page (link in
-`project.md`) from the file, to the same link: this page is meant to change.
+The backlog is the single queue: Building now, Next, Waiting on the owner, Parked, and Done
+(closed). Since 2026-10-31 it lives in a backlog tool, not a file (owner: "a real system…
+that actually keeps updated"); `project.md` says which tool and how. Every Keeper session reads
+it at the start and changes it the moment a story is agreed, started, landed, parked or
+dropped. The owner adds, edits and closes items there too; what they changed wins. Before
+adding anything, search: one wish is one item, never two.
 
 - **Talking runs in parallel** (owner, 2026-10-23: "multi topic is good"): any number of
   sessions may talk wishes through, run card rounds and make mockups. They only *add* stories.
@@ -176,7 +180,7 @@ the owner can move anything. After every change to it, republish the backlog pag
   now. If nothing is there, take the story. A second build may start only if its Touches
   share no file with the one already building; otherwise it waits, and you tell the owner in
   one line which story it waits for. When you take a story, move it to Building now with the
-  session link and date, commit and push *before* the builder starts, so other sessions see it.
+  session link and date *before* the builder starts, so other sessions see it.
 - **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
   sat there unwritten). A story goes there only when a builder starts on it. Proposals still
   to write or picks still to make keep it in Next or Waiting on the owner.
@@ -273,8 +277,9 @@ off. Don't ship a near miss.
   they had been red on 30+ pushes in a row without anyone noticing). Red is work now: find out
   why and fix it, or tell the owner what is failing and why it isn't fixed yet.
 - The backlog moves the moment something arrives (owner, 2026-10-29): a story agreed, a build
-  started, a build landed, a question decided. Update `backlog.md` and republish its page in the
-  same push as that change, never later.
+  started, a build landed, a question decided. Every commit names its backlog item, and the
+  commit that finishes it closes it (`project.md`, "The backlog"), so landing and closing are
+  one step, never two.
 - Before leaving a session, make sure nothing finished sits only on a side branch.
 - Then report to the owner, split by the same areas A), B), C):
   - what changed, in plain words, checked against the agreement;
@@ -330,7 +335,7 @@ commit, so the two never say different things.
 Runs at the start of the first session a month or more after the last one (see `upkeep.md`).
 The owner asked for it: less is more, and the files should get sharper over time, not longer.
 
-1. **Clean up.** Go through `lessons.md`, every file in `builders/`, `backlog.md` and
+1. **Clean up.** Go through `lessons.md`, every file in `builders/`, the open backlog and
    `agreements/`. Remove whatever a newer entry has made obsolete: a lesson marked replaced,
    a note that says the same as a newer one (merge them into one), a backlog item that has
    since been done or dropped, an agreement that a newer agreement replaced. Only remove what

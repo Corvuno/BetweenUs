@@ -1,0 +1,22 @@
+#!/bin/sh
+# Backlog lock (owner, 2026-10-31): every commit names its backlog item (a GitHub issue),
+# so the backlog can't fall behind. "Fixes #12" in the commit that finishes the work closes
+# issue 12 when it lands on main. Work with no item says why: "No issue: <reason>".
+# See .claude/keeper/project.md, "The backlog".
+msg_file="$1"
+# Merges and fixup/squash commits carry their own messages.
+git_dir="$(git rev-parse --git-dir)"
+[ -f "$git_dir/MERGE_HEAD" ] && exit 0
+first="$(head -n1 "$msg_file")"
+case "$first" in Merge*|fixup!*|squash!*|Revert*) exit 0 ;; esac
+body="$(grep -v '^#' "$msg_file")"
+if printf '%s\n' "$body" | grep -Eq '#[0-9]+|^No issue: *[^ ]'; then
+  exit 0
+fi
+cat >&2 <<'MSG'
+Commit refused: name the backlog item.
+  - work on an item:      add "#12" (or "Fixes #12" in the commit that finishes it)
+  - no item fits:         add a line "No issue: <why>"
+Open items: https://github.com/Corvuno/BetweenUs/issues
+MSG
+exit 1

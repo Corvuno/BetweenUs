@@ -134,13 +134,33 @@ On top of the general report: any card that changed is cited in full, old and ne
 - Tests: `node tests/run.mjs between-us.html` (see `tests/README.md`).
 - Every commit touching the app or deck ends with the `Change:` / `Note:` lines from CLAUDE.md.
 
-## The backlog page
+## The backlog
 
-The owner reads the backlog on phone and PC at https://claude.ai/artifact/67V3Fw68avj2944kjZ71zS
-(set up 2026-10-23; a kanban board since the same day: columns Waiting on you, Next, Building
-now, Done, Parked; side by side on PC, one per screen on a phone). The page renders `.claude/keeper/backlog.md`, published next to it as
-`backlog.md`. After changing `backlog.md`, update the page from any session: read the artifact
-once (`action: "read"` with that url), then publish with `url` set to it and
-`files: {"backlog.md": ".claude/keeper/backlog.md"}` and no other file, so the page itself stays
-as it is. The page's source is kept in `.claude/keeper/backlog-page.html`; change it only when
-the owner asks for a different page.
+Since 2026-10-31 the backlog is GitHub Issues on this repo: https://github.com/Corvuno/BetweenUs/issues
+(owner: "a real system, not a file that needs updating… I might want to change things myself";
+the file had items twice or missing). One issue is one backlog item; the body is the story,
+task or decision as the Keeper writes it (kinds and acceptance criteria as in the Keeper's step 3).
+Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue_write`,
+`add_issue_comment`).
+
+- **Where it stands** is a label: `Building now`, `Next`, `Waiting on owner`, `Parked`. Done is
+  closed as completed; dropped is closed as not planned. Exactly one of these per open issue.
+- **Area** is a label: `A deck`, `B looks`, `C app`, `Side job`, `Keeper`. Kind: `Decision` for a
+  question only the owner answers, `bug` for a bug.
+- **The owner's own items.** The owner adds and closes issues on github.com. An open issue with
+  no where-it-stands label is the owner's new wish: at session start, give it one, keep the owner's
+  words at the top of the body and write the story under them. An issue the owner closed stays
+  closed; never reopen it without asking.
+- **No doubles.** Before creating an issue, search open and closed ones for the same wish. If
+  it exists, update it or comment on it instead.
+- **Building now** gets a comment with the session link when the builder starts; the label
+  comes off when the work lands or is handed back.
+- **Commits name their item** (enforced by `.githooks/commit-msg`, on in every session through the
+  SessionStart hook): `#12` in any commit for issue 12; `Fixes #12` in the commit that finishes it,
+  which closes the issue by itself when it reaches `main`. A commit that fits no item says
+  `No issue: <why>`. Never get round the lock with `--no-verify`.
+- **Order of Next**: the Keeper picks by the vision and names its pick in one line; the owner can
+  say otherwise.
+- **History.** `.claude/keeper/backlog.md` holds everything up to 2026-10-31 and is no longer
+  updated. The old backlog page (https://claude.ai/artifact/67V3Fw68avj2944kjZ71zS) shows that
+  last state with a note pointing here; don't republish it.

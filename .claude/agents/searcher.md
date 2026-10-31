@@ -32,7 +32,8 @@ note in it.
 
 ## Where to look, in this order
 
-1. **Keeper notes** in `.claude/keeper/`: `agreements/`, `backlog.md`, `lessons.md`,
+1. **Keeper notes** in `.claude/keeper/`: `agreements/`, `backlog.md` (history up to 2026-10-31; after that the backlog is GitHub Issues,
+   open and closed), `lessons.md`,
    `vision.md`, `upkeep.md`, `builders/`.
 2. **The project on `main`**: `git fetch origin main`, then search the files and the history
    (`git log origin/main --all --grep`, `git log -S`, `git log -- <path>`). Also check other

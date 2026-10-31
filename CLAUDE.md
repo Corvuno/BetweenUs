@@ -9,7 +9,7 @@ overrule it. Facts about the owner (what they did, saw or meant) are always aske
 
 Sessions that run on their own with nobody to answer (the scheduled Friday code clean-up) follow
 the Keeper's rules for building, checks, the backlog and the report, but don't wait for the
-owner: anything that needs a decision goes into the backlog under Waiting on the owner instead.
+owner: anything that needs a decision goes into the backlog labelled Waiting on owner instead.
 
 History: until 2026-10-29 the first rule here was "DO NOT GUESS. EVER. ASK." for every session
 outside the Keeper, written after sessions repeatedly shipped guesses. Its core lives on in the
@@ -23,10 +23,11 @@ Keeper's rule above: what the owner wants or meant is asked; how to build it is 
   works (run it, screenshot it, whatever the change calls for), and land it
   on `main` yourself. "Fix it" means finish the job end-to-end, not produce
   something for the owner to go finish.
-- **Keep the backlog current** (owner, 2026-10-29). Every session, Keeper or not: when you land
-  something on `main`, or start or finish a piece of agreed work, update
-  `.claude/keeper/backlog.md` in the same push (to Done, with the commit) and republish its page
-  (link and steps in `.claude/keeper/project.md`, "The backlog page").
+- **The backlog is GitHub Issues** (owner, 2026-10-31; before that a file that fell behind).
+  Every session, Keeper or not: every commit names its issue (`#12`), the commit that finishes the
+  work says `Fixes #12` so landing on `main` closes it, and a commit that fits no issue says
+  `No issue: <why>`; a commit lock enforces this. Search before adding an issue, so nothing is in
+  twice. The owner adds and closes issues too. Details: `.claude/keeper/project.md`, "The backlog".
 - Push finished work straight to `main`. Don't open a pull request unless
   explicitly asked to — the user doesn't want to be asked "should I open a
   PR?" each time.
