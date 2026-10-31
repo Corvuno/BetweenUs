@@ -2091,6 +2091,21 @@ async function run() {
     await page.evaluate(() => exitParty());
   });
 
+  await check('phone layout stays put: retiring a hint or swapping in Change/Save at the end of a hand never moves the card', async () => {
+    const tops = await page.evaluate(() => {
+      const ALL = ['hint-three-taught', 'hint-spot-taught', 'hint-twist-taught', 'hint-change-taught', 'hint-save-taught'];
+      const b = document.body, before = [...b.classList], seen = new Set();
+      for (let mask = 0; mask < 32; mask++) for (const end of [false, true]) {
+        ALL.forEach((c, i) => b.classList.toggle(c, !!(mask & (1 << i))));
+        b.classList.toggle('showing-hand-summary', end);
+        seen.add(Math.round(document.getElementById('card-wrap').getBoundingClientRect().top + scrollY));
+      }
+      b.className = before.join(' ');
+      return [...seen];
+    });
+    assert(tops.length === 1, `card top moved between hint states: ${tops.join(', ')}`);
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

@@ -1691,12 +1691,14 @@ body.tok-taught .tok-hint{display:none;}
 #handActionsRow > button:not(.disabled):active,
 #screenRow > button:not(.disabled):focus-visible,#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){#screenRow > button:not(.disabled):hover,#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
-/* Hints retire per control once it has worked (see HINTS in state.js). */
+/* Hints retire per control once it has worked (see HINTS in state.js).
+   Hidden, not removed: the row keeps its height, so the centred screen doesn't
+   jump when a hint retires or when Change/Save swap in at the end of a hand. */
 body.hint-three-taught #pickToggle .row-hint,
 body.hint-spot-taught #btnParty .row-hint,
 body.hint-twist-taught #btnTwist .row-hint,
 body.hint-change-taught #btnChange .row-hint,
-body.hint-save-taught #btnSave .row-hint{display:none;}
+body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* Twist can't be used: a short horizontal shake, no words. */
 @keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
 @keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
