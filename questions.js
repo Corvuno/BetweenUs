@@ -359,7 +359,7 @@ const NEWDECK_CARDS = [
   { level: "us", question: "What would you warn someone about me — kindly?" },
   { level: "us", question: "What do you hope I never change?" },
   { level: "us", question: "What's the most me thing I've ever done?" },
-  { level: "us", question: "What would you tell me if you knew I could actually hear it right now?" },
+  { level: "us", question: "Name a trait of mine you'd borrow for a week." },
 
   // ─── USFRIEND ───
   { level: "usfriend", question: "Which moment made this friendship real for you?" },
@@ -368,10 +368,10 @@ const NEWDECK_CARDS = [
   { level: "usfriend", question: "What do you think I need from this friendship that I've never said?" },
   { level: "usfriend", question: "How has this friendship changed you?" },
   { level: "usfriend", question: "What's your favourite story about us that you tell other people?" },
-  { level: "usfriend", question: "What would end this friendship?" },
+  { level: "usfriend", question: "When did I let you down, and did I ever know?" },
   { level: "usfriend", question: "What would you trust me with that you'd trust no one else?" },
   { level: "usfriend", question: "When were you proudest of me?" },
-  { level: "usfriend", question: "When have I made you laugh hardest?" },
+  { level: "usfriend", question: "What's our running joke, and where did it start?" },
   { level: "usfriend", question: "What's something about our friendship that's shifted — and have we talked about it?" },
   { level: "usfriend", question: "Who would you introduce me to — and why?" },
 

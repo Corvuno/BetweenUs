@@ -40,6 +40,8 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Flesh** — "Your hands on someone's body — where do they go first, and where do they linger?" (from Flesh 9; owner asked to bench, round 6 2026-10-29)
 - **Bare** — "Name the ex you'd go back to for one night." (alternative for Bare 9; owner asked to bench, round 6 2026-10-29)
 - **Quick** — "What do you always forget to buy?" (alternative for Quick 11; owner asked to bench, round 7 2026-10-30)
+- **Us: Friends** — "Describe me to someone who's never met me." (alternative for Us: Friends 10; owner asked to bench, round 8 2026-10-31)
+- **Us: Friends** — "Name the moment I surprised you most." (alternative for Us: Friends 10; owner asked to bench, round 8 2026-10-31)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -512,6 +514,50 @@ where they know you · a small win this week · a ridiculous fear.
 people made are Culture's · the people in your life are Connect's and Friendship's · anything that
 stings belongs further into the deck.
 
+
+### Between Us
+**App line:** About each other, directly
+**About:** Questions to the person across from you, whoever they are: a friend, a partner, a
+colleague, someone you're getting to know. What you see in each other, what you've noticed, what
+you've never said. No card assumes a friendship or a love. Band 4.
+**Lines of thought:** first impressions · the question you've never asked · common ground · what
+the other needs to hear · impact you never mentioned · knowing more than you let on · a quote that
+stuck · habits you adapted to · a kind warning · what should never change · the most "you" thing ·
+a trait you'd borrow from each other · where you'd take each other for a day · the moment tonight
+you liked them most · what you'd ask them advice on · what you guess about each other's past · the
+song you'd pick for each other · a compliment you've never given · what the other is like when
+nobody's watching · when you first trusted them.
+**Where it stops:** this friendship is Us: Friends' · this love is Us: Love's · working together is
+Us: Colleagues' · the physical side is Us: Intimate's.
+
+### Us: Friends
+**App line:** About this friendship, directly
+**About:** Your friendship, asked straight to your friend: how it started, what it's made of, what it
+has survived, what you'd change. Band 4.
+**Lines of thought:** the moment it became real · what you wish you did together · what's still not
+understood · an unspoken need · how it changed you · your favourite story · trust · pride in each
+other · what has shifted · who you'd introduce each other to · your running joke · a fight you got
+through · when you needed each other most · when one let the other down · what happens if one of you
+moves away · how you'd describe each other to a stranger · what you've borrowed from each other · a
+secret that stayed between you.
+**Where it stops:** friendship in general is Friendship's · what any two people see in each other is
+Between Us'.
+
+### Us: Love
+**App line:** About this relationship, directly
+**About:** Your relationship, asked straight to your partner: what you give each other, what you
+miss, what you avoid, what you've decided, and how love shows between you. Band 5 (one deeper than
+the other Us categories, owner 2026-10-30).
+**Lines of thought:** what you'd miss most · what you've stopped asking for · what you're avoiding ·
+falling again · how you know you're loved · what was decided before · a version you miss · what
+you'd change · what's still a mystery · the fight you should have · feeling yourself · deciding they
+were worth it · how you each tell the story of how you met · your little rituals · money between you ·
+how you make up · each other's families · what you want more of this year · the hardest time you got
+through · what you've learned from each other · time apart.
+**Where it stops:** the physical side is Us: Intimate's · love in general is Romance's.
+**Guardrail (all Us):** every card is asked to the person across from you; none assumes children,
+living together or marriage.
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
@@ -715,6 +761,26 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.25 — category scope rework round 8, part 1: Between Us, Us: Friends, Us: Love
+
+- **Between Us 12**
+  - Old: "What would you tell me if you knew I could actually hear it right now?"
+  - New: "Name a trait of mine you'd borrow for a week."
+  - Why: The same unsaid thing as Between Us 2.
+- **Us: Friends 7**
+  - Old: "What would end this friendship?"
+  - New: "When did I let you down, and did I ever know?"
+  - Why: Above the band: a heavy hypothetical.
+- **Us: Friends 10**
+  - Old: "When have I made you laugh hardest?"
+  - New: "What's our running joke, and where did it start?"
+  - Why: Below the band. Two alternatives benched on the owner's word.
+- Between Us app line: "About this specific moment, between the two of you" → "About each other, directly".
+- Us: Love depth band 4 → 5 (owner), so its deepest cards stay within one step.
+- Writer briefs added for Between Us, Us: Friends and Us: Love.
+- Bench: two Us: Friends alternatives, on the owner's word.
+- Us: Colleagues (new category) follows in part 2.
 
 ## Patch v7.24 — category scope rework round 7: Arrive (Quick, Warm) and Unwind 5
 

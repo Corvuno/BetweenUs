@@ -116,12 +116,12 @@ const CATEGORIES = {
             chapter:"deeper", bucket:"vulnerability" },
 
   us:       { label:"Between Us",  color:"#f5b9bc", band:4, focus:1,
-              desc:"About this specific moment, between the two of you",
+              desc:"About each other, directly",
               chapter:"aboutus", bucket:"usb" },
   usfriend: { label:"Us: Friends", color:"#dba383", band:4, focus:1,
               desc:"About this friendship, directly",
               chapter:"aboutus", bucket:"usb" },
-  uslove:   { label:"Us: Love",    color:"#d083a6", band:4, focus:1,
+  uslove:   { label:"Us: Love",    color:"#d083a6", band:5, focus:1,
               desc:"About this relationship, directly",
               chapter:"aboutus", bucket:"usb" },
 
