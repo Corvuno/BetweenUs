@@ -39,3 +39,6 @@
 - 12 → "What do we do differently when it's just the two of us?"
 - 5 and 7: owner asked for something new (replacing the earlier picks).
 **BUILT part 1 2026-10-31** — Between Us 12, Us: Friends 7 and 10, Between Us line, Us: Love band 5, three briefs, bench +2; 69/69 checks.
+- Us: Colleagues 5 → "What would we do differently if we had to start this job over together?"
+- Us: Colleagues 7 → "What does work look like from where you sit that I never see?"
+All twelve Us: Colleagues cards decided 2026-10-31. Colour next (shown first).
