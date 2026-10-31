@@ -6,15 +6,7 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 
 ## Building now
 
-### Fix: "Who's here" sits in the preset line on the PC panel (Area B looks)
-**Task:** On the computer Deck panel, the "Who's here" caption sits inline between Balanced and Strangers, so it reads like a preset. Put Everything and Balanced on their own line, "Who's here" as a caption on its own line, the people presets below it, as on the phone.
-**Acceptance criteria:**
-1. In the docked panel (1280x720, 1440x900, 1920x1080), "Who's here" stands on its own line between Everything/Balanced and the people presets.
-2. With every chapter closed, the panel still doesn't scroll at 1280x720.
-3. Phone and tablet sheets look exactly as before.
-**Touches:** styles.css, between-us.html (?v=)
-**Source:** owner 2026-10-31 ("The who's there is weirdly placed between the presets. That needs a fix").
-**Status note:** Building since 2026-10-31, session https://claude.ai/code/session_01Jg2KKEhYbbZNXKj1Kdr6h1.
+_Nothing is being built right now._
 
 ## Next
 
@@ -200,6 +192,9 @@ The one queue of work. The Keeper keeps it in order; the owner can move anything
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Fix: "Who's here" on its own line in the PC Deck panel (B), 2026-10-31
+**Story:** The Who's here caption no longer sits between the presets on a computer. **Source:** owner 2026-10-31, 8ca0bbb
 
 ### Phone screen no longer jumps at the end of a hand (B), 2026-10-31
 **Story:** With the phone layout centred, the screen moved when a button row changed height: Change/Save coming in at the end of a hand with Save's hint still showing, or a hint going away after first use. Hints that have gone away now keep their space, so the screen stays put; a new automatic check guards it. **Source:** owner, 2026-10-31 ("if Save has its tooltip still active and Spotlight/Three/Twist don't, it will move"); commit 2672d33
