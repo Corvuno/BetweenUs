@@ -42,3 +42,4 @@
 - Us: Colleagues 5 → "What would we do differently if we had to start this job over together?"
 - Us: Colleagues 7 → "What does work look like from where you sit that I never see?"
 All twelve Us: Colleagues cards decided 2026-10-31. Colour next (shown first).
+- Colour round 1 (wheat, dusty lilac, ash rose): owner wants it between the Us colours and Work, more blueish. Round 2: periwinkle #9fb0d6, dusty blue #8fa8c2, blue lilac #a99cc8 (+ Work blue for comparison).
