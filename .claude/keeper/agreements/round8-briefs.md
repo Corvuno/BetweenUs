@@ -27,3 +27,15 @@
 - 7 "Describe my job as if you were explaining it to a child." (owner's choice; the icebreaker flag noted)
 - Owner: too much "what do you think of me"; slots 8–12 become real "us/we" cards.
 - Still open: Between Us 12, Us: Friends 7 and 10 (not answered).
+
+## Picks 2026-10-31
+- Between Us 12 → "Name a trait of mine you'd borrow for a week."
+- Us: Friends 7 → "When did I let you down, and did I ever know?"
+- Us: Friends 10 → "What's our running joke, and where did it start?"; bench alt 1 and 3.
+- Us: Colleagues 8 → "What do we never talk about at work that we probably should?"
+- 9 → "Name the disagreement we had that made us work better."
+- 10 → "Tell about the time we were a great team."
+- 11 → "What do we still have to figure out about working together?"
+- 12 → "What do we do differently when it's just the two of us?"
+- 5 and 7: owner asked for something new (replacing the earlier picks).
+**BUILT part 1 2026-10-31** — Between Us 12, Us: Friends 7 and 10, Between Us line, Us: Love band 5, three briefs, bench +2; 69/69 checks.

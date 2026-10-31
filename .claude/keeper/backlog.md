@@ -5,7 +5,7 @@
 
 Every open item below the line moved to its own issue on 2026-10-31, word for word:
 
-- Next: #65 Three Spotlight tilt checks fail on main; #66 Round 8: Between Us, Us: Friends, Us: Love; #67 Global check of how cards ask
+- Next: #65 Three Spotlight tilt checks fail on main; #66 Round 8: the Us categories and new Us: Colleagues; #67 Global check of how cards ask
 - Waiting on owner: #68 Which four looks spots count as settled; #69 How the old versions are reachable; #70 What the work version should become; #71 The website; #72 Small text between two lettering rules; #73 Pause colour; #74 Be Free wall posters; #75 Spotlight turns once on a real phone
 - Parked: #76 Wildcard; #77 Two cards asking the same thing; #78 Finish the old-code clean-up; #79 Tidy the wide-screen code; #80 Old desktop-fits-window branch; #81 Logo mark ideas; #82 When does the app start fresh; #83 A printed deck and an offshoot
 - Done before the move: #64 The Deck made for a PC
