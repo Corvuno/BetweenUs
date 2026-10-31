@@ -1,0 +1,34 @@
+name: Backlog board
+
+# Keeps the board "Between Us backlog" in step with the backlog labels (owner, 2026-10-31).
+# A label change moves the card at once; a card dragged on the board changes the labels on the
+# next 15-minute check. Script and rules: scripts/backlog-board.mjs.
+on:
+  issues:
+    types: [opened, reopened, closed, labeled, unlabeled]
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+concurrency:
+  group: backlog-board
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/backlog-board.mjs
+        env:
+          BOARD_TOKEN: ${{ secrets.BOARD_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_ISSUE: ${{ github.event.issue.number }}

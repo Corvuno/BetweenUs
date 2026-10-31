@@ -145,6 +145,14 @@ Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue
 
 - **Where it stands** is a label: `Building now`, `Next`, `Waiting on owner`, `Parked`. Done is
   closed as completed; dropped is closed as not planned. Exactly one of these per open issue.
+- **The board** (owner, 2026-10-31: "mostly have sessions move it"): GitHub board "Between Us
+  backlog" on the owner's account, columns New, Waiting on owner, Next, Building now, Parked,
+  Done. Sessions never touch the board; they change labels and open/closed, and
+  `.github/workflows/backlog-board.yml` (`scripts/backlog-board.mjs`) moves the card at once.
+  A card the owner drags changes the labels within about 15 minutes; if both changed in
+  between, the newer change wins. New = an open issue with no status label. The job needs the
+  repo secret `BOARD_TOKEN` (a classic key the owner made with `project` and `public_repo`);
+  without it the job only warns. If the board stops moving, check that job's runs first.
 - **Area** is a label: `A deck`, `B looks`, `C app`, `Side job`, `Keeper`. Kind: `Decision` for a
   question only the owner answers, `bug` for a bug.
 - **The owner's own items.** The owner adds and closes issues on github.com. An open issue with
@@ -156,7 +164,7 @@ Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue
 - **Building now** gets a comment with the session link when the builder starts; the label
   comes off when the work lands or is handed back.
 - **Commits name their item** (enforced by `.githooks/commit-msg`, on in every session through the
-  SessionStart hook): `#12` in any commit for issue 12; `Fixes #12` in the commit that finishes it,
+  SessionStart hook): `Backlog: #12` in any commit for issue 12 (a line starting with `#` is a comment and doesn't count); `Fixes #12` in the commit that finishes it,
   which closes the issue by itself when it reaches `main`. A commit that fits no item says
   `No issue: <why>`. Never get round the lock with `--no-verify`.
 - **Order of Next**: the Keeper picks by the vision and names its pick in one line; the owner can
