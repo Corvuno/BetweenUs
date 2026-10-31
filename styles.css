@@ -1602,8 +1602,8 @@ body.tok-taught .tok-hint{display:none;}
   .preset-host .sect-lbl{margin:0 0 2px;}
   .preset-host.open .preset-outer{max-height:none;padding:0;}
   .preset-host .preset-row{justify-content:flex-start;align-items:center;}
-  .mode-group-lbl--break{display:none;}
-  .mode-group-lbl{flex:none;padding:0 8px 0 0;margin-inline-start:14px;}
+  /* Everything and Balanced on their own line, the "Who's here" caption on the next, then the people presets */
+  .mode-group-lbl{text-align:left;padding-block:4px 0;}
   .cat-area .preset-host .mode-btn{--pick-h:34px;}
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){padding:0 8px;}
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{inset-inline:8px;}
