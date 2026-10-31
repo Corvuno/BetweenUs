@@ -1,0 +1,89 @@
+/* Mockup layer for "category lines in The Deck", round 1 (issue #85).
+   app.css is a copy of the live styles.css; everything below is the new part, keyed on html[data-v]:
+   (no data-v) = Today, 1 = List, 2 = Two columns, 3 = Small cards.
+   The category line (.cat-line) is the category's own desc, word for word. */
+
+/* ── shared by 1, 2 and 3 ── */
+html[data-v] .chapter-panel .toggle-btn{
+  display:grid;grid-template-columns:auto 1fr;align-content:center;gap:0 7px;
+  text-align:start;white-space:normal;
+  /* the picked look eases like the rest of the sheet's state changes */
+  transition:color .45s ease;}
+html[data-v] .chapter-panel .toggle-btn::after{display:none;}
+html[data-v] .chapter-panel .cat-dot{align-self:center;transition:opacity .45s ease;}
+html[data-v] .chapter-panel .cat-name{position:relative;justify-self:start;line-height:1.6;white-space:nowrap;}
+/* the picked underline now sits under the name only (it used to sit under the whole button) */
+html[data-v] .chapter-panel .cat-name::after{content:'';position:absolute;inset-inline:0;bottom:-.2em;height:1px;
+  background:var(--tc);opacity:0;transition:opacity .45s ease;}
+html[data-v] .chapter-panel .toggle-btn.on .cat-name::after{opacity:.7;}
+html[data-v] .chapter-panel .toggle-btn:not(.on):hover .cat-name::after{opacity:.35;}
+/* the line: same face, size and spacing as the chapter line (.ch-desc); the quiet tone, following the name's state */
+html[data-v] .chapter-panel .cat-line{grid-column:2;margin-top:.3em;
+  font-family:'Federo','Jost',sans-serif;font-size:.8rem;font-weight:400;letter-spacing:.02em;line-height:1.35;
+  text-transform:none;color:var(--text-helper);transition:color .45s ease;}
+html[data-v] .chapter-panel .toggle-btn.on .cat-line{color:rgba(240,232,216,.72);}
+/* Today carries no line */
+html:not([data-v]) .cat-line{display:none;}
+
+/* ── 1 · List: one category per row ── */
+html[data-v="1"] .chapter-panel{display:block;}
+html[data-v="1"] .chapter-panel .toggle-btn{width:100%;padding:9px 8px;}
+
+/* ── 2 · Two columns ── */
+html[data-v="2"] .chapter-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px;}
+html[data-v="2"] .chapter-panel .toggle-btn{padding:9px 6px;align-content:start;}
+
+/* ── 3 · Small cards: each category is a small card face of this deck ── */
+html[data-v="3"] .chapter-panel{--tile-gap:10px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(min(9.5rem,100%),1fr));gap:var(--tile-gap);}
+html[data-v="3"] .chapter-panel.open{padding:12px 12px 14px 12px;}
+html[data-v="3"] .chapter-panel .toggle-btn{
+  --mark:var(--gold);--corner:color-mix(in srgb,var(--gold) 35%,transparent);--edge:var(--border);
+  --b:10px;--o:9px;                                   /* bracket length, bracket inset */
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;align-content:center;
+  text-align:center;padding:20px 12px 18px;min-height:6.4rem;
+  background-color:var(--card-bg);border:1px solid var(--edge);box-shadow:0 4px 18px rgba(0,0,0,.42),0 1px 3px rgba(0,0,0,.3);
+  /* the card's corner brackets: top left and bottom right, hairlines */
+  background-image:
+    linear-gradient(var(--corner),var(--corner)),linear-gradient(var(--corner),var(--corner)),
+    linear-gradient(var(--corner),var(--corner)),linear-gradient(var(--corner),var(--corner));
+  background-repeat:no-repeat;
+  background-size:var(--b) 1px,1px var(--b),var(--b) 1px,1px var(--b);
+  background-position:left var(--o) top var(--o),left var(--o) top var(--o),
+    right var(--o) bottom var(--o),right var(--o) bottom var(--o);}
+html[data-v="3"] .chapter-panel .toggle-btn:hover{--edge:var(--border-strong);}
+/* the card's top rail: the category's own colour, as on the card (gilt stops set per tile) */
+html[data-v="3"] .chapter-panel .toggle-btn::before{content:'';position:absolute;inset:-1px -1px auto -1px;height:3px;pointer-events:none;
+  background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
+  -webkit-mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+  mask:linear-gradient(to right,transparent 0%,black 14% 86%,transparent 100%);
+  opacity:.3;transition:opacity .45s ease;}
+html[data-v="3"] .chapter-panel .toggle-btn.on::before{opacity:.85;}
+html[data-v="3"] .chapter-panel .cat-line{flex:0 0 100%;margin-top:.55em;text-align:center;text-wrap:balance;
+  font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;font-size-adjust:.36;line-height:1.35;letter-spacing:0;}
+/* After Dark cards keep the app's own mark: corners, edge and a wash in the mark colour, and the watermark */
+html[data-v="3"] .chapter-panel .toggle-btn[data-chapter="afterdark"]{
+  --mark:var(--mark-afterdark);--corner:color-mix(in srgb,var(--mark) 55%,transparent);
+  --edge:color-mix(in srgb,var(--mark) 40%,transparent);
+  background-image:
+    linear-gradient(var(--corner),var(--corner)),linear-gradient(var(--corner),var(--corner)),
+    linear-gradient(var(--corner),var(--corner)),linear-gradient(var(--corner),var(--corner)),
+    radial-gradient(120% 100% at 50% 100%,color-mix(in srgb,var(--mark) 9%,transparent),transparent 62%);
+  background-size:var(--b) 1px,1px var(--b),var(--b) 1px,1px var(--b),100% 100%;
+  background-position:left var(--o) top var(--o),left var(--o) top var(--o),
+    right var(--o) bottom var(--o),right var(--o) bottom var(--o),0 0;}
+html[data-v="3"] .chapter-panel .toggle-btn[data-chapter="afterdark"]::after{
+  display:flex;content:'\2726';position:absolute;inset:0;align-items:center;justify-content:center;
+  background:none;height:auto;top:0;font-size:4rem;color:var(--mark);opacity:.055;pointer-events:none;}
+@media (prefers-reduced-motion:reduce){
+  html[data-v] .chapter-panel :is(.toggle-btn,.cat-dot,.cat-name::after,.cat-line,.toggle-btn::before){transition:none;}
+}
+
+/* ── review chrome inside the mockup pages ── */
+.mock-back{position:fixed;top:8px;left:12px;z-index:999;font:300 .78rem 'Jost',sans-serif;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--btn-quiet);text-decoration:none;opacity:0;transition:opacity .5s ease;pointer-events:none;}
+.mock-back.show{opacity:1;pointer-events:auto;}
+.mock-back:hover{color:var(--gold);}
+
+/* the live sheet caps an open chapter at 30rem (it is the height the hide animation starts from); with lines the open chapter is taller than that */
+html[data-v] .chapter-group.open{max-height:none;}

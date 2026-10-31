@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Category lines, round 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&family=Federo&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--surface:#161310;--cream:#f0e8d8;--gold:#c9a84c;--muted-l:#9c8f7e;--border:rgba(201,168,76,.22);--dim:rgba(201,168,76,.12);--celadon:#A9C7B6;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:1.5;padding:28px 18px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.7rem 'Jost',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+h2{font:300 1.15rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:44px 0 6px}
+h3{font:300 .85rem 'Jost',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-l);margin:26px 0 10px}
+h4{font:300 .8rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--celadon);margin:0 0 8px}
+p{margin:0 0 10px;max-width:46rem}
+.lede{color:var(--muted-l)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted-l);max-width:46rem}
+.strip{display:flex;gap:18px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start;scroll-snap-type:x proximity}
+.strip figure{margin:0;flex:none;scroll-snap-align:start}
+.strip figcaption{font:300 .85rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.strip figure p{font-size:1rem;color:var(--muted-l);margin-top:10px}
+.strip figure{width:380px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in;max-width:100%}
+.fig img{display:block;max-width:100%;height:auto}
+.phones{display:flex;flex-wrap:wrap;gap:34px 40px}
+.phrow{display:flex;flex-wrap:wrap;gap:16px}
+.cap{font-size:.95rem;color:var(--muted-l);margin:8px 0 0}
+a{color:var(--celadon)}
+a.open{font:300 .85rem 'Jost',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto;display:none}
+#viewer.on{display:block}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button.back{font:300 .85rem 'Jost',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:none}
+</style></head><body><main>
+<h1>Category lines, round 1</h1>
+<p class="lede">Issue #85: show each category’s own line in The Deck, so players no longer have to guess what a category does. The lines are the app’s own, word for word, and show whenever a chapter is open. With every chapter closed, The Deck looks as it does today. Today and three options, built from the live app, on a phone sheet and in the PC panel.</p>
+<p class="note">Same moment in all four: Beneath the Surface open, seven of its eleven categories picked (Balanced picks all eleven, so Body, Values, Attract and Spirit were switched off to show both looks). Tap a picture to see it full size. After Dark has three of five picked.</p>
+<nav><a href="#today">Today</a><a href="#list">1 · List</a><a href="#columns">2 · Two columns</a><a href="#cards">3 · Small cards</a></nav>
+
+<h2>Side by side · phone · Beneath the Surface open</h2>
+<p class="cap">Scroll sideways. Each one is the open chapter, from its row down.</p>
+<div class="strip" role="group">
+  <figure><figcaption>Today</figcaption><button type="button" class="fig" data-src="img/strip-phone-today-surface.png" data-w="374" aria-label="Open Today, the open chapter full size"><img src="img/strip-phone-today-surface.png" alt="Today, the open chapter" loading="lazy" style="width:374px"></button><p>The open chapter as it is now: category names only. The lines exist, but a player only meets them as a hover tooltip on a computer.</p></figure>
+  <figure><figcaption>1 · List</figcaption><button type="button" class="fig" data-src="img/strip-phone-list-surface.png" data-w="374" aria-label="Open 1 · List, the open chapter full size"><img src="img/strip-phone-list-surface.png" alt="1 · List, the open chapter" loading="lazy" style="width:374px"></button><p>One category per row: the name as today, its line right under it in the quiet tone. Reads straight down, one tap per category. Gives up height: the open chapter grows a lot, so on a phone you scroll through it.</p></figure>
+  <figure><figcaption>2 · Two columns</figcaption><button type="button" class="fig" data-src="img/strip-phone-columns-surface.png" data-w="374" aria-label="Open 2 · Two columns, the open chapter full size"><img src="img/strip-phone-columns-surface.png" alt="2 · Two columns, the open chapter" loading="lazy" style="width:374px"></button><p>The same name-and-line pairs in two columns, so the open chapter grows less than the list. Gives up some calm: the lines wrap onto two or three short lines and the eye zigzags between the columns.</p></figure>
+  <figure><figcaption>3 · Rethink: small cards</figcaption><button type="button" class="fig" data-src="img/strip-phone-cards-surface.png" data-w="374" aria-label="Open 3 · Rethink: small cards, the open chapter full size"><img src="img/strip-phone-cards-surface.png" alt="3 · Rethink: small cards, the open chapter" loading="lazy" style="width:374px"></button><p>The rethink. Each category is a small card from this deck: its own top rail in the category colour, the corner brackets, the name on top, the line below in the card’s italic, laid out as a grid, so opening a chapter feels like looking through a boxed deck. A card you have not picked sits quieter, with a fainter rail. Gives up height: it is the tallest of the four on a phone, and the cards want more room than names do.</p></figure>
+</div>
+
+<h2>Side by side · phone · After Dark open</h2>
+<p class="cap">Its five categories read differently: each line carries the ✦ mark, and the cards take the app’s own After Dark mark.</p>
+<div class="strip" role="group">
+  <figure><figcaption>Today</figcaption><button type="button" class="fig" data-src="img/strip-phone-today-dark.png" data-w="374" aria-label="Open Today, the open chapter full size"><img src="img/strip-phone-today-dark.png" alt="Today, the open chapter" loading="lazy" style="width:374px"></button><p>The open chapter as it is now: category names only. The lines exist, but a player only meets them as a hover tooltip on a computer.</p></figure>
+  <figure><figcaption>1 · List</figcaption><button type="button" class="fig" data-src="img/strip-phone-list-dark.png" data-w="374" aria-label="Open 1 · List, the open chapter full size"><img src="img/strip-phone-list-dark.png" alt="1 · List, the open chapter" loading="lazy" style="width:374px"></button><p>One category per row: the name as today, its line right under it in the quiet tone. Reads straight down, one tap per category. Gives up height: the open chapter grows a lot, so on a phone you scroll through it.</p></figure>
+  <figure><figcaption>2 · Two columns</figcaption><button type="button" class="fig" data-src="img/strip-phone-columns-dark.png" data-w="374" aria-label="Open 2 · Two columns, the open chapter full size"><img src="img/strip-phone-columns-dark.png" alt="2 · Two columns, the open chapter" loading="lazy" style="width:374px"></button><p>The same name-and-line pairs in two columns, so the open chapter grows less than the list. Gives up some calm: the lines wrap onto two or three short lines and the eye zigzags between the columns.</p></figure>
+  <figure><figcaption>3 · Rethink: small cards</figcaption><button type="button" class="fig" data-src="img/strip-phone-cards-dark.png" data-w="374" aria-label="Open 3 · Rethink: small cards, the open chapter full size"><img src="img/strip-phone-cards-dark.png" alt="3 · Rethink: small cards, the open chapter" loading="lazy" style="width:374px"></button><p>The rethink. Each category is a small card from this deck: its own top rail in the category colour, the corner brackets, the name on top, the line below in the card’s italic, laid out as a grid, so opening a chapter feels like looking through a boxed deck. A card you have not picked sits quieter, with a fainter rail. Gives up height: it is the tallest of the four on a phone, and the cards want more room than names do.</p></figure>
+</div>
+
+<h2>Side by side · PC panel · Beneath the Surface open</h2>
+<p class="cap">The open chapter inside the docked panel. Scroll sideways.</p>
+<div class="strip" style="--w:545px"><figure style="width:545px"><figcaption>Today</figcaption><button type="button" class="fig" data-src="img/strip-pc-today.png" data-w="545" aria-label="Open Today, PC panel, the open chapter full size"><img src="img/strip-pc-today.png" alt="Today, PC panel, the open chapter" loading="lazy" style="width:545px"></button></figure><figure style="width:545px"><figcaption>1 · List</figcaption><button type="button" class="fig" data-src="img/strip-pc-list.png" data-w="545" aria-label="Open 1 · List, PC panel, the open chapter full size"><img src="img/strip-pc-list.png" alt="1 · List, PC panel, the open chapter" loading="lazy" style="width:545px"></button></figure><figure style="width:545px"><figcaption>2 · Two columns</figcaption><button type="button" class="fig" data-src="img/strip-pc-columns.png" data-w="545" aria-label="Open 2 · Two columns, PC panel, the open chapter full size"><img src="img/strip-pc-columns.png" alt="2 · Two columns, PC panel, the open chapter" loading="lazy" style="width:545px"></button></figure><figure style="width:545px"><figcaption>3 · Rethink: small cards</figcaption><button type="button" class="fig" data-src="img/strip-pc-cards.png" data-w="545" aria-label="Open 3 · Rethink: small cards, PC panel, the open chapter full size"><img src="img/strip-pc-cards.png" alt="3 · Rethink: small cards, PC panel, the open chapter" loading="lazy" style="width:545px"></button></figure></div>
+
+<h1 style="margin-top:56px">Each version in full</h1>
+<section id="today"><h2>Today</h2><p class="what">The open chapter as it is now: category names only. The lines exist, but a player only meets them as a hover tooltip on a computer.</p>
+  <h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-today-surface.png" data-w="412" aria-label="Open Today, phone, Beneath the Surface open full size"><img src="img/phone-today-surface.png" alt="Today, phone, Beneath the Surface open" loading="lazy" style="width:412px"></button></div>
+    
+    <p class="cap"><a href="phone-live.html?f=phone-today-surface.html">Try this phone screen live (tap categories) ›</a></p></div><div class="ph"><h4>After Dark open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-today-dark.png" data-w="412" aria-label="Open Today, phone, After Dark open full size"><img src="img/phone-today-dark.png" alt="Today, phone, After Dark open" loading="lazy" style="width:412px"></button></div>
+    
+    <p class="cap"><a href="phone-live.html?f=phone-today-dark.html">Try this phone screen live (tap categories) ›</a></p></div></div>
+  <h3>PC panel</h3><button type="button" class="fig" data-src="img/pc-today.png" data-w="1440" aria-label="Open Today, PC panel full size"><img src="img/pc-today.png" alt="Today, PC panel" loading="lazy" style="width:1440px"></button>
+  <p class="cap"><a class="open" href="pc-today.html">Open the PC panel as its own page, at real size ›</a></p></section>
+<section id="list"><h2>1 · List</h2><p class="what">One category per row: the name as today, its line right under it in the quiet tone. Reads straight down, one tap per category. Gives up height: the open chapter grows a lot, so on a phone you scroll through it.</p>
+  <h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-list-surface.png" data-w="412" aria-label="Open 1 · List, phone, Beneath the Surface open full size"><img src="img/phone-list-surface.png" alt="1 · List, phone, Beneath the Surface open" loading="lazy" style="width:412px"></button><button type="button" class="fig" data-src="img/phone-list-surface-end.png" data-w="412" aria-label="Open 1 · List, phone, Beneath the Surface open, scrolled to the end of the chapter full size"><img src="img/phone-list-surface-end.png" alt="1 · List, phone, Beneath the Surface open, scrolled to the end of the chapter" loading="lazy" style="width:412px"></button></div>
+    <p class="cap">The second picture is the same sheet scrolled to the end of the chapter.</p>
+    <p class="cap"><a href="phone-live.html?f=phone-list-surface.html">Try this phone screen live (tap categories) ›</a></p></div><div class="ph"><h4>After Dark open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-list-dark.png" data-w="412" aria-label="Open 1 · List, phone, After Dark open full size"><img src="img/phone-list-dark.png" alt="1 · List, phone, After Dark open" loading="lazy" style="width:412px"></button></div>
+    
+    <p class="cap"><a href="phone-live.html?f=phone-list-dark.html">Try this phone screen live (tap categories) ›</a></p></div></div>
+  <h3>PC panel</h3><button type="button" class="fig" data-src="img/pc-list.png" data-w="1440" aria-label="Open 1 · List, PC panel full size"><img src="img/pc-list.png" alt="1 · List, PC panel" loading="lazy" style="width:1440px"></button>
+  <p class="cap"><a class="open" href="pc-list.html">Open the PC panel as its own page, at real size ›</a></p></section>
+<section id="columns"><h2>2 · Two columns</h2><p class="what">The same name-and-line pairs in two columns, so the open chapter grows less than the list. Gives up some calm: the lines wrap onto two or three short lines and the eye zigzags between the columns.</p>
+  <h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-columns-surface.png" data-w="412" aria-label="Open 2 · Two columns, phone, Beneath the Surface open full size"><img src="img/phone-columns-surface.png" alt="2 · Two columns, phone, Beneath the Surface open" loading="lazy" style="width:412px"></button></div>
+    
+    <p class="cap"><a href="phone-live.html?f=phone-columns-surface.html">Try this phone screen live (tap categories) ›</a></p></div><div class="ph"><h4>After Dark open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-columns-dark.png" data-w="412" aria-label="Open 2 · Two columns, phone, After Dark open full size"><img src="img/phone-columns-dark.png" alt="2 · Two columns, phone, After Dark open" loading="lazy" style="width:412px"></button></div>
+    
+    <p class="cap"><a href="phone-live.html?f=phone-columns-dark.html">Try this phone screen live (tap categories) ›</a></p></div></div>
+  <h3>PC panel</h3><button type="button" class="fig" data-src="img/pc-columns.png" data-w="1440" aria-label="Open 2 · Two columns, PC panel full size"><img src="img/pc-columns.png" alt="2 · Two columns, PC panel" loading="lazy" style="width:1440px"></button>
+  <p class="cap"><a class="open" href="pc-columns.html">Open the PC panel as its own page, at real size ›</a></p></section>
+<section id="cards"><h2>3 · Rethink: small cards</h2><p class="what">The rethink. Each category is a small card from this deck: its own top rail in the category colour, the corner brackets, the name on top, the line below in the card’s italic, laid out as a grid, so opening a chapter feels like looking through a boxed deck. A card you have not picked sits quieter, with a fainter rail. Gives up height: it is the tallest of the four on a phone, and the cards want more room than names do.</p>
+  <h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-cards-surface.png" data-w="412" aria-label="Open 3 · Rethink: small cards, phone, Beneath the Surface open full size"><img src="img/phone-cards-surface.png" alt="3 · Rethink: small cards, phone, Beneath the Surface open" loading="lazy" style="width:412px"></button><button type="button" class="fig" data-src="img/phone-cards-surface-end.png" data-w="412" aria-label="Open 3 · Rethink: small cards, phone, Beneath the Surface open, scrolled to the end of the chapter full size"><img src="img/phone-cards-surface-end.png" alt="3 · Rethink: small cards, phone, Beneath the Surface open, scrolled to the end of the chapter" loading="lazy" style="width:412px"></button></div>
+    <p class="cap">The second picture is the same sheet scrolled to the end of the chapter.</p>
+    <p class="cap"><a href="phone-live.html?f=phone-cards-surface.html">Try this phone screen live (tap categories) ›</a></p></div><div class="ph"><h4>After Dark open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-cards-dark.png" data-w="412" aria-label="Open 3 · Rethink: small cards, phone, After Dark open full size"><img src="img/phone-cards-dark.png" alt="3 · Rethink: small cards, phone, After Dark open" loading="lazy" style="width:412px"></button></div>
+    
+    <p class="cap"><a href="phone-live.html?f=phone-cards-dark.html">Try this phone screen live (tap categories) ›</a></p></div></div>
+  <h3>PC panel</h3><button type="button" class="fig" data-src="img/pc-cards.png" data-w="1440" aria-label="Open 3 · Rethink: small cards, PC panel full size"><img src="img/pc-cards.png" alt="3 · Rethink: small cards, PC panel" loading="lazy" style="width:1440px"></button>
+  <p class="cap"><a class="open" href="pc-cards.html">Open the PC panel as its own page, at real size ›</a></p></section>
+</main>
+<div id="viewer" role="dialog" aria-modal="true" aria-label="Picture viewer"><header><button type="button" class="back">‹ Back to the overview</button></header><img alt=""></div>
+<script>
+const viewer=document.getElementById('viewer'),big=viewer.querySelector('img');let lastY=0;
+const open=btn=>{lastY=scrollY;big.src=btn.dataset.src;big.alt=btn.querySelector('img').alt;big.style.width=btn.dataset.w+'px';viewer.classList.add('on');viewer.scrollTop=0;document.body.style.overflow='hidden';};
+const close=()=>{viewer.classList.remove('on');document.body.style.overflow='';scrollTo(0,lastY);};
+document.addEventListener('click',e=>{const b=e.target.closest('.fig');if(b)open(b);});
+viewer.querySelector('.back').addEventListener('click',close);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('on'))close();});
+</script></body></html>
