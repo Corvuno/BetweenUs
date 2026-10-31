@@ -395,7 +395,8 @@ while the panel is open.
   directions, with nothing under the panel on the way. (An earlier version animated a registered
   length on `html` and the card jumped; do not go back to it.) Instant under reduced motion.
 - **Layout**: head on one line (name, question, close at the right); presets stay at the top (sticky,
-  wrap to two or three lines, the "Who's here" caption inline); chapters scroll between; Shuffle and
+  wrap to two or three lines: Everything and Balanced on the first, the "Who's here" caption on its own
+  line below them, left-aligned (as on the tablet sheet, where it is centred), then the people presets); chapters scroll between; Shuffle and
   Cards on one line and Draw Cards as a full-width gold bar stay at the foot (sticky). Chapter rows
   48px, preset buttons 34px (desk-size controls). None and Open all stay at the Chapters heading
   (Open all reads "Close all" once every chapter is open, as on the phone).
