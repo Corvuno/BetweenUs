@@ -751,11 +751,15 @@ function renderHandSide(animate) {
   // Save's hint follows the device's local time of day.
   const sh = document.getElementById('saveHint');
   if (sh) { const hr = new Date().getHours(); sh.textContent = 'take ' + (hr >= 5 && hr < 12 ? 'this morning' : hr < 18 && hr >= 12 ? 'this afternoon' : hr >= 18 ? 'this evening' : 'tonight') + ' with you'; }
+  // Fullscreen's side classes also set its layout (the list sits higher than the mark), so on a turn
+  // they change with the face, edge-on, never before: else the mark jumps before the card turns.
   const ov = document.getElementById('partyOverlay');
-  if (ov) { ov.classList.add('is-hand-end'); ov.classList.toggle('is-intermezzo', !isList); ov.classList.toggle('is-hand-list', isList); }
+  const setOverlaySide = () => { if (ov) { ov.classList.add('is-hand-end'); ov.classList.toggle('is-intermezzo', !isList); ov.classList.toggle('is-hand-list', isList); } };
+  if (!animate) setOverlaySide();
   const el = document.getElementById('card');
   const swap = () => {
     if (token !== handSideToken || state.handSide !== side) return;
+    if (animate) setOverlaySide();
     paintHandSide();
     if (el) el.classList.remove('flipping');
   };
