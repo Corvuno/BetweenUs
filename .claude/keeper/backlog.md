@@ -1,6 +1,6 @@
 # Backlog
 
-_Updated 30 October 2026_
+_Updated 31 October 2026_
 
 The one queue of work. The Keeper keeps it in order; the owner can move anything.
 
@@ -192,6 +192,9 @@ _Nothing is being built right now._
 **Status note:** Kept open.
 
 ## Done (last 14 days)
+
+### Phone screen no longer jumps at the end of a hand (B), 2026-10-31
+**Story:** With the phone layout centred, the screen moved when a button row changed height: Change/Save coming in at the end of a hand with Save's hint still showing, or a hint going away after first use. Hints that have gone away now keep their space, so the screen stays put; a new automatic check guards it. **Source:** owner, 2026-10-31 ("if Save has its tooltip still active and Spotlight/Three/Twist don't, it will move"); commit 2672d33
 
 ### App centred top-to-bottom on tall phones (B), 2026-10-30
 **Story:** On a tall phone, and above all in the installed app (no address bar), everything hung at the top with an empty band under the buttons. It is now centred, like tablets and computers already were; short phones and landscape are unchanged. **Source:** owner, 2026-10-30 (screenshot, chose "centre" over "pin the buttons to the bottom"); commit ca74f21
