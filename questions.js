@@ -389,6 +389,20 @@ const NEWDECK_CARDS = [
   { level: "uslove", question: "When do you feel most like yourself with me?" },
   { level: "uslove", question: "When did you decide I was worth it?" },
 
+  // ─── USCOLLEAGUE ───
+  { level: "uscolleague", question: "Which day at work will we both never forget?" },
+  { level: "uscolleague", question: "What would you steal from the way I work?" },
+  { level: "uscolleague", question: "Which habit of mine at work makes you smile?" },
+  { level: "uscolleague", question: "What do you think I hold back at work?" },
+  { level: "uscolleague", question: "What would we do differently if we had to start this job over together?" },
+  { level: "uscolleague", question: "What do you think I'm afraid of at work?" },
+  { level: "uscolleague", question: "What does work look like from where you sit that I never see?" },
+  { level: "uscolleague", question: "What do we never talk about at work that we probably should?" },
+  { level: "uscolleague", question: "Name the disagreement we had that made us work better." },
+  { level: "uscolleague", question: "Tell about the time we were a great team." },
+  { level: "uscolleague", question: "What do we still have to figure out about working together?" },
+  { level: "uscolleague", question: "What do we do differently when it's just the two of us?" },
+
   // ─── USINTIMATE ───
   { level: "usintimate", question: "What do you think I want from you that I haven't asked for?" },
   { level: "usintimate", question: "Replay a moment between us — out loud." },

@@ -558,6 +558,25 @@ through · what you've learned from each other · time apart.
 **Guardrail (all Us):** every card is asked to the person across from you; none assumes children,
 living together or marriage.
 
+
+### Us: Colleagues
+**App line:** About working together, directly
+**About:** Your working relationship, asked straight to the colleague across from you, at the level
+of The And's Coworkers edition: what you've noticed about each other at work, how you work together,
+what you'd learn from each other, the person behind the role, and "we" cards about the two of you as
+a pair. Band 4. New category, added 2026-11-01 (owner).
+**Lines of thought:** first impressions at work, and what you got wrong · what you'd steal from how
+the other works · a day you'll never forget together · what the other is secretly great at · what
+drives the other · what the other is afraid of at work · something the other handled that you
+couldn't have · what the other holds back · a habit of theirs that makes you smile · what you'd say
+if you weren't colleagues · when you knew you could trust them · what they need from the team · the
+version of them outside work · how you split the work · the disagreement that made you better ·
+what you never talk about · what you still have to figure out together.
+**Where it stops:** work in general is Work's · a colleague who's become a close friend is Us:
+Friends' · what any two people see in each other is Between Us'.
+**Guardrail:** only about the two of you; no gossip about colleagues who aren't there; no pay or
+reviews. A manager may play too (owner: "they can join").
+
 ## NOTE — decks living in the app, not in this file
 Colbert Questionnaire · Priya Parker's questions · the 36 Questions to Fall in Love · Magical Questions (School of Life). These are separate sets held in the app.
 
@@ -761,6 +780,24 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.26 — round 8, part 2: new category Us: Colleagues
+
+- New category **Us: Colleagues** in the Between Us chapter: line "About working together, directly", colour periwinkle #9fb0d6 (owner picked from two mockup rounds), band 4. On in Coworkers and Everything, available in Balanced.
+- Its twelve cards, each picked by the owner in these exact words:
+  1. "Which day at work will we both never forget?"
+  2. "What would you steal from the way I work?"
+  3. "Which habit of mine at work makes you smile?"
+  4. "What do you think I hold back at work?"
+  5. "What would we do differently if we had to start this job over together?"
+  6. "What do you think I'm afraid of at work?"
+  7. "What does work look like from where you sit that I never see?"
+  8. "What do we never talk about at work that we probably should?"
+  9. "Name the disagreement we had that made us work better."
+  10. "Tell about the time we were a great team."
+  11. "What do we still have to figure out about working together?"
+  12. "What do we do differently when it's just the two of us?"
+- Writer brief added (WRITER BRIEFS).
 
 ## Patch v7.25 — category scope rework round 8, part 1: Between Us, Us: Friends, Us: Love
 

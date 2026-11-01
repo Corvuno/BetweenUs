@@ -436,6 +436,7 @@ async function run() {
       await page.locator('.mode-btn[data-mode="work"]').click(); await page.waitForTimeout(300);
       assert(!(await shown('deeper')) && !(await shown('afterdark')), 'Coworkers still shows Into the Deep or After Dark');
       assert((await shown('surface')) && (await shown('warmup')), 'Coworkers lost a chapter it can reach');
+      assert(await shown('aboutus'), 'Coworkers should show the Between Us chapter for Us: Colleagues');
       assert((await subtitle()) === 'Professional, mostly.', 'Coworkers subtitle missing');
       const allowedOff = await page.evaluate(() => PRESETS.work.available.filter(l => DECK_LEVELS.has(l) && !SAFE_BLOCKED_LEVELS.includes(l) && document.querySelector(`.toggle-btn[data-level="${l}"]`)));
       const vis = await visibleCats();
@@ -457,7 +458,7 @@ async function run() {
       assert((await foldAll.textContent()) === 'Open all', 'fold control should offer Open all');
       await foldAll.click(); await page.waitForTimeout(450);
       const opened = await folds();
-      assert(opened.length === 3 && opened.every(Boolean), `Open all left shown chapters shut: ${opened}`);
+      assert(opened.length === 4 && opened.every(Boolean), `Open all left shown chapters shut: ${opened}`);
       assert((await page.locator('.chapter-group[data-group="deeper"] .chapter-panel.open').count()) === 0, 'Open all opened a hidden chapter');
       assert((await foldAll.textContent()) === 'Close all', 'control should read Close all once everything is open');
       await foldAll.click(); await page.waitForTimeout(450);

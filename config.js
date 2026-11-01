@@ -106,7 +106,7 @@ const NL_DEFAULT        = window.NL_DEFAULT || false;
 // lists the After Dark categories that still make a preset Custom.
 const PRESETS = {
   open: {
-    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","usintimate","shadow","bare"],
+    on:        ["warm","quick","connect","deep","self","culture","life","values","wish","home","roots","past","unwind","body","mind","spirit","friends","date","attract","world","work","raw","grief","family","us","usfriend","uslove","uscolleague","usintimate","shadow","bare"],
     available: ["colbert","aron","magic","flesh","carnal","kinks","backup"],
     customisedBy: ["usintimate"],
     subtitle:  "Everything on the table"
@@ -123,7 +123,7 @@ const PRESETS = {
     // as available, not left out: unlisted categories are hidden entirely, and
     // a chapter with only some of its categories on shows "part" on load, so
     // a first click would complete it instead of clearing it.
-    available: ["warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup"],
+    available: ["uscolleague","warm","quick","past","roots","deep","raw","shadow","grief","usintimate","flesh","carnal","bare","kinks","colbert","aron","magic","backup"],
     customisedBy: ["usintimate"],
     subtitle:  "Just enough edge."
   },
@@ -135,7 +135,7 @@ const PRESETS = {
     subtitle:  "No history required."
   },
   work: {
-    on:        ["quick","warm","culture","life","home","work","unwind","world","mind","wish"],
+    on:        ["quick","warm","culture","life","home","work","unwind","world","mind","wish","uscolleague"],
     available: ["attract","friends","aron","magic"],
     subtitle:  "Professional, mostly."
   },

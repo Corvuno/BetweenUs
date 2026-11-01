@@ -124,6 +124,9 @@ const CATEGORIES = {
   uslove:   { label:"Us: Love",    color:"#d083a6", band:5, focus:1,
               desc:"About this relationship, directly",
               chapter:"aboutus", bucket:"usb" },
+  uscolleague: { label:"Us: Colleagues", color:"#9fb0d6", band:4, focus:1,
+              desc:"About working together, directly",
+              chapter:"aboutus", bucket:"usb" },
 
   usintimate: { label:"Us: Intimate ✦", color:"#a13039", band:4, focus:1, gate:true,
                 desc:"Ask each other what you'd never ask anyone else ✦",

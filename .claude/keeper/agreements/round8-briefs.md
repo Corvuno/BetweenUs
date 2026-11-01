@@ -43,3 +43,5 @@
 - Us: Colleagues 7 → "What does work look like from where you sit that I never see?"
 All twelve Us: Colleagues cards decided 2026-10-31. Colour next (shown first).
 - Colour round 1 (wheat, dusty lilac, ash rose): owner wants it between the Us colours and Work, more blueish. Round 2: periwinkle #9fb0d6, dusty blue #8fa8c2, blue lilac #a99cc8 (+ Work blue for comparison).
+- Colour → A, periwinkle #9fb0d6 (owner, 2026-11-01).
+**BUILT 2026-11-01** — Us: Colleagues: category, 12 cards, brief, on in Coworkers and Everything, available in Balanced; Coworkers check updated to four chapters; 69/69 checks.
