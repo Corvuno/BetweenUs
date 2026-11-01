@@ -94,9 +94,30 @@ function syncCategoryButtons() {
 }
 
 let _prevSafeModeHS = null;   // remembers your After Dark state across hard-safe modes
+
+// The After Dark categories the player has switched on, kept across preset
+// changes. Only categories the outgoing preset could show are updated from the
+// selection; the ones it hid keep their remembered value, so they come back
+// when a preset that offers them returns.
+const _afterDarkOn = new Set();
+const reachesLevel = (preset, l) => preset.on.includes(l) || preset.available.includes(l);
+function rememberAfterDark() {
+  const outgoing = PRESETS[_lastPreset];
+  if (!outgoing || state.safeMode) return;
+  SAFE_BLOCKED_LEVELS.filter(l => reachesLevel(outgoing, l))
+    .forEach(l => state.activeToggles.has(l) ? _afterDarkOn.add(l) : _afterDarkOn.delete(l));
+}
+
+// The remembered After Dark categories the preset offers, while After Dark is open.
+function carriedAfterDark(preset) {
+  if (state.safeMode || MASTER_SAFE || WORKPLACE_MODE) return [];
+  return [..._afterDarkOn].filter(l => DECK_LEVELS.has(l) && !OPT_IN_ONLY.includes(l) && reachesLevel(preset, l));
+}
+
 function applyPreset(mode) {
   const preset = PRESETS[mode];
   if (!preset) return;
+  rememberAfterDark();
   state.activePreset = _lastPreset = mode;
   const isFixedSeq = FIXED_SEQ_PRESETS.includes(mode);
   document.body.classList.toggle('fixed-seq-mode', isFixedSeq);
@@ -139,6 +160,7 @@ function applyPreset(mode) {
   }
   showSubtitle(preset);
   state.activeToggles = presetSelection(preset);
+  carriedAfterDark(preset).forEach(l => state.activeToggles.add(l));
 
   syncCategoryButtons();
 

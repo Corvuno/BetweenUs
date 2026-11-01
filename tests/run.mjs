@@ -541,6 +541,45 @@ async function run() {
     }
   });
 
+  // After Dark categories you switched on stay on when you pick another preset.
+  await check('After Dark categories you had on carry over to the next preset; the ones you left off stay off', async () => {
+    if (await page.evaluate(() => window.SPICE_MODE || MASTER_SAFE || WORKPLACE_MODE)) {
+      console.log('  \x1b[33m·\x1b[0m (After Dark is not player-controlled in this profile — skipped, counted as pass)');
+      return;
+    }
+    const AD = ['usintimate', 'flesh', 'carnal', 'bare', 'kinks'];
+    const adOn = () => page.evaluate(levels => levels.filter(l => state.activeToggles.has(l)), AD);
+    const pick = async mode => { await page.locator(`.mode-btn[data-mode="${mode}"]`).click(); await page.waitForTimeout(300); };
+    const same = (a, b) => JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+    try {
+      await openCategorySheet();
+      await pick('balanced'); await pick('partner');
+      assert((await adOn()).length === 0, 'opening a preset switched an After Dark category on by itself');
+      await page.locator('.chapter[data-chapter="afterdark"] .ch-hit').click({ force: true });
+      await page.waitForTimeout(300);
+      assert(same(await adOn(), AD), 'the After Dark chapter did not switch all five on in Partner');
+      await pick('latenight');
+      assert(same(await adOn(), AD), `Late Night lost After Dark categories: ${await adOn()}`);
+      // only Flesh on, then Dating (which offers Flesh, Carnal and Bare)
+      await pick('partner');
+      await page.evaluate(levels => { levels.forEach(l => state.activeToggles.delete(l)); state.activeToggles.add('flesh'); }, AD);
+      await pick('dating');
+      assert(same(await adOn(), ['flesh']), `Dating should keep only Flesh, got: ${await adOn()}`);
+      // New people hides After Dark; coming back to Partner restores what was on
+      await pick('newpeople');
+      assert((await adOn()).length === 0, 'New people kept an After Dark category on');
+      await pick('partner');
+      assert(same(await adOn(), ['flesh']), `Partner after New people should bring Flesh back, got: ${await adOn()}`);
+      // nothing on: a preset switch leaves them all off
+      await page.evaluate(levels => { levels.forEach(l => state.activeToggles.delete(l)); applyToggleUI(); }, AD);
+      await pick('latenight');
+      assert((await adOn()).length === 0, `Late Night switched After Dark on although none was: ${await adOn()}`);
+    } finally {
+      await pick('balanced');
+      await closeCategorySheet();
+    }
+  });
+
   // ── J. Fullscreen party tap zones ────────────────────────────────────────
   await check('fullscreen party mode: enter, tap zones move the deck, exit', async () => {
     await closeCategorySheet();
