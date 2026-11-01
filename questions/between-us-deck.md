@@ -636,6 +636,13 @@ The subject matter is not what makes a card recognisable — every deck asks abo
     about…", "Quote…", "Name…", "Point to…", an open "…" sentence, or a command. Every proposal
     slot offers at least one alternative that isn't a question, and a category never loses its
     non-question cards to a rework (owner, 2026-10-27).
+    The open sentence comes first among these (owner, 2026-11-01): a card can simply start with
+    "The…" or "A…" and trail off — *"The time you went gloriously too far…"* works without any
+    command. Mix those, the commands ("Tell about…", "Name…") and other devices, so no one shape
+    takes over.
+14. **Write for the band.** Every category has a depth band (1–7, in `categories.js`). A new card
+    sits within one step of it. Read the category's About and its band before writing, and check
+    each alternative against it before proposing (owner, 2026-11-01).
 
 ## Lenses
 
