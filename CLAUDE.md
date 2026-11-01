@@ -370,7 +370,7 @@ in a sentence or a paragraph turn into unreadable text for them. So:
 
 ## Where the cards live
 
-`questions.js` is the only copy of the card text — 35 categories, 12 cards each. The deck
+`questions.js` is the only copy of the card text — 34 categories, 12 cards each. The deck
 file no longer repeats them (retired 2026-10-06; the two had been verified identical).
 The categories and chapters (CATEGORIES, CHAPTERS_META, BUCKET_META and the lookups derived from
 them) live in `categories.js`, not `config.js` (moved 2026-10-30).

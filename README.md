@@ -117,7 +117,7 @@ The rules that follow from that:
 - **Don't hand the player the category** — listing the kind of answer you expect narrows
   the answer to that list.
 - **Every card is answerable by someone who has no story to tell.**
-- **Twelve cards per category, always** — 35 categories, 420 cards. Cards are swapped, not
+- **Twelve cards per category, always** — 34 categories, 408 cards. Cards are swapped, not
   added; a new category comes in whole, with its twelve.
 
 The full version, with the lens list used to audit a category, is in
