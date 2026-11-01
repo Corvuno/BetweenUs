@@ -405,24 +405,29 @@ function _peakInMiddle(cards) {
 /* How many places hold the same category as the card before them. */
 const _repeats = hand => hand.reduce((n, c, i) => n + (i > 0 && c.level === hand[i - 1].level ? 1 : 0), 0);
 
-/* Never the same category twice in a row where the shape allows it: a repeat
-   is swapped away only with a card of the same depth, so the arc keeps its
-   shape. Arc is the base (owner, 2026-10-30); this rule only works inside it. */
+/* Never the same category twice in a row where the shape allows it. The
+   shape stays as built (which depth sits where); each place is then refilled
+   with a card of its own depth, taking the category with the most cards left
+   that differs from the card before. (Swapping repeats away one at a time got
+   stuck when the deep stretch came from only three categories.) Arc is the
+   base (owner, 2026-10-30): the depth order never changes. */
 function _breakRepeats(hand) {
-  for (let i = 1; i < hand.length; i++) {
-    if (hand[i].level !== hand[i - 1].level) continue;
-    const now = _repeats(hand);
-    const helps = j => {
-      const a = hand.slice();
-      [a[i], a[j]] = [a[j], a[i]];
-      return _repeats(a) < now;
-    };
-    const others = hand.map((_, j) => j).filter(j => j !== i);
-    const sameDepth = j => levelDepth(hand[j].level) === levelDepth(hand[i].level);
-    const j = others.find(k => sameDepth(k) && helps(k));   // Arc is the base: never at the cost of the shape
-    if (j !== undefined) [hand[i], hand[j]] = [hand[j], hand[i]];
-  }
-  return hand;
+  const left = new Map();
+  hand.forEach(c => {
+    const depth = levelDepth(c.level);
+    left.set(depth, [...(left.get(depth) ?? []), c]);
+  });
+  const out = [];
+  hand.forEach(slot => {
+    const pool = left.get(levelDepth(slot.level));
+    const prev = out[out.length - 1]?.level;
+    const count = level => pool.filter(c => c.level === level).length;
+    const others = pool.filter(c => c.level !== prev);
+    const pick = others.length ? others.reduce((best, c) => (count(c.level) > count(best.level) ? c : best)) : pool[0];
+    pool.splice(pool.indexOf(pick), 1);
+    out.push(pick);
+  });
+  return out;
 }
 
 /* The long-Arc hand, already in playing order, followed by the unseen cards
