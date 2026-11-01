@@ -788,6 +788,10 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.27 — depth bands: Body, Romance and Family 5 → 4 (global check, #67)
+
+- Their cards had become lighter and more concrete in the rounds; the owner moved the bands instead of the cards. Family 7 sitting above the new band is accepted.
+
 ## Patch v7.26 — round 8, part 2: new category Us: Colleagues
 
 - New category **Us: Colleagues** in the Between Us chapter: line "About working together, directly", colour periwinkle #9fb0d6 (owner picked from two mockup rounds), band 4. On in Coworkers and Everything, available in Balanced.

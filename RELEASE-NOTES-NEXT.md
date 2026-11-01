@@ -14,3 +14,4 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - A new category, Us: Colleagues, for asking a colleague straight about working together. It is on in Coworkers.
+- Body, Romance and Family now come a little earlier in an evening's arc, closer to how deep their questions really are.
