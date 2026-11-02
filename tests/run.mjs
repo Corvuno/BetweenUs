@@ -2021,6 +2021,40 @@ async function run() {
     assert(lastLabel === 'End of hand', `the button on the last card reads "${lastLabel}"`);
   });
 
+  await check('Custom with several picks: the start card diamond and rule blend into the next colour over the dim half of a breath instead of stepping', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    try {
+      await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await p.waitForSelector('#card', { state: 'visible' });
+      await p.waitForTimeout(500);
+      await p.evaluate(() => { document.getElementById('deselectAll').click(); [...document.querySelectorAll('.toggle-btn')].slice(0, 3).forEach(b => b.click()); });
+      await p.waitForTimeout(300);
+      const supported = await p.evaluate(() => typeof CSS !== 'undefined' && typeof CSS.registerProperty === 'function');
+      if (!supported) return;   // without registration the colour steps, as before
+      // wait until the cycle runs on both the diamond and the rule, then read their keyframes
+      await p.waitForFunction(() => _startCycle?.anims.length === 2 && _startCycle.anims.every(a => a.startTime !== null), null, { timeout: 4000 });
+      const cycle = await p.evaluate(() => _startCycle.anims.map(a => ({
+        target: a.effect.target.className.baseVal ?? a.effect.target.className,
+        easings: a.effect.getKeyframes().map(k => k.easing),
+      })));
+      assert(cycle.map(c => c.target).join() === 'lg-dm,cb-rule', `cycle targets: ${JSON.stringify(cycle)}`);
+      assert(cycle.every(c => !c.easings.includes('steps(1, end)')), `the colour still steps: ${JSON.stringify(cycle)}`);
+      // sample the diamond's fill across a whole cycle: it changes by small amounts every frame, never one jump
+      const fills = await p.evaluate(() => new Promise(res => {
+        const dm = document.querySelector('#card .cb-mark:not(.cb-fermata) .lg-dm');
+        const out = []; const t0 = performance.now();
+        (function frame() {
+          out.push(getComputedStyle(dm).fill.match(/\d+/g).map(Number));
+          performance.now() - t0 < 10000 ? requestAnimationFrame(frame) : res(out);
+        })();
+      }));
+      const jumps = fills.slice(1).map((c, i) => Math.max(...c.map((v, k) => Math.abs(v - fills[i][k]))));
+      assert(jumps.filter(j => j > 0).length > 20, 'the diamond colour never changed over ten seconds');
+      assert(Math.max(...jumps) < 40, `the diamond colour jumped by ${Math.max(...jumps)} in one frame`);
+    } finally { await ctx.close(); }
+  });
+
   await check('a restored session shows its own subtitle: Custom "Off script.", a preset its own line', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     const p = await ctx.newPage();

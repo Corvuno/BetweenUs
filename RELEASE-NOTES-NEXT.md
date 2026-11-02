@@ -17,4 +17,4 @@ Rules:
 - Sixteen questions are reworded or new, most of them in Roots, which now goes deeper.
 - Body, Romance and Family now come a little earlier in an evening's arc, closer to how deep their questions really are.
 - In The Deck you can now see what each category is about: always on a computer, and by holding a category on a phone.
-- Smaller fixes throughout: After Dark categories you switched on stay on when you pick another preset; Spotlight turns with your phone again on newer Chrome versions.
+- Smaller fixes throughout: After Dark categories you switched on stay on when you pick another preset; Spotlight turns with your phone again on newer Chrome versions; in Custom, the start card's diamond now drifts into its next colour instead of jumping.
