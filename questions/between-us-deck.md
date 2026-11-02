@@ -791,6 +791,29 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.29 — global check, part 2: Self 11, Romance 12, Mind 12, Kink 7, World 11 (#67)
+
+- **Self 11**
+  - Old: "If you couldn't mention what you do all day, how would you introduce yourself?"
+  - New: "Losing the part of your image you need the most would..."
+  - Why: Below Self's band; owner's direction: what you blow up into your identity. Owner's own wording.
+- **Romance 12**
+  - Old: "What's the most romantic thing you've attempted that failed completely?"
+  - New: "The one that got away, and whether they really did..."
+  - Why: Below Romance's new band 4; owner asked for a fully different direction.
+- **Mind 12**
+  - Old: "What are you like at three in the morning?"
+  - New: "The version of you that shows up at three in the morning..."
+  - Why: Mind had no card that isn't a question (house style 13).
+- **Kink 7**
+  - Old: "What kind of words instantly turn you on?"
+  - New: "Quote the words that turned you on instantly."
+  - Why: Kink had no card that isn't a question; owner: invite the player to quote them, in the past.
+- **World 11**
+  - Old: "What fact about the universe or nature still blows your mind?"
+  - New: "The fact about nature that still blows your mind..."
+  - Why: World had no card that isn't a question; owner narrowed it to nature.
+
 ## Patch v7.28 — global check, part 1: Family, Roots, Us: Friends, Wish (#67)
 
 - **Family 1**

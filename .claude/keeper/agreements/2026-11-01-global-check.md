@@ -32,3 +32,4 @@ Depth (each card within one step of its band), Keeper's estimates:
   "Mind 3 alt 2" (read as the three-in-the-morning card, Mind 12 — to confirm).
 - 2026-11-02: Romance 12 → "The one that got away, and whether they really did..."; Mind 12 → "The version of you that shows up at three in the morning..." (confirmed).
   Body cards are concept cards (how the body works), not story cards — new options that way. Kink 7: owner's direction "The words that turn you on instantly..." (quote them; dirty talk). Self 11: owner asked whether I understand where the question comes from.
+- 2026-11-02 built: Self 11 "Losing the part of your image you need the most would..." (owner wording), Romance 12, Mind 12, Kink 7 "Quote the words that turned you on instantly.", World 11 "The fact about nature that still blows your mind...". Body 3 and 5: owner wants story cards (the last options were too conceptual).

@@ -147,7 +147,7 @@ const NEWDECK_CARDS = [
   { level: "self", question: "What do you keep expecting the mirror to show you?" },
   { level: "self", question: "Which small battle with yourself have you finally won?" },
   { level: "self", question: "What's a part of your character you hope never changes, even when it makes life harder?" },
-  { level: "self", question: "If you couldn't mention what you do all day, how would you introduce yourself?" },
+  { level: "self", question: "Losing the part of your image you need the most would..." },
   { level: "self", question: "Which ordinary thing scares you more than it should?" },
 
   // ─── BODY ───
@@ -176,7 +176,7 @@ const NEWDECK_CARDS = [
   { level: "mind", question: "What's the earliest thing you remember — and is it actually yours?" },
   { level: "mind", question: "What small decision takes you far longer than it should?" },
   { level: "mind", question: "What are you bad at learning?" },
-  { level: "mind", question: "What are you like at three in the morning?" },
+  { level: "mind", question: "The version of you that shows up at three in the morning..." },
 
   // ─── SPIRIT ───
   { level: "spirit", question: "What were you taught to believe — and what's left of it?" },
@@ -233,7 +233,7 @@ const NEWDECK_CARDS = [
   { level: "date", question: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?" },
   { level: "date", question: "Which love story — your own or borrowed — do you retell most gladly?" },
   { level: "date", question: "What are you like single — and do you like that version?" },
-  { level: "date", question: "What's the most romantic thing you've attempted that failed completely?" },
+  { level: "date", question: "The one that got away, and whether they really did..." },
 
   // ─── ATTRACT ───
   { level: "attract", question: "Tell about the moment you realised someone was flirting with you — how long did it take you to notice?" },
@@ -274,7 +274,7 @@ const NEWDECK_CARDS = [
   { level: "world", question: "Where in the world did you feel most like a foreigner — and not in the way you expected?" },
   { level: "world", question: "Who's the richest person you've ever actually met — and what surprised you?" },
   { level: "world", question: "Is progress real?" },
-  { level: "world", question: "What fact about the universe or nature still blows your mind?" },
+  { level: "world", question: "The fact about nature that still blows your mind..." },
   { level: "world", question: "Which common belief about how the world works do you think is simply wrong?" },
 
   // ─── WORK ───
@@ -494,7 +494,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "Who in your normal life knows about the kinky side of you — do they understand, and who will never find out?" },
   { level: "kinks", question: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
-  { level: "kinks", question: "What kind of words instantly turn you on?" },
+  { level: "kinks", question: "Quote the words that turned you on instantly." },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },
   { level: "kinks", question: "Which piece of clothing in your wardrobe exists for one reason only?" },
   { level: "kinks", question: "When did \"yes\" turn into \"actually, no\" while it was already happening?" },
