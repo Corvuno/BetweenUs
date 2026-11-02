@@ -21,3 +21,12 @@ Depth (each card within one step of its band), Keeper's estimates:
 - Single outliers stay, except Self 11, which changes — towards what you do to keep standing (car, clothes, words, job).
 - Writer note: check the band (house style 14).
 - "Us" cards and rule 12: owner asked what harm "us" does and what question 5 meant.
+
+## Owner, 2026-11-02
+- "Us" cards stay. Rule 12 softened: "me" only where it works better (built).
+- Built: Family 1, 5; Roots 5, 7, 9, 10, 12 (+2 bench); Us: Friends 6; Wish 5.
+- Connect 12 stays as it is.
+- Open: Self 11 (what you give more importance than it deserves — the car, the clothes), Body 3/4
+  (my deepening felt tacked on), Body 5 (new), Romance 12 (fully different direction),
+  Kink 7 (the kind of words, not the exact words), World 11 (alt 1 made about nature — wording to show),
+  "Mind 3 alt 2" (read as the three-in-the-morning card, Mind 12 — to confirm).

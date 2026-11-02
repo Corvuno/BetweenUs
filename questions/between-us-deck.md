@@ -42,6 +42,8 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Quick** — "What do you always forget to buy?" (alternative for Quick 11; owner asked to bench, round 7 2026-10-30)
 - **Us: Friends** — "Describe me to someone who's never met me." (alternative for Us: Friends 10; owner asked to bench, round 8 2026-10-31)
 - **Us: Friends** — "Name the moment I surprised you most." (alternative for Us: Friends 10; owner asked to bench, round 8 2026-10-31)
+- **Roots** — "What did school teach you about your place that you're still unlearning?" (alternative for Roots 7; owner asked to bench, global check 2026-11-02)
+- **Roots** — "What did your grandparents live through that your family still carries?" (alternative for Roots 12; owner asked to bench, global check 2026-11-02)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -627,11 +629,13 @@ The subject matter is not what makes a card recognisable — every deck asks abo
     register. Unwind isn't just relaxation, it's holidays, free time, hobbies, fun. Name
     the category's actual outer edge before writing toward it, not the first association
     the category name brings to mind.
-12. **No "me."** Nobody hands the player a card and asks it aloud — there is no fixed
-    narrator to be the "me" in the sentence, and "me" could stand for one person, a
-    group, or two people depending on the table. *"Tell about the moment..."* is house
-    style; *"Tell me about the moment..."* invents an asker that doesn't exist. The
-    question is pulled from the player, not given to them by a "me."
+12. **"Me" only where it works better.** There is no fixed narrator, so by default a card
+    is pulled from the player without a "me": *"Tell about the moment..."*. But a "me" that
+    isn't a real person is fine where the card works better with it (owner, 2026-11-02: "some
+    questions work better with me, like undressing"). If a card can lose its "me" without
+    becoming a different question, it loses it. "Us" ("take us there") speaks to the table
+    and is fine (owner: "then we leave them"). The Us categories ask the person across from
+    you, so their "me" is always right.
 13. **Vary how a card asks.** About four in five cards start with a question word. Mix in "Tell
     about…", "Quote…", "Name…", "Point to…", an open "…" sentence, or a command. Every proposal
     slot offers at least one alternative that isn't a question, and a category never loses its
@@ -787,6 +791,47 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.28 — global check, part 1: Family, Roots, Us: Friends, Wish (#67)
+
+- **Family 1**
+  - Old: "What happens at every family get-together, without fail?"
+  - New: "At every family get-together, you become..."
+  - Why: Too light for Family's new band 4 (global check).
+- **Family 5**
+  - Old: "What does your family argue about that doesn't matter at all?"
+  - New: "The silly argument your family keeps having, and what's underneath it..."
+  - Why: Too light for band 4 (global check).
+- **Roots 5**
+  - Old: "Where did your family go on holiday — and what always went wrong?"
+  - New: "What did family holidays show you about your parents that home didn't?"
+  - Why: Roots made deeper: "a deep version of Past" (owner, global check).
+- **Roots 7**
+  - Old: "Who from school could still make you feel like a kid again if you ran into them today?"
+  - New: "Who from school still decides, a little, how you feel about yourself?"
+  - Why: Roots made deeper. One alternative benched on the owner's word.
+- **Roots 9**
+  - Old: "What did you play with until it fell apart?"
+  - New: "What comforted you as a kid, and what do you reach for now instead?"
+  - Why: Roots made deeper.
+- **Roots 10**
+  - Old: "What's the oldest thing you still own from your childhood?"
+  - New: "What from your childhood can't you throw away, and why not?"
+  - Why: Roots made deeper, same subject.
+- **Roots 12**
+  - Old: "Which of your grandparents' lives would make a good film?"
+  - New: "Which of your grandparents' choices is still shaping your life?"
+  - Why: Roots made deeper. One alternative benched on the owner's word.
+- **Us: Friends 6**
+  - Old: "What's your favourite story about us that you tell other people?"
+  - New: "The story about us you love telling other people..."
+  - Why: Us: Friends had no card that isn't a question (house style 13).
+- **Wish 5**
+  - Old: "What's the oddest thing on your someday list?"
+  - New: "Something on your someday list nobody would guess..."
+  - Why: Wish had no card that isn't a question (house style 13).
+- House style 12 softened: "me" only where it works better; "us" is fine.
+- Bench: two Roots alternatives, on the owner's word.
 
 ## Patch v7.27 — depth bands: Body, Romance and Family 5 → 4 (global check, #67)
 
