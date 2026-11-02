@@ -2213,6 +2213,40 @@ async function run() {
     }
   });
 
+  await check('a chapter that is open and then hidden by a preset eases shut (and back) instead of snapping; a hold released off the button does not swallow the next key press', async () => {
+    try {
+      await openCategorySheet();
+      await page.locator('.mode-btn[data-mode="balanced"]').click(); await page.waitForTimeout(500);
+      const deeper = '.chapter-group[data-group="deeper"]';
+      if (!(await page.locator(`${deeper} .chapter-panel.open`).count())) { await page.locator(`${deeper} .ch-fold`).click(); await page.waitForTimeout(500); }
+      const heights = await page.evaluate(async () => {
+        const g = document.querySelector('.chapter-group[data-group="deeper"]'), out = [];
+        document.querySelector('.mode-btn[data-mode="work"]').click();
+        for (let i = 0; i < 5; i++) { out.push(Math.round(g.getBoundingClientRect().height)); await new Promise(r => setTimeout(r, 30)); }
+        return out;
+      });
+      assert(heights[0] > 0 && heights.some(h => h > 0 && h < heights[0]), `an open chapter snapped shut instead of easing: ${heights}`);
+      await page.waitForTimeout(500);
+      await page.locator('.mode-btn[data-mode="balanced"]').click(); await page.waitForTimeout(700);
+      assert((await page.locator(deeper).evaluate(g => g.getBoundingClientRect().height)) > 60, 'the chapter did not come back open');
+      // a hold that ends away from its button leaves no click behind: the next key press must still pick
+      const firstCat = '.chapter-panel[data-chapter="surface"] .toggle-btn';
+      if (!(await page.locator('.chapter-group[data-group="surface"] .chapter-panel.open').count())) { await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(500); }
+      const box = await page.locator(firstCat).first().boundingBox();
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.mouse.down(); await page.waitForTimeout(750);
+      await page.mouse.move(box.x + box.width / 2, box.y - 400); await page.mouse.up();
+      await page.waitForTimeout(300);
+      const level = await page.locator(firstCat).first().getAttribute('data-level');
+      const was = await page.evaluate(l => state.activeToggles.has(l), level);
+      await page.locator(firstCat).first().focus(); await page.keyboard.press('Enter'); await page.waitForTimeout(200);
+      assert((await page.evaluate(l => state.activeToggles.has(l), level)) !== was, 'the key press after a hold released elsewhere was swallowed');
+      if (await linesOn()) await holdOn(firstCat, 750);
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
   await check('computer panel: every open chapter shows its categories in two columns with their lines, no tooltip, no hint; a hold still picks', async () => {
     const wide = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const pc = await wide.newPage();

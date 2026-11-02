@@ -297,7 +297,13 @@ chaptersEl.addEventListener('pointerdown', e => {
     setSheetLines(!linesShown());
   }, HOLD_MS);
 });
-['pointerup', 'pointercancel'].forEach(type => document.addEventListener(type, cancelHold));
+// The release of a fired hold is followed by a click only if it ends on the button: forget the hold shortly after,
+// so a click that never comes cannot swallow a later keyboard Enter or Space.
+const HOLD_CLICK_WINDOW_MS = 100;
+['pointerup', 'pointercancel'].forEach(type => document.addEventListener(type, () => {
+  cancelHold();
+  setTimeout(() => { holdFired = false; }, HOLD_CLICK_WINDOW_MS);
+}));
 document.addEventListener('pointermove', e => {
   if (holdButton && Math.hypot(e.clientX - holdStart.x, e.clientY - holdStart.y) > 10) cancelHold();   // a scroll, not a hold
 });

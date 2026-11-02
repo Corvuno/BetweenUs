@@ -1103,6 +1103,24 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     });
   }
 
+  /* An open chapter has no height cap (max-height:none), which cannot ease to or from the hidden 0: pin its
+     real height for the move so it slides shut / open like a closed one does. */
+  function setChapterHidden(group, hidden){
+    if (!group || group.classList.contains('ch-hidden') === hidden) return;
+    if (!group.classList.contains('open')) { group.classList.toggle('ch-hidden', hidden); return; }
+    if (hidden) {
+      group.style.maxHeight = `${group.offsetHeight}px`;
+      group.getBoundingClientRect();   // settle the pinned height, so the move to 0 starts from it
+      group.style.maxHeight = '';
+      group.classList.add('ch-hidden');
+      return;
+    }
+    group.classList.remove('ch-hidden');
+    group.style.maxHeight = '0px';
+    group.getBoundingClientRect();
+    group.style.maxHeight = `${group.scrollHeight}px`;
+    group.addEventListener('transitionend', () => { group.style.maxHeight = ''; }, { once: true });
+  }
   function syncIntentUI(){
     document.querySelectorAll('.chapter').forEach(btn => {
       const visible = visibleLevels(btn.dataset.chapter);
@@ -1114,7 +1132,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
          follows (bkt-hidden), applied one level up. Applies to any chapter
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. */
-      btn.closest('.chapter-group')?.classList.toggle('ch-hidden', visible.length === 0);
+      setChapterHidden(btn.closest('.chapter-group'), visible.length === 0);
       /* "n / total": how many of this chapter's categories are on, of those reachable here */
       const ct = btn.querySelector('.ch-ct');
       if (ct) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
