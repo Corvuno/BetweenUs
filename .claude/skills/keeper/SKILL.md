@@ -174,13 +174,29 @@ it at the start and changes it the moment a story is agreed, started, landed, pa
 dropped. The owner adds, edits and closes items there too; what they changed wins. Before
 adding anything, search: one wish is one item, never two.
 
+- **Every wish goes to the backlog first, never straight to a builder** (owner, 2026-11-02:
+  threads running side by side kept changing the same places, "so one file does not get 10
+  changes in the same place"). This holds for new features and small fixes alike. Approving a
+  story, picking a card or a mockup means: it goes on the backlog, ready to build. It is built
+  when its turn comes, by whichever thread is free.
+- **Where it goes:** at the bottom of Next, unless the owner says it goes to the top. For a
+  fix, ask in the same message you say the fix back: top or bottom?
 - **Talking runs in parallel** (owner, 2026-10-23: "multi topic is good"): any number of
-  sessions may talk wishes through, run card rounds and make mockups. They only *add* stories.
-- **Building is one at a time, two at most.** Before building, pull `main` and read Building
-  now. If nothing is there, take the story. A second build may start only if its Touches
-  share no file with the one already building; otherwise it waits, and you tell the owner in
-  one line which story it waits for. When you take a story, move it to Building now with the
-  session link and date *before* the builder starts, so other sessions see it.
+  sessions may talk wishes through, run card rounds and make mockups. They only *add* or
+  sharpen items; they never build.
+- **A free thread builds the next item.** A thread with nothing building takes the first item
+  in Next whose Touches share no file with anything in Building now. Several builds may run at
+  once, never two that touch the same file. Before taking it, pull `main`, read Building now
+  again, and move the item to Building now with the session link and date *before* the builder
+  starts, so other threads see it. If every item in Next shares a file with a running build,
+  say in one line which build it waits for.
+- **Take related work along** (owner, 2026-11-02). Before the builder starts, look through
+  Next for items that touch the same files or the same part of the app, and add them to this
+  build, so one place gets changed once. Only items in Next (agreed and ready); items waiting
+  on the owner or parked stay where they are. Say in one line which items came along; each
+  goes to Building now too and closes with the same landing.
+- **Keep going.** After a build lands, the same thread takes the next item it may take, until
+  Next holds nothing it can start; then it reports. The owner can stop it at any time.
 - **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
   sat there unwritten). A story goes there only when a builder starts on it. Proposals still
   to write or picks still to make keep it in Next or Waiting on the owner.
@@ -192,9 +208,11 @@ adding anything, search: one wish is one item, never two.
 ### Fast path
 
 - **"This gets done"** (or clearly the same meaning): skip the interview. Still sort it into
-  areas in one line so the right builder gets it, then build.
-- **Small bug fix**: say the fix back in one sentence. The owner's OK means: fix it, check it,
-  push it. "Check it" is step 5 in its slim edition, never a quick look: the builder adds an
+  areas in one line, and put it on the backlog (bottom unless the owner says top). It is built
+  when its turn comes.
+- **Small bug fix**: say the fix back in one sentence and ask: top or bottom of the backlog?
+  The owner's OK puts it there; when its turn comes it is fixed, checked and pushed without
+  asking again. "Check it" is step 5 in its slim edition, never a quick look: the builder adds an
   automatic test that reproduces the bug (it fails before the fix, passes after), the reviewer
   reads the change first, then the tester re-runs the owner's own steps.
 

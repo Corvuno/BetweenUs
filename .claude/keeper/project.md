@@ -174,8 +174,9 @@ Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue
   SessionStart hook): `Backlog: #12` in any commit for issue 12 (a line starting with `#` is a comment and doesn't count); `Fixes #12` in the commit that finishes it,
   which closes the issue by itself when it reaches `main`. A commit that fits no item says
   `No issue: <why>`. Never get round the lock with `--no-verify`.
-- **Order of Next**: the Keeper picks by the vision and names its pick in one line; the owner can
-  say otherwise.
+- **Order of Next** (owner, 2026-11-02): oldest first, by issue number, so a new item lands at
+  the bottom. An item the owner puts at the top gets the label `Top`; `Top` items come first,
+  oldest `Top` first. Nothing else reorders Next.
 - **History.** `.claude/keeper/backlog.md` holds everything up to 2026-10-31 and is no longer
   updated. The old backlog page (https://claude.ai/artifact/67V3Fw68avj2944kjZ71zS) shows that
   last state with a note pointing here; don't republish it.

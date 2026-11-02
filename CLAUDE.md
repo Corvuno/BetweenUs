@@ -40,9 +40,13 @@ Keeper's rule above: what the owner wants or meant is asked; how to build it is 
   `main` and push `main` yourself, the same session, without being asked
   again — that's what "land it on `main` yourself" above means in practice.
 - Once a change is actually decided — the owner approved a specific card, gave a
-  correction to fix, or otherwise made the call — make it, commit it, and push it.
-  Don't stop to confirm first; that's a separate failure mode from editing without
-  permission in the first place, and the owner has said explicitly not to do it.
+  correction to fix, or otherwise made the call — it goes on the backlog (bottom, unless the
+  owner says top; for a fix, ask top or bottom), and when its turn comes it gets made,
+  committed and pushed. Don't stop to confirm again then; the owner has said explicitly not to.
+- **One build per file at a time** (owner, 2026-11-02). Nothing is built straight from a chat:
+  a thread builds only an item it took from Next, takes related Next items along so each file
+  is changed once, and never builds anything that shares a file with an item in Building now.
+  Rules: `.claude/skills/keeper/SKILL.md`, "The backlog, and one build at a time".
 
 ## Classic and first are frozen legacy versions
 
