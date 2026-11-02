@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Category lines, round 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&family=Federo&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--surface:#161310;--cream:#f0e8d8;--gold:#c9a84c;--muted-l:#9c8f7e;--border:rgba(201,168,76,.22);--dim:rgba(201,168,76,.12);--celadon:#A9C7B6;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:1.5;padding:28px 18px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.7rem 'Jost',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+h2{font:300 1.15rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:44px 0 6px}
+h3{font:300 .85rem 'Jost',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-l);margin:26px 0 10px}
+h4{font:300 .8rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--celadon);margin:0 0 8px}
+p{margin:0 0 10px;max-width:46rem}
+.lede{color:var(--muted-l)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted-l);max-width:46rem}
+.strip{display:flex;gap:18px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start;scroll-snap-type:x proximity}
+.strip figure{margin:0;flex:none;scroll-snap-align:start}
+.strip figcaption{font:300 .85rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.strip figure p{font-size:1rem;color:var(--muted-l);margin-top:10px}
+.strip figure{width:380px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in;max-width:100%}
+.fig img{display:block;max-width:100%;height:auto}
+.phones{display:flex;flex-wrap:wrap;gap:34px 40px}
+.phrow{display:flex;flex-wrap:wrap;gap:16px}
+.cap{font-size:.95rem;color:var(--muted-l);margin:8px 0 0}
+a{color:var(--celadon)}
+a.open{font:300 .85rem 'Jost',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem 'Jost',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto;display:none}
+#viewer.on{display:block}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button.back{font:300 .85rem 'Jost',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:none}
+
+video{display:block;max-width:100%;height:auto;border:1px solid var(--dim);background:#000}
+.vid{max-width:880px}
+.what{color:var(--muted-l)}
+</style></head><body><main>
+<h1>Category lines, round 2</h1>
+<p class="lede">Issue #85, after round 1. Decided: on the computer, Two columns, always shown in an open chapter. On the phone, the lines are off by default and the sheet looks as it does today; a long press on any category switches them on for every chapter, another switches them off, and the phone remembers. A hint under the first chapter a player opens teaches the long press, until their first one. Still open: the look when the lines are on (List or Small cards) and the hint’s wording (three below).</p>
+<p class="note">Same moment as round 1: Beneath the Surface open, seven of its eleven categories picked (Body, Values, Attract and Spirit switched off to show both looks); After Dark has three of five picked. Tap a picture to see it full size. Round 1 is still at its own link, unchanged.</p>
+<nav><a href="#strips">Side by side</a><a href="#switch">The switch</a><a href="#today">Today</a><a href="#off">Lines off + hint</a><a href="#list">Lines on · List</a><a href="#cards">Lines on · Small cards</a><a href="#pc">PC panel</a></nav>
+
+<div id="strips">
+<h2>Side by side · Phone · Today and the hint, three wordings</h2>
+<p class="cap">Beneath the Surface open, lines off. The three hints are the same element in three wordings.</p>
+<div class="strip" role="group">
+  <figure style="width:374px"><figcaption>Today</figcaption><button type="button" class="fig" data-src="img/strip-phone-today-surface.png" data-w="374" aria-label="Open Today full size"><img src="img/strip-phone-today-surface.png" alt="Today, the open chapter" loading="lazy" style="width:374px"></button><p>The open chapter as it is now, category names only. The lines exist, but a player only meets them as a hover tooltip on a computer.</p></figure>
+  <figure style="width:374px"><figcaption>Lines off · hint a</figcaption><button type="button" class="fig" data-src="img/strip-phone-off-a.png" data-w="374" aria-label="Open Lines off · hint a full size"><img src="img/strip-phone-off-a.png" alt="Lines off, hint a" loading="lazy" style="width:374px"></button><p>“Hold a category to see what it’s about”</p></figure>
+  <figure style="width:374px"><figcaption>Lines off · hint b</figcaption><button type="button" class="fig" data-src="img/strip-phone-off-b.png" data-w="374" aria-label="Open Lines off · hint b full size"><img src="img/strip-phone-off-b.png" alt="Lines off, hint b" loading="lazy" style="width:374px"></button><p>“Hold any category to show every line”</p></figure>
+  <figure style="width:374px"><figcaption>Lines off · hint c</figcaption><button type="button" class="fig" data-src="img/strip-phone-off-c.png" data-w="374" aria-label="Open Lines off · hint c full size"><img src="img/strip-phone-off-c.png" alt="Lines off, hint c" loading="lazy" style="width:374px"></button><p>“What’s behind a name? Hold it.”</p></figure>
+</div>
+
+<h2>Side by side · Phone · Today and lines on</h2>
+<p class="cap">The look the long press switches on: the List, or the Small cards.</p>
+<div class="strip" role="group">
+  <figure style="width:374px"><figcaption>Today</figcaption><button type="button" class="fig" data-src="img/strip-phone-today-surface.png" data-w="374" aria-label="Open Today full size"><img src="img/strip-phone-today-surface.png" alt="Today, the open chapter" loading="lazy" style="width:374px"></button></figure>
+  <figure style="width:374px"><figcaption>Lines on · List</figcaption><button type="button" class="fig" data-src="img/strip-phone-list-surface.png" data-w="374" aria-label="Open Lines on · List full size"><img src="img/strip-phone-list-surface.png" alt="Lines on, List" loading="lazy" style="width:374px"></button><p>One category per row, its line under the name.</p></figure>
+  <figure style="width:374px"><figcaption>Lines on · Small cards</figcaption><button type="button" class="fig" data-src="img/strip-phone-cards-surface.png" data-w="374" aria-label="Open Lines on · Small cards full size"><img src="img/strip-phone-cards-surface.png" alt="Lines on, Small cards" loading="lazy" style="width:374px"></button><p>Each category a small card, two across.</p></figure>
+</div>
+
+<h2>Side by side · Phone · After Dark open, lines on</h2>
+<p class="cap">Its five categories carry the ✦ mark in their lines; the cards take the app’s own After Dark mark.</p>
+<div class="strip" role="group">
+  <figure style="width:374px"><figcaption>Lines on · List</figcaption><button type="button" class="fig" data-src="img/strip-phone-list-dark.png" data-w="374" aria-label="Open Lines on · List full size"><img src="img/strip-phone-list-dark.png" alt="After Dark, List" loading="lazy" style="width:374px"></button></figure>
+  <figure style="width:374px"><figcaption>Lines on · Small cards</figcaption><button type="button" class="fig" data-src="img/strip-phone-cards-dark.png" data-w="374" aria-label="Open Lines on · Small cards full size"><img src="img/strip-phone-cards-dark.png" alt="After Dark, Small cards" loading="lazy" style="width:374px"></button></figure>
+</div>
+
+<h2>Side by side · PC panel · Today and Two columns</h2>
+<p class="cap">The open chapter inside the docked panel. Scroll sideways.</p>
+<div class="strip" role="group">
+  <figure style="width:545px"><figcaption>Today</figcaption><button type="button" class="fig" data-src="img/strip-pc-today.png" data-w="545" aria-label="Open Today full size"><img src="img/strip-pc-today.png" alt="PC panel today" loading="lazy" style="width:545px"></button><p>Category names only, as now.</p></figure>
+  <figure style="width:545px"><figcaption>Two columns</figcaption><button type="button" class="fig" data-src="img/strip-pc-columns.png" data-w="545" aria-label="Open Two columns full size"><img src="img/strip-pc-columns.png" alt="PC panel, Two columns" loading="lazy" style="width:545px"></button><p>Name with its line under it, always shown in an open chapter.</p></figure>
+</div>
+</div>
+
+<section id="switch"><h2>The switch</h2>
+<p class="what">A long press on any category turns the lines on for every chapter at once; another long press turns them off. A tap still picks, a long press never does. The video is the whole thing on a loop, List and Small cards side by side; the soft disc is a pretend finger so you can see where the press is.</p>
+<div class="vid"><video src="img/switch-demo.mp4" controls loop muted autoplay playsinline preload="auto"></video></div>
+<p class="cap"><a href="demo.html">Play it live, side by side ›</a> &nbsp; <a href="phone-live.html?v=list&amp;s=surface&amp;h=a">Hold a category yourself, List ›</a> &nbsp; <a href="phone-live.html?v=cards&amp;s=surface&amp;h=a">Hold a category yourself, Small cards ›</a></p>
+<h3>What the hold feels like</h3>
+<p>While the finger is down the category presses in a little and dims slowly, the way Next Card dims when you hold it at the end of a hand. When the hold is long enough, it comes back to full strength as the lines arrive. The hold is the app’s own hold time, so it feels like the other hold in the game.</p>
+<p>When the lines come on, the names glide down to their new places, the chapter grows to its new height, and the lines fade in just after, once the names are nearly home. In Small cards the card faces, rails and corners ease in at the same time. The hint fades out the same way “· tap to change” does. Going off is the same in reverse, lines first, then the names glide back.</p>
+<p>I did not add a separate held pause between the press and the lines: the slow dim already is the wait. Nothing is shown on the phone for the buzz a phone can give when the hold completes; that is a build detail.</p>
+</section>
+
+<h1 style="margin-top:56px">Each version in full</h1>
+<section id="today"><h2>Today</h2><p class="what">The open chapter as it is now, category names only. The lines exist, but a player only meets them as a hover tooltip on a computer.</p>
+<h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-today-surface.png" data-w="412" aria-label="Open Today full size"><img src="img/phone-today-surface.png" alt="Today, phone" loading="lazy" style="width:412px"></button></div></div></div><h3>PC panel</h3><button type="button" class="fig" data-src="img/pc-today.png" data-w="1440" aria-label="Open Today, PC panel full size"><img src="img/pc-today.png" alt="PC panel today" loading="lazy" style="width:1440px"></button>
+<p class="cap"><a class="open" href="pc-today.html">Open the PC panel as its own page, at real size ›</a></p></section>
+<section id="off"><h2>Lines off, with the hint</h2><p class="what">The sheet exactly as today, plus one line of helper text under the first chapter a player opens. It is the “· tap to change” text of Selected deck, in the same face and size, in its computer tone because it is read on a phone; no box, no icon. It goes for good with the player’s first long press. It gives up a line of text under the chips until then.</p>
+<div class="phones"><div class="ph"><h4>Hint a · “Hold a category to see what it’s about”</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-off-a.png" data-w="412" aria-label="Open Lines off, hint a full size"><img src="img/phone-off-a.png" alt="Lines off, hint a" loading="lazy" style="width:412px"></button></div><p class="cap">Says what you get: what each category is about. <a href="phone-live.html?v=list&amp;s=surface&amp;h=a">Try it live ›</a></p></div><div class="ph"><h4>Hint b · “Hold any category to show every line”</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-off-b.png" data-w="412" aria-label="Open Lines off, hint b full size"><img src="img/phone-off-b.png" alt="Lines off, hint b" loading="lazy" style="width:412px"></button></div><p class="cap">Says what the hold does: every line, on every chapter. <a href="phone-live.html?v=list&amp;s=surface&amp;h=b">Try it live ›</a></p></div><div class="ph"><h4>Hint c · “What’s behind a name? Hold it.”</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-off-c.png" data-w="412" aria-label="Open Lines off, hint c full size"><img src="img/phone-off-c.png" alt="Lines off, hint c" loading="lazy" style="width:412px"></button></div><p class="cap">A question first, then the instruction: the shortest of the three. <a href="phone-live.html?v=list&amp;s=surface&amp;h=c">Try it live ›</a></p></div></div></section>
+<section id="list"><h2>Lines on · List</h2><p class="what">One category per row: the name as today, its line right under it in the quiet tone. Reads straight down. Gives up height: the open chapter grows a lot, so on a phone you scroll through it.</p>
+<h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-list-surface.png" data-w="412" aria-label="Open List full size"><img src="img/phone-list-surface.png" alt="Lines on, List, Beneath the Surface" loading="lazy" style="width:412px"></button><button type="button" class="fig" data-src="img/phone-list-surface-end.png" data-w="412" aria-label="Open List, end of chapter full size"><img src="img/phone-list-surface-end.png" alt="Lines on, List, end of the chapter" loading="lazy" style="width:412px"></button></div><p class="cap">The second picture is the same sheet scrolled to the end of the chapter.</p></div><p class="cap"><a href="phone-live.html?v=list&amp;s=surface&amp;h=a">Try this phone screen live (hold a category) ›</a></p><div class="ph"><h4>After Dark open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-list-dark.png" data-w="412" aria-label="Open List, After Dark full size"><img src="img/phone-list-dark.png" alt="Lines on, List, After Dark" loading="lazy" style="width:412px"></button></div></div><p class="cap"><a href="phone-live.html?v=list&amp;s=dark&amp;h=a">Try this phone screen live (hold a category) ›</a></p></div></section>
+<section id="cards"><h2>Lines on · Small cards</h2><p class="what">Each category is a small card from this deck: its own top rail in the category colour, the corner brackets, the name on top, the line below in the card’s italic, two across. A card you have not picked sits quieter. Gives up room: the open chapter is taller still than the List, and the screen is busier.</p>
+<h3>Phone</h3><div class="phones"><div class="ph"><h4>Beneath the Surface open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-cards-surface.png" data-w="412" aria-label="Open Small cards full size"><img src="img/phone-cards-surface.png" alt="Lines on, Small cards, Beneath the Surface" loading="lazy" style="width:412px"></button><button type="button" class="fig" data-src="img/phone-cards-surface-end.png" data-w="412" aria-label="Open Small cards, end of chapter full size"><img src="img/phone-cards-surface-end.png" alt="Lines on, Small cards, end of the chapter" loading="lazy" style="width:412px"></button></div><p class="cap">The second picture is the same sheet scrolled to the end of the chapter.</p></div><p class="cap"><a href="phone-live.html?v=cards&amp;s=surface&amp;h=a">Try this phone screen live (hold a category) ›</a></p><div class="ph"><h4>After Dark open</h4><div class="phrow"><button type="button" class="fig" data-src="img/phone-cards-dark.png" data-w="412" aria-label="Open Small cards, After Dark full size"><img src="img/phone-cards-dark.png" alt="Lines on, Small cards, After Dark" loading="lazy" style="width:412px"></button></div></div><p class="cap"><a href="phone-live.html?v=cards&amp;s=dark&amp;h=a">Try this phone screen live (hold a category) ›</a></p></div></section>
+<section id="pc"><h2>PC panel · Two columns</h2><p class="what">Name with its line under it, in two columns, always shown in an open chapter. No switch, no hint and no hover tooltip on the computer. Gives up: the lines wrap onto two short lines in places, and the eye zigzags between the columns.</p>
+<h3>Beneath the Surface open</h3><button type="button" class="fig" data-src="img/pc-columns.png" data-w="1440" aria-label="Open Two columns, PC panel full size"><img src="img/pc-columns.png" alt="PC panel, Two columns" loading="lazy" style="width:1440px"></button>
+<p class="cap"><a class="open" href="pc-columns.html">Open the PC panel as its own page, at real size ›</a></p><h3>After Dark open</h3><button type="button" class="fig" data-src="img/pc-columns-dark.png" data-w="1440" aria-label="Open Two columns, PC panel, After Dark full size"><img src="img/pc-columns-dark.png" alt="PC panel, Two columns, After Dark" loading="lazy" style="width:1440px"></button>
+<p class="cap"><a class="open" href="pc-columns-dark.html">Open the PC panel with After Dark as its own page, at real size ›</a></p></section>
+</main>
+<div id="viewer" role="dialog" aria-modal="true" aria-label="Picture viewer"><header><button type="button" class="back">‹ Back to the overview</button></header><img alt=""></div>
+<script>
+const viewer=document.getElementById('viewer'),big=viewer.querySelector('img');let lastY=0;
+const open=btn=>{lastY=scrollY;big.src=btn.dataset.src;big.alt=btn.querySelector('img').alt;big.style.width=btn.dataset.w+'px';viewer.classList.add('on');viewer.scrollTop=0;document.body.style.overflow='hidden';};
+const close=()=>{viewer.classList.remove('on');document.body.style.overflow='';scrollTo(0,lastY);};
+document.addEventListener('click',e=>{const b=e.target.closest('.fig');if(b)open(b);});
+viewer.querySelector('.back').addEventListener('click',close);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('on'))close();});
+</script></body></html>

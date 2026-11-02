@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The switch, side by side</title>
+<style>
+:root{--gold:#c9a84c;--celadon:#A9C7B6;--muted-l:#9c8f7e}
+body{margin:0;background:#0e0c0a;color:#f0e8d8;font-family:'Cormorant Garamond',serif;padding:10px 12px 40px}
+a{font:300 .8rem Jost,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);text-decoration:none;padding:8px 4px;display:inline-block}
+p{font-size:1.02rem;color:var(--muted-l);max-width:44rem;margin:2px 0 12px}
+.strip{display:flex;gap:18px;overflow-x:auto;align-items:flex-start}
+figure{margin:0;flex:none}
+figcaption{font:300 .85rem Jost,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+iframe{width:412px;height:915px;border:1px solid rgba(201,168,76,.22);background:#000;display:block}
+</style></head><body>
+<a href="index.html">‹ Overview</a>
+<p>A long press on a category, played on a loop. The soft disc is a pretend finger, only so you can see where the press is. Both phones do the same thing at the same time: the lines come on for every chapter, then go off again.</p>
+<div class="strip">
+<figure><figcaption>Lines on: List</figcaption><iframe id="a" title="List" src="phone-surface.html?look=list&hint=a&auto=sync"></iframe></figure>
+<figure><figcaption>Lines on: Small cards</figcaption><iframe id="b" title="Small cards" src="phone-surface.html?look=cards&hint=a&auto=sync"></iframe></figure>
+</div>
+<script>
+addEventListener('load',()=>setTimeout(()=>[a,b].forEach(f=>f.contentWindow.postMessage('go','*')),800));
+addEventListener('keydown',e=>{if(e.key==='Backspace'||e.key.toLowerCase()==='b')location.href='index.html';});
+</script></body></html>

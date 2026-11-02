@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Phone screen, live</title>
+<style>
+body{margin:0;background:#0e0c0a;color:#f0e8d8;display:flex;flex-direction:column;align-items:center;min-height:100vh;font-family:'Cormorant Garamond',serif}
+a{font:300 .8rem Jost,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A9C7B6;text-decoration:none;padding:8px 10px}
+a[aria-current]{color:#c9a84c;text-decoration:underline;text-underline-offset:6px}
+nav{display:flex;flex-wrap:wrap;justify-content:center;max-width:430px}
+p{font-size:1.02rem;color:#9c8f7e;margin:2px 16px 10px;max-width:400px;text-align:center}
+iframe{width:412px;max-width:100%;height:915px;border:1px solid rgba(201,168,76,.22);background:#000}
+</style></head><body>
+<nav id="back"><a href="index.html">‹ Overview</a></nav>
+<nav id="looks"></nav><nav id="sheets"></nav><nav id="hints"></nav>
+<p>Hold any category for a moment to switch the lines on or off for every chapter. Tap one to pick or unpick it. Tap a chapter’s arrow to open it.</p>
+<iframe id="f" title="Phone screen"></iframe>
+<script>
+const q=new URLSearchParams(location.search);
+const look=q.get('v')==='cards'?'cards':'list', sheet=q.get('s')==='dark'?'dark':'surface', hint=['a','b','c'].includes(q.get('h'))?q.get('h'):'a';
+const link=(label,patch,on)=>{const p=new URLSearchParams({v:look,s:sheet,h:hint,...patch});return `<a href="?${p}"${on?' aria-current="true"':''}>${label}</a>`;};
+looks.innerHTML=link('List',{v:'list'},look==='list')+link('Small cards',{v:'cards'},look==='cards');
+sheets.innerHTML=link('Beneath the Surface',{s:'surface'},sheet==='surface')+link('After Dark',{s:'dark'},sheet==='dark');
+hints.innerHTML=['a','b','c'].map(h=>link('Hint '+h,{h},hint===h)).join('');
+f.src=`phone-${sheet==='dark'?'dark':'surface'}.html?look=${look}&lines=off&hint=${hint}`;
+addEventListener('keydown',e=>{if(e.key==='Backspace'||e.key.toLowerCase()==='b')location.href='index.html';});
+</script></body></html>
