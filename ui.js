@@ -744,7 +744,9 @@ applyToggleUI();
       el.style.maxHeight = el.scrollHeight + 'px';   // re-measure, then snap the start point to it
     }
     el.offsetHeight; // force layout so the jump above doesn't itself animate
-    el.style.transition = `max-height ${ms ?? 260}ms var(--ease-out)`;
+    // the inline transition replaces the stylesheet's, so it keeps the panel's colour ease (instant under reduced motion)
+    const colourEase = matchMedia('(prefers-reduced-motion:reduce)').matches ? '' : ', background var(--ch-ease), border-color var(--ch-ease)';
+    el.style.transition = `max-height ${ms ?? 260}ms var(--ease-out)${colourEase}`;
     requestAnimationFrame(() => {
       el.style.maxHeight = opening ? el.scrollHeight + 'px' : '0px';
     });

@@ -1447,7 +1447,7 @@ body.tok-taught .tok-hint{display:none;}
    lines of .ch-desc at its current font-size/line-height plus the row's
    own 15px top/bottom padding; align-items:center (not baseline) so a
    one-line row centers inside that height instead of sitting at the top. */
-.chapter{--ch:var(--gold);--ch-ease:.4s ease-out;position:relative;
+.chapter{--ch:var(--gold);position:relative;
   --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
   display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
@@ -1460,7 +1460,14 @@ body.tok-taught .tok-hint{display:none;}
 .chapter::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
   background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
 .chapter.on::before{opacity:1;}
-@media (hover:hover) and (pointer:fine){.chapter:hover{border-color:var(--border);}}
+/* hover (mouse only): the brighter outline goes round the whole chapter, header and open part together.
+   The left line keeps its state colour; the header's bottom edge stays open while it is unfolded. */
+@media (hover:hover) and (pointer:fine){
+  .chapter-group{--ch-hover-line:var(--border);}
+  .chapter-group:hover>:is(.chapter,.ch-fold--row){border-top-color:var(--ch-hover-line);border-right-color:var(--ch-hover-line);}
+  .chapter-group:not(.open):hover>:is(.chapter,.ch-fold--row){border-bottom-color:var(--ch-hover-line);}
+  .chapter-group.open:hover>.chapter-panel{border-right-color:var(--ch-hover-line);border-bottom-color:var(--ch-hover-line);}
+}
 /* the row is one tap target for the whole chapter: the name button stretches over
    it (::after), and the fold target and spice mark sit above that. */
 .ch-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 8px 8px 13px;}
@@ -1500,11 +1507,17 @@ body.tok-taught .tok-hint{display:none;}
   .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden{transition:none;}
 }
 /* the unfolded panel: categories, each its own tap target */
-.chapter-group{--ch:var(--gold);}
+.chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;}
 .chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0 6px 0 8px;
   border:1px solid var(--dim);border-top:none;border-radius:0 0 2px 2px;border-width:0 1px 0 3px;
-  border-left-color:color-mix(in srgb, var(--ch) 40%, transparent);
-  background:color-mix(in srgb, var(--ch) 3%, transparent);}
+  border-left-color:var(--dim);background:none;
+  transition:background var(--ch-ease),border-color var(--ch-ease);}
+/* the unfolded part follows its chapter's row: off is neutral, partly is the row's paler state, fully on is full colour
+   (same line and tint values as .chapter.part / .chapter.on above) */
+.chapter-group:has(>.chapter.part)>.chapter-panel{border-left-color:color-mix(in srgb, var(--ch) 70%, var(--dim));
+  background:color-mix(in srgb, var(--ch) 6.5%, transparent);}
+.chapter-group:has(>.chapter.on)>.chapter-panel{border-left-color:var(--ch);
+  background:color-mix(in srgb, var(--ch) 9%, transparent);}
 .chapter-panel.open{padding:2px 6px 6px 8px;border-width:0 1px 1px 3px;}
 .chapter-panel .toggle-btn.hard-locked{pointer-events:auto;cursor:pointer;opacity:.75;}
 .chapter-panel .toggle-btn.suggested{opacity:1;}
@@ -1617,7 +1630,7 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
 body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 @keyframes catHintIn{from{opacity:0}}
 @media (prefers-reduced-motion:reduce){
-  .chapter-panel :is(.toggle-btn,.cat-dot,.cat-line),.cat-area .chapter-panel .toggle-btn.holding{transition:none;}
+  .chapter-panel,.chapter-panel :is(.toggle-btn,.cat-dot,.cat-line),.cat-area .chapter-panel .toggle-btn.holding{transition:none;}
   .cat-hint{animation:none;}
 }
 
@@ -1674,7 +1687,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active)):hover::after{opacity:.35;}
   .chapter:hover .ch-name,.ch-fold--row:hover .ch-name{color:var(--cream);}
   .chapter:is(.on,.part):hover .ch-name{color:var(--ch);}
-  .chapter:hover,.ch-fold--row:hover{border-color:var(--border-strong);}
+  .chapter-group{--ch-hover-line:var(--border-strong);}
   @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
 }
 

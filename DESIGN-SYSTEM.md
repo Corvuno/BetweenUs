@@ -335,9 +335,18 @@ line, Draw Cards fixed. Chapter and category colours stay content colour, set fr
   `--border` hairline inset 14px top and bottom. No box, no outline. The chevron turns over when
   open. Reason: the count says the state, the chevron says "opens", the hairline separates the
   fold from the switch without a container.
-- **Panel** (`.chapter-panel`, the unfolded categories): left line 3px in the chapter colour at 40%
-  (`--ch` is set on `.chapter-group` by `ui.js` for this), `--dim` on the other sides, tint `--ch`
-  3%. Each category is a 44px tap target.
+- **Panel** (`.chapter-panel`, the unfolded categories): follows its chapter's row state (2026-11-02,
+  owner: an opened chapter with nothing picked looked odd in colour). Off: left line 3px `--dim`, no
+  tint. Partly on: line chapter colour 70% into `--dim`, tint 6.5%. Fully on: line full `--ch`, tint 9%
+  (the row's own `.part` / `.on` values, found with `:has()` on `.chapter-group`; `--ch` is set on the
+  group by `ui.js`). Eases over `--ch-ease` (.4s, now set on `.chapter-group`), instant under reduced
+  motion. Other sides `--dim`. Each category is a 44px tap target; category words keep their own
+  picked/not-picked look.
+- **Chapter hover** (mouse only, `hover:hover` + `pointer:fine`): the brighter outline goes round the
+  whole chapter, header row and open panel together, via `--ch-hover-line` on `.chapter-group`
+  (`--border`; `--border-strong` on the wide docked panel). Fixed Sets uses the same rule (its open part keeps its own colours). Left line keeps its state colour; the
+  header's bottom edge stays open while unfolded. Reason: lighting only the header looked like a
+  separate box (owner 2026-11-02).
 - **Category chip marks**: see "The one picked look" below (superseded 2026-10-19: the cream word and
   hollow ring are gone).
 - **Fixed Sets** (`.ch-fold--row`, 49px): the whole row is the fold. Name in `.68` cream, hint in
