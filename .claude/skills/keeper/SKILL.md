@@ -215,6 +215,13 @@ adding anything, search: one wish is one item, never two.
   build, so one place gets changed once. Only items in Next (agreed and ready); items waiting
   on the owner or parked stay where they are. Say in one line which items came along; each
   goes to Building now too and closes with the same landing.
+- **A build always goes through to `main`, never waits on the owner** (owner, 2026-11-02:
+  "When it's ready: push it. If a builder has space, build and push. No waiting on me").
+  Once an item is taken from Next, nothing about it is asked again: when the reviewer and
+  tester pass it, it lands. Never ask the owner when to land, whether to wait for another
+  build, or whether to start the next item. Timing between builds is the clash check's job.
+  The only reason to stop and ask is a real question about what the owner wants; then the
+  item goes back to Refine with the question.
 - **Keep going.** After a build lands, the same thread takes the next item it may take, until
   Next holds nothing it can start; then it reports. The owner can stop it at any time.
 - **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
