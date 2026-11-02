@@ -162,3 +162,5 @@ Replaces the 2026-10-18 turn for this one moment.
 - Applies on phone, PC and Spotlight (same Intermezzo everywhere; Keeper's call).
 - Unchanged: the message's dwell, the tap flip to the list and back (sideways turn, 0.84s), Back behaviour.
 - Reduced motion: a calm fade to a finished Intermezzo.
+- Considered and dropped (owner, 2026-11-02): putting "Those were your X cards" on the Intermezzo back to remove
+  the message step. Owner: "Case closed, not doing it." The message on the card face stays.
