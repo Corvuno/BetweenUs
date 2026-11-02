@@ -42,3 +42,7 @@ Format: **date** — what happened / what to do instead.
 - **2026-10-28** — In the end-of-hand round, the owner picked version 4 because of a held empty moment (the finished back with an empty window, before the pause mark draws). / A held empty beat between two states is a tool the owner likes; when a timing creates one, report it as a feature, and keep it when building. (from lesson 2026-10-28)
 - **2026-10-29** — The Deck panel build reported the main screen "easing with the panel"; watched at 25fps, the card stayed full size under the panel and then jumped in one frame, both ways (a registered CSS length on `html` did not animate as expected). Sent back. / Before reporting any motion, record it and look at a frame strip at real speed yourself; check that every moving part moves in every frame, and that nothing passes under anything else mid-way.
 - **2026-11-02** — Chapter colour fix: reported "changes ease over .4s" from the stylesheet, but `slideFold` in ui.js sets an inline transition that overrode it, so the open part snapped; the tester caught it. / Before claiming an ease, sample the frames in the real app after the element has been opened and closed once; check JS that sets inline transitions on the same element.
+
+- **A colour change hidden at the faint point still shows unless it is near zero** (2026-11-02, #94). The start
+  card's diamond stepped colour at 45% strength and the owner saw it as a jolt. Blend colour changes over the dim
+  phase (register the custom property as `<color>` so it can interpolate) instead of stepping them.
