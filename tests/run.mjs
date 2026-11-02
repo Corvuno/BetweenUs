@@ -1837,8 +1837,12 @@ async function run() {
   });
 
   // ── Spotlight turning: tilt readings, no permission phones, swipes in the turned frame ──
-  const tiltPage = async (initScript) => {
+  // A phone whose sensors work: Chrome 151+ has the permission method too and only gives tilt once the
+  // sensor permission is granted (its default here is "ask"), so the page gets it granted, as on an Android phone.
+  // The iPhone case passes sensors = false: Safari has no such permission, only the popup.
+  const tiltPage = async (initScript, sensors = true) => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    if (sensors) await ctx.grantPermissions(['accelerometer', 'gyroscope']);
     const pg = await ctx.newPage();
     if (initScript) await pg.addInitScript(initScript);
     await pg.goto(`http://127.0.0.1:${port}/${TARGET}`);
@@ -1886,7 +1890,7 @@ async function run() {
   });
 
   await check('Spotlight tilt: readings while Spotlight is closed turn nothing; a phone that needs a permission popup is never turned by itself and keeps the word', async () => {
-    const ios = await tiltPage(() => { window.DeviceOrientationEvent = Object.assign(function () {}, { requestPermission: () => Promise.resolve('granted') }); });
+    const ios = await tiltPage(() => { window.DeviceOrientationEvent = Object.assign(function () {}, { requestPermission: () => Promise.resolve('granted') }); }, false);
     await tilt(ios, 2, -85);
     await ios.waitForTimeout(1000);
     const s = await spot(ios);

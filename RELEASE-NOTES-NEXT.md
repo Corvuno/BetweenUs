@@ -16,4 +16,4 @@ Rules:
 - A new category, Us: Colleagues, for asking a colleague straight about working together. It is on in Coworkers.
 - Nine questions are reworded or new, most of them in Roots, which now goes deeper.
 - Body, Romance and Family now come a little earlier in an evening's arc, closer to how deep their questions really are.
-- Smaller fixes throughout: After Dark categories you switched on stay on when you pick another preset.
+- Smaller fixes throughout: After Dark categories you switched on stay on when you pick another preset; Spotlight turns with your phone again on newer Chrome versions.

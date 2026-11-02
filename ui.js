@@ -379,8 +379,17 @@ function contentDelta(dx, dy, turn) {
   realLandscape.addEventListener('change', syncToDevice);
 
   // iPhone only gives tilt after a permission popup: none is asked, the word stays.
-  const needsPermission = typeof DeviceOrientationEvent !== 'undefined'
+  // Chrome has the same method too, but gives tilt without a popup while its sensor permission is granted.
+  const hasPermissionApi = typeof DeviceOrientationEvent !== 'undefined'
     && 'requestPermission' in DeviceOrientationEvent;
+  let sensorsGranted = false;
+  if (hasPermissionApi) {
+    navigator.permissions?.query({ name: /** @type {PermissionName} */ ('accelerometer') }).then(status => {
+      const sync = () => { sensorsGranted = status.state === 'granted'; listenToTilt(); };
+      status.addEventListener('change', sync);
+      sync();
+    }).catch(() => {});   // Safari has no such permission: the popup route stays the only one
+  }
   let readingsProven = false;
   function onTilt(e) {
     if (e.beta == null || e.gamma == null) return;
@@ -405,16 +414,18 @@ function contentDelta(dx, dy, turn) {
   }
 
   // Tilt is only listened to while Spotlight is open; leaving it always returns to upright.
-  new MutationObserver(() => {
-    if (overlay.classList.contains('open')) {
-      if (!needsPermission) window.addEventListener('deviceorientation', onTilt);
+  function listenToTilt() {
+    if (overlay.classList.contains('open') && (!hasPermissionApi || sensorsGranted)) {
+      window.addEventListener('deviceorientation', onTilt);
       return;
     }
     window.removeEventListener('deviceorientation', onTilt);
+    if (overlay.classList.contains('open')) return;
     clearTimeout(settleTimer);
     wanted = null;
     if (turn) setTurn(null);
-  }).observe(overlay, { attributes: true, attributeFilter: ['class'] });
+  }
+  new MutationObserver(listenToTilt).observe(overlay, { attributes: true, attributeFilter: ['class'] });
 })();
 
 
