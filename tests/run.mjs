@@ -2040,18 +2040,29 @@ async function run() {
       })));
       assert(cycle.map(c => c.target).join() === 'lg-dm,cb-rule', `cycle targets: ${JSON.stringify(cycle)}`);
       assert(cycle.every(c => !c.easings.includes('steps(1, end)')), `the colour still steps: ${JSON.stringify(cycle)}`);
-      // sample the diamond's fill across a whole cycle: it changes by small amounts every frame, never one jump
-      const fills = await p.evaluate(() => new Promise(res => {
+      // sample the diamond's fill (with timestamps) across ten seconds, then judge the first change by elapsed time, not frames
+      const { samples, second } = await p.evaluate(() => new Promise(res => {
         const dm = document.querySelector('#card .cb-mark:not(.cb-fermata) .lg-dm');
-        const out = []; const t0 = performance.now();
+        const rgb = css => css.match(/[\d.]+/g).slice(0, 3).map(Number);
+        const probe = document.createElement('i');
+        probe.style.color = presetDeep(_startCols[1]) || _startCols[1];
+        document.body.append(probe);
+        const second = rgb(getComputedStyle(probe).color);
+        probe.remove();
+        const samples = []; const t0 = performance.now();
         (function frame() {
-          out.push(getComputedStyle(dm).fill.match(/\d+/g).map(Number));
-          performance.now() - t0 < 10000 ? requestAnimationFrame(frame) : res(out);
+          samples.push({ t: performance.now() - t0, c: rgb(getComputedStyle(dm).fill) });
+          performance.now() - t0 < 10000 ? requestAnimationFrame(frame) : res({ samples, second });
         })();
       }));
-      const jumps = fills.slice(1).map((c, i) => Math.max(...c.map((v, k) => Math.abs(v - fills[i][k]))));
-      assert(jumps.filter(j => j > 0).length > 20, 'the diamond colour never changed over ten seconds');
-      assert(Math.max(...jumps) < 40, `the diamond colour jumped by ${Math.max(...jumps)} in one frame`);
+      const dist = (a, b) => Math.max(...a.map((v, k) => Math.abs(v - b[k])));
+      const first = samples[0].c, total = dist(first, second);
+      const leaves = samples.find(s => dist(s.c, first) >= total * 0.1);
+      const arrives = samples.find(s => dist(s.c, second) <= total * 0.1);
+      assert(total > 10, `the first two picks are too alike to judge (${total})`);
+      assert(leaves && arrives, 'the diamond never went from the first pick to the second pick');
+      // a step covers the 10%-90% span in one frame; the blend takes well over half a second
+      assert(arrives.t - leaves.t >= 500, `the first change took ${Math.round(arrives.t - leaves.t)}ms from 10% to 90%, it should blend`);
     } finally { await ctx.close(); }
   });
 

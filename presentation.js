@@ -425,7 +425,7 @@ const deepIsBlendable = (() => {
   try {
     CSS.registerProperty({ name: '--preset-deep', syntax: '<color>', inherits: true, initialValue: '#c9a84c' });   // initial = the app's gold
     return true;
-  } catch (e) { return false; }
+  } catch (e) { return e.name === 'InvalidModificationError'; }   // already registered counts as registered
 })();
 let _startCols = [];
 let _startCycle = null;   // { src: the breath CSSAnimation, key, anims }
