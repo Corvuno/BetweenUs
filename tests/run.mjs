@@ -2021,6 +2021,51 @@ async function run() {
     assert(lastLabel === 'End of hand', `the button on the last card reads "${lastLabel}"`);
   });
 
+  await check('Custom with several picks: the start card diamond and rule blend into the next colour over the dim half of a breath instead of stepping', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    try {
+      await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await p.waitForSelector('#card', { state: 'visible' });
+      await p.waitForTimeout(500);
+      await p.evaluate(() => { document.getElementById('deselectAll').click(); [...document.querySelectorAll('.toggle-btn')].slice(0, 3).forEach(b => b.click()); });
+      await p.waitForTimeout(300);
+      const supported = await p.evaluate(() => typeof CSS !== 'undefined' && typeof CSS.registerProperty === 'function');
+      if (!supported) return;   // without registration the colour steps, as before
+      // wait until the cycle runs on both the diamond and the rule, then read their keyframes
+      await p.waitForFunction(() => _startCycle?.anims.length === 2 && _startCycle.anims.every(a => a.startTime !== null), null, { timeout: 4000 });
+      const cycle = await p.evaluate(() => _startCycle.anims.map(a => ({
+        target: a.effect.target.className.baseVal ?? a.effect.target.className,
+        easings: a.effect.getKeyframes().map(k => k.easing),
+      })));
+      assert(cycle.map(c => c.target).join() === 'lg-dm,cb-rule', `cycle targets: ${JSON.stringify(cycle)}`);
+      assert(cycle.every(c => !c.easings.includes('steps(1, end)')), `the colour still steps: ${JSON.stringify(cycle)}`);
+      // sample the diamond's fill (with timestamps) across ten seconds, then judge the first change by elapsed time, not frames
+      const { samples, second } = await p.evaluate(() => new Promise(res => {
+        const dm = document.querySelector('#card .cb-mark:not(.cb-fermata) .lg-dm');
+        const rgb = css => css.match(/[\d.]+/g).slice(0, 3).map(Number);
+        const probe = document.createElement('i');
+        probe.style.color = presetDeep(_startCols[1]) || _startCols[1];
+        document.body.append(probe);
+        const second = rgb(getComputedStyle(probe).color);
+        probe.remove();
+        const samples = []; const t0 = performance.now();
+        (function frame() {
+          samples.push({ t: performance.now() - t0, c: rgb(getComputedStyle(dm).fill) });
+          performance.now() - t0 < 10000 ? requestAnimationFrame(frame) : res({ samples, second });
+        })();
+      }));
+      const dist = (a, b) => Math.max(...a.map((v, k) => Math.abs(v - b[k])));
+      const first = samples[0].c, total = dist(first, second);
+      const leaves = samples.find(s => dist(s.c, first) >= total * 0.1);
+      const arrives = samples.find(s => dist(s.c, second) <= total * 0.1);
+      assert(total > 10, `the first two picks are too alike to judge (${total})`);
+      assert(leaves && arrives, 'the diamond never went from the first pick to the second pick');
+      // a step covers the 10%-90% span in one frame; the blend takes well over half a second
+      assert(arrives.t - leaves.t >= 500, `the first change took ${Math.round(arrives.t - leaves.t)}ms from 10% to 90%, it should blend`);
+    } finally { await ctx.close(); }
+  });
+
   await check('a restored session shows its own subtitle: Custom "Off script.", a preset its own line', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     const p = await ctx.newPage();

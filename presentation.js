@@ -408,32 +408,64 @@ function shownPicks(picks) {
   shownCache = { key, shown: chosen.sort((a, b) => a - b).map(i => picks[i]) };
   return shownCache.shown;
 }
-// The start card's diamond (and the rule under it, which share --preset-deep on
-// #card) takes the next picked colour at the faint point of each breath, so the
-// switch is never seen. One Web Animation locked to the diamond's own breath
-// (imBreathe: faint 1.6s into each 3.2s cycle, breath starting after its 2.4s
-// delay, so 4.0s in, then every 3.2s). It exists only while that breath runs:
-// the card face showing, the deck sheet closing, or reduced motion all cancel it.
-// No timer is involved.
+// The start card's diamond and the rule under it (both fill from --preset-deep)
+// drift into the next picked colour while the diamond is dim: from 0.8s to 2.4s
+// of each 3.2s breath, centred on the faint point (imBreathe: faint 1.6s into
+// each cycle, breath starting after its 2.4s delay), then hold. One Web Animation
+// per element, locked to the diamond's own breath so the two never drift apart.
+// It exists only while that breath runs: the card face showing, the deck sheet
+// closing, or reduced motion all cancel it. No timer is involved.
+// Blending needs --preset-deep registered as a <color>; without that support the
+// colour steps at the faint point on #card instead, as it did before.
+const BREATH_MS = 3200;
+const BLEND_FROM = 0.25, BLEND_TO = 0.75;   // share of a breath: 0.8s to 2.4s
+// strong ease-in-out: nearly all of the change lands around the faint point
+const BLEND_EASING = 'cubic-bezier(0.77, 0, 0.175, 1)';
+const deepIsBlendable = (() => {
+  try {
+    CSS.registerProperty({ name: '--preset-deep', syntax: '<color>', inherits: true, initialValue: '#c9a84c' });   // initial = the app's gold
+    return true;
+  } catch (e) { return e.name === 'InvalidModificationError'; }   // already registered counts as registered
+})();
 let _startCols = [];
-let _startCycle = null;   // { src: the breath CSSAnimation, key, anim }
-function stopStartCycle() { if (_startCycle) { try { _startCycle.anim.cancel(); } catch (e) {} _startCycle = null; } }
+let _startCycle = null;   // { src: the breath CSSAnimation, key, anims }
+function stopStartCycle() { if (_startCycle) { _startCycle.anims.forEach(a => a.cancel()); _startCycle = null; } }
+// Keyframes for n colours over n breaths: hold colour i, blend to the next in the dim half, hold again.
+const startCycleFrames = (cols, blend) => {
+  const n = cols.length;
+  if (!blend) return [...cols.map((c, i) => ({ '--preset-deep': c, offset: i / n, easing: 'step-end' })), { '--preset-deep': cols[0], offset: 1 }];
+  return [
+    { '--preset-deep': cols[0], offset: 0 },
+    ...cols.flatMap((c, i) => [
+      { '--preset-deep': c, offset: (i + BLEND_FROM) / n, easing: BLEND_EASING },
+      { '--preset-deep': cols[(i + 1) % n], offset: (i + BLEND_TO) / n },
+    ]),
+    { '--preset-deep': cols[0], offset: 1 },
+  ];
+};
 function syncStartCycle() {
   const card = document.getElementById('card');
-  const dm = card && card.querySelector('.cb-mark:not(.cb-fermata) .lg-dm');
-  const src = dm && card.classList.contains('is-start') && !card.classList.contains('is-intermezzo') && dm.getAnimations
+  const dm = card?.querySelector('.cb-mark:not(.cb-fermata) .lg-dm');
+  const src = dm && card.classList.contains('is-start') && !card.classList.contains('is-intermezzo')
     ? dm.getAnimations().find(a => a.animationName === 'imBreathe') : null;
-  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const key = _startCols.join();
   if (!src || reduce || _startCols.length < 2) { stopStartCycle(); return; }
-  if (_startCycle && _startCycle.src === src && _startCycle.key === key) return;
+  if (_startCycle?.src === src && _startCycle.key === key) return;
   stopStartCycle();
-  const n = _startCols.length;
-  const frames = _startCols.map((c, i) => ({ '--preset-deep': presetDeep(c) || c, offset: i / n, easing: 'step-end' }));
-  frames.push({ '--preset-deep': presetDeep(_startCols[0]) || _startCols[0], offset: 1 });
-  const anim = card.animate(frames, { duration: 3200 * n, delay: 800, iterations: Infinity, fill: 'backwards' });
-  anim.startTime = src.startTime;
-  _startCycle = { src, key, anim };
+  // a breath that has only just been set going has no start time yet: lock on once it has
+  if (src.pending) { src.ready.then(syncStartCycle, () => {}); return; }
+  const cols = _startCols.map(c => presetDeep(c) || c);
+  const targets = deepIsBlendable ? [dm, card.querySelector('.cb-rule')] : [card];
+  // blending: the first blend sits in the first full breath (breath delay 2.4s + 0.8s);
+  // stepping: the step sits at the faint point of the first breath (4.0s).
+  const delay = deepIsBlendable ? 2400 : 800;
+  const anims = targets.map(el => {
+    const anim = el.animate(startCycleFrames(cols, deepIsBlendable), { duration: BREATH_MS * cols.length, delay, iterations: Infinity, fill: 'backwards' });
+    anim.startTime = src.startTime;
+    return anim;
+  });
+  _startCycle = { src, key, anims };
 }
 document.addEventListener('animationstart', e => { if (e.target.classList && e.target.classList.contains('lg-dm')) syncStartCycle(); });
 document.addEventListener('animationcancel', e => { if (e.target.classList && e.target.classList.contains('lg-dm')) syncStartCycle(); });
