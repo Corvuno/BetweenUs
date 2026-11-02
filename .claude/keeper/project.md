@@ -93,6 +93,8 @@ The Keeper. Started with `/keeper`.
 use the application's own language: no "line", "app line", "category", "chapter", "preset", "Arc",
 "bucket", "band" or other names we use among ourselves. Say what it does or what happens, in plain
 words. Check every proposal for this before showing it.
+"Category" is allowed: the owner chose "Hold a category to see what it's about" for the long-press
+hint (2026-11-02, #85) knowing it uses the word.
 
 **Names we use:** "the evening chooser" = the sheet now headed **The Deck** (named 2026-10-19; was only "What kind of evening?"; code: `#cat-area`). In the app it is The Deck; "Selected deck" on the card screen points to it.
 
