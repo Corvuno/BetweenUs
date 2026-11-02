@@ -2159,7 +2159,7 @@ async function run() {
     await page.waitForTimeout(700);   // the switch eases about .45s
   };
 
-  await check('phone: category lines are off, the hint shows once, a hold switches the lines (in two columns, remembered) without picking, a tap still picks', async () => {
+  await check('phone: category lines are off, the hint shows under every open chapter until the first hold, a hold switches the lines (in two columns, remembered) without picking, a tap still picks', async () => {
     const surface = '.chapter-panel[data-chapter="surface"]';
     const firstCat = `${surface} .toggle-btn:visible`;
     try {
@@ -2170,8 +2170,13 @@ async function run() {
       await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(500);
       assert(!(await linesOn()), 'the lines should be off by default on a phone');
       assert(await page.locator(`${surface} .cat-line`).first().isHidden(), 'a category line shows while the lines are off');
-      assert((await page.locator('.cat-hint').count()) === 1 && (await page.locator('.cat-hint').textContent()) === "Hold a category to see what it's about", 'the hint is missing or misworded in the first chapter opened');
+      assert((await page.locator(`${surface} .cat-hint`).count()) === 1 && (await page.locator(`${surface} .cat-hint`).textContent()) === "Hold a category to see what it's about", 'the hint is missing or misworded in the first chapter opened');
       assert(await page.locator(`${surface} .cat-hint`).isVisible(), 'the hint is not visible');
+      // a chapter opened later shows it too, and so does every chapter with Open all
+      await page.locator('#foldAll').click(); await page.waitForTimeout(500);
+      const openPanels = await page.locator('.chapter-panel.open[data-chapter]').count();
+      assert(openPanels > 1 && (await page.locator('.chapter-panel.open .cat-hint:visible').count()) === openPanels, 'not every open chapter shows the hint');
+      // (they stay open: the first hold must clear the hint from all of them)
       // a tap picks as before
       const level = await page.locator(firstCat).first().getAttribute('data-level');
       const picked = () => page.evaluate(l => state.activeToggles.has(l), level);
@@ -2200,7 +2205,11 @@ async function run() {
           shortest: Math.min(...btns.map(b => b.getBoundingClientRect().height)), wide: document.documentElement.scrollWidth > innerWidth };
       }, surface);
       assert(cols.columns === 2 && cols.shortest >= 44 && !cols.wide, `phone lines are not two usable columns: ${JSON.stringify(cols)}`);
-      assert((await page.locator('.cat-hint').count()) === 0 && await page.evaluate(() => hintIsTaught('lines')), 'the hint is not gone for good after the first hold');
+      assert((await page.locator('.cat-hint').count()) === 0 && await page.evaluate(() => hintIsTaught('lines')), 'the hint is not gone from every chapter for good after the first hold');
+      await page.reload(); await page.waitForTimeout(600);
+      await openCategorySheet();
+      await page.locator('#foldAll').click(); await page.waitForTimeout(500);
+      assert((await page.locator('.cat-hint').count()) === 0, 'the hint is back after a reload');
       assert(await page.evaluate(() => localStorage.getItem('bu.catLines')) === '1', 'the choice is not remembered');
       // the lines are the categories' own words
       const wrong = await page.evaluate(() => [...document.querySelectorAll('.toggle-btn')].filter(b => b.querySelector('.cat-line').textContent !== CATEGORY_DESCRIPTIONS[b.dataset.level]).map(b => b.dataset.level));

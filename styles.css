@@ -1610,7 +1610,7 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
    the dim ends as the lines start to appear, and the category comes back to full strength as they ease in */
 .cat-area .chapter-panel .toggle-btn.holding{opacity:.5;transform:scale(.98);
   transition:opacity .55s ease-in,transform .16s var(--ease-out),color var(--pick-ease) ease;}
-/* the hint under the first chapter opened: .tok-hint's face and size, in the tone it takes on a phone (--muted-l) */
+/* the hint under each chapter opened: .tok-hint's face and size, in the tone it takes on a phone (--muted-l) */
 .chapter-panel .cat-hint{flex:0 0 100%;margin:0;padding:8px 9px 6px;
   font-family:'Federo','Jost',sans-serif;font-size:.9rem;letter-spacing:.02em;line-height:1.35;color:var(--muted-l);}
 .chapter-panel .cat-hint{animation:catHintIn .45s ease both;}

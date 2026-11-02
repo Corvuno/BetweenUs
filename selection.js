@@ -218,10 +218,10 @@ const paintLines = () => { linesRoot.dataset.lines = dockedQuery.matches || shee
 paintLines();
 dockedQuery.addEventListener('change', paintLines);
 
-// "Hold a category to see what it's about": under the categories of the first chapter opened, on the sheet only,
-// gone for good after the first hold (state.js HINTS).
+// "Hold a category to see what it's about": under the categories of every chapter opened, on the sheet only,
+// gone from all of them for good after the first hold (state.js HINTS).
 function showCategoryLinesHint(panel) {
-  if (dockedQuery.matches || hintIsTaught('lines') || document.querySelector('.cat-hint') || !panel.dataset.chapter) return;
+  if (dockedQuery.matches || hintIsTaught('lines') || panel.querySelector('.cat-hint') || !panel.dataset.chapter) return;
   panel.append(Object.assign(document.createElement('p'), { className: 'cat-hint', textContent: "Hold a category to see what it's about" }));
 }
 
@@ -246,17 +246,17 @@ function setSheetLines(on) {
   sheetLines = on;
   try { localStorage.setItem(LINES_KEY, on ? '1' : '0'); } catch (error) { console.warn('Could not save the category lines choice:', error); }
   hintRetire('lines');
-  const hint = document.querySelector('.cat-hint');
+  const hints = [...document.querySelectorAll('.cat-hint')];
   const panels = [...document.querySelectorAll('.chapter-panel.open[data-chapter]')];
   const glides = panels.flatMap(panel => [...panel.querySelectorAll('.toggle-btn .cat-dot, .toggle-btn .cat-name')]);
   const before = new Map(glides.map(el => [el, el.getBoundingClientRect()]));
   const heights = panels.map(panel => panel.getBoundingClientRect().height);
   const animated = !prefersReducedMotion.matches;
   if (animated) {
-    if (hint) fadeGhost(hint, hint.parentElement, LINES_HINT_FADE_MS);
+    hints.forEach(hint => fadeGhost(hint, hint.parentElement, LINES_HINT_FADE_MS));
     if (!on) panels.forEach(panel => panel.querySelectorAll('.cat-line').forEach(line => fadeGhost(line, panel, LINES_FADE_OUT_MS)));
   }
-  hint?.remove();
+  hints.forEach(hint => hint.remove());
   paintLines();
   if (!animated) return;
   linesRoot.classList.add('switching');   // the sheet's picks ease at the same pace while it moves
