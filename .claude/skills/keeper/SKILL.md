@@ -167,7 +167,7 @@ builder builds to and what the tester checks, one by one.
 
 ### The backlog, and one build at a time
 
-The backlog is the single queue: Building now, Next, Waiting on the owner, Parked, and Done
+The backlog is the single queue: Refine, Next, Building now, Parked, and Done
 (closed). Since 2026-10-31 it lives in a backlog tool, not a file (owner: "a real system…
 that actually keeps updated"); `project.md` says which tool and how. Every Keeper session reads
 it at the start and changes it the moment a story is agreed, started, landed, parked or
@@ -179,7 +179,13 @@ adding anything, search: one wish is one item, never two.
   changes in the same place"). This holds for new features and small fixes alike. Approving a
   story, picking a card or a mockup means: it goes on the backlog, ready to build. It is built
   when its turn comes, by whichever thread is free.
-- **Where it goes:** at the bottom of Next, unless the owner says it goes to the top. For a
+- **Refine is for what needs the owner; Next is for what a builder can do alone** (owner,
+  2026-11-02: "cards where I have to do things should be in a refine column, those are
+  different from things you build"). Anything still waiting on the owner's choice, words,
+  picks, mockup choice, answer or action (a key, a check on their own phone) is in Refine,
+  including card rounds and "what do I want" questions. An item moves to Next only when
+  nothing more is needed from the owner to build it. A builder never takes a Refine item.
+- **Where it goes:** at the bottom of Next (or of Refine, while it still needs the owner), unless the owner says it goes to the top. For a
   fix, ask in the same message you say the fix back: top or bottom?
 - **Talking runs in parallel** (owner, 2026-10-23: "multi topic is good"): any number of
   sessions may talk wishes through, run card rounds and make mockups. They only *add* or
@@ -199,7 +205,7 @@ adding anything, search: one wish is one item, never two.
   Next holds nothing it can start; then it reports. The owner can stop it at any time.
 - **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
   sat there unwritten). A story goes there only when a builder starts on it. Proposals still
-  to write or picks still to make keep it in Next or Waiting on the owner.
+  to write or picks still to make keep it in Refine.
 - **Finish what you take.** A story leaves Building now when it lands on `main` (to Done, with
   the commit) or is handed back (to Next or Waiting, with why). A story sitting in Building
   now for over a day with no new commits on `main` is stale: check its session; if it stopped,

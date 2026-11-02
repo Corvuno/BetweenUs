@@ -5,7 +5,7 @@
 //  - A card the owner dragged changes the labels on the next check (every 15 minutes).
 //  - When both changed since they last matched, the newer change wins.
 //
-// Columns: New (owner's own wish, not sorted yet), Waiting on owner, Next, Building now, Parked,
+// Columns: New (owner's own wish, not sorted yet), Refine (needs the owner), Next, Building now, Parked,
 // Done. Done = issue closed as completed. Closed as not planned = taken off the board.
 //
 // Needs BOARD_TOKEN (a key the owner made, allowed to change projects) and GITHUB_TOKEN.
@@ -16,13 +16,13 @@ const REPO = 'BetweenUs';
 const TITLE = 'Between Us backlog';
 const COLUMNS = [
   { name: 'New', color: 'GRAY', description: 'Your own wish, not sorted yet' },
-  { name: 'Waiting on owner', color: 'ORANGE', description: 'Needs your answer' },
+  { name: 'Refine', color: 'ORANGE', description: 'Needs you: a choice, words, a pick or a key' },
   { name: 'Next', color: 'BLUE', description: 'Agreed, waiting its turn' },
   { name: 'Building now', color: 'YELLOW', description: 'A builder is at work' },
   { name: 'Parked', color: 'PURPLE', description: 'Kept for later' },
   { name: 'Done', color: 'GREEN', description: 'Landed on main' },
 ];
-const STATUS_LABELS = ['Waiting on owner', 'Next', 'Building now', 'Parked'];
+const STATUS_LABELS = ['Refine', 'Next', 'Building now', 'Parked'];
 const DONE_DAYS = 14; // closed issues older than this are not added to the board
 
 const boardToken = process.env.BOARD_TOKEN;
@@ -128,7 +128,7 @@ function columnFromIssue(i) {
   if (i.state === 'CLOSED') return i.stateReason === 'NOT_PLANNED' || i.stateReason === 'DUPLICATE' ? null : 'Done';
   const names = i.labels.nodes.map(l => l.name);
   // If two status labels are on at once, the one further along wins.
-  for (const s of ['Building now', 'Waiting on owner', 'Next', 'Parked']) if (names.includes(s)) return s;
+  for (const s of ['Building now', 'Refine', 'Next', 'Parked']) if (names.includes(s)) return s;
   return 'New';
 }
 

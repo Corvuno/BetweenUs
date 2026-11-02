@@ -9,7 +9,7 @@ overrule it. Facts about the owner (what they did, saw or meant) are always aske
 
 Sessions that run on their own with nobody to answer (the scheduled Friday code clean-up) follow
 the Keeper's rules for building, checks, the backlog and the report, but don't wait for the
-owner: anything that needs a decision goes into the backlog labelled Waiting on owner instead.
+owner: anything that needs a decision goes into the backlog labelled Refine instead.
 
 History: until 2026-10-29 the first rule here was "DO NOT GUESS. EVER. ASK." for every session
 outside the Keeper, written after sessions repeatedly shipped guesses. Its core lives on in the

@@ -150,11 +150,11 @@ task or decision as the Keeper writes it (kinds and acceptance criteria as in th
 Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue_write`,
 `add_issue_comment`).
 
-- **Where it stands** is a label: `Building now`, `Next`, `Waiting on owner`, `Parked`. Done is
+- **Where it stands** is a label: `Refine` (needs the owner), `Next` (ready to build), `Building now`, `Parked`. Done is
   closed as completed; dropped is closed as not planned. Exactly one of these per open issue.
 - **The board** (owner, 2026-10-31: "mostly have sessions move it"): GitHub board "Between Us
-  backlog" on the owner's account, columns New, Waiting on owner, Next, Building now, Parked,
-  Done. Sessions never touch the board; they change labels and open/closed, and
+  backlog" on the owner's account, columns New, Refine, Next, Building now, Parked,
+  Done. (`Refine` was called `Waiting on owner` until 2026-11-02.) Sessions never touch the board; they change labels and open/closed, and
   `.github/workflows/backlog-board.yml` (`scripts/backlog-board.mjs`) moves the card at once.
   A card the owner drags changes the labels within about 15 minutes; if both changed in
   between, the newer change wins. New = an open issue with no status label. The job needs the
