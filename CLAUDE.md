@@ -40,8 +40,8 @@ Keeper's rule above: what the owner wants or meant is asked; how to build it is 
   `main` and push `main` yourself, the same session, without being asked
   again — that's what "land it on `main` yourself" above means in practice.
 - Once a change is actually decided — the owner approved a specific card, gave a
-  correction to fix, or otherwise made the call — it goes on the backlog (bottom, unless the
-  owner says top; for a fix, ask top or bottom), and when its turn comes it gets made,
+  correction to fix, or otherwise made the call — it goes on the backlog (always the bottom,
+  unless the owner says top; never ask where, owner 2026-11-02), and when its turn comes it gets made,
   committed and pushed. Don't stop to confirm again then; the owner has said explicitly not to.
 - **Builds go through to `main` without asking** (owner, 2026-11-02: "No waiting on me").
   A build taken from Next lands as soon as review and test pass; never ask the owner when to

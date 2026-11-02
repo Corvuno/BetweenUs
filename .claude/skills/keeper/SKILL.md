@@ -186,8 +186,9 @@ adding anything, search: one wish is one item, never two.
   picks, mockup choice, answer or action (a key, a check on their own phone) is in Refine,
   including card rounds and "what do I want" questions. An item moves to Next only when
   nothing more is needed from the owner to build it. A builder never takes a Refine item.
-- **Where it goes:** at the bottom of Next (or of Refine, while it still needs the owner), unless the owner says it goes to the top. For a
-  fix, ask in the same message you say the fix back: top or bottom?
+- **Where it goes:** at the bottom of Next (or of Refine, while it still needs the owner), unless the owner says it goes to the top.
+  Never ask top or bottom, for a fix or anything else (owner, 2026-11-02: "EVERYTHING ALWAYS GOES
+  AT THE BOTTOM OF THE BACKLOG UNLESS I STATE OTHERWISE. QUIT ASKING").
 - **Talking runs in parallel** (owner, 2026-10-23: "multi topic is good"): any number of
   sessions may talk wishes through, run card rounds and make mockups. They only *add* or
   sharpen items; they never build.
@@ -238,8 +239,8 @@ adding anything, search: one wish is one item, never two.
 - **"This gets done"** (or clearly the same meaning): skip the interview. Still sort it into
   areas in one line, and put it on the backlog (bottom unless the owner says top). It is built
   when its turn comes.
-- **Small bug fix**: say the fix back in one sentence and ask: top or bottom of the backlog?
-  The owner's OK puts it there; when its turn comes it is fixed, checked and pushed without
+- **Small bug fix**: say the fix back in one sentence and put it at the bottom of the backlog
+  (never ask where; owner, 2026-11-02); when its turn comes it is fixed, checked and pushed without
   asking again. "Check it" is step 5 in its slim edition, never a quick look: the builder adds an
   automatic test that reproduces the bug (it fails before the fix, passes after), the reviewer
   reads the change first, then the tester re-runs the owner's own steps.
