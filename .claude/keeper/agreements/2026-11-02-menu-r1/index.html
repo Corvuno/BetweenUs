@@ -1,0 +1,93 @@
+<title>Menu, round 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Jost:wght@300;400&family=Federo&display=swap" rel="stylesheet">
+<style>
+/* Review page in the app's own dark world: one column of reading, wide strips of pictures. */
+:root{--bg:#0e0c0a;--cream:#f0e8d8;--gold:#c9a84c;--muted:#9c8f7e;--dim:rgba(201,168,76,.14);--border:rgba(201,168,76,.26);--celadon:#A9C7B6;
+  --serif:'Cormorant Garamond',Georgia,serif;--caps:'Jost',system-ui,sans-serif;--small:'Federo','Jost',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:1.12rem;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.5rem var(--caps);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;text-wrap:balance}
+h2{font:300 1.05rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:46px 0 8px}
+h3{font:400 .82rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--celadon);margin:0 0 6px}
+p{margin:0 0 10px;max-width:44rem}
+.lede{color:var(--muted)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted);max-width:44rem}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem var(--caps);letter-spacing:.12em;text-transform:uppercase}
+a{color:var(--celadon)}
+.strip{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start}
+figure{margin:0;flex:none}
+figcaption{font:300 .82rem var(--caps);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in}
+.fig:focus-visible{outline:1px solid var(--celadon);outline-offset:3px}
+.fig img{display:block;height:auto}
+.phone img{width:300px}
+.pc img{width:720px;max-width:85vw}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px 30px;margin-top:10px}
+.opts > div{min-width:0}
+.opts p{font-size:1.05rem}
+.good{color:var(--cream)}
+.bad{color:var(--muted)}
+ul{margin:6px 0 10px;padding-left:1.1em;max-width:44rem}
+li{margin:3px 0}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button{font:300 .85rem var(--caps);letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:none}
+</style>
+<main>
+<h1>Menu, round 1</h1>
+<p class="lede">The menu, as it is now and in three new shapes, on the phone and on PC. All pictures are taken from the live app with its own fonts, colours and sheet, two cards into a hand on Balanced.</p>
+<p class="note">Same contents in every option: The Deck (was Categories), Ways to play, Start over (was Reshuffle), Your evening (Log and Sessions merged; the word follows the clock: morning, afternoon, evening, night), Favourites, and Show hints again. The Pause colour switch is gone. The icons are redrawn with square corners, like the Three, Spotlight and Twist icons. Tap a picture to open it full size.</p>
+<nav><a href="#phone">Phone, side by side</a><a href="#pc">PC, side by side</a><a href="#options">What each option does</a></nav>
+
+<h2 id="phone">Phone</h2>
+<div class="strip phone">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/phone-current.png" alt="The current phone menu: eight items in one list."></button></figure>
+  <figure><figcaption>A · Two groups</figcaption><button class="fig" type="button"><img src="img/phone-A.png" alt="Option A on the phone: the list sorted under Play and Yours."></button></figure>
+  <figure><figcaption>B · Like the play row</figcaption><button class="fig" type="button"><img src="img/phone-B.png" alt="Option B on the phone: centred items in pairs, styled like Three, Spotlight and Twist."></button></figure>
+  <figure><figcaption>C · Shows tonight</figcaption><button class="fig" type="button"><img src="img/phone-C.png" alt="Option C on the phone: each item shows where you are now."></button></figure>
+</div>
+
+<h2 id="pc">PC</h2>
+<p>On PC the menu becomes a side panel built from the same rows as The Deck's chapters. It slides in from the left, under the Menu button, while The Deck stays on the right.</p>
+<div class="strip pc">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/pc-current.png" alt="The current PC menu: a box in the middle of the card."></button></figure>
+  <figure><figcaption>A · Two groups</figcaption><button class="fig" type="button"><img src="img/pc-A.png" alt="Option A on PC: a left panel with framed rows under Play and Yours."></button></figure>
+  <figure><figcaption>B · Pairs</figcaption><button class="fig" type="button"><img src="img/pc-B.png" alt="Option B on PC: The Deck full width, the others in pairs."></button></figure>
+  <figure><figcaption>C · Shows tonight</figcaption><button class="fig" type="button"><img src="img/pc-C.png" alt="Option C on PC: framed rows with the current state on the right, like the chapter counts."></button></figure>
+</div>
+
+<h2 id="options">What each option does</h2>
+<div class="opts">
+  <div>
+    <h3>Now</h3>
+    <p class="bad">Eight items in one list with dividers that group nothing in particular. Log and Sessions read as the same thing. Pause colour is a test switch. "Categories" opens a screen called The Deck. The icons have round corners, while the rest of the app's icons are square.</p>
+  </div>
+  <div>
+    <h3>A · Two groups</h3>
+    <p class="good">The closest to today. The same rows, sorted under two headings in the style of The Deck's "Start from" and "Chapters": Play for the game, Yours for what you keep. Show hints again sits at the bottom as a quiet line.</p>
+    <p class="bad">It is still a list. It is tidier, but you would still recognise it as a settings menu.</p>
+  </div>
+  <div>
+    <h3>B · Like the play row</h3>
+    <p class="good">Uses the look you called clever on Three, Spotlight and Twist: caps name with an icon, an italic line under it, centred and symmetric. The Deck stands alone at the top as the main item, and the rest come in pairs. It is the most "this game" of the three.</p>
+    <p class="bad">The italic lines have to stay short to fit a pair, so they explain less. On PC the pairs become boxes side by side, which is less elegant than on the phone.</p>
+  </div>
+  <div>
+    <h3>C · Shows tonight (the rethink)</h3>
+    <p class="good">Each item shows where you are instead of describing itself: which deck, how far into the hand, how many drawn, how many starred. The PC rows use the count column exactly as the chapters do. Ways to play and Show hints move to the bottom, because you need them once.</p>
+    <p class="bad">The most new work: every line needs live numbers. Ways to play becomes small at the bottom, so a first-timer finds it less easily.</p>
+  </div>
+</div>
+</main>
+<div id="viewer" hidden><header><button type="button" id="back">&larr; Back</button></header><img id="big" alt=""></div>
+<script>
+const v=document.getElementById('viewer'),big=document.getElementById('big');
+document.querySelectorAll('.fig').forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');big.src=i.src;big.alt=i.alt;
+  big.style.width=i.src.includes('phone')?'390px':'1440px';v.hidden=false;v.scrollTop=0;}));
+document.getElementById('back').addEventListener('click',()=>{v.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')v.hidden=true;});
+</script>
