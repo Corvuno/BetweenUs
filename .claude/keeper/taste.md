@@ -39,6 +39,8 @@ a light category; "belonging" as a feeling; subject lists copied from the cards.
 
 ## Turned down (with why)
 
+- "Your body" in Body cards (owner, 2026-11-02): "your body is a vessel, not the feeling of being alive… it creates distance where it should make connection." Body cards speak to *you* in your body — moving, dancing, how you look and feel — not to "your body" as a thing you own.
+
 - "Which piece of technology would you happily un-invent?" — cheap answers, Colbert style.
 - "If you ran your country for a year…" — "could be in a crappy date deck".
 - Bare alternatives "caught in the act", "awkward morning after", "longest and shortest" — juvenile, drunk party-game questions.
