@@ -629,13 +629,12 @@ The subject matter is not what makes a card recognisable — every deck asks abo
     register. Unwind isn't just relaxation, it's holidays, free time, hobbies, fun. Name
     the category's actual outer edge before writing toward it, not the first association
     the category name brings to mind.
-12. **"Me" only where it works better.** There is no fixed narrator, so by default a card
-    is pulled from the player without a "me": *"Tell about the moment..."*. But a "me" that
-    isn't a real person is fine where the card works better with it (owner, 2026-11-02: "some
-    questions work better with me, like undressing"). If a card can lose its "me" without
-    becoming a different question, it loses it. "Us" ("take us there") speaks to the table
-    and is fine (owner: "then we leave them"). The Us categories ask the person across from
-    you, so their "me" is always right.
+12. **"Me", "I" and "us".** No rule against "me" any more (owner, 2026-11-02: "rule me is out"),
+    but new cards are written without a "me": the card is pulled from the player, *"Tell about
+    the moment..."*. Cards that already have one keep it. An "I" works in an open "…" card the
+    player finishes in their own voice: *"The closest thing I have to a ritual is..."*. "Us"
+    ("take us there") speaks to the table and stays. The Us categories ask the person across
+    from you, so their "me" is always right.
 13. **Vary how a card asks.** About four in five cards start with a question word. Mix in "Tell
     about…", "Quote…", "Name…", "Point to…", an open "…" sentence, or a command. Every proposal
     slot offers at least one alternative that isn't a question, and a category never loses its
