@@ -505,10 +505,14 @@ Every category in an open chapter carries its own line (`.cat-line`, the categor
   category is picked it takes `rgba(240,232,216,.72)`. Never smaller than the chapter line, never muted small print.
 - **The name keeps its look.** Dot and name sit on one row (grid, dot in column 1, line in column 2); the picked
   underline moves from under the whole button to under the name only (`.cat-name::after`).
-- **Computer (docked panel, `dockedQuery` in `selection.js`, the same switch as "THE DECK, DOCKED").** Lines always on; a
-  chapter's categories in two equal columns. No hover `title` on a category any more.
+- **Lines on is one look, phone and computer alike** (round 3, issue #91): a chapter's categories in two equal columns
+  (`gap:0 10px`), each name with its line under it, `padding:6px` per category (a little tighter than round 3's 9px, so
+  eleven categories fit one phone screen; a one-line category is 54px, above the 44px minimum). One shared rule on
+  `html[data-lines="on"] .chapter-panel[data-chapter]`, not a docked-only one.
+- **Computer (docked panel, `dockedQuery` in `selection.js`, the same switch as "THE DECK, DOCKED").** Lines always on.
+  No hover `title` on a category any more.
 - **Phone / sheet.** Lines off by default and the sheet exactly as before; a hold of 550ms (the end-of-hand hold) on any
-  category switches them on or off for every chapter at once, as one list (each category the panel's full width).
+  category switches them on or off for every chapter at once.
   The choice is remembered (`bu.catLines`). `html[data-lines="on"|"off"]` carries the state; JS sets it (docked = on).
 - **The hold.** The held category presses in (`scale(.98)`, 160ms) and dims to `.5` across the hold (the way Next Card
   dims while held at the end of a hand); a hold never picks or opens the browser menu. Under reduced motion the press-in and dim are instant.

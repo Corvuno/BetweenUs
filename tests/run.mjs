@@ -2159,7 +2159,7 @@ async function run() {
     await page.waitForTimeout(700);   // the switch eases about .45s
   };
 
-  await check('phone: category lines are off, the hint shows once, a hold switches the lines (and is remembered) without picking, a tap still picks', async () => {
+  await check('phone: category lines are off, the hint shows once, a hold switches the lines (in two columns, remembered) without picking, a tap still picks', async () => {
     const surface = '.chapter-panel[data-chapter="surface"]';
     const firstCat = `${surface} .toggle-btn:visible`;
     try {
@@ -2193,6 +2193,13 @@ async function run() {
       assert(await linesOn(), 'a hold did not switch the lines on');
       assert((await picked()) === before, 'a hold picked or unpicked the category');
       assert(await page.locator(`${surface} .cat-line`).first().isVisible(), 'the lines are not showing after the hold');
+      // two columns on the phone, a tappable height each, nothing running off the side
+      const cols = await page.evaluate(sel => {
+        const btns = [...document.querySelectorAll(`${sel} .toggle-btn`)].filter(b => b.offsetParent);
+        return { columns: new Set(btns.map(b => Math.round(b.getBoundingClientRect().left))).size,
+          shortest: Math.min(...btns.map(b => b.getBoundingClientRect().height)), wide: document.documentElement.scrollWidth > innerWidth };
+      }, surface);
+      assert(cols.columns === 2 && cols.shortest >= 44 && !cols.wide, `phone lines are not two usable columns: ${JSON.stringify(cols)}`);
       assert((await page.locator('.cat-hint').count()) === 0 && await page.evaluate(() => hintIsTaught('lines')), 'the hint is not gone for good after the first hold');
       assert(await page.evaluate(() => localStorage.getItem('bu.catLines')) === '1', 'the choice is not remembered');
       // the lines are the categories' own words

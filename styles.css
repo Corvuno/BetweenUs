@@ -1574,8 +1574,8 @@ body.tok-taught .tok-hint{display:none;}
 
 /* ── Category lines (issue #85) ──
    Each category carries its line (.cat-line, the category's own desc). Docked (a computer with a mouse) the lines are
-   always on, in two columns (see "THE DECK, DOCKED"); on the sheet they are off until a hold on any category switches
-   them on for every chapter (html[data-lines], set in selection.js), in a single list. Off is the sheet as it always was.
+   always on; on the sheet they are off until a hold on any category switches them on for every chapter
+   (html[data-lines], set in selection.js). Lines on is two columns everywhere, phone and docked panel alike. Off is the sheet as it always was.
    The line is Federo at .8rem like a chapter's line (.ch-desc), in the quiet helper tone, brighter once picked. */
 :root{--pick-ease:.2s;}   /* how fast a category's state eases: the sheet's own .2s with the lines off, .45s once they are on or moving */
 html[data-lines="on"],html.switching{--pick-ease:.45s;}
@@ -1603,8 +1603,9 @@ html[data-lines="on"] .chapter-panel .toggle-btn.on .cat-line{color:rgba(240,232
 @media (hover:hover) and (pointer:fine){
   html[data-lines="on"] .chapter-panel .toggle-btn:not(.on):hover .cat-name::after{opacity:.35;}
 }
-/* the sheet: one list, every category the panel's full width (the docked panel sets its own columns) */
-html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;padding:9px 8px;}
+/* a chapter's categories in two columns, each name with its line under it: the phone sheet and the docked panel alike */
+html[data-lines="on"] .chapter-panel[data-chapter]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px;}
+html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;padding:6px;align-content:start;}
 /* the hold: the category presses in and dims across the hold, as Next Card dims while held at the end of a hand;
    the dim ends as the lines start to appear, and the category comes back to full strength as they ease in */
 .cat-area .chapter-panel .toggle-btn.holding{opacity:.5;transform:scale(.98);
@@ -1661,9 +1662,6 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .sect-lbl{margin-bottom:6px;}
   .deselect-btn{padding-block:6px;}
   .chapters{gap:3px;}
-  /* a chapter's categories in two columns, each name with its line under it (the lines are always on here) */
-  .chapter-panel[data-chapter]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px;}
-  html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{padding:9px 6px;align-content:start;}
   .chapter,.ch-fold--row{min-height:48px;}
   .ch-main{padding-block:3px;gap:1px;}
   .play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);border-left:0;margin:0;
