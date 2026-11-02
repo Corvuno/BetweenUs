@@ -164,6 +164,13 @@ own words.
 question, number them 1, 2, 3 … so the owner can answer by number. Still plain
 sentences, one question per number, no suggested answers.
 
+## Numbers always come with their name
+
+(owner, 2026-11-02: "numbers that mean nothing to me"). Never write a bare number or code to
+the owner: a backlog item is always its number *and* its title ("#67, Global check of how
+cards ask"), a commit is what it did (the code may follow, never stand alone), a card is
+cited in full as below. Applies to chat, reports, backlog comments and the board alike.
+
 ## Say what happened
 
 The owner wants to know what actually happened, as it happens, because it helps
