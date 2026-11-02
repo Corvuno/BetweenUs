@@ -404,7 +404,7 @@ const NEWDECK_CARDS = [
   { level: "uscolleague", question: "What do we do differently when it's just the two of us?" },
 
   // ─── USINTIMATE ───
-  { level: "usintimate", question: "What do you think I want from you that I haven't asked for?" },
+  { level: "usintimate", question: "What did you learn about me in bed that surprised you?" },
   { level: "usintimate", question: "Replay a moment between us — out loud." },
   { level: "usintimate", question: "What do you wish I understood about your desire?" },
   { level: "usintimate", question: "Point to where you want to be kissed, right now." },

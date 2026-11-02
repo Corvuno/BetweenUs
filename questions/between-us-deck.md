@@ -57,6 +57,8 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Flesh** — "Describe the most sexually charged moment of your life — what made it that?" (from an old version; owner asked to bench, 2026-11-02)
 - **Kink** — "In bed — are you where you want to be, or just where you always end up?" (from an old version; owner asked to bench, 2026-11-02)
 - **Kink** — "What turns you on that you don't fully understand?" (from an old version; owner asked to bench, 2026-11-02)
+- **Us: Intimate** — "Where's the best place we've ever had sex, and why there?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
+- **Us: Intimate** — "What do you love about how we've changed in bed since the beginning?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -803,6 +805,14 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.31 — Us: Intimate 1 (#77, two cards asking the same thing)
+
+- **Us: Intimate 1**
+  - Old: "What do you think I want from you that I haven't asked for?"
+  - New: "What did you learn about me in bed that surprised you?"
+  - Why: the same question as Us: Intimate 10, from the other side; owner kept 10.
+- Bench: two Us: Intimate alternatives, on the owner's word.
 
 ## Patch v7.30 — global check, part 3: Body 3 and 5 (#67)
 
