@@ -173,6 +173,12 @@ Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue
   like a message in the chat (a correction, an answer, a wish). Act on it by the usual rules,
   answer on the item in one or two plain lines, and then remove the label. Before building an
   item, read all its comments.
+- **The owner moved a card from Refinement to Ready** (often with a comment answering it). Before
+  building, the Keeper checks that everything the item asked the owner is now answered, writes
+  the answers into the item (story, acceptance criteria, Touches) so the builder gets them, and
+  names in one line on the item what it took from the comment. The builder gets the item text,
+  never a bare comment. If anything is still open, it doesn't guess: the card goes back to
+  Refinement with the question on the item.
 - **No doubles.** Before creating an issue, search open and closed ones for the same wish. If
   it exists, update it or comment on it instead.
 - **Building now** gets a comment with the session link when the builder starts; the label
