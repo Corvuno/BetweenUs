@@ -44,6 +44,22 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Us: Friends** — "Name the moment I surprised you most." (alternative for Us: Friends 10; owner asked to bench, round 8 2026-10-31)
 - **Roots** — "What did school teach you about your place that you're still unlearning?" (alternative for Roots 7; owner asked to bench, global check 2026-11-02)
 - **Roots** — "What did your grandparents live through that your family still carries?" (alternative for Roots 12; owner asked to bench, global check 2026-11-02)
+- **Kink** — "Do you like being watched — in any context?" (from an old version; owner asked to bench, 2026-11-02; close to Kink 2, "Watching, or being watched — which does more for you?")
+- **Attract** — "What do you find attractive that most people wouldn't put on a list?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "What's the most intimate thing someone can do that has nothing to do with sex?" (from an old version; owner asked to bench, 2026-11-02)
+- **Kink** — "What would surprise people most about what actually does it for you?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "What's the most spontaneous sexual experience you've ever had?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "Have you ever fallen for someone you were only supposed to sleep with?" (from an old version; owner asked to bench, 2026-11-02)
+- **Carnal** — "What's the best sexual experience you've ever had?" (from an old version; owner asked to bench, 2026-11-02; close to Carnal 2, "Take us through the best sex you've ever had — what made it that good?")
+- **Flesh** — "Is there a sexual experience you wish you could have again?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "The sexual experience that made you laugh the most — what happened?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "What's something you did sexually that was entirely out of character?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "What are the biggest differences between sex with love and sex purely from desire — for you?" (from an old version; owner asked to bench, 2026-11-02)
+- **Carnal** — "What pulls you out of sex and into your head?" (from an old version; owner asked to bench, 2026-11-02; close to Carnal 1, "What pulls you out of your body during sex, when it happens?")
+- **Carnal** — "What are you like the morning after?" (from an old version; owner asked to bench, 2026-11-02)
+- **Flesh** — "Describe the most sexually charged moment of your life — what made it that?" (from an old version; owner asked to bench, 2026-11-02)
+- **Kink** — "In bed — are you where you want to be, or just where you always end up?" (from an old version; owner asked to bench, 2026-11-02)
+- **Kink** — "What turns you on that you don't fully understand?" (from an old version; owner asked to bench, 2026-11-02)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -790,6 +806,18 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.30 — global check, part 3: Body 3 and 5 (#67)
+
+- **Body 3**
+  - Old: "When did you last move purely for the joy of it — no goal, no fitness?"
+  - New: "I move just for the joy of it when..."
+  - Why: Below Body's band; owner's own wording, a story about you, not "your body".
+- **Body 5**
+  - Old: "Point to where you carry your tension right now."
+  - New: "The moment I first felt proud of how I look..."
+  - Why: Weak (owner); owner's own wording, a story about how you see yourself.
+- The global check is complete.
 
 ## Patch v7.29 — global check, part 2: Self 11, Romance 12, Mind 12, Kink 7, World 11 (#67)
 

@@ -153,9 +153,9 @@ const NEWDECK_CARDS = [
   // ─── BODY ───
   { level: "body", question: "When did your body surprise you with what it could do?" },
   { level: "body", question: "When did you keep going long after your body wanted to stop?" },
-  { level: "body", question: "When did you last move purely for the joy of it — no goal, no fitness?" },
+  { level: "body", question: "I move just for the joy of it when..." },
   { level: "body", question: "What music reaches your body before it reaches your head — and what happens?" },
-  { level: "body", question: "Point to where you carry your tension right now." },
+  { level: "body", question: "The moment I first felt proud of how I look..." },
   { level: "body", question: "Which scar still carries the best story?" },
   { level: "body", question: "Which part of your body do you like keeping to yourself, and which part is happily on display for the general public?" },
   { level: "body", question: "Which version of your body do you still compare this one to?" },
