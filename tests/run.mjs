@@ -2150,6 +2150,105 @@ async function run() {
     assert(tops.length === 1, `card top moved between hint states: ${tops.join(', ')}`);
   });
 
+  // ── Category lines in The Deck (issue #85) ──────────────────────────────
+  const linesOn = () => page.evaluate(() => document.documentElement.dataset.lines === 'on');
+  const holdOn = async (selector, ms) => {
+    const box = await page.locator(selector).first().boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down(); await page.waitForTimeout(ms); await page.mouse.up();
+    await page.waitForTimeout(700);   // the switch eases about .45s
+  };
+
+  await check('phone: category lines are off, the hint shows once, a hold switches the lines (and is remembered) without picking, a tap still picks', async () => {
+    const surface = '.chapter-panel[data-chapter="surface"]';
+    const firstCat = `${surface} .toggle-btn:visible`;
+    try {
+      await openCategorySheet();
+      await page.evaluate(() => { localStorage.removeItem(HINTS.lines.key); localStorage.removeItem('bu.catLines'); document.body.classList.remove(HINTS.lines.cls); document.querySelector('.cat-hint')?.remove(); });
+      if ((await page.locator('#foldAll').textContent()) === 'Close all') { await page.locator('#foldAll').click(); await page.waitForTimeout(450); }
+      await page.evaluate(() => { document.documentElement.dataset.lines = 'off'; });
+      await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(500);
+      assert(!(await linesOn()), 'the lines should be off by default on a phone');
+      assert(await page.locator(`${surface} .cat-line`).first().isHidden(), 'a category line shows while the lines are off');
+      assert((await page.locator('.cat-hint').count()) === 1 && (await page.locator('.cat-hint').textContent()) === "Hold a category to see what it's about", 'the hint is missing or misworded in the first chapter opened');
+      assert(await page.locator(`${surface} .cat-hint`).isVisible(), 'the hint is not visible');
+      // a tap picks as before
+      const level = await page.locator(firstCat).first().getAttribute('data-level');
+      const picked = () => page.evaluate(l => state.activeToggles.has(l), level);
+      const before = await picked();
+      await page.locator(firstCat).first().click(); await page.waitForTimeout(200);
+      assert((await picked()) !== before, 'a tap did not pick or unpick the category');
+      await page.locator(firstCat).first().click(); await page.waitForTimeout(200);
+      assert((await picked()) === before, 'a second tap did not restore the category');
+      // a short press (under the hold) leaves the lines alone
+      await holdOn(firstCat, 200);
+      assert(!(await linesOn()), 'a short press switched the lines on');
+      assert((await picked()) !== before, 'a short press did not pick');
+      await holdOn(firstCat, 200);
+      assert((await picked()) === before, 'the second short press did not unpick');
+      // a hold switches the lines on, never picks, and the browser's own menu is held back
+      const menu = await page.evaluate(sel => { const e = new MouseEvent('contextmenu', { bubbles: true, cancelable: true }); document.querySelector(sel).dispatchEvent(e); return e.defaultPrevented; }, `${surface} .toggle-btn`);
+      assert(menu, 'the long press can open the browser menu');
+      await holdOn(firstCat, 750);
+      assert(await linesOn(), 'a hold did not switch the lines on');
+      assert((await picked()) === before, 'a hold picked or unpicked the category');
+      assert(await page.locator(`${surface} .cat-line`).first().isVisible(), 'the lines are not showing after the hold');
+      assert((await page.locator('.cat-hint').count()) === 0 && await page.evaluate(() => hintIsTaught('lines')), 'the hint is not gone for good after the first hold');
+      assert(await page.evaluate(() => localStorage.getItem('bu.catLines')) === '1', 'the choice is not remembered');
+      // the lines are the categories' own words
+      const wrong = await page.evaluate(() => [...document.querySelectorAll('.toggle-btn')].filter(b => b.querySelector('.cat-line').textContent !== CATEGORY_DESCRIPTIONS[b.dataset.level]).map(b => b.dataset.level));
+      assert(wrong.length === 0, `lines differ from the category text: ${wrong}`);
+      // a tap picks with the lines on; a second hold switches them off again
+      await page.locator(firstCat).first().click(); await page.waitForTimeout(200);
+      assert((await picked()) !== before, 'a tap did not pick with the lines on');
+      await page.locator(firstCat).first().click(); await page.waitForTimeout(200);
+      await holdOn(firstCat, 750);
+      assert(!(await linesOn()) && await page.evaluate(() => localStorage.getItem('bu.catLines')) === '0', 'a second hold did not switch the lines off and remember it');
+      // closing and reopening the chapter does not bring the hint back
+      await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(400);
+      await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(400);
+      assert((await page.locator('.cat-hint').count()) === 0, 'the hint came back');
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
+  await check('computer panel: every open chapter shows its categories in two columns with their lines, no tooltip, no hint; a hold still picks', async () => {
+    const wide = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const pc = await wide.newPage();
+    try {
+      await pc.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await pc.waitForSelector('#card', { state: 'visible' });
+      await pc.locator('#tokCats').click(); await pc.waitForTimeout(900);
+      await pc.locator('#foldAll').click(); await pc.waitForTimeout(600);
+      assert(await pc.evaluate(() => document.documentElement.classList.contains('deck-docked')), 'the deck is not docked at 1440x900');
+      const st = await pc.evaluate(() => {
+        const open = [...document.querySelectorAll('.chapter-panel.open[data-chapter]')];
+        const btns = open.flatMap(p => [...p.querySelectorAll('.toggle-btn')]).filter(b => b.offsetParent);
+        const lefts = [...new Set([...document.querySelector('.chapter-panel.open[data-chapter] ').querySelectorAll('.toggle-btn')].map(b => Math.round(b.getBoundingClientRect().left)))];
+        return {
+          shown: btns.length, hidden: btns.filter(b => getComputedStyle(b.querySelector('.cat-line')).display === 'none').length,
+          words: btns.filter(b => b.querySelector('.cat-line').textContent !== CATEGORY_DESCRIPTIONS[b.dataset.level]).length,
+          titled: document.querySelectorAll('.toggle-btn[title]').length, hint: document.querySelectorAll('.cat-hint').length,
+          columns: lefts.length, cut: open.filter(p => p.scrollHeight > p.clientHeight + 1).length,
+        };
+      });
+      assert(st.shown > 0 && st.hidden === 0 && st.words === 0, `lines on the panel: ${JSON.stringify(st)}`);
+      assert(st.titled === 0, 'a category still has a hover tooltip');
+      assert(st.hint === 0, 'the hint shows on the computer');
+      assert(st.columns === 2, `expected two columns, got ${st.columns}`);
+      assert(st.cut === 0, 'an open chapter is cut off');
+      const level = 'culture';
+      const was = await pc.evaluate(l => state.activeToggles.has(l), level);
+      const box = await pc.locator(`.toggle-btn[data-level="${level}"]`).boundingBox();
+      await pc.mouse.move(box.x + 20, box.y + 10); await pc.mouse.down(); await pc.waitForTimeout(750); await pc.mouse.up(); await pc.waitForTimeout(300);
+      assert(await pc.evaluate(() => document.documentElement.dataset.lines === 'on'), 'a hold on the computer switched the lines');
+      assert(await pc.evaluate(l => state.activeToggles.has(l), level) !== was, 'a long click on the computer did not pick as before');
+    } finally {
+      await wide.close();
+    }
+  });
+
   await check('no uncaught page errors were raised during the run', async () => {
     assert(consoleErrors.length === 0, `page errors: ${consoleErrors.join(' | ')}`);
   });

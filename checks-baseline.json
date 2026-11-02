@@ -44,7 +44,6 @@
   "selection.js | TS2339 | Property 'SHOW_BACKUP' does not exist on type 'Window & typeof globalThis'.": 1,
   "selection.js | TS2339 | Property 'SPICE_MODE' does not exist on type 'Window & typeof globalThis'.": 2,
   "selection.js | TS2339 | Property 'closeCats' does not exist on type 'Window & typeof globalThis'.": 1,
-  "selection.js | TS2339 | Property 'closest' does not exist on type 'EventTarget'.": 1,
   "selection.js | TS2339 | Property 'dataset' does not exist on type 'Element'.": 6,
   "selection.js | TS2339 | Property 'offsetLeft' does not exist on type 'Element'.": 1,
   "selection.js | TS2339 | Property 'style' does not exist on type 'Element'.": 2,

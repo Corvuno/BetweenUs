@@ -21,7 +21,7 @@
       const cat = CATEGORIES[id];
       if (cat.chapter !== ch) return;
       const desc = (typeof CATEGORY_DESCRIPTIONS !== 'undefined' && CATEGORY_DESCRIPTIONS[id]) || '';
-      html += `<button type="button" class="toggle-btn" data-level="${id}" data-chapter="${ch}" style="--c:${levelColor(id)}" title="${esc(desc)}"><i class="cat-dot" aria-hidden="true"></i><span class="cat-name">${esc(cat.label)}</span></button>`;
+      html += `<button type="button" class="toggle-btn" data-level="${id}" data-chapter="${ch}" style="--c:${levelColor(id)}"><i class="cat-dot" aria-hidden="true"></i><span class="cat-name">${esc(cat.label)}</span><span class="cat-line">${esc(desc)}</span></button>`;
     });
     panel.innerHTML = html;
   });
@@ -823,8 +823,7 @@ applyToggleUI();
   window.afterCatsClosed=function(fn){ if(catsBusy()) closeWaiters.push(fn); else fn(); };
   window.catsBusy=catsBusy;
   /* On a wide window with a mouse The Deck is a panel docked beside the card (styles.css, "THE DECK,
-     DOCKED"): no scrim, and the main screen makes room while it is open. */
-  const dockedQuery=matchMedia('(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine)');
+     DOCKED"): no scrim, and the main screen makes room while it is open. `dockedQuery` is in selection.js. */
   const syncDock=()=>{
     const docked=dockedQuery.matches;
     document.documentElement.classList.toggle('deck-docked',docked);
@@ -1284,6 +1283,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     btn.setAttribute('aria-expanded', String(open));
     const ms = open ? 260 : 200;
     window.slideFold(panel, open, prefersReducedMotion.matches ? 1 : ms);
+    if (open) showCategoryLinesHint(panel);
     if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }
 

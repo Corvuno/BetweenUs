@@ -1490,6 +1490,8 @@ body.tok-taught .tok-hint{display:none;}
 .chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);}
 .chapter.on .ch-name{color:var(--ch);}
 .chapter-group{display:block;max-height:30rem;transition:max-height .26s var(--ease-out),opacity .26s ease-out,margin-block-end .26s var(--ease-out),visibility 0s;}
+/* an open chapter is never cut off, whatever its categories and lines add up to */
+.chapter-group.open{max-height:none;}
 /* a chapter with nothing reachable under the current preset fades and collapses (the
    gap of .chapters goes with it) instead of jumping out; visibility keeps it out of reach */
 .chapter-group.ch-hidden{max-height:0;opacity:0;overflow:hidden;visibility:hidden;margin-block-end:-4px;
@@ -1570,6 +1572,54 @@ body.tok-taught .tok-hint{display:none;}
 .toggle-btn[data-level="kinks"]{--tc:#ce4d9e;}
 .mode-btn[data-mode="latenight"]{--tc:#8875aa;}
 
+/* ── Category lines (issue #85) ──
+   Each category carries its line (.cat-line, the category's own desc). Docked (a computer with a mouse) the lines are
+   always on, in two columns (see "THE DECK, DOCKED"); on the sheet they are off until a hold on any category switches
+   them on for every chapter (html[data-lines], set in selection.js), in a single list. Off is the sheet as it always was.
+   The line is Federo at .8rem like a chapter's line (.ch-desc), in the quiet helper tone, brighter once picked. */
+:root{--pick-ease:.2s;}   /* how fast a category's state eases: the sheet's own .2s with the lines off, .45s once they are on or moving */
+html[data-lines="on"],html.switching{--pick-ease:.45s;}
+.cat-line{display:none;}
+.chapter-panel{position:relative;}
+.cat-area .chapter-panel .toggle-btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  transition:color var(--pick-ease) ease,opacity var(--pick-ease) ease,transform .3s ease;}
+.cat-area .chapter-panel .cat-dot{transition:opacity var(--pick-ease) ease;}
+.cat-area .chapter-panel .toggle-btn::after,.chapter-panel .cat-name::after{transition:opacity var(--pick-ease) ease;}
+.cat-area .chapter-panel .cat-line{transition:color var(--pick-ease) ease;}
+html[data-lines="on"] .chapter-panel[data-chapter] .cat-line{display:block;}
+/* lines on: name and dot on one row, the line under the name; the underline sits under the name only */
+html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{
+  display:grid;grid-template-columns:auto 1fr;align-content:center;gap:0 7px;text-align:start;white-space:normal;}
+html[data-lines="on"] .cat-area .chapter-panel[data-chapter] .toggle-btn::after{opacity:0;}
+.chapter-panel .cat-name{position:relative;}
+.chapter-panel .cat-name::after{content:'';position:absolute;inset-inline:0;bottom:-.2em;height:1px;background:var(--tc);opacity:0;}
+html[data-lines="on"] .chapter-panel .toggle-btn.on .cat-name::after{opacity:.7;}
+html[data-lines="on"] .chapter-panel .cat-dot{align-self:center;}
+html[data-lines="on"] .chapter-panel .cat-name{justify-self:start;line-height:1.6;white-space:nowrap;}
+html[data-lines="on"] .chapter-panel .cat-line{grid-column:2;margin-top:.3em;
+  font-family:'Federo','Jost',sans-serif;font-size:.8rem;font-weight:400;letter-spacing:.02em;line-height:1.35;
+  text-transform:none;color:var(--text-helper);}
+html[data-lines="on"] .chapter-panel .toggle-btn.on .cat-line{color:rgba(240,232,216,.72);}
+@media (hover:hover) and (pointer:fine){
+  html[data-lines="on"] .chapter-panel .toggle-btn:not(.on):hover .cat-name::after{opacity:.35;}
+}
+/* the sheet: one list, every category the panel's full width (the docked panel sets its own columns) */
+html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;padding:9px 8px;}
+/* the hold: the category presses in and dims across the hold, as Next Card dims while held at the end of a hand;
+   the dim ends as the lines start to appear, and the category comes back to full strength as they ease in */
+.cat-area .chapter-panel .toggle-btn.holding{opacity:.5;transform:scale(.98);
+  transition:opacity .55s ease-in,transform .16s var(--ease-out),color var(--pick-ease) ease;}
+/* the hint under the first chapter opened: .tok-hint's face and size, in the tone it takes on a phone (--muted-l) */
+.chapter-panel .cat-hint{flex:0 0 100%;margin:0;padding:8px 9px 6px;
+  font-family:'Federo','Jost',sans-serif;font-size:.9rem;letter-spacing:.02em;line-height:1.35;color:var(--muted-l);}
+.chapter-panel .cat-hint{animation:catHintIn .45s ease both;}
+body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
+@keyframes catHintIn{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .chapter-panel :is(.toggle-btn,.cat-dot,.cat-line){transition:none;}
+  .cat-hint{animation:none;}
+}
+
 /* ── THE DECK, DOCKED (a computer with a mouse, owner 2026-10-29: "the panel beside the card") ──
    On a wide window with a mouse The Deck is a panel docked to the right edge instead of a window
    over the card. No scrim: the card stays in view and the main screen makes room: the body's right
@@ -1611,6 +1661,9 @@ body.tok-taught .tok-hint{display:none;}
   .sect-lbl{margin-bottom:6px;}
   .deselect-btn{padding-block:6px;}
   .chapters{gap:3px;}
+  /* a chapter's categories in two columns, each name with its line under it (the lines are always on here) */
+  .chapter-panel[data-chapter]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px;}
+  html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{padding:9px 6px;align-content:start;}
   .chapter,.ch-fold--row{min-height:48px;}
   .ch-main{padding-block:3px;gap:1px;}
   .play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);border-left:0;margin:0;

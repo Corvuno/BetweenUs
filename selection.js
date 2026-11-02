@@ -197,29 +197,128 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
 );
 
 
+// ── Category lines ───────────────────────────────────────────────────────────
+// Each category button carries its line (the category's desc). In the docked panel (a computer with a
+// mouse, the same switch as styles.css "THE DECK, DOCKED") the lines are always on, in two columns. On the
+// sheet they are off until the player holds any category for HOLD_MS; that switches them on or off for
+// every chapter at once, and the phone remembers the choice. A hold never picks.
+const dockedQuery = matchMedia('(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine)');
+const LINES_KEY = 'bu.catLines';
+const HOLD_MS = 550;                // the same hold as the end of a hand (ui.js)
+const LINES_EASE_MS = 450;          // names glide, lines fade, the panel resizes: all about .45s
+const LINES_FADE_OUT_MS = 250;      // lines leave first, before the names glide back
+const LINES_FADE_IN_DELAY_MS = 180; // lines arrive once the names are nearly home
+const LINES_HINT_FADE_MS = 350;     // the hint leaves like "· tap to change" does
+const linesRoot = document.documentElement;
+
+let sheetLines = false;             // the player's choice for the sheet
+try { sheetLines = localStorage.getItem(LINES_KEY) === '1'; } catch (error) { console.warn('Could not read the category lines choice:', error); }
+const linesShown = () => linesRoot.dataset.lines === 'on';
+const paintLines = () => { linesRoot.dataset.lines = dockedQuery.matches || sheetLines ? 'on' : 'off'; };
+paintLines();
+dockedQuery.addEventListener('change', paintLines);
+
+// "Hold a category to see what it's about": under the categories of the first chapter opened, on the sheet only,
+// gone for good after the first hold (state.js HINTS).
+function showCategoryLinesHint(panel) {
+  if (dockedQuery.matches || hintIsTaught('lines') || document.querySelector('.cat-hint') || !panel.dataset.chapter) return;
+  panel.append(Object.assign(document.createElement('p'), { className: 'cat-hint', textContent: "Hold a category to see what it's about" }));
+}
+
+// A copy of an element that stays put and fades out: what leaves while the rest glides.
+const ghostProps = ['fontFamily', 'fontSize', 'fontStyle', 'fontWeight', 'letterSpacing', 'lineHeight', 'textAlign', 'color'];
+function fadeGhost(el, panel, ms) {
+  const box = el.getBoundingClientRect(), frame = panel.getBoundingClientRect(), style = getComputedStyle(el);
+  const ghost = el.cloneNode(true);
+  ghostProps.forEach(prop => { ghost.style[prop] = style[prop]; });
+  Object.assign(ghost.style, {
+    display: 'block', position: 'absolute', margin: '0', padding: '0', pointerEvents: 'none', transition: 'none', animation: 'none',
+    left: `${box.left - frame.left - panel.clientLeft}px`, top: `${box.top - frame.top - panel.clientTop}px`, width: `${box.width}px`,
+  });
+  panel.append(ghost);
+  ghost.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, easing: 'ease' }).finished.then(() => ghost.remove());
+}
+
+let linesSwitchTimer = 0;
+// Switch the lines for every open chapter. Names and dots glide from where they were to where they are, the panel
+// grows or shrinks, the lines fade in (or out where they were). Reduced motion switches at once.
+function setSheetLines(on) {
+  sheetLines = on;
+  try { localStorage.setItem(LINES_KEY, on ? '1' : '0'); } catch (error) { console.warn('Could not save the category lines choice:', error); }
+  hintRetire('lines');
+  const hint = document.querySelector('.cat-hint');
+  const panels = [...document.querySelectorAll('.chapter-panel.open[data-chapter]')];
+  const glides = panels.flatMap(panel => [...panel.querySelectorAll('.toggle-btn .cat-dot, .toggle-btn .cat-name')]);
+  const before = new Map(glides.map(el => [el, el.getBoundingClientRect()]));
+  const heights = panels.map(panel => panel.getBoundingClientRect().height);
+  const animated = !prefersReducedMotion.matches;
+  if (animated) {
+    if (hint) fadeGhost(hint, hint.parentElement, LINES_HINT_FADE_MS);
+    if (!on) panels.forEach(panel => panel.querySelectorAll('.cat-line').forEach(line => fadeGhost(line, panel, LINES_FADE_OUT_MS)));
+  }
+  hint?.remove();
+  paintLines();
+  if (!animated) return;
+  linesRoot.classList.add('switching');   // the sheet's picks ease at the same pace while it moves
+  clearTimeout(linesSwitchTimer);
+  linesSwitchTimer = setTimeout(() => linesRoot.classList.remove('switching'), LINES_EASE_MS + 250);
+  panels.forEach((panel, i) => {
+    panel.animate([{ height: `${heights[i]}px` }, { height: `${panel.getBoundingClientRect().height}px` }], { duration: LINES_EASE_MS, easing: 'ease' });
+    if (on) panel.querySelectorAll('.cat-line').forEach(line => line.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: LINES_EASE_MS - LINES_FADE_IN_DELAY_MS, delay: LINES_FADE_IN_DELAY_MS, easing: 'ease', fill: 'backwards' }));
+  });
+  before.forEach((from, el) => {
+    const to = el.getBoundingClientRect();
+    const dx = from.left - to.left, dy = from.top - to.top;
+    if (dx || dy) el.animate([{ translate: `${dx}px ${dy}px` }, { translate: '0 0' }], { duration: LINES_EASE_MS, easing: 'ease' });
+  });
+}
+
+// The hold: the button presses in and dims (.holding) across HOLD_MS, then the lines switch. The release that
+// follows must not pick, so a fired hold is remembered until the next press.
+let holdTimer = 0, holdButton = null, holdFired = false, holdStart = { x: 0, y: 0 };
+function cancelHold() {
+  clearTimeout(holdTimer);
+  holdButton?.classList.remove('holding');
+  holdButton = null;
+}
+const chaptersEl = document.getElementById('chapters');
+chaptersEl.addEventListener('pointerdown', e => {
+  holdFired = false;
+  const btn = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('.chapter-panel[data-chapter] .toggle-btn'));
+  if (!btn || e.button !== 0 || dockedQuery.matches) return;
+  cancelHold();
+  holdButton = btn;
+  holdStart = { x: e.clientX, y: e.clientY };
+  btn.classList.add('holding');
+  holdTimer = setTimeout(() => {
+    holdFired = true;
+    cancelHold();
+    setSheetLines(!linesShown());
+  }, HOLD_MS);
+});
+['pointerup', 'pointercancel'].forEach(type => document.addEventListener(type, cancelHold));
+document.addEventListener('pointermove', e => {
+  if (holdButton && Math.hypot(e.clientX - holdStart.x, e.clientY - holdStart.y) > 10) cancelHold();   // a scroll, not a hold
+});
+chaptersEl.addEventListener('contextmenu', e => { if (/** @type {HTMLElement} */ (e.target).closest('.toggle-btn')) e.preventDefault(); });
+
 // Category toggles (the buttons live in each chapter's panel inside #chapters)
-document.getElementById('chapters').addEventListener('click', e => {
-  const btn = e.target.closest('.toggle-btn');
+chaptersEl.addEventListener('click', e => {
+  const btn = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('.toggle-btn'));
   if (!btn) return;
+  if (holdFired) { holdFired = false; return; }   // a hold switches the lines, never picks
   if (btn.classList.contains('hard-locked')) {
     // A locked After Dark category opens After Dark (same gate as its chapter row)
     // and switches on only itself, not the rest of the chapter.
     if (typeof openAfterDark !== 'function' || !openAfterDark()) return;
     syncCategoryButtons();
   }
-  if (btn._longPressed) { btn._longPressed = false; return; }   // long-press reads, never toggles
   const lvl = btn.dataset.level;
   state.activeToggles[state.activeToggles.has(lvl) ? 'delete' : 'add'](lvl);
   syncActivePreset();   // a tweak that leaves the preset's set makes the deck Custom
   applyToggleUI();
   initDeck();
-  // Show tooltip briefly then fade
-  if (btn.dataset.tip) {
-    btn.classList.remove('tip-fade');
-    btn.classList.add('show-tip');
-    setTimeout(() => { btn.classList.add('tip-fade'); btn.classList.remove('show-tip'); }, 1200);
-    setTimeout(() => btn.classList.remove('tip-fade'), 1900);
-  }
 });
 
 function updateCatCounts() {
