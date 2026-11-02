@@ -46,7 +46,8 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
    the last session. Read the open backlog (`project.md`, "The backlog"), sort any item the owner added that has
-   no status yet, and tell the owner in one line what is being built
+   no status yet, read the owner's new comments on items (`project.md`, "The backlog"), and tell
+   the owner in one line what is being built
    now and what is next.
 4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, say so
    in one line and ask the owner to start it in its own thread (`/keeper upkeep`). Never run

@@ -167,6 +167,12 @@ Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue
   no where-it-stands label is the owner's new wish: at session start, give it one, keep the owner's
   words at the top of the body and write the story under them. An issue the owner closed stays
   closed; never reopen it without asking.
+- **The owner's comments** (owner, 2026-11-02: "can you also see the comments I make in
+  GitHub?"). A comment the owner writes on an item gets the label `Owner comment` by itself.
+  At session start, read every open or recently closed item with that label: a comment counts
+  like a message in the chat (a correction, an answer, a wish). Act on it by the usual rules,
+  answer on the item in one or two plain lines, and then remove the label. Before building an
+  item, read all its comments.
 - **No doubles.** Before creating an issue, search open and closed ones for the same wish. If
   it exists, update it or comment on it instead.
 - **Building now** gets a comment with the session link when the builder starts; the label
