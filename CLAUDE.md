@@ -43,9 +43,14 @@ Keeper's rule above: what the owner wants or meant is asked; how to build it is 
   correction to fix, or otherwise made the call — it goes on the backlog (bottom, unless the
   owner says top; for a fix, ask top or bottom), and when its turn comes it gets made,
   committed and pushed. Don't stop to confirm again then; the owner has said explicitly not to.
+- **Builds go through to `main` without asking** (owner, 2026-11-02: "No waiting on me").
+  A build taken from Next lands as soon as review and test pass; never ask the owner when to
+  push or whether to wait for another build.
 - **One build per file at a time** (owner, 2026-11-02). Nothing is built straight from a chat:
   a thread builds only an item it took from Next, takes related Next items along so each file
   is changed once, and never builds anything that shares a file with an item in Building now.
+  At most three builds at once; if a clash is a maybe, the item doesn't start. Scheduled jobs
+  (label `Fill`) sit at the bottom and only fill free room.
   Rules: `.claude/skills/keeper/SKILL.md`, "The backlog, and one build at a time".
 
 ## Classic and first are frozen legacy versions
@@ -161,6 +166,13 @@ own words.
 **Number your questions** (owner, 2026-10-15). When a message asks more than one
 question, number them 1, 2, 3 … so the owner can answer by number. Still plain
 sentences, one question per number, no suggested answers.
+
+## Numbers always come with their name
+
+(owner, 2026-11-02: "numbers that mean nothing to me"). Never write a bare number or code to
+the owner: a backlog item is always its number *and* its title ("#67, Global check of how
+cards ask"), a commit is what it did (the code may follow, never stand alone), a card is
+cited in full as below. Applies to chat, reports, backlog comments and the board alike.
 
 ## Say what happened
 

@@ -46,7 +46,8 @@ The repo's `CLAUDE.md` still applies in full. Where it is stricter than this fil
    straight after.
 3. Fetch `origin/main` and glance at the last few commits, so you know what changed since
    the last session. Read the open backlog (`project.md`, "The backlog"), sort any item the owner added that has
-   no status yet, and tell the owner in one line what is being built
+   no status yet, read the owner's new comments on items (`project.md`, "The backlog"), and tell
+   the owner in one line what is being built
    now and what is next.
 4. Read `upkeep.md`. If no upkeep has run yet, or the last one is a month old or more, say so
    in one line and ask the owner to start it in its own thread (`/keeper upkeep`). Never run
@@ -191,16 +192,37 @@ adding anything, search: one wish is one item, never two.
   sessions may talk wishes through, run card rounds and make mockups. They only *add* or
   sharpen items; they never build.
 - **A free thread builds the next item.** A thread with nothing building takes the first item
-  in Next whose Touches share no file with anything in Building now. Several builds may run at
-  once, never two that touch the same file. Before taking it, pull `main`, read Building now
+  in Next that passes the clash check. Before taking it, pull `main`, read Building now
   again, and move the item to Building now with the session link and date *before* the builder
-  starts, so other threads see it. If every item in Next shares a file with a running build,
-  say in one line which build it waits for.
+  starts, so other threads see it. If nothing in Next passes, say in one line which build it
+  waits for.
+- **At most three builds at once** (owner, 2026-11-02), counted as items in Building now.
+- **The clash check is strict: a maybe is a no** (owner, 2026-11-02). An item may start only
+  if its Touches name concrete files and share none with any item in Building now. Before the
+  check, make the Touches exact: read the code and list every file the change will touch. If
+  that list stays unsure, or names something vague ("other .js files", "none yet"), the item
+  does not start. Two things don't count as a clash, because they are bookkeeping that merges
+  by itself at landing: the `?v=` version numbers in the page file, and the release-notes file
+  (for this project: `project.md`, "Things every builder must know"). Any other change to those
+  files counts. If a build finds it needs a file outside its Touches, it stops before
+  changing it and checks that file against Building now first; on a clash it waits.
+- **Scheduled jobs fill, they don't push in** (owner, 2026-11-02: "they are there to fill,
+  not overwrite"). Work a scheduled job does carries the label `Fill` and always sits at the
+  very bottom of Next, below everything else, `Top` or not. A scheduled job starts only when
+  the clash check passes and fewer than three builds run, and it never touches a file an item
+  in Building now touches.
 - **Take related work along** (owner, 2026-11-02). Before the builder starts, look through
   Next for items that touch the same files or the same part of the app, and add them to this
   build, so one place gets changed once. Only items in Next (agreed and ready); items waiting
   on the owner or parked stay where they are. Say in one line which items came along; each
   goes to Building now too and closes with the same landing.
+- **A build always goes through to `main`, never waits on the owner** (owner, 2026-11-02:
+  "When it's ready: push it. If a builder has space, build and push. No waiting on me").
+  Once an item is taken from Next, nothing about it is asked again: when the reviewer and
+  tester pass it, it lands. Never ask the owner when to land, whether to wait for another
+  build, or whether to start the next item. Timing between builds is the clash check's job.
+  The only reason to stop and ask is a real question about what the owner wants; then the
+  item goes back to Refine with the question.
 - **Keep going.** After a build lands, the same thread takes the next item it may take, until
   Next holds nothing it can start; then it reports. The owner can stop it at any time.
 - **Building now means a builder is at work, nothing less** (owner, 2026-10-23, after round 4
