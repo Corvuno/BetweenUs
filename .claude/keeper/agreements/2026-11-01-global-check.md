@@ -30,3 +30,5 @@ Depth (each card within one step of its band), Keeper's estimates:
   (my deepening felt tacked on), Body 5 (new), Romance 12 (fully different direction),
   Kink 7 (the kind of words, not the exact words), World 11 (alt 1 made about nature — wording to show),
   "Mind 3 alt 2" (read as the three-in-the-morning card, Mind 12 — to confirm).
+- 2026-11-02: Romance 12 → "The one that got away, and whether they really did..."; Mind 12 → "The version of you that shows up at three in the morning..." (confirmed).
+  Body cards are concept cards (how the body works), not story cards — new options that way. Kink 7: owner's direction "The words that turn you on instantly..." (quote them; dirty talk). Self 11: owner asked whether I understand where the question comes from.
