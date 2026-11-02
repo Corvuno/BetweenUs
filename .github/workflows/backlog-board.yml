@@ -9,6 +9,11 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Only report what would change
+        type: boolean
+        default: true
 
 permissions:
   issues: write
@@ -27,7 +32,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node scripts/backlog-board.mjs
+      - run: node scripts/backlog-board.mjs ${{ inputs.dry_run && '--dry-run' || '' }}
         env:
           BOARD_TOKEN: ${{ secrets.BOARD_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

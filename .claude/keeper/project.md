@@ -152,16 +152,17 @@ Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue
 
 - **Where it stands** is a label: `Refine` (needs the owner), `Next` (ready to build), `Building now`, `Parked`. Done is
   closed as completed; dropped is closed as not planned. Exactly one of these per open issue.
-- **The board** (owner, 2026-10-31: "mostly have sessions move it"): GitHub board "Between Us
-  backlog" on the owner's account, columns New, Refine, Next, Building now, Parked,
-  Done. (`Refine` was called `Waiting on owner` until 2026-11-02.) Sessions never touch the board; they change labels and open/closed, and
-  `.github/workflows/backlog-board.yml` (`scripts/backlog-board.mjs`) moves the card at once.
-  A card the owner drags changes the labels within about 15 minutes; if both changed in
-  between, the newer change wins. New = an open issue with no status label. The job needs the
-  repo secret `BOARD_TOKEN` (a classic key the owner made with `project` and `public_repo`);
-  without it the job only warns. If the board stops moving, check that job's runs first.
-- **Area** is a label: `A deck`, `B looks`, `C app`, `Side job`, `Keeper`. Kind: `Decision` for a
-  question only the owner answers, `bug` for a bug.
+- **The board** (owner, 2026-10-31; the owner made it from GitHub's Kanban template on
+  2026-11-02): the owner's GitHub project with the columns Backlog, Refinement, Ready,
+  In progress, Done. Sessions never touch the board; they change labels and open/closed, and
+  `.github/workflows/backlog-board.yml` (`scripts/backlog-board.mjs`) moves the card at once:
+  no status label or `Parked` → Backlog, `Refine` → Refinement, `Next` → Ready,
+  `Building now` → In progress, closed → Done, closed as not planned → off the board. A card
+  the owner drags changes the labels within about 15 minutes (newer change wins; moves the
+  board makes by itself never count). Every 15 minutes Ready is also put in queue order.
+  The columns are the owner's; the job never renames them. It needs the repo secret
+  `BOARD_TOKEN` (a classic key the owner made with `project` and `public_repo`); without it
+  the job only warns. If the board stops moving, check that job's runs first.
 - **The owner's own items.** The owner adds and closes issues on github.com. An open issue with
   no where-it-stands label is the owner's new wish: at session start, give it one, keep the owner's
   words at the top of the body and write the story under them. An issue the owner closed stays

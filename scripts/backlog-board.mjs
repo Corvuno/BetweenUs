@@ -1,27 +1,25 @@
-// Keeps the GitHub board "Between Us backlog" and the backlog labels on the issues in step
-// (owner, 2026-10-31). The labels are what sessions change; the board is what the owner looks at.
+// Keeps the owner's GitHub board and the backlog labels on the issues in step (owner,
+// 2026-10-31; the owner made the board from GitHub's Kanban template on 2026-11-02). The labels
+// are what sessions change; the board is what the owner looks at.
 //
 //  - A label change (or closing/reopening) moves the card straight away (run on the issue event).
 //  - A card the owner dragged changes the labels on the next check (every 15 minutes).
 //  - When both changed since they last matched, the newer change wins.
+//  - The 15-minute check also puts the Ready column in queue order: Top first, Fill last,
+//    otherwise oldest first (project.md, "Order of Next").
 //
-// Columns: New (owner's own wish, not sorted yet), Refine (needs the owner), Next, Building now, Parked,
-// Done. Done = issue closed as completed. Closed as not planned = taken off the board.
+// The board's own columns are used as they are, never renamed:
+//   Backlog = an open issue with no status label (the owner's new wish) or Parked
+//   Refinement = Refine, Ready = Next, In progress = Building now, Done = closed as completed.
+// Closed as not planned = taken off the board (archived).
 //
 // Needs BOARD_TOKEN (a key the owner made, allowed to change projects) and GITHUB_TOKEN.
 // See .claude/keeper/project.md, "The backlog".
 
 const OWNER = 'Corvuno';
 const REPO = 'BetweenUs';
-const TITLE = 'Between Us backlog';
-const COLUMNS = [
-  { name: 'New', color: 'GRAY', description: 'Your own wish, not sorted yet' },
-  { name: 'Refine', color: 'ORANGE', description: 'Needs you: a choice, words, a pick or a key' },
-  { name: 'Next', color: 'BLUE', description: 'Agreed, waiting its turn' },
-  { name: 'Building now', color: 'YELLOW', description: 'A builder is at work' },
-  { name: 'Parked', color: 'PURPLE', description: 'Kept for later' },
-  { name: 'Done', color: 'GREEN', description: 'Landed on main' },
-];
+const LABEL_TO_COLUMN = { New: 'Backlog', Parked: 'Backlog', Refine: 'Refinement', Next: 'Ready', 'Building now': 'In progress', Done: 'Done' };
+const COLUMNS = ['Backlog', 'Refinement', 'Ready', 'In progress', 'Done'];
 const STATUS_LABELS = ['Refine', 'Next', 'Building now', 'Parked'];
 const DONE_DAYS = 14; // closed issues older than this are not added to the board
 
@@ -64,30 +62,18 @@ async function rest(method, path, data) {
 // ---- the board -------------------------------------------------------------
 
 async function ensureBoard() {
-  const d = await gql(`query($o:String!,$r:String!){
-    user(login:$o){ id projectsV2(first:50){ nodes{ id title number url } } }
-    repository(owner:$o,name:$r){ id }
-  }`, { o: OWNER, r: REPO });
-  let p = d.user.projectsV2.nodes.find(n => n.title === TITLE);
-  if (!p) {
-    console.log(`Creating the board "${TITLE}"`);
-    const c = await gql(`mutation($owner:ID!,$title:String!,$repo:ID!){
-      createProjectV2(input:{ownerId:$owner,title:$title,repositoryId:$repo}){ projectV2{ id title number url } }
-    }`, { owner: d.user.id, title: TITLE, repo: d.repository.id });
-    p = c.createProjectV2.projectV2;
+  // The owner's board: one of their projects whose Status column has all five columns.
+  const d = await gql(`query($o:String!){ user(login:$o){ projectsV2(first:50){ nodes{ id title url closed
+    field(name:"Status"){ ... on ProjectV2SingleSelectField{ id options{ id name } } } } } } }`, { o: OWNER });
+  const fits = d.user.projectsV2.nodes.filter(n => !n.closed && n.field &&
+    COLUMNS.every(c => n.field.options.some(o => o.name === c)));
+  if (fits.length !== 1) {
+    console.log(`::warning::Expected one open board with the columns ${COLUMNS.join(', ')}; found ${fits.length}. Nothing changed.`);
+    process.exit(0);
   }
-  console.log(`Board: ${p.url}`);
-  let field = await statusField(p.id);
-  const have = field.options.map(o => o.name).join('|');
-  const want = COLUMNS.map(c => c.name).join('|');
-  if (have !== want) {
-    console.log(`Setting the columns (were: ${have})`);
-    await gql(`mutation($f:ID!,$opts:[ProjectV2SingleSelectFieldOptionInput!]){
-      updateProjectV2Field(input:{fieldId:$f,singleSelectOptions:$opts}){ projectV2Field{ ... on ProjectV2SingleSelectField{ id } } }
-    }`, { f: field.id, opts: COLUMNS });
-    field = await statusField(p.id);
-  }
-  return { id: p.id, fieldId: field.id, optionId: Object.fromEntries(field.options.map(o => [o.name, o.id])) };
+  const p = fits[0];
+  console.log(`Board: ${p.title} ${p.url}`);
+  return { id: p.id, fieldId: p.field.id, optionId: Object.fromEntries(p.field.options.map(o => [o.name, o.id])) };
 }
 
 async function statusField(projectId) {
@@ -114,7 +100,7 @@ async function issues() {
                    ... on ClosedEvent{createdAt} ... on ReopenedEvent{createdAt} } }
           createdAt
           projectItems(first:10,includeArchived:true){ nodes{ id isArchived project{ id }
-            fieldValueByName(name:"Status"){ ... on ProjectV2ItemFieldSingleSelectValue{ name updatedAt } } } }
+            fieldValueByName(name:"Status"){ ... on ProjectV2ItemFieldSingleSelectValue{ name updatedAt creator{ login } } } } }
         } } } }`, { o: OWNER, r: REPO, after });
     const page = d.repository.issues;
     out.push(...page.nodes);
@@ -125,11 +111,11 @@ async function issues() {
 
 // What the labels and open/closed state say the column is. null = not on the board.
 function columnFromIssue(i) {
-  if (i.state === 'CLOSED') return i.stateReason === 'NOT_PLANNED' || i.stateReason === 'DUPLICATE' ? null : 'Done';
+  if (i.state === 'CLOSED') return i.stateReason === 'NOT_PLANNED' || i.stateReason === 'DUPLICATE' ? null : LABEL_TO_COLUMN.Done;
   const names = i.labels.nodes.map(l => l.name);
   // If two status labels are on at once, the one further along wins.
-  for (const s of ['Building now', 'Refine', 'Next', 'Parked']) if (names.includes(s)) return s;
-  return 'New';
+  for (const s of ['Building now', 'Refine', 'Next', 'Parked']) if (names.includes(s)) return LABEL_TO_COLUMN[s];
+  return LABEL_TO_COLUMN.New;
 }
 
 async function setColumn(board, itemId, column) {
@@ -152,14 +138,38 @@ async function archiveCard(board, itemId) {
     { p: board.id, i: itemId });
 }
 
+// The owner dragged a card: make the labels and open/closed say the same.
 async function applyColumnToIssue(i, column) {
   const names = i.labels.nodes.map(l => l.name);
+  // Backlog keeps Parked if the item was parked; otherwise it means "not sorted yet": no status label.
+  const label = { Refinement: 'Refine', Ready: 'Next', 'In progress': 'Building now' }[column]
+    || (column === 'Backlog' && names.includes('Parked') ? 'Parked' : null);
   if (column !== 'Done' && i.state === 'CLOSED') await rest('PATCH', `/issues/${i.number}`, { state: 'open' });
   for (const s of STATUS_LABELS) {
-    if (s !== column && names.includes(s)) await rest('DELETE', `/issues/${i.number}/labels/${encodeURIComponent(s)}`);
+    if (s !== label && names.includes(s)) await rest('DELETE', `/issues/${i.number}/labels/${encodeURIComponent(s)}`);
   }
   if (column === 'Done' && i.state !== 'CLOSED') await rest('PATCH', `/issues/${i.number}`, { state: 'closed', state_reason: 'completed' });
-  if (STATUS_LABELS.includes(column) && !names.includes(column)) await rest('POST', `/issues/${i.number}/labels`, { labels: [column] });
+  if (label && !names.includes(label)) await rest('POST', `/issues/${i.number}/labels`, { labels: [label] });
+}
+
+// Ready in queue order: Top first, Fill last, otherwise oldest (lowest number) first.
+async function orderReady(board, all) {
+  const d = await gql(`query($p:ID!){ node(id:$p){ ... on ProjectV2{ items(first:100){ nodes{ id
+    content{ ... on Issue{ number labels(first:20){ nodes{ name } } } }
+    fieldValueByName(name:"Status"){ ... on ProjectV2ItemFieldSingleSelectValue{ name } } } } } } }`, { p: board.id });
+  const ready = d.node.items.nodes.filter(n => n.fieldValueByName?.name === 'Ready' && n.content?.number);
+  const rank = n => { const l = n.content.labels.nodes.map(x => x.name); return l.includes('Top') ? 0 : l.includes('Fill') ? 2 : 1; };
+  const want = [...ready].sort((a, b) => rank(a) - rank(b) || a.content.number - b.content.number);
+  if (want.map(n => n.id).join() === ready.map(n => n.id).join()) return 0;
+  console.log(`Ready put in queue order: ${want.map(n => '#' + n.content.number).join(', ')}`);
+  if (dryRun) return 1;
+  let after = null;
+  for (const n of want) {
+    await gql(`mutation($p:ID!,$i:ID!,$a:ID){ updateProjectV2ItemPosition(input:{projectId:$p,itemId:$i,afterId:$a}){ clientMutationId } }`,
+      { p: board.id, i: n.id, a: after });
+    after = n.id;
+  }
+  return 1;
 }
 
 // ---- sync ------------------------------------------------------------------
@@ -196,7 +206,11 @@ for (const i of all) {
   // On the 15-minute check, the newer change wins.
   const issueChanged = new Date(i.timelineItems.nodes[0]?.createdAt || i.createdAt).getTime();
   const boardChanged = item.fieldValueByName?.updatedAt ? new Date(item.fieldValueByName.updatedAt).getTime() : 0;
-  if (!eventIssue && onBoard && boardChanged > issueChanged) {
+  // Only a person's drag counts. A move the board made by itself (GitHub's own workflows, such
+  // as "new items go to Backlog") never overrides the labels.
+  const mover = item.fieldValueByName?.creator?.login || '';
+  const byPerson = mover && !mover.endsWith('[bot]') && !/automation/i.test(mover);
+  if (!eventIssue && onBoard && byPerson && boardChanged > issueChanged) {
     console.log(`${tag}: moved on the board to ${onBoard}, labels follow (were: ${fromIssue})`);
     await applyColumnToIssue(i, onBoard);
   } else {
@@ -205,4 +219,5 @@ for (const i of all) {
   }
   changed++;
 }
+if (!eventIssue) changed += await orderReady(board, all);
 console.log(changed ? `${changed} change(s).` : 'Board and labels already match.');
