@@ -275,8 +275,11 @@ function setSheetLines(on) {
 }
 
 // The hold: the button presses in and dims (.holding) across HOLD_MS, then the lines switch. The release that
-// follows must not pick, so a fired hold is remembered until the next press.
-let holdTimer = 0, holdButton = null, holdFired = false, holdStart = { x: 0, y: 0 };
+// follows must not pick, and the switch moves the layout, so its click can land on any element (a chapter row,
+// a lock): the next click anywhere is swallowed.
+let holdTimer = 0, holdButton = null, holdStart = { x: 0, y: 0 };
+const swallowClick = (/** @type {Event} */ e) => { e.preventDefault(); e.stopPropagation(); };
+const stopSwallowing = () => document.removeEventListener('click', swallowClick, true);
 function cancelHold() {
   clearTimeout(holdTimer);
   holdButton?.classList.remove('holding');
@@ -284,7 +287,7 @@ function cancelHold() {
 }
 const chaptersEl = document.getElementById('chapters');
 chaptersEl.addEventListener('pointerdown', e => {
-  holdFired = false;
+  stopSwallowing();
   const btn = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('.chapter-panel[data-chapter] .toggle-btn'));
   if (!btn || e.button !== 0 || dockedQuery.matches) return;
   cancelHold();
@@ -292,17 +295,17 @@ chaptersEl.addEventListener('pointerdown', e => {
   holdStart = { x: e.clientX, y: e.clientY };
   btn.classList.add('holding');
   holdTimer = setTimeout(() => {
-    holdFired = true;
+    document.addEventListener('click', swallowClick, true);
     cancelHold();
     setSheetLines(!linesShown());
   }, HOLD_MS);
 });
-// The release of a fired hold is followed by a click only if it ends on the button: forget the hold shortly after,
+// The release of a fired hold is followed by a click at once, or by none: stop swallowing shortly after,
 // so a click that never comes cannot swallow a later keyboard Enter or Space.
 const HOLD_CLICK_WINDOW_MS = 100;
 ['pointerup', 'pointercancel'].forEach(type => document.addEventListener(type, () => {
   cancelHold();
-  setTimeout(() => { holdFired = false; }, HOLD_CLICK_WINDOW_MS);
+  setTimeout(stopSwallowing, HOLD_CLICK_WINDOW_MS);
 }));
 document.addEventListener('pointermove', e => {
   if (holdButton && Math.hypot(e.clientX - holdStart.x, e.clientY - holdStart.y) > 10) cancelHold();   // a scroll, not a hold
@@ -313,7 +316,6 @@ chaptersEl.addEventListener('contextmenu', e => { if (/** @type {HTMLElement} */
 chaptersEl.addEventListener('click', e => {
   const btn = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('.toggle-btn'));
   if (!btn) return;
-  if (holdFired) { holdFired = false; return; }   // a hold switches the lines, never picks
   if (btn.classList.contains('hard-locked')) {
     // A locked After Dark category opens After Dark (same gate as its chapter row)
     // and switches on only itself, not the rest of the chapter.

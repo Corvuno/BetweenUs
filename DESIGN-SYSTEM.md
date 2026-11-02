@@ -511,7 +511,7 @@ Every category in an open chapter carries its own line (`.cat-line`, the categor
   category switches them on or off for every chapter at once, as one list (each category the panel's full width).
   The choice is remembered (`bu.catLines`). `html[data-lines="on"|"off"]` carries the state; JS sets it (docked = on).
 - **The hold.** The held category presses in (`scale(.98)`, 160ms) and dims to `.5` across the hold (the way Next Card
-  dims while held at the end of a hand); a hold never picks or opens the browser menu.
+  dims while held at the end of a hand); a hold never picks or opens the browser menu. Under reduced motion the press-in and dim are instant.
 - **The hint** (`.cat-hint`, a `HINTS` entry `lines` in `state.js`, so "Show hints again" brings it back): "Hold a
   category to see what it's about", Federo `.9rem` in `--muted-l` (the tone `.tok-hint` takes on a phone), under the
   categories of the first chapter opened, phone only, gone for good after the first hold.

@@ -2247,6 +2247,34 @@ async function run() {
     }
   });
 
+  await check('phone: a touch hold on any category, released after the lines have shifted the layout, picks nothing anywhere (no chapter or category toggled by the release click)', async () => {
+    const cdp = await page.context().newCDPSession(page);
+    const touch = (type, x, y) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x, y }] });
+    const picks = () => page.evaluate(() => JSON.stringify([...state.activeToggles].sort()));
+    try {
+      await openCategorySheet();
+      if ((await page.locator('#foldAll').textContent()) !== 'Close all') { await page.locator('#foldAll').click(); await page.waitForTimeout(600); }
+      await page.evaluate(() => { document.documentElement.dataset.lines = 'off'; });
+      const levels = await page.evaluate(() => [...document.querySelectorAll('.chapter-panel.open[data-chapter] .toggle-btn')].filter(b => b.offsetParent).map(b => b.dataset.level));
+      assert(levels.length > 10, `expected many categories on show, got ${levels.length}`);
+      const before = await picks();
+      let changedAfter = null;
+      for (const level of levels) {
+        const btn = page.locator(`.toggle-btn[data-level="${level}"]`);
+        await btn.scrollIntoViewIfNeeded();
+        const box = await btn.boundingBox();
+        const x = box.x + box.width / 2, y = box.y + box.height / 2;
+        await touch('touchStart', x, y); await page.waitForTimeout(700); await touch('touchEnd', x, y);
+        await page.waitForTimeout(150);
+        if ((await picks()) !== before) { changedAfter = level; break; }
+        await page.waitForTimeout(500);
+      }
+      assert(changedAfter === null, `a hold released over a shifted layout changed the selection (after ${changedAfter})`);
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
   await check('computer panel: every open chapter shows its categories in two columns with their lines, no tooltip, no hint; a hold still picks', async () => {
     const wide = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const pc = await wide.newPage();

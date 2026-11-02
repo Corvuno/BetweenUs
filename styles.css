@@ -1616,7 +1616,7 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
 body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 @keyframes catHintIn{from{opacity:0}}
 @media (prefers-reduced-motion:reduce){
-  .chapter-panel :is(.toggle-btn,.cat-dot,.cat-line){transition:none;}
+  .chapter-panel :is(.toggle-btn,.cat-dot,.cat-line),.cat-area .chapter-panel .toggle-btn.holding{transition:none;}
   .cat-hint{animation:none;}
 }
 
