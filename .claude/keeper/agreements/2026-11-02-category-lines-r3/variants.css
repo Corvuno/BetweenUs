@@ -1,0 +1,19 @@
+/* Round 3 mockup variants, laid over the live styles.css on a phone (lines on). One block per option,
+   switched by html[data-opt]. Today (data-opt="0") adds nothing: it is the live List as built. */
+
+/* 1 · Two columns: the PC panel's rules, on the phone's width */
+html[data-opt="1"] .chapter-panel[data-chapter]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px;}
+html[data-opt="1"][data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{padding:9px 6px;align-content:start;}
+
+/* 2 · Tight list: same single list, name and line closer, less between categories */
+html[data-opt="2"][data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{padding:4px 8px;}
+html[data-opt="2"][data-lines="on"] .chapter-panel .cat-name{line-height:1.35;}
+html[data-opt="2"][data-lines="on"] .chapter-panel .cat-line{margin-top:0;}
+html[data-opt="2"] .chapter-panel[data-chapter]{gap:0;}
+
+/* 3 · One row each: name, then its line beside it; a long line wraps under itself */
+html[data-opt="3"][data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{
+  grid-template-columns:auto auto 1fr;gap:0 10px;padding:6px 8px;align-items:baseline;}
+html[data-opt="3"][data-lines="on"] .chapter-panel .cat-dot{align-self:start;margin-top:.6em;}   /* stays by the name when a line wraps */
+html[data-opt="3"][data-lines="on"] .chapter-panel .cat-name{line-height:1.35;}
+html[data-opt="3"][data-lines="on"] .chapter-panel .cat-line{grid-column:3;margin-top:0;}
