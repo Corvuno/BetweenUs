@@ -191,11 +191,25 @@ adding anything, search: one wish is one item, never two.
   sessions may talk wishes through, run card rounds and make mockups. They only *add* or
   sharpen items; they never build.
 - **A free thread builds the next item.** A thread with nothing building takes the first item
-  in Next whose Touches share no file with anything in Building now. Several builds may run at
-  once, never two that touch the same file. Before taking it, pull `main`, read Building now
+  in Next that passes the clash check. Before taking it, pull `main`, read Building now
   again, and move the item to Building now with the session link and date *before* the builder
-  starts, so other threads see it. If every item in Next shares a file with a running build,
-  say in one line which build it waits for.
+  starts, so other threads see it. If nothing in Next passes, say in one line which build it
+  waits for.
+- **At most three builds at once** (owner, 2026-11-02), counted as items in Building now.
+- **The clash check is strict: a maybe is a no** (owner, 2026-11-02). An item may start only
+  if its Touches name concrete files and share none with any item in Building now. Before the
+  check, make the Touches exact: read the code and list every file the change will touch. If
+  that list stays unsure, or names something vague ("other .js files", "none yet"), the item
+  does not start. Two things don't count as a clash, because they are bookkeeping that merges
+  by itself at landing: the `?v=` version numbers in the page file, and the release-notes file
+  (for this project: `project.md`, "Things every builder must know"). Any other change to those
+  files counts. If a build finds it needs a file outside its Touches, it stops before
+  changing it and checks that file against Building now first; on a clash it waits.
+- **Scheduled jobs fill, they don't push in** (owner, 2026-11-02: "they are there to fill,
+  not overwrite"). Work a scheduled job does carries the label `Fill` and always sits at the
+  very bottom of Next, below everything else, `Top` or not. A scheduled job starts only when
+  the clash check passes and fewer than three builds run, and it never touches a file an item
+  in Building now touches.
 - **Take related work along** (owner, 2026-11-02). Before the builder starts, look through
   Next for items that touch the same files or the same part of the app, and add them to this
   build, so one place gets changed once. Only items in Next (agreed and ready); items waiting

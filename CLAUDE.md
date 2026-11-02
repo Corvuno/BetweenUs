@@ -46,6 +46,8 @@ Keeper's rule above: what the owner wants or meant is asked; how to build it is 
 - **One build per file at a time** (owner, 2026-11-02). Nothing is built straight from a chat:
   a thread builds only an item it took from Next, takes related Next items along so each file
   is changed once, and never builds anything that shares a file with an item in Building now.
+  At most three builds at once; if a clash is a maybe, the item doesn't start. Scheduled jobs
+  (label `Fill`) sit at the bottom and only fill free room.
   Rules: `.claude/skills/keeper/SKILL.md`, "The backlog, and one build at a time".
 
 ## Classic and first are frozen legacy versions
