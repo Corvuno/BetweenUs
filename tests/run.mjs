@@ -752,7 +752,8 @@ async function run() {
     assert((await imSide()) === 'intermezzo', 'did not come back to Intermezzo after stepping forward');
   });
 
-  await check('end of hand: Save gives two files (the list and a state file); Import restores a state file; the .txt import still works', async () => {
+  await check('end of hand: Save gives ONE file (name, readable list, state at the end); Open a list restores the whole evening and adds it to Saved; the old plain list and the old state file still open', async () => {
+    const fsp = await import('node:fs/promises');
     const files = [];
     const onDl = d => files.push(d);
     page.on('download', onDl);
@@ -760,32 +761,43 @@ async function run() {
     await page.waitForTimeout(1500);
     page.off('download', onDl);
     const names = files.map(f => f.suggestedFilename());
-    assert(files.length === 2, `Save gave ${files.length} files: ${names}`);
-    assert(names.some(n => /^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(n)) && names.some(n => /^between-us-state-\d{4}-\d{2}-\d{2}\.json$/.test(n)), `unexpected file names: ${names}`);
-    const stateFile = files.find(f => f.suggestedFilename().endsWith('.json'));
-    const json = JSON.parse(await (await import('node:fs/promises')).readFile(await stateFile.path(), 'utf8'));
-    const live = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), mode: state.randomMode, lim: state.cardLimit }));
-    assert(json.format === 'between-us-state' && JSON.stringify(json.data.deckQuestions) === JSON.stringify(live.q), 'state file does not hold this hand');
-    assert(json.data.position === live.q.length - 1, `state file position ${json.data.position} (at the end of a hand it is the last card)`);
-    // wreck the live state, then import the file
+    assert(files.length === 1 && /^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(names[0]), `Save gave ${files.length} files: ${names}`);
+    const text = await fsp.readFile(await files[0].path(), 'utf8');
+    const live = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), log: state.sessionLog.map(c => c.question), name: eveningName() }));
+    assert(text.split('\n')[0] === live.name, `the first line should be the evening's name "${live.name}", got "${text.split('\n')[0]}"`);
+    const mark = text.indexOf('you can ignore everything below this line');
+    assert(mark > 0 && live.log.every(q => text.indexOf(q) > -1 && text.indexOf(q) < mark), 'the readable list is not above the state block');
+    const json = JSON.parse(text.slice(text.indexOf('{', mark)));
+    assert(json.format === 'between-us-state' && JSON.stringify(json.data.deckQuestions) === JSON.stringify(live.q), 'the state block does not hold this hand');
+    assert(json.data.position === live.q.length - 1, `state position ${json.data.position} (at the end of a hand it is the last card)`);
+    // wreck the live state, then open the file
+    await page.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); document.getElementById('d-reshuffle').click(); });
+    await page.waitForTimeout(500);
+    const openFile = async path => {
+      await page.locator('#btn-menu').click(); await page.locator('#d-played').click(); await page.waitForTimeout(700);
+      const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
+      await chooser.setFiles(path); await page.waitForTimeout(800);
+    };
+    await openFile(await files[0].path());
+    const back = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), idx: state.currentIndex, log: state.sessionLog.map(c => c.question), saved: getStoredSessions().map(s => s.name), active: getStoredSessions().find(s => s.id === state.activeSessionId)?.name }));
+    assert(JSON.stringify(back.q) === JSON.stringify(live.q) && back.idx === live.q.length - 1, `opening the file did not restore the hand: idx ${back.idx}`);
+    assert(JSON.stringify(back.log) === JSON.stringify(live.log), 'opening the file did not restore the drawn list');
+    assert(back.saved.length === 1 && back.saved[0] === live.name && back.active === live.name, `Saved after opening: ${JSON.stringify(back)}`);
+    await page.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); closeAllDrawers(); });
+    // an old state file (JSON) still restores the state, and adds nothing to Saved
+    const jsonPath = (await import('node:os')).tmpdir() + '/bu-old-state.json';
+    await fsp.writeFile(jsonPath, JSON.stringify({ format: 'between-us-state', version: 1, data: json.data }));
     await page.evaluate(() => { document.getElementById('d-reshuffle').click(); });
     await page.waitForTimeout(500);
-    await page.locator('#btn-menu').click();
-    await page.locator('#d-played').click();
-    const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
-    await chooser.setFiles(await stateFile.path());
-    await page.waitForTimeout(800);
-    const back = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), idx: state.currentIndex }));
-    assert(JSON.stringify(back.q) === JSON.stringify(live.q) && back.idx === live.q.length - 1, `state import did not restore the hand: idx ${back.idx}`);
-    // the .txt still imports as before
-    const txt = files.find(f => f.suggestedFilename().endsWith('.txt'));
-    await page.evaluate(() => { window.__logKeep = { log: state.sessionLog, from: state.seenFrom, logged: state.loggedQuestions }; });
-    await page.locator('#btn-menu').click();
-    await page.locator('#d-played').click();
-    const [chooser2] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
-    await chooser2.setFiles(await txt.path());
-    await page.waitForTimeout(500);
-    assert(await page.evaluate(() => state.sessionLog.length > 0), 'the .txt import loaded nothing');
+    await openFile(jsonPath);
+    const old = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), saved: getStoredSessions().length }));
+    assert(JSON.stringify(old.q) === JSON.stringify(live.q) && old.saved === 0, `old state file: ${JSON.stringify({ same: JSON.stringify(old.q) === JSON.stringify(live.q), saved: old.saved })}`);
+    // an old plain list (.txt) still restores the list
+    const txtPath = (await import('node:os')).tmpdir() + '/bu-old-list.txt';
+    await fsp.writeFile(txtPath, `Between Us — 1/1/2026\n${'─'.repeat(40)}\n\n${live.log.map((q, i) => `${i + 1}. [Culture]\n   ${q}`).join('\n\n')}`);
+    await page.evaluate(() => { window.__logKeep = { log: state.sessionLog, from: state.seenFrom, logged: state.loggedQuestions }; state.sessionLog = []; });
+    await openFile(txtPath);
+    assert(await page.evaluate(n => state.sessionLog.length === n, live.log.length), 'the old plain list loaded the wrong list');
     // put the history back as it was: the import replaces it, and later checks count on the real one
     await page.evaluate(() => { const k = window.__logKeep; state.sessionLog = k.log; state.seenFrom = k.from; state.loggedQuestions = k.logged; renderLog(); closeAllDrawers(); });
     // back to the end of the hand for the next check
@@ -2564,6 +2576,98 @@ async function run() {
       assert(seen.length === 0, `the menu showed after Escape (ms: ${seen})`);
       assert(await pg.evaluate(() => !document.getElementById('overlay').classList.contains('open') && !document.querySelector('[id$="Drawer"].open')), 'Escape mid-fade left an overlay or a sheet up');
     } finally { await ctx.close(); }
+  });
+
+  await check('Download the list gives one file with the evening\'s name first and its state last; opening it restores the evening and adds it to Saved as the one playing now', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3);
+      await pg.evaluate(() => { storeCurrentSession('Friday with Sam'); });
+      await drawCards(pg, 1);
+      const was = await pg.evaluate(() => ({ idx: state.currentIndex, q: state.visibleDeck.map(c => c.question), log: state.sessionLog.map(c => c.question) }));
+      await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700);
+      const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 3000 }), pg.locator('#btnExport').click()]);
+      const text = await (await import('node:fs/promises')).readFile(await dl.path(), 'utf8');
+      assert(text.split('\n')[0] === 'Friday with Sam', `first line: ${text.split('\n')[0]}`);
+      assert(text.indexOf('1. [') > 0 && text.indexOf('1. [') < text.indexOf('between-us-state'), 'the list should come before the state');
+      assert(text.trimEnd().endsWith('}'), 'the state should be the last thing in the file');
+      await pg.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); closeAllDrawers(); });
+      await pg.evaluate(() => document.getElementById('d-reshuffle').click()); await pg.waitForTimeout(400);
+      await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700);
+      const [chooser] = await Promise.all([pg.waitForEvent('filechooser'), pg.locator('#btnImport').click()]);
+      await chooser.setFiles(await dl.path()); await pg.waitForTimeout(800);
+      const now = await pg.evaluate(() => ({ idx: state.currentIndex, q: state.visibleDeck.map(c => c.question), log: state.sessionLog.map(c => c.question), rows: [...document.querySelectorAll('#sessionsList .play-save')].map(r => r.textContent) }));
+      assert(now.idx === was.idx && JSON.stringify(now.q) === JSON.stringify(was.q) && JSON.stringify(now.log) === JSON.stringify(was.log), 'the evening did not come back as it was');
+      assert(now.rows.length === 1 && /Friday with Sam/.test(now.rows[0]) && /playing now/.test(now.rows[0]), `Saved after opening: ${JSON.stringify(now.rows)}`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('opening a file whose list quotes the state marker, or whose name is very long or whose state holds no deck, is handled: the real state is used, the name is capped, nothing half-restored', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 2);
+      const mark = 'you can ignore everything below this line';
+      const body = await pg.evaluate(() => {
+        const data = serializeSession();
+        data.sessionLog = data.sessionLog.map((c, i) => (i === 0 ? { ...c, question: `${c.question} — state (for Open a list; you can ignore everything below this line) —` } : c));
+        const rule = '─'.repeat(40);
+        return { data, rule };
+      });
+      const fsp = await import('node:fs/promises');
+      const dir = (await import('node:os')).tmpdir();
+      const make = async (name, first, data) => {
+        const path = `${dir}/${name}`;
+        await fsp.writeFile(path, `${first}\nBetween Us\n${body.rule}\n\n1. [Culture]\n   ${data.sessionLog?.[0]?.question ?? ''}\n\n${body.rule}\n— state (for Open a list; ${mark}) —\n${JSON.stringify({ format: 'between-us-state', version: 1, data }, null, 2)}\n`);
+        return path;
+      };
+      const open = async path => {
+        await pg.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); document.getElementById('d-reshuffle').click(); });
+        await pg.waitForTimeout(400);
+        await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700);
+        const [chooser] = await Promise.all([pg.waitForEvent('filechooser'), pg.locator('#btnImport').click()]);
+        await chooser.setFiles(path); await pg.waitForTimeout(800);
+      };
+      const snap = () => pg.evaluate(() => ({ log: state.sessionLog.length, deck: state.visibleDeck.length, names: getStoredSessions().map(s => s.name) }));
+      // a question that quotes the marker: the evening still opens fully
+      await open(await make('bu-quote.txt', 'Quoted evening', body.data));
+      let s = await snap();
+      assert(s.log === 2 && s.deck > 0 && s.names.join() === 'Quoted evening', `a quoted marker broke opening: ${JSON.stringify(s)}`);
+      // a very long first line is capped
+      await open(await make('bu-long.txt', 'y'.repeat(200), body.data));
+      s = await snap();
+      assert(s.names.length === 1 && s.names[0].length === 80, `the name is ${s.names[0]?.length} characters`);
+      // an empty first line falls back to the name Save for later would give
+      await open(await make('bu-empty.txt', '', body.data));
+      s = await snap();
+      assert(s.names.length === 1 && s.names[0].length > 0, `empty first line: ${JSON.stringify(s.names)}`);
+      // a state with no deck restores nothing and adds nothing
+      const before = await pg.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); document.getElementById('d-reshuffle').click(); return state.visibleDeck.map(c => c.question); });
+      await pg.waitForTimeout(400);
+      await open(await make('bu-nodeck.txt', 'Empty evening', { ...body.data, deckQuestions: [], fullDeckQuestions: [] }));
+      s = await snap();
+      assert(s.names.length === 0, `an evening with no deck was added to Saved: ${JSON.stringify(s.names)}`);
+      assert(before.length > 0, 'no hand to compare with');
+    } finally { await ctx.close(); }
+  });
+
+  await check('after Start over, or after Clear the list, Save for later adds a new saved evening and the open one stays as it was saved', async () => {
+    for (const how of ['start', 'clear']) {
+      const { ctx, pg } = await freshApp();
+      try {
+        await drawCards(pg, 2);
+        await pg.evaluate(() => { storeCurrentSession('First'); });
+        const kept = await pg.evaluate(() => JSON.stringify(getStoredSessions()[0].data.sessionLog));
+        if (how === 'start') await pg.evaluate(() => document.getElementById('d-reshuffle').click());
+        else { await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700); await pg.locator('#btnClearLog').click(); }
+        await pg.waitForTimeout(400);
+        await drawCards(pg, 1);
+        await pg.evaluate(() => storeCurrentSession());
+        const rows = await pg.evaluate(() => getStoredSessions().map(s => ({ name: s.name, log: JSON.stringify(s.data.sessionLog) })));
+        assert(rows.length === 2, `${how}: Saved has ${rows.length} rows after saving again`);
+        const first = rows.find(r => r.name === 'First');
+        assert(first && first.log === kept, `${how}: the first saved evening was written over`);
+      } finally { await ctx.close(); }
+    }
   });
 
   await check('menu: Played holds what was drawn now and what was saved; Played and Favourites lines count right; the old Log and Sessions drawers are gone', async () => {

@@ -278,6 +278,7 @@ dockedQuery.addEventListener('change', closeAllDrawers);
 
 // Start over: every card back in (a fresh pass; what was drawn stays in Played), and a fresh hand.
 function startOver() {
+  setActiveSessionId('');   // a fresh start: the next Save for later is a new evening, the saved one stays as it was
   startFreshPass();
   initDeck();
   updateDeckInfo(); updateDrawMore();
@@ -333,9 +334,12 @@ document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 
 // ── Played: the log (what was drawn now) and the saved sessions ──
 document.getElementById('closePlayed').addEventListener('click',()=>closeAllDrawers());
-// Shared by the log drawer's own Export button and the end-of-set screen's
-// "Export the log" action — one function, so the two can't drift into two
-// different file formats. No-op-safe on an empty session.
+// One file for a whole evening, from the Download button in Played and from the end-of-hand Save (one
+// function, so the two can't drift into two file formats): the evening's name, the numbered list anyone can
+// read, and at the very end the evening's state (serializeSession(), the one definition of what an evening
+// captures) in a block a reader can ignore. No-op-safe on an empty list.
+const STATE_FILE_FORMAT = 'between-us-state';
+const STATE_BLOCK_MARK = '— state (for Open a list; you can ignore everything below this line) —';
 function exportSessionLog() {
   if (!state.sessionLog.length) return;
   const favQ = new Set((state.favourites || []).map(f => f.question));
@@ -343,35 +347,43 @@ function exportSessionLog() {
     const star = favQ.has(c.question) ? ' ★' : '';
     return `${i+1}. [${LEVEL_LABELS[c.level]||c.level}]${star}\n   ${c.question}`;
   }).join('\n\n');
-  const blob = new Blob([`Between Us — ${new Date().toLocaleDateString()}\n${'─'.repeat(40)}\n\n${lines}`],{type:'text/plain'});
+  // at the end of a hand the position is the last card (the hand's end is not a card to come back to)
+  const data = serializeSession();
+  if (data.deckQuestions.length && data.position >= data.deckQuestions.length) data.position = data.deckQuestions.length - 1;
+  const stateBlock = JSON.stringify({ format: STATE_FILE_FORMAT, version: 1, data }, null, 2);
+  const rule = '─'.repeat(40);
+  const text = `${eveningName()}\nBetween Us — ${new Date().toLocaleDateString()}\n${rule}\n\n${lines}\n\n${rule}\n${STATE_BLOCK_MARK}\n${stateBlock}\n`;
+  const blob = new Blob([text],{type:'text/plain'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
 }
 document.getElementById('btnExport').addEventListener('click', exportSessionLog);
+// Save (end-of-hand screen, ui.js): the same single file.
+function saveSessionFiles() { exportSessionLog(); }
 
-// The state file: selection, settings and position, from serializeSession() —
-// the one definition of what a session captures. At the end of a hand the
-// position is the last card (the hand's end is not a card to come back to).
-const STATE_FILE_FORMAT = 'between-us-state';
-function exportSessionState() {
-  const data = serializeSession();
-  if (data.deckQuestions.length && data.position >= data.deckQuestions.length) data.position = data.deckQuestions.length - 1;
-  const file = { format: STATE_FILE_FORMAT, version: 1, data };
-  const blob = new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `between-us-state-${new Date().toISOString().slice(0,10)}.json`; a.click();
-}
-// Save (end-of-hand screen): both files in one press. Browsers may refuse a
-// second download fired in the same instant, so the second follows shortly after.
-function saveSessionFiles() {
-  exportSessionLog();
-  setTimeout(exportSessionState, 400);
+// A whole evening back from its file: the state and the list, added to Saved under its name as the one playing now.
+function openEveningFile(text) {
+  // the marker is a line of its own, and the state is by design the last thing in the file: a question that
+  // quotes the marker sits inside a line of text or a JSON string, never alone on a line
+  const line = `\n${STATE_BLOCK_MARK}\n`;
+  const at = text.lastIndexOf(line);
+  if (at < 0) return false;
+  let file = null;
+  try { file = JSON.parse(text.slice(at + line.length)); } catch (error) { console.warn('Could not read the state in this file:', error); return false; }
+  if (file?.format !== STATE_FILE_FORMAT || !file.data?.deckQuestions?.length) return false;   // nothing to restore: treat as an unreadable block
+  const name = text.split('\n')[0].trim().slice(0, 80) || autoSessionName();
+  restoreSessionData(file.data);
+  setActiveSessionId('');
+  storeCurrentSession(name);
+  closeAllDrawers(); renderLog(); renderSessionsList(); openDrawer('playedDrawer');
+  return true;
 }
 
 document.getElementById('btnImport') && document.getElementById('btnImport').addEventListener('click',()=>{
   const inp=document.createElement('input'); inp.type='file'; inp.accept='.txt,.json,text/plain,application/json';
   inp.onchange=async e=>{
     const text=await e.target.files[0]?.text(); if(!text) return;
-    // a state file restores the selection, settings and position
+    if (text.includes(STATE_BLOCK_MARK) && openEveningFile(text)) return;
+    // an older state file restores the selection, settings and position
     if (text.trimStart().startsWith('{')) {
       let file = null;
       try { file = JSON.parse(text); } catch(err) {}
@@ -388,6 +400,8 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
 
 document.getElementById('btnClearLog').addEventListener('click', () => {
   state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.loggedQuestions.clear(); renderLog();
+  setActiveSessionId('');   // a fresh start: the next Save for later is a new evening, the saved one stays as it was
+  renderSessionsList();
 });
 
 // ── Favourites ──

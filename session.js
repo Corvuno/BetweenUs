@@ -170,6 +170,11 @@ function presetDisplayName(preset) {
   const btn = document.querySelector('.mode-btn[data-mode="' + preset + '"]');
   return btn ? btn.textContent.trim() : (preset || 'Custom');
 }
+// The evening's name: the saved one it is playing, or the name Save for later would give it.
+function eveningName() {
+  const saved = state.activeSessionId && getStoredSessions().find(s => s.id === state.activeSessionId);
+  return saved ? saved.name : autoSessionName();
+}
 function autoSessionName() {
   const dateStr = new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   return presetDisplayName(state.activePreset) + ' · ' + dateStr;
