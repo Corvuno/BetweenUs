@@ -128,7 +128,7 @@ const NEWDECK_CARDS = [
   { level: "unwind", question: "What reliably gets you out of your own head?" },
   { level: "unwind", question: "The hour of the week that's entirely yours..." },
   { level: "unwind", question: "What do you keep doing for the joy of it, knowing you'll never be any good?" },
-  { level: "unwind", question: "Is there a place or moment you feel free enough to actually dance, even badly?" },
+  { level: "unwind", question: "Where's the best place you've ever danced, and who was there?" },
   { level: "unwind", question: "What does travel give you that staying home never could?" },
   { level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },
   { level: "unwind", question: "Which game would you drop everything for, even now?" },

@@ -806,6 +806,14 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.32 — Unwind 6 (#77, two cards asking the same thing)
+
+- **Unwind 6**
+  - Old: "Is there a place or moment you feel free enough to actually dance, even badly?"
+  - New: "Where's the best place you've ever danced, and who was there?"
+  - Why: it assumed you'd feel awkward, and sat on the same subject as Body 3; owner kept a dance card in Unwind as a story.
+- The overlap check is complete: four of the six old overlaps were already gone, two fixed here.
+
 ## Patch v7.31 — Us: Intimate 1 (#77, two cards asking the same thing)
 
 - **Us: Intimate 1**
