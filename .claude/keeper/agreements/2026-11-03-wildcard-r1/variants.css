@@ -1,0 +1,58 @@
+/* Wildcard mock-ups, injected at screenshot time only. Nothing here is in the app.
+   Scope: .wc-a/.wc-b/.wc-c on #card (main screen) and on #partyOverlay (Spotlight). */
+.wc-extra{display:none}
+/* the screenshot is taken with the controls awake (as just after a touch), for every card alike */
+#partyOverlay.idle .party-chrome,#partyOverlay.idle .party-orient{opacity:1}
+
+/* ---------- A: cream face (inverted) ---------- */
+#card.wc-a{background:var(--cream);border-color:var(--gold);box-shadow:0 4px 32px rgba(0,0,0,.5)}
+#card.wc-a::before,#card.wc-a::after,#partyOverlay.wc-a .party-frame i{border-color:#6b4f12;opacity:.55}
+#card.wc-a .card-question,#partyOverlay.wc-a .party-question{color:var(--bg)}
+#card.wc-a .card-level,#partyOverlay.wc-a .party-level{color:#6b4f12}
+#card.wc-a .card-star{color:#6b4f12;opacity:.5}
+#partyOverlay.wc-a{background:var(--cream)}
+#partyOverlay.wc-a .party-chrome button,#partyOverlay.wc-a .party-chrome .party-key{color:#3d3016}
+#partyOverlay.wc-a .party-count{color:#6b4f12}
+#partyOverlay.wc-a .pc-rule{background:rgba(107,79,18,.45)}
+#partyOverlay.wc-a .party-star{color:#6b4f12}
+#partyOverlay.wc-a .party-prev-btn,#partyOverlay.wc-a .party-next-btn{color:#3d3016}
+#partyOverlay.wc-a .party-chrome svg{stroke:#3d3016}
+#partyOverlay.wc-a .party-orient-btn{color:#3d3016}
+
+/* ---------- B: dark face, gilt title, inset frame, "?" watermark ---------- */
+#card.wc-b,#partyOverlay.wc-b .party-card{outline:1px solid var(--border-strong);outline-offset:-10px}
+#card.wc-b{border-color:var(--border-strong)}
+#card.wc-b .card-level,#partyOverlay.wc-b .party-level{
+  font-family:'Federo','Jost',sans-serif;font-weight:400;letter-spacing:.32em;color:var(--gold-l)}
+#card.wc-b .card-level{font-size:.95rem}
+#partyOverlay.wc-b .party-level{font-size:19px}
+#card.wc-b .wc-extra,#partyOverlay.wc-b .wc-extra{display:flex;position:absolute;inset:0;align-items:center;justify-content:center;
+  font:italic 400 9rem/1 'Bodoni Moda','Cormorant Garamond',serif;color:var(--gold);opacity:.1;pointer-events:none;z-index:0}
+#partyOverlay.wc-b .party-frame{--fi:22px}
+#partyOverlay.wc-b .wc-extra{font-size:min(70vh,60vw);z-index:0}
+#partyOverlay.wc-b .party-inner{position:relative;z-index:2}
+
+/* ---------- C: the card's back as an edge: lattice band round the face ---------- */
+#card.wc-c,#partyOverlay.wc-c .party-card{
+  --band:16px;
+  background:var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath d='M0 0 18 18M18 0 0 18' fill='none' stroke='%23c9a84c' stroke-width='.6' opacity='.42'/%3E%3Ccircle cx='9.0' cy='9.0' r='.9' fill='%23c9a84c' opacity='.55'/%3E%3Ccircle cx='0' cy='0' r='.7' fill='%23c9a84c' opacity='.3'/%3E%3C/svg%3E") center/18px 18px}
+#partyOverlay.wc-c .party-card{--band:20px}
+@media (min-width:900px){#partyOverlay.wc-c .party-card{--band:26px}}
+#card.wc-c .wc-extra,#partyOverlay.wc-c .wc-extra{display:block;position:absolute;inset:var(--band);background:var(--card-bg);
+  border:1px solid rgba(201,168,76,.55);z-index:0;pointer-events:none}
+#card.wc-c .wc-extra::after,#partyOverlay.wc-c .wc-extra::after{content:"";position:absolute;inset:6px;border:1px solid rgba(201,168,76,.28)}
+#card.wc-c::before{top:30px;left:30px}#card.wc-c::after{bottom:30px;right:30px}
+#card.wc-c .card-body-inner{padding-inline:30px}
+#card.wc-c .card-level,#partyOverlay.wc-c .party-level{color:var(--gold-l)}
+#partyOverlay.wc-c .party-frame{--fi:calc(var(--band) + 12px)}
+#partyOverlay.wc-c .party-inner{position:relative;z-index:2}
+#partyOverlay.wc-c .party-chrome{z-index:3}
+#partyOverlay.wc-c .party-inner{padding-inline:calc(var(--band) + 16px)}
+#partyOverlay.wc-c .party-chrome{margin-inline:12px}
+@media (min-width:900px){
+  #partyOverlay.wc-c .party-top{margin-top:var(--band)}
+  #partyOverlay.wc-c .party-bottom{margin-bottom:var(--band)}
+  #partyOverlay.wc-c .party-chrome{margin-inline:var(--band)}
+}
+#partyOverlay.wc-b .wc-extra{font-size:min(55vh,48vw);opacity:.08}
+@media (min-width:768px){#card.wc-b .wc-extra{font-size:24rem;opacity:.08}}
