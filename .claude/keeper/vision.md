@@ -83,10 +83,9 @@ forward side by side; the owner starts the conversations on each.
 
 - **Deck:** every card earns its slot, nothing repeats, and every category is wide enough
   to stay fun. The weakest cards are the first work.
-- **Looks:** good enough to release once the remaining spots are settled: the bottom of the
-  screen, the end of a hand, the evening chooser, and the desktop layout.
-- **App:** as smooth as the cards. One language, English. The Dutch goes and the work
-  version is reworked.
+- **Looks:** good enough to release. The four spots that were left (the bottom of the screen,
+  the end of a hand, the evening chooser, the desktop layout) are settled (owner, 2026-11-02).
+- **App:** as smooth as the cards. One language, English. The Dutch goes.
 
 Later doors, kept open: a printed deck (which could also bring in money), and an offshoot
 with no shape yet.
@@ -123,3 +122,8 @@ attractive about you?"), and long cards with a second question attached.
   a real conversation — never juvenile. Not the drunk sex-talk register ("we did it after
   buying a vibrator" trivia the owner doesn't care about). That holds for every After Dark
   category, Bare included: Bare's facts and silly stories are still adult ones.
+- **2026-11-02** — On the backlog the owner closed "What the work version should become" ("There
+  is a work version. Case closed right?") and "Which four looks spots count as settled" ("All
+  four are done in different threads"). Removed text: "and the work version is reworked";
+  "once the remaining spots are settled: the bottom of the screen, the end of a hand, the
+  evening chooser, and the desktop layout."
