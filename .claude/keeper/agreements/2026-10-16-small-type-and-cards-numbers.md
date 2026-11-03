@@ -18,3 +18,8 @@ Area: B (looks). A and C untouched.
 ## Name
 - Replaced 2026-10-19: the sheet is called **The Deck** (see `2026-10-18-evening-chooser.md` and
   project.md, "Names we use").
+
+## Closed 2026-11-03
+The borderline items are settled as they stand (owner: "Close 72"): Three in the plain button
+letter (Jost), INTERMEZZO in Federo spaced capitals, the hint lines in Cormorant Garamond italic,
+"Start to finish" in Jost like the chapter descriptions next to it.
