@@ -671,14 +671,7 @@ body.showing-hand-summary .card-question{
 @media (hover:hover) and (pointer:fine){.drawer-close:hover{color:var(--cream);}}
 .drawer-title{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-align:center;padding:4px 0 16px;}
 .drawer-body{padding:4px 0 max(20px,env(safe-area-inset-bottom));}
-.d-item{display:flex;align-items:center;width:100%;background:none;border:none;cursor:pointer;transition:background .15s;text-align:left;}
-@media (hover:hover) and (pointer:fine){.d-item:hover{background:rgba(255,255,255,.035);}}
-.d-icon{flex-shrink:0;transition:color .2s,opacity .2s;}
-.d-text{display:flex;flex-direction:column;gap:2px;}
-.d-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream);}
-.d-sub{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.05em;color:var(--muted-l);}
-.d-divider{height:1px;background:var(--dim);margin:4px 0;}
-/* secondary drawers (log, favs, custom, help) */
+/* secondary drawers (played, favs, custom, help) */
 .sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .42s var(--ease-out);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
 .sub-drawer.open{transform:translateY(0);transition:transform .64s var(--ease-sheet);}
 .drawer-empty{font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-align:center;padding:24px 0;opacity:.6;}
@@ -1286,13 +1279,52 @@ body.tok-taught .tok-hint{display:none;}
   .party-orient{display:none;}
 }
 
-/* menu drawer: de-boxed, text-first; icons are one stroke-SVG set, muted→gold on hover */
-.d-icon{width:auto;height:auto;border:none;border-radius:0;font-family:'Jost',sans-serif;font-size:.78rem;color:var(--gold);opacity:.55;min-width:20px;justify-content:center;align-items:center;display:flex;}
-.d-icon svg{width:16px;height:16px;}
-.d-item{padding:15px 26px;gap:16px;}
-@media (hover:hover) and (pointer:fine){.d-item:hover .d-icon{border:none;color:var(--gold);opacity:1;}}
-#menuDrawer .d-label{color:var(--celadon);}
-#menuDrawer .d-sub{color:var(--celadon-hint);}
+/* ── THE MENU: "Shows tonight" (menu round 1, option C) ──
+   Each line shows where the game is now (the deck, what is seen, what is played and starred) and what a
+   tap does. The phone drawer holds the lines; the side panel (computer with a mouse) holds the same
+   lines in The Deck's chapter-row frames, with the state in the count column. Values are the mockup's. */
+.menu-head{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text-helper);}
+.menu-lines .menu-head{padding:10px 26px 4px;}
+.sub-drawer .menu-head{text-align:center;padding:8px 0 12px;}
+.menu-rule{height:1px;background:var(--dim);margin:10px 26px;}
+.menu-line{display:grid;grid-template-columns:20px 1fr auto;grid-template-rows:auto auto;column-gap:16px;row-gap:3px;align-items:center;width:100%;padding:14px 26px;background:none;border:none;text-align:left;cursor:pointer;transition:background .15s;}
+@media (hover:hover) and (pointer:fine){.menu-line:hover{background:rgba(255,255,255,.035);}}
+.menu-icon{grid-row:1/3;color:var(--celadon);opacity:.8;display:flex;}
+.menu-icon svg{width:18px;height:18px;}
+.menu-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);}
+.menu-state{grid-column:2;font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--cream);opacity:.85;}
+.menu-deck{color:var(--preset);letter-spacing:.04em;}
+[data-menu-state].tok-multi .menu-deck{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
+.menu-act{grid-column:3;grid-row:1/3;font-family:'Federo','Jost',sans-serif;font-size:.8rem;letter-spacing:.05em;color:var(--celadon-hint);}
+.menu-foot{display:flex;justify-content:center;align-items:flex-start;gap:22px;margin:16px 0 2px;}
+.menu-foot button{background:none;border:none;font-family:'Federo','Jost',sans-serif;font-size:.82rem;letter-spacing:.05em;color:var(--celadon-hint);cursor:pointer;padding:10px 2px;}
+.menu-foot-item{display:flex;flex-direction:column;align-items:center;}
+/* the once-only line under Ways to play, like the hints under Three, Spotlight and Twist */
+.menu-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;line-height:1.15;color:var(--row-hint);}
+body.hint-ways-taught .menu-hint{display:none;}
+.menu-sep{width:4px;height:4px;margin-block-start:1.1rem;background:var(--celadon);transform:rotate(45deg);opacity:.4;}
+
+/* the side panel: closed and hidden except where The Deck is docked (see "THE DECK, DOCKED") */
+.side-drawer{display:none;}
+.side-head{display:flex;align-items:center;justify-content:space-between;padding:18px 0 6px;}
+.side-title{font-family:'Jost',sans-serif;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.side-close{background:none;border:none;color:var(--muted);font-size:1rem;padding:4px;cursor:pointer;}
+@media (hover:hover) and (pointer:fine){.side-close:hover{color:var(--cream);}}
+.side-drawer .menu-lines .menu-head{padding:0;margin:16px 0 8px;}
+.side-drawer .chapter{min-height:0;margin-bottom:6px;cursor:pointer;}
+.side-drawer .ch-main{padding:10px 14px;gap:4px;}
+.side-drawer .ch-name{font-size:.8rem;letter-spacing:.14em;color:var(--celadon);}
+.side-drawer .ch-desc{font-family:'Federo','Jost',sans-serif;font-size:.82rem;color:var(--cream);opacity:.8;}
+.side-drawer .ch-fold{pointer-events:none;width:10.5rem;padding:0 16px;margin:8px 0;border-left:1px solid var(--border);}
+.side-drawer .ch-ct{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:.85rem;letter-spacing:.1em;color:var(--cream);opacity:1;}
+.side-drawer .menu-deck{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;}
+.side-drawer .menu-foot{justify-content:flex-start;margin-top:22px;padding-top:14px;border-top:1px solid var(--dim);}
+.side-drawer .menu-foot button{font-size:.85rem;padding:6px 0;}
+.side-drawer .menu-foot-item{align-items:flex-start;}
+@media (hover:hover) and (pointer:fine){
+  .side-drawer .chapter:hover{border-top-color:var(--border);border-right-color:var(--border);border-bottom-color:var(--border);}
+  .side-drawer .chapter:hover .ch-name{color:var(--cream);}
+}
 
 /* ── DESKTOP — a room, not a stretched phone ── */
 @media(min-width:768px){
@@ -1338,7 +1370,6 @@ body.tok-taught .tok-hint{display:none;}
   /* small surfaces were phone-sized on a monitor */
   .pick-toggle,.btn-fullscreen{padding:15px 6px;}
   .drawer-title{font-size:.85rem;}
-  .d-label{font-size:.85rem;} .d-sub{font-size:.85rem;} .d-icon{font-size:.95rem;}
   .drawer-item{font-size:1.12rem;} .drawer-item-meta{font-size:.85rem;}
   .session-btn{font-size:.85rem;padding:15px 18px;}
   .cat-area{--pick-size:.85rem;}
@@ -1350,7 +1381,6 @@ body.tok-taught .tok-hint{display:none;}
   .drawer-item{font-size:1.2rem;padding:16px 0;}
   .drawer-item-meta{font-size:.88rem;}
   .drawer-title{font-size:.9rem;}
-  .d-label{font-size:.9rem;} .d-sub{font-size:.9rem;}
   .session-btn{font-size:.9rem;padding:15px 18px;}
   .help-content p{font-size:1.15rem;}
   .card-question{line-height:1.42;}
@@ -1689,10 +1719,19 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .chapter:is(.on,.part):hover .ch-name{color:var(--ch);}
   .chapter-group{--ch-hover-line:var(--border-strong);}
   @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
+
+  /* The menu is a panel from the left instead of the phone drawer: under the overlay, eased in on The Deck's
+     curve, hidden (out of the keyboard's reach too) until it has slid away */
+  #menuDrawer{display:none;}
+  .side-drawer{display:block;position:fixed;inset-block:0;inset-inline-start:0;z-index:160;width:var(--dock-w);
+    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border-inline-end:1px solid var(--border-strong);
+    transform:translateX(-102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
+  .side-drawer.open{transform:none;visibility:visible;transition:transform .5s var(--ease-sheet);}
+  @media(prefers-reduced-motion:reduce){.side-drawer,.side-drawer.open{transition:none;}}
 }
 
 /* the panel is a focus target for the keyboard, not a control: no ring around it (the controls inside keep theirs) */
-.cat-area:focus-visible{outline:none;}
+.cat-area:focus-visible,.side-drawer:focus-visible{outline:none;}
 
 /* ── Sentence case for the words people read ──
    Names of things (BALANCED, the chapter names, a card's category) stay in
@@ -1719,7 +1758,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
   font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
 .tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.pick-toggle,.btn-fullscreen,
-.d-sub,#menuDrawer .d-sub,.chapter .ch-desc,.drawer-empty{
+.chapter .ch-desc,.drawer-empty{
   font-family:'Federo','Jost',sans-serif;}
 
 /* ── Logo ornament: centre diamond copper, inner line pairs take the preset ── */

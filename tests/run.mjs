@@ -771,7 +771,7 @@ async function run() {
     await page.evaluate(() => { document.getElementById('d-reshuffle').click(); });
     await page.waitForTimeout(500);
     await page.locator('#btn-menu').click();
-    await page.locator('#d-log').click();
+    await page.locator('#d-played').click();
     const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
     await chooser.setFiles(await stateFile.path());
     await page.waitForTimeout(800);
@@ -781,7 +781,7 @@ async function run() {
     const txt = files.find(f => f.suggestedFilename().endsWith('.txt'));
     await page.evaluate(() => { window.__logKeep = { log: state.sessionLog, from: state.seenFrom, logged: state.loggedQuestions }; });
     await page.locator('#btn-menu').click();
-    await page.locator('#d-log').click();
+    await page.locator('#d-played').click();
     const [chooser2] = await Promise.all([page.waitForEvent('filechooser'), page.locator('#btnImport').click()]);
     await chooser2.setFiles(await txt.path());
     await page.waitForTimeout(500);
@@ -1731,12 +1731,12 @@ async function run() {
     assert(await alive(), 'reloaded while offline');
 
     await ctx.setOffline(false);
-    await upd.evaluate(() => document.getElementById('logDrawer').classList.add('open'));
+    await upd.evaluate(() => document.getElementById('playedDrawer').classList.add('open'));
     await upd.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); updateDrawMore(); });
     await upd.waitForTimeout(500);
     assert(await alive(), 'reloaded with a drawer open');
 
-    await upd.evaluate(() => { document.getElementById('logDrawer').classList.remove('open'); updateDrawMore(); });   // the next screen change at Intermezzo applies it
+    await upd.evaluate(() => { document.getElementById('playedDrawer').classList.remove('open'); updateDrawMore(); });   // the next screen change at Intermezzo applies it
     await reloaded();
     let at = await upd.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, len: state.visibleDeck.length, body: document.body.classList.contains('showing-hand-summary'), recorded: sessionStorage.getItem('bu-reloaded-for') }));
     assert(at.side === 'intermezzo' && at.idx === at.len && at.body && at.recorded === 'NEWVERSION', `after the reload: ${JSON.stringify(at)}`);
@@ -2370,6 +2370,242 @@ async function run() {
     } finally {
       await wide.close();
     }
+  });
+
+  // ── The menu (#95): "Tonight" / "Yours", Played, the pause colour (#73) ─────────────────────
+  // Each of these loads the app fresh in its own context, so what earlier checks left in the page
+  // (cards drawn, the sheet open) can't colour the result.
+  const freshApp = async (opts = {}) => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block', ...opts });
+    const pg = await ctx.newPage();
+    pg.on('pageerror', (e) => consoleErrors.push(e.message));
+    await pg.goto(`http://127.0.0.1:${port}/${TARGET}`);
+    await pg.waitForSelector('#card', { state: 'visible' });
+    await pg.waitForTimeout(500);
+    return { ctx, pg };
+  };
+  const drawCards = async (pg, n) => {
+    for (let i = 0; i < n; i++) {
+      const before = await pg.evaluate(() => { const at = state.currentIndex; nextCard(); return at; });
+      await pg.waitForFunction(at => state.currentIndex > at, before, { timeout: 4000 });
+    }
+  };
+  // what the open phone menu says on one line: its state sentence, read as a player would
+  const menuLine = (pg, key) => pg.evaluate(k => document.querySelector(`#menuDrawer [data-menu-state="${k}"]`).textContent, key);
+  const openPhoneMenu = async pg => { await pg.evaluate(() => closeAllDrawers()); await pg.locator('#btn-menu').click(); await pg.waitForTimeout(150); };
+
+  await check('menu: Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await openPhoneMenu(pg);
+      const m = await pg.evaluate(() => {
+        const d = document.getElementById('menuDrawer');
+        return {
+          order: [...d.querySelectorAll('.menu-head, .menu-line .menu-label, .menu-foot button')].map(e => e.textContent.trim()),
+          acts: [...d.querySelectorAll('.menu-act')].map(e => e.textContent.trim()),
+          text: d.innerText,
+          old: ['d-log', 'd-sessions', 'd-pausecolour'].filter(id => document.getElementById(id)),
+          sideShown: getComputedStyle(document.getElementById('menuSideDrawer')).display !== 'none',
+          open: d.classList.contains('open'),
+        };
+      });
+      assert(m.open && !m.sideShown, `the phone menu should be the one showing: ${JSON.stringify({ open: m.open, sideShown: m.sideShown })}`);
+      assert(JSON.stringify(m.order) === JSON.stringify(['Tonight', 'The Deck', 'Start over', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
+      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
+      assert(m.old.length === 0, `old menu items still there: ${m.old}`);
+      assert(!/\b(mode|preset|session|category|chapter)\b/i.test(m.text), `the menu uses our own words: ${m.text}`);
+      assert(await menuLine(pg, 'cats') === 'Balanced, five cards', `The Deck line: ${await menuLine(pg, 'cats')}`);
+      assert(await menuLine(pg, 'played') === 'Nothing drawn yet', `Played before the first draw: ${await menuLine(pg, 'played')}`);
+      assert(await menuLine(pg, 'favs') === 'None starred yet', `Favourites with none: ${await menuLine(pg, 'favs')}`);
+      // the hand size reads as a word up to twenty, and "every card" for All
+      const sizes = await pg.evaluate(() => [5, 10, 20, null].map(n => { state.cardLimit = n; fillMenu(); return document.querySelector('#menuDrawer [data-menu-state="cats"]').textContent; }));
+      assert(JSON.stringify(sizes) === JSON.stringify(['Balanced, five cards', 'Balanced, ten cards', 'Balanced, twenty cards', 'Balanced, every card']), `hand sizes: ${JSON.stringify(sizes)}`);
+      // a tap on The Deck opens The Deck, as the old Categories item did
+      await pg.evaluate(() => { state.cardLimit = 5; });
+      await pg.locator('#d-cats').click(); await pg.waitForTimeout(700);
+      assert(await pg.evaluate(() => document.getElementById('cat-area').classList.contains('sheet-open') && !document.getElementById('menuDrawer').classList.contains('open')), 'The Deck line did not open The Deck');
+    } finally { await ctx.close(); }
+  });
+
+  await check('menu: Start over shows the cards seen and left of the whole selected deck, in a normal hand, Colbert, After Dark on and off, and after Start over; numbers refresh on each open', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      // what the line should say, worked out from the log and the selection itself rather than from the app's own count
+      const expected = () => pg.evaluate(() => {
+        const all = getFilteredCards ? (orderedSoloLevel() ? state.fullDeck : getFilteredCards()) : [];
+        const seen = new Set(state.sessionLog.slice(state.seenFrom).map(c => c.question));
+        state.skippedSeen.forEach(q => seen.add(q));
+        const n = all.filter(c => seen.has(c.question)).length;
+        return `${n} seen, ${all.length - n} left`;
+      });
+      const said = async () => { await openPhoneMenu(pg); return menuLine(pg, 'start'); };
+      const total = await pg.evaluate(() => state.fullDeck.length);
+      assert(await said() === `0 seen, ${total} left`, `before the first draw: ${await said()} (deck ${total})`);
+      await pg.evaluate(() => closeAllDrawers());
+      await drawCards(pg, 3);
+      assert(await said() === `3 seen, ${total - 3} left`, `after three cards: ${await said()}`);
+      assert(await said() === await expected(), `line and log disagree: ${await said()} vs ${await expected()}`);
+      // the numbers refresh on each open: a fourth card changes them
+      await pg.evaluate(() => closeAllDrawers());
+      await drawCards(pg, 1);
+      assert(await said() === `4 seen, ${total - 4} left`, `after four cards: ${await said()}`);
+      // Start over does what Reshuffle did (a fresh hand), and the line then reads from the same rule
+      await pg.locator('#d-reshuffle').click(); await pg.waitForTimeout(400);
+      assert(await pg.evaluate(() => state.currentIndex === -1), 'Start over did not build a fresh hand');
+      assert(await said() === await expected(), `after Start over: ${await said()} vs ${await expected()}`);
+      await pg.evaluate(() => closeAllDrawers());
+      // a fixed set played from its start (Colbert, The 36): seen and left count that set
+      for (const level of ['colbert', 'aron']) {
+        await pg.evaluate(l => { state.activeToggles.clear(); state.activeToggles.add(l); initDeck(); }, level);
+        await pg.waitForTimeout(300);
+        const set = await pg.evaluate(l => ALL_CARDS.filter(c => c.level === l).length, level);
+        const fixed = await pg.evaluate(() => state.fullDeck.length);
+        assert(fixed > 0 && fixed <= set && fixed < total, `${level} should be a smaller fixed set, got ${fixed} (deck ${total})`);
+        const before = await said();
+        assert(before === `0 seen, ${fixed} left` || before === await expected(), `${level} before drawing: ${before}`);
+        await pg.evaluate(() => closeAllDrawers());
+        await drawCards(pg, 2);
+        const line = await said();
+        assert(line === await expected(), `${level}: ${line} vs ${await expected()}`);
+        assert(/^\d+ seen, \d+ left$/.test(line) && line.split(/\D+/).filter(Boolean).reduce((x, y) => x + +y, 0) === fixed, `${level} numbers do not add up to its ${fixed} cards: ${line}`);
+        await pg.evaluate(() => closeAllDrawers());
+      }
+      // After Dark on and off: seen + left is always the selection
+      await pg.evaluate(() => { applyPreset('partner'); });
+      await pg.waitForTimeout(400);
+      for (const adOn of [true, false, true]) {
+        await pg.evaluate(on => { ['flesh', 'carnal'].forEach(l => (on ? state.activeToggles.add(l) : state.activeToggles.delete(l))); applyToggleUI(); initDeck(); }, adOn);
+        await pg.waitForTimeout(300);
+        const line = await said();
+        const sum = line.split(/\D+/).filter(Boolean).reduce((a, b) => a + +b, 0);
+        const sel = await pg.evaluate(() => getFilteredCards().length);
+        assert(line === await expected() && sum === sel, `After Dark ${adOn ? 'on' : 'off'}: "${line}" for a selection of ${sel}`);
+        await pg.evaluate(() => closeAllDrawers());
+      }
+    } finally { await ctx.close(); }
+  });
+
+  await check('menu: Played holds what was drawn now and what was saved; Played and Favourites lines count right; the old Log and Sessions drawers are gone', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 2);
+      await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
+      await openPhoneMenu(pg);
+      assert(await menuLine(pg, 'played') === '2 drawn so far', `Played line: ${await menuLine(pg, 'played')}`);
+      assert(await menuLine(pg, 'favs') === '1 starred', `Favourites line: ${await menuLine(pg, 'favs')}`);
+      await pg.locator('#d-played').click(); await pg.waitForTimeout(700);
+      const p = await pg.evaluate(() => {
+        const d = document.getElementById('playedDrawer');
+        return {
+          open: d.classList.contains('open'),
+          title: d.querySelector('.drawer-title').textContent,
+          heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent),
+          buttons: ['btnExport', 'btnImport', 'btnClearLog', 'storeSessionBtn'].map(id => d.querySelector('#' + id)?.textContent.trim()),
+          rows: d.querySelectorAll('#logList .drawer-item').length,
+          gone: ['logDrawer', 'sessionsDrawer'].filter(id => document.getElementById(id)),
+        };
+      });
+      assert(p.open && p.title === 'Played', `Played did not open: ${JSON.stringify(p)}`);
+      assert(JSON.stringify(p.heads) === JSON.stringify(['Now', 'Saved']), `Played headings: ${p.heads}`);
+      assert(JSON.stringify(p.buttons) === JSON.stringify(['Export log', 'Import log', 'Clear', 'Save for later']), `Played buttons: ${p.buttons}`);
+      assert(p.rows === 2 && p.gone.length === 0, `Played rows / old drawers: ${JSON.stringify(p)}`);
+      // save, and the saved list sits in the same screen with open / rename / delete
+      await pg.locator('#storeSessionBtn').click(); await pg.waitForTimeout(200);
+      const saved = await pg.evaluate(() => {
+        const d = document.getElementById('playedDrawer');
+        return { rows: d.querySelectorAll('#sessionsList [data-id]').length, actions: [...d.querySelectorAll('#sessionsList [data-action]')].map(e => e.dataset.action), text: d.innerText };
+      });
+      assert(saved.rows === 1 && saved.actions.join() === 'open,rename,delete', `saved list: ${JSON.stringify(saved)}`);
+      assert(!/evening|tonight|earlier/i.test(saved.text), `Played guesses when something was saved: ${saved.text}`);
+      await pg.evaluate(() => closeAllDrawers());
+      await openPhoneMenu(pg);
+      assert(await menuLine(pg, 'played') === '2 drawn so far, 1 saved', `Played line after saving: ${await menuLine(pg, 'played')}`);
+      // delete it again: the empty line reads with no number
+      await pg.locator('#d-played').click(); await pg.waitForTimeout(700);
+      await pg.locator('#sessionsList [data-action="delete"]').click(); await pg.waitForTimeout(150);
+      assert((await pg.locator('#sessionsList').textContent()).includes('Nothing saved yet'), 'the empty saved list should say so');
+      // the end-of-hand Export still goes straight to a file, with no drawer in between
+      const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 3000 }), pg.locator('#btnExport').click()]);
+      assert(/^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(dl.suggestedFilename()), `Export file name: ${dl.suggestedFilename()}`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('menu: Ways to play carries its once-only hint until first tapped; Show hints again brings it back', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      const hintShown = () => pg.evaluate(() => getComputedStyle(document.querySelector('#menuDrawer .menu-hint')).display !== 'none');
+      await openPhoneMenu(pg);
+      assert(await hintShown() && /seven ways round the table/.test(await pg.locator('#menuDrawer .menu-hint').textContent()), 'the hint is not there at first');
+      await pg.locator('#d-help').click(); await pg.waitForTimeout(600);
+      assert(await pg.evaluate(() => document.getElementById('helpDrawer').classList.contains('open')), 'Ways to play did not open');
+      await pg.evaluate(() => closeAllDrawers());
+      await openPhoneMenu(pg);
+      assert(!(await hintShown()), 'the hint stayed after Ways to play was tapped');
+      await pg.locator('#d-hints').click(); await pg.waitForTimeout(300);
+      await openPhoneMenu(pg);
+      assert(await hintShown(), 'Show hints again did not bring the hint back');
+    } finally { await ctx.close(); }
+  });
+
+  await check('menu on a computer: a side panel eased in from the left with the state in the count column; the phone drawer is not shown; overlay and Escape close it', async () => {
+    const { ctx, pg } = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
+    try {
+      await drawCards(pg, 2);
+      const total = await pg.evaluate(() => state.fullDeck.length);
+      await pg.locator('#btn-menu').click();
+      // mid-slide, not a snap: the panel is partly in view a moment after the click
+      await pg.waitForTimeout(120);
+      const mid = await pg.evaluate(() => { const r = document.getElementById('menuSideDrawer').getBoundingClientRect(); return { right: r.right, width: r.width, ms: getComputedStyle(document.getElementById('menuSideDrawer')).transitionDuration }; });
+      assert(mid.right > 0 && mid.right < mid.width, `the panel should be part-way in: ${JSON.stringify(mid)}`);
+      assert(parseFloat(mid.ms) > 0, `no slide: transition ${mid.ms}`);
+      await pg.waitForTimeout(800);
+      const m = await pg.evaluate(() => {
+        const side = document.getElementById('menuSideDrawer');
+        const r = side.getBoundingClientRect();
+        return {
+          open: side.classList.contains('open'), left: r.left, top: r.top, height: r.height, phoneShown: getComputedStyle(document.getElementById('menuDrawer')).display !== 'none',
+          rows: [...side.querySelectorAll('.chapter')].map(c => [c.querySelector('.ch-name').textContent, c.querySelector('.ch-ct').innerText.replace(/\s+/g, ' ').trim()]),
+          focus: document.activeElement === side,
+        };
+      });
+      assert(m.open && m.left === 0 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
+      assert(m.focus, 'focus did not move into the menu');
+      assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
+      await pg.locator('#overlay').click({ position: { x: 1300, y: 400 } }); await pg.waitForTimeout(800);
+      assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
+      await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
+      assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'Escape did not close the panel');
+      // a tap anywhere on a row (here: Favourites) opens what it shows
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
+      await pg.locator('#menuSideDrawer .chapter', { hasText: 'Favourites' }).click(); await pg.waitForTimeout(800);
+      assert(await pg.evaluate(() => document.getElementById('favsDrawer').classList.contains('open')), 'a tap on the Favourites row did not open Favourites');
+    } finally { await ctx.close(); }
+    // reduced motion: no slide at all
+    const calm = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false, reducedMotion: 'reduce' });
+    try {
+      assert(await calm.pg.evaluate(() => getComputedStyle(document.getElementById('menuSideDrawer')).transitionDuration === '0s'), 'the panel still slides under reduced motion');
+    } finally { await calm.ctx.close(); }
+  });
+
+  await check('the pause takes the last card\'s colour, whatever the old Pause colour setting left on the device; the test switch is gone', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { try { localStorage.setItem('bu-pause-colour', 'chapter'); } catch (e) { /* storage blocked */ } });
+    const pg = await ctx.newPage();
+    pg.on('pageerror', (e) => consoleErrors.push(e.message));
+    try {
+      await pg.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await pg.waitForSelector('#card', { state: 'visible' });
+      await pg.waitForTimeout(400);
+      assert(await pg.evaluate(() => !document.getElementById('d-pausecolour')), 'the Pause colour switch is still in the menu');
+      const r = await pg.evaluate(() => {
+        // a card whose category colour is not its chapter's colour, so the two settings could be told apart
+        const card = ALL_CARDS.find(c => CATEGORIES[c.level] && CHAPTERS_META[CATEGORIES[c.level].chapter] && CHAPTERS_META[CATEGORIES[c.level].chapter].color.toLowerCase() !== levelColor(c.level).toLowerCase());
+        state.visibleDeck = [card];
+        return { got: handEndColors().raw, want: levelColor(card.level), chapter: CHAPTERS_META[CATEGORIES[card.level].chapter].color };
+      });
+      assert(r.got === r.want && r.got.toLowerCase() !== r.chapter.toLowerCase(), `the pause colour is ${r.got}; the last card's is ${r.want} (its chapter's is ${r.chapter})`);
+    } finally { await ctx.close(); }
   });
 
   await check('no uncaught page errors were raised during the run', async () => {

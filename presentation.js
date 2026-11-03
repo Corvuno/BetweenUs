@@ -150,11 +150,11 @@ function exitParty() {
 // ── Drawer helpers ──
 // btn-menu is the one drawer trigger that's never itself inside a drawer, so
 // it's always a safe, visible place to return focus to when any drawer closes
-// — the sub-drawer triggers (d-log, d-favs, ...) live inside menuDrawer, which
+// — the sub-drawer triggers (d-played, d-favs, ...) live inside menuDrawer, which
 // is already closed by the time a sub-drawer closes, so focusing them back
 // would land focus inside a hidden dialog.
 
-const DRAWER_TRIGGER_IDS = ['btn-menu', 'd-log', 'd-favs', 'd-help', 'd-sessions'];
+const DRAWER_TRIGGERS = '#btn-menu, [data-menu][aria-expanded]';
 function openDrawer(id, triggerEl) {
   document.getElementById('overlay').classList.add('open');
   const el = document.getElementById(id);
@@ -172,13 +172,11 @@ function openDrawer(id, triggerEl) {
 function closeAllDrawers() {
   document.getElementById('overlay').classList.remove('open');
   if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
-  ['menuDrawer','logDrawer','favsDrawer','helpDrawer','sessionsDrawer'].forEach(id=>{
+  ['menuDrawer','menuSideDrawer','playedDrawer','favsDrawer','helpDrawer'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
   });
-  DRAWER_TRIGGER_IDS.forEach(id=>{
-    const el=document.getElementById(id); if(el) el.setAttribute('aria-expanded', 'false');
-  });
+  document.querySelectorAll(DRAWER_TRIGGERS).forEach(el=>el.setAttribute('aria-expanded', 'false'));
   const btnMenu = document.getElementById('btn-menu');
   if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
 }
@@ -215,20 +213,82 @@ document.getElementById('catLabel').addEventListener('click', toggleCategories);
 
 // Shuffle mode is chosen from the Shuffle token tray (see the order list in the
 // app shell wiring below); the mode is applied via updateShuffleDisplay().
-// ── Reshuffle button: re-draw in the current shuffle mode ──
-document.getElementById('d-reshuffle').addEventListener('click',()=>{
+// ── Menu: the phone drawer, or (the condition The Deck is docked by) the side panel ──
+// Both hold the same lines (between-us.html); each line's state is filled in every time the menu opens.
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven',
+  'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+
+// How many cards a hand has, as the player reads it: a word up to twenty, "every card" for All.
+function handSizeLabel(limit) {
+  if (limit === null) return 'every card';
+  return `${NUMBER_WORDS[limit] ?? limit} ${limit === 1 ? 'card' : 'cards'}`;
+}
+
+// Each line's state as short parts: joined by commas on the phone, stacked in the side panel's count column.
+// A line with nothing true to say about a number says nothing.
+function menuStates() {
+  const seen = _seenSet();
+  const total = state.fullDeck.length;
+  const seenCount = state.fullDeck.filter(c => seen.has(c.question)).length;
+  const drawn = state.sessionLog.length;
+  const saved = getStoredSessions().length;
+  const starred = state.favourites.length;
+  return {
+    cats: [document.getElementById('valCats').textContent, handSizeLabel(state.cardLimit)],
+    start: total ? [`${seenCount} seen`, `${total - seenCount} left`] : [],
+    played: [drawn ? `${drawn} drawn so far` : 'Nothing drawn yet', ...(saved ? [`${saved} saved`] : [])],
+    favs: [starred ? `${starred} starred` : 'None starred yet'],
+  };
+}
+
+function fillMenu() {
+  const states = menuStates();
+  const tokCats = document.getElementById('tokCats');
+  document.querySelectorAll('[data-menu-state]').forEach((/** @type {HTMLElement} */ el) => {
+    const spans = states[el.dataset.menuState].map(text => Object.assign(document.createElement('span'), { textContent: text }));
+    // stacked in the side panel's count column, one sentence with commas on the phone
+    el.replaceChildren(...(el.closest('.side-drawer') ? spans : spans.flatMap((span, i) => (i ? [', ', span] : [span]))));
+    if (el.dataset.menuState !== 'cats') return;
+    // the deck's name wears the colour the "Selected deck" line gives it, a gradient for a custom mix
+    el.firstElementChild?.classList.add('menu-deck');
+    el.classList.toggle('tok-multi', tokCats.classList.contains('tok-multi'));
+    el.style.setProperty('--tokg', tokCats.style.getPropertyValue('--tokg'));
+  });
+}
+
+function openMenu(trigger) {
+  fillMenu();
+  openDrawer(dockedQuery.matches ? 'menuSideDrawer' : 'menuDrawer', trigger);
+}
+
+// Crossing the line between the phone drawer and the side panel with a menu open: close it rather than leave a hidden drawer open under the overlay.
+dockedQuery.addEventListener('change', closeAllDrawers);
+
+// Start over: a fresh hand in the current shuffle mode (what Reshuffle was).
+function startOver() {
   initDeck();
   updateDeckInfo(); updateDrawMore();
   closeAllDrawers();
-});
+}
 
-// ── Menu drawer ──
-document.getElementById('btn-menu').addEventListener('click',(e)=>openDrawer('menuDrawer', e.currentTarget));
+const MENU_ACTIONS = {
+  cats: () => { closeAllDrawers(); /** @type {any} */ (window).openCats(); },   // openCats is published by ui.js
+  start: startOver,
+  played: trigger => { closeAllDrawers(); renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); },
+  favs: trigger => { closeAllDrawers(); renderFavourites(); openDrawer('favsDrawer', trigger); },
+  help: trigger => { hintRetire('ways'); closeAllDrawers(); openDrawer('helpDrawer', trigger); },
+  hints: () => { hintsReset(); closeAllDrawers(); },
+  close: closeAllDrawers,
+};
+document.querySelectorAll('#menuDrawer, #menuSideDrawer').forEach(menu => menu.addEventListener('click', e => {
+  const line = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('[data-menu]'));
+  if (line) MENU_ACTIONS[line.dataset.menu](line);
+}));
+document.getElementById('btn-menu').addEventListener('click', e => openMenu(e.currentTarget));
 document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 
-// ── Log ──
-document.getElementById('d-log').addEventListener('click',(e)=>{ closeAllDrawers(); renderLog(); openDrawer('logDrawer', e.currentTarget); });
-document.getElementById('closeLog').addEventListener('click',()=>closeAllDrawers());
+// ── Played: the log (what was drawn now) and the saved sessions ──
+document.getElementById('closePlayed').addEventListener('click',()=>closeAllDrawers());
 // Shared by the log drawer's own Export button and the end-of-set screen's
 // "Export the log" action — one function, so the two can't drift into two
 // different file formats. No-op-safe on an empty session.
@@ -278,7 +338,7 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
     const imported=[]; text.split('\n').forEach((line,i,arr)=>{
       if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(qMap[q.toLowerCase()]||{question:q,level:'deep'});}
     });
-    if(imported.length){state.sessionLog=imported;state.seenFrom=0;state.loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('logDrawer');}
+    if(imported.length){state.sessionLog=imported;state.seenFrom=0;state.loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('playedDrawer');}
   }; inp.click();
 });
 
@@ -287,12 +347,9 @@ document.getElementById('btnClearLog').addEventListener('click', () => {
 });
 
 // ── Favourites ──
-document.getElementById('d-favs').addEventListener('click',(e)=>{ closeAllDrawers(); renderFavourites(); openDrawer('favsDrawer', e.currentTarget); });
 document.getElementById('closeFavs').addEventListener('click',()=>closeAllDrawers());
 
-// ── Sessions (multi-slot store) ──
-document.getElementById('d-sessions').addEventListener('click',(e)=>{ closeAllDrawers(); renderSessionsList(); openDrawer('sessionsDrawer', e.currentTarget); });
-document.getElementById('closeSessions').addEventListener('click',()=>closeAllDrawers());
+// ── Saved (multi-slot store, in Played) ──
 document.getElementById('storeSessionBtn').addEventListener('click', ()=>{ storeCurrentSession(); });
 // Delegated: the list re-renders on every store/rename/delete/open, so a
 // direct per-row listener would need re-attaching each time — one listener
@@ -308,7 +365,7 @@ document.getElementById('sessionsList').addEventListener('click', e => {
     deleteStoredSession(id);
   } else if (action === 'rename') {
     const entry = getStoredSessions().find(s => s.id === id);
-    const name = window.prompt('Rename session', entry ? entry.name : '');
+    const name = window.prompt('Rename', entry ? entry.name : '');
     if (name) renameStoredSession(id, name);
   } else {
     openStoredSession(id);
@@ -318,7 +375,6 @@ document.getElementById('sessionsList').addEventListener('click', e => {
 
 
 // ── Help ──
-document.getElementById('d-help').addEventListener('click',(e)=>{ closeAllDrawers(); openDrawer('helpDrawer', e.currentTarget); });
 document.getElementById('closeHelp').addEventListener('click',()=>closeAllDrawers());
 
 function updateAfterDarkBtn() {
@@ -623,37 +679,11 @@ let handStill = false;
 // the closing's beat (styles.css .im-wrap.closing).
 let handClosing = false;
 
-// ── TEST SWITCH: pause colour (temporary — remove this block, its menu row #d-pausecolour in
-// between-us.html, and the mode check in handEndColors() once the owner has decided) ──
-// 'last' = the pause takes the last drawn card's category colour (default); 'chapter' = that
-// card's chapter colour (the old behaviour). Stored per device.
-const PAUSE_COLOUR_KEY = 'bu-pause-colour';
-let pauseColourMode = 'last';
-try { if (localStorage.getItem(PAUSE_COLOUR_KEY) === 'chapter') pauseColourMode = 'chapter'; } catch (e) {}
-(function () {
-  const row = document.getElementById('d-pausecolour');
-  if (!row) return;
-  const sub = row.querySelector('.d-sub');
-  const showMode = () => { if (sub) sub.textContent = pauseColourMode === 'chapter' ? 'Chapter' : 'Last card'; };
-  showMode();
-  row.addEventListener('click', () => {
-    pauseColourMode = pauseColourMode === 'chapter' ? 'last' : 'chapter';
-    try { localStorage.setItem(PAUSE_COLOUR_KEY, pauseColourMode); } catch (e) {}
-    showMode();
-    if (state.handSide) paintHandSide();   // pause showing: repaint its colour now
-  });
-})();
-// ── end of test switch ──
-
 // The colour of the pause: raw (rail) and the lifted one (diamond, rule, button) — labelColor
-// lifts After Dark's near-black lacquer. Takes the last drawn card's category colour, or (test
-// switch on "Chapter") that card's chapter colour.
+// lifts After Dark's near-black lacquer. Takes the last drawn card's category colour.
 function handEndColors() {
   const last = state.visibleDeck[state.visibleDeck.length - 1];
-  const cat = last && CATEGORIES[last.level];
-  const base = pauseColourMode === 'chapter'
-    ? (cat && CHAPTERS_META[cat.chapter] && CHAPTERS_META[cat.chapter].color)
-    : (cat && levelColor(last.level));
+  const base = last && CATEGORIES[last.level] && levelColor(last.level);
   if (!base) return { raw: null, label: null };
   return { raw: base, label: labelColor(base) };
 }

@@ -121,7 +121,7 @@ function autoSaveSession() {
     const data = serializeSession();
     localStorage.setItem('bu-session', JSON.stringify(data));
     // Mirror into the bound stored slot, if any, so re-opening it later
-    // ("Sessions" drawer) reflects the cards drawn since it was opened —
+    // (Played, under Saved) reflects the cards drawn since it was opened —
     // not just the moment it was stored.
     if (state.activeSessionId) {
       const list = getStoredSessions();
@@ -236,7 +236,7 @@ function renderSessionsList() {
   if (!el) return;
   const list = getStoredSessions().slice().sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
   el.innerHTML = list.length === 0
-    ? '<div class="drawer-empty">No stored sessions yet.</div>'
+    ? '<div class="drawer-empty">Nothing saved yet.</div>'
     : list.map(s => {
         const isActive = s.id === state.activeSessionId;
         const dateStr = new Date(s.savedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });

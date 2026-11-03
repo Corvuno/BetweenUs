@@ -76,7 +76,8 @@ const HINTS = {
   twist:     { key: 'bu.hintTwistTaught', cls: 'hint-twist-taught' },   // under Twist
   change:    { key: 'bu.hintChangeTaught', cls: 'hint-change-taught' }, // under Change (end of hand)
   save:      { key: 'bu.hintSaveTaught',  cls: 'hint-save-taught' },     // under Save (end of hand)
-  lines:     { key: 'bu.hintLinesTaught', cls: 'hint-lines-taught' }     // "Hold a category…" under each chapter opened (phone)
+  lines:     { key: 'bu.hintLinesTaught', cls: 'hint-lines-taught' },    // "Hold a category…" under each chapter opened (phone)
+  ways:      { key: 'bu.hintWaysTaught',  cls: 'hint-ways-taught' }      // under Ways to play (menu)
 };
 function hintIsTaught(id) {
   try { return !!localStorage.getItem(HINTS[id].key); }

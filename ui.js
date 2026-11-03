@@ -173,12 +173,6 @@ document.getElementById('card').addEventListener('click', e => {
   }, { passive: false });
 })();
 
-// ── Show hints again (menu) ──
-(function(){
-  const b = document.getElementById('d-hints');
-  if (b) b.addEventListener('click', () => { hintsReset(); closeAllDrawers(); });
-})();
-
 // ── Spotlight brightens once ── PROVISIONAL, for testing. When the third card
 // of a session is drawn, the Spotlight button (symbol + word) brightens to near
 // white for about a second, once per device ever. Tune or remove here only.
@@ -839,7 +833,7 @@ applyToggleUI();
     lockBodyScroll();
     document.querySelectorAll('.tray.open,.tok.open').forEach(el=>el.classList.remove('open'));
     catArea.removeAttribute('aria-hidden');
-    $('d-cats').setAttribute('aria-expanded', 'true');
+    document.querySelectorAll('[data-menu="cats"]').forEach(el=>el.setAttribute('aria-expanded', 'true'));
     // Reset to the top on every open, so the sheet doesn't reopen scrolled
     // wherever it was left (e.g. deep in Explore's list).
     const pp = $('panePlay'); if (pp) pp.scrollTop = 0;
@@ -861,8 +855,8 @@ applyToggleUI();
     }
     unlockBodyScroll();
     catArea.setAttribute('aria-hidden', 'true');
-    $('d-cats').setAttribute('aria-expanded', 'false');
-    // d-cats lives inside menuDrawer, already closed by the time this fires — a
+    document.querySelectorAll('[data-menu="cats"]').forEach(el=>el.setAttribute('aria-expanded', 'false'));
+    // the menu's Deck line is inside a drawer already closed by the time this fires — a
     // stable, always-visible anchor (same one closeAllDrawers uses) is safer to
     // refocus than a trigger that may now sit inside a hidden dialog.
     // preventScroll here too: btn-menu sits down in the Controls section,
@@ -903,7 +897,6 @@ applyToggleUI();
         if(type==='pointerup') swallowTimer=setTimeout(()=>{ swallowPress=false; },400);
       }
     },true));
-  $('d-cats').addEventListener('click', ()=>{ if(typeof closeAllDrawers==='function') closeAllDrawers(); openCats(); });
 
   /* ── swipe the sheet down to dismiss it, same gesture a bottom sheet is
      expected to have — dragging from the handle follows the finger live
