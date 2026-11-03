@@ -178,13 +178,18 @@ function _unseenCount(cards){
   const seen = _seenSet();
   return cards.filter(c => !seen.has(c.question)).length;
 }
+/* A fresh pass: every card counts as unseen again; the log itself stays. */
+function startFreshPass(){
+  state.seenFrom = state.sessionLog.length;
+  state.skippedSeen.clear();
+}
 /* Nothing in the selection is unseen any more: a fresh pass begins, every
    card in the selection counts as unseen again. Called when a new hand is
    about to be built (hold-to-continue / Draw more / any settings change). */
 function _startFreshPassIfSpent(){
   if (orderedSoloLevel()) return;
   const cards = getFilteredCards();
-  if (cards.length && _unseenCount(cards) === 0) { state.seenFrom = state.sessionLog.length; state.skippedSeen.clear(); }
+  if (cards.length && _unseenCount(cards) === 0) startFreshPass();
 }
 
 /* A new hand is being built (initDeck / applyLimit): the hand counter moves on,

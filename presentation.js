@@ -156,8 +156,10 @@ function exitParty() {
 
 const DRAWER_TRIGGERS = '#btn-menu, [data-menu][aria-expanded]';
 function openDrawer(id, triggerEl) {
+  document.getElementById('overlay').classList.remove('fading');
   document.getElementById('overlay').classList.add('open');
   const el = document.getElementById(id);
+  el.classList.remove('leaving');
   el.classList.add('open');
   el.scrollTop = 0;   // reopening shouldn't land wherever a previous scroll left it
   if (typeof window.lockBodyScroll === 'function') window.lockBodyScroll();
@@ -169,12 +171,22 @@ function openDrawer(id, triggerEl) {
   // below) silently scrolled the whole page to bring it into view.
   el.focus({preventScroll: true});
 }
+// A drawer that has already faded (leaving) goes away without sliding or snapping back to full opacity.
+function putAwayUnseen(el) {
+  el.style.transition = 'none';
+  el.classList.remove('open', 'leaving');
+  el.getBoundingClientRect();   // settle the unanimated state before the transition comes back
+  el.style.transition = '';
+}
 function closeAllDrawers() {
-  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open', 'fading');
   if (typeof window.unlockBodyScroll === 'function') window.unlockBodyScroll();
   ['menuDrawer','menuSideDrawer','playedDrawer','favsDrawer','helpDrawer'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
+    if (!el) return;
+    if (el.classList.contains('leaving')) putAwayUnseen(el);
+    else el.classList.remove('open');
+    el.setAttribute('aria-hidden', 'true');
   });
   document.querySelectorAll(DRAWER_TRIGGERS).forEach(el=>el.setAttribute('aria-expanded', 'false'));
   const btnMenu = document.getElementById('btn-menu');
@@ -264,19 +276,51 @@ function openMenu(trigger) {
 // Crossing the line between the phone drawer and the side panel with a menu open: close it rather than leave a hidden drawer open under the overlay.
 dockedQuery.addEventListener('change', closeAllDrawers);
 
-// Start over: a fresh hand in the current shuffle mode (what Reshuffle was).
+// Start over: every card back in (a fresh pass; what was drawn stays in Played), and a fresh hand.
 function startOver() {
+  startFreshPass();
   initDeck();
   updateDeckInfo(); updateDrawMore();
   closeAllDrawers();
 }
 
+// Menu to the next sheet in one move: the menu fades in place while the next sheet arrives as it always does,
+// and the overlay stays up until the next sheet has its own dimming. Instant under reduced motion.
+function leaveMenuFor(openNext) {
+  const menu = /** @type {HTMLElement | null} */ (document.querySelector('#menuDrawer.open, #menuSideDrawer.open'));
+  if (menu?.classList.contains('leaving')) return;   // already on its way out: a second tap opens nothing more
+  if (!menu || matchMedia('(prefers-reduced-motion: reduce)').matches) { closeAllDrawers(); openNext(); return; }
+  const overlay = document.getElementById('overlay');
+  menu.classList.add('leaving');
+  // each wait ends on its transition, with a timeout behind it (as closeCats does), and runs once
+  const putAway = e => {
+    if (e && e.target !== menu) return;   // a child's transition
+    menu.removeEventListener('transitionend', putAway);
+    if (menu.classList.contains('leaving')) putAwayUnseen(menu);   // not closed meanwhile (Escape, overlay)
+  };
+  menu.addEventListener('transitionend', putAway);
+  setTimeout(() => putAway(null), 250);
+  openNext();
+  const w = /** @type {any} */ (window);
+  if (typeof w.unlockBodyScroll === 'function') w.unlockBodyScroll();   // the next sheet holds its own scroll lock
+  // The Deck dims with its own scrim (or, docked, not at all): the overlay eases out as it arrives
+  if (!document.querySelector('[id$="Drawer"].open:not(.leaving)')) {
+    overlay.classList.add('fading');
+    const dropOverlay = () => {
+      overlay.removeEventListener('transitionend', dropOverlay);
+      if (overlay.classList.contains('fading')) overlay.classList.remove('open', 'fading');
+    };
+    overlay.addEventListener('transitionend', dropOverlay);
+    setTimeout(dropOverlay, 700);
+  }
+}
+
 const MENU_ACTIONS = {
-  cats: () => { closeAllDrawers(); /** @type {any} */ (window).openCats(); },   // openCats is published by ui.js
+  cats: () => leaveMenuFor(() => /** @type {any} */ (window).openCats()),   // openCats is published by ui.js
   start: startOver,
-  played: trigger => { closeAllDrawers(); renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); },
-  favs: trigger => { closeAllDrawers(); renderFavourites(); openDrawer('favsDrawer', trigger); },
-  help: trigger => { hintRetire('ways'); closeAllDrawers(); openDrawer('helpDrawer', trigger); },
+  played: trigger => leaveMenuFor(() => { renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); }),
+  favs: trigger => leaveMenuFor(() => { renderFavourites(); openDrawer('favsDrawer', trigger); }),
+  help: trigger => { hintRetire('ways'); leaveMenuFor(() => openDrawer('helpDrawer', trigger)); },
   hints: () => { hintsReset(); closeAllDrawers(); },
   close: closeAllDrawers,
 };

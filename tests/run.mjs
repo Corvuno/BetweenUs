@@ -2485,6 +2485,87 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  await check('menu: Start over puts every card back (0 seen, the whole deck left) and keeps what was drawn in Played', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      const total = await pg.evaluate(() => state.fullDeck.length);
+      await drawCards(pg, 3);
+      const logged = await pg.evaluate(() => state.sessionLog.length);
+      await openPhoneMenu(pg);
+      assert(await menuLine(pg, 'start') === `3 seen, ${total - 3} left`, `before Start over: ${await menuLine(pg, 'start')}`);
+      await pg.locator('#d-reshuffle').click(); await pg.waitForTimeout(400);
+      await openPhoneMenu(pg);
+      assert(await menuLine(pg, 'start') === `0 seen, ${total} left`, `after Start over: ${await menuLine(pg, 'start')}`);
+      assert(await pg.evaluate(() => state.sessionLog.length) === logged, 'Start over wiped what was drawn');
+    } finally { await ctx.close(); }
+  });
+
+  await check('menu to The Deck is one move: the overlay stays up the whole time, the menu fades in place (no slide) while The Deck arrives', async () => {
+    for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
+      const { ctx, pg } = await freshApp(opts);
+      try {
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        const log = await pg.evaluate(() => new Promise(done => {
+          const menu = document.querySelector('#menuDrawer.open, #menuSideDrawer.open');
+          const overlay = document.getElementById('overlay');
+          const sheet = document.getElementById('cat-area');
+          const top0 = menu.getBoundingClientRect().top, left0 = menu.getBoundingClientRect().left;
+          const frames = [];
+          const t0 = performance.now();
+          const tick = () => {
+            const r = menu.getBoundingClientRect();
+            frames.push({ t: performance.now() - t0, overlay: getComputedStyle(overlay).display !== 'none', menuMoved: (r.top !== top0 || r.left !== left0) && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth, menuOpacity: +getComputedStyle(menu).opacity, sheetOpen: sheet.classList.contains('sheet-open') });
+            if (performance.now() - t0 < 900) requestAnimationFrame(tick); else done(frames);
+          };
+          menu.querySelector('[data-menu="cats"]').click();
+          requestAnimationFrame(tick);
+        }));
+        // the overlay eases out over about 640ms as The Deck arrives; until then it never drops
+        const early = log.filter(f => f.t < 550);
+        assert(early.every(f => f.overlay), `${name}: the overlay dropped at ${early.find(f => !f.overlay)?.t}ms`);
+        assert(!log.some(f => f.menuMoved), `${name}: the menu moved on screen while leaving`);   // once faded it is put away off screen, unseen
+        assert(log.some(f => f.sheetOpen), `${name}: The Deck did not open`);
+        assert(log[log.length - 1].menuOpacity === 0 || !(await pg.evaluate(() => document.querySelector('#menuDrawer.open, #menuSideDrawer.open'))), `${name}: the menu is still showing`);
+        await pg.waitForTimeout(900);
+        assert(await pg.evaluate(() => !document.getElementById('overlay').classList.contains('open') && !document.querySelector('#menuDrawer.open, #menuSideDrawer.open')), `${name}: the overlay or menu was left behind`);
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('menu to the next sheet: a fast second tap opens only one sheet; Escape mid-fade leaves no overlay and no menu showing', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+      const open = await pg.evaluate(() => {
+        const menu = document.getElementById('menuDrawer');
+        menu.querySelector('[data-menu="played"]').click();
+        menu.querySelector('[data-menu="favs"]').click();   // a second tap while the menu is still fading
+        return ['playedDrawer', 'favsDrawer'].filter(id => document.getElementById(id).classList.contains('open'));
+      });
+      assert(open.join() === 'playedDrawer', `a second tap opened: ${open}`);
+      await pg.waitForTimeout(900);
+      await pg.evaluate(() => closeAllDrawers());
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+      const seen = await pg.evaluate(() => new Promise(done => {
+        const menu = document.getElementById('menuDrawer');
+        menu.querySelector('[data-menu="played"]').click();
+        setTimeout(() => {
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+          const showing = [];
+          const t0 = performance.now();
+          const tick = () => {
+            const r = menu.getBoundingClientRect(), o = +getComputedStyle(menu).opacity;
+            if (o > 0.02 && r.bottom > 0 && r.top < innerHeight) showing.push(Math.round(performance.now() - t0));
+            if (performance.now() - t0 < 500) requestAnimationFrame(tick); else done(showing);
+          };
+          tick();
+        }, 60);
+      }));
+      assert(seen.length === 0, `the menu showed after Escape (ms: ${seen})`);
+      assert(await pg.evaluate(() => !document.getElementById('overlay').classList.contains('open') && !document.querySelector('[id$="Drawer"].open')), 'Escape mid-fade left an overlay or a sheet up');
+    } finally { await ctx.close(); }
+  });
+
   await check('menu: Played holds what was drawn now and what was saved; Played and Favourites lines count right; the old Log and Sessions drawers are gone', async () => {
     const { ctx, pg } = await freshApp();
     try {
