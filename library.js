@@ -24,15 +24,18 @@ function loadFavourites() {
 }
 
 
-function renderFavourites() {
-  const el = document.getElementById('favsList');
-  el.innerHTML = state.favourites.length === 0
-    ? '<div class="drawer-empty">No favourites yet. Tap ★ on a card.</div>'
-    : state.favourites.map(c =>
-        `<div class="drawer-item drawer-item--lvl" style="--lvl:${levelColor(c.level)}">
-          <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
-          ${esc(c.question)}
-        </div>`
-      ).join('');
+// A drawn or starred card as a small card: its colour line on top, a faint wash of the colour, the name of
+// its group, the question, and a small star when it is starred.
+function smallCardHTML(c) {
+  const colour = levelColor(c.level);
+  const star = state.favourites.some(f => f.question === c.question) ? '<span class="play-star" aria-label="Starred">★</span>' : '';
+  return `<div class="play-card" style="--lvl:${colour}">${star}<div class="play-cat" style="color:${labelColor(colour)}">${LEVEL_LABELS[c.level] || esc(c.level)}</div><p class="play-q">${esc(c.question)}</p></div>`;
 }
 
+function renderFavourites() {
+  const el = document.getElementById('favsList');
+  el.classList.toggle('play-grid', state.favourites.length > 0);
+  el.innerHTML = state.favourites.length === 0
+    ? '<div class="play-empty">Nothing starred yet. Tap the star on a card.</div>'
+    : state.favourites.map(smallCardHTML).join('');
+}

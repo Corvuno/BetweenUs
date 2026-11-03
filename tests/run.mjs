@@ -1831,7 +1831,7 @@ async function run() {
           favs: document.querySelector('#favsList').textContent.trim(),
         };
       });
-      assert(/No favourites yet/.test(shown.favs), `${label}: favourites drawer not empty: ${shown.favs}`);
+      assert(/Nothing starred yet/.test(shown.favs), `${label}: favourites drawer not empty: ${shown.favs}`);
       await damagedPage.context().close();
     }
   });
@@ -2582,13 +2582,13 @@ async function run() {
           title: d.querySelector('.drawer-title').textContent,
           heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent),
           buttons: ['btnExport', 'btnImport', 'btnClearLog', 'storeSessionBtn'].map(id => d.querySelector('#' + id)?.textContent.trim()),
-          rows: d.querySelectorAll('#logList .drawer-item').length,
+          rows: d.querySelectorAll('#logList .play-card').length,
           gone: ['logDrawer', 'sessionsDrawer'].filter(id => document.getElementById(id)),
         };
       });
       assert(p.open && p.title === 'Played', `Played did not open: ${JSON.stringify(p)}`);
-      assert(JSON.stringify(p.heads) === JSON.stringify(['Now', 'Saved']), `Played headings: ${p.heads}`);
-      assert(JSON.stringify(p.buttons) === JSON.stringify(['Export log', 'Import log', 'Clear', 'Save for later']), `Played buttons: ${p.buttons}`);
+      assert(JSON.stringify(p.heads) === JSON.stringify(['Saved', 'Drawn so far']), `Played headings: ${p.heads}`);
+      assert(JSON.stringify(p.buttons) === JSON.stringify(['Download the list', 'Open a list', 'Clear the list', 'Save for later']), `Played buttons: ${p.buttons}`);
       assert(p.rows === 2 && p.gone.length === 0, `Played rows / old drawers: ${JSON.stringify(p)}`);
       // save, and the saved list sits in the same screen with open / rename / delete
       await pg.locator('#storeSessionBtn').click(); await pg.waitForTimeout(200);
@@ -2598,6 +2598,8 @@ async function run() {
       });
       assert(saved.rows === 1 && saved.actions.join() === 'open,rename,delete', `saved list: ${JSON.stringify(saved)}`);
       assert(!/evening|tonight|earlier/i.test(saved.text), `Played guesses when something was saved: ${saved.text}`);
+      assert(!/\b(log|session|category|chapter)\b/i.test(saved.text), `Played uses our own words: ${saved.text}`);
+      assert(!await pg.evaluate(() => document.querySelector('#playedDrawer .session-live-tag, #playedDrawer .session-rename-btn, #playedDrawer .drawer-remove-btn, #playedDrawer .session-btn')), 'the old pencil, cross, LIVE tag or boxed buttons are still there');
       await pg.evaluate(() => closeAllDrawers());
       await openPhoneMenu(pg);
       assert(await menuLine(pg, 'played') === '2 drawn so far, 1 saved', `Played line after saving: ${await menuLine(pg, 'played')}`);
@@ -2608,6 +2610,80 @@ async function run() {
       // the end-of-hand Export still goes straight to a file, with no drawer in between
       const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 3000 }), pg.locator('#btnExport').click()]);
       assert(/^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(dl.suggestedFilename()), `Export file name: ${dl.suggestedFilename()}`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('Played and Favourites: small cards (count, order, star on starred ones), two across on the phone and three on a computer panel, Played in the order Saved, Save for later, saved rows, Drawn so far, the tools, the cards', async () => {
+    for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
+      const { ctx, pg } = await freshApp(opts);
+      try {
+        await drawCards(pg, 5);
+        const asked = await pg.evaluate(() => state.sessionLog.map(c => c.question));
+        await pg.evaluate(() => { toggleFavourite(state.visibleDeck[1]); toggleFavourite(state.visibleDeck[3]); });
+        await pg.evaluate(() => { storeCurrentSession(); setActiveSessionId(''); storeCurrentSession(); });
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        await pg.locator('[data-menu="played"]:visible').click(); await pg.waitForTimeout(900);
+        const p = await pg.evaluate(() => {
+          const d = document.getElementById('playedDrawer');
+          const cards = [...d.querySelectorAll('#logList .play-card')];
+          const r = d.getBoundingClientRect();
+          return {
+            qs: cards.map(c => c.querySelector('.play-q').textContent), stars: cards.map(c => !!c.querySelector('.play-star')),
+            cols: getComputedStyle(d.querySelector('#logList')).gridTemplateColumns.split(' ').length,
+            saves: d.querySelectorAll('#sessionsList .play-save').length,
+            order: (([h1, h2]) => [h1, d.querySelector('#storeSessionBtn'), d.querySelector('#sessionsList'), h2, d.querySelector('#btnExport'), d.querySelector('#logList')])(d.querySelectorAll('.menu-head')).map(e => e.getBoundingClientRect().top).every((y, i, all) => i === 0 || y >= all[i - 1]),
+            heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent), left: r.left, width: r.width,
+          };
+        });
+        assert(JSON.stringify(p.qs) === JSON.stringify([...asked].reverse()), `${name}: cards not newest first: ${JSON.stringify(p.qs)}`);
+        const starredNewestFirst = [false, true, false, true, false];   // drawn 1..5, stars on 2 and 4, shown reversed
+        assert(JSON.stringify(p.stars) === JSON.stringify(starredNewestFirst), `${name}: stars ${JSON.stringify(p.stars)}`);
+        assert(p.cols === (name === 'phone' ? 2 : 3), `${name}: ${p.cols} cards across`);
+        assert(p.saves === 2, `${name}: ${p.saves} saved rows`);
+        assert(p.order && p.heads.join() === 'Saved,Drawn so far', `${name}: Played is not in the order Saved, Save for later, rows, Drawn so far, tools, cards (${p.heads})`);
+        if (name === 'computer') assert(p.left === 0 && p.width > 500, `computer: Played is not the left side panel (${p.left}, ${p.width})`);
+        // Favourites: the starred cards, as the same small cards
+        await pg.evaluate(() => closeAllDrawers());
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        await pg.locator('[data-menu="favs"]:visible').click(); await pg.waitForTimeout(900);
+        const f = await pg.evaluate(() => {
+          const cards = [...document.querySelectorAll('#favsList .play-card')];
+          return { n: cards.length, stars: cards.every(c => c.querySelector('.play-star')), cols: getComputedStyle(document.getElementById('favsList')).gridTemplateColumns.split(' ').length, left: document.getElementById('favsDrawer').getBoundingClientRect().left };
+        });
+        assert(f.n === 2 && f.stars, `${name}: favourites ${JSON.stringify(f)}`);
+        assert(f.cols === (name === 'phone' ? 2 : 3), `${name}: favourites ${f.cols} across`);
+        if (name === 'computer') assert(f.left === 0, 'computer: Favourites is not the left side panel');
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('Played: Download the list, Open a list, Clear the list, Save for later, open a saved one by its row, Rename and Delete all still work', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3);
+      const asked = await pg.evaluate(() => state.sessionLog.map(c => c.question));
+      await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700);
+      const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 3000 }), pg.locator('#btnExport').click()]);
+      const file = await dl.path();
+      const body = await (await import('node:fs/promises')).readFile(file, 'utf8');
+      assert(asked.every(q => body.includes(q)), 'the downloaded list is missing a card');
+      await pg.locator('#btnClearLog').click(); await pg.waitForTimeout(150);
+      assert(await pg.evaluate(() => state.sessionLog.length === 0 && /Nothing drawn yet/.test(document.getElementById('logList').textContent)), 'Clear the list did not empty it');
+      const [chooser] = await Promise.all([pg.waitForEvent('filechooser'), pg.locator('#btnImport').click()]);
+      await chooser.setFiles(file); await pg.waitForTimeout(600);
+      assert(await pg.evaluate(qs => JSON.stringify(state.sessionLog.map(c => c.question)) === JSON.stringify(qs), asked), 'Open a list did not bring the cards back');
+      assert(await pg.evaluate(() => document.getElementById('playedDrawer').classList.contains('open')), 'Played should show the opened list');
+      await pg.locator('#storeSessionBtn').click(); await pg.waitForTimeout(200);
+      pg.once('dialog', d => d.accept('Friday with Sam'));
+      await pg.locator('#sessionsList [data-action="rename"]').click(); await pg.waitForTimeout(200);
+      assert((await pg.locator('#sessionsList .play-save-name').textContent()).includes('Friday with Sam'), 'Rename did not rename');
+      assert((await pg.locator('#sessionsList .play-save-now').textContent()) === 'playing now', 'the open one does not say playing now');
+      await drawCards(pg, 1);
+      await pg.locator('#sessionsList .play-save-main').click(); await pg.waitForTimeout(500);
+      assert(await pg.evaluate(() => !document.getElementById('playedDrawer').classList.contains('open')), 'tapping a saved row did not open it');
+      await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700);
+      await pg.locator('#sessionsList [data-action="delete"]').click(); await pg.waitForTimeout(150);
+      assert((await pg.locator('#sessionsList').textContent()).includes('Nothing saved yet'), 'Delete did not remove it');
     } finally { await ctx.close(); }
   });
 

@@ -398,7 +398,7 @@ document.getElementById('storeSessionBtn').addEventListener('click', ()=>{ store
 // Delegated: the list re-renders on every store/rename/delete/open, so a
 // direct per-row listener would need re-attaching each time — one listener
 // on the container reads which row and which action (open the row itself,
-// or one of its two icon buttons) from the click target instead.
+// or one of the words Rename and Delete) from the click target instead.
 document.getElementById('sessionsList').addEventListener('click', e => {
   const row = e.target.closest('[data-id]');
   if (!row) return;

@@ -44,14 +44,10 @@ function restoreToLog(info) {
 
 function renderLog() {
   const el = document.getElementById('logList');
+  el.classList.toggle('play-grid', state.sessionLog.length > 0);
   el.innerHTML = state.sessionLog.length === 0
-    ? '<div class="drawer-empty">No cards drawn yet.</div>'
-    : [...state.sessionLog].reverse().map(c =>
-        `<div class="drawer-item drawer-item--lvl" style="--lvl:${levelColor(c.level)}">
-          <div class="drawer-item-meta">${LEVEL_LABELS[c.level] || esc(c.level)}</div>
-          ${esc(c.question)}
-        </div>`
-      ).join('');
+    ? '<div class="play-empty">Nothing drawn yet.</div>'
+    : [...state.sessionLog].reverse().map(smallCardHTML).join('');
 }
 
 function serializeSession() {
@@ -236,17 +232,16 @@ function renderSessionsList() {
   if (!el) return;
   const list = getStoredSessions().slice().sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
   el.innerHTML = list.length === 0
-    ? '<div class="drawer-empty">Nothing saved yet.</div>'
+    ? '<div class="play-empty">Nothing saved yet.</div>'
     : list.map(s => {
         const isActive = s.id === state.activeSessionId;
-        const dateStr = new Date(s.savedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-        return `<div class="drawer-item drawer-item--session${isActive ? ' drawer-item--active' : ''}" data-id="${esc(s.id)}">
-          <div class="session-item-main" data-action="open">
-            <div class="session-item-name">${esc(s.name)}${isActive ? ' <span class="session-live-tag">Live</span>' : ''}</div>
-            <div class="drawer-item-meta">${dateStr}</div>
-          </div>
-          <button class="session-rename-btn" data-action="rename" title="Rename">&#9998;</button>
-          <button class="drawer-remove-btn" data-action="delete" title="Delete">&#10005;</button>
+        const when = new Date(s.savedAt).toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+        return `<div class="play-save${isActive ? ' now' : ''}" data-id="${esc(s.id)}">
+          <button type="button" class="play-save-main" data-action="open">
+            <span class="play-save-name">${esc(s.name)}${isActive ? '<span class="play-save-now">playing now</span>' : ''}</span>
+            <span class="play-save-meta">Saved ${when}</span>
+          </button>
+          <div class="play-save-act"><button type="button" data-action="rename">Rename</button><button type="button" data-action="delete">Delete</button></div>
         </div>`;
       }).join('');
 }
