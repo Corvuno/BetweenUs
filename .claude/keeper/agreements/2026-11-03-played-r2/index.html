@@ -1,0 +1,69 @@
+<title>Played and Favourites, round 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Jost:wght@300;400&family=Federo&display=swap" rel="stylesheet">
+<style>
+/* Review page in the app's own dark world: one column of reading, wide strips of pictures. */
+:root{--bg:#0e0c0a;--cream:#f0e8d8;--gold:#c9a84c;--muted:#9c8f7e;--dim:rgba(201,168,76,.14);--border:rgba(201,168,76,.26);--celadon:#A9C7B6;
+  --serif:'Cormorant Garamond',Georgia,serif;--caps:'Jost',system-ui,sans-serif;--small:'Federo','Jost',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:1.12rem;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.5rem var(--caps);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;text-wrap:balance}
+h2{font:300 1.05rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:46px 0 8px}
+h3{font:400 .82rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--celadon);margin:0 0 6px}
+p{margin:0 0 10px;max-width:44rem}
+.lede{color:var(--muted)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted);max-width:44rem}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem var(--caps);letter-spacing:.12em;text-transform:uppercase}
+a{color:var(--celadon)}
+.strip{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start}
+figure{margin:0;flex:none}
+figcaption{font:300 .82rem var(--caps);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in}
+.fig:focus-visible{outline:1px solid var(--celadon);outline-offset:3px}
+.fig img{display:block;height:auto}
+.phone img{width:300px}
+.pc img{width:720px;max-width:85vw}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px 30px;margin-top:10px}
+.opts > div{min-width:0}
+.opts p{font-size:1.05rem}
+.good{color:var(--cream)}
+.bad{color:var(--muted)}
+ul{margin:6px 0 10px;padding-left:1.1em;max-width:44rem}
+li{margin:3px 0}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button{font:300 .85rem var(--caps);letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:none}
+</style>
+<main>
+<h1>Played and Favourites, round 2</h1>
+<p class="lede">Option C from round 1, your pick, with the small cards drawn like the real card: its dark face and frame, the gold corner marks, the category name in the card's own lettering, the question in the card's typeface, and the star on cards you starred. Round 1 is still on its own link: https://claude.ai/artifact/VDsShhZT5vxNqMNypuqBbT</p>
+<p class="note">Also new: Export and Import read "Download the list" and "Open a list", because Export makes a file and doesn't add anything to Saved. Known, fixed in the build: on the phone "Clear the list" wraps onto its own line and leaves a stray diamond. The cards differ between pictures because the app draws at random. Tap a picture to open it full size.</p>
+
+<h2>The real card</h2>
+<div class="strip phone"><figure><figcaption>As it is in the game</figcaption><button class="fig" type="button"><img src="img/phone-real-card.png" alt="A real card in the game" style="width:340px"></button></figure></div>
+
+<h2>Phone</h2>
+<div class="strip phone">
+  <figure><figcaption>Round 1 · C</figcaption><button class="fig" type="button"><img src="img/phone-C1-played.png" alt="Round 1 option C, Played"></button></figure>
+  <figure><figcaption>Round 2 · C, like the card</figcaption><button class="fig" type="button"><img src="img/phone-C2-played.png" alt="Round 2, Played"></button></figure>
+  <figure><figcaption>Round 1 · C · Favourites</figcaption><button class="fig" type="button"><img src="img/phone-C1-favs.png" alt="Round 1 option C, Favourites"></button></figure>
+  <figure><figcaption>Round 2 · Favourites</figcaption><button class="fig" type="button"><img src="img/phone-C2-favs.png" alt="Round 2, Favourites"></button></figure>
+</div>
+<h2>PC</h2>
+<div class="strip pc">
+  <figure><figcaption>Round 1 · C</figcaption><button class="fig" type="button"><img src="img/pc-C1-played.png" alt="Round 1 option C on PC"></button></figure>
+  <figure><figcaption>Round 2 · C, like the card</figcaption><button class="fig" type="button"><img src="img/pc-C2-played.png" alt="Round 2 on PC"></button></figure>
+  <figure><figcaption>Round 2 · Favourites</figcaption><button class="fig" type="button"><img src="img/pc-C2-favs.png" alt="Round 2 Favourites on PC"></button></figure>
+</div>
+</main>
+<div id="viewer" hidden><header><button type="button" id="back">&larr; Back</button></header><img id="big" alt=""></div>
+<script>
+const v=document.getElementById('viewer'),big=document.getElementById('big');
+document.querySelectorAll('.fig').forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');big.src=i.src;big.alt=i.alt;
+  big.style.width=i.src.includes('phone')?'390px':'1440px';v.hidden=false;v.scrollTop=0;}));
+document.getElementById('back').addEventListener('click',()=>{v.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')v.hidden=true;});
+</script>
