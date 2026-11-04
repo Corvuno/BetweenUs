@@ -12,6 +12,23 @@
 `npm run check:static` runs only 2 and 3. GitHub runs all three on every push to main and on
 pull requests (`.github/workflows/checks.yml`).
 
+## Which browser checks a build runs
+
+Owner, 2026-11-04: "Don't run full tests every time. Run what's hit and a small smoke test check."
+The full suite is about 100 checks and 15+ minutes; GitHub already runs it on every push to main.
+
+- **Every build:** `npm run check:static`, plus `node tests/run.mjs --smoke` (7 core checks, about
+  10 seconds: load, draw, advance, menu, Spotlight, end of hand, no page errors).
+- **What the change hits:** `node tests/run.mjs --smoke --only=word,word` with words from the
+  names of the checks that cover the changed part (`grep "await check(" tests/run.mjs` lists
+  them). Pick specific words: "spotlight" alone picks about 20 checks.
+- **Looks only** (font, colour, spacing, a line): smoke, static, and before/after screenshots.
+  No `--only`.
+- **The full suite** (`node tests/run.mjs`, no flags) only when the change reaches shared
+  foundations (state, deck building, sessions, saving, the service worker) or the GitHub run on
+  main failed. Once, never repeated; only a failing check gets rerun.
+- After landing, a red GitHub run on main is the build's to fix.
+
 ## How strict it is
 
 `checks-baseline.json` lists the findings that already existed when the checks were added.

@@ -83,7 +83,7 @@ build step:
 - Take before and after screenshots of everything you changed (Playwright; Chromium is
   preinstalled at /opt/pw-browsers — don't run `playwright install`). Save them in the
   scratchpad, not in the repo, and list the paths in your report.
-- Run `node tests/run.mjs between-us.html` and report the result, pass or fail.
+- Run the browser checks in `CHECKS.md`, "Which browser checks a build runs": what the change hits (`--only=`) plus `--smoke`, never the full suite by default (owner, 2026-11-04). A looks-only change runs `--smoke` alone. Report the result, pass or fail.
 
 ## Report back
 

@@ -305,9 +305,11 @@ full for new features"); say in one line which one a build gets, so the owner ca
    yourself against the agreement (screenshots, the chosen mockup, the approved words). Motion is
    watched playing at real speed, never judged from stills (owner, 2026-10-29).
 
-Run the reviewer after the builder, and the tester after the reviewer's clean verdict. Don't rerun the full test suite yourself unless `main` changed
-under the build before landing (owner, 2026-10-23: one run each by the builder and the tester is
-enough). If the project's own test run is broken, that is a finding, not a skip.
+Run the reviewer after the builder, and the tester after the reviewer's clean verdict. Browser
+checks follow the project's own rule for which checks a build runs; in Between Us that is what the
+change hits plus a smoke check, never the full suite by default (owner, 2026-11-04, "Don't run full
+tests every time"). Don't rerun checks yourself unless `main` changed under the build before
+landing (owner, 2026-10-23: one run each by the builder and the tester is enough). If the project's own test run is broken, that is a finding, not a skip.
 
 If the result doesn't match the agreement, send it back to the builder with exactly what's
 off. Don't ship a near miss.

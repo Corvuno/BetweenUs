@@ -4,7 +4,11 @@
 // on real DOM state. Deliberately dependency-light: this app has no build
 // step, so its tests shouldn't need one either.
 //
-// Usage: node tests/run.mjs [file.html]   (default: between-us.html)
+// Usage: node tests/run.mjs [file.html] [--smoke] [--only=word,word]
+//   (default: between-us.html, every check)
+//   --smoke         a handful of core checks: the app loads, draws, plays a hand, opens Spotlight and the menu
+//   --only=a,b      only the checks whose name holds one of the words (case-insensitive)
+// A build runs what its change can reach plus --smoke (owner, 2026-11-04); GitHub runs everything on main.
 
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -25,7 +29,15 @@ try {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const TARGET = process.argv[2] || 'between-us.html';
+const ARGS = process.argv.slice(2);
+const TARGET = ARGS.find(a => !a.startsWith('--')) || 'between-us.html';
+const ONLY = (ARGS.find(a => a.startsWith('--only='))?.slice(7) ?? '').toLowerCase().split(',').map(w => w.trim()).filter(Boolean);
+// The smoke set: parts of check names. Keep it short — a few minutes at most.
+const SMOKE = ['initial load shows', 'first tap on the card draws', 'tapping the card advances',
+  'menu drawer opens', 'fullscreen party mode: enter', 'end of hand: the card shows its back',
+  'no uncaught page errors'];
+const PICK = ARGS.includes('--smoke') ? [...SMOKE.map(w => w.toLowerCase()), ...ONLY] : ONLY;
+let skipped = 0;
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -51,6 +63,7 @@ function startServer() {
 // ── assertion bookkeeping ──────────────────────────────────────────────────
 const results = [];
 async function check(name, fn) {
+  if (PICK.length && !name.startsWith('no uncaught page errors') && !PICK.some(w => name.toLowerCase().includes(w))) { skipped++; return; }
   try {
     await fn();
     results.push({ name, ok: true });
@@ -3245,7 +3258,7 @@ async function run() {
   server.close();
 
   const failed = results.filter(r => !r.ok);
-  console.log(`\n${results.length - failed.length}/${results.length} checks passed.\n`);
+  console.log(`\n${results.length - failed.length}/${results.length} checks passed.${skipped ? ` (${skipped} not picked: --smoke/--only)` : ''}\n`);
   if (failed.length) process.exit(1);
 }
 

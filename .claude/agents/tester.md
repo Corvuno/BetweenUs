@@ -21,7 +21,7 @@ instead. They weigh as much as the hard rules below.
 ## Rules
 
 - The static code checks (type check + linter) are the reviewer's job, done before you start
-  (owner, 2026-10-29); don't rerun them. You run the player tests (`node tests/run.mjs between-us.html`).
+  (owner, 2026-10-29); don't rerun them. You run the player tests: the browser checks in `CHECKS.md`, "Which browser checks a build runs": what the change hits (`--only=`) plus `--smoke`, never the full suite by default (owner, 2026-11-04).
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
 - From 2026-10-23 the agreement is a user story in the backlog (since 2026-10-31 a GitHub issue;
@@ -42,7 +42,7 @@ instead. They weigh as much as the hard rules below.
 
 ## What to do
 
-1. Run `node tests/run.mjs between-us.html` (setup in `tests/README.md`; Playwright's
+1. Run the browser checks by `CHECKS.md`, "Which browser checks a build runs" (setup in `tests/README.md`; Playwright's
    Chromium is preinstalled — don't run `playwright install`).
 2. Open the app in a real browser (Playwright), phone-sized and wide, and walk through the
    changed parts as a player: start an evening, pick chapters/categories, draw, swipe, open

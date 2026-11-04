@@ -59,9 +59,9 @@ build step:
 ## Check before reporting
 
 - Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19). Never add a new finding to the baseline to make the check pass (owner, 2026-10-30: "builders don't introduce new issues again"); report "check: OK, no new findings" in every report, or say exactly what is still failing.
-- Run `node tests/run.mjs between-us.html` before you start (so you know what already
-  fails) and after (setup in `tests/README.md`; Playwright's Chromium is preinstalled —
-  don't run `playwright install`).
+- Run the browser checks in `CHECKS.md`, "Which browser checks a build runs": what the change hits (`--only=`) plus `--smoke`, never the full suite by default (owner, 2026-11-04). For a change you'll test with `--only=`, run those same checks once before you start
+  too, so you know what already fails (setup in `tests/README.md`; Playwright's Chromium is
+  preinstalled — don't run `playwright install`).
 - Click through the changed behaviour yourself in a real browser, including what sits right
   next to it, in every profile it affects.
 - If the change adds behaviour the tests don't cover and it fits the harness's style, add a
