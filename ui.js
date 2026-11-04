@@ -1318,8 +1318,24 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
     syncFoldAll();
   });
 
+  /* Wildcards: an on/off row in The Deck. Like Shuffle and Cards it draws a fresh hand (the hand on
+     screen was built under the old setting). The row stays in Coworkers and New people, where no
+     wildcard comes up whatever it says. */
+  const wildcardToggle = $('wildcardToggle');
+  function syncWildcardRow(){
+    wildcardToggle.setAttribute('aria-checked', String(state.wildcards));
+    $('wildcardState').textContent = state.wildcards ? 'On' : 'Off';
+  }
+  wildcardToggle.addEventListener('click', () => {
+    setWildcardSwitch(!state.wildcards);
+    syncWildcardRow();
+    initDeck(); updateDeckInfo(); updateDrawMore();
+    renderShell();
+  });
+  syncWildcardRow();
+
   $('chapters').addEventListener('click', e => {
-    const f = e.target.closest('.ch-fold');
+    const f = e.target.closest('.ch-fold:not([role="switch"])');
     if (!f) return;
     setFold(f, !f.classList.contains('open'));
     syncFoldAll();

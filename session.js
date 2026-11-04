@@ -95,7 +95,7 @@ function restoreSessionData(data) {
     // sync spice glyph
     if (window.syncSpiceGlyph) window.syncSpiceGlyph();
     updateAfterDarkBtn(); applyToggleUI();
-    const qMap={}; ALL_CARDS.forEach(c=>{qMap[c.question]=c;});
+    const qMap={}; KNOWN_CARDS.forEach(c=>{qMap[c.question]=c;});
     state.visibleDeck=(data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
     state.fullDeck=(data.fullDeckQuestions||data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
     state.currentIndex=data.position??-1;

@@ -127,6 +127,15 @@ async function run() {
   const server = await startServer();
   const port = server.address().port;
   const browser = await chromium.launch();
+  // A wildcard makes a hand one card longer, and a hand holds one in about every second draw, so every
+  // context starts with the Wildcards switch off (the checks count cards) unless it asks for them
+  // ({ wildcards: true }, the wildcard checks at the end). The init script only sets what the device has not chosen.
+  const newContext = browser.newContext.bind(browser);
+  browser.newContext = async ({ wildcards = false, ...options } = {}) => {
+    const ctx = await newContext(options);
+    if (!wildcards) await ctx.addInitScript(() => { try { if (localStorage.getItem('bu.wildcards') === null) localStorage.setItem('bu.wildcards', '0'); } catch { /* storage blocked */ } });
+    return ctx;
+  };
   // Between Us is designed mobile-first ("hand it to someone" — see README);
   // a desktop-width viewport leaves category-sheet elements sitting under
   // pointer-events:none, which isn't a real bug, just an untested layout.
@@ -452,7 +461,7 @@ async function run() {
       await row.locator('.ch-hit').click({ force: true }); await page.waitForTimeout(300);
       assert((await subtitle()) === 'Professional, mostly.', 'undoing the change did not bring the Coworkers subtitle back');
       // Open all / Close all
-      const folds = () => page.evaluate(() => [...document.querySelectorAll('.chapter-group:not(.ch-hidden):not(.chapter-group--fixed) .ch-fold')].map(f => f.classList.contains('open')));
+      const folds = () => page.evaluate(() => [...document.querySelectorAll('.chapter-group:not(.ch-hidden):not(.chapter-group--fixed) .chapter .ch-fold')].map(f => f.classList.contains('open')));
       const foldAll = page.locator('#foldAll');
       if ((await foldAll.textContent()) === 'Close all') { await foldAll.click(); await page.waitForTimeout(450); }
       assert((await foldAll.textContent()) === 'Open all', 'fold control should offer Open all');
@@ -3082,6 +3091,149 @@ async function run() {
         return { got: handEndColors().raw, want: levelColor(card.level), chapter: CHAPTERS_META[CATEGORIES[card.level].chapter].color };
       });
       assert(r.got === r.want && r.got.toLowerCase() !== r.chapter.toLowerCase(), `the pause colour is ${r.got}; the last card's is ${r.want} (its chapter's is ${r.chapter})`);
+    } finally { await ctx.close(); }
+  });
+
+  // ── Wildcards (#76) ──────────────────────────────────────────────────────────────────────────
+  // hands as the app builds them (no screen involved), as a list of "is it a wildcard" per place
+  const wildcardHands = (pg, n, limit) => pg.evaluate(({ n, limit }) => {
+    state.cardLimit = limit;
+    return Array.from({ length: n }, () => { const b = buildFullDeck(); return sliceVisibleDeck(b.deck, b.unseen).map(c => c.level === WILDCARD_LEVEL); });
+  }, { n, limit });
+
+  await check('wildcards: in normal hands only, at most one a hand, never first, now and then; none in Coworkers, New people or the fixed sets', async () => {
+    const { ctx, pg } = await freshApp({ wildcards: true });
+    try {
+      for (const limit of [5, 10, 20]) {
+        const hands = await wildcardHands(pg, 150, limit);
+        assert(hands.every(h => !h[0]), `a wildcard came first (limit ${limit})`);
+        assert(hands.every(h => h.filter(Boolean).length <= 1), `a hand held two wildcards (limit ${limit})`);
+        const withOne = hands.filter(h => h.some(Boolean)).length;
+        assert(withOne > 30 && withOne < 120, `${withOne} of 150 hands had a wildcard (limit ${limit}): not occasional`);
+      }
+      const texts = await pg.evaluate(() => WILDCARD_CARDS.map(c => c.question));
+      assert(JSON.stringify(texts) === JSON.stringify(["Ask anyone here the question you've been saving.", "Ask someone at the table what you really want to know."]), `wildcard texts: ${texts}`);
+      for (const preset of ['work', 'newpeople', 'colbertmode', 'aronmode']) {
+        await pg.evaluate(p => { applyPreset(p); }, preset);
+        const hands = await wildcardHands(pg, 100, 5);
+        assert(hands.every(h => !h.some(Boolean)), `a wildcard came up in ${preset}`);
+      }
+      await pg.evaluate(() => { state.activeToggles = new Set(['magic']); });
+      assert((await wildcardHands(pg, 100, 5)).every(h => !h.some(Boolean)), 'a wildcard came up in Magical played alone');
+    } finally { await ctx.close(); }
+  });
+
+  await check('wildcards: the switch in The Deck sits above Fixed Sets, starts on, turns them off (and the hand redraws), is remembered after a reload, and a Coworkers hand has none either way', async () => {
+    const { ctx, pg } = await freshApp({ wildcards: true });
+    try {
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(300);
+      await pg.locator('#d-cats').click(); await pg.waitForTimeout(900);
+      const row = pg.locator('#wildcardToggle');
+      const r = await pg.evaluate(() => {
+        const t = document.getElementById('wildcardToggle'), fixed = document.getElementById('fixedSeqToggle');
+        return { name: t.querySelector('.ch-name').textContent, state: t.querySelector('.wc-state').textContent, on: t.getAttribute('aria-checked'),
+          above: !!(t.compareDocumentPosition(fixed) & Node.DOCUMENT_POSITION_FOLLOWING), sameHeight: t.offsetHeight === fixed.offsetHeight, gap: fixed.getBoundingClientRect().top - t.getBoundingClientRect().bottom };
+      });
+      assert(r.name === 'Wildcards' && r.state === 'On' && r.on === 'true' && r.above, `row: ${JSON.stringify(r)}`);
+      assert(r.sameHeight && r.gap < 20, `row shape: ${JSON.stringify(r)}`);
+      await row.scrollIntoViewIfNeeded(); await row.click(); await pg.waitForTimeout(300);
+      const off = await pg.evaluate(() => ({ on: state.wildcards, label: document.querySelector('#wildcardToggle .wc-state').textContent, stored: localStorage.getItem('bu.wildcards') }));
+      assert(!off.on && off.label === 'Off' && off.stored === '0', `after a tap: ${JSON.stringify(off)}`);
+      assert((await wildcardHands(pg, 150, 5)).every(h => !h.some(Boolean)), 'a wildcard came up with the switch off');
+      await pg.reload(); await pg.waitForSelector('#card', { state: 'visible' }); await pg.waitForTimeout(400);
+      assert(await pg.evaluate(() => !state.wildcards && document.getElementById('wildcardToggle').getAttribute('aria-checked') === 'false'), 'the switch was not remembered');
+      await pg.evaluate(() => { setWildcardSwitch(true); });
+      await pg.evaluate(() => { applyPreset('work'); });
+      assert((await wildcardHands(pg, 100, 5)).every(h => !h.some(Boolean)), 'Coworkers got a wildcard with the switch on');
+    } finally { await ctx.close(); }
+  });
+
+  await check('wildcards: the face says "Wildcard" on the card and in Spotlight, in gold; Twist does not apply; Three, favourites, the hand list and a saved hand carry it', async () => {
+    const { ctx, pg } = await freshApp({ wildcards: true });
+    try {
+      const wild = await pg.evaluate(() => {
+        const normal = ALL_CARDS.filter(c => c.level === 'culture').slice(0, 2);
+        state.visibleDeck = [normal[0], WILDCARD_CARDS[0], normal[1]];
+        state.fullDeck = [...state.visibleDeck];
+        state.currentIndex = -1; state.reachedIdx = -1; renderProgress(); setCardDisplay(null);
+        return WILDCARD_CARDS[0].question;
+      });
+      await drawCards(pg, 2);
+      await pg.waitForTimeout(900);
+      const f = await pg.evaluate(() => {
+        const lvl = document.getElementById('card-level'), c = document.getElementById('card');
+        return { level: lvl.textContent, q: document.getElementById('card-question').textContent, mark: c.classList.contains('mark-wildcard'),
+          font: getComputedStyle(lvl).fontFamily, inlineColour: lvl.style.color, q2: document.getElementById('card-level').textContent,
+          tick: document.querySelectorAll('.progress-tick')[1].style.getPropertyValue('--tick-color'), watermark: getComputedStyle(document.querySelector('#card .wc-mark')).display };
+      });
+      assert(f.level === 'Wildcard' && f.q === wild, `face: ${JSON.stringify(f)}`);
+      assert(f.mark && /Federo/.test(f.font) && f.inlineColour === '' && f.watermark === 'flex', `look: ${JSON.stringify(f)}`);
+      assert(f.tick.toLowerCase() === '#c9a84c', `the wildcard's place in the progress line is ${f.tick}, not gold`);
+      // Twist is off on it
+      await pg.evaluate(() => toggleTwist());
+      assert(await pg.evaluate(() => currentTwist === null), 'Twist applied to a wildcard');
+      // the next card is a normal one: the wildcard look goes with it
+      await drawCards(pg, 1); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => !document.getElementById('card').classList.contains('mark-wildcard') && document.getElementById('card-level').textContent === 'Culture' ), 'the wildcard look stayed on the next card');
+      // Spotlight, on the wildcard
+      await pg.evaluate(() => { prevCard(); }); await pg.waitForTimeout(900);
+      await pg.locator('#btnParty').click(); await pg.waitForTimeout(700);
+      const sp = await pg.evaluate(() => ({ level: document.getElementById('party-level').textContent, mark: document.querySelector('.party-frame').classList.contains('mark-wildcard'), q: document.getElementById('party-question').textContent }));
+      assert(sp.level === 'Wildcard' && sp.mark && sp.q === wild, `Spotlight: ${JSON.stringify(sp)}`);
+      await pg.keyboard.press('Escape'); await pg.waitForTimeout(500);
+      // favourite, hand list, saved hand
+      await pg.evaluate(() => toggleFavourite());
+      const other = await pg.evaluate(() => {
+        const fav = document.querySelector('#favsList .play-card');
+        const list = handListHTML().includes(WILDCARD_CARDS[0].question);
+        const data = JSON.parse(JSON.stringify(serializeSession()));
+        state.visibleDeck = []; restoreSessionData(data);
+        return { fav: fav && fav.querySelector('.play-cat').textContent, list, restored: state.visibleDeck.map(c => c.level) };
+      });
+      assert(other.fav === 'Wildcard' && other.list, `favourites / list: ${JSON.stringify(other)}`);
+      assert(JSON.stringify(other.restored) === JSON.stringify(['culture', 'wildcard', 'culture']), `a saved hand lost its wildcard: ${other.restored}`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('wildcards in a real hand (Arc and Random, 5 and 10): played card by card with Next to the end message and a new hand; counter, progress line, end message and deck label agree with the hand, a wildcard never starts a hand', async () => {
+    const { ctx, pg } = await freshApp({ wildcards: true });
+    const facts = () => pg.evaluate(() => ({
+      idx: state.currentIndex, len: state.visibleDeck.length, wild: state.visibleDeck.map(c => c.level === WILDCARD_LEVEL),
+      count: document.getElementById('progCountNum').textContent.replace(/\s+/g, ''),
+      ticks: document.querySelectorAll('#progress .progress-tick:not(.end)').length,
+      label: document.getElementById('deckCount').textContent, total: state.fullDeck.length,
+      level: document.getElementById('card-level').textContent,
+    }));
+    // a hand the app builds by itself, as often as it takes to get one with a wildcard
+    const drawHandWithWildcard = () => pg.evaluate(() => { for (let i = 0; i < 60; i++) { initDeck(); if (state.visibleDeck.some(c => c.level === WILDCARD_LEVEL)) return true; } return false; });
+    try {
+      for (const [mode, size] of [['arc', 5], ['arc', 10], ['wild', 5], ['wild', 10]]) {
+        const tag = `${mode} ${size}`;
+        await pg.evaluate(({ mode, size }) => { state.randomMode = mode; shuffleModeIdx = SHUFFLE_MODES.indexOf(mode); state.cardLimit = size; syncLimitButtons(); }, { mode, size });
+        assert(await drawHandWithWildcard(), `${tag}: no hand with a wildcard in 60 hands`);
+        const hand = await facts();
+        assert(hand.len === size + 1 && !hand.wild[0] && hand.wild.filter(Boolean).length === 1, `${tag}: hand ${JSON.stringify(hand)}`);
+        assert(hand.label === `${size} / ${hand.total}` || hand.label === `${size} cards`, `${tag}: deck label "${hand.label}" for ${size} cards of ${hand.total}`);
+        for (let i = 0; i < hand.len; i++) {
+          await pg.locator('#btn-next').click();
+          await pg.waitForFunction(at => state.currentIndex === at, i, { timeout: 5000 });
+          await pg.waitForTimeout(i === 0 ? 1600 : 700);
+          const f = await facts();
+          assert(f.count === `${i + 1}/${hand.len}` && f.ticks === hand.len, `${tag} card ${i + 1}: counter ${f.count}, ${f.ticks} ticks, hand of ${hand.len}`);
+          assert((f.level === 'Wildcard') === hand.wild[i], `${tag} card ${i + 1}: title "${f.level}"`);
+        }
+        await pg.locator('#btn-next').click();   // past the last card: the end message
+        await pg.waitForFunction(() => document.querySelector('#card-question .end-msg'), null, { timeout: 4000 });
+        const msg = (await pg.locator('#card-question .end-msg').textContent()).trim();
+        assert(msg === `Those were your ${hand.len} cards.`, `${tag}: end message "${msg}"`);
+        // a new hand, the way a completed hold draws it
+        await pg.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 7000 });
+        await pg.evaluate(() => { window._endHoldOK = true; nextCard(); });
+        await pg.waitForFunction(() => state.currentIndex === 0, null, { timeout: 5000 });
+        await pg.waitForTimeout(900);
+        const next = await facts();
+        assert(next.idx === 0 && next.level !== 'Wildcard' && next.count === `1/${next.len}` && next.ticks === next.len, `${tag}: new hand ${JSON.stringify(next)}`);
+      }
     } finally { await ctx.close(); }
   });
 

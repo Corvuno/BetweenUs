@@ -164,6 +164,18 @@ const LEVEL_INTENSITY = LEVEL_DEPTH;
 const LEVEL_FOCUS     = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.focus]));
 const LEVEL_LABELS    = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.label]));
 const CATEGORY_DESCRIPTIONS = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.desc]));
+// Wildcards (#76): cards that belong to no category or chapter, so they are not in CATEGORIES. They carry
+// their own level key so every place that shows a card finds a label ("Wildcard"); the colour (gold) and the
+// depth fall back to levelColor's / levelDepth's defaults. To add one, add a line to WILDCARD_QUESTIONS.
+const WILDCARD_LEVEL = 'wildcard';
+LEVEL_LABELS[WILDCARD_LEVEL] = 'Wildcard';
+const WILDCARD_QUESTIONS = [
+  "Ask anyone here the question you've been saving.",
+  "Ask someone at the table what you really want to know.",
+];
+const WILDCARD_CARDS = WILDCARD_QUESTIONS.map(question => ({ level: WILDCARD_LEVEL, question }));
+/** Every card a saved hand or a pasted list can name: the deck and the wildcards. */
+const KNOWN_CARDS = [...ALL_CARDS, ...WILDCARD_CARDS];
 
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }

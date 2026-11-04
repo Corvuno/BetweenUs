@@ -60,7 +60,8 @@ function renderTwist() {
 // from here since this only ever runs from a click, well after every module
 // has loaded.
 function toggleTwist() {
-  if (!shownCard()) { shakeRowBtn(document.getElementById('btnTwist')); return; }   // can't be used right now — shake, no words
+  const card = shownCard();
+  if (!card || card.level === WILDCARD_LEVEL) { shakeRowBtn(document.getElementById('btnTwist')); return; }   // no card, or a wildcard (already asks you to ask your own): can't be used right now — shake, no words
   if (currentTwist) { clearTwist(); return; }   // tap again to untwist
   currentTwist = pickTwist();
   renderTwist();
@@ -120,6 +121,14 @@ async function toggleFavourite(forCard) {
   if (typeof syncHandStars === 'function') syncHandStars();
 }
 
+/* A card's name in its title spot (main card and Spotlight): the category's, in its own lifted colour; a
+   wildcard's is lettered by the stylesheet (styles.css .mark-wildcard), so no colour is set on it. */
+function paintLevelLabel(el, card) {
+  if (!el) return;
+  el.textContent = LEVEL_LABELS[card.level] || '';
+  el.style.color = card.level === WILDCARD_LEVEL ? '' : labelColor(levelColor(card.level));
+}
+
 function updateStarUI() {
   const card = shownCard();
   const star = document.getElementById('cardStar');
@@ -137,9 +146,10 @@ function updateStarUI() {
 // (the two card-render paths) can't drift apart on this.
 function applyCardMark(el, card) {
   if (!el) return;
-  el.classList.remove('mark-full', 'mark-border');
+  el.classList.remove('mark-full', 'mark-border', 'mark-wildcard');
   el.style.removeProperty('--mark');
   if (!card) return;
+  if (card.level === WILDCARD_LEVEL) { el.classList.add('mark-wildcard'); return; }
   const meta = CATEGORIES[card.level];
   if (!meta) return;
   if (meta.bucket === 'afterdarkb') {
@@ -260,10 +270,7 @@ function setCardDisplay(card) {
   if (accent) {
     giltRailPaint(accent, color);
   }
-  if (lvlEl) {
-    lvlEl.textContent = LEVEL_LABELS[card.level] || '';
-    lvlEl.style.color = labelColor(color);
-  }
+  paintLevelLabel(lvlEl, card);
   if (qEl)   qEl.textContent = translateQ(card);
   /* .card-level and .card-question are invisible until they carry `in` —
      every route that shows a card without the flip (Spotlight before the first
@@ -384,7 +391,7 @@ function flipToCard(card, isFirstDraw) {
     applyCardMark(el, shown);
     const color = levelColor(shown.level);
     giltRailPaint(accent, color);
-    if (lvlEl) { lvlEl.textContent = LEVEL_LABELS[shown.level] || ''; lvlEl.style.color = labelColor(color); }
+    paintLevelLabel(lvlEl, shown);
     if (qEl)   qEl.textContent = translateQ(shown);
     lvlEl?.classList.add('in');
     qEl?.classList.add('in');

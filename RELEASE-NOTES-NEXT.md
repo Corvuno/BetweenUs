@@ -13,3 +13,5 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+
+- **Wildcards.** Now and then a card asks you to ask your own question. You can switch them off in The Deck.

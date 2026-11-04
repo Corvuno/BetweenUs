@@ -23,6 +23,7 @@ const state = {
   spiceMode: false,
   randomMode: window.DEFAULT_SHUFFLE || 'wild',
   cardLimit: (window.DEFAULT_LIMIT === 0 ? null : (window.DEFAULT_LIMIT || 5)),
+  wildcards: true,        // the Wildcards switch in The Deck (deck.js reads and remembers it)
   fullDeck: [],
   visibleDeck: [],
   drawUnseen: undefined,  // how many of fullDeck this session hasn't shown yet; set by buildFullDeck()

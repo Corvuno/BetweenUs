@@ -219,6 +219,21 @@ body{
   line-height:1;pointer-events:none;
 }
 .card.mark-full .card-ad-mark{display:flex;}
+.wc-mark{display:none;position:absolute;inset:0;z-index:0;align-items:center;justify-content:center;
+  font:italic 400 9rem/1 'Bodoni Moda','Cormorant Garamond',serif;color:var(--gold);opacity:.1;pointer-events:none;}
+/* Wildcard (#76): the card stays dark; its title is lettered like Intermezzo and set in light gold, a second
+   hairline frame sits inside the first, and a faint "?" stands behind the text. Same on Spotlight (the
+   mark class sits on .party-frame there). Its rail is plain gold: levelColor's fallback. */
+.card.mark-wildcard,.party-frame.mark-wildcard{outline:1px solid var(--border-strong);outline-offset:-10px;}
+.card.mark-wildcard{border-color:var(--border-strong);}
+.card.mark-wildcard .wc-mark,.party-frame.mark-wildcard .wc-mark{display:flex;}
+.card.mark-wildcard .card-level,.party-card:has(.mark-wildcard) .party-level{
+  font-family:'Federo','Jost',sans-serif;font-weight:400;letter-spacing:.32em;color:var(--gold-l);}
+.card.mark-wildcard .card-level{font-size:.95rem;}
+.party-frame.mark-wildcard{--fi:22px;}
+.party-frame.mark-wildcard .wc-mark{font-size:min(55vh,48vw);opacity:.08;}
+.party-card:has(.mark-wildcard) .party-level{font-size:19px;}
+@media (min-width:768px){.card.mark-wildcard .wc-mark{font-size:24rem;opacity:.08;}}
 .c-accent{
   position:absolute;top:0;left:0;right:0;height:3px;z-index:3;opacity:.85;
   background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
@@ -1574,6 +1589,12 @@ body.hint-ways-taught .menu-hint{display:none;}
   color:rgba(240,232,216,.68);white-space:nowrap;}
 .ch-fold--row .ch-desc{flex:1;text-align:left;font-size:.8rem;color:var(--muted-l);}
 .chapter-group--fixed{--ch:var(--cream);}
+/* Wildcards: a switch in Fixed Sets' row shape; its state sits where Fixed Sets has its chevron, celadon like a chosen option */
+.wc-state{flex:none;width:60px;text-align:center;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);transition:color .4s ease;}
+.wc-state::before{content:'\25CF\00a0';}
+.ch-fold--row[aria-checked="true"] .wc-state{color:var(--celadon);}
+.ch-fold--row[aria-checked="false"] .wc-state::before{content:'\25CB\00a0';}
 .chapter-group--fixed .chapter-panel.fixed-seq-options{border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
 .chapter-group--fixed .chapter-panel.fixed-seq-options:not(.open){border-width:0;}
 .cat-grid-wrap.chapter-wrap{max-height:none;border-top:none;overflow:visible;padding:0 0 6px;}

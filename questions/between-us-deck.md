@@ -806,6 +806,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.33 — Wildcards (#76)
+
+- **Wildcard** (a new kind of card: no category, no chapter, not counted in the deck; lives in `WILDCARD_QUESTIONS` in `categories.js`, not in `questions.js`)
+  - New: "Ask anyone here the question you've been saving."
+  - New: "Ask someone at the table what you really want to know."
+  - Why: owner's decision. A card that tells the player to ask their own question. About every second normal hand carries at most one, never first; none in Coworkers, New people or the fixed sets; a switch in The Deck turns them off.
+
 ## Patch v7.32 — Unwind 6 (#77, two cards asking the same thing)
 
 - **Unwind 6**

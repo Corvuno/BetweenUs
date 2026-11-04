@@ -108,8 +108,32 @@ function sliceVisibleDeck(fullDeck, unseen) {
   if (orderedSoloLevel()) {
     return state.cardLimit === null ? [...fullDeck] : fullDeck.slice(0, state.cardLimit);
   }
-  return _sliceDraw(fullDeck, unseen);
+  return _withWildcard(_sliceDraw(fullDeck, unseen));
 }
+
+/* Wildcards (#76): a hand may carry one wildcard card, an extra card on top of the hand size, so the
+   Arc's shape and spread (built before this) stay as they were. Never first, never in the fixed sets
+   (they return before this runs), never in these presets, never with the switch off. Occasional: this
+   share of hands has one. */
+const WILDCARD_SHARE = 0.5;
+const NO_WILDCARD_PRESETS = ['work', 'newpeople'];
+const WILDCARD_KEY = 'bu.wildcards';
+function _withWildcard(hand) {
+  if (!state.wildcards || NO_WILDCARD_PRESETS.includes(state.activePreset)) return hand;
+  if (!hand.length || Math.random() >= WILDCARD_SHARE) return hand;
+  const card = WILDCARD_CARDS[Math.floor(Math.random() * WILDCARD_CARDS.length)];
+  const at = 1 + Math.floor(Math.random() * hand.length);   // 1 … hand.length: after the first card
+  return [...hand.slice(0, at), card, ...hand.slice(at)];
+}
+/* The switch's state outlives the evening, like the screen-rotation flag: a device preference. */
+function loadWildcardSwitch() {
+  try { state.wildcards = localStorage.getItem(WILDCARD_KEY) !== '0'; } catch { /* storage blocked: on */ }
+}
+function setWildcardSwitch(on) {
+  state.wildcards = on;
+  try { localStorage.setItem(WILDCARD_KEY, on ? '1' : '0'); } catch { /* private mode: only this visit remembers */ }
+}
+loadWildcardSwitch();
 
 /* Mirrors state.cardLimit onto the limit-button row's active class. All is
    Wild-only (owner, 2026-10-30): Arc hides it, since an arc needs a set length. */

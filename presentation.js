@@ -111,7 +111,7 @@ function updatePartyDisplay(card) {
   }
   const color = levelColor(card.level);
   if (pa) { giltRailPaint(pa, color); pa.classList.remove('accent-bloom'); void pa.offsetWidth; pa.classList.add('accent-bloom'); }
-  if (pl) { pl.textContent=LEVEL_LABELS[card.level]||''; pl.style.color=labelColor(color); }
+  paintLevelLabel(pl, card);
   const td = document.querySelector('.twist-div');   // Twist divider: question-side bar = the card's category colour, as the pick dividers use
   if (td) td.style.setProperty('--pd-a', color);
   if (pq) {
@@ -134,7 +134,7 @@ function toggleCategories() {
 };
 
 function updateDeckInfo() {
-  const shown = state.visibleDeck.length, total = state.fullDeck.length;
+  const shown = state.visibleDeck.filter(c => c.level !== WILDCARD_LEVEL).length, total = state.fullDeck.length;   // the deck's own cards: a wildcard is not one of them
   const el = document.getElementById('deckCount');
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
@@ -390,7 +390,7 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
       if (file && file.format === STATE_FILE_FORMAT && file.data) { restoreSessionData(file.data); closeAllDrawers(); }
       return;
     }
-    const qMap={}; ALL_CARDS.forEach(c=>{qMap[c.question.toLowerCase().trim()]=c;});
+    const qMap={}; KNOWN_CARDS.forEach(c=>{qMap[c.question.toLowerCase().trim()]=c;});
     const imported=[]; text.split('\n').forEach((line,i,arr)=>{
       if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(qMap[q.toLowerCase()]||{question:q,level:'deep'});}
     });
@@ -756,8 +756,8 @@ let handClosing = false;
 // The colour of the pause: raw (rail) and the lifted one (diamond, rule, button) — labelColor
 // lifts After Dark's near-black lacquer. Takes the last drawn card's category colour.
 function handEndColors() {
-  const last = state.visibleDeck[state.visibleDeck.length - 1];
-  const base = last && CATEGORIES[last.level] && levelColor(last.level);
+  const last = [...state.visibleDeck].reverse().find(c => CATEGORIES[c.level]);   // a wildcard has no category colour: the card before it
+  const base = last && levelColor(last.level);
   if (!base) return { raw: null, label: null };
   return { raw: base, label: labelColor(base) };
 }
