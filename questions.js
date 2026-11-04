@@ -453,7 +453,7 @@ const NEWDECK_CARDS = [
   { level: "flesh", question: "Reconstruct your smoothest pickup ever." },
   { level: "flesh", question: "A kiss you can still feel when you think of it..." },
   { level: "flesh", question: "A hotel room, far from home: what comes out in you that stays hidden at home?" },
-  { level: "flesh", question: "How much affection with a partner are you comfortable showing in front of people — and what's the furthest you actually went?" },
+  { level: "flesh", question: "How much affection with a partner are you comfortable showing in front of people?" },
   { level: "flesh", question: "When did sex last feel like play — and what made it that way?" },
   { level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
   { level: "flesh", question: "Ever woken someone up, or been woken up, in a way that was unmistakably sexual?" },

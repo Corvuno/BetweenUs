@@ -806,6 +806,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.34 — Flesh 8 shortened (#107)
+
+- **Flesh 8**
+  - Old: "How much affection with a partner are you comfortable showing in front of people — and what's the furthest you actually went?"
+  - New: "How much affection with a partner are you comfortable showing in front of people?"
+  - Why: owner: the second half isn't needed.
+
 ## Patch v7.33 — Wildcards (#76)
 
 - **Wildcard** (a new kind of card: no category, no chapter, not counted in the deck; lives in `WILDCARD_QUESTIONS` in `categories.js`, not in `questions.js`)
