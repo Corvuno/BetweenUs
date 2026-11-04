@@ -193,7 +193,9 @@ function spotlightBrightenOnce() {
       state.partyMode = true;
       document.getElementById('partyOverlay').classList.add('open');
       movePickerToScreen();   // Three options up: they move along into Spotlight
-      if (state.currentIndex < 0 && state.visibleDeck.length > 0 && !state.pickerOpen) {   // first-card options up: nothing is drawn yet
+      if (broughtBack) {
+        updatePartyDisplay(broughtBack);   // a card brought back from Played or Favourites is the one on screen
+      } else if (state.currentIndex < 0 && state.visibleDeck.length > 0 && !state.pickerOpen) {   // first-card options up: nothing is drawn yet
         state.currentIndex = 0;
         setCardDisplay(state.visibleDeck[0]);
         renderProgress();

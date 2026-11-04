@@ -2650,6 +2650,222 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  // ── #101: a small card in Played or Favourites brings that card back onto the card screen (no draw) ──
+  const openFromMenu = async (pg, key) => {
+    await pg.evaluate(() => closeAllDrawers());
+    await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
+    await pg.locator(`[data-menu="${key}"]:visible`).click(); await pg.waitForTimeout(900);
+  };
+  const onScreen = pg => pg.evaluate(() => ({ q: document.getElementById('card-question').textContent, level: document.getElementById('card-level').textContent, star: document.getElementById('cardStar').classList.contains('active') }));
+  const handFacts = pg => pg.evaluate(() => ({ idx: state.currentIndex, reached: state.reachedIdx, log: state.sessionLog.map(c => c.question), seen: [...new Set(state.sessionLog.map(c => c.question))].length, deck: state.visibleDeck.map(c => c.question), picker: state.pickerOpen, count: document.getElementById('progCountNum')?.textContent }));
+
+  await check('a small card in Played and in Favourites is a real button; a tap (or Enter) shows that card full size with its category and star, and closes the screen and the menu', async () => {
+    for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
+      const { ctx, pg } = await freshApp(opts);
+      try {
+        await drawCards(pg, 3);
+        await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
+        const first = await pg.evaluate(() => ({ q: state.visibleDeck[0].question, label: LEVEL_LABELS[state.visibleDeck[0].level] }));
+        await openFromMenu(pg, 'played');
+        assert(await pg.evaluate(() => [...document.querySelectorAll('#logList .play-card')].every(c => c.tagName === 'BUTTON' && c.type === 'button')), `${name}: the cards in Played are not buttons`);
+        await pg.locator('#logList .play-card', { hasText: first.q }).click(); await pg.waitForTimeout(900);
+        let s = await onScreen(pg);
+        assert(s.q === first.q && s.level === first.label && s.star, `${name}: Played card on screen: ${JSON.stringify(s)}`);
+        assert(await pg.evaluate(() => !document.querySelector('[id$="Drawer"].open') && !document.getElementById('overlay').classList.contains('open')), `${name}: the screen or menu is still up`);
+        // Enter on a card in Favourites
+        await openFromMenu(pg, 'favs');
+        await pg.evaluate(() => { document.querySelector('#favsList .play-card').focus(); });
+        await pg.keyboard.press('Enter'); await pg.waitForTimeout(900);
+        s = await onScreen(pg);
+        assert(s.q === first.q && s.star, `${name}: Favourites card by Enter: ${JSON.stringify(s)}`);
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('bringing a card back is no draw: the hand, its counters, the progress, seen / left and the history list stay as they were', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3);
+      await pg.evaluate(() => toggleFavourite(state.visibleDeck[1]));
+      await openPhoneMenu(pg);
+      const before = { facts: await handFacts(pg), start: await menuLine(pg, 'start'), played: await menuLine(pg, 'played') };
+      await pg.locator('#d-played').click(); await pg.waitForTimeout(800);
+      const firstQ = await pg.evaluate(() => state.sessionLog[0].question);
+      await pg.locator('#logList .play-card').last().click(); await pg.waitForTimeout(900);
+      assert((await onScreen(pg)).q === firstQ, 'the card was not brought back');
+      await openPhoneMenu(pg);
+      const after = { facts: await handFacts(pg), start: await menuLine(pg, 'start'), played: await menuLine(pg, 'played') };
+      assert(JSON.stringify(before) === JSON.stringify(after), `the hand moved: ${JSON.stringify(before)} -> ${JSON.stringify(after)}`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('after a brought-back card, Draw carries on the hand where it was and Back returns to where you were', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3);
+      const hand = await handFacts(pg);   // standing on card 3 of 5
+      await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
+      // Back: the hand's own card again, nothing moved
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert((await onScreen(pg)).q === hand.deck[2] && (await handFacts(pg)).idx === 2, 'Back did not return to the card we were on');
+      // Draw: the next card of the hand
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.locator('#btn-next').click(); await pg.waitForTimeout(900);
+      assert((await onScreen(pg)).q === hand.deck[3] && (await handFacts(pg)).idx === 3, 'Draw did not carry on the hand');
+      // the start card: Back returns to it, and the first Draw is still card 1
+      await pg.evaluate(() => { initDeck(); });
+      await pg.waitForTimeout(500);
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), 'Back did not return to the start card');
+    } finally { await ctx.close(); }
+  });
+
+  await check('a brought-back card in Three (the options come back with Back), in Spotlight, and at the end-of-hand screen', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 2);
+      await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
+      await pg.locator('#pickToggle').click(); await pg.waitForTimeout(200);
+      await pg.evaluate(() => nextCard()); await pg.waitForFunction(() => state.pickerOpen, null, { timeout: 4000 });
+      const options = await pg.evaluate(() => state.pickOptions.options.map(c => c.question));
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      const shown = await pg.evaluate(() => ({ picker: state.pickerOpen, q: document.getElementById('card-question').textContent, fav: state.favourites[0].question }));
+      assert(!shown.picker && shown.q === shown.fav, `Three: the card is not the single current card: ${JSON.stringify(shown)}`);
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(700);
+      assert(await pg.evaluate(o => state.pickerOpen && JSON.stringify(state.pickOptions.options.map(c => c.question)) === JSON.stringify(o), options), 'Back did not return the same three options');
+      await pg.evaluate(() => { choosePick(state.pickOptions.options[0], state.pickOptions.options, state.pickOptions.step); });
+      await pg.waitForTimeout(700);
+      await pg.locator('#pickToggle').click();   // Three off again
+      // Spotlight shows the brought-back card, and the star is that card's
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.locator('#btnParty').click(); await pg.waitForTimeout(700);
+      assert(await pg.evaluate(() => document.getElementById('party-question').textContent === state.favourites[0].question && document.getElementById('partyStar').classList.contains('on')), 'Spotlight does not show the brought-back card');
+      await pg.evaluate(() => document.getElementById('partyOverlay').classList.contains('open') && exitParty());
+      await pg.waitForTimeout(500);
+      // the end-of-hand screen: the card shows, Back returns to the screen, Draw then does what it would have
+      await pg.evaluate(() => { state.currentIndex = state.visibleDeck.length; showHandSummary(); });
+      await pg.waitForTimeout(500);
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => document.getElementById('card-question').textContent === state.favourites[0].question && !state.handSide && state.currentIndex === state.visibleDeck.length), 'the end-of-hand screen does not show the brought-back card');
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.handSide === 'intermezzo' && state.currentIndex === state.visibleDeck.length), 'Back did not return to the end-of-hand screen');
+    } finally { await ctx.close(); }
+  });
+
+  await check('a brought-back card: the skip Undo is let go, the star is the brought-back card\'s, Twist and Spotlight work on it, Back in Spotlight returns, Skip (swipe down) and the arrow keys act on the hand, not on the wrong card', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3);
+      await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
+      const fav = await pg.evaluate(() => state.favourites[0].question);
+      // swipe-skip card 3, then bring a card back inside the Undo bar's life
+      await pg.evaluate(() => skipCard());
+      assert(await pg.evaluate(() => document.getElementById('skipUndo').classList.contains('visible')), 'no Undo bar after a skip');
+      const lenBefore = await pg.evaluate(() => state.visibleDeck.length);
+      await pg.evaluate(() => { renderFavourites(); openDrawer('favsDrawer'); });   // quick: the Undo bar lives 3 seconds
+      await pg.waitForTimeout(700);
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(600);
+      assert(await pg.evaluate(() => !document.getElementById('skipUndo').classList.contains('visible')), 'the skip Undo bar is still up over a brought-back card');
+      // the star is the brought-back card's
+      await pg.locator('#cardStar').click(); await pg.waitForTimeout(200);
+      assert(await pg.evaluate(q => !state.favourites.some(f => f.question === q), fav), 'the star acted on another card');
+      await pg.locator('#cardStar').click(); await pg.waitForTimeout(200);
+      // Twist on the brought-back card
+      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(300);
+      assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work on a brought-back card');
+      // Skip (swipe down) drops the brought-back card and skips nothing
+      await swipe(pg, '#card', 0, 100); await pg.waitForTimeout(900);
+      let h = await pg.evaluate(() => ({ len: state.visibleDeck.length, idx: state.currentIndex, q: document.getElementById('card-question').textContent, own: state.visibleDeck[state.currentIndex]?.question }));
+      assert(h.len === lenBefore && h.q === h.own, `swipe-down on a brought-back card: ${JSON.stringify(h)}`);
+      // arrow keys: Right draws the hand's next card; Left after a bring-back returns to where we were
+      const at = h.idx;
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.keyboard.press('ArrowLeft'); await pg.waitForTimeout(900);
+      h = await pg.evaluate(() => ({ idx: state.currentIndex, q: document.getElementById('card-question').textContent, own: state.visibleDeck[state.currentIndex]?.question }));
+      assert(h.q === h.own && h.idx === at, `ArrowLeft after a bring-back: ${JSON.stringify(h)}`);
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.keyboard.press('ArrowRight'); await pg.waitForTimeout(900);
+      h = await pg.evaluate(() => ({ idx: state.currentIndex, q: document.getElementById('card-question').textContent, own: state.visibleDeck[state.currentIndex]?.question }));
+      assert(h.idx === at + 1 && h.q === h.own, `ArrowRight after a bring-back: ${JSON.stringify(h)}`);
+      // the start card: Spotlight opens on the brought-back card, and Back in Spotlight returns to the start card
+      await pg.evaluate(() => { initDeck(); });
+      await pg.waitForTimeout(500);
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => !document.getElementById('btnParty').classList.contains('disabled')), 'Spotlight is not enabled with a brought-back card up');
+      await pg.locator('#btnParty').click(); await pg.waitForTimeout(700);
+      assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('party-question').textContent === state.favourites[0].question), 'Spotlight did not open on the brought-back card (or drew the first card)');
+      await pg.locator('#partyPrevBtn').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), 'Back in Spotlight did not return to the start card');
+    } finally { await ctx.close(); }
+  });
+
+  await check('a brought-back card at the end of a hand: Twist works on it, and Back returns to the side (Intermezzo or the list) the hand was on, without replaying the closing', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 2);
+      await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
+      await pg.evaluate(() => { state.currentIndex = state.visibleDeck.length; showHandSummary(); });
+      await pg.waitForTimeout(600);
+      await pg.evaluate(() => flipHandList());
+      await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.handSide === 'list'), 'not on the list side');
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      const back = await pg.evaluate(() => ({ side: state.handSide, closing: document.getElementById('card').classList.contains('mv-build') || document.getElementById('card').classList.contains('mv-live') }));
+      assert(back.side === 'list' && !back.closing, `Back landed on ${JSON.stringify(back)}`);
+      await openFromMenu(pg, 'favs');
+      await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => !document.getElementById('btnTwist').classList.contains('disabled')), 'Twist is disabled with a brought-back card up');
+      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(300);
+      assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work at the end of a hand on a brought-back card');
+    } finally { await ctx.close(); }
+  });
+
+  await check('real taps: draw, star, Start over, Favourites, tap the card, then Back (at once, and after everything settles) returns to the start card with Back, Twist and Spotlight disabled as on a fresh start card; also with Three\'s options up', async () => {
+    for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
+      for (const settle of [150, 2500]) {
+        const { ctx, pg } = await freshApp(opts);
+        try {
+          const flags = () => pg.evaluate(() => ['btn-prev', 'btnTwist', 'btnParty'].map(id => document.getElementById(id).classList.contains('disabled')));
+          await pg.locator('#btn-next').click(); await pg.waitForTimeout(2500);
+          await pg.locator('#cardStar').click(); await pg.waitForTimeout(300);
+          await pg.locator('#pickToggle').click(); await pg.waitForTimeout(200);   // Three on (it cannot be switched on at the start card)
+          const startOver = async () => { await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900); await pg.locator('[data-menu="start"]:visible').click(); await pg.waitForTimeout(1200); };
+          const bringAndBack = async () => {
+            await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+            await pg.locator('[data-menu="favs"]:visible').click(); await pg.waitForTimeout(1000);
+            await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(settle);
+            await pg.locator('#btn-prev').click(); await pg.waitForTimeout(2500);   // everything settles
+          };
+          await startOver();
+          const fresh = await flags();
+          assert(fresh.every(Boolean), `${name}: a fresh start card should have all three disabled: ${fresh}`);
+          await bringAndBack();
+          assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), `${name} (${settle}ms): Back did not return to the start card`);
+          assert(JSON.stringify(await flags()) === JSON.stringify(fresh), `${name} (${settle}ms): after Back to the start card: ${await flags()}`);
+          // Three's options up for the first card
+          await pg.evaluate(() => nextCard()); await pg.waitForFunction(() => state.pickerOpen, null, { timeout: 4000 });
+          const withOptions = await flags();
+          await bringAndBack();
+          assert(await pg.evaluate(() => state.pickerOpen), `${name} (${settle}ms): the options did not come back`);
+          assert(JSON.stringify(await flags()) === JSON.stringify(withOptions), `${name} (${settle}ms): after Back to Three's options at the start: ${await flags()} (was ${withOptions})`);
+        } finally { await ctx.close(); }
+      }
+    }
+  });
+
   await check('after Start over, or after Clear the list, Save for later adds a new saved evening and the open one stays as it was saved', async () => {
     for (const how of ['start', 'clear']) {
       const { ctx, pg } = await freshApp();

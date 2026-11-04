@@ -98,7 +98,7 @@ function updatePartyDisplay(card) {
   const pa  = document.getElementById('party-accent');
   const ps  = document.getElementById('partyStar');
   const pv  = document.getElementById('partyPrevBtn');
-  if (pv) pv.disabled = state.currentIndex <= 0;
+  if (pv) pv.disabled = !canGoBack();
   applyCardMark(document.querySelector('.party-frame'), card);   // deck-mark corners (After Dark, Colbert, The 36) reach Spotlight too
   if (pq) pq.classList.remove('is-end-msg');
   if (!card) {
@@ -406,6 +406,14 @@ document.getElementById('btnClearLog').addEventListener('click', () => {
 
 // ── Favourites ──
 document.getElementById('closeFavs').addEventListener('click',()=>closeAllDrawers());
+// A small card in Played or Favourites: tap it to bring it back onto the card screen (no draw, see card.js)
+[{ id: 'logList', cards: () => state.sessionLog }, { id: 'favsList', cards: () => state.favourites }].forEach(({ id, cards }) => {
+  document.getElementById(id).addEventListener('click', e => {
+    const button = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('.play-card'));
+    const card = button && cards()[+button.dataset.i];
+    if (card) bringBackCard(card);
+  });
+});
 
 // ── Saved (multi-slot store, in Played) ──
 document.getElementById('storeSessionBtn').addEventListener('click', ()=>{ storeCurrentSession(); });
@@ -643,6 +651,16 @@ function renderShell() {
   if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
 }
 
+// Back has something to go back to once a card is behind it, or while a card brought back from Played or
+// Favourites is up (Back then returns to where the hand was).
+function canGoBack() { return state.currentIndex > 0 || !!broughtBack; }
+// The hand has begun: a card is drawn, Three's options for the first card are up, or a card was brought back.
+function handBegun() { return state.currentIndex >= 0 || state.pickerOpen || !!broughtBack; }
+// The main Back button also waits for the first card (it has nothing to go back to).
+function syncBackButton() {
+  document.getElementById('btn-prev')?.classList.toggle('disabled', state.currentIndex < 0 && !broughtBack);
+}
+
 function updateDrawMore() {
   // This runs after every deck-state change (nextCard, skipCard, initDeck,
   // choosePick, …), so the end-of-hand hint updates from here too — no need
@@ -658,7 +676,7 @@ function updateDrawMore() {
   // Twist is a lens on a drawn card — nothing to twist before the first
   // draw or on the end-of-round summary.
   [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-    if (btn) btn.classList.toggle('disabled', !hasCurrentCard());
+    if (btn) btn.classList.toggle('disabled', !shownCard());
   });
   // Three and Spotlight wait for the first card of a hand too (back-of-card
   // start screen). Unlike Twist they stay usable on the end-of-hand screen,
@@ -671,11 +689,9 @@ function updateDrawMore() {
   const spotBtn = document.getElementById('btnParty');
   /* Options up for the first card of a hand: the hand has begun, so nothing on
      screen shows the start state */
-  const begun = state.currentIndex >= 0 || state.pickerOpen;
+  const begun = handBegun();
   if (spotBtn) spotBtn.classList.toggle('disabled', !begun);
-  // Back waits for the first card too (it has nothing to go back to).
-  const prevBtn = document.getElementById('btn-prev');
-  if (prevBtn) prevBtn.classList.toggle('disabled', state.currentIndex < 0);
+  syncBackButton();
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
@@ -896,10 +912,10 @@ function renderHandSide(animate) {
   else swap();
 }
 
-function showHandSummary({ closing = false } = {}) {
+function showHandSummary({ closing = false, still = false, side = 'intermezzo' } = {}) {
   clearTwist();
-  state.handSide = 'intermezzo';
-  handStill = false;
+  state.handSide = side;
+  handStill = still;   // still: the pause mark appears finished (coming back to it, not arriving at it)
   handClosing = closing;
   renderHandSide(false);
   handClosing = false;

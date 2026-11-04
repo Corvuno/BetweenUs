@@ -25,11 +25,12 @@ function loadFavourites() {
 
 
 // A drawn or starred card as a small card: its colour line on top, a faint wash of the colour, the name of
-// its group, the question, and a small star when it is starred.
-function smallCardHTML(c) {
+// its group, the question, and a small star when it is starred. A tap brings the card back onto the card screen
+// (presentation.js); i is its place in the list it came from.
+function smallCardHTML(c, i) {
   const colour = levelColor(c.level);
   const star = state.favourites.some(f => f.question === c.question) ? '<span class="play-star" aria-label="Starred">★</span>' : '';
-  return `<div class="play-card" style="--lvl:${colour}">${star}<div class="play-cat" style="color:${labelColor(colour)}">${LEVEL_LABELS[c.level] || esc(c.level)}</div><p class="play-q">${esc(c.question)}</p></div>`;
+  return `<button type="button" class="play-card" data-i="${i}" style="--lvl:${colour}">${star}<span class="play-cat" style="color:${labelColor(colour)}">${LEVEL_LABELS[c.level] || esc(c.level)}</span><span class="play-q">${esc(c.question)}</span></button>`;
 }
 
 function renderFavourites() {

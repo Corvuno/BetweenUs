@@ -707,6 +707,7 @@ function _nextCardBase() {
 // the end-of-draw hold gate and post-advance hooks (party/session summary).
 
 function prevCard() {
+  if (dismissBroughtBack()) return;   // Back from a card brought back from Played or Favourites: the hand's own view
   /* Three options on screen: Back leaves them (no pick, nothing sits out) and
      is the card behind them again — the card of the step before. */
   if (state.pickerOpen && state.currentIndex < 0) return;   // first card of a hand: no card behind the options, they stay
@@ -727,6 +728,7 @@ function prevCard() {
 // ═══════════════════════════════════════════════════════════
 
 function skipCard() {
+  if (dismissBroughtBack()) return;   // the card on screen was brought back, not drawn: nothing to skip
   // Captured before the guard below, and the "show undo button" step at the
   // end runs unconditionally too — matching the swipe-down caller, which
   // already never invokes skipCard() outside a valid index.
@@ -825,6 +827,7 @@ function startNewHand() {
 }
 
 function nextCard() {
+  dismissBroughtBack();   // Draw carries on the hand where it was
   const action = decideNextCardAction();
   switch (action.type) {
     case 'blocked':

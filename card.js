@@ -60,7 +60,7 @@ function renderTwist() {
 // from here since this only ever runs from a click, well after every module
 // has loaded.
 function toggleTwist() {
-  if (!hasCurrentCard()) { shakeRowBtn(document.getElementById('btnTwist')); return; }   // can't be used right now — shake, no words
+  if (!shownCard()) { shakeRowBtn(document.getElementById('btnTwist')); return; }   // can't be used right now — shake, no words
   if (currentTwist) { clearTwist(); return; }   // tap again to untwist
   currentTwist = pickTwist();
   renderTwist();
@@ -94,10 +94,21 @@ function translateQ(card) {
 }
 
 
+// A card brought back from Played or Favourites (see bringBackCard): it fills the card screen in place of the
+// hand's own view, which is left exactly as it was. null whenever the hand's own view is showing.
+let broughtBack = null;
+let viewBeforeBringBack = null;   // { options, step, handSide }: the Three options that were up, and the end-of-hand side, if any
+
+// The card on screen now: the brought-back one, else the hand's current card (null before the first draw
+// and at the end-of-hand screen).
+function shownCard() {
+  return broughtBack ?? (hasCurrentCard() ? state.visibleDeck[state.currentIndex] : null);
+}
+
 async function toggleFavourite(forCard) {
   // No argument: the card on screen (the card's own star). The end-of-hand list
   // passes the question it is starring, so both go through this one store.
-  const card = forCard || (state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null);
+  const card = forCard || shownCard();
   if (!card) return;
   const idx = state.favourites.findIndex(f => f.question === card.question);
   if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
@@ -110,7 +121,7 @@ async function toggleFavourite(forCard) {
 }
 
 function updateStarUI() {
-  const card = state.currentIndex >= 0 ? state.visibleDeck[state.currentIndex] : null;
+  const card = shownCard();
   const star = document.getElementById('cardStar');
   const starred = !!card && state.favourites.some(f => f.question === card.question);
   if (star) star.classList.toggle('active', starred);
@@ -186,6 +197,7 @@ function setStartBack(text) {
    first card's flip dissolves it, and the list side just empties. The rails keep their colour until
    that card's face swap repaints them. */
 function clearCardFace() {
+  broughtBack = viewBeforeBringBack = null;   // a new hand: nothing brought back is up any more
   hideHandSummary();
   clearTwist();
   applyCardMark(document.getElementById('card'), null);
@@ -226,6 +238,7 @@ function showStartFace({ qEl, nextBtn, accent }) {
 }
 
 function setCardDisplay(card) {
+  broughtBack = viewBeforeBringBack = null;   // a fresh face: nothing brought back is up any more
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
   // shown, so the previous hand's end-of-hand summary can't still be
@@ -379,7 +392,7 @@ function flipToCard(card, isFirstDraw) {
        ran 175ms later and clobbered the "Draw more cards"/"Continue" states */
     updateDrawMore();
   };
-  const isStale = shown => state.currentIndex < state.visibleDeck.length && state.visibleDeck[state.currentIndex] !== shown;
+  const isStale = shown => shown !== broughtBack && state.currentIndex < state.visibleDeck.length && state.visibleDeck[state.currentIndex] !== shown;
   const finishFace = shown => {
     renderProgress();
     updatePartyDisplay(shown);
@@ -435,6 +448,37 @@ function flipToCard(card, isFirstDraw) {
   }, timing.swap));
   timers.push(setTimeout(() => { endAnimation(); pendingFlip = null; }, timing.done));
   pendingFlip = { cancel: () => { timers.forEach(clearTimeout); endAnimation(); pendingFlip = null; } };
+}
+
+/* A card from Played or Favourites fills the card screen again. No draw: the hand, its counters, the progress
+   and the history list stay exactly as they were, and nothing is logged. It is shown by the ordinary card swap.
+   Three options that were up are put away meanwhile and come back with dismissBroughtBack(). */
+function bringBackCard(card) {
+  closeAllDrawers();
+  if (!broughtBack) viewBeforeBringBack = { options: state.pickerOpen ? state.pickOptions?.options : null, step: state.pickOptions?.step, handSide: state.handSide };
+  closePicker();
+  // the card is on screen in place of the hand's own view: a skip that could still be undone is let go
+  document.getElementById('skipUndo')?.classList.remove('visible');
+  _undoCard = _undoIndex = _undoLog = null;
+  broughtBack = card;
+  flipToCard(card);
+  updateStarUI();
+  updateDrawMore();   // Back, Twist and Spotlight are live from the tap, not 110ms later when the face is painted
+}
+
+/* Back from a brought-back card (and the first thing Draw and Skip do): the hand's own view comes back as it was,
+   the card, the start card, the end-of-hand screen, or the Three options. Returns whether there was one to drop. */
+function dismissBroughtBack() {
+  if (!broughtBack) return false;
+  const view = viewBeforeBringBack;
+  broughtBack = viewBeforeBringBack = null;
+  if (hasCurrentCard()) flipToCard(state.visibleDeck[state.currentIndex]);
+  else if (state.currentIndex >= state.visibleDeck.length && state.visibleDeck.length > 0) showHandSummary({ still: true, side: view?.handSide ?? 'intermezzo' });   // the side it was on, finished, no closing replay
+  else setCardDisplay(null);
+  updateDrawMore();   // the controls' disabled states follow the view that is back (the start card has Back, Twist and Spotlight off)
+  if (view?.options) openPicker(view.options, view.step);
+  updateStarUI();
+  return true;
 }
 
 function openPicker(options, step) {

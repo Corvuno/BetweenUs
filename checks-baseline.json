@@ -31,7 +31,7 @@
   "presentation.js | no-unused-vars | 'e' is defined but never used.": 1,
   "presentation.js | no-unused-vars | 'err' is defined but never used.": 1,
   "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 19 to the 15 allowed.": 2,
-  "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed.": 1,
+  "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 20 to the 15 allowed.": 1,
   "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 24 to the 15 allowed.": 1,
   "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed.": 1,
   "presentation.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 2,

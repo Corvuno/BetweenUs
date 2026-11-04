@@ -47,7 +47,7 @@ function renderLog() {
   el.classList.toggle('play-grid', state.sessionLog.length > 0);
   el.innerHTML = state.sessionLog.length === 0
     ? '<div class="play-empty">Nothing drawn yet.</div>'
-    : [...state.sessionLog].reverse().map(smallCardHTML).join('');
+    : state.sessionLog.map((c, i) => smallCardHTML(c, i)).reverse().join('');
 }
 
 function serializeSession() {
