@@ -113,9 +113,9 @@ function sliceVisibleDeck(fullDeck, unseen) {
 
 /* Wildcards (#76): a hand may carry one wildcard card, an extra card on top of the hand size, so the
    Arc's shape and spread (built before this) stay as they were. Never first, never in the fixed sets
-   (they return before this runs), never in these presets, never with the switch off. Occasional: this
-   share of hands has one. */
-const WILDCARD_SHARE = 0.5;
+   (they return before this runs), never in these presets, never with the switch off. Rare on purpose:
+   about one hand in seven has one (owner, 2026-11-04: "about 1 in 5 to 10 hands, it should be special"). */
+const WILDCARD_SHARE = 1 / 7;
 const NO_WILDCARD_PRESETS = ['work', 'newpeople'];
 const WILDCARD_KEY = 'bu.wildcards';
 function _withWildcard(hand) {

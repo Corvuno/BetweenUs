@@ -3109,7 +3109,7 @@ async function run() {
         assert(hands.every(h => !h[0]), `a wildcard came first (limit ${limit})`);
         assert(hands.every(h => h.filter(Boolean).length <= 1), `a hand held two wildcards (limit ${limit})`);
         const withOne = hands.filter(h => h.some(Boolean)).length;
-        assert(withOne > 30 && withOne < 120, `${withOne} of 150 hands had a wildcard (limit ${limit}): not occasional`);
+        assert(withOne > 5 && withOne < 45, `${withOne} of 150 hands had a wildcard (limit ${limit}): not about one in seven`);
       }
       const texts = await pg.evaluate(() => WILDCARD_CARDS.map(c => c.question));
       assert(JSON.stringify(texts) === JSON.stringify(["Ask anyone here the question you've been saving.", "Ask someone at the table what you really want to know."]), `wildcard texts: ${texts}`);
@@ -3205,7 +3205,7 @@ async function run() {
       level: document.getElementById('card-level').textContent,
     }));
     // a hand the app builds by itself, as often as it takes to get one with a wildcard
-    const drawHandWithWildcard = () => pg.evaluate(() => { for (let i = 0; i < 60; i++) { initDeck(); if (state.visibleDeck.some(c => c.level === WILDCARD_LEVEL)) return true; } return false; });
+    const drawHandWithWildcard = () => pg.evaluate(() => { for (let i = 0; i < 200; i++) { initDeck(); if (state.visibleDeck.some(c => c.level === WILDCARD_LEVEL)) return true; } return false; });
     try {
       for (const [mode, size] of [['arc', 5], ['arc', 10], ['wild', 5], ['wild', 10]]) {
         const tag = `${mode} ${size}`;
