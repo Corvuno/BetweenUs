@@ -533,3 +533,7 @@ Every category in an open chapter carries its own line (`.cat-line`, the categor
   off). Instant under `prefers-reduced-motion`.
 - **An open chapter is never cut off:** `.chapter-group.open{max-height:none}` (the closed cap of 30rem stays for the
   fade-out of a hidden chapter).
+
+## Card question width (2026-11-04, #108)
+
+On the phone/tablet card the question's side padding is `--bracket-inset + --text-gap` (both set on `.card`; inset 20px phone, 26px from 768px, gap 6px), so the text may use the width out to just inside the corner-bracket lines. The brackets read the same `--bracket-inset`, so moving one moves both. The PC grid layout (`min-width:900px`) already sets its side padding to 7cqw, the bracket inner edge, and Spotlight's side padding already clears its frame corners; both unchanged. Font size is unchanged and never scales with length.
