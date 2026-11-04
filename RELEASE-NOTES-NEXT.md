@@ -13,8 +13,3 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- The menu is redrawn around where you are tonight: which deck you are on, how many of its cards you have seen, and what you have played and starred, each line opening what it shows, with Start over putting every card back in and the menu easing into The Deck and the other screens in one smooth move. Inside Played, what you saved comes first, then the cards you drew as small cards, and Favourites uses the same small cards; tap one and that card comes back onto the card screen without using a draw. Download the list now saves a whole evening in one file that Open a list brings back into Saved, and saving again after Start over or Clear the list makes a new saved evening instead of writing over the old one. Log and Sessions are now one screen, Played, and on a computer the menu slides in as a side panel.
-- A new category, Us: Colleagues, for asking a colleague straight about working together. It is on in Coworkers.
-- Eighteen questions are reworded or new, most of them in Roots, which now goes deeper.
-- In The Deck you can now see what each category is about: always on a computer, and by holding a category on a phone.
-- Smaller fixes throughout: Body, Romance and Family now come a little earlier in an evening's arc, closer to how deep their questions really are; After Dark categories you switched on stay on when you pick another preset; Spotlight turns with your phone again on newer Chrome versions; in Custom, the start card's diamond now drifts into its next colour instead of jumping.
