@@ -35,8 +35,8 @@ node tests/run.mjs --smoke                       # 7 core checks, about 10 secon
 node tests/run.mjs --smoke --only=wildcard,tilt  # plus the checks whose name holds a word
 ```
 
-Which of these a build runs: `CHECKS.md`, "Which browser checks a build runs" (owner,
-2026-11-04: what the change hits plus a smoke check; GitHub runs everything on main).
-Run the full suite after a change to the app's shared state/deck/session code (see `CHECKS.md`), against all
+Which of these a build runs: `CHECKS.md`, "Which checks a build runs" (owner, 2026-11-04: the
+smoke run and the checks for the change's own addition; GitHub runs everything on main).
+The full suite runs on GitHub on every push to main (see `CHECKS.md`); it covers all
 three HTML files — they're kept behaviourally identical (see the root
 README's "Build profiles" section).

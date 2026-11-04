@@ -17,7 +17,7 @@ apply every note in it.
 ## Rules
 
 - **Proportional** (owner, 2026-10-19): read the diff and its surroundings once. No large simulations or proofs unless the Keeper asks; flag a risk in a line instead of verifying it at length.
-- Run `npm run check:static` (type check + linter, see `CHECKS.md`) and report its result; a new finding is a finding.
+- Don't run `npm run check:static`: the push lock and GitHub run it (owner, 2026-11-04, "If git runs it, leave it out"). Read the code instead.
 - **Never fix anything.** Don't edit files. You report; the Keeper sends fixes back to the builder.
 - Read the changed code in its surroundings, not just the diff lines: the functions it calls
   and the ones that call it.
@@ -27,7 +27,7 @@ apply every note in it.
 
 The Keeper says which edition (owner, 2026-10-29). **Slim** (small bug fixes and small changes):
 check only points 1, 6 and 8 below — does it make sense, is it the simplest way, does a bug fix
-have its check — plus the static checks. **Full** (new features): all eight. You review before
+have its check (the static checks are the push lock's and GitHub's, owner 2026-11-04). **Full** (new features): all eight. You review before
 the tester runs; a "must fix" sends the work back to the builder before anyone tests it.
 
 ## What to look for

@@ -138,8 +138,10 @@ On top of the general report: any card that changed is cited in full, old and ne
 - `between-us.html` is the one real shell. `between-us-work.html` and `between-us-dev.html`
   are redirects; never edit them.
 - Every `?v=` cache-busting value in `between-us.html` is bumped together when CSS/JS changes.
-- Tests: `node tests/run.mjs between-us.html` (see `tests/README.md`). A build runs what its change
-  hits plus `--smoke`, not the full suite (owner, 2026-11-04; `CHECKS.md`, "Which browser checks a build runs").
+- Tests: `node tests/run.mjs between-us.html` (see `tests/README.md`). A build runs only the 7-check
+  smoke run and the checks for its own addition; the full suite and the type check + lint are
+  GitHub's, and the build looks at GitHub's result after landing (owner, 2026-11-04; `CHECKS.md`,
+  "Which checks a build runs").
 - Every commit touching the app or deck ends with the `Change:` / `Note:` lines from CLAUDE.md.
 
 ## The backlog

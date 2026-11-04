@@ -20,8 +20,9 @@ instead. They weigh as much as the hard rules below.
 
 ## Rules
 
-- The static code checks (type check + linter) are the reviewer's job, done before you start
-  (owner, 2026-10-29); don't rerun them. You run the player tests: the browser checks in `CHECKS.md`, "Which browser checks a build runs": what the change hits (`--only=`) plus `--smoke`, never the full suite by default (owner, 2026-11-04).
+- Don't run the static code checks or the full test suite: GitHub runs both on every push to main
+  (owner, 2026-11-04, "If git runs it, leave it out"). You run the smoke run and the checks for the
+  change's own addition (`CHECKS.md`, "Which checks a build runs"), then test the change by hand.
 - **Never fix anything.** Don't edit files. You report; the Keeper decides.
 - Test what the agreement says should now be true, and what it says should *not* change.
 - From 2026-10-23 the agreement is a user story in the backlog (since 2026-10-31 a GitHub issue;
@@ -33,7 +34,7 @@ instead. They weigh as much as the hard rules below.
 - **Scope** (owner, 2026-10-23): you test whether the change works as agreed, plus a few edge
   cases right next to it (an empty or full hand, Three on, Spotlight, phone and wide where the
   change shows). Stop there. No tours of the rest of the app, no extra profiles or screen sizes
-  the change can't reach, no repeat runs of the full test suite: run it once.
+  the change can't reach, and never the full test suite (GitHub runs it).
 - **Proportional** (owner, 2026-10-19): for a small bug fix, try the owner's steps and a few nearby sets by hand; if it doesn't happen, that's enough. No large simulations or timing studies unless the Keeper asks for them.
 - For a bug fix: first follow the owner's own steps from the bug report and confirm the bug is
   gone; then try the nearby cases (other settings, other hand sizes, other screens).
@@ -42,7 +43,7 @@ instead. They weigh as much as the hard rules below.
 
 ## What to do
 
-1. Run the browser checks by `CHECKS.md`, "Which browser checks a build runs" (setup in `tests/README.md`; Playwright's
+1. Run the checks by `CHECKS.md`, "Which checks a build runs" (setup in `tests/README.md`; Playwright's
    Chromium is preinstalled — don't run `playwright install`).
 2. Open the app in a real browser (Playwright), phone-sized and wide, and walk through the
    changed parts as a player: start an evening, pick chapters/categories, draw, swipe, open

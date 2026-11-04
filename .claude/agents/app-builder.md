@@ -58,9 +58,9 @@ build step:
 
 ## Check before reporting
 
-- Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19). Never add a new finding to the baseline to make the check pass (owner, 2026-10-30: "builders don't introduce new issues again"); report "check: OK, no new findings" in every report, or say exactly what is still failing.
-- Run the browser checks in `CHECKS.md`, "Which browser checks a build runs": what the change hits (`--only=`) plus `--smoke`, never the full suite by default (owner, 2026-11-04). For a change you'll test with `--only=`, run those same checks once before you start
-  too, so you know what already fails (setup in `tests/README.md`; Playwright's Chromium is
+- Don't run `npm run check:static` by hand: the push lock runs it on every push to main. A push it refuses is yours to fix: fix the finding, never the baseline (owner, 2026-10-30: "builders don't introduce new issues again"); a finding your change removed means `npm run check:baseline`.
+- Run the checks in `CHECKS.md`, "Which checks a build runs": the 7-check smoke run and the checks for your own addition only; the full suite and the type check + lint are GitHub's (owner, 2026-11-04). A new check for a bug fix also runs once against the old code, to show it fails
+  there (setup in `tests/README.md`; Playwright's Chromium is
   preinstalled — don't run `playwright install`).
 - Click through the changed behaviour yourself in a real browser, including what sits right
   next to it, in every profile it affects.

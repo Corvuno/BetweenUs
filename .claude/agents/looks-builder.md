@@ -79,11 +79,11 @@ build step:
 
 ## Check before reporting
 
-- Run `npm run check:static` (type check + linter, see `CHECKS.md`; `npm install` in the repo root first if needed). Any NEW finding fails it and must be fixed before reporting; a finding your change removed means shrinking the baseline with `npm run check:baseline` (owner, 2026-10-19). Never add a new finding to the baseline to make the check pass (owner, 2026-10-30: "builders don't introduce new issues again"); report "check: OK, no new findings" in every report, or say exactly what is still failing.
+- Don't run `npm run check:static` by hand: the push lock runs it on every push to main. A push it refuses is yours to fix: fix the finding, never the baseline (owner, 2026-10-30: "builders don't introduce new issues again"); a finding your change removed means `npm run check:baseline`.
 - Take before and after screenshots of everything you changed (Playwright; Chromium is
   preinstalled at /opt/pw-browsers — don't run `playwright install`). Save them in the
   scratchpad, not in the repo, and list the paths in your report.
-- Run the browser checks in `CHECKS.md`, "Which browser checks a build runs": what the change hits (`--only=`) plus `--smoke`, never the full suite by default (owner, 2026-11-04). A looks-only change runs `--smoke` alone. Report the result, pass or fail.
+- Run the checks in `CHECKS.md`, "Which checks a build runs": the 7-check smoke run and the checks for your own addition only; the full suite and the type check + lint are GitHub's (owner, 2026-11-04). A looks-only change runs the smoke run alone. Report the result, pass or fail.
 
 ## Report back
 

@@ -12,22 +12,30 @@
 `npm run check:static` runs only 2 and 3. GitHub runs all three on every push to main and on
 pull requests (`.github/workflows/checks.yml`).
 
-## Which browser checks a build runs
+## Which checks a build runs
 
-Owner, 2026-11-04: "Don't run full tests every time. Run what's hit and a small smoke test check."
-The full suite is about 100 checks and 15+ minutes; GitHub already runs it on every push to main.
+Owner, 2026-11-04: "If git runs it, leave it out for everything. Then its only waste.. do the 7
+checks and run the check on the new addition let git do the rest." (Earlier the same evening:
+"Don't run full tests every time. Run what's hit and a small smoke test check.")
 
-- **Every build:** `npm run check:static`, plus `node tests/run.mjs --smoke` (7 core checks, about
-  10 seconds: load, draw, advance, menu, Spotlight, end of hand, no page errors).
-- **What the change hits:** `node tests/run.mjs --smoke --only=word,word` with words from the
-  names of the checks that cover the changed part (`grep "await check(" tests/run.mjs` lists
-  them). Pick specific words: "spotlight" alone picks about 20 checks.
-- **Looks only** (font, colour, spacing, a line): smoke, static, and before/after screenshots.
-  No `--only`.
-- **The full suite** (`node tests/run.mjs`, no flags) only when the change reaches shared
-  foundations (state, deck building, sessions, saving, the service worker) or the GitHub run on
-  main failed. Once, never repeated; only a failing check gets rerun.
-- After landing, a red GitHub run on main is the build's to fix.
+GitHub runs the full browser suite (about 100 checks, 15 minutes) and the type check + lint on
+every push to main. A build never runs those by hand. Locally it runs only:
+
+- **The smoke run:** `node tests/run.mjs --smoke` (7 core checks, about 10 seconds: load, draw,
+  advance, menu, Spotlight, end of hand, no page errors).
+- **The checks for its own addition:** a new or changed check in `tests/run.mjs` is run with
+  `node tests/run.mjs --smoke --only=word` (a word from its name). A new check for a bug fix is
+  also run once against the old code, to show it fails there.
+- **Looks only** (font, colour, spacing, a line): the smoke run and before/after screenshots.
+
+The push lock below still runs the type check + lint by itself on every push to main (about 10
+seconds, nobody has to start it): faults it finds never reach the live site.
+
+**After landing:** `main` is live on the website at once, and GitHub's run takes about 15
+minutes, so the build looks once at GitHub's result for its commit before reporting
+(`gh api "repos/Corvuno/BetweenUs/actions/workflows/checks.yml/runs?head_sha=<sha>"`, waited
+on with Monitor, not by polling). Red is the build's to fix straight away; it reruns only the
+failing check locally (`--only=`).
 
 ## How strict it is
 
