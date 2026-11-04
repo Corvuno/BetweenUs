@@ -15,3 +15,4 @@ Rules:
 -->
 
 - **Wildcards.** Now and then a card asks you to ask your own question. You can switch them off in The Deck.
+- Smaller fixes throughout.

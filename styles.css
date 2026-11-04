@@ -1816,7 +1816,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 #screenRow::before,#handActionsRow::before{top:0;}
 #screenRow::after,#handActionsRow::after{bottom:0;}
 #screenRow > button,#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
-  font-family:'Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
+  font-family:'Federo','Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
 @media (hover:hover) and (pointer:fine){#screenRow > button:hover,#handActionsRow > button:hover{color:var(--celadon);}}
 #screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
 #screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
