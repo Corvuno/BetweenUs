@@ -153,6 +153,27 @@ letter for the owner to confirm.
     look, the tokens, the vision's lines on the screen). The overview is its starting point,
     not its limit: a rethink says what it changes against the overview, in one line per part.
     If an option doesn't meet that, it is not called a rethink.
+  - **Designs, not variations** (owner, 2026-11-05: "Designs should never EVER all lean on the
+    same concept. That are not designs. That would be variations. Variations are good when a
+    direction has been chosen… DONT build variants when I ask for designs"). In a design round
+    every option rests on its own concept; no two share the idea that carries them. Variations
+    of one concept are made only after the owner has chosen that direction.
+  - **Nothing is agreed without the owner's explicit words** (owner, 2026-11-05: "NEVER EVER
+    assume that I agreed with a design element without my explicit say so"). "That design is
+    good" covers that design as a whole, every element. "That part is a direction" earns at most
+    one variation of it in the next round, never a round built on it. A choice the Keeper made
+    inside a mockup stays a proposal; it is never carried into every option or called settled.
+  - **Every element's place has a reason** (owner, 2026-11-05: "Randomly throwing things
+    everywhere does not make it a design"). For each element, say in one line why it sits there
+    and nowhere else. A spot chosen because it was free is not a reason.
+  - **The card is for reading the question, nothing else** (owner, 2026-11-05: "NO interaction
+    elements on the card"). No control is placed on the card; its proportions stay a real card's.
+  - **Words on screen must make sense** (owner, 2026-11-05, on hints in rounds 1–5: "the hints
+    and text make no sense… randomly there"). Every hint and label is written for that option:
+    it says what that control does there, in plain words, or it is left out. No copied filler.
+  - **Order of work: look, think, ask, then design** (owner, 2026-11-05: "First look, then think,
+    then ask, then design something USEFUL"). Look at the live screen and the code; think about
+    what the screen must do; ask the owner what only they know; only then make options.
   This holds for every design round, also one handed to a builder: the builder's brief
   carries the overview.
 - Follow each area's own way of working as written in `project.md` (for example: card text
