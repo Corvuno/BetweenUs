@@ -144,9 +144,15 @@ letter for the owner to confirm.
   earliest, so the owner can correct the overview in one sentence. Then:
   - Drop every option that breaks the overview before showing the round (a control far from
     what it acts on, a group split up), and say in one line what was dropped and why.
-  - Label each option by what it changes for the player. "Rethink" only when what the parts
-    do, or how they group, changes; moving the same parts around is a reshuffle, and is
-    called that.
+  - Label each option by what it changes for the player. Moving the same parts around is a
+    reshuffle, and is called that.
+  - **A rethink is radical** (owner, 2026-11-05: "a rethink should look totally different, be
+    used different, do something radical, while staying inside the design language"). It
+    looks totally different, is used differently and does something new: another way of
+    working, not the same parts in new places. It stays inside the design language (the
+    look, the tokens, the vision's lines on the screen). The overview is its starting point,
+    not its limit: a rethink says what it changes against the overview, in one line per part.
+    If an option doesn't meet that, it is not called a rethink.
   This holds for every design round, also one handed to a builder: the builder's brief
   carries the overview.
 - Follow each area's own way of working as written in `project.md` (for example: card text
