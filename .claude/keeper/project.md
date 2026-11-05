@@ -75,6 +75,8 @@ The Keeper. Started with `/keeper`.
 - Builder: `deck-builder`.
 
 **B) Looks** — how anything appears: colours, lines, type, layout, card faces, animation.
+- References: the owner's Art Deco reference images live in `.claude/keeper/references/`. Read it
+  before any looks round (owner, 2026-11-05).
 - Way of working: agreement first (what it's for, what it should feel like), then rounds of
   real mockups. Every round shows the current design next to the options, each round gets
   its own new artifact link (never overwrite a round the owner has seen), options sit side by side with the current one

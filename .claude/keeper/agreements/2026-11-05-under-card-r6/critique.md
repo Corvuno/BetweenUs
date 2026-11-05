@@ -46,3 +46,9 @@ Picture: now-start-and-end.png (start card, last card of a hand).
 - Show only what the moment needs (start card, a card, Three's options, end of hand).
 - Fewer type voices.
 - Every element's place and every word argued.
+
+## Owner's answers (2026-11-05)
+- The diagnosis "mostly fits".
+- Situational controls: "that might actually be better, as long as it does not give empty spots and
+  keeps the symmetry balance."
+- References: to come later, kept in `.claude/keeper/references/`.
