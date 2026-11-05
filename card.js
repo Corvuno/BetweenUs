@@ -91,7 +91,13 @@ function clearTwist() { currentTwist = null; renderTwist(); }
 
 // ── TRANSLATION ───────────────────────────────────────────────────────────────
 function translateQ(card) {
-  return card.question;
+  return keepDashWithWord(card.question);
+}
+
+// A dash never starts a line (owner, 2026-11-05): the space before a dash becomes a no-break space, so the
+// dash stays at the end of the line with the word before it. Display only; the card text itself is unchanged.
+function keepDashWithWord(text) {
+  return String(text).replace(/ ([\u2014\u2013])/g, '\u00A0$1');
 }
 
 
