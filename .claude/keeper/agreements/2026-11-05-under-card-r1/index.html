@@ -1,0 +1,124 @@
+<title>Under the card, round 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* Review page in the app's own dark world: one column of reading, wide strips of phone pictures. */
+:root{--bg:#0e0c0a;--cream:#f0e8d8;--gold:#c9a84c;--muted:#9c8f7e;--dim:rgba(201,168,76,.14);--border:rgba(201,168,76,.26);--celadon:#A9C7B6;
+  --serif:'Cormorant Garamond',Georgia,serif;--caps:'Jost',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:1.12rem;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.5rem var(--caps);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;text-wrap:balance}
+h2{font:300 1.05rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:46px 0 8px}
+h3{font:400 .82rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--celadon);margin:0 0 6px}
+p{margin:0 0 10px;max-width:44rem}
+.lede{color:var(--muted)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted);max-width:44rem}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem var(--caps);letter-spacing:.12em;text-transform:uppercase}
+a{color:var(--celadon)}
+.strip{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start}
+figure{margin:0;flex:none}
+figcaption{font:300 .82rem var(--caps);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in}
+.fig:focus-visible{outline:1px solid var(--celadon);outline-offset:3px}
+.fig img{display:block;height:auto;width:280px}
+.small .fig img{width:220px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px 30px;margin-top:10px}
+.opts > div{min-width:0}
+.opts p{font-size:1.05rem}
+.good{color:var(--cream)}
+.bad{color:var(--muted)}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button{font:300 .85rem var(--caps);letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:min(100%,560px)}
+</style>
+<main>
+<h1>Under the card, round 1</h1>
+<p class="lede">Everything under the card on the phone, as it is now and in six new shapes. All pictures are taken from the live app with its own card, fonts and colours, three cards into a hand on Balanced, on a phone the size of a Xiaomi 14 Ultra (412 × 915). Every picture shows the same card.</p>
+<p class="note">Every option shows the count, Next, Back, Menu and Spotlight. Three and Twist stay, move onto the card, or move into the menu, depending on the option. Each option uses one kind of line, one colour for controls (celadon), gold only for Next and the count, and square corners throughout. Tap a picture to open it full size.</p>
+<nav><a href="#play">After the first visit</a><a href="#first">First visit, with hints</a><a href="#small">On a small phone</a><a href="#options">What each option does</a></nav>
+
+<h2 id="play">After the first visit</h2>
+<p>What you see from the second evening on, once each hint has gone.</p>
+<div class="strip">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/current.png" alt="The current design: bars, count, back / next card / menu, and the Three, Spotlight, Twist row with an empty strip under it."></button></figure>
+  <figure><figcaption>A · One language</figcaption><button class="fig" type="button"><img src="img/A.png" alt="Option A: the same parts, with the three play styles in one framed strip."></button></figure>
+  <figure><figcaption>B · The plinth</figcaption><button class="fig" type="button"><img src="img/B.png" alt="Option B: a framed base joined to the bottom of the card."></button></figure>
+  <figure><figcaption>C · Two equals</figcaption><button class="fig" type="button"><img src="img/C.png" alt="Option C: Next card and Spotlight as two equal buttons; Three and Twist on the card."></button></figure>
+  <figure><figcaption>D · Under the thumb</figcaption><button class="fig" type="button"><img src="img/D.png" alt="Option D: a bar at the bottom of the screen with Next as a gold diamond in the middle."></button></figure>
+  <figure><figcaption>E · The count moves you</figcaption><button class="fig" type="button"><img src="img/E.png" alt="Option E: a large count with an arrow either side; Spotlight and Menu as words under it."></button></figure>
+  <figure><figcaption>F · Deco, out loud</figcaption><button class="fig" type="button"><img src="img/F.png" alt="Option F: stepped gold Next between two diamond buttons, Spotlight framed by corner brackets."></button></figure>
+</div>
+
+<h2 id="first">First visit, with hints</h2>
+<p>The same screens the first time someone plays. Each hint goes once its control has been tapped.</p>
+<div class="strip">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/current-hints.png" alt="The current design with hints under Three, Spotlight and Twist."></button></figure>
+  <figure><figcaption>A</figcaption><button class="fig" type="button"><img src="img/A-hints.png" alt="Option A with a hint inside each cell of the strip."></button></figure>
+  <figure><figcaption>B</figcaption><button class="fig" type="button"><img src="img/B-hints.png" alt="Option B with a hint under Spotlight."></button></figure>
+  <figure><figcaption>C</figcaption><button class="fig" type="button"><img src="img/C-hints.png" alt="Option C with a hint under Spotlight."></button></figure>
+  <figure><figcaption>D</figcaption><button class="fig" type="button"><img src="img/D-hints.png" alt="Option D with one sentence above the bar."></button></figure>
+  <figure><figcaption>E</figcaption><button class="fig" type="button"><img src="img/E-hints.png" alt="Option E with a hint under Spotlight and Menu."></button></figure>
+  <figure><figcaption>F</figcaption><button class="fig" type="button"><img src="img/F-hints.png" alt="Option F with a hint inside the Spotlight frame."></button></figure>
+</div>
+
+<h2 id="small">On a small phone</h2>
+<p>The same design scaled to a 360-wide phone, to check that one standard works everywhere. Nothing touches or overlaps in any option. Today's diamonds beside Spotlight do touch the word here.</p>
+<div class="strip small">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/s360-current.png" alt="The current design on a 360-wide phone."></button></figure>
+  <figure><figcaption>A</figcaption><button class="fig" type="button"><img src="img/s360-A.png" alt="Option A on a small phone."></button></figure>
+  <figure><figcaption>B</figcaption><button class="fig" type="button"><img src="img/s360-B.png" alt="Option B on a small phone."></button></figure>
+  <figure><figcaption>C</figcaption><button class="fig" type="button"><img src="img/s360-C.png" alt="Option C on a small phone."></button></figure>
+  <figure><figcaption>D</figcaption><button class="fig" type="button"><img src="img/s360-D.png" alt="Option D on a small phone."></button></figure>
+  <figure><figcaption>E</figcaption><button class="fig" type="button"><img src="img/s360-E.png" alt="Option E on a small phone."></button></figure>
+  <figure><figcaption>F</figcaption><button class="fig" type="button"><img src="img/s360-F.png" alt="Option F on a small phone."></button></figure>
+</div>
+
+<h2 id="options">What each option does</h2>
+<div class="opts">
+  <div>
+    <h3>Now</h3>
+    <p class="bad">Four control colours, four type styles, three kinds of line. Back and Menu are boxed, while the row under them is deliberately unboxed. Progress is shown twice (bars, then "3 / 5"). The two diamonds make Spotlight look like the main item, but nothing else sets it apart. Once the hints have gone, two lines frame an empty strip. On a tall phone the bottom third of the screen is empty.</p>
+  </div>
+  <div>
+    <h3>A · One language</h3>
+    <p class="good">The smallest step. Every part stays where you know it. The three play styles get the same box line as Back and Menu, so the two rows finally read as one set. The count moves to the end of the bars, so progress is shown once.</p>
+    <p class="bad">It fixes the mess but doesn't add character. Spotlight is still one of three equals. The strip of three framed cells is close to a standard tab control.</p>
+  </div>
+  <div>
+    <h3>B · The plinth</h3>
+    <p class="good">Card and controls become one object, like a card standing in its box. The bars are the top edge of the base. Spotlight gets the widest place, with Three and Twist as its two ends, so it stands out by its position, without a different colour.</p>
+    <p class="bad">The block is heavy: a lot of framed surface right under the question. Three and Twist get small labels, and their hints don't fit at the ends (only Spotlight's hint shows).</p>
+  </div>
+  <div>
+    <h3>C · Two equals</h3>
+    <p class="good">Says plainly what the screen is for: draw the next card, or put it in Spotlight. Spotlight is a real button for the first time. Three and Twist move onto the card itself, which is where they act (they change this card).</p>
+    <p class="bad">The card's bottom-right corner line makes way for Twist. Next card loses its full width, so it no longer clearly wins. Back and Menu become quiet icons at the sides of the count, which is easy to miss for a first-timer.</p>
+  </div>
+  <div>
+    <h3>D · Under the thumb</h3>
+    <p class="good">The only option that uses the whole height of a tall phone: controls sit where the thumb rests and the question gets the empty middle. Next is the logo's gold diamond. One hint sentence above the bar replaces three small ones.</p>
+    <p class="bad">The closest to a regular phone app, which pulls it away from "boxed deck". Five slots with small labels are busy. The card sits high with space under it, so the screen splits into two parts.</p>
+  </div>
+  <div>
+    <h3>E · The count moves you</h3>
+    <p class="good">The calmest one. No wide gold slab: the count is the centrepiece, in the logo's letter, with Back and Next as two squares either side. Progress becomes small diamonds. Spotlight and Menu are two words on one line, so the card does nearly all the talking.</p>
+    <p class="bad">Three and Twist go into the menu, one tap further away (vision: "Three belongs right next to the draw"). The gold square for Next is smaller than today's bar, so it is a smaller target for the most-used tap.</p>
+  </div>
+  <div>
+    <h3>F · Deco, out loud</h3>
+    <p class="good">The boldest: everything symmetric around the centre, built from shapes the deck already owns. Stepped ends on Next, Back and Menu as the logo's diamonds, the count on a small plaque, and Spotlight set between the card's own corner brackets. Three and Twist hang under it as its wings.</p>
+    <p class="bad">The most decoration of the six; it needs care so it doesn't turn into costume. Three and Twist become the smallest text on the screen. Diamond buttons are less obvious to tap than squares.</p>
+  </div>
+</div>
+<p class="note">Spotlight's own screen and the PC layout follow whichever option is chosen, in the next round. Options can be combined (for example B's plinth with C's Three and Twist on the card).</p>
+</main>
+<div id="viewer" hidden><header><button type="button" id="closeV">Close</button></header><img id="vImg" alt=""></div>
+<script>
+const v=document.getElementById('viewer'),vi=document.getElementById('vImg');
+document.querySelectorAll('.fig').forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');vi.src=i.src;vi.alt=i.alt;v.hidden=false;document.getElementById('closeV').focus();}));
+document.getElementById('closeV').addEventListener('click',()=>{v.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')v.hidden=true;});
+</script>
