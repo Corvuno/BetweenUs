@@ -188,7 +188,7 @@ body{
   -webkit-touch-callout:none;touch-action:manipulation;
 }
 .card:active{transform:scale(.997);}
-.card{--bracket-inset:20px;--text-gap:6px;}   /* the question's side padding = bracket inset + gap, so it uses the width between the corner lines */
+.card{--bracket-inset:20px;--text-gap:11px;}   /* the question's side padding = bracket inset + gap (31px on a phone): it uses the width between the corner lines, with a margin (owner, 2026-11-05) */
 .card::before,.card::after{
   content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;
   border-color:var(--gold);opacity:.35;pointer-events:none;
