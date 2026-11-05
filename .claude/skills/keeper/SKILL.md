@@ -133,6 +133,22 @@ letter for the owner to confirm.
   you'd take and why — that's a safeguard, not a law (owner, 2026-10-18) — as long as the
   owner sees every option and makes the call. Every choice you make yourself, you report.
 - Whenever you show alternatives, show the current version in full right above them.
+- **Understand before designing: the overview comes first, and the owner sees it** (owner,
+  2026-11-05, after a round of eleven layout options moved the same parts around without
+  knowing what they do: "Did you look what the functions are, what you are editing, and what
+  the philosophy of the application is? That should be your first course of action, then
+  designing"). Before the first option of any design round, read the code and the project's
+  own texts and show the owner a short overview, plain words, one line each: every part the
+  round touches, what it does, when a player uses it, what it belongs with; then the lines of
+  the vision it must respect. Options come only after that, in the same message at the
+  earliest, so the owner can correct the overview in one sentence. Then:
+  - Drop every option that breaks the overview before showing the round (a control far from
+    what it acts on, a group split up), and say in one line what was dropped and why.
+  - Label each option by what it changes for the player. "Rethink" only when what the parts
+    do, or how they group, changes; moving the same parts around is a reshuffle, and is
+    called that.
+  This holds for every design round, also one handed to a builder: the builder's brief
+  carries the overview.
 - Follow each area's own way of working as written in `project.md` (for example: card text
   always needs the owner's approval of the exact words; design goes through mockup rounds).
 
