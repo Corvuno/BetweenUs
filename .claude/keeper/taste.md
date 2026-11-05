@@ -69,3 +69,5 @@ specific objects, places, body parts or skills (too narrow, not the feeling).
 "What I'm leaving on the dance floor…" — "too… leaving something. What are you getting on that dance floor, that's the point!"
 
 2026-10-22: Be Free posters — chose round 1 option C (co-brand): "I like C, it's clearly both".
+
+2026-11-05 (under-the-card round 1): the small diamond (rotated square as icon, separator or ornament) belongs to After Dark; elsewhere only inside a button. Liked: centre compositions and balance; the category-coloured progress line ("a lot"; it needs a good reason to go); the line laid along the card's edge (round 1 B, "might be a way"); D's thumb bar ("more interesting"); F's deco ("I can see this", but heavy). Turned down: A, a tidy-up of the same parts ("lazy as fuck"); B, controls as a plinth joined to the card ("too much card, it loses its distinction"); C, two equal buttons side by side, off-centre; E, the big count as the control ("funny thought, no").

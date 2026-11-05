@@ -1,0 +1,103 @@
+<title>Under the card, round 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* Review page in the app's own dark world: one column of reading, wide strips of phone pictures. */
+:root{--bg:#0e0c0a;--cream:#f0e8d8;--gold:#c9a84c;--muted:#9c8f7e;--dim:rgba(201,168,76,.14);--border:rgba(201,168,76,.26);--celadon:#A9C7B6;
+  --serif:'Cormorant Garamond',Georgia,serif;--caps:'Jost',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:1.12rem;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.5rem var(--caps);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;text-wrap:balance}
+h2{font:300 1.05rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:46px 0 8px}
+h3{font:400 .82rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--celadon);margin:0 0 6px}
+p{margin:0 0 10px;max-width:44rem}
+.lede{color:var(--muted)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted);max-width:44rem}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem var(--caps);letter-spacing:.12em;text-transform:uppercase}
+a{color:var(--celadon)}
+.strip{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start}
+figure{margin:0;flex:none}
+figcaption{font:300 .82rem var(--caps);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in}
+.fig:focus-visible{outline:1px solid var(--celadon);outline-offset:3px}
+.fig img{display:block;height:auto;width:280px}
+.small .fig img{width:220px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px 30px;margin-top:10px}
+.opts > div{min-width:0}
+.opts p{font-size:1.05rem}
+.good{color:var(--cream)}
+.bad{color:var(--muted)}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button{font:300 .85rem var(--caps);letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:min(100%,560px)}
+</style>
+<main>
+<h1>Under the card, round 2</h1>
+<p class="lede">Built on your round 1 verdict: centred and balanced; D (the thumb) and F (deco) are the leads, F lighter; the coloured line stays; no small diamonds; no outline around a single control; hints may never break the layout; and one real rethink (J). Same live app, same card, Xiaomi 14 Ultra size (412 × 915).</p>
+<p class="note">Changes in every option: the coloured line now runs along the card's bottom edge (your liked part of B), and the count "3 / 5" stays as small numbers, because on hands of 20 or All the line alone can't tell you where you are. Back and Menu are bare icons. Every hint has its space reserved, so nothing moves when one goes. Smaller phones get this same design scaled down, so there is no separate small-phone version. Tap a picture to open it full size.</p>
+<nav><a href="#play">After the first visit</a><a href="#first">First visit, with hints</a><a href="#options">What each option does</a></nav>
+
+<h2 id="play">After the first visit</h2>
+<div class="strip">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/current.png" alt="The current design."></button></figure>
+  <figure><figcaption>Round 1 · D</figcaption><button class="fig" type="button"><img src="img/r1-D.png" alt="Round 1 option D: thumb bar with a gold diamond."></button></figure>
+  <figure><figcaption>Round 1 · F</figcaption><button class="fig" type="button"><img src="img/r1-F.png" alt="Round 1 option F: deco, stepped gold Next."></button></figure>
+  <figure><figcaption>G · Like Spotlight</figcaption><button class="fig" type="button"><img src="img/G.png" alt="Option G: Three, count and Twist under the card, Spotlight centred, Back, Next card and Menu at the bottom of the screen."></button></figure>
+  <figure><figcaption>H · F, lighter</figcaption><button class="fig" type="button"><img src="img/H.png" alt="Option H: stepped gold Next with bare Back and Menu, Spotlight under it, Three and Twist as wings."></button></figure>
+  <figure><figcaption>I · D, hint-proof</figcaption><button class="fig" type="button"><img src="img/I.png" alt="Option I: Spotlight under the card, a bar at the bottom with Back, Three, Next card, Twist and Menu."></button></figure>
+  <figure><figcaption>J · Rethink: the deck</figcaption><button class="fig" type="button"><img src="img/J.png" alt="Option J: the rest of the hand as a stack of card edges under the card, tap to draw."></button></figure>
+  <figure><figcaption>K · Small things up top</figcaption><button class="fig" type="button"><img src="img/K.png" alt="Option K: Three and Twist in the top corners, one centred column under the card."></button></figure>
+</div>
+
+<h2 id="first">First visit, with hints</h2>
+<div class="strip">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/current-hints.png" alt="The current design with hints."></button></figure>
+  <figure><figcaption>Round 1 · D</figcaption><button class="fig" type="button"><img src="img/r1-D-hints.png" alt="Round 1 option D with its hint."></button></figure>
+  <figure><figcaption>Round 1 · F</figcaption><button class="fig" type="button"><img src="img/r1-F-hints.png" alt="Round 1 option F with its hint."></button></figure>
+  <figure><figcaption>G</figcaption><button class="fig" type="button"><img src="img/G-hints.png" alt="Option G with hints."></button></figure>
+  <figure><figcaption>H</figcaption><button class="fig" type="button"><img src="img/H-hints.png" alt="Option H with hints."></button></figure>
+  <figure><figcaption>I</figcaption><button class="fig" type="button"><img src="img/I-hints.png" alt="Option I with hints."></button></figure>
+  <figure><figcaption>J</figcaption><button class="fig" type="button"><img src="img/J-hints.png" alt="Option J with hints."></button></figure>
+  <figure><figcaption>K</figcaption><button class="fig" type="button"><img src="img/K-hints.png" alt="Option K with hints."></button></figure>
+</div>
+
+<h2 id="options">What each option does</h2>
+<div class="opts">
+  <div>
+    <h3>G · Like Spotlight</h3>
+    <p class="good">Takes the Spotlight layout you liked (arrows in the bottom corners, gold in the middle, small items at the top) and uses it on the main screen, so both screens speak the same language. One centre column: count, Spotlight, Next card. Next sits low, under the thumb, and the tall screen gets used.</p>
+    <p class="bad">The screen splits into two parts with empty space between them. Three and Twist sit at the edges, far apart, so they read as less important than today.</p>
+  </div>
+  <div>
+    <h3>H · F, lighter</h3>
+    <p class="good">Keeps F's symmetry and stepped gold Next and drops the plaque, the diamond buttons and the brackets. Everything hangs off one centre line, close under the card. Spotlight has its own line, with Three and Twist under it as a pair.</p>
+    <p class="bad">Still four layers stacked under the card. The stepped ends are the only deco left, so it may now be too quiet for "bold". Like today, it leaves the bottom of a tall phone empty.</p>
+  </div>
+  <div>
+    <h3>I · D, hint-proof</h3>
+    <p class="good">D's thumb bar in pairs around the gold centre: Back and Menu outside, Three and Twist inside. Each label has room for its hint all the time, so the bar has the same height before and after. Spotlight stands alone under the card, by the question it puts on stage.</p>
+    <p class="bad">Still the most like a regular phone app. Five things in one bar is busy, and the hints are small at that size. Next card is narrower than today.</p>
+  </div>
+  <div>
+    <h3>J · Rethink: the deck in your hand</h3>
+    <p class="good">No row of controls. The rest of the hand lies under the card as a real stack, one blank edge per card still to come (at most eight), with "Draw · 2 left" on the front edge. You draw by taking from the deck, which is what the game is. It fits "a beautiful boxed deck" literally.</p>
+    <p class="bad">Three and Twist go into the menu (vision: Three belongs next to the draw). A stack that thins out as you play is clear, but the front edge is a smaller tap target than today's gold bar. The gold main action becomes a gold word.</p>
+  </div>
+  <div>
+    <h3>K · Small things up top</h3>
+    <p class="good">Spotlight's other rule, small items in the top corners, applied to the main screen: Three and Twist move up beside the logo, as in Spotlight. Under the card only one centred column remains: count, Spotlight, Next card with Back and Menu. The calmest of the five.</p>
+    <p class="bad">Three and Twist end up far from the card they change, at the top of the screen, which is hardest to reach with a thumb. The top corners are crowded with the logo.</p>
+  </div>
+</div>
+<p class="note">Removed after round 1: the small diamond as separator or ornament (After Dark's, allowed inside buttons only), outlines around single controls, and corner brackets anywhere but on the card.</p>
+</main>
+<div id="viewer" hidden><header><button type="button" id="closeV">Close</button></header><img id="vImg" alt=""></div>
+<script>
+const v=document.getElementById('viewer'),vi=document.getElementById('vImg');
+document.querySelectorAll('.fig').forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');vi.src=i.src;vi.alt=i.alt;v.hidden=false;document.getElementById('closeV').focus();}));
+document.getElementById('closeV').addEventListener('click',()=>{v.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')v.hidden=true;});
+</script>
