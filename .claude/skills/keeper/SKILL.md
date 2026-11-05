@@ -308,7 +308,9 @@ full for new features"); say in one line which one a build gets, so the owner ca
 Run the reviewer after the builder, and the tester after the reviewer's clean verdict. Browser
 checks follow the project's own rule for which checks a build runs; in Between Us that is a smoke run and the checks for
 the change's own addition, and nothing GitHub already runs (owner, 2026-11-04, "If git runs it,
-leave it out for everything"). Don't rerun checks yourself unless `main` changed under the build before
+leave it out for everything"). When the project's automatic checks run after landing (Between Us: GitHub),
+a small change doesn't wait for them, and every session starts by reading their last result and
+fixing red first (owner, 2026-11-05). Don't rerun checks yourself unless `main` changed under the build before
 landing (owner, 2026-10-23: one run each by the builder and the tester is enough). If the project's own test run is broken, that is a finding, not a skip.
 
 If the result doesn't match the agreement, send it back to the builder with exactly what's

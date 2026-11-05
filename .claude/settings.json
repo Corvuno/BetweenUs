@@ -26,6 +26,10 @@
           {
             "type": "command",
             "command": "git -C \"$CLAUDE_PROJECT_DIR\" config core.hooksPath .githooks || true"
+          },
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/main-checks.sh\""
           }
         ]
       }
