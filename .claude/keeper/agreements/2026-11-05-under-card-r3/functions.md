@@ -30,3 +30,13 @@ you draw (it belongs with Draw), Twist changes the card (it belongs with the car
 Spotlight changes how the card is shown. Three different things dressed as equals, next to Back
 and Menu (a correction and an exit) drawn as boxes, is a large part of why it reads incoherent.
 Moving those same parts to new places (rounds 1 and 2) can't fix that.
+
+## The owner's answers (2026-11-05)
+1. Where it's played differs: at a table, in a line for a rave, in a car; then one person holds it
+   and taps for the others. Sometimes it's passed around, sometimes everyone uses their own phone,
+   and it has been used in WhatsApp conversations with dates.
+2. Spotlight: both on the table (clearer to read) and held up in the dark (the rave line).
+3. Back: a mis-tap correction at best.
+4. Three: sometimes on the whole time, sometimes only at the start; mostly it stays on or off.
+
+Round 3 (L, M, N) is built from this table and these answers.
