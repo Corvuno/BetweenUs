@@ -15,4 +15,4 @@ Rules:
 -->
 
 - **Wildcards.** Now and then a card asks you to ask your own question. You can switch them off in The Deck.
-- Smaller fixes throughout, including a question that now uses the full width of the card, and one Flesh question made shorter.
+- Smaller fixes throughout, including a question that now uses the width of the card better and looks the same on every phone, so long questions no longer run off the card on small phones, and one Flesh question made shorter.
