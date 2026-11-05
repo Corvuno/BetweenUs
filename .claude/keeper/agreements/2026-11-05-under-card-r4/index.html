@@ -1,0 +1,92 @@
+<title>Under the card, round 4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* Review page in the app's own dark world: one column of reading, wide strips of phone pictures. */
+:root{--bg:#0e0c0a;--cream:#f0e8d8;--gold:#c9a84c;--muted:#9c8f7e;--dim:rgba(201,168,76,.14);--border:rgba(201,168,76,.26);--celadon:#A9C7B6;
+  --serif:'Cormorant Garamond',Georgia,serif;--caps:'Jost',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:1.12rem;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 80px}
+main{max-width:1700px;margin:0 auto}
+h1{font:300 1.5rem var(--caps);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;text-wrap:balance}
+h2{font:300 1.05rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:46px 0 8px}
+h3{font:400 .82rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--celadon);margin:0 0 6px}
+p{margin:0 0 10px;max-width:44rem}
+.lede{color:var(--muted)}
+.note{border-left:3px solid var(--border);padding:2px 0 2px 14px;margin:18px 0;color:var(--muted);max-width:44rem}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font:300 .8rem var(--caps);letter-spacing:.12em;text-transform:uppercase}
+a{color:var(--celadon)}
+.strip{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 14px;align-items:flex-start}
+figure{margin:0;flex:none}
+figcaption{font:300 .82rem var(--caps);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.fig{display:block;padding:0;border:0;background:none;cursor:zoom-in}
+.fig:focus-visible{outline:1px solid var(--celadon);outline-offset:3px}
+.fig img{display:block;height:auto;width:280px}
+.small .fig img{width:220px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px 30px;margin-top:10px}
+.opts > div{min-width:0}
+.opts p{font-size:1.05rem}
+.good{color:var(--cream)}
+.bad{color:var(--muted)}
+#viewer{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.97);overflow:auto}
+#viewer header{position:sticky;top:0;padding:12px 16px;background:rgba(10,8,6,.97);border-bottom:1px solid var(--dim)}
+#viewer button{font:300 .85rem var(--caps);letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);background:none;border:0;cursor:pointer;padding:8px 4px}
+#viewer img{display:block;margin:16px auto 40px;max-width:min(100%,560px)}
+table{border-collapse:collapse;font-size:1rem;min-width:620px}
+td,th{border-bottom:1px solid var(--dim);padding:8px 14px 8px 0;text-align:left;vertical-align:top}
+th{font:400 .72rem var(--caps);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.tbl{overflow-x:auto;max-width:60rem}
+</style>
+<main>
+<h1>Under the card, round 4</h1>
+<p class="lede">Built on round 3's M, the gold bar. The card keeps a real card's proportions. This round is only about where Menu belongs.</p>
+
+<h2>What Menu is</h2>
+<p>Menu holds two groups and one extra: <b>Tonight</b> (The Deck, Start over), <b>Yours</b> (Played, Favourites), and Ways to play. The Deck is also what "Selected deck" at the top already opens. You open Menu rarely, never while playing a card. So it belongs either with the deck (top) or with your hands (the count), and away from the thumb's every-turn path. Each option below puts it in one of those places and says why.</p>
+<p class="note">Kept from round 3 in every option: the gold bar (Spotlight · Next card · Three), Twist on the card across from the star, Back as an undo for a few seconds after a draw, the coloured line along the card's bottom edge with the count under it. Hint space is always reserved, so nothing moves when a hint goes. Tap a picture to open it full size.</p>
+
+<h2 id="play">After the first visit</h2>
+<div class="strip">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/current.png" alt="The current design."></button></figure>
+  <figure><figcaption>Round 3 · M</figcaption><button class="fig" type="button"><img src="img/r3-M.png" alt="Round 3 option M, with Menu in the top-right corner."></button></figure>
+  <figure><figcaption>P · Menu with the deck</figcaption><button class="fig" type="button"><img src="img/P.png" alt="Option P: the menu mark beside Selected deck at the top."></button></figure>
+  <figure><figcaption>Q · Menu with the hand</figcaption><button class="fig" type="button"><img src="img/Q.png" alt="Option Q: the menu mark beside the count, above the gold bar."></button></figure>
+  <figure><figcaption>R · Menu on the centre line</figcaption><button class="fig" type="button"><img src="img/R.png" alt="Option R: Menu centred under the gold bar."></button></figure>
+</div>
+
+<h2 id="first">First visit, with hints</h2>
+<div class="strip">
+  <figure><figcaption>Now</figcaption><button class="fig" type="button"><img src="img/current-hints.png" alt="The current design with hints."></button></figure>
+  <figure><figcaption>Round 3 · M</figcaption><button class="fig" type="button"><img src="img/r3-M-hints.png" alt="Round 3 option M with hints."></button></figure>
+  <figure><figcaption>P</figcaption><button class="fig" type="button"><img src="img/P-hints.png" alt="Option P with hints."></button></figure>
+  <figure><figcaption>Q</figcaption><button class="fig" type="button"><img src="img/Q-hints.png" alt="Option Q with hints."></button></figure>
+  <figure><figcaption>R</figcaption><button class="fig" type="button"><img src="img/R-hints.png" alt="Option R with hints."></button></figure>
+</div>
+
+<h2>Why each place</h2>
+<div class="opts">
+  <div>
+    <h3>P · Menu with the deck</h3>
+    <p class="good">"Selected deck" already opens The Deck, the menu's first item. Here it opens the whole menu: one door at the top for the evening's deck and everything you kept. Nothing is added to the screen except the menu mark beside the words. The bottom is only for playing.</p>
+    <p class="bad">One tap further to The Deck (open the menu, then The Deck). The top is the hardest place to reach with a thumb, which is fine for something opened rarely, but it's a reach.</p>
+  </div>
+  <div>
+    <h3>Q · Menu with the hand</h3>
+    <p class="good">Played, Favourites and Start over are all about your hands, and the count is the hand. So the count opens the menu, on the bar's centre line, close to the thumb. It adds no new element; the count gets a job.</p>
+    <p class="bad">The count is status and now also a button, so people may tap it expecting something about the count only. The Deck is about the deck, not the hand, so it fits less well here.</p>
+  </div>
+  <div>
+    <h3>R · Menu on the centre line</h3>
+    <p class="good">Everything hangs on one vertical axis: count, gold bar, then Menu as its quiet end, below the play controls. It's on its own and clearly named, the easiest of the three to find.</p>
+    <p class="bad">It adds one more line under the bar, so the column grows. It's the closest to "put it somewhere below", and its only reason is the axis.</p>
+  </div>
+</div>
+</main>
+<div id="viewer" hidden><header><button type="button" id="closeV">Close</button></header><img id="vImg" alt=""></div>
+<script>
+const v=document.getElementById('viewer'),vi=document.getElementById('vImg');
+document.querySelectorAll('.fig').forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');vi.src=i.src;vi.alt=i.alt;v.hidden=false;document.getElementById('closeV').focus();}));
+document.getElementById('closeV').addEventListener('click',()=>{v.hidden=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')v.hidden=true;});
+</script>
