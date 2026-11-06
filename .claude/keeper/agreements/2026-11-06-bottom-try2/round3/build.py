@@ -115,17 +115,19 @@ designs = [
  ('A · Title echo', bookend, 'Takes its look from the title: the title\'s parallel hairlines run out from Next card; Spotlight and Menu under their outer ends.',
   ['Title and controls frame the card top and bottom.', 'Against it: the two words sit far apart at the edges.']),
  ('B · The hand is the ornament', skyline, 'Takes its look from the hand: no gold ornament; the coloured ticks are larger and stepped like a skyline, the current card tallest. Coming cards stay flat and low, so nothing is given away.',
-  ['The colours you like do the decorating; gold is kept for the one action.', 'Against it: the colours get louder right under the card, which carries its own single colour.']),
+  ['The colours you like do the decorating; gold is kept for the one action.', 'Against it: the colours get louder right under the card, which carries its own single colour.', 'Risk: the stepped heights can read as a bar chart or level meter; nothing on screen says taller only means "this card".']),
  ('C · Rethink: the title opens the menu', titlemenu, 'The Menu leaves the bottom: tapping the title Between Us opens it, since it is seldom used. Under the card only the ticks, Next card and Spotlight. This changes the structure you agreed, which had Menu under the card.',
   ['The bottom holds one action and one view, nothing else: the simplest of the three.', 'Uses the game\'s name as the way in to everything about the evening.', 'On a first visit a hint under the title says "tap for the menu", gone after the first tap.', 'Two things at the top open two sheets: the big title opens the menu, the "Selected deck" line under it opens The Deck, as today.', 'On a PC the title sits at the top of the page too and works the same; in Spotlight the menu is not needed.', 'Against it: after the first tap nothing visible shows that the title opens the menu, and "Show hints again" lives inside that menu, so a player who skipped the hint has to find it by trying.']),
 ]
 
+TITLEHINT = (f'<svg viewBox="0 0 375 200" role="img" aria-hidden="true"><image href="{TOP}" x="0" y="0" width="375" height="447.5"/>'
+  '<text x="187.5" y="128" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="15" fill="#6f8579">tap for the menu</text></svg>')
 cards = []
 for i, (name, fn, idea, notes) in enumerate(designs, 1):
     li = ''.join(f'<li>{n}</li>' for n in notes)
     cards.append(f'''<section class="design"><h2><span>{i}</span>{name}</h2><p class="idea">{idea}</p>
 {phone(fn())}
-<p class="lbl">First visit: Spotlight's existing hint</p><div class="strip">{svg(fn(True))}</div>
+<p class="lbl">First visit: Spotlight's existing hint</p><div class="strip">{svg(fn(True))}</div>{('<p class="lbl">First visit: the new hint under the title</p><div class="strip">' + TITLEHINT + '</div>') if fn is titlemenu else ''}
 <ul>{li}</ul></section>''')
 
 html = f'''<title>Under the Card, Round 3</title>
@@ -171,13 +173,13 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <h3>Open</h3>
 <ul><li>How it looks: this round.</li><li>Whether the count "14 / 20" stays. It is in all three, because on long hands the ticks show only about 20 cards and the count is the only total.</li></ul>
 <h3>My own choices in all three (overrule any)</h3>
-<ul><li>Spotlight and Menu are words only, no icons, in the same typeface as Next card.</li>
+<ul><li>Spotlight and Menu are words only, no icons, in the same typeface as Next card (C has no Menu under the card).</li>
 <li>Next card keeps the app's one gold-button look (square, gold), but slimmer than today.</li>
 <li>The small diamond at the end of the ticks is gone (diamonds belong to After Dark).</li>
 <li>Nothing touches the card; there is always a gap.</li>
-<li>Next card gets slimmer than today, in all five. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
+<li>Next card gets slimmer than today, in all three. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>The design gate blocked eight options in words on the way here (variations of one bar, a second frame round the controls, a fourth typeface, new icons for the same two controls). These three passed, with C as the rethink.</p>
+<p>The design gate blocked many options in words on the way here (variations of one bar, a second frame round the controls, a fourth typeface, new icons for the same two controls). These three passed, with C as the rethink.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
