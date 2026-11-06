@@ -56,6 +56,10 @@ Every round page for this topic opens with this file. Only the owner's own words
 - **Count and line are optional, not out:** "Count or the coloured line can go. I did not say it had
   to. So options that include it are welcome as well. Could be nice with the card thing." (2026-11-06)
 
+- **Simple, about the questions:** on round 7 (the hand, the dial, the programme): "I actually don't
+  like any. They are way too convoluted. It asks people to think. And it should be about the
+  questions. Not the controls. They are over engineered to an extreme." (2026-11-06)
+
 ## Open
 
 - Where Twist goes (the Keeper is to work it out: "the point was that YOU had to figure this out by
