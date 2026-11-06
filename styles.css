@@ -480,7 +480,7 @@ body.showing-hand-summary .card-question{
 .quiet-word{display:flex;flex-direction:column;align-items:flex-start;min-width:44px;min-height:44px;padding:4px calc(6 * var(--u)) 0;
   background:none;border:none;cursor:pointer;color:var(--btn-quiet);text-align:left;
   font:400 11.5px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;transition:color .2s;}
-.quiet-word:focus-visible{outline:none;}   /* keyboard focus shows as the gold word, never a box */
+.quiet-word:focus-visible{outline:none;text-decoration:underline solid var(--gold) 1px;text-underline-offset:6px;}   /* keyboard focus: the gold word with a thin gold underline, never a box */
 .quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
 #screenRow{grid-column:1;grid-row:4;justify-self:start;align-items:flex-start;}

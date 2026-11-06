@@ -42,12 +42,8 @@ function renderTwist() {
   applyTwistToCounter(document.getElementById('twistSentence'));
   applyTwistToCounter(document.getElementById('party-number'));
 }
-// Twist is a lens on a drawn card, so it only makes sense while one is
-// actually showing — not before the first draw (currentIndex is -1) and
-// not on the end-of-round summary (currentIndex >= visibleDeck.length).
-// hasCurrentCard() lives in presentation.js, next to atEnd() — safe to call
-// from here since this only ever runs from a click, well after every module
-// has loaded.
+// Twist is a lens on a drawn card, so it only makes sense while one is showing (shownCard() in presentation.js):
+// not before the first draw and not on the end-of-hand screen.
 // No card showing, or a wildcard (it already asks you to ask your own): nothing to twist.
 function canTwist() {
   const card = shownCard();
