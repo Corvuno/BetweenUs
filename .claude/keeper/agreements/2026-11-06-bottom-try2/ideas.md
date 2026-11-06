@@ -264,3 +264,13 @@ the chevron runs come out lopsided, against the owner's "centre and balance".)
 V3 Sunburst BLOCK (crowds the count) → replaced by V3 Converge (bow-shaped dividers). V2 made symmetric.
 Further gate blocks (2026-11-06): ring ends (V1 with a curve), gathered under the action (under the thumb, words
 too close). Round 4 goes out as A + V1 Drop to the word + V2 Converge.
+
+## Owner on round 4 (2026-11-06)
+"These are not new variations on a theme based on the art deco resources I gave. Use your design skills to make
+something truly interesting and not ham handed trying to force a stupid idea." (lesson added)
+
+# Round 5: four designs, each a specific reference divider drawn with its real ornament
+1 Cartouche (gold-on-slate, stepped-bars): a long bevelled double frame round the group; Spotlight and Menu in its ends.
+2 Fan and count (layered-diamonds-and-fans): a fan above Next card with the count in its heart; lines step down to the words.
+3 Bow (stepped-bars-and-dots): double-outlined bow wings either side of Next card, lines through to dot ends.
+4 Setback (corners sheet, stepped towers): doubled stepped lines fall from Next card like a tower's setbacks; words on the lowest steps.
