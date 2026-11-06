@@ -154,6 +154,18 @@ def v_conv(h=False):
     if h: s_ += hint(lc+30, 165)
     return s_
 
+def v_ring(h=False):
+    bx, bw = 123.5, 128
+    lc, rc = 56.5, 318.5
+    s_ = ticks() + count()
+    s_ += hl(bx-6, 30, 93) + hl(bx-6, 14, 99) + hl(bx+bw+6, 345, 93) + hl(bx+bw+6, 361, 99)
+    for x0, cx in ((bx-6, lc), (bx+bw+6, rc)):
+        s_ += f'<path d="M{x0},105 C{(x0+cx)/2},105 {cx},105 {cx},118" fill="none" stroke="{GOLD}" stroke-opacity=".55" stroke-width="1"/>'
+        s_ += f'<circle cx="{cx}" cy="121.5" r="3" fill="none" stroke="{GOLD}" stroke-opacity=".6" stroke-width="1"/>'
+    s_ += bar(bx, 82, bw, 34) + word(lc, 143, 'SPOTLIGHT') + word(rc, 143, 'MENU')
+    if h: s_ += hint(lc+30, 165)
+    return s_
+
 def v_sun(h=False):
     import math
     r, lc, rc = rails_row(cy=107)
@@ -174,12 +186,12 @@ def phone(inner):
 designs = [
  ('A · As chosen', bookend, 'Round 3\'s option A, unchanged, for comparison.',
   ['Spotlight and Menu hang under the outer ends of the lines.']),
- ('V1 · Rails', v_rails, 'From stepped-bars-and-dots: the outer two lines run the full width like rails; the middle line breaks for the words, so Spotlight and Menu sit between the rails on the same line as Next card.',
-  ['The words become stations on the line, level with Next card.', 'Against it: Next card is a little narrower and the words a little smaller to fit between the rails.', 'Risk: the words sit level with Next card, about 28 points from it; a thumb aiming for Next card could hit Spotlight. Built, the word\'s tap area would stop short of the button, but they stay closer than in A.', 'Risk: a rail above and below each word half closes it in, close to a box round a single control.']),
- ('V2 · Drop to the word', v_drop, 'From thin-gold-on-black and stepped-bars-and-dots: the lowest line on each side steps down at its end and finishes in a small dot right above its word.',
-  ['Each line leads to its control, so the words are tied to the figure instead of floating.', 'Keeps A\'s look almost as it is; both drops sit the same distance from the centre.', 'Against it: the words still sit below the line, so the bottom is a little taller than V1.']),
- ('V3 · Converge', v_conv, 'From stepped-bars-and-dots (the bow-shaped dividers): the three lines on each side leave Next card spread apart and narrow to one point above each word, like a bow.',
+ ('V1 · Drop to the word', v_drop, 'From thin-gold-on-black and stepped-bars-and-dots: the lowest line on each side steps down at its end and finishes in a small dot right above its word.',
+  ['Each line leads to its control, so the words are tied to the figure instead of floating.', 'Keeps A\'s look almost as it is; both drops sit the same distance from the centre.', 'Against it: the words still sit below the line, so the bottom is a little taller than A.']),
+ ('V2 · Converge', v_conv, 'From stepped-bars-and-dots (the bow-shaped dividers): the three lines on each side leave Next card spread apart and narrow to one point above each word, like a bow.',
   ['Each side becomes one shape that ends exactly on its control; the words belong to the figure.', 'Words stay below and apart from Next card, as in A.', 'Against it: angled lines are less like the title, whose lines are all level.']),
+ ('V3 · Ring ends', v_ring, 'From dividers-and-corners-fine-line (lines that swing and end in small rings): the lowest line on each side curves gently down and ends in a small open ring above its word.',
+  ['The softest of the variations: pretty rather than strict deco, which you allowed.', 'Each word is tied to the figure by its own line, as in V1, but with a curve instead of a right angle.', 'Against it: the curves are the one rounded thing in the bottom; the title\'s lines are all straight.']),
 ]
 
 TITLEHINT = (f'<svg viewBox="0 0 375 200" role="img" aria-hidden="true"><image href="{TOP}" x="0" y="0" width="375" height="447.5"/>'
@@ -241,7 +253,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Nothing touches the card; there is always a gap.</li>
 <li>Next card gets slimmer than today, in all of them. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>The design gate passed V2 and V3. It flagged V1 for the words sitting level with Next card (a mis-tap risk) and for the rails closing the words in; both are stated under V1 so you can judge by eye. A sunburst version was blocked: it crowded the count right under the card.</p>
+<p>The design gate passed V1, V2 and V3. It blocked two others: rails with the words between them (half a box round each word, and Spotlight too close to Next card) and a sunburst behind Next card (it crowded the count).</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
