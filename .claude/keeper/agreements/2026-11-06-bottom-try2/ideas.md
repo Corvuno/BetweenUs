@@ -48,3 +48,10 @@ F. **Rethink: the phone's position does the work.** Holding the phone upright is
    are already gone. Hint: one, on the first visit, telling the player to turn the phone to show
    the question.
    Why: showing the card to others is a physical act, so the physical act opens it.
+
+## Gate verdict on D, E, F: BLOCK (2026-11-06)
+D put Spotlight behind the Menu, against the vision line "Three and Full screen belong right next to
+the draw", and called Played a replacement for progress (it can't show how far). E kept the controls as
+they are and invented a Twist feature. F made Spotlight an invisible gesture (rotation lock, car holder,
+reading sideways). All three kept Next card and Menu with no owner words. Not shown to the owner.
+Two blocked sets: per the two-miss rule, back to the owner with questions of fact and taste before a third.
