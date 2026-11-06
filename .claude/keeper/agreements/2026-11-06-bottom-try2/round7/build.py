@@ -357,9 +357,8 @@ def r_open(h=False):
     cy = 92
     s_ = tk(22)
     for m in (lambda x: x, lambda x: 375-x):
-        s_ += P([(m(26),cy-18),(m(8),cy),(m(26),cy+18)],.55,1)
-        s_ += P([(m(32),cy-14),(m(18),cy),(m(32),cy+14)],.3,.8)
-    s_ += wordlines(cy, 110, 30, 66, 309, 8)
+        s_ += L(m(22),cy-14,m(22),cy+14,.55) + L(m(14),cy-8,m(14),cy+8,.55) + L(m(8),cy-3,m(8),cy+3,.55)
+    s_ += wordlines(cy, 110, 22, 66, 309, 8)
     s_ += bigbar(117.5, 72, 140, 40)
     if h: s_ += hint(66, 140)
     return s_
@@ -386,8 +385,8 @@ designs = [
   ['The closest to what you asked: same idea, more breathing space, a stronger Next card.', 'Against it: Spotlight still almost fills its side; the phone is only so wide.']),
  ('2 · Ticks as the crown', r_crown, 'The ticks move into the plate: they run along a band at its top, between the outer and inner frame, with the end-of-hand diamond at their end. The frame gets cut corners, an octagon.',
   ['Everything under the card is one object: progress, the action and the two words.', 'The colours of the evening become the plate\'s jewelled top edge.', 'Against it: the most enclosed; the ticks get a frame round them.']),
- ('3 · Open ends', r_open, 'Back to A: no closed frame, only the three lines with the words in the middle one, ending at each side in a double point, like the arrow ends in your references.',
-  ['Lighter than any framed version; the old design with the words finally in it.', 'The pointed ends give it the nameplate\'s shape without the box.', 'Against it: less of a single object than the framed ones.']),
+ ('3 · Open ends', r_open, 'Back to A: no closed frame, only the three lines with the words in the middle one, ending at each side in short upright bars that step down in height, like the hard stepped ends of the gold-on-slate dividers.',
+  ['Lighter than any framed version; the old design with the words finally in it.', 'The stepped ends close the figure without a box, and they can\'t be mistaken for back and forward arrows.', 'Against it: less of a single object than the framed ones.']),
  ('4 · Stepped plate', r_step, 'The plate steps up in the middle around Next card, like a deco building with a taller centre tower; the low wings either side carry the three lines and the words.',
   ['The biggest Next card, and the step makes it the clear centre without colour or glow.', 'The silhouette is the most deco of the four.', 'Against it: the tallest; Next card is closer to today\'s weight, which you now asked for.']),
 ]
@@ -452,7 +451,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Next card gets slimmer than today, in all of them.</li>
 <li>No small diamonds, though the references use many: you reserved them for After Dark. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>GATE_R7</p>
+<p>The design gate passed 1, 2 and 4. It blocked 3 at first: its pointed ends read as back and forward arrows; they are now stepped bars. In 2 and 4 the frame goes round Next card itself; it is the main control, but judge by eye.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
