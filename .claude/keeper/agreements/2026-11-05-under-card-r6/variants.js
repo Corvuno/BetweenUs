@@ -23,12 +23,12 @@ const slots = s => s.state === 'start'
   : s.state === 'end'
   ? [{ g:G.change, w:'Change', h:'which questions come next' }, { g:G.save, w:'Save', h:'keep this evening' }]
   : [{ g:G.spot, w:'Spotlight', h:'the question fills the screen' }, { g:G.menu, w:'Menu', h:'deck, played, favourites' }];
-const action = s => ({ 'Draw Card':'Draw', 'Next Card':'Next card', 'End of hand':'End of hand', 'Tap to flip card':'Turn the card', 'Hold to continue':'Hold for a new hand' }[s.label] || s.label);
+const action = s => s.label;   // the app's own words, unchanged
 const count = s => `${s.cur} / ${s.total}`;
 const base = `
   .k6{width:100%;display:flex;flex-direction:column;align-items:center}
-  .k6 .lbl{font:400 .62rem 'Federo';letter-spacing:.24em;text-transform:uppercase;color:var(--celadon)}
-  .k6 .hint{font:italic 400 .86rem/1.1 'Cormorant Garamond';color:var(--row-hint);min-height:1.1em;text-align:center}
+  .k6 .lbl{font:400 .7rem 'Federo';letter-spacing:.2em;text-transform:uppercase;color:var(--celadon)}
+  .k6 .hint{font:italic 400 .92rem/1.15 'Cormorant Garamond';color:#8a9d92;min-height:1.1em;text-align:center}
   .k6 svg{width:22px;height:22px;color:var(--celadon)}
   .k6 .num{font:400 15px 'Poiret One';letter-spacing:.3em;color:var(--gold);font-weight:400}`;
 const V = {};

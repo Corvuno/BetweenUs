@@ -171,6 +171,13 @@ letter for the owner to confirm.
   - **Words on screen must make sense** (owner, 2026-11-05, on hints in rounds 1–5: "the hints
     and text make no sense… randomly there"). Every hint and label is written for that option:
     it says what that control does there, in plain words, or it is left out. No copied filler.
+  - **Always design with the design skills** (owner, 2026-11-05: "please make a rule to ALWAYS use a
+    design skill to design"). Every design or looks round, and every builder brief for one, loads
+    and follows the design skills, together with the Keeper's own judgement: `design:design-critique`
+    to diagnose the current state, `design:design-system` (extend) to build from the app's existing
+    patterns and tokens, and `emil-design-eng` to review the options' polish before the owner sees
+    them. Say in the round which skills were used and what each changed. Opening a skill and then
+    designing without following it does not count.
   - **Order of work: look, think, ask, then design** (owner, 2026-11-05: "First look, then think,
     then ask, then design something USEFUL"). Look at the live screen and the code; think about
     what the screen must do; ask the owner what only they know; only then make options.
