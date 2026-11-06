@@ -204,18 +204,17 @@ def cnt(y=40): return count(y)
 def d_cart(h=False):
     s_ = ticks(12) + cnt(40)
     cy = 99
-    outer = [(6,cy),(24,78),(351,78),(369,cy),(351,120),(24,120)]
-    inner = [(14,cy),(28,83),(347,83),(361,cy),(347,115),(28,115)]
+    outer = [(10,cy),(28,80),(347,80),(365,cy),(347,118),(28,118)]
+    inner = [(18,cy),(32,85),(343,85),(357,cy),(343,113),(32,113)]
     s_ += P(outer,.55,1,True) + P(inner,.28,.8,True)
     def side(m):
-        o = L(m(128),83,m(128),115,.35,.8)
-        o += L(m(150),71,m(40),71,.3) + dot(m(37),71,1.4,.55)
-        o += L(m(150),127,m(40),127,.3) + dot(m(37),127,1.4,.55)
+        o = L(m(117),93,m(48),93,.45) + L(m(117),99,m(34),99,.55) + L(m(117),105,m(48),105,.45)
+        o += L(m(150),73,m(44),73,.3) + dot(m(41),73,1.4,.55)
         return o
     s_ += mirror(side)
-    s_ += bar(134,86,107,26)
-    s_ += sword(76, cy+3.8, 'SPOTLIGHT') + sword(300, cy+3.8, 'MENU')
-    if h: s_ += hint(76, 150)
+    s_ += bar(123.5,84,128,30)
+    s_ += word(14, 140, 'SPOTLIGHT', 'start') + word(361, 140, 'MENU', 'end')
+    if h: s_ += hint(14, 162, 'start')
     return s_
 
 # 2. Fan and count: from layered-diamonds-and-fans (a fan rising from stepped lines) - the count sits in the fan
@@ -229,7 +228,7 @@ def d_fan(h=False):
         a = math.radians(180 - i*22.5)
         s_ += L(cx+26*math.cos(a), base-26*math.sin(a), cx+37*math.cos(a), base-37*math.sin(a), .4, .9)
     s_ += f'<path d="M{cx-23},{base} A23,23 0 0 1 {cx+23},{base}" fill="#0e0c0a" stroke="{GOLD}" stroke-opacity=".55" stroke-width="1"/>'
-    s_ += f'<text x="{cx}" y="{base-6}" text-anchor="middle" font-family="Jost,sans-serif" font-weight="300" font-size="10.5" letter-spacing=".6" fill="{GOLD}">14/20</text>'
+    s_ += f'<text x="{cx}" y="{base-6}" text-anchor="middle" font-family="Jost,sans-serif" font-weight="300" font-size="10" fill="{GOLD}">14 / 20</text>'
     def side(m):
         o = L(m(cx-48),base,m(30),base,.6) + L(m(30),base,m(22),base+8,.6) + L(m(22),base+8,m(22),base+46,.6) + dot(m(22),base+49,1.8)
         o += L(m(cx-66),base+5,m(42),base+5,.3)
@@ -245,32 +244,31 @@ def d_bow(h=False):
     s_ = ticks(12) + cnt(40)
     cy = 99
     def side(m):
-        o = P([(m(117),82),(m(84),90),(m(84),108),(m(117),116)],.55,1,True)
-        o += P([(m(112),88),(m(90),93),(m(90),105),(m(112),110)],.3,.8,True)
+        o = P([(m(117),92),(m(80),80),(m(80),118),(m(117),106)],.55,1,True)
+        o += P([(m(111),95),(m(86),87),(m(86),111),(m(111),103)],.3,.8,True)
         o += L(m(117),cy,m(84),cy,.35,.8)
-        o += L(m(84),cy,m(18),cy,.55) + dot(m(15),cy,2)
-        o += L(m(84),91,m(46),91,.3) + dot(m(43),91,1.4,.55)
-        o += L(m(84),107,m(46),107,.3) + dot(m(43),107,1.4,.55)
+        o += L(m(80),cy,m(18),cy,.55) + dot(m(15),cy,2)
+        o += L(m(80),88,m(46),88,.3) + dot(m(43),88,1.4,.55)
+        o += L(m(80),110,m(46),110,.3) + dot(m(43),110,1.4,.55)
         return o
     s_ += mirror(side)
     s_ += bar(123.5,82,128,34)
-    s_ += word(56, cy+31, 'SPOTLIGHT') + word(319, cy+31, 'MENU')
-    if h: s_ += hint(56, cy+53)
+    s_ += word(13, cy+38, 'SPOTLIGHT', 'start') + word(362, cy+38, 'MENU', 'end')
+    if h: s_ += hint(13, cy+60, 'start')
     return s_
 
 # 4. Setback: from corners-and-elements-sheet (stepped towers): Next card is the top of a stepped base; the words stand on its lowest steps
 def d_setback(h=False):
     s_ = ticks(12) + cnt(40)
     def side(m):
-        pts = [(m(123.5),116),(m(123.5),124),(m(100),124),(m(100),132),(m(70),132),(m(70),140),(m(14),140)]
-        o = P(pts,.55,1)
-        o += P([(m(118),116),(m(118),119),(m(95),119),(m(95),127),(m(65),127),(m(65),135),(m(30),135)],.28,.8)
+        o = P([(m(123.5),116),(m(123.5),126),(m(108),126),(m(108),136),(m(94),136),(m(94),148),(m(8),148)],.55,1)
+        o += P([(m(117),116),(m(117),121),(m(102),121),(m(102),131),(m(88),131),(m(88),142),(m(8),142)],.28,.8)
         return o
     s_ += mirror(side)
-    s_ += L(123.5,124,251.5,124,.3,.8)
+    s_ += L(123.5,126,251.5,126,.3,.8)
     s_ += bar(123.5,82,128,34)
-    s_ += word(58, 158, 'SPOTLIGHT') + word(317, 158, 'MENU')
-    if h: s_ += hint(58, 180)
+    s_ += sword(48, 137, 'SPOTLIGHT') + sword(327, 137, 'MENU')
+    if h: s_ += hint(48, 168)
     return s_
 
 def svg(inner, H=220):
@@ -280,13 +278,13 @@ def phone(inner):
 
 designs = [
  ('A · As chosen', bookend, 'Round 3\'s option A, for comparison.', ['Three plain hairlines each side.']),
- ('1 · Cartouche', d_cart, 'From dividers-gold-on-slate and stepped-bars-and-dots: a long bevelled double frame, the shape those dividers put round their centre piece, holds Next card with Spotlight and Menu in its two ends; lines run out from the tips to dot ends, with shorter lines above and below.',
-  ['Spotlight and Menu sit inside the same figure as Next card, each in its own end of the frame, split from the button by a fine upright line.', 'The frame goes round the whole group, like the reference dividers, never round one control.', 'Against it: the most enclosed of the four; Next card is slimmer to fit inside.']),
+ ('1 · Cartouche', d_cart, 'From dividers-gold-on-slate and stepped-bars-and-dots: a long bevelled double frame, the shape those dividers put round their centre piece, with Next card in its centre and A\'s three lines filling it either side; Spotlight and Menu sit under its two tips.',
+  ['The whole lower half becomes one framed ornament, like a nameplate; A\'s lines live inside it.', 'Spotlight and Menu stay outside the frame, under its tips, apart from Next card.', 'Against it: the most enclosed of the four; the frame is a second rectangle under the card.']),
  ('2 · Fan and count', d_fan, 'From layered-diamonds-and-fans: a fan rises from the lines above Next card, and the count sits in its centre; the lines step down at the ends to Spotlight and Menu.',
-  ['The count stops being a separate line of text: it becomes the heart of the ornament.', 'The fan marks Next card as the centre of the screen\'s lower half.', 'Against it: the count gets smaller to fit in the fan.']),
+  ['The count stops being a separate line of text: it becomes the heart of the ornament.', 'The fan marks Next card as the centre of the screen\'s lower half.', 'Against it: the count gets smaller to fit in the fan, about 10 points instead of 13 today.']),
  ('3 · Bow', d_bow, 'From stepped-bars-and-dots: bow-shaped wings open out from either side of Next card, with lines running through them to dot ends, and shorter lines above and below.',
-  ['The most like the references\' bow dividers; wide and symmetrical, a clear centre.', 'Spotlight and Menu sit under the main line\'s dot ends.', 'Against it: wide; the wings make the figure feel heavier than A.']),
- ('4 · Setback', d_setback, 'From corners-and-elements-sheet (the stepped towers): Next card is the top of a stepped base; doubled lines step down and out from it like the setbacks of a deco tower, and Spotlight and Menu stand on its lowest steps.',
+  ['Like the references\' bow dividers: the wings are narrow at Next card and widen outward.', 'Spotlight and Menu line up with the main line\'s dot ends.', 'Against it: wide; the wings make the figure feel heavier than A.']),
+ ('4 · Setback', d_setback, 'Inspired by the stepped towers in corners-and-elements-sheet: Next card is the top of a stepped base; doubled lines step down and out from it like the setbacks of a deco tower, and Spotlight and Menu stand on its lowest steps.',
   ['The words have a place in the figure: they stand on the steps.', 'Echoes deco architecture, not only the dividers.', 'Against it: the steps point down and out, away from the title\'s level lines.']),
 ]
 
@@ -350,7 +348,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Next card gets slimmer than today, in all of them.</li>
 <li>No small diamonds, though the references use many: you reserved them for After Dark. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>GATE_R5</p>
+<p>The design gate first passed Fan and count and Setback, and blocked Cartouche (it had become three boxes, Spotlight | Next card | Menu) and Bow (the wings narrowed the wrong way). Both were redrawn and checked again.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
