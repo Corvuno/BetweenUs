@@ -77,8 +77,9 @@ The Keeper. Started with `/keeper`.
 **B) Looks** — how anything appears: colours, lines, type, layout, card faces, animation.
 - References: the owner's Art Deco reference images live in `.claude/keeper/references/`. Read it
   before any looks round (owner, 2026-11-05).
-- Way of working: agreement first (what it's for, what it should feel like), then rounds of
-  real mockups. Every round shows the current design next to the options, each round gets
+- Way of working: agreement first (what it's for, what it should feel like), then models in
+  words, then rounds of real mockups, each checked by the `design-gate` agent first (Keeper
+  step 2, "A design round goes in four steps", owner 2026-11-06). Every round shows the current design next to the options, each round gets
   its own new artifact link (never overwrite a round the owner has seen), options sit side by side with the current one
   (owner, 2026-10-21), and you explain why
   each option works or doesn't without picking one. The builder builds only from the mockup

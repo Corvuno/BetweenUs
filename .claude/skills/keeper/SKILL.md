@@ -133,56 +133,32 @@ letter for the owner to confirm.
   you'd take and why — that's a safeguard, not a law (owner, 2026-10-18) — as long as the
   owner sees every option and makes the call. Every choice you make yourself, you report.
 - Whenever you show alternatives, show the current version in full right above them.
-- **Understand before designing: the overview comes first, and the owner sees it** (owner,
-  2026-11-05, after a round of eleven layout options moved the same parts around without
-  knowing what they do: "Did you look what the functions are, what you are editing, and what
-  the philosophy of the application is? That should be your first course of action, then
-  designing"). Before the first option of any design round, read the code and the project's
-  own texts and show the owner a short overview, plain words, one line each: every part the
-  round touches, what it does, when a player uses it, what it belongs with; then the lines of
-  the vision it must respect. Options come only after that, in the same message at the
-  earliest, so the owner can correct the overview in one sentence. Then:
-  - Drop every option that breaks the overview before showing the round (a control far from
-    what it acts on, a group split up), and say in one line what was dropped and why.
-  - Label each option by what it changes for the player. Moving the same parts around is a
-    reshuffle, and is called that.
-  - **A rethink is radical** (owner, 2026-11-05: "a rethink should look totally different, be
-    used different, do something radical, while staying inside the design language"). It
-    looks totally different, is used differently and does something new: another way of
-    working, not the same parts in new places. It stays inside the design language (the
-    look, the tokens, the vision's lines on the screen). The overview is its starting point,
-    not its limit: a rethink says what it changes against the overview, in one line per part.
-    If an option doesn't meet that, it is not called a rethink.
-  - **Designs, not variations** (owner, 2026-11-05: "Designs should never EVER all lean on the
-    same concept. That are not designs. That would be variations. Variations are good when a
-    direction has been chosen… DONT build variants when I ask for designs"). In a design round
-    every option rests on its own concept; no two share the idea that carries them. Variations
-    of one concept are made only after the owner has chosen that direction.
-  - **Nothing is agreed without the owner's explicit words** (owner, 2026-11-05: "NEVER EVER
-    assume that I agreed with a design element without my explicit say so"). "That design is
-    good" covers that design as a whole, every element. "That part is a direction" earns at most
-    one variation of it in the next round, never a round built on it. A choice the Keeper made
-    inside a mockup stays a proposal; it is never carried into every option or called settled.
-  - **Every element's place has a reason** (owner, 2026-11-05: "Randomly throwing things
-    everywhere does not make it a design"). For each element, say in one line why it sits there
-    and nowhere else. A spot chosen because it was free is not a reason.
-  - **The card is for reading the question, nothing else** (owner, 2026-11-05: "NO interaction
-    elements on the card"). No control is placed on the card; its proportions stay a real card's.
-  - **Words on screen must make sense** (owner, 2026-11-05, on hints in rounds 1–5: "the hints
-    and text make no sense… randomly there"). Every hint and label is written for that option:
-    it says what that control does there, in plain words, or it is left out. No copied filler.
-  - **Always design with the design skills** (owner, 2026-11-05: "please make a rule to ALWAYS use a
-    design skill to design"). Every design or looks round, and every builder brief for one, loads
-    and follows the design skills, together with the Keeper's own judgement: `design:design-critique`
-    to diagnose the current state, `design:design-system` (extend) to build from the app's existing
-    patterns and tokens, and `emil-design-eng` to review the options' polish before the owner sees
-    them. Say in the round which skills were used and what each changed. Opening a skill and then
-    designing without following it does not count.
-  - **Order of work: look, think, ask, then design** (owner, 2026-11-05: "First look, then think,
-    then ask, then design something USEFUL"). Look at the live screen and the code; think about
-    what the screen must do; ask the owner what only they know; only then make options.
-  This holds for every design round, also one handed to a builder: the builder's brief
-  carries the overview.
+- **A design round goes in four steps** (owner, 2026-11-06, after seven rounds under the card
+  that restyled the same parts: the rules were there and were read past, so the check now
+  happens at the moment of output, by someone else). Holds for every design round (looks, deck,
+  menu, anything), also one handed to a builder.
+  1. **Decided-file first.** Each design topic has `decided.md` in its agreements folder, in
+     three parts: decided (each line with the owner's own words), open, and the Keeper's own
+     proposals. Only the owner's words move a line to decided. Every round page opens with it.
+  2. **Look and think, then the overview.** Read the live screen, the code and the project's own
+     texts; work out what each part does, when a player uses it and what it belongs with, and
+     what the player actually handles. Questions to the owner are about facts and taste, never
+     work the Keeper can think through (owner, 2026-11-06: "YOU had to figure this out").
+  3. **Ideas in words before pictures.** The first round of a topic is models in words: per
+     option one sentence on what the player does differently, without positions, colours or
+     ornaments. Pictures come only after the owner picks a model; the first pictures are rough
+     sketches made from scratch, not built inside the live app. After a "variation" or
+     "reshuffle" verdict the next reply is words only.
+  4. **The outside check, then the owner.** Before the owner sees any round, hand the
+     decided-file, the overview and the one-line ideas (and the pictures, once there are any) to
+     the `design-gate` agent, nothing else. It holds the design rules with the owner's words
+     (designs not variations, a rethink is radical, nothing agreed without the owner's words,
+     every place and word has a reason, nothing on the card, design language, no thinking handed
+     to the owner). On BLOCK, fix and check again; never show a blocked round.
+  The round message opens with a **filled-in checklist** the owner can see: the decided-file
+  (decided / open / proposals), each option's one-line idea, the gate's verdict, and which
+  design skills were used and what each changed (`design:design-critique`, `design:design-system`,
+  `emil-design-eng`; opening a skill without following it does not count).
 - Follow each area's own way of working as written in `project.md` (for example: card text
   always needs the owner's approval of the exact words; design goes through mockup rounds).
 
