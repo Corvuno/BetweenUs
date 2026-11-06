@@ -77,3 +77,5 @@ specific objects, places, body parts or skills (too narrow, not the feeling).
 2026-11-05 (under-the-card round 5): the coloured progress line: "I kinda like the line under the card. I'm not married to it. I'm already bored by it" (correction of the earlier "a lot"). Turned down: the ribbon to pull (W, not the style); type-set controls (V, "the same, just a bit different"); controls on the card (U; rule: the card is only for reading); round 4's gold-bar variants (not worth comments).
 
 2026-11-06 (under-the-card round 7): turned down all three, the hand of card backs, the radio dial and the programme of acts: "way too convoluted. It asks people to think. It should be about the questions. Not the controls. Over engineered to an extreme."
+
+2026-11-06: "not everything should be only deco. It may also just be pretty... That's fine too!" Don't force deco ornament onto every element; plain and beautiful is allowed.

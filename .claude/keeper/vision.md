@@ -127,3 +127,6 @@ attractive about you?"), and long cards with a second question attached.
   four are done in different threads"). Removed text: "and the work version is reworked";
   "once the remaining spots are settled: the bottom of the screen, the end of a hand, the
   evening chooser, and the desktop layout."
+- **2026-11-06** — Looks: Art Deco is the language, not a test every element must pass. Owner: "Also;
+  not everything should be only deco. It may also just be pretty... That's fine too!" An element can be
+  simply beautiful without deco ornament, as long as it sits well with the rest.

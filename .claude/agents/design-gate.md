@@ -56,6 +56,9 @@ card rules in `CLAUDE.md`.
 7. **Inside the design language**: the vision, the tokens, what lessons.md and taste.md say the
    owner has turned down (for example the small diamond belongs to After Dark; outlines around
    single controls).
+   Art Deco is the language, not a test: an element may simply be pretty without deco ornament
+   (owner, 2026-11-06: "not everything should be only deco. It may also just be pretty... That's fine
+   too!"). Don't block an option for being plain and beautiful rather than ornamented.
 8. **Thinking not handed to the owner** (owner, 2026-11-06: "YOU had to figure this out by
    thinking it through"). The round's questions to the owner are about facts and taste only.
    A question like "where should X go?" that the Keeper could work out is a block.
