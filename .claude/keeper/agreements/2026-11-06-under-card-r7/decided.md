@@ -49,6 +49,13 @@ Every round page for this topic opens with this file. Only the owner's own words
 - **Pictures before judging a model:** on objects instead of buttons, and on Twist: "I'd wanna see
   it. Can't imagine it for now." (2026-11-06)
 
+- **The hand as card backs may be shown, in one or two options:** asked whether blank backs count
+  as "other cards on screen": "Show me an option… Showing me something always is oke. As long as I
+  don't get 5 options with cards sprinkled around. 1 or 2 is good. Then the rest is DIFFERENT as
+  fuck." (2026-11-06)
+- **Count and line are optional, not out:** "Count or the coloured line can go. I did not say it had
+  to. So options that include it are welcome as well. Could be nice with the card thing." (2026-11-06)
+
 ## Open
 
 - Where Twist goes (the Keeper is to work it out: "the point was that YOU had to figure this out by
