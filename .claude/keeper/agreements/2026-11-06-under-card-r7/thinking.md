@@ -34,3 +34,16 @@ thinking it through." Two rounds missed in a row: stop producing, talk (SKILL.md
    Spotlight the only other control, the rest appears when the reader stops on a card.
 3. Quiet until touched: while people talk only the question and the count show; a touch on the lower
    half brings the controls up, they sink away again.
+
+## Design-gate verdict on the three models (2026-11-06): BLOCK
+The models were sent to the owner before the gate existed; the gate (run from
+.claude/agents/design-gate.md) blocked them afterwards:
+- Models 2 and 3 are one idea (hide most controls, show them when needed); only the trigger differs.
+- Model 3 hides the draw, against the vision ("You open it and draw"; "the controls needed to play are shown").
+- Model 1 puts the twist deck under the card, against the owner's "Three and Twist leave this space".
+- Hints have no place in any model; "stops on a card" in model 2 means nothing (players stop on every card).
+- Written as fact above but NOT decided: Back as a swipe only, Menu as one layer, Three's setting in
+  The Deck. These are Keeper proposals (see decided.md).
+Questions 1 and 2 to the owner passed (taste and meaning). Question 3 passed only with the Keeper's own
+verdict added. The models get reworked after the owner's answer to question 1, and go through the gate
+again before the owner sees them.
