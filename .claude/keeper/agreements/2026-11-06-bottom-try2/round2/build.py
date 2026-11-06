@@ -65,8 +65,8 @@ def fan(h=False):
     return body
 
 def plain(h=False):
-    body = ticks() + count() + bar(82.5, 76, 210, 34) + word(132, 168, 'SPOTLIGHT') + word(243, 168, 'MENU')
-    if h: body += hint(132, 190)
+    body = ticks() + count() + bar(82.5, 76, 210, 34) + word(102, 168, 'SPOTLIGHT', 'start') + word(273, 168, 'MENU', 'end')
+    if h: body += hint(145, 190)
     return body
 
 def svg(inner, H=220):
@@ -75,13 +75,13 @@ def phone(inner):
     return f'<div class="phone"><img src="{TOP}" alt="Title and card, as in the app"><div class="bot">{svg(inner)}</div></div>'
 
 designs = [
- ('Bookend', bookend,
-  'The bottom repeats the title\'s figure: three parallel gold hairlines run out from one centre, and the centre is Next card. Spotlight and Menu sit at the ends of the lines.',
+ ('With the title\'s lines', bookend,
+  'The bottom repeats the title\'s figure: three parallel gold hairlines run out from one centre, and the centre is Next card. Spotlight and Menu sit under the outer ends of the lines.',
   ['The title and the bottom read as the top and bottom of one frame around the card.',
    'Next card is narrower and lower than today, so the question is now the brightest thing.',
    'Spotlight and Menu are far from Next card, so a thumb aiming for Next never hits them.',
    'Against it: the two words sit at the far edges, a longer reach on a big phone, and the hairlines add one more set of lines under the ticks.']),
- ('Plain and pretty', plain,
+ ('Without ornament', plain,
   'No line work at all: the ticks, one slim gold Next card, and the two words Spotlight and Menu, with empty dark space doing the rest.',
   ['The fewest shapes possible: three things under the card besides the ticks.',
    'The coloured ticks become the only ornament, which gives them more room to be the flourish you like.',
@@ -125,7 +125,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 .now .phone img+img{{border-top:0}}
 </style>
 <div class="wrap">
-<header><h1>Under the card, try two</h1><p style="margin:6px 0 0;color:var(--muted)">Round 2: two designs on the structure you agreed. The current version comes first. Drawn from scratch under a screenshot of the real title and card, 14 cards into a 20-card mixed hand, at the size of your phone.</p></header>
+<header><h1>Under the card, try two</h1><p style="margin:6px 0 0;color:var(--muted)">Round 2: one design on the structure you agreed, shown two ways, with the title\'s lines and without any ornament. That is the real choice left: does the bottom echo the title, or stay bare and let the ticks be the only flourish. The current version comes first. Drawn from scratch under a screenshot of the real title and card, 14 cards into a 20-card mixed hand, at the size of your phone. The empty space at the very bottom is real screen; on your phone the browser bar covers roughly the last 60 points of it.</p></header>
 
 <div class="check">
 <h3>Decided (your words)</h3>
@@ -146,7 +146,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Nothing touches the card; there is always a gap.</li>
 <li>Next card gets slimmer than today. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>The design gate blocked four sets of ideas before this one; it passed these three in words: Bookend and Plain and pretty passed. A third, a fan of rays under Next card, was blocked as a variation of Bookend, so this round has two.</p>
+<p>The design gate blocked four sets of ideas in words before this. Of the last set, a fan of rays under Next card was blocked as a variation; the other two passed in words. In pictures the gate found they are one design with and without the lines, so the page now says exactly that.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
