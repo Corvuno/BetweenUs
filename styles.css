@@ -1892,7 +1892,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 262px * var(--k) - 100px) * 556 / 360));}
   body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
   .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
-    display:grid;grid-template-columns:1fr calc(128 * 1.2px) 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto auto;
+    display:grid;grid-template-columns:1fr minmax(calc(128 * 1.2px),auto) 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto auto;
     align-items:start;justify-items:stretch;}
   .controls-wrap,.nav-row{display:contents;}
   .header,.tok-line,.controls-wrap{max-width:none;}
