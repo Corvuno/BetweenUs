@@ -166,6 +166,17 @@ def v_ring(h=False):
     if h: s_ += hint(lc+30, 165)
     return s_
 
+def v_base(h=False):
+    bx, bw = 123.5, 128
+    s_ = ticks() + count()
+    s_ += hl(bx-6, 40, 93) + hl(bx-6, 24, 99) + hl(bx-6, 40, 105) + hl(bx+bw+6, 335, 93) + hl(bx+bw+6, 351, 99) + hl(bx+bw+6, 335, 105)
+    s_ += bar(bx, 82, bw, 34)
+    s_ += hl(187.5, 92, 131, .55, .15) + hl(187.5, 283, 131, .55, .15)
+    s_ += f'<line x1="187.5" y1="138" x2="187.5" y2="152" stroke="{GOLD}" stroke-opacity=".45"/>'
+    s_ += word(176, 149, 'SPOTLIGHT', 'end') + word(199, 149, 'MENU', 'start')
+    if h: s_ += hint(140, 171)
+    return s_
+
 def v_sun(h=False):
     import math
     r, lc, rc = rails_row(cy=107)
@@ -190,8 +201,8 @@ designs = [
   ['Each line leads to its control, so the words are tied to the figure instead of floating.', 'Keeps A\'s look almost as it is; both drops sit the same distance from the centre.', 'Against it: the words still sit below the line, so the bottom is a little taller than A.']),
  ('V2 · Converge', v_conv, 'From stepped-bars-and-dots (the bow-shaped dividers): the three lines on each side leave Next card spread apart and narrow to one point above each word, like a bow.',
   ['Each side becomes one shape that ends exactly on its control; the words belong to the figure.', 'Words stay below and apart from Next card, as in A.', 'Against it: angled lines are less like the title, whose lines are all level.']),
- ('V3 · Ring ends', v_ring, 'From dividers-and-corners-fine-line (lines that swing and end in small rings): the lowest line on each side curves gently down and ends in a small open ring above its word.',
-  ['The softest of the variations: pretty rather than strict deco, which you allowed.', 'Each word is tied to the figure by its own line, as in V1, but with a curve instead of a right angle.', 'Against it: the curves are the one rounded thing in the bottom; the title\'s lines are all straight.']),
+ ('V3 · Gathered under the action', v_base, 'From dividers-gold-on-slate (dividers with a second short line under the centre): A\'s lines as they are; under Next card one fine line, and the two words gathered on it at the centre, split by a short upright line.',
+  ['The words move from the far edges to the centre axis, under the thing they sit next to; the whole bottom is one centred stack.', 'Still well below Next card, so a thumb aiming for it does not land on them.', 'Against it: Spotlight and Menu sit close to each other, so the two small words are easier to mix up than when they are apart.']),
 ]
 
 TITLEHINT = (f'<svg viewBox="0 0 375 200" role="img" aria-hidden="true"><image href="{TOP}" x="0" y="0" width="375" height="447.5"/>'
@@ -253,7 +264,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Nothing touches the card; there is always a gap.</li>
 <li>Next card gets slimmer than today, in all of them. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>The design gate passed V1, V2 and V3. It blocked two others: rails with the words between them (half a box round each word, and Spotlight too close to Next card) and a sunburst behind Next card (it crowded the count).</p>
+<p>The design gate passed V1, V2 and V3. It blocked three others: rails with the words between them (half a box round each word, Spotlight too close to Next card), a sunburst behind Next card (it crowded the count), and lines ending in rings (the same idea as V1 with a curve).</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
