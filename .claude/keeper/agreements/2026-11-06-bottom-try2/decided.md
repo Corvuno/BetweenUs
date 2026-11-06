@@ -28,6 +28,12 @@ rules (vision, taste, DESIGN-SYSTEM.md, CLAUDE.md) still hold.
   Keeper's pick (named to the owner): Twist leaves the card screen and Spotlight, and stays reachable
   from the Menu, so nothing is lost for players who do use it.
 
+- **The structure, and the round is about looks:** Keeper proposed "Under the card: the coloured ticks with
+  the count, then Next card as the only strong control, then Spotlight and Menu, quiet. The Deck stays where
+  it is, above the card… The ticks should be the only colour under the card." and that from here it is about
+  how it looks. Owner: "1 yea, that sounds good, im curious what will hapen this time. Better make it good."
+  (2026-11-06) Variations on this structure are allowed; the designs differ in their visual idea.
+
 ## Open
 
 - (Answered below.) **Twist:** "Where twist should go. No clue yet, though if might be cleaner without it." (2026-11-06)

@@ -87,3 +87,64 @@ H only regroup them ("remove stuff and rearrange"); H's rethink is a relocation.
 Keeper's reading: with Three, Back and Twist gone, what the player does is mostly settled; the remaining
 problem is the owner's diagnosis itself (no shared look, no hierarchy), which is a looks round. Asking the
 owner to confirm that before a fourth try.
+
+# Round 2: designs on the agreed structure (looks), ideas in words before pictures
+
+Structure (owner agreed): under the card the coloured ticks with the count, Next card as the only strong
+control, Spotlight and Menu quiet; The Deck stays above the card; the ticks are the only colour under the
+card. Each design is one visual idea that gives the area one look and a clear order. All three: one
+typeface family for the controls, gold only for Next card, no glow, no small diamonds, no outline around a
+single control, centred and balanced, the same on phone, PC and in Spotlight's own bar.
+References drawn from: dividers-gold-on-slate-two-columns, dividers-thin-gold-on-black,
+corners-and-elements-sheet (the long bevelled bar, the stepped towers).
+
+1. **Bookend.** The bottom answers the title: the same parallel gold hairlines run out from a single centre,
+   and that centre is Next card, a gold bar with bevelled ends like the long bars in the references;
+   Spotlight and Menu are the two words at the far ends of the line, and the ticks run as the upper
+   hairline. Why: the title and the bottom become the top and bottom of one frame around the card.
+
+2. **Setback.** The card stands on a stepped base, like the setbacks of a deco tower: the widest step is the
+   ticks, the next step in is Next card, the narrowest step is Spotlight and Menu in small words; thin
+   stepped lines join the tiers. Why: the order of importance is drawn by the shape itself, each step
+   smaller and quieter than the one above.
+
+3. **Plain and pretty.** No ornament at all: order comes from type alone. Next card is set in large spaced
+   gold capitals over one fine rule, not a filled block; Spotlight and Menu are small, calm words; the
+   ticks are the only shape. Why: nothing under the card is a filled block any more, so the question stays
+   the brightest thing on screen (the assessment found the gold block outshines it); the owner allowed
+   "just pretty".
+
+## Gate verdict on Round 2 (Bookend, Setback, Plain and pretty): BLOCK (2026-11-06)
+Bookend: unclear whether the title has parallel hairlines, bevelled ends split the one gold-button spec,
+no reason for the far-end places. Setback: the plinth joined to the card (turned down 2026-11-05) and its
+steps draw the wrong order. Plain and pretty: type-set controls (turned down 2026-11-05), Next not visibly
+tappable. Not shown to the owner.
+
+# Round 2, second try
+
+Same common ground as above. Next card keeps the one gold-button spec (square corners, the gold gradient,
+the same type), only its height and width change per design, always lower than today's 46px block so it
+no longer outshines the question. Nothing touches or joins the card: a clear gap separates card and
+controls in all three.
+
+1. **Bookend (revised).** Verified on the live title: three parallel hairlines each side meet in one centre
+   emblem. The bottom repeats that figure: the same parallel hairlines run out from one centre, and the
+   centre is Next card (a slim gold bar, square corners); Spotlight and Menu are the two words at the ends of
+   those lines. Why: the title and the bottom become the top and bottom of one frame around the card; the
+   two now-and-then actions sit symmetrically either side of the draw, far enough from it that a thumb
+   aiming for Next card never hits them.
+
+2. **Fan.** A quiet half fan of fine gold rays opens downward under Next card, the fan from the references
+   (corners-and-elements-sheet, emblems-twelve-fan-shapes); its two outermost rays end in Spotlight and
+   Menu. Why: every ray leads the eye to Next card, so the order is drawn by direction, not by size or
+   frames; the two small actions hang off the same figure instead of floating.
+
+3. **Plain and pretty (revised).** No line work at all: empty space is the design. Under the ticks only a
+   slim filled gold Next card (a real button, so it reads as tappable) and, well below it, the two words
+   Spotlight and Menu side by side in the controls' one typeface. Why: the fewest shapes possible under the
+   card; the order comes from one filled gold shape against empty dark, which the owner allowed ("It may
+   also just be pretty").
+
+## Gate verdict on Round 2, second try (2026-11-06): Bookend PASS, Plain and pretty PASS, Fan BLOCK
+Fan is a variation of Bookend (lines out from Next card, words at their ends). Round goes out with two.
+Named to the owner: Next card slimmer changes the one gold-button spec, so Draw Cards follows.
