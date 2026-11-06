@@ -36,13 +36,25 @@ Every round page for this topic opens with this file. Only the owner's own words
   layered." (2026-11-06)
 - **Sharing:** "For now screenshot works fine." (2026-11-05)
 
+- **Three goes to The Deck:** "Three in the deck sounds like logic." (2026-11-06)
+- **Twist is a modifier, not a deck:** "For me twist is a modifier. In a physical card game it could be
+  a dice with questions that gets thrown. So it's not a second deck, it's a change to what's in front
+  of you." (2026-11-06)
+- **The main screen is what gets shown and shared:** "Even if it's on a table or in a hand and shown,
+  it might be on spotlight, does not have to. If shared it's the main screen." (2026-11-06)
+- **The count is the hand's progress:** "the hand, not the deck. It shows 3 of 5. Not 3 of 400… I
+  don't know if the count is important. It's there to track progress." (2026-11-06)
+- **The coloured line may go:** "I liked the coloured line as it gave some flourish, it can go."
+  (2026-11-06)
+- **Pictures before judging a model:** on objects instead of buttons, and on Twist: "I'd wanna see
+  it. Can't imagine it for now." (2026-11-06)
+
 ## Open
 
-- Where Three goes, and where Twist goes (the Keeper is to work it out: "the point was that YOU had
-  to figure this out by thinking it through", 2026-11-06).
+- Where Twist goes (the Keeper is to work it out: "the point was that YOU had to figure this out by
+  thinking it through", 2026-11-06). Three's setting is decided (The Deck); whether its on/off shows at
+  the draw is a proposal.
 - Where the menu's handle sits.
-- Whether the coloured progress line stays: "I kinda like the line under the card. I'm not married
-  to it. I'm already bored by it." (2026-11-05)
 - Whether Back keeps any visible control.
 - The interaction model (round 7 questions, waiting for the owner).
 
@@ -54,12 +66,17 @@ Every round page for this topic opens with this file. Only the owner's own words
 - The ribbon to pull: not the style (2026-11-05). Round 4 (gold-bar variants), round 6 A/B
   ("variations"), C ("plain ugly"), D ("unusable as it has no controls").
 
+## Liked, not decided (one idea, not for every design)
+- The empty start card showing the ways to play: "What I did like is that the backside card without
+  anything drawn showed the 'ways to play'. That's a nice touch. (It does not have to do this. It's
+  not decided on. DON'T put this in every design. Just a small hint)" (2026-11-06)
+
 ## Keeper's proposals (not agreed)
 
 - Twist on the card, Back as an undo after a draw, the coloured line on the card's edge, Menu in
   "Selected deck" or in the count (rounds 3–5; called "settled" by mistake in round 5).
 - Situational side slots: Ways to play / Spotlight / Change–Save on the left, Menu / Save on the
   right (round 6).
-- Three's setting in The Deck with its state shown at the draw; Twist as a small second deck
-  (round 7 thinking).
+- Three's on/off shown at the draw (round 7 thinking). Twist as a second deck: turned down, it's a
+  modifier (2026-11-06).
 - Three interaction models for round 7: objects on the table; the reader's hand; quiet until touched.
