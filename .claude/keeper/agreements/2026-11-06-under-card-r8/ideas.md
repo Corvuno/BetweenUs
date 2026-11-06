@@ -29,3 +29,5 @@ acceptable because it's gone after the first tap). Gone after the first tap, as 
 
 
 ## Design-gate verdict (2026-11-06): PASS (ideas after two tries, pictures after two tries)
+Owner (2026-11-06): "Are these designs? It's remove stuff and rearrange.. what the flying fuck." Round 8
+turned down: layouts, not designs. Keeper asked what a design means here and for the references.
