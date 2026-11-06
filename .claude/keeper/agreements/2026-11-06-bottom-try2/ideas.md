@@ -80,3 +80,10 @@ H. **Rethink: everything the thumb touches, in one place.** The top of the scree
    existing one, The Deck keeps "tap to change".
    Why: the Menu is opened seldom, so it doesn't earn its own button; the thumb is under the card, and
    a phone held in one hand reaches the bottom, not the title.
+
+## Gate verdict on G, H: BLOCK (2026-11-06)
+After the owner's answers the parts left are Next card, Spotlight, the ticks, The Deck and the Menu; G and
+H only regroup them ("remove stuff and rearrange"); H's rethink is a relocation. Not shown to the owner.
+Keeper's reading: with Three, Back and Twist gone, what the player does is mostly settled; the remaining
+problem is the owner's diagnosis itself (no shared look, no hierarchy), which is a looks round. Asking the
+owner to confirm that before a fourth try.
