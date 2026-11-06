@@ -82,7 +82,7 @@ function assert(cond, msg) { if (!cond) throw new Error(msg || 'assertion failed
 async function cardParts(page) {
   return page.evaluate(() => ({ index: state.currentIndex + 1, total: state.visibleDeck.length }));
 }
-async function questionText(page) { return (await page.locator('#card-question').textContent()).trim(); }
+async function questionText(page) { return (await page.locator('#card-question').textContent()).replace(/\u00A0/g, ' ').trim(); }
 // Polls real DOM state instead of sleeping a fixed duration — the draw
 // animation's length is a styling detail, not a contract, so a test that
 // waits for it to *finish* (rather than guessing how long it takes) doesn't
@@ -1353,13 +1353,13 @@ async function run() {
     const before = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit }));
     await page.locator('#pickToggle').click();   // on: the very next card is three options
     await waitPicker(true);
-    let mid = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit, step: state.pickOptions.step, planned: state.pickOptions.planned.question, idx: state.currentIndex, q: document.getElementById('card-question').textContent.trim() }));
+    let mid = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit, step: state.pickOptions.step, planned: state.pickOptions.planned.question, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ').trim() }));
     assert(mid.hand === before.hand && mid.lim === before.lim && mid.lim === 5, `switching on changed the hand or the limit: ${JSON.stringify({ b: before.hand, m: mid.hand, lim: mid.lim })}`);
     assert(mid.deck.join('|') === before.deck.join('|') && mid.step === 1 && mid.idx === 0, 'switching on restarted or changed the hand');
     assert(!/place to begin|draw a card/i.test(mid.q), 'switching on went back to the start card');
     await page.locator('#pickToggle').click();   // off with the options up: the planned card takes the step
     await page.waitForTimeout(500);
-    const after = await page.evaluate(() => ({ open: state.pickerOpen, idx: state.currentIndex, q: document.getElementById('card-question').textContent.trim(), cur: state.visibleDeck[state.currentIndex].question, sit: Object.keys(state.sitOut).length, hand: state.handNo, len: state.visibleDeck.length, lim: state.cardLimit, qq: [...state.sessionLog].map(c => c.question) }));
+    const after = await page.evaluate(() => ({ open: state.pickerOpen, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ').trim(), cur: state.visibleDeck[state.currentIndex].question, sit: Object.keys(state.sitOut).length, hand: state.handNo, len: state.visibleDeck.length, lim: state.cardLimit, qq: [...state.sessionLog].map(c => c.question) }));
     assert(!after.open && after.idx === 1 && after.cur === mid.planned, 'off with options up did not show the planned card for that step');
     assert(after.sit === 0, 'the two put back were made to sit out');
     assert(after.hand === before.hand && after.len === 5 && after.lim === 5, 'switching off changed the hand or the limit');
@@ -1593,7 +1593,7 @@ async function run() {
     await swipe(page, '#card', 0, 100);
     await page.waitForTimeout(400);
     const r = await page.evaluate((q) => {
-      const out = { seen: state.skippedSeen.has(q), inLog: state.sessionLog.some(c => c.question === q), inDrawer: document.getElementById('logList').textContent.includes(q) };
+      const out = { seen: state.skippedSeen.has(q), inLog: state.sessionLog.some(c => c.question === q), inDrawer: document.getElementById('logList').textContent.replace(/\u00A0/g, ' ').includes(q) };
       out.back = [];
       for (let i = 0; i < 6; i++) { initDeck(true); out.back.push(state.fullDeck.slice(0, state.drawUnseen).some(c => c.question === q) || state.visibleDeck.some(c => c.question === q)); }
       return out;
@@ -2208,7 +2208,7 @@ async function run() {
     await waitPicker(true); await page.waitForTimeout(600);
     const st = await page.evaluate(() => ({
       mark: document.querySelector('.party-frame').className, star: document.getElementById('partyStar').classList.contains('on'), prev: document.getElementById('partyPrevBtn').disabled,
-      start: /Draw a card to begin/.test(document.getElementById('party-question').textContent),
+      start: /Draw a card to begin/.test(document.getElementById('party-question').textContent.replace(/\u00A0/g, ' ')),
     }));
     assert(!/mark-/.test(st.mark) && !st.star && st.prev && !st.start, `Spotlight picker after hold to continue: ${JSON.stringify(st)}`);
     await page.evaluate(() => exitParty());
@@ -2678,7 +2678,7 @@ async function run() {
     await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
     await pg.locator(`[data-menu="${key}"]:visible`).click(); await pg.waitForTimeout(900);
   };
-  const onScreen = pg => pg.evaluate(() => ({ q: document.getElementById('card-question').textContent, level: document.getElementById('card-level').textContent, star: document.getElementById('cardStar').classList.contains('active') }));
+  const onScreen = pg => pg.evaluate(() => ({ q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), level: document.getElementById('card-level').textContent, star: document.getElementById('cardStar').classList.contains('active') }));
   const handFacts = pg => pg.evaluate(() => ({ idx: state.currentIndex, reached: state.reachedIdx, log: state.sessionLog.map(c => c.question), seen: [...new Set(state.sessionLog.map(c => c.question))].length, deck: state.visibleDeck.map(c => c.question), picker: state.pickerOpen, count: document.getElementById('progCountNum')?.textContent }));
 
   await check('a small card in Played and in Favourites is a real button; a tap (or Enter) shows that card full size with its category and star, and closes the screen and the menu', async () => {
@@ -2757,7 +2757,7 @@ async function run() {
       const options = await pg.evaluate(() => state.pickOptions.options.map(c => c.question));
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      const shown = await pg.evaluate(() => ({ picker: state.pickerOpen, q: document.getElementById('card-question').textContent, fav: state.favourites[0].question }));
+      const shown = await pg.evaluate(() => ({ picker: state.pickerOpen, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), fav: state.favourites[0].question }));
       assert(!shown.picker && shown.q === shown.fav, `Three: the card is not the single current card: ${JSON.stringify(shown)}`);
       await pg.locator('#btn-prev').click(); await pg.waitForTimeout(700);
       assert(await pg.evaluate(o => state.pickerOpen && JSON.stringify(state.pickOptions.options.map(c => c.question)) === JSON.stringify(o), options), 'Back did not return the same three options');
@@ -2768,7 +2768,7 @@ async function run() {
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
       await pg.locator('#btnParty').click(); await pg.waitForTimeout(700);
-      assert(await pg.evaluate(() => document.getElementById('party-question').textContent === state.favourites[0].question && document.getElementById('partyStar').classList.contains('on')), 'Spotlight does not show the brought-back card');
+      assert(await pg.evaluate(() => document.getElementById('party-question').textContent.replace(/\u00A0/g, ' ') === state.favourites[0].question && document.getElementById('partyStar').classList.contains('on')), 'Spotlight does not show the brought-back card');
       await pg.evaluate(() => document.getElementById('partyOverlay').classList.contains('open') && exitParty());
       await pg.waitForTimeout(500);
       // the end-of-hand screen: the card shows, Back returns to the screen, Draw then does what it would have
@@ -2776,7 +2776,7 @@ async function run() {
       await pg.waitForTimeout(500);
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      assert(await pg.evaluate(() => document.getElementById('card-question').textContent === state.favourites[0].question && !state.handSide && state.currentIndex === state.visibleDeck.length), 'the end-of-hand screen does not show the brought-back card');
+      assert(await pg.evaluate(() => document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ') === state.favourites[0].question && !state.handSide && state.currentIndex === state.visibleDeck.length), 'the end-of-hand screen does not show the brought-back card');
       await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => state.handSide === 'intermezzo' && state.currentIndex === state.visibleDeck.length), 'Back did not return to the end-of-hand screen');
     } finally { await ctx.close(); }
@@ -2805,19 +2805,19 @@ async function run() {
       assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work on a brought-back card');
       // Skip (swipe down) drops the brought-back card and skips nothing
       await swipe(pg, '#card', 0, 100); await pg.waitForTimeout(900);
-      let h = await pg.evaluate(() => ({ len: state.visibleDeck.length, idx: state.currentIndex, q: document.getElementById('card-question').textContent, own: state.visibleDeck[state.currentIndex]?.question }));
+      let h = await pg.evaluate(() => ({ len: state.visibleDeck.length, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), own: state.visibleDeck[state.currentIndex]?.question }));
       assert(h.len === lenBefore && h.q === h.own, `swipe-down on a brought-back card: ${JSON.stringify(h)}`);
       // arrow keys: Right draws the hand's next card; Left after a bring-back returns to where we were
       const at = h.idx;
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
       await pg.keyboard.press('ArrowLeft'); await pg.waitForTimeout(900);
-      h = await pg.evaluate(() => ({ idx: state.currentIndex, q: document.getElementById('card-question').textContent, own: state.visibleDeck[state.currentIndex]?.question }));
+      h = await pg.evaluate(() => ({ idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), own: state.visibleDeck[state.currentIndex]?.question }));
       assert(h.q === h.own && h.idx === at, `ArrowLeft after a bring-back: ${JSON.stringify(h)}`);
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
       await pg.keyboard.press('ArrowRight'); await pg.waitForTimeout(900);
-      h = await pg.evaluate(() => ({ idx: state.currentIndex, q: document.getElementById('card-question').textContent, own: state.visibleDeck[state.currentIndex]?.question }));
+      h = await pg.evaluate(() => ({ idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), own: state.visibleDeck[state.currentIndex]?.question }));
       assert(h.idx === at + 1 && h.q === h.own, `ArrowRight after a bring-back: ${JSON.stringify(h)}`);
       // the start card: Spotlight opens on the brought-back card, and Back in Spotlight returns to the start card
       await pg.evaluate(() => { initDeck(); });
@@ -2826,7 +2826,7 @@ async function run() {
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => !document.getElementById('btnParty').classList.contains('disabled')), 'Spotlight is not enabled with a brought-back card up');
       await pg.locator('#btnParty').click(); await pg.waitForTimeout(700);
-      assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('party-question').textContent === state.favourites[0].question), 'Spotlight did not open on the brought-back card (or drew the first card)');
+      assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('party-question').textContent.replace(/\u00A0/g, ' ') === state.favourites[0].question), 'Spotlight did not open on the brought-back card (or drew the first card)');
       await pg.locator('#partyPrevBtn').click(); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), 'Back in Spotlight did not return to the start card');
     } finally { await ctx.close(); }
@@ -2970,7 +2970,7 @@ async function run() {
           const cards = [...d.querySelectorAll('#logList .play-card')];
           const r = d.getBoundingClientRect();
           return {
-            qs: cards.map(c => c.querySelector('.play-q').textContent), stars: cards.map(c => !!c.querySelector('.play-star')),
+            qs: cards.map(c => c.querySelector('.play-q').textContent.replace(/\u00A0/g, ' ')), stars: cards.map(c => !!c.querySelector('.play-star')),
             cols: getComputedStyle(d.querySelector('#logList')).gridTemplateColumns.split(' ').length,
             saves: d.querySelectorAll('#sessionsList .play-save').length,
             order: (([h1, h2]) => [h1, d.querySelector('#storeSessionBtn'), d.querySelector('#sessionsList'), h2, d.querySelector('#btnExport'), d.querySelector('#logList')])(d.querySelectorAll('.menu-head')).map(e => e.getBoundingClientRect().top).every((y, i, all) => i === 0 || y >= all[i - 1]),
@@ -3175,7 +3175,7 @@ async function run() {
       await pg.waitForTimeout(900);
       const f = await pg.evaluate(() => {
         const lvl = document.getElementById('card-level'), c = document.getElementById('card');
-        return { level: lvl.textContent, q: document.getElementById('card-question').textContent, mark: c.classList.contains('mark-wildcard'),
+        return { level: lvl.textContent, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), mark: c.classList.contains('mark-wildcard'),
           font: getComputedStyle(lvl).fontFamily, inlineColour: lvl.style.color, q2: document.getElementById('card-level').textContent,
           tick: document.querySelectorAll('.progress-tick')[1].style.getPropertyValue('--tick-color'), watermark: getComputedStyle(document.querySelector('#card .wc-mark')).display };
       });
@@ -3191,7 +3191,7 @@ async function run() {
       // Spotlight, on the wildcard
       await pg.evaluate(() => { prevCard(); }); await pg.waitForTimeout(900);
       await pg.locator('#btnParty').click(); await pg.waitForTimeout(700);
-      const sp = await pg.evaluate(() => ({ level: document.getElementById('party-level').textContent, mark: document.querySelector('.party-frame').classList.contains('mark-wildcard'), q: document.getElementById('party-question').textContent }));
+      const sp = await pg.evaluate(() => ({ level: document.getElementById('party-level').textContent, mark: document.querySelector('.party-frame').classList.contains('mark-wildcard'), q: document.getElementById('party-question').textContent.replace(/\u00A0/g, ' ') }));
       assert(sp.level === 'Wildcard' && sp.mark && sp.q === wild, `Spotlight: ${JSON.stringify(sp)}`);
       await pg.keyboard.press('Escape'); await pg.waitForTimeout(500);
       // favourite, hand list, saved hand
