@@ -239,3 +239,6 @@ E. **Rethink: the title opens the menu.** The Menu control leaves the bottom: ta
    one action and one view, nothing else.
    Departure named: the agreed structure had Menu quiet under the card; this option moves it, which only
    the owner can accept.
+
+## Gate verdict, third try (2026-11-06): A, B, E PASS (E the rethink); C Emblems BLOCK (same icons, new varnish).
+Round 3 goes out as A Title echo, B The hand is the ornament, C Rethink: the title opens the menu.

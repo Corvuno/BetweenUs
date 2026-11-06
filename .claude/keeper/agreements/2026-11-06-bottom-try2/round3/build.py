@@ -116,10 +116,8 @@ designs = [
   ['Title and controls frame the card top and bottom.', 'Against it: the two words sit far apart at the edges.']),
  ('B · The hand is the ornament', skyline, 'Takes its look from the hand: no gold ornament; the coloured ticks are larger and stepped like a skyline, the current card tallest. Coming cards stay flat and low, so nothing is given away.',
   ['The colours you like do the decorating; gold is kept for the one action.', 'Against it: the colours get louder right under the card, which carries its own single colour.']),
- ('C · Emblems', emblems, 'Takes its look from your reference emblems: Spotlight and Menu each get a small emblem drawn for this deck, a half sunburst (the stage light) and three stepped bars (a stack), with the word under it.',
-  ['Replaces the generic icons with symbols only this game has.', 'Against it: two drawn symbols are the most detail under the card of any option, and a new emblem needs its word for a while before it reads on its own.']),
- ('E · Rethink: the title opens the menu', titlemenu, 'The Menu leaves the bottom: tapping the title Between Us opens it, since it is seldom used. Under the card only the ticks, Next card and Spotlight. This changes the structure you agreed, which had Menu under the card.',
-  ['The bottom holds one action and one view, nothing else: the simplest of all five.', 'Uses the game\'s name as the way in to everything about the evening.', 'On a first visit a hint under the title says "tap for the menu", gone after the first tap.', 'Against it: a player looking for settings won\'t think of tapping a title until told once.']),
+ ('C · Rethink: the title opens the menu', titlemenu, 'The Menu leaves the bottom: tapping the title Between Us opens it, since it is seldom used. Under the card only the ticks, Next card and Spotlight. This changes the structure you agreed, which had Menu under the card.',
+  ['The bottom holds one action and one view, nothing else: the simplest of the three.', 'Uses the game\'s name as the way in to everything about the evening.', 'On a first visit a hint under the title says "tap for the menu", gone after the first tap.', 'Two things at the top open two sheets: the big title opens the menu, the "Selected deck" line under it opens The Deck, as today.', 'On a PC the title sits at the top of the page too and works the same; in Spotlight the menu is not needed.', 'Against it: after the first tap nothing visible shows that the title opens the menu, and "Show hints again" lives inside that menu, so a player who skipped the hint has to find it by trying.']),
 ]
 
 cards = []
@@ -158,7 +156,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 .now .phone img+img{{border-top:0}}
 </style>
 <div class="wrap">
-<header><h1>Under the card, round 3</h1><p style="margin:6px 0 0;color:var(--muted)">Round 3: four options on the structure you agreed, each a different thought; each takes its look from a different source; E is the rethink. A is round 2's version with the lines (round 2 stays at its own link). The current version comes first. Drawn from scratch under a screenshot of the real title and card, 14 cards into a 20-card mixed hand, at the size of your phone. The empty space at the very bottom is real screen; on your phone the browser bar covers roughly the last 60 points of it.</p></header>
+<header><h1>Under the card, round 3</h1><p style="margin:6px 0 0;color:var(--muted)">Round 3: three options on the structure you agreed, each a different thought; A and B each take their look from a different source; C is the rethink. A is round 2's version with the lines (round 2 stays at its own link). The current version comes first. Drawn from scratch under a screenshot of the real title and card, 14 cards into a 20-card mixed hand, at the size of your phone. The empty space at the very bottom is real screen; on your phone the browser bar covers roughly the last 60 points of it.</p></header>
 
 <div class="check">
 <h3>Decided (your words)</h3>
@@ -171,15 +169,15 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>The structure: the ticks with the count, Next card the only strong control, Spotlight and Menu quiet, The Deck above the card. "yea, that sounds good… Better make it good."</li>
 </ul>
 <h3>Open</h3>
-<ul><li>How it looks: this round.</li><li>Whether the count "14 / 20" stays. It is in all four, because on long hands the ticks show only about 20 cards and the count is the only total.</li></ul>
-<h3>My own choices in all four (overrule any)</h3>
+<ul><li>How it looks: this round.</li><li>Whether the count "14 / 20" stays. It is in all three, because on long hands the ticks show only about 20 cards and the count is the only total.</li></ul>
+<h3>My own choices in all three (overrule any)</h3>
 <ul><li>Spotlight and Menu are words only, no icons, in the same typeface as Next card.</li>
 <li>Next card keeps the app's one gold-button look (square, gold), but slimmer than today.</li>
 <li>The small diamond at the end of the ticks is gone (diamonds belong to After Dark).</li>
 <li>Nothing touches the card; there is always a gap.</li>
 <li>Next card gets slimmer than today, in all five. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>GATE_R3</p>
+<p>The design gate blocked eight options in words on the way here (variations of one bar, a second frame round the controls, a fourth typeface, new icons for the same two controls). These three passed, with C as the rethink.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
