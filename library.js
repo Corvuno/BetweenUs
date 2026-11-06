@@ -30,7 +30,7 @@ function loadFavourites() {
 function smallCardHTML(c, i) {
   const colour = levelColor(c.level);
   const star = state.favourites.some(f => f.question === c.question) ? '<span class="play-star" aria-label="Starred">★</span>' : '';
-  return `<button type="button" class="play-card" data-i="${i}" style="--lvl:${colour}">${star}<span class="play-cat" style="color:${labelColor(colour)}">${LEVEL_LABELS[c.level] || esc(c.level)}</span><span class="play-q">${esc(translateQ(c))}</span></button>`;
+  return `<button type="button" class="play-card" data-i="${i}" style="--lvl:${colour}">${star}<span class="play-cat" style="color:${labelColor(colour)}">${LEVEL_LABELS[c.level] || esc(c.level)}</span><span class="play-q">${esc(c.question)}</span></button>`;
 }
 
 function renderFavourites() {
