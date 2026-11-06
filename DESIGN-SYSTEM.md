@@ -102,8 +102,10 @@ menu), so the question is the brightest thing.
   left ends, Menu under the right; Spotlight's first-visit hint (`.row-hint`, `--row-hint`) sits under its
   word and retires after the first tap; Menu has no hint. Reason for Jost and `--btn-quiet` rather than the
   celadon Federo of the old play row: they are secondary and must not compete with Next card or the question.
-- Wide screens keep their own arrangement (Menu top left, Spotlight top right, Next card centred below the
-  card, ticks and count right): the same elements, no Back, Three, Twist or hairlines.
+- Wide screens draw the same figure under the card (owner, 2026-11-06): ticks and count centred above, Next card
+  centred between its three hairlines (as long as the card is wide), Spotlight and Menu under the outer ends. The
+  app grid's middle column is Next card's own width (`128 * 1.2px`), so the lines start 6 units from the bar; the
+  100px in `--pcW` is the figure's extra height. Only the header (Selected deck, logo) stays at the top.
 
 ### Three, Twist (moved 2026-11-06, #113)
 Three is a setting in The Deck (`#pickToggle`, Off / On, the same picked / not-picked look as Shuffle and
