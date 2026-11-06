@@ -242,3 +242,20 @@ E. **Rethink: the title opens the menu.** The Menu control leaves the bottom: ta
 
 ## Gate verdict, third try (2026-11-06): A, B, E PASS (E the rethink); C Emblems BLOCK (same icons, new varnish).
 Round 3 goes out as A Title echo, B The hand is the ornament, C Rethink: the title opens the menu.
+
+# Round 4: variations on A (owner chose A), each from a line example in the references
+
+Common: the agreed structure, A's idea (the bottom answers the title's lines), ticks the only colour,
+gold lines only (no preset colour in them, Keeper's choice), no small diamonds, words not boxed.
+The aim of each: Spotlight and Menu become part of the line figure instead of hanging under its ends.
+
+V1. **Rails** (stepped-bars-and-dots: lines that pass above and below a centre piece). The outer two
+    lines run the full width; the middle line breaks for the words, so SPOTLIGHT and MENU sit between two
+    gold rails on the same line as Next card: rail, word, rail, Next card, rail, word, rail.
+V2. **Drop to the word** (thin-gold-on-black and stepped-bars-and-dots: dot ends, right-angle steps).
+    The outer line on each side steps down at its end and ends in a small round dot just above its word,
+    so each line leads to its control.
+V3. **Sunburst on rails** (sunburst-circles-on-navy, top row: a half sunburst seated on two long lines).
+    A low half sunburst rises behind Next card from the rails; the words sit between the rails as in V1.
+(Chevrons dropped before drawing: with words level with Next card, SPOTLIGHT is twice as wide as MENU and
+the chevron runs come out lopsided, against the owner's "centre and balance".)

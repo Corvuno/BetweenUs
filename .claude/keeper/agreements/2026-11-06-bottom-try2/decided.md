@@ -34,6 +34,11 @@ rules (vision, taste, DESIGN-SYSTEM.md, CLAUDE.md) still hold.
   how it looks. Owner: "1 yea, that sounds good, im curious what will hapen this time. Better make it good."
   (2026-11-06) Variations on this structure are allowed; the designs differ in their visual idea.
 
+- **Option A, Title echo, is chosen:** "It's going to be a. I already liked it when I first looked at it.
+  Marvelous. Maybe make some variations based on different examples of lines in the inspiration map..
+  Bonus points if the spotlight and menu fit in better." (2026-11-06, round 3,
+  https://claude.ai/artifact/PoGJFzRipwgAVhA6hxates) Variations on A are now wanted.
+
 ## Open
 
 - (Answered below.) **Twist:** "Where twist should go. No clue yet, though if might be cleaner without it." (2026-11-06)
