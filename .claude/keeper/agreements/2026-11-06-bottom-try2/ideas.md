@@ -148,3 +148,34 @@ controls in all three.
 ## Gate verdict on Round 2, second try (2026-11-06): Bookend PASS, Plain and pretty PASS, Fan BLOCK
 Fan is a variation of Bookend (lines out from Next card, words at their ends). Round goes out with two.
 Named to the owner: Next card slimmer changes the one gold-button spec, so Draw Cards follows.
+
+## Owner on round 2 (2026-11-06)
+"you are supposed to give me 3 to 5 options with atleast one rethink. :-). Add a few more options (and not
+varaitions, options. Like different thoughts." Round 2 (two ways of one design) stays as it was seen
+(https://claude.ai/artifact/4VfgyFjRYwAMparARnkjoo). Round 3 keeps those two as options A and B and adds three.
+
+# Round 3: five options on the agreed structure, words first
+
+Structure as agreed. The ticks stay the only colour under the card in every option.
+
+A. **Title echo** (round 2, with the lines). The title's parallel hairlines run out from Next card.
+   Thought: the bottom answers the title.
+B. **Bare** (round 2, without ornament). Only the ticks, a slim gold Next card, two words, empty space.
+   Thought: nothing added; the ticks are the only flourish.
+C. **The panel.** Everything under the card sits on one framed plate, like the control panel of a deco
+   lift: a fine gold border with stepped corners around the whole group, the ticks along its top edge,
+   Next card the one big gold button on it, Spotlight and Menu engraved small at its foot.
+   Thought: the controls become one object with one edge, instead of pieces loose on the background; the
+   border goes round the group, never round a single control.
+D. **The emblem.** Next card stops being a bar: it is a single centred gold plaque with cut corners, like
+   the centre emblem of the title or a deco badge, and stands alone; Spotlight and Menu sit beneath it as
+   two small words, the ticks above.
+   Thought: the order is made by one shape, a plaque the eye goes to like a seal, not by a line or a
+   frame. Named: the cut corners leave the one gold-button spec for this option only.
+E. **Rethink: the hand is the button.** The ticks and Next card become one control: a single wide bar
+   whose inside is the row of coloured ticks, filling from the left as the hand goes, with NEXT CARD and
+   the count written over it; tapping it draws. Spotlight and Menu are two words under it.
+   Part by part: ticks move inside Next card; the count moves into it; the separate gold bar goes (the
+   bar's gold becomes its frame and its words); Spotlight and Menu stay as words; nothing else changes.
+   Thought: progress and drawing are one act (each draw adds a colour), so they are one object, and
+   there is one thing under the card instead of two.
