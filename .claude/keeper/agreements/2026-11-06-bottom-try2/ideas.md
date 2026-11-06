@@ -280,3 +280,7 @@ Would that work? Or to much? Don't just do. Think and talk" → Keeper's take gi
 # Round 6: the cartouche with the words in its lines, three ways
 1 In the middle line (top/bottom lines full, middle line gives way to the word). 2 In the border (frame's lower
 edge breaks for each word). 3 Lower band (taller frame; lines above, words beneath, inside the frame).
+
+# Round 7 (owner picked round 6 #1; "more room, bigger Next card… try some things… play around with this and
+the old design"; diamond back; count gone): 1 nameplate roomier, 2 ticks as the crown (octagon plate),
+3 open ends (A's lines with double points), 4 stepped plate (raised centre).

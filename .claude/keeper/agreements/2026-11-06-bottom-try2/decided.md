@@ -39,6 +39,14 @@ rules (vision, taste, DESIGN-SYSTEM.md, CLAUDE.md) still hold.
   Bonus points if the spotlight and menu fit in better." (2026-11-06, round 3,
   https://claude.ai/artifact/PoGJFzRipwgAVhA6hxates) Variations on A are now wanted.
 
+- **Round 6, option 1 (words in the middle line of the cartouche), with changes:** "1 in the middle, just give a
+  it a bit more room and make Next card bigger... That be better... Or try some things. You are now being fucking
+  boring... Play around with this, and the old design. I choose the three lines that worked well as well."
+  (2026-11-06, https://claude.ai/artifact/1Z8RLtANZrKrtZBycA9xDZ)
+- **The end-of-hand diamond on the ticks comes back:** "The line had a diamond in the endfor the end of hand
+  thing. Thats lost now." (2026-11-06)
+- **The count goes:** "Numbers can be removed. You can count" (2026-11-06)
+
 ## Open
 
 - (Answered below.) **Twist:** "Where twist should go. No clue yet, though if might be cleaner without it." (2026-11-06)
