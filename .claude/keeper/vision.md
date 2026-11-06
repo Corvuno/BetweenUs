@@ -34,8 +34,8 @@ people or for eight. The presets adjust it to who's at the table.
 ## How it meets people
 
 You open it and draw. Everything beyond the draw (presets, chapters, categories, Twist,
-the ways to play) is there to discover once you're curious. Three and Full screen belong
-right next to the draw. Three especially helps people who are new to it.
+the ways to play) is there to discover once you're curious. Spotlight (full screen) sits on
+the card screen where it fits logically, always reachable. Three is set in The Deck.
 
 For someone looking on their own (a first visitor from a post or a link), it reads like a
 beautiful boxed deck: clearly made for an evening with other people, pretty, and exciting
@@ -130,3 +130,8 @@ attractive about you?"), and long cards with a second question attached.
 - **2026-11-06** — Looks: Art Deco is the language, not a test every element must pass. Owner: "Also;
   not everything should be only deco. It may also just be pretty... That's fine too!" An element can be
   simply beautiful without deco ornament, as long as it sits well with the rest.
+- **2026-11-06** — Spotlight and Three no longer "right next to the draw". Owner (bottom of the screen,
+  try two): "I dont think I knew that was a vision line. Spotlight should be somewhere in the screen where
+  it fits logicaly. So its reachable for the player." and "three moving to the deck feels logical."
+  Removed text: "Three and Full screen belong right next to the draw. Three especially helps people who
+  are new to it."

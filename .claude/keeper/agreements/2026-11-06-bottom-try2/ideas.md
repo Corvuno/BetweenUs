@@ -55,3 +55,28 @@ the draw", and called Played a replacement for progress (it can't show how far).
 they are and invented a Twist feature. F made Spotlight an invisible gesture (rotation lock, car holder,
 reading sideways). All three kept Next card and Menu with no owner words. Not shown to the owner.
 Two blocked sets: per the two-miss rule, back to the owner with questions of fact and taste before a third.
+
+# Round 1, third try (after the owner's answers): models in words
+
+Fixed by the owner: Three to The Deck, Back gone, card for reading only, Spotlight on the card screen
+and reachable, the coloured ticks stay, Twist off the screen (Keeper picked: into the Menu, as the
+owner allowed).
+
+G. **Two places, by what they change.** What changes the evening lives together where the chosen deck
+   already is: The Deck and the Menu, side by side above the card. What acts on this card lives under
+   it: Next card, Spotlight, and the coloured ticks as the hand's line.
+   Why: the owner opens The Deck more than the Menu, and both change the evening, not the card; under
+   the card the player only meets what this card needs. Hint: Spotlight keeps its existing one,
+   "the question takes the stage".
+
+H. **Rethink: everything the thumb touches, in one place.** The top of the screen keeps only the title;
+   the chosen deck moves under the card, so the player finds every control in one place by the thumb,
+   in order of use: Next card first, then The Deck and Spotlight, with the ticks above them. The Menu
+   stops being a separate button: its few items (Played, Favourites, Ways to play, Start over, Twist)
+   sit at the foot of The Deck's sheet.
+   Part by part: Next card stays; Spotlight stays; ticks stay; count only if the long-hand total needs
+   it; Selected deck moves from the top to under the card; the Menu button goes and its items move
+   into The Deck's sheet; Twist goes there too; Back and Three already gone; hints: Spotlight keeps its
+   existing one, The Deck keeps "tap to change".
+   Why: the Menu is opened seldom, so it doesn't earn its own button; the thumb is under the card, and
+   a phone held in one hand reaches the bottom, not the title.

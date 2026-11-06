@@ -36,3 +36,11 @@ loudest thing on screen; ~20 category colours sit right under a card that carrie
   - Menu: a door to the evening's settings and history. Rare, but it needs a visible way in.
   - Twist: a modifier on the current card (open).
   - Hints: explain the controls on the first evening.
+
+## Added for the third check (after the owner's answers)
+
+- **"Selected deck · tap to change"** sits above the card, under the title: it shows the chosen deck
+  (e.g. CUSTOM) and opens The Deck sheet (chapters, categories, shuffle, hand size; Three will join it).
+  The owner opens The Deck more often than the Menu.
+- How often, per the owner: Next card every turn; The Deck now and then; Spotlight now and then;
+  Menu seldom; Twist barely (leaves the screen).

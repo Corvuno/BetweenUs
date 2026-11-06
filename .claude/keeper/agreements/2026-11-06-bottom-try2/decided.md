@@ -16,11 +16,24 @@ rules (vision, taste, DESIGN-SYSTEM.md, CLAUDE.md) still hold.
 - **Back goes:** "Back gone is good." (2026-11-06) Swiping right on the card already goes back.
 - **The card is for reading only:** "Card reading only stays" (2026-11-06)
 
+- **Spotlight stays on the card screen, reachable:** "Spotlight should be somewhere in the screen where it
+  fits logicaly. So its reachable for the player." (2026-11-06) Not behind the Menu.
+- **The coloured ticks stay:** "I like the coloured ticks. They have a sense of progression and add some
+  coloured flusish to the application. If its harmfull or other options are better, let me know"
+  (2026-11-06)
+- **The Menu is opened seldom, The Deck more:** "Almost never, its opend seldom. The Deck gets opened
+  more." (2026-11-06) (A fact about use, not a placement.)
+- **Twist leaves the screen; out or in the Menu, the Keeper picks:** "i dont see it being used… I think you
+  could just leave it out and be fine. Or hide it in the menu. also fine." (2026-11-06)
+  Keeper's pick (named to the owner): Twist leaves the card screen and Spotlight, and stays reachable
+  from the Menu, so nothing is lost for players who do use it.
+
 ## Open
 
-- **Twist:** "Where twist should go. No clue yet, though if might be cleaner without it." (2026-11-06)
-- Whether Next card, Spotlight, Menu and progress stay under the card at all (no owner words).
-- Whether progress keeps showing which categories were played (the colours), or only how far.
+- (Answered below.) **Twist:** "Where twist should go. No clue yet, though if might be cleaner without it." (2026-11-06)
+- Where the Menu's way in sits, and where The Deck's (no owner words; Keeper's work).
+- Whether the count "52 / 76" stays next to the ticks (they overlap on short hands; on long hands the
+  ticks show only ~20, so the count is the only total).
 - What happens to the first-visit hints.
 
 ## Keeper's proposals (not agreed)
