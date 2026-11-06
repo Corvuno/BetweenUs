@@ -47,6 +47,11 @@ rules (vision, taste, DESIGN-SYSTEM.md, CLAUDE.md) still hold.
   thing. Thats lost now." (2026-11-06)
 - **The count goes:** "Numbers can be removed. You can count" (2026-11-06)
 
+- **Final pick: round 5's option A (Title echo) as drawn there.** Owner, with a screenshot of round 5's A
+  (count shown, no end diamond): "Its getting to much. We are going to do this one." (2026-11-06)
+  Keeper's reading, named to the owner: built as pictured (count stays), plus the end-of-hand diamond the owner
+  asked back. Rounds 6 and 7 are not built.
+
 ## Open
 
 - (Answered below.) **Twist:** "Where twist should go. No clue yet, though if might be cleaner without it." (2026-11-06)
