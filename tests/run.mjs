@@ -1800,6 +1800,7 @@ async function run() {
     await bare.evaluate(() => { window.__same = true; });
     await bare.waitForTimeout(1200);
     assert(await bare.evaluate(() => window.__same === true), 'reloaded without sessionStorage');
+    await ctx.unrouteAll({ behavior: 'ignoreErrors' });   // let a request still inside the route finish before the context closes
     await ctx.close();
   });
 
@@ -1821,6 +1822,7 @@ async function run() {
     await upd.waitForFunction(() => window.__same !== true && document.readyState === 'complete', null, { timeout: 5000 });
     const r = await upd.evaluate(() => ({ on: pickMode, lit: document.getElementById('pickToggle').classList.contains('on'), idx: state.currentIndex, side: state.handSide }));
     assert(r.on && r.lit && r.idx === -1 && r.side === null, `after the reload at the start screen: ${JSON.stringify(r)}`);
+    await ctx.unrouteAll({ behavior: 'ignoreErrors' });   // let a request still inside the route finish before the context closes
     await ctx.close();
   });
 
