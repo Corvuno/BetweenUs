@@ -179,3 +179,63 @@ E. **Rethink: the hand is the button.** The ticks and Next card become one contr
    bar's gold becomes its frame and its words); Spotlight and Menu stay as words; nothing else changes.
    Thought: progress and drawing are one act (each draw adds a colour), so they are one object, and
    there is one thing under the card instead of two.
+
+## Gate verdict on round 3 A–E (2026-11-06): A PASS; B, C, D, E BLOCK
+B and D are A's bar at other levels of ornament; C is a plinth-like second frame with a big gold button;
+E put a gold outline round one control and "filling from the left" fails on long hands. Not shown.
+
+# Round 3, second try: five thoughts, each from a different source
+
+What makes these different is where each design takes its look from, not how much decoration is on one
+bar. In every option: ticks are the only colour under the card, Next card is the filled gold button,
+Spotlight and Menu are words, a gap to the card.
+
+A. **Title echo** (passed). Source: the title. Its parallel hairlines run out from Next card; the bottom
+   answers the top.
+B. **The hand is the ornament.** Source: the hand itself. No gold ornament at all; the coloured ticks are
+   drawn larger and stepped like a deco skyline (the current card's tick tallest, stepping down to each
+   side), so the colours of the evening are the decoration and Next card stays plain beneath them.
+   Thought: the flourish the owner likes ("coloured flusish") does the deco work, gold does only the action.
+C. **Card echo.** Source: the card. The card's own open corner brackets (top-left, bottom-right) are
+   repeated at the corners of the control group, at the same weight, with the same gap the card keeps to
+   its text. Thought: the controls belong to the card they act on, a smaller second layer of its world,
+   not a second frame (open corners, never a closed border, nothing touching the card).
+D. **The title's type.** Source: the title's typeface. No lines or shapes added: the count is set in the
+   title's display face (Poiret One) as the one large typographic element, "14 / 20", centred over Next
+   card; Spotlight and Menu in the same face, small. Thought: deco by lettering, the way the title is deco;
+   Next card stays a filled button (not a type-set control).
+E. **Rethink: progress inside the button.** Source: the act of drawing. Next card and the ticks become one
+   control: the filled gold Next card carries the hand's ticks as a band along its lower edge (the same
+   sliding window as today on long hands, faded ends), with NEXT CARD above the band on the gold. The whole
+   bar is one tap target; the ticks inside it are not separately tappable.
+   Part by part: the separate tick row goes into the button; the count stays as a small number above it;
+   Next card stays filled gold; Spotlight and Menu stay words; nothing else changes.
+   Thought: each draw adds a colour to the thing you press; one object under the card instead of two.
+
+## Gate verdict on round 3 second try (2026-11-06): A PASS, B PASS; C, D, E BLOCK
+C repeats the card's brackets (card loses its distinction); D adds a typeface and makes progress louder;
+E is a merge, not used differently. Not shown.
+
+B, clarified: the count stays as today's small number under the skyline; taller ticks show only where the
+current card is (coming ticks stay flat and low), and making the colours the one ornament is the intended
+answer to "about 20 colours under the card": they become the deliberate flourish, not noise next to gold
+lines, icons and boxes.
+
+# Round 3, third try: a third option and a rethink
+
+C. **Emblems.** Source: the owner's references (emblems-twelve-fan-shapes, corners-and-elements-sheet).
+   The generic icons were part of the mess; here Spotlight and Menu each get a small emblem drawn for this
+   deck in gold line: a half sunburst for Spotlight (the stage light), three stepped bars for Menu (a
+   stack of pages), each with its word under it. Next card plain filled gold. No lines between them.
+   Thought: the bottom speaks in made-for-this-deck symbols, the vision's "original ornament in place of
+   stock design", instead of in lines (A) or in the hand's colours (B).
+E. **Rethink: the title opens the menu.** The Menu control leaves the bottom: tapping the title
+   "Between Us" opens the menu, which is the thing it rarely needs to be (owner: "Almost never, its opend
+   seldom"). Under the card only the ticks with the count, Next card, and Spotlight centred beneath it.
+   Part by part: ticks and count stay; Next card stays; Spotlight stays, now alone and centred; the Menu
+   control is gone from the bottom, its job taken by the title; a first-visit hint under the title says
+   "tap for the menu" and goes after the first tap, like the other hints.
+   Used differently: the player reaches the menu through the game's name, not a control; the bottom has
+   one action and one view, nothing else.
+   Departure named: the agreed structure had Menu quiet under the card; this option moves it, which only
+   the owner can accept.
