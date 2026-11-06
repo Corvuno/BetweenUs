@@ -274,3 +274,9 @@ something truly interesting and not ham handed trying to force a stupid idea." (
 2 Fan and count (layered-diamonds-and-fans): a fan above Next card with the count in its heart; lines step down to the words.
 3 Bow (stepped-bars-and-dots): double-outlined bow wings either side of Next card, lines through to dot ends.
 4 Setback (corners sheet, stepped towers): doubled stepped lines fall from Next card like a tower's setbacks; words on the lowest steps.
+
+## Owner (2026-11-06): "What is you take cartouche and put the menu and spotlight in the spaces of the lines?
+Would that work? Or to much? Don't just do. Think and talk" → Keeper's take given; owner: "Can you make a few options?"
+# Round 6: the cartouche with the words in its lines, three ways
+1 In the middle line (top/bottom lines full, middle line gives way to the word). 2 In the border (frame's lower
+edge breaks for each word). 3 Lower band (taller frame; lines above, words beneath, inside the frame).
