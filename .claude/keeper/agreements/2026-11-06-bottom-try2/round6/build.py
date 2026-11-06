@@ -296,7 +296,7 @@ def c_border(h=False):
     def side(m):
         return L(m(124),92,m(48),92,.45) + L(m(124),99,m(34),99,.55) + L(m(124),106,m(48),106,.45)
     s_ += mirror(side)
-    s_ += gapbox(78,118,SW+12,12) + gapbox(297,118,MW+12,12)
+    s_ += gapbox(78,118,SW+12,12) + gapbox(297,118,SW+12,12)
     s_ += sword(78,121.8,'SPOTLIGHT') + sword(297,121.8,'MENU')
     s_ += bar(134.5,85,106,28)
     if h: s_ += hint(78, 146)
@@ -308,7 +308,7 @@ def c_band(h=False):
         return L(m(122),86,m(44),86,.45) + L(m(122),92,m(36),92,.55) + L(m(122),98,m(44),98,.45) + L(m(122),104,m(30),104,.25,.8)
     s_ += mirror(side)
     s_ += sword(80,120,'SPOTLIGHT') + sword(295,120,'MENU')
-    s_ += bar(134.5,82,106,44)
+    s_ += bar(134.5,90,106,28)
     if h: s_ += hint(80, 156)
     return s_
 
@@ -320,11 +320,11 @@ def phone(inner):
 designs = [
  ('Round 5 · Cartouche', d_cart, 'As shown in round 5, for comparison: Spotlight and Menu under the frame\'s tips.', ['The words sit outside the frame.']),
  ('1 · In the middle line', c_mid, 'The top and bottom lines run the full width of each side; the middle line breaks and the word takes its place.',
-  ['The words read as part of the line work: a nameplate reading Spotlight, Next card, Menu.', 'The top and bottom lines keep both sides symmetric, though Spotlight is twice as long as Menu.', 'Against it: Spotlight fills nearly its whole side, so on the left the middle line almost disappears; Spotlight sits about 10 points from Next card.']),
+  ['Your idea as you described it: the words read as part of the line work, a nameplate reading Spotlight, Next card, Menu.', 'The top and bottom lines keep both sides symmetric, though Spotlight is twice as long as Menu.', 'Against it: Spotlight fills nearly its whole side, so on the left the middle line almost disappears; Spotlight sits about 10 points from Next card.']),
  ('2 · In the border', c_border, 'A\'s three lines stay inside the frame untouched; the frame\'s lower edge breaks and each word is set into it, like a legend set into the rim of a nameplate.',
-  ['The inside stays pure ornament; the words belong to the frame itself.', 'The words sit lower than Next card and off to the sides, the furthest from it of the three.', 'Against it: the frame has two breaks in its lower edge, which makes it read lighter at the bottom than at the top.']),
+  ['The inside stays pure ornament; the words belong to the frame itself.', 'The words sit lower than Next card and off to the sides, the furthest from it of the three.', 'Both breaks are the same width, so the lower edge stays symmetric although Menu is the shorter word.', 'Against it: the frame has two breaks in its lower edge, which makes it read lighter at the bottom than at the top.']),
  ('3 · Lower band', c_band, 'The frame is taller: the lines fill the upper half of each side, and the words sit beneath them inside the frame, with a fine line between.',
-  ['Words and lines each get their own room, so neither is squeezed.', 'Next card is taller to match the frame, the clearest centre of the three.', 'Against it: the tallest of the three, and Next card gets back some of the weight we took away.']),
+  ['Words and lines each get their own room, so neither is squeezed.', 'Next card stays slim, centred in the frame.', 'Against it: the tallest frame of the three, so the whole figure takes more of the screen.']),
 ]
 
 TITLEHINT = (f'<svg viewBox="0 0 375 200" role="img" aria-hidden="true"><image href="{TOP}" x="0" y="0" width="375" height="447.5"/>'
@@ -387,7 +387,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Next card gets slimmer than today, in all of them.</li>
 <li>No small diamonds, though the references use many: you reserved them for After Dark. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>GATE_R6</p>
+<p>The design gate passed 1 and 2; in 1, Spotlight sits about 10 points from Next card, which is yours to judge. It blocked 3 at first because Next card had grown back to almost today\'s height; redrawn with the slim Next card.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
