@@ -201,8 +201,6 @@ designs = [
   ['Each line leads to its control, so the words are tied to the figure instead of floating.', 'Keeps A\'s look almost as it is; both drops sit the same distance from the centre.', 'Against it: the words still sit below the line, so the bottom is a little taller than A.']),
  ('V2 · Converge', v_conv, 'From stepped-bars-and-dots (the bow-shaped dividers): the three lines on each side leave Next card spread apart and narrow to one point above each word, like a bow.',
   ['Each side becomes one shape that ends exactly on its control; the words belong to the figure.', 'Words stay below and apart from Next card, as in A.', 'Against it: angled lines are less like the title, whose lines are all level.']),
- ('V3 · Gathered under the action', v_base, 'From dividers-gold-on-slate (dividers with a second short line under the centre): A\'s lines as they are; under Next card one fine line, and the two words gathered on it at the centre, split by a short upright line.',
-  ['The words move from the far edges to the centre axis, under the thing they sit next to; the whole bottom is one centred stack.', 'Still well below Next card, so a thumb aiming for it does not land on them.', 'Against it: Spotlight and Menu sit close to each other, so the two small words are easier to mix up than when they are apart.']),
 ]
 
 TITLEHINT = (f'<svg viewBox="0 0 375 200" role="img" aria-hidden="true"><image href="{TOP}" x="0" y="0" width="375" height="447.5"/>'
@@ -264,7 +262,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Nothing touches the card; there is always a gap.</li>
 <li>Next card gets slimmer than today, in all of them. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>The design gate passed V1, V2 and V3. It blocked three others: rails with the words between them (half a box round each word, Spotlight too close to Next card), a sunburst behind Next card (it crowded the count), and lines ending in rings (the same idea as V1 with a curve).</p>
+<p>The design gate passed V1 and V2. It blocked four others: rails with the words between them (half a box round each word, Spotlight too close to Next card), a sunburst behind Next card (it crowded the count), lines ending in rings (V1 with a curve), and the two words gathered together under Next card (right where the thumb lands, and too close to each other).</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>

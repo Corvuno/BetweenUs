@@ -262,3 +262,5 @@ the chevron runs come out lopsided, against the owner's "centre and balance".)
 
 ## Gate on round 4 (2026-11-06): V2 PASS; V1 BLOCK (mis-tap, rails close words in: now stated as risks);
 V3 Sunburst BLOCK (crowds the count) → replaced by V3 Converge (bow-shaped dividers). V2 made symmetric.
+Further gate blocks (2026-11-06): ring ends (V1 with a curve), gathered under the action (under the thumb, words
+too close). Round 4 goes out as A + V1 Drop to the word + V2 Converge.
