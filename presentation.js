@@ -248,6 +248,7 @@ function menuStates() {
   return {
     cats: [document.getElementById('valCats').textContent, handSizeLabel(state.cardLimit)],
     start: total ? [`${seenCount} seen`, `${total - seenCount} left`] : [],
+    twist: currentTwist ? ['on'] : [],
     played: [drawn ? `${drawn} drawn so far` : 'Nothing drawn yet', ...(saved ? [`${saved} saved`] : [])],
     favs: [starred ? `${starred} starred` : 'None starred yet'],
   };
@@ -255,6 +256,9 @@ function menuStates() {
 
 function fillMenu() {
   const states = menuStates();
+  // Twist acts on the card in front of you: dim when there is none (start, end of a hand, a wildcard)
+  document.querySelectorAll('#d-twist, #s-twist').forEach(line => line.classList.toggle('disabled', !canTwist()));
+  document.getElementById('twistAct').textContent = currentTwist ? 'Undo' : 'Twist';
   const tokCats = document.getElementById('tokCats');
   document.querySelectorAll('[data-menu-state]').forEach((/** @type {HTMLElement} */ el) => {
     const spans = states[el.dataset.menuState].map(text => Object.assign(document.createElement('span'), { textContent: text }));
@@ -319,6 +323,7 @@ function leaveMenuFor(openNext) {
 const MENU_ACTIONS = {
   cats: () => leaveMenuFor(() => /** @type {any} */ (window).openCats()),   // openCats is published by ui.js
   start: startOver,
+  twist: () => { if (canTwist()) { toggleTwist(); closeAllDrawers(); } },
   played: trigger => leaveMenuFor(() => { renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); }),
   favs: trigger => leaveMenuFor(() => { renderFavourites(); openDrawer('favsDrawer', trigger); }),
   help: trigger => { hintRetire('ways'); leaveMenuFor(() => openDrawer('helpDrawer', trigger)); },
@@ -646,9 +651,6 @@ function renderShell() {
   // that the main-screen Shuffle token is gone.
   document.querySelectorAll('.shuffle-toggle-opt').forEach(b =>
     b.classList.toggle('active', b.dataset.mode === state.randomMode));
-  // Fullscreen mirror of the Draw-three toggle
-  const pp = document.getElementById('partyPick'), pt = document.getElementById('pickToggle');
-  if (pp && pt) { pp.classList.toggle('on', pt.classList.contains('on')); }
 }
 
 // Back has something to go back to once a card is behind it, or while a card brought back from Played or
@@ -656,10 +658,6 @@ function renderShell() {
 function canGoBack() { return state.currentIndex > 0 || !!broughtBack; }
 // The hand has begun: a card is drawn, Three's options for the first card are up, or a card was brought back.
 function handBegun() { return state.currentIndex >= 0 || state.pickerOpen || !!broughtBack; }
-// The main Back button also waits for the first card (it has nothing to go back to).
-function syncBackButton() {
-  document.getElementById('btn-prev')?.classList.toggle('disabled', state.currentIndex < 0 && !broughtBack);
-}
 
 function updateDrawMore() {
   // This runs after every deck-state change (nextCard, skipCard, initDeck,
@@ -673,14 +671,8 @@ function updateDrawMore() {
 
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
 
-  // Twist is a lens on a drawn card — nothing to twist before the first
-  // draw or on the end-of-round summary.
-  [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-    if (btn) btn.classList.toggle('disabled', !shownCard());
-  });
-  // Three and Spotlight wait for the first card of a hand too (back-of-card
-  // start screen). Unlike Twist they stay usable on the end-of-hand screen,
-  // where the row is swapped out anyway. Exception: with Three already ON it
+  // Three and Spotlight wait for the first card of a hand (back-of-card
+  // start screen). They stay usable on the end-of-hand screen. Exception: with Three already ON it
   // stays live on the start screen, so it can be switched off (never on).
   // (Reads the button's 'on' class: pickMode itself is declared in ui.js,
   // which loads after this file.)
@@ -691,7 +683,6 @@ function updateDrawMore() {
      screen shows the start state */
   const begun = handBegun();
   if (spotBtn) spotBtn.classList.toggle('disabled', !begun);
-  syncBackButton();
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;

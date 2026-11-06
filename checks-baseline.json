@@ -34,7 +34,7 @@
   "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 19 to the 15 allowed.": 1,
   "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 20 to the 15 allowed.": 1,
   "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 24 to the 15 allowed.": 1,
-  "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed.": 1,
+  "presentation.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 31 to the 15 allowed.": 1,
   "presentation.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 2,
   "presentation.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 7,
   "presentation.js | sonarjs/void-use | Remove this use of the \"void\" operator.": 3,

@@ -131,7 +131,18 @@ async function pointerHold(page, selector, ms) {
   }, { selector });
 }
 
-// Three, Spotlight and Twist wait for the first card of a hand — draw it.
+// Three lives in The Deck sheet and Twist in the menu now. Most checks flip Three through its own element's click (what key 3 and the
+// fixed-set switch-off do); the check "Three is set in The Deck" taps the real Off/On words.
+const toggleThree = page => page.evaluate(() => document.getElementById('pickToggle').click());
+// Back has no button any more: a swipe right on the card (or the arrow key).
+const goBack = page => swipe(page, '#card', 120, 0);
+// Twist: its line in the menu (the menu closes by itself when it worked)
+async function twistFromMenu(page) {
+  await page.locator('#btn-menu').click(); await page.waitForTimeout(900);
+  await page.locator('[data-menu="twist"]:visible').click(); await page.waitForTimeout(500);
+}
+
+// Three and Spotlight wait for the first card of a hand — draw it.
 async function drawFirstIfNeeded(page) {
   if ((await cardParts(page)).index === 0) { await page.locator('#btn-next').click(); await page.waitForFunction(() => !document.getElementById('pickToggle').classList.contains('disabled'), null, { timeout: 4000 }); }
 }
@@ -225,6 +236,25 @@ async function run() {
     await page.waitForTimeout(300);
     const after = await cardParts(page);
     assert(after.index === before.index - 1, `expected -1, got ${before.index} -> ${after.index}`);
+  });
+
+  // A thumb rarely swipes a straight line: a slanted back swipe is still a back swipe (#117).
+  await check('slanted swipe: mostly sideways always goes back or forward and never skips; only a clearly downward swipe skips', async () => {
+    for (const [dx, dy, expect] of [[120, 90, -1], [110, 100, -1], [90, 70, -1], [-110, 100, 1], [-90, 80, 1]]) {
+      const before = await cardParts(page);
+      await swipe(page, '#card', dx, dy, { thenClick: true });
+      await page.waitForTimeout(350);
+      const after = await cardParts(page);
+      assert(after.total === before.total, `swipe (${dx}, ${dy}) skipped a card`);
+      assert(after.index === before.index + expect, `swipe (${dx}, ${dy}): expected ${expect > 0 ? 'forward' : 'back'} one card, got ${before.index} -> ${after.index}`);
+      if (expect < 0) { await swipe(page, '#card', -120, 0); await page.waitForTimeout(350); } else { await swipe(page, '#card', 120, 0); await page.waitForTimeout(350); }
+    }
+    // a long diagonal that is neither sideways nor clearly down does nothing
+    const before = await cardParts(page);
+    await swipe(page, '#card', 60, 100);
+    await page.waitForTimeout(350);
+    const after = await cardParts(page);
+    assert(after.index === before.index && after.total === before.total, `a diagonal swipe did something: ${JSON.stringify(before)} -> ${JSON.stringify(after)}`);
   });
 
   // ── E. Swipe down skips the current card ────────────────────────────────
@@ -501,7 +531,7 @@ async function run() {
     // Three waits for the first card of a hand: draw one, then turn it on
     // (turning pick mode on then draws the three options itself)
     await drawFirstIfNeeded(page);
-    await page.locator('#pickToggle').click();
+    await toggleThree(page);
     await page.waitForTimeout(400);
     const picker = page.locator('#cardPicker');
     assert(await picker.evaluate(el => el.classList.contains('open')), 'picker did not open');
@@ -514,7 +544,7 @@ async function run() {
     assert(!(await picker.evaluate(el => el.classList.contains('open'))), 'picker did not close');
     const q = await questionText(page);
     assert(q === chosenText.trim(), `card did not flip to chosen option (${q} vs ${chosenText})`);
-    await page.locator('#pickToggle').click(); // turn pick mode back off
+    await toggleThree(page); // turn pick mode back off
     await page.waitForTimeout(300);
   });
 
@@ -640,8 +670,8 @@ async function run() {
     assert((await starOn()) === was, 'star did not toggle back');
     await page.evaluate(() => toggleTwist());
     await page.waitForTimeout(200);
-    const tw = await page.evaluate(() => { const b = document.getElementById('partyBtnTwist'); return { svg: !!b.querySelector('svg'), key: !!b.querySelector('.party-key'), lbl: b.querySelector('.row-lbl').textContent, active: b.classList.contains('active') }; });
-    assert(tw.svg && tw.key && tw.lbl === 'Twist' && tw.active, 'Twist button in Spotlight lost its icon, key hint or label: ' + JSON.stringify(tw));
+    const tw = await page.evaluate(() => ({ line: document.getElementById('party-number').textContent.trim().length > 0, buttons: !!document.getElementById('partyBtnTwist') || !!document.getElementById('partyPick') }));
+    assert(tw.line && !tw.buttons, 'Spotlight shows the Twist line and has no Twist or Three buttons: ' + JSON.stringify(tw));
     await page.evaluate(() => clearTwist());
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
@@ -747,7 +777,7 @@ async function run() {
   });
 
   await check('end of hand: Back on the list side (button, arrow key, swipe right) turns to Intermezzo; on Intermezzo it goes back a card as before', async () => {
-    await page.locator('#btn-prev').click(); await imWaitSide('intermezzo');
+    await goBack(page); await imWaitSide('intermezzo');
     assert(await page.locator('#card').evaluate(el => el.classList.contains('is-start') && !el.classList.contains('is-hand-list')), 'not back on the Intermezzo card');
     assert((await imBtn()) === 'Tap to flip card', 'button did not go back to "Tap to flip card"');
     await page.locator('#card').click(); await page.waitForTimeout(1000);   // a tap on the card flips as well (0.9s turn)
@@ -763,7 +793,7 @@ async function run() {
     await imWaitSide('intermezzo');
     // Intermezzo: Back is the old Back — the last card of the hand
     const n = await page.evaluate(() => state.visibleDeck.length);
-    await page.locator('#btn-prev').click();
+    await goBack(page);
     await page.waitForTimeout(500);
     const st = await page.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, back: document.getElementById('card').classList.contains('is-start'), body: document.body.classList.contains('showing-hand-summary') }));
     assert(st.side === null && st.idx === n - 1 && !st.back && !st.body, `Back from Intermezzo: ${JSON.stringify(st)}`);
@@ -1001,26 +1031,28 @@ async function run() {
     assert(r.all === 12, `All should be every unseen card (12), got ${r.all}`);
   });
 
-  await check('start screen: Three, Spotlight and Twist are dimmed (hints bright), shake and do nothing until the first card; usable after it', async () => {
+  await check('start screen: Three (in The Deck), Spotlight and Twist (in the menu) are dimmed, shake and do nothing until the first card; usable after it', async () => {
     await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // fresh hand, nothing drawn
     await page.waitForTimeout(300);
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
     const taughtBefore = await page.evaluate(() => document.body.className);
-    for (const id of ['pickToggle', 'btnParty', 'btnTwist']) {
-      const info = await page.evaluate((id) => {
-        const b = document.getElementById(id);
-        return { dis: b.classList.contains('disabled'), top: +getComputedStyle(b.querySelector('.row-top')).opacity, hint: +getComputedStyle(b.querySelector('.row-hint')).opacity };
-      }, id);
-      assert(info.dis && info.top < 0.5 && info.hint === 1, `${id} not dimmed with a bright hint: ${JSON.stringify(info)}`);
-      await page.locator('#' + id).click();
-      assert(await page.locator('#' + id).evaluate(el => el.classList.contains('row-shake')), `${id} did not shake`);
-      await page.waitForTimeout(450);
-    }
-    // Back is dimmed the same way (whole button), shakes, and does nothing; Menu is not dimmed
-    const bk = await page.evaluate(() => ({ dis: document.getElementById('btn-prev').classList.contains('disabled'), op: +getComputedStyle(document.getElementById('btn-prev')).opacity, menu: +getComputedStyle(document.getElementById('btn-menu')).opacity }));
-    assert(bk.dis && bk.op < 0.5 && bk.menu === 1, `back not dimmed (or menu dimmed): ${JSON.stringify(bk)}`);
-    await page.locator('#btn-prev').click();
-    assert(await page.locator('#btn-prev').evaluate(el => el.classList.contains('row-shake')), 'back did not shake');
+    // Spotlight: the word dims, its hint stays bright; it shakes and does nothing
+    const spot = await page.evaluate(() => { const b = document.getElementById('btnParty'); return { dis: b.classList.contains('disabled'), lbl: +getComputedStyle(b.querySelector('.row-lbl')).opacity, hint: +getComputedStyle(b.querySelector('.row-hint')).opacity }; });
+    assert(spot.dis && spot.lbl < 0.5 && spot.hint === 1, `Spotlight not dimmed with a bright hint: ${JSON.stringify(spot)}`);
+    await page.locator('#btnParty').click();
+    assert(await page.locator('#btnParty').evaluate(el => el.classList.contains('row-shake')), 'Spotlight did not shake');
+    await page.waitForTimeout(450);
+    // Three: its setting in The Deck dims and shakes
+    const three = await page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), op: +getComputedStyle(b).opacity }; });
+    assert(three.dis && three.op < 0.5, `Three not dimmed: ${JSON.stringify(three)}`);
+    await toggleThree(page);
+    assert(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake')), 'Three did not shake');
+    await page.waitForTimeout(450);
+    // Twist: its menu line is dimmed, and Menu is not
+    await page.evaluate(() => fillMenu());
+    const tw = await page.evaluate(() => ({ dis: document.getElementById('d-twist').classList.contains('disabled'), op: +getComputedStyle(document.getElementById('d-twist')).opacity, menu: +getComputedStyle(document.getElementById('btn-menu')).opacity }));
+    assert(tw.dis && tw.op < 0.5 && tw.menu === 1, `Twist line not dimmed (or Menu dimmed): ${JSON.stringify(tw)}`);
+    assert(!(await page.evaluate(() => { toggleTwist(); return !!currentTwist; })), 'Twist worked before the first card');
     await page.keyboard.press('ArrowLeft');
     await page.waitForTimeout(450);
     assert(!(await page.locator('#partyOverlay').evaluate(el => el.classList.contains('open'))), 'Spotlight opened before the first draw');
@@ -1032,7 +1064,7 @@ async function run() {
     for (const id of ['pickToggle', 'btnParty']) {
       assert(!(await page.locator('#' + id).evaluate(el => el.classList.contains('disabled'))), `${id} still dimmed after the first card`);
     }
-    assert(!(await page.locator('#btn-prev').evaluate(el => el.classList.contains('disabled'))), 'back still dimmed after the first card');
+    assert(await page.evaluate(() => canTwist()), 'Twist still unavailable after the first card');
     // Spotlight opened after the first draw leaves the card's category title showing
     await page.click('#btnParty');
     await page.waitForTimeout(200);
@@ -1330,6 +1362,68 @@ async function run() {
     assert(r.fillable > 200 && r.fillable < r.states - 200, `the random states are one-sided (${r.fillable} of ${r.states} fillable)`);
   });
 
+  await check('under the card (phone): Next card between hairlines, Spotlight and Menu as plain 44px words that do not touch it; no Back, Three or Twist buttons', async () => {
+    await closeCategorySheet();
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    const r = await page.evaluate(() => {
+      const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, w: b.width, h: b.height }; };
+      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnTwist', 'partyBtnTwist', 'partyPick'].filter(id => document.getElementById(id)),
+        lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: document.querySelectorAll('#btnParty svg, #btn-menu svg').length };
+    });
+    assert(!r.gone.length, `old buttons are still in the page: ${r.gone}`);
+    assert(Math.abs(r.next.h - 34) < 0.5, `Next card is ${r.next.h}px tall, not the slim 34px`);
+    assert(r.lines.length === 2 && r.lines.every(n => n === 3), `Next card should have three hairlines a side: ${r.lines}`);
+    assert(r.icons === 0, 'Spotlight or Menu has an icon');
+    for (const [name, b] of [['Spotlight', r.spot], ['Menu', r.menu]]) {
+      assert(b.h >= 44 && b.w >= 44, `${name}'s tap area is ${b.w} x ${b.h}`);
+      assert(b.t >= r.next.b, `${name}'s tap area overlaps Next card`);
+    }
+    assert(r.spot.l < r.next.l && r.menu.r > r.next.r, 'Spotlight and Menu are not under the outer ends of the lines');
+  });
+
+  await check('Three is set in The Deck: Off and On words in the settings line at the foot of the sheet, above Draw Cards; it works and shakes at the start screen', async () => {
+    await closeCategorySheet();
+    await freshHand({ three: false });
+    await page.evaluate(() => openCats());
+    await page.waitForTimeout(900);
+    const lay = await page.evaluate(() => { const t = document.getElementById('pickToggle').getBoundingClientRect(), g = document.getElementById('catGoBtn').getBoundingClientRect(), s = document.getElementById('shuffleToggle').getBoundingClientRect(); return { tb: t.bottom, gt: g.top, vis: t.height > 0, sameLine: Math.abs(t.top - s.top) < 200, labels: [...document.querySelectorAll('#pickToggle .three-opt')].map(e => e.textContent.trim()) }; });
+    assert(lay.vis && lay.tb <= lay.gt && lay.labels.join() === 'Off,On', `Three setting in The Deck: ${JSON.stringify(lay)}`);
+    // at the start screen it is dimmed: a tap on On shakes and does nothing
+    await page.locator('#pickToggle .three-opt[data-pick="on"]').click({ force: true });
+    assert(!(await page.evaluate(() => pickMode)), 'Three switched on from the start screen');
+    await closeCategorySheet();
+    await drawFirstIfNeeded(page);
+    await page.waitForTimeout(1200);
+    await page.evaluate(() => openCats());
+    await page.waitForTimeout(900);
+    await page.locator('#pickToggle .three-opt[data-pick="on"]').click();
+    await waitPicker(true);
+    const on = await page.evaluate(() => ({ mode: pickMode, active: document.querySelector('#pickToggle .three-opt.active').dataset.pick }));
+    assert(on.mode && on.active === 'on', `after tapping On: ${JSON.stringify(on)}`);
+    await page.locator('#pickToggle .three-opt[data-pick="off"]').click();
+    await page.waitForTimeout(400);
+    const off = await page.evaluate(() => ({ mode: pickMode, active: document.querySelector('#pickToggle .three-opt.active').dataset.pick, open: state.pickerOpen }));
+    assert(!off.mode && off.active === 'off' && !off.open, `after tapping Off: ${JSON.stringify(off)}`);
+    await closeCategorySheet();
+  });
+
+  await check('Twist is a line in the menu: it twists the card in front of you, closes the menu, and the line then undoes it', async () => {
+    await closeCategorySheet();
+    await freshHand({ three: false });
+    await page.locator('#card').click();
+    await waitForCardIndex(page, 1);
+    await page.waitForTimeout(1100);
+    await twistFromMenu(page);
+    assert(await page.evaluate(() => !!currentTwist && document.getElementById('twistSentence').textContent.length > 0 && !document.querySelector('#menuDrawer.open')), 'Twist from the menu did not twist the card and close the menu');
+    await page.locator('#btn-menu').click(); await page.waitForTimeout(900);
+    assert((await page.locator('#twistAct').textContent()) === 'Undo', 'the Twist line does not offer Undo while twisted');
+    await page.locator('[data-menu="twist"]:visible').click(); await page.waitForTimeout(500);
+    assert(await page.evaluate(() => !currentTwist), 'a second tap on the Twist line did not undo it');
+  });
+
   await check('Three is live right after the first draw (button and Spotlight not dimmed) and the 3 key toggles it on the main screen', async () => {
     await freshHand({ three: false });
     await page.locator('#btn-next').click();
@@ -1351,13 +1445,13 @@ async function run() {
     await waitForCardIndex(page, 1);
     await page.waitForTimeout(1100);
     const before = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit }));
-    await page.locator('#pickToggle').click();   // on: the very next card is three options
+    await toggleThree(page);   // on: the very next card is three options
     await waitPicker(true);
     let mid = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit, step: state.pickOptions.step, planned: state.pickOptions.planned.question, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ').trim() }));
     assert(mid.hand === before.hand && mid.lim === before.lim && mid.lim === 5, `switching on changed the hand or the limit: ${JSON.stringify({ b: before.hand, m: mid.hand, lim: mid.lim })}`);
     assert(mid.deck.join('|') === before.deck.join('|') && mid.step === 1 && mid.idx === 0, 'switching on restarted or changed the hand');
     assert(!/place to begin|draw a card/i.test(mid.q), 'switching on went back to the start card');
-    await page.locator('#pickToggle').click();   // off with the options up: the planned card takes the step
+    await toggleThree(page);   // off with the options up: the planned card takes the step
     await page.waitForTimeout(500);
     const after = await page.evaluate(() => ({ open: state.pickerOpen, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ').trim(), cur: state.visibleDeck[state.currentIndex].question, sit: Object.keys(state.sitOut).length, hand: state.handNo, len: state.visibleDeck.length, lim: state.cardLimit, qq: [...state.sessionLog].map(c => c.question) }));
     assert(!after.open && after.idx === 1 && after.cur === mid.planned, 'off with options up did not show the planned card for that step');
@@ -1367,10 +1461,10 @@ async function run() {
     await page.locator('#btn-next').click();   // next: one card at that step
     await page.waitForTimeout(400);
     assert(!(await page.evaluate(() => state.pickerOpen)) && (await cardParts(page)).index === 3, 'with Three off the next card was not a single card');
-    await page.locator('#pickToggle').click();   // on again: next card is three again
+    await toggleThree(page);   // on again: next card is three again
     await waitPicker(true);
     assert((await pickInfo()).step === 3, 'switching on again did not offer the next step');
-    await page.locator('#pickToggle').click();
+    await toggleThree(page);
     await page.waitForTimeout(500);
   });
 
@@ -1434,7 +1528,7 @@ async function run() {
     r = await newHandPick();
     assert(r.step === 0 && r.n === 3 && r.idx === -1 && r.hand === handBefore + 2, `after Draw more: ${JSON.stringify(r)}`);
     // With Three off the first card of the next hand stays a single card
-    await page.locator('#pickToggle').click();
+    await toggleThree(page);
     assert(!(await page.evaluate(() => state.pickerOpen)) && (await page.evaluate(() => state.currentIndex)) === 0, 'Three off with the first card of the hand\'s options up: the planned card should take the step');
     await page.evaluate(() => drawMore());
     await page.waitForTimeout(300);
@@ -1442,7 +1536,7 @@ async function run() {
     assert(!r.open && r.idx === 0, `Three off, Draw more: ${JSON.stringify(r)}`);
   });
 
-  await check('Spotlight open/close with Three options up: the options move along, Next stays put, Close/Back/Twist/Three/Next are tappable over them', async () => {
+  await check('Spotlight open/close with Three options up: the options move along, Next stays put, Close/Back/Next are tappable over them', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();
     await waitForCardIndex(page, 1);
@@ -1450,7 +1544,7 @@ async function run() {
     await page.locator('#card').click();   // step 1 shown
     await waitForCardIndex(page, 2);
     await page.waitForTimeout(400);
-    await page.locator('#pickToggle').click();   // Three on: options for step 2
+    await toggleThree(page);   // Three on: options for step 2
     await waitPicker(true);
     const qs0 = (await pickInfo()).qs;
     await page.locator('#btnParty').click();
@@ -1460,7 +1554,7 @@ async function run() {
     const texts = await page.evaluate((qs) => qs.map(q => translateQ({ question: q })), qs0);
     assert(s.qs.length === 3 && s.qs.every(t => texts.includes(t)), 'Spotlight shows different options');
     // each control is the topmost thing at its own centre (not covered by the options)
-    for (const id of ['partyExit', 'partyPrevBtn', 'partyBtnTwist', 'partyPick', 'partyNext', 'partyStar']) {
+    for (const id of ['partyExit', 'partyPrevBtn', 'partyNext', 'partyStar']) {
       const ok = await page.evaluate((id) => { const el = document.getElementById(id); const r = el.getBoundingClientRect(); const t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!t && (t === el || el.contains(t)); }, id);
       assert(ok, `#${id} is covered while the options show`);
     }
@@ -1469,39 +1563,38 @@ async function run() {
     await page.locator('#partyNext').click();
     await page.waitForTimeout(300);
     assert(await page.evaluate(() => state.pickerOpen && state.currentIndex) === idx, 'Next drew a card under the options');
-    await page.locator('#partyBtnTwist').click();
+    await page.keyboard.press('t');   // the T key: Twist has no button in Spotlight
     await page.waitForTimeout(200);
-    assert(await page.evaluate(() => !!currentTwist || document.getElementById('partyBtnTwist').classList.contains('active')), 'Twist did not respond over the options');
+    assert(await page.evaluate(() => !!currentTwist), 'Twist did not respond over the options');
     await page.locator('#partyExit').click();   // Close: the options go back to the main screen
     await page.waitForTimeout(500);
     s = await page.evaluate(() => ({ party: document.getElementById('partyPicker').classList.contains('open'), main: document.getElementById('cardPicker').classList.contains('open'), qs: [...document.querySelectorAll('#pickerOptions .pick-opt-q')].map(e => e.textContent.trim()), pm: state.partyMode }));
     assert(s.main && !s.party && !s.pm && s.qs.length === 3 && s.qs.every(t => texts.includes(t)), 'options did not come back to the main screen');
     await page.locator('#btnParty').click();   // and in again, then switch Three off from inside Spotlight with the options up
     await page.waitForTimeout(400);
-    await page.locator('#partyPick').click();
+    await page.keyboard.press('3');   // key 3: Three has no button in Spotlight
     await page.waitForTimeout(500);
     s = await page.evaluate(() => ({ open: state.pickerOpen, three: pickMode, idx: state.currentIndex, sit: Object.keys(state.sitOut).length }));
     assert(!s.open && !s.three && s.idx === 2 && s.sit === 0, `Three off in Spotlight with options up: ${JSON.stringify(s)}`);
     await page.locator('#partyExit').click();
     await page.waitForTimeout(400);
-    // "‹ One card" is gone; the Three toggle (top-right) does that job and shows gold while the options are up
+    // "‹ One card" is gone; Three's setting does that job
     assert(await page.locator('#partyPickerBack').count() === 0, '#partyPickerBack ("‹ One card") is still in the page');
-    await page.locator('#pickToggle').click();
+    await toggleThree(page);
     await waitPicker(true);
     await page.locator('#btnParty').click();
     await page.waitForTimeout(400);
-    s = await page.evaluate(() => { const b = document.getElementById('partyPick'); const r = b.getBoundingClientRect(); const c = document.querySelector('#partyOverlay .party-count-wrap').getBoundingClientRect(); return { on: b.classList.contains('on'), colour: getComputedStyle(b).color, top: r.top < 120 && r.left > innerWidth / 2, countShown: getComputedStyle(document.getElementById('party-count')).visibility !== 'hidden' && c.height > 0 }; });
-    assert(s.on && s.top, `Three toggle while picking: ${JSON.stringify(s)}`);
+    s = await page.evaluate(() => { const c = document.querySelector('#partyOverlay .party-count-wrap').getBoundingClientRect(); return { countShown: getComputedStyle(document.getElementById('party-count')).visibility !== 'hidden' && c.height > 0 }; });
     assert(s.countShown, 'the count is hidden while picking');
-    await page.locator('#partyPick').click();
+    await page.keyboard.press('3');
     await page.waitForTimeout(500);
     s = await page.evaluate(() => ({ open: state.pickerOpen, three: pickMode }));
-    assert(!s.open && !s.three, 'the Three toggle did not switch Three off from the options');
+    assert(!s.open && !s.three, 'key 3 did not switch Three off from the options');
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
   });
 
-  await check('Spotlight layout: arrows in the bottom corners, celadon Close between, Twist/Three top corners, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
+  await check('Spotlight layout: arrows in the bottom corners, celadon Close between, no Twist or Three buttons, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();
     await waitForCardIndex(page, 1);
@@ -1509,10 +1602,11 @@ async function run() {
     await page.locator('#btnParty').click();
     await page.waitForTimeout(500);
     const box = id => page.evaluate(id => { const r = document.querySelector(id).getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom, cx: (r.left + r.right) / 2 }; }, id);
-    const [pv, ex, nx, tw, pk, st, ct] = await Promise.all(['#partyPrevBtn', '#partyExit', '#partyNext', '#partyBtnTwist', '#partyPick', '#partyStar', '#party-count'].map(box));
+    const [pv, ex, nx, st, ct] = await Promise.all(['#partyPrevBtn', '#partyExit', '#partyNext', '#partyStar', '#party-count'].map(box));
     assert(pv.l < ex.l && ex.r < nx.r && Math.abs(pv.t - ex.t) < 30 && ex.t > 844 - 140, 'back / Close / next are not in one bottom row');
     assert(Math.abs(ex.cx - 195) < 4, 'Close is not centred at the bottom');
-    assert(tw.l < 100 && pk.r > 290 && tw.t < 140 && pk.t < 140, 'Twist and Three are not in the top corners');
+    assert(!(await page.locator('#partyBtnTwist, #partyPick').count()), 'Spotlight still has Twist or Three buttons');
+    assert(Math.abs(ct.l + ct.r - 390) < 6, 'the count is not centred at the top');
     assert(st.t >= ct.b - 2 && Math.abs(st.cx - ct.cx) < 6, 'the star is not under the count');
     assert(await page.evaluate(() => getComputedStyle(document.querySelector('.twist-div')).display === 'none'), 'the divider under the question is showing without a Twist');
     assert(await page.evaluate(() => !!document.querySelector('#partyExit svg') && getComputedStyle(document.getElementById('partyExit')).color === 'rgb(169, 199, 182)'), 'Close is not celadon (like the main Spotlight button) with the Spotlight symbol');
@@ -1531,7 +1625,7 @@ async function run() {
     const turned = await page.evaluate(() => { const ov = document.getElementById('partyOverlay'); return { turn: ov.dataset.turn, w: ov.offsetWidth, h: ov.offsetHeight, tf: getComputedStyle(ov).transform }; });
     assert(turned.turn === 'cw' && turned.w === 844 && turned.h === 390 && turned.tf !== 'none', `Sideways did not turn the content a quarter: ${JSON.stringify(turned)}`);
     // Three up in the turned frame: three columns, vertical dividers, like a real sideways phone
-    await page.locator('#partyPick').click();
+    await page.keyboard.press('3');
     await waitPicker(true);
     await page.waitForTimeout(300);
     const cols = await page.evaluate(() => {
@@ -1542,19 +1636,19 @@ async function run() {
     assert(cols.q === '21px' && cols.div === '0.65', `turned Three sizes: ${cols.q} / ${cols.div}`);
     await page.locator('#partyOrientBtn').click();
     assert(await page.evaluate(() => !document.getElementById('partyOverlay').dataset.turn), 'Upright did not drop the turn');
-    await page.locator('#partyPick').click();
+    await page.keyboard.press('3');
     await page.waitForTimeout(400);
     // PC: no switch, options stacked one above the other
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.waitForTimeout(300);
     assert(!(await vis()).shown, 'the Sideways switch shows on a PC');
-    await page.locator('#partyPick').click();
+    await page.keyboard.press('3');
     await waitPicker(true);
     await page.waitForTimeout(300);
     const rows = await page.evaluate(() => [...document.querySelectorAll('#partyPickerOptions .pick-opt')].map(e => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, b: r.bottom }; }));
     assert(rows.length === 3 && rows[0].b <= rows[1].t + 1 && rows[1].b <= rows[2].t + 1 && Math.abs(rows[0].l - rows[2].l) < 2, `PC options not stacked: ${JSON.stringify(rows)}`);
     assert(await page.evaluate(() => document.querySelectorAll('#partyPickerOptions .pick-div').length === 2), 'expected 2 dividers between 3 options');
-    await page.locator('#partyPick').click();
+    await page.keyboard.press('3');
     await page.waitForTimeout(300);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.locator('#partyExit').click();
@@ -1653,7 +1747,7 @@ async function run() {
     await page.locator('#btn-next').click(); await waitForCardIndex(page, 2);
     await page.locator('#btn-next').click(); await waitForCardIndex(page, 3);
     await page.waitForTimeout(1100);
-    await page.locator('#btn-prev').click(); await waitForCardIndex(page, 2);
+    await goBack(page); await waitForCardIndex(page, 2);
     await page.waitForTimeout(400);
     await page.evaluate(() => { document.getElementById('pickToggle').click(); });   // Three on, mid-hand, behind the front
     await swipe(page, '#card', 0, 100);
@@ -1675,15 +1769,15 @@ async function run() {
   await check('start screen: with Three ON its button is not dimmed and switches Three off (then dims again); with Three off it stays dimmed; Spotlight and Twist stay dimmed', async () => {
     await freshHand({ three: true });
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
-    const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b.querySelector('.row-top')).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: document.getElementById('btnTwist').classList.contains('disabled') }; });
+    const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: !canTwist() }; });
     let s = await st();
     assert(!s.dis && s.on && s.mode && s.top === 1 && s.spotDis && s.twistDis, `Three on at start: ${JSON.stringify(s)}`);
-    await page.locator('#pickToggle').click();
+    await toggleThree(page);
     await page.waitForTimeout(450);
     s = await st();
     assert(!s.on && !s.mode && s.dis && s.top < 0.5, `after switching off at start: ${JSON.stringify(s)}`);
     assert(!(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake'))) && (await cardParts(page)).index === 0, 'switching off at start shook or drew a card');
-    await page.locator('#pickToggle').click();   // off + dimmed: shakes, does nothing
+    await toggleThree(page);   // off + dimmed: shakes, does nothing
     assert(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake')), 'dimmed Three did not shake');
     await page.waitForTimeout(450);
     assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
@@ -1758,7 +1852,7 @@ async function run() {
     assert(await alive(), 'reloaded in the middle of a hand');
 
     await upd.evaluate(() => { while (state.currentIndex < state.visibleDeck.length - 1) _nextCardBase(); });
-    await upd.locator('#pickToggle').click();   // Three on: it has to survive the reload
+    await toggleThree(upd);   // Three on: it has to survive the reload
     await ctx.setOffline(true);
     await upd.evaluate(() => showHandSummary());   // Intermezzo, but offline
     await upd.waitForTimeout(500);
@@ -2732,7 +2826,7 @@ async function run() {
       // Back: the hand's own card again, nothing moved
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      await goBack(pg); await pg.waitForTimeout(900);
       assert((await onScreen(pg)).q === hand.deck[2] && (await handFacts(pg)).idx === 2, 'Back did not return to the card we were on');
       // Draw: the next card of the hand
       await openFromMenu(pg, 'favs');
@@ -2744,7 +2838,7 @@ async function run() {
       await pg.waitForTimeout(500);
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      await goBack(pg); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), 'Back did not return to the start card');
     } finally { await ctx.close(); }
   });
@@ -2754,18 +2848,18 @@ async function run() {
     try {
       await drawCards(pg, 2);
       await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
-      await pg.locator('#pickToggle').click(); await pg.waitForTimeout(200);
+      await toggleThree(pg); await pg.waitForTimeout(200);
       await pg.evaluate(() => nextCard()); await pg.waitForFunction(() => state.pickerOpen, null, { timeout: 4000 });
       const options = await pg.evaluate(() => state.pickOptions.options.map(c => c.question));
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
       const shown = await pg.evaluate(() => ({ picker: state.pickerOpen, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), fav: state.favourites[0].question }));
       assert(!shown.picker && shown.q === shown.fav, `Three: the card is not the single current card: ${JSON.stringify(shown)}`);
-      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(700);
+      await goBack(pg); await pg.waitForTimeout(700);
       assert(await pg.evaluate(o => state.pickerOpen && JSON.stringify(state.pickOptions.options.map(c => c.question)) === JSON.stringify(o), options), 'Back did not return the same three options');
       await pg.evaluate(() => { choosePick(state.pickOptions.options[0], state.pickOptions.options, state.pickOptions.step); });
       await pg.waitForTimeout(700);
-      await pg.locator('#pickToggle').click();   // Three off again
+      await toggleThree(pg);   // Three off again
       // Spotlight shows the brought-back card, and the star is that card's
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
@@ -2779,7 +2873,7 @@ async function run() {
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ') === state.favourites[0].question && !state.handSide && state.currentIndex === state.visibleDeck.length), 'the end-of-hand screen does not show the brought-back card');
-      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      await goBack(pg); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => state.handSide === 'intermezzo' && state.currentIndex === state.visibleDeck.length), 'Back did not return to the end-of-hand screen');
     } finally { await ctx.close(); }
   });
@@ -2803,7 +2897,7 @@ async function run() {
       assert(await pg.evaluate(q => !state.favourites.some(f => f.question === q), fav), 'the star acted on another card');
       await pg.locator('#cardStar').click(); await pg.waitForTimeout(200);
       // Twist on the brought-back card
-      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(300);
+      await twistFromMenu(pg);
       assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work on a brought-back card');
       // Skip (swipe down) drops the brought-back card and skips nothing
       await swipe(pg, '#card', 0, 100); await pg.waitForTimeout(900);
@@ -2846,13 +2940,13 @@ async function run() {
       assert(await pg.evaluate(() => state.handSide === 'list'), 'not on the list side');
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      await goBack(pg); await pg.waitForTimeout(900);
       const back = await pg.evaluate(() => ({ side: state.handSide, closing: document.getElementById('card').classList.contains('mv-build') || document.getElementById('card').classList.contains('mv-live') }));
       assert(back.side === 'list' && !back.closing, `Back landed on ${JSON.stringify(back)}`);
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      assert(await pg.evaluate(() => !document.getElementById('btnTwist').classList.contains('disabled')), 'Twist is disabled with a brought-back card up');
-      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(300);
+      assert(await pg.evaluate(() => canTwist()), 'Twist is disabled with a brought-back card up');
+      await twistFromMenu(pg);
       assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work at the end of a hand on a brought-back card');
     } finally { await ctx.close(); }
   });
@@ -2862,16 +2956,16 @@ async function run() {
       for (const settle of [150, 2500]) {
         const { ctx, pg } = await freshApp(opts);
         try {
-          const flags = () => pg.evaluate(() => ['btn-prev', 'btnTwist', 'btnParty'].map(id => document.getElementById(id).classList.contains('disabled')));
+          const flags = () => pg.evaluate(() => [!canGoBack(), !canTwist(), document.getElementById('btnParty').classList.contains('disabled')]);
           await pg.locator('#btn-next').click(); await pg.waitForTimeout(2500);
           await pg.locator('#cardStar').click(); await pg.waitForTimeout(300);
-          await pg.locator('#pickToggle').click(); await pg.waitForTimeout(200);   // Three on (it cannot be switched on at the start card)
+          await toggleThree(pg); await pg.waitForTimeout(200);   // Three on (it cannot be switched on at the start card)
           const startOver = async () => { await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900); await pg.locator('[data-menu="start"]:visible').click(); await pg.waitForTimeout(1200); };
           const bringAndBack = async () => {
             await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
             await pg.locator('[data-menu="favs"]:visible').click(); await pg.waitForTimeout(1000);
             await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(settle);
-            await pg.locator('#btn-prev').click(); await pg.waitForTimeout(2500);   // everything settles
+            await goBack(pg); await pg.waitForTimeout(2500);   // everything settles
           };
           await startOver();
           const fresh = await flags();

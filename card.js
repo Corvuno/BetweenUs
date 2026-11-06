@@ -9,9 +9,8 @@
 // changing who's telling the story or what it costs to tell it — never a
 // request to critique or reverse an answer already given, and never an
 // abstract argument-for/against move (this deck is stories, not positions).
-// The trigger lives in the control row (Twist/partyBtnTwist) and in the
-// party header; tapping it doesn't replace anything on the card — it just
-// shows the modifier at the bottom of the card, underneath the question
+// The trigger is the Twist line in the Menu sheet (and the T key in Spotlight); using it doesn't replace
+// anything on the card — it just shows the modifier at the bottom of the card, underneath the question
 // (#twistSentence, main mode) or in the party header (#party-number, party
 // mode). Never survives a new card; flipToCard/clearTwist reset it every
 // draw.
@@ -26,7 +25,6 @@ function pickTwist() {
   const pool = MODIFIERS.filter(m => m !== currentTwist);
   return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
 }
-function twistLabel() { return 'Twist'; }
 // Applies (or clears) the twist text on a counter element. party-number shows
 // only the Twist sentence (the count lives in #party-count), so clearing it
 // just empties it out, same as twistSentence.
@@ -43,15 +41,6 @@ function applyTwistToCounter(el) {
 function renderTwist() {
   applyTwistToCounter(document.getElementById('twistSentence'));
   applyTwistToCounter(document.getElementById('party-number'));
-  [document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-    if (!btn) return;
-    // btnTwist carries an SVG icon alongside its label — overwriting the
-    // button's full textContent would wipe the icon out along with it, so
-    // only the label span gets the text update (both buttons have one).
-    const label = btn.querySelector('.tt-label') || btn;
-    label.textContent = twistLabel();
-    btn.classList.toggle('active', !!currentTwist);
-  });
 }
 // Twist is a lens on a drawn card, so it only makes sense while one is
 // actually showing — not before the first draw (currentIndex is -1) and
@@ -59,13 +48,16 @@ function renderTwist() {
 // hasCurrentCard() lives in presentation.js, next to atEnd() — safe to call
 // from here since this only ever runs from a click, well after every module
 // has loaded.
-function toggleTwist() {
+// No card showing, or a wildcard (it already asks you to ask your own): nothing to twist.
+function canTwist() {
   const card = shownCard();
-  if (!card || card.level === WILDCARD_LEVEL) { shakeRowBtn(document.getElementById('btnTwist')); return; }   // no card, or a wildcard (already asks you to ask your own): can't be used right now — shake, no words
+  return !!card && card.level !== WILDCARD_LEVEL;
+}
+function toggleTwist() {
+  if (!canTwist()) return;
   if (currentTwist) { clearTwist(); return; }   // tap again to untwist
   currentTwist = pickTwist();
   renderTwist();
-  hintRetire('twist');   // it has actually worked once — its hint is done
   flashTwist();
 }
 // Restart a one-shot CSS animation class on an element.
@@ -76,15 +68,12 @@ function replayClass(el, cls, ms) {
   el.classList.add(cls);
   setTimeout(() => el.classList.remove(cls), ms);
 }
-// A play-row button (Three, Spotlight, Twist) tapped at a moment it can't be
+// Spotlight or Three tapped at a moment it can't be
 // used: it shakes (blinks instead under reduced motion). Does not count as
 // using it, so its hint stays.
 function shakeRowBtn(btn) { replayClass(btn, 'row-shake', 400); }
-// Twist just landed: the word Twist and the new line on the card light up
-// together, then settle.
+// Twist just landed: the new line on the card lights up, then settles.
 function flashTwist() {
-  const lbl = document.querySelector('#btnTwist .tt-label');
-  replayClass(lbl, 'twist-lit', 520);
   replayClass(document.getElementById('twistSentence'), 'twist-lit', 520);
 }
 function clearTwist() { currentTwist = null; renderTwist(); }

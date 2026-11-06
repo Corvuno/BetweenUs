@@ -27,11 +27,6 @@
   });
 })();
 
-[document.getElementById('btnTwist'), document.getElementById('partyBtnTwist')].forEach(btn => {
-  if (btn) btn.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
-});
-
-
 // ── INIT ──────────────────────────────────────────────────────────────────────
 if (MASTER_SAFE || WORKPLACE_MODE) {
   state.safeMode = true;
@@ -102,10 +97,6 @@ document.getElementById('btn-next').addEventListener('click', () => {
   if (state.handSide === 'intermezzo') { flipHandList(); return; }
   nextCard();
 });
-document.getElementById('btn-prev').addEventListener('click', function() {
-  if (this.classList.contains('disabled')) { shakeRowBtn(this); return; }   // before the first card: shake, nothing else
-  prevCard();
-});
 
 // Card star
 document.getElementById('cardStar').addEventListener('click', e => {
@@ -143,6 +134,17 @@ document.getElementById('card').addEventListener('click', e => {
   updateDeckInfo();
 });
 
+// What a finished touch on the card means: a swipe that is mostly sideways always moves through the hand
+// (left = next, right = back) and never skips; only a swipe that is clearly downward skips. In between
+// (a long diagonal) nothing happens, so a slanted back swipe is never read as a skip.
+function swipeAction(dx, dy, ms) {
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (ms >= 400 || Math.abs(dx) <= 50) return null;
+    return dx < 0 ? 'next' : 'prev';
+  }
+  return dy > 65 && dy > Math.abs(dx) * 2 ? 'skip' : null;
+}
+
 // Card touch gestures — one handler owns all of them (swipe left/right to
 // advance/reverse, swipe down to skip), so there's exactly one place that
 // decides what a touch on the card means. Registered non-passive so it can
@@ -158,17 +160,16 @@ document.getElementById('card').addEventListener('click', e => {
     startTime = Date.now();
   }, { passive: true });
   card.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-    if (dy > 65 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+    const action = swipeAction(e.changedTouches[0].clientX - startX, e.changedTouches[0].clientY - startY, Date.now() - startTime);
+    if (action === 'skip') {
       // never on the end/summary card
       if (state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length) {
         e.preventDefault();
         skipCard();
       }
-    } else if (Date.now() - startTime < 400 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    } else if (action) {
       e.preventDefault();
-      dx < 0 ? nextCard() : prevCard();
+      action === 'next' ? nextCard() : prevCard();
     }
   }, { passive: false });
 })();
@@ -628,30 +629,35 @@ document.getElementById('btnSave') && document.getElementById('btnSave').addEven
 
 let pickMode = false;
 
-/* Three on or off: the flag, the button's lit state, and everything that mirrors it */
+/* Three on or off: the flag, the setting's lit state in The Deck, and everything that mirrors it */
 function setPickMode(on) {
   pickMode = on;
-  document.getElementById('pickToggle')?.classList.toggle('on', on);
+  const toggle = document.getElementById('pickToggle');
+  toggle?.classList.toggle('on', on);
+  toggle?.querySelectorAll('.three-opt').forEach(opt => opt.classList.toggle('active', /** @type {HTMLElement} */ (opt).dataset.pick === (on ? 'on' : 'off')));
   updateDrawMore();   // start screen: Three off dims again, until the first card
-  renderShell();      // mirror the toggle onto the fullscreen Three button
+  renderShell();
 }
 
 
 (function(){
-  const btn = document.getElementById('pickToggle');
-  if (!btn) return;
+  const toggle = document.getElementById('pickToggle');
+  if (!toggle) return;
 
   /* Three is a layer on the hand, not a different hand: it never touches the
      card count or restarts anything. On: the very next card is three options
      (when there is a next step). Off: the next card is the step's single
      planned card; with the options on screen, the planned card takes the step
      now and the other two go back (no pick, so nothing sits out). */
-  btn.addEventListener('click', () => {
-    if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
-    setPickMode(!pickMode);
+  toggle.addEventListener('click', e => {
+    if (toggle.classList.contains('disabled')) { shakeRowBtn(toggle); return; }   // before the first card
+    // a tap on Off or On sets it; a click on the setting as a whole (key 3, the fixed-set switch-off) flips it
+    const chosen = /** @type {HTMLElement | null} */ (/** @type {Element} */ (e.target).closest('[data-pick]'))?.dataset.pick;
+    const on = chosen ? chosen === 'on' : !pickMode;
+    if (on === pickMode) return;
+    setPickMode(on);
 
     if (pickMode) {
-      hintRetire('three');
       // Turning this on IS the draw — show the next step's three straight
       // away (only from the front of the hand, and only if there is a next step).
       if (state.currentIndex === state.reachedIdx && state.currentIndex + 1 < state.visibleDeck.length) nextCard();
@@ -1003,11 +1009,6 @@ applyToggleUI();
   // (state.cardLimit, set from DEFAULT_LIMIT in state.js) as selected.
   if (typeof syncLimitButtons === 'function') syncLimitButtons();
   $('tokLine').classList.add('in');
-
-  /* fullscreen mirror of the pick-3 toggle */
-  /* fullscreen Draw-three button forwards taps; its label + state come from renderShell() */
-  const pp=$('partyPick');
-  if(pp) pp.addEventListener('click',e=>{ e.stopPropagation(); $('pickToggle').click(); });
 
   /* ── fullscreen idle fade (concept B: resting state is only the card) ── */
   const party=$('partyOverlay'); let idleT=null, partyWasOpen=false;

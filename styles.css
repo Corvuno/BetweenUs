@@ -38,6 +38,8 @@
      copper = the deck's own frame, celadon = the play-style row,
      --preset = the active preset's colour (set from renderShell). */
   --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--row-hint:#6f8579;--text-helper:#8c8071;--celadon-bright:#eef7f1;
+  --under-row-h:90px;   /* the row under Next card: Spotlight's word and hint, or Change and Save at the end of a hand, whichever is taller */
+  --gold-btn-h:34px;   /* the gold button's height: Next card under the card and Draw Cards in The Deck */
   --preset:var(--gold);
   --preset-deep:var(--preset); /* a shade deeper, for filled areas (start-card diamond + rule); set in renderShell */
 }
@@ -363,8 +365,6 @@ body.showing-hand-summary .card-question{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
   letter-spacing:.01em;opacity:1;
 }
-.twist-trigger.disabled{opacity:.32;}   /* still takes the tap, so it can shake */
-.party-twist.disabled{opacity:.32;pointer-events:none;}
 /* end-of-hand message fade (deck.js renderEndMessage); the Next/Back swap is Web Animations in card.js */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
 
@@ -398,7 +398,8 @@ body.showing-hand-summary .card-question{
 @keyframes cardDrawFade{from{opacity:0;}to{opacity:1;}}
 
 /* ── CONTROLS ── */
-.controls-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:12px;opacity:0;transform:translateY(7px);transition:opacity .34s .2s var(--ease-out),transform .34s .2s var(--ease-out);}
+.controls-wrap{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);justify-items:center;row-gap:11px;grid-template-rows:auto auto auto minmax(var(--under-row-h),auto);margin-top:12px;
+  container-type:inline-size;opacity:0;transform:translateY(7px);transition:opacity .34s .2s var(--ease-out),transform .34s .2s var(--ease-out);}
 .controls-wrap.in{opacity:1;transform:none;}
 /* the progress dots: one per card, up to 20 on screen at once — past that
    the window slides to keep the current card visible, everything scrolled
@@ -454,19 +455,41 @@ body.showing-hand-summary .card-question{
   font-family:'Poiret One',cursive;font-size:15px;letter-spacing:.22em;
   line-height:1;color:var(--gold);white-space:nowrap;
 }
-.nav-row{display:flex;align-items:center;gap:10px;width:100%;}
-.btn-sq{flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.12);color:#7a6e60;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:border-color .2s,color .2s,opacity .2s,transform .16s var(--ease-out);}
-.btn-sq:active{transform:scale(.97);}
-@media (hover:hover) and (pointer:fine){.btn-sq:hover{border-color:var(--border-strong);color:var(--cream);}}
-.nav-row .btn-sq{border-color:rgba(201,168,76,.2);color:var(--celadon);}
-.nav-row .btn-sq:active,.nav-row .btn-sq:focus-visible{border-color:var(--gold);color:var(--gold);}
-@media (hover:hover) and (pointer:fine){.nav-row .btn-sq:hover{border-color:var(--gold);color:var(--gold);}}
-/* Back before the first card: whole button (frame + symbol) dimmed like the play row, no gold. */
-.nav-row #btn-prev.disabled{opacity:.32;}
-.nav-row #btn-prev.disabled:active,.nav-row #btn-prev.disabled:focus-visible{border-color:rgba(201,168,76,.2);color:var(--celadon);}
-@media (hover:hover) and (pointer:fine){.nav-row #btn-prev.disabled:hover{border-color:rgba(201,168,76,.2);color:var(--celadon);}}
-.btn-sq svg{width:19px;height:19px;}
-.btn-draw{flex:1;--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer;transition:opacity .2s,color .2s,font-size .2s,letter-spacing .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+/* Under the card (agreement #113): the ticks and count, then Next card between three hairlines a side (the title's figure),
+   then Spotlight and Menu as plain words under the outer ends of the lines. One grid, in --u: 1px of the 375-wide mockup,
+   so 360 and 412 phones get the same figure scaled. The rows below are the phone's; the wide-screen block places the
+   same parts around the card. */
+.controls-wrap > *{--u:min(1.2px,calc(100cqw / 339));}
+.progress,.prog-count,.draw-more-btn,.deck-info{grid-column:1 / -1;}
+.progress{grid-row:1;} .prog-count{grid-row:2;}
+.nav-row{display:contents;}
+.nav-lines{grid-row:3;justify-self:stretch;height:var(--gold-btn-h);
+  --line:color-mix(in srgb,var(--gold) 70%,transparent);--line-end:color-mix(in srgb,var(--gold) 20%,transparent);
+  --gap:calc(6 * var(--u));   /* bar edge to the first hairline end */
+  --y-mid:calc(var(--gold-btn-h) / 2 - .5px);   /* the middle line; the others sit 6px above and below */
+  background-repeat:no-repeat;
+  background-size:calc(100% - 22 * var(--u)) 1px,calc(100% - 6 * var(--u)) 1px,calc(100% - 22 * var(--u)) 1px;}   /* outer ends 40, 24, 40 from the screen edge */
+.nav-lines--l{grid-column:1;margin-inline-end:var(--gap);
+  background-image:linear-gradient(to left,var(--line),var(--line-end)),linear-gradient(to left,var(--line),var(--line-end)),linear-gradient(to left,var(--line),var(--line-end));
+  background-position:100% calc(var(--y-mid) - 6px),100% var(--y-mid),100% calc(var(--y-mid) + 6px);}
+.nav-lines--r{grid-column:3;margin-inline-start:var(--gap);
+  background-image:linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(to right,var(--line),var(--line-end));
+  background-position:0 calc(var(--y-mid) - 6px),0 var(--y-mid),0 calc(var(--y-mid) + 6px);}
+#btn-next{grid-column:2;grid-row:3;min-width:calc(128 * var(--u));padding-inline:calc(14 * var(--u));white-space:nowrap;}
+/* Spotlight and Menu: plain words in the quiet tone, no icon, no box. The tap area is 44px tall and starts a row-gap under Next card. */
+.quiet-word{display:flex;flex-direction:column;align-items:flex-start;min-width:44px;min-height:44px;padding:4px calc(6 * var(--u)) 0;
+  background:none;border:none;cursor:pointer;color:var(--btn-quiet);text-align:left;
+  font:400 11.5px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;transition:color .2s;}
+.quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
+@media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
+#screenRow{grid-column:1;grid-row:4;justify-self:start;}
+#btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
+#btnParty .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
+#btnParty.disabled .row-lbl{opacity:.32;}   /* the word waits for the first card; its hint stays bright */
+/* End of a hand: Change and Save take Spotlight's row (Menu stays at its right end), so swapping them in never moves the card */
+#handActionsRow{grid-column:1 / -1;grid-row:4;padding-inline-end:64px;}
+#handActionsRow::before,#handActionsRow::after{display:none;}
+.btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,font-size .2s,letter-spacing .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 /* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
 @media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
 .btn-draw:active{transform:scale(.97);}
@@ -766,11 +789,9 @@ body.showing-hand-summary .card-question{
 .party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .38s var(--ease-out);}
 .party-overlay.idle .party-chrome{opacity:.28;}
 /* grid (not space-between) so the count is centred on the screen regardless of Close/★ widths */
-/* L2: Twist top-left, Three top-right, the count between them with the star under it (the count needs room from the top edge) */
+/* the count in the middle with the star under it (the count needs room from the top edge) */
 .party-top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;padding:max(58px,env(safe-area-inset-top)) 26px 0;}
-.party-top .party-count-wrap{justify-self:center;}
-.party-top .party-twist{justify-self:start;padding:0 !important;}
-.party-top .party-pick{justify-self:end;padding:0 !important;}
+.party-top .party-count-wrap{grid-column:2;justify-self:center;}
 /* L2: back and next in the bottom corners, Close in gold between them, where Spotlight opened */
 .party-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
 .party-prev-btn{justify-self:start;} .party-next-btn{justify-self:end;}
@@ -789,8 +810,6 @@ body.showing-hand-summary .card-question{
 .party-chrome .party-star{color:var(--gold);opacity:.18;transition:opacity .2s;}
 @media (hover:hover) and (pointer:fine){.party-chrome .party-star:hover{color:var(--gold);opacity:.65;}}
 .party-chrome .party-star.on{opacity:1;}
-.party-twist.active .row-lbl,.party-pick.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* same underline as #screenRow .on */
-.party-twist svg,.party-pick svg{width:16px;height:16px;flex-shrink:0;}
 .party-key{display:none;color:var(--muted);margin-left:6px;}
 
 /* count: a short rule each side (hidden on phone portrait), the star underneath */
@@ -908,7 +927,6 @@ body.showing-hand-summary .card-question{
 @media (min-width:900px) and (min-height:501px){
   .party-frame{--fi:24px;--fs:40px;}
   .party-top{padding:44px 88px 0;}
-  .party-top .party-twist,.party-top .party-pick{gap:10px;}
   .pc-rule{display:flex;} .pc-rule::before{width:40px;}
   .party-count{font-size:18px;letter-spacing:.24em;}
   .party-bottom{padding:16px 88px 46px;}
@@ -943,12 +961,10 @@ body.showing-hand-summary .card-question{
 
 
 
-/* Draw Three, Full Screen (which is also how Twist's party-mode double
-   normally gets reached) and Twist itself all assume a hand you're mixing
+/* Spotlight (and Three in The Deck, and Twist in the menu) assume a hand you're mixing
    or drawing from at random — none of that applies to Colbert/The 36's
-   fixed, in-order sequence, so the whole row disappears rather than
-   leaving three now-meaningless buttons in place. */
-body.fixed-seq-mode .screen-row{display:none;}
+   fixed, in-order sequence, so they disappear rather than sit there meaningless. */
+body.fixed-seq-mode :is(.screen-row,#pickToggle,.seg:has(#pickToggle),#d-twist,#s-twist){display:none;}
 
 /* ── PICK-3 MODE ── */
 .screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
@@ -960,16 +976,7 @@ body.fixed-seq-mode .screen-row{display:none;}
 .screen-row--hand{display:none;}
 body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
 body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
-/* Change and Save look and behave like Three / Spotlight / Twist: they share the #screenRow rules (see "The play-style row" below). */
-.pick-toggle{
-  background:transparent;border:none;border-bottom:1px solid transparent;
-  color:var(--btn-quiet);
-  padding:15px 8px;cursor:pointer;transition:color .2s,border-bottom-color .2s;white-space:nowrap;flex-shrink:0;
-  display:inline-flex;align-items:center;gap:5px;
-}
-@media (hover:hover) and (pointer:fine){.pick-toggle:hover{color:rgba(240,232,216,.85);border-bottom-color:var(--border-strong);}}
-.pick-toggle.on{color:var(--gold);border-bottom-color:var(--border-strong);}
-.pick-toggle .pt-card{width:16px;height:16px;flex-shrink:0;}
+/* Change and Save: the end-of-hand row (see "The end-of-hand row" below). */
 
 /* ── DRAW THREE · normal screen: one card split three ways ──
    The whole picker is a single card on the drawn card's own surface, border and gold
@@ -1023,12 +1030,12 @@ body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;
 @media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:.88rem;}}
 @media(min-width:768px){
   .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.twist-sentence.twist{font-size:.98rem;}
-  .btn-sq{width:48px;font-size:1.1rem;}.btn-draw{font-size:.85rem;letter-spacing:.16em;}
+  .btn-draw{font-size:.85rem;letter-spacing:.16em;}
   .cat-toggle-lbl{font-size:.8rem;}
 }
 @media(min-width:1024px){
   .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.twist-sentence.twist{font-size:1.05rem;}
-  .btn-sq{width:52px;}.btn-draw{font-size:.88rem;}
+  .btn-draw{font-size:.88rem;}
   /* chrome sized for a 364px mobile card reads thin at 720px — scale the rail,
      corner brackets and star (mobile 3px rail/24px corners/.9rem star).
      Rail is 5px: desktop uses the hard-edged "intense" gilt.js derivation (see
@@ -1309,6 +1316,7 @@ body.tok-taught .tok-hint{display:none;}
 .menu-rule{height:1px;background:var(--dim);margin:10px 26px;}
 .menu-line{display:grid;grid-template-columns:20px 1fr auto;grid-template-rows:auto auto;column-gap:16px;row-gap:3px;align-items:center;width:100%;padding:14px 26px;background:none;border:none;text-align:left;cursor:pointer;transition:background .15s;}
 @media (hover:hover) and (pointer:fine){.menu-line:hover{background:rgba(255,255,255,.035);}}
+.menu-line.disabled,.chapter.disabled{opacity:.32;cursor:default;}   /* Twist with no card in front of you */
 .menu-icon{grid-row:1/3;color:var(--celadon);opacity:.8;display:flex;}
 .menu-icon svg{width:18px;height:18px;}
 .menu-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);}
@@ -1418,7 +1426,7 @@ body.hint-ways-taught .menu-hint{display:none;}
 }
 @media(min-width:1024px){
   /* small surfaces were phone-sized on a monitor */
-  .pick-toggle,.btn-fullscreen{padding:15px 6px;}
+  .btn-fullscreen{padding:15px 6px;}
   .drawer-title{font-size:.85rem;}
   .cat-area{--pick-size:.85rem;}
   .help-content p{font-size:1.1rem;}
@@ -1435,7 +1443,6 @@ body.hint-ways-taught .menu-hint{display:none;}
   .card-level{font-size:1.05rem;letter-spacing:.2em;}
   .tok{font-size:.85rem;}
   .btn-draw{font-size:.9rem;}
-  .btn-sq{width:54px;}
 }
 @media(min-width:1600px){
   .app{max-width:1000px;}
@@ -1480,8 +1487,9 @@ body.hint-ways-taught .menu-hint{display:none;}
    here left a permanent ~24px sliver visible even while "closed". */
 
 /* Arc / Random: a plain row of choices, picked like everything else in the sheet. */
-.shuffle-toggle,.limit-row{display:flex;}
-.shuffle-toggle-opt,.limit-btn{--pc:var(--celadon);--pick-h:48px;flex:none;}
+.shuffle-toggle,.limit-row,.three-toggle{display:flex;}
+.shuffle-toggle-opt,.limit-btn,.three-opt{--pc:var(--celadon);--pick-h:44px;flex:none;}
+#pickToggle.disabled{opacity:.32;}   /* Three waits for the first card of a hand; it still takes the tap, so it can shake */
 .cat-area .limit-btn[hidden]{display:none;}   /* All, hidden in Arc */
 
 .pane{display:none;}
@@ -1497,6 +1505,8 @@ body.hint-ways-taught .menu-hint{display:none;}
 .play-sect{border-left:2px solid transparent;padding-left:12px;margin-left:-12px;}
 .play-sect--1{border-left-color:var(--border-strong);}
 .play-sect--2{border-left-color:rgba(101,201,176,.35);}
+/* Shuffle, Cards and Three stay fixed at the foot of the sheet, above Draw Cards, while the chapters scroll above them */
+.play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);}
 .play-sect+.play-sect{margin-top:8px;padding-top:2px;}
 
 /* "start" bar at the foot of the sheet — .cat-area is itself the flex column
@@ -1509,7 +1519,7 @@ body.hint-ways-taught .menu-hint{display:none;}
 .cat-go-btn{display:block;width:100%;
   background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
   border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;
-  text-transform:uppercase;padding:14px 0;text-align:center;cursor:pointer;transition:transform .16s var(--ease-out);}
+  text-transform:uppercase;height:var(--gold-btn-h);padding:0;text-align:center;cursor:pointer;transition:transform .16s var(--ease-out);}
 @media (hover:hover) and (pointer:fine){.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}}
 .cat-go-btn:active{transform:scale(.98);}
 
@@ -1624,7 +1634,7 @@ body.hint-ways-taught .menu-hint{display:none;}
   color:var(--text-helper);margin:0 0 12px;}
 /* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
    chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
-.seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 22px;white-space:nowrap;}
+.seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 8px;white-space:nowrap;}
 .seg{display:flex;align-items:center;}
 .seg-head{flex:none;width:5.5rem;}
 
@@ -1636,22 +1646,22 @@ body.hint-ways-taught .menu-hint{display:none;}
    --tc  the colour of the word. Same as --pc, except where --pc is too dark to read as small
          text on the sheet: those get a lighter version of their own colour (list below). */
 .cat-area{--pick-size:.8rem;}
-.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){
+.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){
   --tc:var(--pc);
   position:relative;display:flex;align-items:center;gap:7px;min-height:var(--pick-h,44px);padding:0 9px;
   background:none;border:none;border-radius:0;opacity:1;text-shadow:none;cursor:pointer;
   font-family:'Jost',sans-serif;font-size:var(--pick-size);font-weight:300;letter-spacing:.09em;
   text-transform:uppercase;white-space:nowrap;
   color:color-mix(in srgb, var(--tc) 42%, rgba(240,232,216,.5));transition:color .2s;}
-.cat-area :is(.mode-btn,.shuffle-toggle-opt,.limit-btn)::before,
+.cat-area :is(.mode-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::before,
 .cat-area .cat-dot{content:'';flex:none;width:5px;height:5px;border-radius:50%;
   background:var(--pc);opacity:.5;transition:opacity .2s;}
-.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{content:'';position:absolute;
+.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::after{content:'';position:absolute;
   inset-inline:9px;top:calc(50% + 1em);height:1px;background:var(--tc);opacity:0;transition:opacity .2s;}
-.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active){color:var(--tc);font-weight:400;}
-.cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active)::before,
+.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active){color:var(--tc);font-weight:400;}
+.cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::before,
 .cat-area .toggle-btn.on .cat-dot{opacity:1;}
-.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active)::after{opacity:.7;}
+.cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::after{opacity:.7;}
 /* word colours lightened for this sheet only (owner-approved 2026-10-19); the real colours stay in
    config.js and everywhere else. Each is the least lightening that reaches 4.5:1 on the sheet (#161310). */
 .toggle-btn[data-level="world"]{--tc:#3b8c68;}
@@ -1750,8 +1760,8 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   /* Everything and Balanced on their own line, the "Who's here" caption on the next, then the people presets */
   .mode-group-lbl{text-align:left;padding-block:2px 0;}
   .cat-area .preset-host .mode-btn{--pick-h:34px;}
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){padding:0 8px;}
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)::after{inset-inline:8px;}
+  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){padding:0 8px;}
+  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::after{inset-inline:8px;}
   .play-sect--1{flex:1 0 auto;padding-top:2px;}
   .sect-lbl{margin-bottom:6px;}
   .deselect-btn{padding-block:6px;}
@@ -1760,12 +1770,12 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .ch-main{padding-block:3px;gap:1px;}
   .play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);border-left:0;margin:0;
     padding:8px 0 0;border-top:1px solid var(--dim);}
-  .seg-row{--row-inset:0;display:flex;align-items:center;gap:22px;margin:0;}
-  .seg-head{width:auto;margin-inline-end:6px;}
+  .seg-row{--row-inset:0;display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;margin:0;}   /* Shuffle, Cards and Three on one line; wraps on a narrow panel */
+  .seg-head{width:auto;margin-inline-end:2px;}
   .cat-go-bar{padding:8px 0 12px;background:none;}
   /* every pickable thing answers the mouse the same way: its picked colour, lightly underlined */
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn):hover{color:var(--tc);}
-  .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active)):hover::after{opacity:.35;}
+  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt):hover{color:var(--tc);}
+  .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active),.three-opt:not(.active)):hover::after{opacity:.35;}
   .chapter:hover .ch-name,.ch-fold--row:hover .ch-name{color:var(--cream);}
   .chapter:is(.on,.part):hover .ch-name{color:var(--ch);}
   .chapter-group{--ch-hover-line:var(--border-strong);}
@@ -1797,9 +1807,9 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
    screen / Twist row are written normally. */
 .tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
 .sect-lbl,.sect-lbl span,.cat-sheet-head-title{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
-.pick-toggle,.btn-fullscreen{text-transform:none;letter-spacing:.03em;font-size:.95rem;}
+.btn-fullscreen{text-transform:none;letter-spacing:.03em;font-size:.95rem;}
 @media(min-width:1024px){
-  .pick-toggle,.btn-fullscreen,.sect-lbl,.sect-lbl span{font-size:1rem;}
+  .btn-fullscreen,.sect-lbl,.sect-lbl span{font-size:1rem;}
   .cat-sheet-head-title{font-size:1rem;}
 }
 
@@ -1815,7 +1825,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
    as Jost (0.46), so labels keep their size; caps names stay Jost. */
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
   font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
-.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.pick-toggle,.btn-fullscreen,
+.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,.btn-fullscreen,
 .chapter .ch-desc{
   font-family:'Federo','Jost',sans-serif;}
 
@@ -1823,56 +1833,50 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 .tr-svg path:nth-of-type(4){stroke:url(#trP);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
 .tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
 
-/* ── The play-style row: Three · Spotlight · Twist (also the end-of-hand row Change · Save, #handActionsRow) ──
+/* ── The end-of-hand row: Change · Save (#handActionsRow; it was once also the play row Three · Spotlight · Twist) ──
    One celadon, one strength, no boxes. Two fading rules above and below,
    rotated-square separators between items, hint line under each. Active =
    underline under the word only. Placed last so it wins over the quiet
    text-button rules above. */
-#screenRow,#handActionsRow{position:relative;gap:4px;padding:4px 0 6px;align-items:flex-start;}
-#screenRow::before,#handActionsRow::before,#screenRow::after,#handActionsRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
+#handActionsRow{position:relative;gap:4px;padding:4px 0 6px;align-items:flex-start;}
+#handActionsRow::before,#handActionsRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
   background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent) 30%,color-mix(in srgb,var(--celadon) 42%,transparent) 70%,transparent);}
-#screenRow::before,#handActionsRow::before{top:0;}
-#screenRow::after,#handActionsRow::after{bottom:0;}
-#screenRow > button,#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
+#handActionsRow::before{top:0;}
+#handActionsRow::after{bottom:0;}
+#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
   font-family:'Federo','Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
-@media (hover:hover) and (pointer:fine){#screenRow > button:hover,#handActionsRow > button:hover{color:var(--celadon);}}
-#screenRow .row-top,#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
-#screenRow > button svg,#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
-#screenRow .row-hint,#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
+@media (hover:hover) and (pointer:fine){#handActionsRow > button:hover{color:var(--celadon);}}
+#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
+#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
+#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
   font-size:.95rem;line-height:1.15;color:var(--row-hint);white-space:normal;max-width:112px;text-align:center;}
-#screenRow .row-sep,#handActionsRow .row-sep{width:4px;height:4px;background:var(--celadon);transform:rotate(45deg);opacity:.5;flex:0 0 auto;margin-top:20px;}
-#screenRow > button.on .row-lbl,#handActionsRow > button.on .row-lbl,#screenRow > button.active .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
+#handActionsRow > button.on .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
 /* Not usable yet (before the first card; Twist also on the end screen): only the
    symbol + word dim — the hint under them stays at full strength. */
-#screenRow > button.disabled,#handActionsRow > button.disabled{opacity:1;}
-#screenRow > button.disabled .row-top,#handActionsRow > button.disabled .row-top{opacity:.32;}
+#handActionsRow > button.disabled{opacity:1;}
+#handActionsRow > button.disabled .row-top{opacity:.32;}
 /* Hover (pointer devices only), press and keyboard focus light up gold, like the
    nav row's back and menu. Not while dimmed. Hint keeps its own tone. */
-#screenRow > button:not(.disabled):active,
 #handActionsRow > button:not(.disabled):active,
-#screenRow > button:not(.disabled):focus-visible,#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
-@media (hover:hover) and (pointer:fine){#screenRow > button:not(.disabled):hover,#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
+#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
+@media (hover:hover) and (pointer:fine){#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
 /* Hints retire per control once it has worked (see HINTS in state.js).
    Hidden, not removed: the row keeps its height, so the centred screen doesn't
    jump when a hint retires or when Change/Save swap in at the end of a hand. */
-body.hint-three-taught #pickToggle .row-hint,
 body.hint-spot-taught #btnParty .row-hint,
-body.hint-twist-taught #btnTwist .row-hint,
 body.hint-change-taught #btnChange .row-hint,
 body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
-/* Twist can't be used: a short horizontal shake, no words. */
+/* A control tapped when it can't be used (Spotlight, Three): a short horizontal shake, no words. */
 @keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
 @keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
-#screenRow > button.row-shake,#btn-prev.row-shake{animation:twistShake .35s ease-in-out;}
-@media (prefers-reduced-motion:reduce){#screenRow > button.row-shake,#btn-prev.row-shake{animation:none;}
-  #btn-prev.row-shake{animation:twistBlink .35s ease-in-out;}
-  #screenRow > button.row-shake .row-top{animation:twistBlink .35s ease-in-out;}}
+#btnParty.row-shake,#pickToggle.row-shake{animation:twistShake .35s ease-in-out;}
+@media (prefers-reduced-motion:reduce){#btnParty.row-shake,#pickToggle.row-shake{animation:twistBlink .35s ease-in-out;}}
 /* Twist landed: the word and the card's new line light up together, then settle. */
 @keyframes twistLit{from{color:var(--celadon-bright)}}
 .twist-lit{animation:twistLit .5s ease-out;}
 /* Spotlight, provisional: brightens to near white once, then settles. No glow. */
 @keyframes spotBright{0%,55%{color:var(--celadon-bright)}100%{color:var(--celadon)}}
-#screenRow > button.spot-bright{animation:spotBright 1s ease-out;}
+#btnParty.spot-bright{animation:spotBright 1s ease-out;}
 
 /* fullscreen, end of a hand: the count slot is empty — no rules around nothing */
 .party-overlay.is-hand-end .pc-rule{display:none;}
@@ -1912,17 +1916,16 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
     #tokHint{font-size:0;}
     #tokHint::after{content:" \00b7  click to change";font-size:max(11px,calc(var(--k)*14px));}
   }
-  #btn-menu{grid-column:1;grid-row:2;justify-self:start;align-self:start;width:auto;height:auto;border:0;background:none;
-    padding:calc(var(--k)*8px) 0;gap:calc(var(--k)*10px);color:var(--celadon);justify-content:flex-start;}
-  #btn-menu svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-  #btn-menu::after{content:"Menu";font-family:'Jost',sans-serif;font-size:max(11px,calc(var(--k)*14px));font-weight:400;letter-spacing:.22em;text-transform:uppercase;}
+  #btn-menu{grid-column:1;grid-row:2;justify-self:start;align-self:start;min-width:0;min-height:0;padding:calc(var(--k)*8px) 0;
+    font-size:max(11px,calc(var(--k)*14px));}
+  .nav-lines{display:none;}
 
   /* ways to play, top right: icons at the outer edge, hints only on hover */
   #screenRow,#handActionsRow{grid-column:3;grid-row:1 / 3;justify-self:end;flex-direction:column;align-items:flex-end;gap:3px;padding:calc(var(--k)*20px) 0 0;}
-  #screenRow::before,#screenRow::after,#handActionsRow::before,#handActionsRow::after,#screenRow .row-sep{display:none;}
-  #screenRow > button,#handActionsRow > button{position:relative;flex:none;width:auto;min-width:0;flex-direction:row;padding:calc(var(--k)*4px) 0;font-size:max(11px,calc(var(--k)*14px));}
-  #screenRow .row-top,#handActionsRow .row-top{flex-direction:row-reverse;gap:calc(var(--k)*10px);}
-  #screenRow > button svg,#handActionsRow > button svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
+  #handActionsRow::before,#handActionsRow::after{display:none;}
+  #screenRow > button,#handActionsRow > button{position:relative;flex:none;width:auto;min-width:0;min-height:0;flex-direction:row;padding:calc(var(--k)*4px) 0;font-size:max(11px,calc(var(--k)*14px));}
+  #handActionsRow .row-top{flex-direction:row-reverse;gap:calc(var(--k)*10px);}
+  #handActionsRow > button svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
   #screenRow .row-hint,#handActionsRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin-right:calc(var(--k)*18px);
     max-width:none;white-space:nowrap;text-align:right;font-size:max(13px,calc(var(--k)*16px));line-height:1.15;color:var(--celadon);opacity:0;transition:opacity .2s;pointer-events:none;}
   @media (hover:hover) and (pointer:fine){#screenRow > button:hover .row-hint,#handActionsRow > button:hover .row-hint{opacity:.9;}}
@@ -1953,11 +1956,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .hd-list{--hd-fs:2.2cqw;justify-content:safe center;gap:.9em;}
 
   /* bottom row */
-  #btn-prev{grid-column:1;grid-row:4 / 6;justify-self:start;align-self:center;width:auto;height:auto;border:0;background:none;
-    padding:calc(var(--k)*10px) 0;gap:calc(var(--k)*10px);color:var(--celadon);}
-  #btn-prev svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-  #btn-prev::after{content:"Back";font-family:'Jost',sans-serif;font-size:max(11px,calc(var(--k)*14px));font-weight:400;letter-spacing:.22em;text-transform:uppercase;}
-  #btn-next{grid-column:2;grid-row:4 / 6;align-self:center;width:100%;height:calc(var(--k)*46px);padding:0;font-size:max(11px,calc(var(--k)*14px));letter-spacing:.14em;}
+  #btn-next{grid-column:2;grid-row:4 / 6;align-self:center;width:100%;min-width:0;padding:0;font-size:max(11px,calc(var(--k)*14px));letter-spacing:.14em;}
   .progress{grid-column:3;grid-row:4;justify-self:end;width:calc(var(--k)*190px);margin:0;box-sizing:content-box;}
   .prog-count{grid-column:3;grid-row:5;justify-self:end;margin-top:calc(var(--k)*4px);}
   .prog-count-rule{display:none;}
@@ -1979,22 +1978,17 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .twist-sentence.twist{font-size:3.3cqw;line-height:1.3;}
 }
 
-/* Spotlight on wide screens: Three / Close / Twist take the same places as on the main screen's
-   top-right stack (Three, Spotlight, Twist), Close in Spotlight's own slot. Close leaves the
-   bottom centre, Twist leaves the top left. Phone and sideways phone are untouched. */
+/* Spotlight on wide screens: Close takes the place Spotlight has on the main screen's top-right,
+   and leaves the bottom centre. Phone and sideways phone are untouched. */
 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
   .party-card{--sx:88px;}
-  .party-top .party-count-wrap{grid-column:2;}
   .party-bottom .party-prev-btn{grid-column:1;} .party-bottom .party-next-btn{grid-column:3;}
-  .party-top .party-pick,.party-top .party-twist,.party-bottom .party-exit{
+  .party-bottom .party-exit{
     position:fixed;right:var(--sx);left:auto;height:calc(var(--k)*31px);min-width:0;padding:0 !important;z-index:6;
     flex-direction:row-reverse;justify-content:flex-start;gap:calc(var(--k)*10px);font-size:max(11px,calc(var(--k)*14px));letter-spacing:.22em;}
-  .party-top .party-pick{top:calc(var(--k)*20px);}
-  .party-bottom .party-exit{top:calc(var(--k)*51px);}
-  .party-top .party-twist{top:calc(var(--k)*82px);}
-  .party-chrome .party-pick svg,.party-chrome .party-twist svg,.party-chrome .party-exit svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-  .party-chrome .party-pick .party-key,.party-chrome .party-twist .party-key,.party-chrome .party-exit .party-key{margin:0 calc(var(--k)*4px) 0 0;}
-  .party-top .party-twist,.party-top .party-pick{font-size:max(11px,calc(var(--k)*14px));}
+  .party-bottom .party-exit{top:calc(var(--k)*20px);}   /* the top of the stack: Three and Twist are no longer in it */
+  .party-chrome .party-exit svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
+  .party-chrome .party-exit .party-key{margin:0 calc(var(--k)*4px) 0 0;}
 }
 
 /* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;
@@ -2019,7 +2013,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
    44-49px touch height, so the presets alone take a third of the sheet and push the chapters, the point of the sheet,
    below the fold. A pointer needs less: the same picks at 38px, everything else as it was. */
 @media (min-width:1024px) and (hover:hover) and (pointer:fine){
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn){--pick-h:38px;}
+  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){--pick-h:38px;}
 }
 
 /* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */

@@ -47,7 +47,7 @@ a real screen first, not just a mockup.
 
 ### Quiet text-buttons — 1 resting tone
 ```
---btn-quiet: #8f8171   /* Three, Full Screen, Twist, Change, Save, After Dark,
+--btn-quiet: #8f8171   /* Spotlight and Menu (under the card), Change, Save, After Dark,
                            All/None, Explore categories, Categories, ⓘ info,
                            the pick-toggle, limit buttons… */
 ```
@@ -67,12 +67,50 @@ mechanism on one of them (`filter:brightness()` instead of the gradient
 lightening), and one with no press feedback at all. All three are now the
 same spec — Next Card's, by explicit pick:
 ```
-font-size: .8rem (12.8px)   letter-spacing: .14em   padding: 14px 0
+font-size: .8rem (12.8px)   letter-spacing: .14em   height: var(--gold-btn-h) = 34px   padding: 0 (sideways)
 hover: linear-gradient(135deg,#ddb85c,#b08840)   active: scale(.98) (Draw and the square buttons press to .97, see "Motion")
 corners: square
 ```
 2026-10-29: `.custom-add-btn` went with the custom cards, so the spec is now used twice
 (Next Card and Draw Cards).
+
+2026-11-06 (#113): the button is **slimmer, 34px tall instead of 46px** (it was `padding:14px 0`, which
+came to 46px; now `height:var(--gold-btn-h)`, a token in `:root`, `padding:0`). Reason: under the card the
+question is to be the brightest thing, and a 46px gold block outshone it; Next card is now one slim bar
+framed by hairlines (see "Under the card"). Draw Cards in The Deck takes the same height, since the
+two are one spec. Width is the part that differs: Next card is `128 * --u` wide at minimum, Draw Cards
+fills the sheet.
+
+### Under the card (phone, added 2026-11-06, #113)
+The whole bottom of the main screen is one figure that answers the title: the coloured ticks, the count,
+one slim gold Next card with **three gold hairlines a side** (the title's figure: a hairline fading
+outward), and the words Spotlight and Menu under the outer ends of the lines. Back, Three and Twist are not
+here any more (Back is a swipe right on the card; Three is a setting in The Deck; Twist is a line in the
+menu), so the question is the brightest thing.
+- `.controls-wrap` is a grid (`1fr auto 1fr`) and a size container; `--u` is 1px of the 375-wide mockup
+  (`min(1.2px, 100cqw / 339)`), so 360 and 412 phones get the same figure scaled. Rows: ticks, count, Next
+  card, words. Gaps between rows are the existing 11px.
+- Next card `#btn-next`: the gold button spec above, `min-width:128 * --u`, grows with its words ("Tap to flip
+  card", "Hold to continue").
+- Hairlines `.nav-lines`: three 1px lines at -6px, 0, +6px from the bar's centre, starting `6 * --u` from the
+  bar, outer ends 40, 24 and 40 from the screen edge (the middle one longest), gold from opacity .7 at the bar to
+  .2 at the outer end (`color-mix` of `--gold`, one gradient per line so the fade follows each line's own length).
+  Decoration only (`aria-hidden`); hidden on PC.
+- Spotlight and Menu: `.quiet-word`, plain words (no icon, no box), Jost 400, 11.5px, `.22em`, uppercase,
+  `--btn-quiet`, `--gold` on hover (mouse only), press and keyboard focus. The tap area is at least 44px
+  tall and wide and starts one row-gap under Next card, so it never overlaps it. Spotlight sits under the
+  left ends, Menu under the right; Spotlight's first-visit hint (`.row-hint`, `--row-hint`) sits under its
+  word and retires after the first tap; Menu has no hint. Reason for Jost and `--btn-quiet` rather than the
+  celadon Federo of the old play row: they are secondary and must not compete with Next card or the question.
+- Wide screens keep their own arrangement (Menu top left, Spotlight top right, Next card centred below the
+  card, ticks and count right): the same elements, no Back, Three, Twist or hairlines.
+
+### Three, Twist (moved 2026-11-06, #113)
+Three is a setting in The Deck (`#pickToggle`, Off / On, the same picked / not-picked look as Shuffle and
+Cards, `.three-opt`), in the settings line that is fixed at the foot of the sheet above Draw Cards on
+every screen size (it wraps to a second row on a narrow panel). Twist is a line in the Menu sheet, in the
+menu's own row style, dimmed (opacity .32) when no card is in front of you. Neither has a button on the
+main screen or in Spotlight; keys 3 and T still work in Spotlight.
 
 ### Corners — Option B (square controls, one soft radius for containers)
 Buttons and the question card stay square — the deck's own shape. Containers
@@ -95,10 +133,10 @@ chapter row (was `#6e1719`) needed to move onto them.
 ### Frame colours — copper, celadon, preset (added 2026-10-13)
 ```
 --copper:        #C67B28   /* the deck's own frame: the logo's centre diamond only (no longer Custom) */
---celadon:       #A9C7B6   /* everything you can tap besides Draw: Three, Full screen, Twist, their rules/separators, Twist's line on the card, and the back and menu symbols */
+--celadon:       #A9C7B6   /* everything you can tap besides Draw and the quiet words (Spotlight, Menu): Change / Save, Close in Spotlight, Twist's line on the card and its menu line */
   /* also marks the chosen option in a choice row: Shuffle (Arc/Random) and Cards (5/10/20/All) in the categories sheet */
 --celadon-hint:  #5b6b63   /* the sub-lines in the main menu (its labels are celadon, icons stay gold) */
---row-hint:      #6f8579   /* the hint lines under Three / Spotlight / Twist (`.row-hint`): one step lighter than --celadon-hint (3.5:1 → 4.9:1 on the dark ground) so they read on a phone; 15px (.95rem), max-width 112px so they fit under each label at 360px. PC hover hints use --celadon, unchanged */
+--row-hint:      #6f8579   /* the hint lines under Spotlight / Change / Save (`.row-hint`): one step lighter than --celadon-hint (3.5:1 → 4.9:1 on the dark ground) so they read on a phone; 15px (.95rem), max-width 112px so they fit under each label at 360px. PC hover hints use --celadon, unchanged */
 --preset:        (set from renderShell) /* which edition: logo's inner line pairs, preset name. Strangers #8fd14f, Family #ee7a35 (--mc in styles.css) */
 --preset-a/-b:  (set from renderShell, Custom with 2+ categories only) /* first and second picked category colour: the logo's inner line pairs split left/right (gradient #trP) */
 --preset-deep:   (set from renderShell) /* the preset a shade deeper (same hue/saturation, lightness -7 points, floor 45%, already-darker colours unchanged): for filled areas, i.e. the start-card diamond and its rule, which read paler than thin letters */
@@ -188,10 +226,10 @@ the list. Earlier look (0.35s, `perspective(1100px)`, edge at 175ms, no size dip
 down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words: "Tap to
 flip card" on Intermezzo, "Hold to continue" on the list.
 
-**Play row words** (`#screenRow` `.row-lbl`: Three, Spotlight, Twist, Change, Save): all Jost, 400, `.72rem`, `.22em`, uppercase, as the row sets. Three's word used to render in Federo because the Federo label rule listed `.pick-toggle span`; that selector is gone so the row's own type applies (owner, 2026-10-18).
+**End-of-hand row words** (`#handActionsRow` `.row-lbl`: Change, Save): Jost, 400, `.72rem`, `.22em`, uppercase, as the row sets. (Three, Spotlight and Twist used to share this row; since 2026-11-06 they live elsewhere, see "Under the card".)
 
 **Change / Save at hand end** (`#handActionsRow`, swapped in for `#screenRow` via
-`body.showing-hand-summary`): the same row as Three / Spotlight / Twist, not a copy of it.
+`body.showing-hand-summary`): the row that Three / Spotlight / Twist used to share.
 The `#screenRow` rules in styles.css ("The play-style row") list `#handActionsRow` as a
 second selector, so rules above and below, `--celadon` capitals (Jost, `.72rem`, `.22em`),
 17px icon, gold on hover/press and the italic `.row-hint` line (`--row-hint`) are one
@@ -245,15 +283,15 @@ over. A new control that has a twin on the other screen gets a selector in the t
 its values.
 
 Twins and what they share (main / Spotlight):
-- Play-row words and the back/next arrows (`#screenRow` buttons, `.nav-row` / `.party-chrome button`):
+- Spotlight's own buttons (`.party-chrome button`) follow the main screen's celadon rule below; the main screen's
+  Spotlight and Menu are quiet words (`--btn-quiet`), see "Under the card". Spotlight's controls:
   `--celadon` at rest; `--gold` on hover (`@media (hover:hover)` only, so it never sticks on touch), on press
   and on keyboard focus; "on" (Three, Twist) is an underline under the word (1px, offset 7px) and the colour
   stays celadon; disabled opacity `.32`. Words Jost 400, `.22em`, uppercase. Spotlight keeps its own size
   (12px, 15px on PC) and its arrows stay plain glyphs (no bordered square).
 - Close (`#partyExit`) is the twin of the main Spotlight button (`#btnParty`): same square-in-square symbol,
   celadon. The `Esc` / `T` / `3` key hints are `--muted`, shown on PC only.
-- Three: same three-card symbol and word as `#pickToggle`; Twist: same square-and-diamond symbol. The Twist word
-  sits in `.row-lbl.tt-label`, so `renderTwist()` rewrites only the word, never the symbol or key hint.
+- Three and Twist have no button in Spotlight any more (2026-11-06): the keys 3 and T work, and Twist's sentence still shows.
 - Star: `#cardStar` / `#partyStar`: `--gold`, opacity `.18` off, `.65` on hover (mouse only), `1` when starred.
   `updateStarUI()` (card.js) keeps both in step.
 - Twist text: `.twist-sentence.twist` / `.party-number.twist` Cormorant italic, `--celadon` (also its
