@@ -279,13 +279,13 @@ def phone(inner):
 designs = [
  ('A · As chosen', bookend, 'Round 3\'s option A, for comparison.', ['Three plain hairlines each side.']),
  ('1 · Cartouche', d_cart, 'From dividers-gold-on-slate and stepped-bars-and-dots: a long bevelled double frame, the shape those dividers put round their centre piece, with Next card in its centre and A\'s three lines filling it either side; Spotlight and Menu sit under its two tips.',
-  ['The whole lower half becomes one framed ornament, like a nameplate; A\'s lines live inside it.', 'Spotlight and Menu stay outside the frame, under its tips, apart from Next card.', 'Against it: the most enclosed of the four; the frame is a second rectangle under the card.']),
+  ['The whole lower half becomes one framed ornament, like a nameplate; A\'s lines live inside it.', 'Spotlight and Menu stay outside the frame, under its tips, apart from Next card.', 'Against it: the most enclosed of the four; the frame is a second rectangle under the card, and it frames Next card itself, which you have turned down for single controls before (this is the main control and the frame carries the ornament, but judge by eye).']),
  ('2 · Fan and count', d_fan, 'From layered-diamonds-and-fans: a fan rises from the lines above Next card, and the count sits in its centre; the lines step down at the ends to Spotlight and Menu.',
   ['The count stops being a separate line of text: it becomes the heart of the ornament.', 'The fan marks Next card as the centre of the screen\'s lower half.', 'Against it: the count gets smaller to fit in the fan, about 10 points instead of 13 today.']),
  ('3 · Bow', d_bow, 'From stepped-bars-and-dots: bow-shaped wings open out from either side of Next card, with lines running through them to dot ends, and shorter lines above and below.',
   ['Like the references\' bow dividers: the wings are narrow at Next card and widen outward.', 'Spotlight and Menu line up with the main line\'s dot ends.', 'Against it: wide; the wings make the figure feel heavier than A.']),
  ('4 · Setback', d_setback, 'Inspired by the stepped towers in corners-and-elements-sheet: Next card is the top of a stepped base; doubled lines step down and out from it like the setbacks of a deco tower, and Spotlight and Menu stand on its lowest steps.',
-  ['The words have a place in the figure: they stand on the steps.', 'Echoes deco architecture, not only the dividers.', 'Against it: the steps point down and out, away from the title\'s level lines.']),
+  ['The words have a place in the figure: they stand on the steps.', 'Echoes deco architecture, not only the dividers.', 'Against it: the steps point down and out, away from the title\'s level lines; Spotlight sits close to the first step.']),
 ]
 
 TITLEHINT = (f'<svg viewBox="0 0 375 200" role="img" aria-hidden="true"><image href="{TOP}" x="0" y="0" width="375" height="447.5"/>'
@@ -348,7 +348,7 @@ h3{{font-family:var(--ui);font-weight:400;font-size:.75rem;letter-spacing:.2em;t
 <li>Next card gets slimmer than today, in all of them.</li>
 <li>No small diamonds, though the references use many: you reserved them for After Dark. The app has one gold-button look, shared with Draw Cards in The Deck, so Draw Cards would get the same slimmer height.</li></ul>
 <h3>Outside check</h3>
-<p>The design gate first passed Fan and count and Setback, and blocked Cartouche (it had become three boxes, Spotlight | Next card | Menu) and Bow (the wings narrowed the wrong way). Both were redrawn and checked again.</p>
+<p>The design gate first passed Fan and count and Setback, and blocked Cartouche (it had become three boxes, Spotlight | Next card | Menu) and Bow (the wings narrowed the wrong way). Both were redrawn and then passed; all four pass.</p>
 <h3>Design skills used</h3>
 <ul><li>Design critique: the assessment you agreed with (no shared look, the gold block outshining the question, progress shown twice).</li>
 <li>Emil Kowalski's design engineering: one look throughout (one typeface for controls, one gold, quiet secondary words), which is why every design drops the icons and the boxes.</li></ul>
