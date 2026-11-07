@@ -318,7 +318,20 @@ adding anything, search: one wish is one item, never two.
 
 ### 5. Check
 
-Every build gets all three checks, never a choice between them (owner, 2026-10-19), **sized to
+**Light by default** (owner, 2026-11-07: "less tests... I think a lot is being spend on useless
+testing. It's not a system where a primary proces of a hospital runs on. Its a small question
+application..get a grip"). This replaces "every build gets all three checks" below wherever they differ:
+- Every build: the builder runs the smoke run and the one check for its own change; the reviewer
+  reads the change once (logic, simplicity, a bug's automatic check); for anything visible the
+  Keeper looks at one to three screenshots against the agreed picture. Then it lands. GitHub's full
+  suite runs after landing and costs no tokens; red there gets fixed.
+- No separate tester by default. The tester runs only when the owner asks for it, and then once,
+  on the owner's own steps.
+- No rounds for nice-to-haves: a review or test note that isn't a fault goes in one line of the
+  report or on the backlog, never back to the builder. Only a fault against the agreement goes back.
+- Never rerun a check that passed; never run the full suite locally.
+
+(Older rule, kept where it doesn't conflict:) Every build gets all three checks, never a choice between them (owner, 2026-10-19), **sized to
 the change** (owner, same day: "proportional — small bug, test a few sets; does not happen, fine"),
 and **the review comes first** (owner, 2026-10-29): the reviewer reads the change before anyone
 tests it; when it isn't clean it goes back to the builder, and the tester starts only once the
