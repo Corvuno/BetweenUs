@@ -137,6 +137,18 @@ letter for the owner to confirm.
   that restyled the same parts: the rules were there and were read past, so the check now
   happens at the moment of output, by someone else). Holds for every design round (looks, deck,
   menu, anything), also one handed to a builder.
+  0. **Ask about the experience before designing** (owner, 2026-11-07: "don't asks me where does
+     this go? Asks me; what do you use, feel, see. That i can answer. And if you have to little to
+     go on, ask, dont build. That would improve millions"). Before a round, ask the owner what they
+     use, how they play, what they feel and what they see when they look at it, never where
+     something goes or which layout. If what you know is too thin to design something good, ask
+     first and draw nothing. A round built on guesses costs more than one question.
+  0b. **Design for beauty, from the references** (owner agreed 2026-11-07, after ~15 missed rounds
+     on one area). Start every looks round from the owner's references (`.claude/keeper/references/`)
+     and the screens that already work (the title, the card); each option names its source and what
+     makes it beautiful, not only which rule it follows. Look at every picture as a designer with
+     `design:design-critique` before anything goes to the gate, and fix what you see. Three strong
+     options beat many quick ones. Rules and "less" are limits, not the idea.
   1. **Decided-file first.** Each design topic has `decided.md` in its agreements folder, in
      three parts: decided (each line with the owner's own words), open, and the Keeper's own
      proposals. Only the owner's words move a line to decided. Every round page opens with it.
