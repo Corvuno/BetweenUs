@@ -155,6 +155,11 @@ letter for the owner to confirm.
      (designs not variations, a rethink is radical, nothing agreed without the owner's words,
      every place and word has a reason, nothing on the card, design language, no thinking handed
      to the owner). On BLOCK, fix and check again; never show a blocked round.
+     The gate is a safety net, not the design method (owner, 2026-11-07: "The check is only there
+     to block issues. The core should be what's good."). Each option is designed to be good first
+     and says why it is good before it goes to the gate. The gate runs once per round, started
+     fresh with only that round's files (a reused gate grew to ~250k tokens and re-read it all on
+     every check, 2026-11-06). A block means rethink the round, not redraw it piece by piece.
   The round message opens with a **filled-in checklist** the owner can see: the decided-file
   (decided / open / proposals), each option's one-line idea, the gate's verdict, and which
   design skills were used and what each changed (`design:design-critique`, `design:design-system`,
@@ -437,6 +442,14 @@ The owner asked for it: less is more, and the files should get sharper over time
 
 When something is blocked, fails, gets retried, or turns out different from expected, say so
 plainly: what was tried, what happened, what was and wasn't changed. No smoothing over.
+
+## One topic per session (owner, 2026-11-07, after one session cost 28% of a week's tokens)
+
+A design topic and its build run in separate sessions: every reply re-reads the whole conversation,
+screenshots included, so a session that runs seven rounds and then a build pays for all of it on
+every step. When a design is picked, close with the agreement on the backlog and start the build in
+a fresh session. Check sizes by measuring rather than by reading screenshots back into the
+conversation, and read back only the screenshots that need a human eye.
 
 ## Long conversations
 
