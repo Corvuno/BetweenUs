@@ -13,7 +13,3 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-
-- **Wildcards.** Now and then a card asks you to ask your own question. You can switch them off in The Deck.
-- **A calmer bottom of the screen.** Under the card there is now one gold Next card, Spotlight and Menu. Three moved into The Deck and Twist into the menu.
-- Smaller fixes throughout, including a swipe back that is no longer sometimes read as a skip, a question that now uses the width of the card better and looks the same on every phone, so long questions no longer run off the card on small phones, and one Flesh question made shorter.
