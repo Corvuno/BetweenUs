@@ -496,7 +496,9 @@ async function run() {
       assert(!vis.includes('deep') && !vis.includes('carnal'), 'a category outside Coworkers is shown');
       // one change: the deck is Custom, the limits stay, the preset's tagline gives way
       const row = page.locator('.chapter[data-chapter="surface"]');
-      await row.locator('.ch-hit').click({ force: true }); await page.waitForTimeout(300);
+      // scrolled to the middle first: the settings at the foot of the sheet can sit over the row, as for a player who scrolls
+      await row.evaluate(el => el.scrollIntoView({ block: 'center' })); await page.waitForTimeout(200);
+      await row.locator('.ch-hit').click(); await page.waitForTimeout(300);
       assert((await page.locator('#valCats').textContent()).trim() === 'Custom', 'a change from Coworkers did not make the deck Custom');
       assert((await subtitle()) === 'Off script.', `Custom subtitle was "${await subtitle()}"`);
       assert(!(await shown('deeper')) && !(await shown('afterdark')), 'going Custom lifted the Coworkers limits');
