@@ -13,3 +13,4 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+- Smaller fixes throughout, including Menu that could not be tapped at the end of a hand.

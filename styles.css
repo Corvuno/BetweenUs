@@ -484,7 +484,7 @@ body.showing-hand-summary .card-question{
 .quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
 #screenRow{grid-column:1;grid-row:4;justify-self:start;align-items:flex-start;}
-#btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
+#btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;z-index:1;}   /* above the end-of-hand row, which spans under it */
 #btnParty .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
 #btnParty.disabled .row-lbl{opacity:.32;}   /* the word waits for the first card; its hint stays bright */
 /* End of a hand: Change and Save take Spotlight's row (Menu stays at its right end), so swapping them in never moves the card */
@@ -1839,7 +1839,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
    rotated-square separators between items, hint line under each. Active =
    underline under the word only. Placed last so it wins over the quiet
    text-button rules above. */
-#handActionsRow{position:relative;gap:4px;padding:4px 0 6px;align-items:flex-start;}
+#handActionsRow{position:relative;gap:4px;padding-block:4px 6px;align-items:flex-start;}
 #handActionsRow::before,#handActionsRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
   background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent) 30%,color-mix(in srgb,var(--celadon) 42%,transparent) 70%,transparent);}
 #handActionsRow::before{top:0;}

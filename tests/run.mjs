@@ -2342,6 +2342,8 @@ async function run() {
       await page.evaluate(() => { localStorage.removeItem(HINTS.lines.key); localStorage.removeItem('bu.catLines'); document.body.classList.remove(HINTS.lines.cls); document.querySelector('.cat-hint')?.remove(); });
       if ((await page.locator('#foldAll').textContent()) === 'Close all') { await page.locator('#foldAll').click(); await page.waitForTimeout(450); }
       await page.evaluate(() => { document.documentElement.dataset.lines = 'off'; });
+      // an earlier check may have left this chapter open on its own: then the tap below would close it
+      if (await page.locator(`${surface}.open`).count()) { await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(450); }
       await page.locator('.chapter-group[data-group="surface"] .ch-fold').click(); await page.waitForTimeout(500);
       assert(!(await linesOn()), 'the lines should be off by default on a phone');
       assert(await page.locator(`${surface} .cat-line`).first().isHidden(), 'a category line shows while the lines are off');
@@ -2540,8 +2542,8 @@ async function run() {
         };
       });
       assert(m.open && !m.sideShown, `the phone menu should be the one showing: ${JSON.stringify({ open: m.open, sideShown: m.sideShown })}`);
-      assert(JSON.stringify(m.order) === JSON.stringify(['Tonight', 'The Deck', 'Start over', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
-      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
+      assert(JSON.stringify(m.order) === JSON.stringify(['Tonight', 'The Deck', 'Start over', 'Twist', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
+      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Twist', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
       assert(m.old.length === 0, `old menu items still there: ${m.old}`);
       assert(!/\b(mode|preset|session|category|chapter)\b/i.test(m.text), `the menu uses our own words: ${m.text}`);
       assert(await menuLine(pg, 'cats') === 'Balanced, five cards', `The Deck line: ${await menuLine(pg, 'cats')}`);
@@ -3165,7 +3167,7 @@ async function run() {
       });
       assert(m.open && m.left === 0 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
       assert(m.focus, 'focus did not move into the menu');
-      assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
+      assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', ''], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
       await pg.locator('#overlay').click({ position: { x: 1300, y: 400 } }); await pg.waitForTimeout(800);
       assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
       await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
