@@ -325,8 +325,14 @@ application..get a grip"). This replaces "every build gets all three checks" bel
   reads the change once (logic, simplicity, a bug's automatic check); for anything visible the
   Keeper looks at one to three screenshots against the agreed picture. Then it lands. GitHub's full
   suite runs after landing and costs no tokens; red there gets fixed.
-- No separate tester by default. The tester runs only when the owner asks for it, and then once,
-  on the owner's own steps.
+- The tester runs once on a build that changes what players see or how they play, never on small
+  fixes (owner, 2026-11-07, replacing "only when the owner asks"). And whenever the owner asks.
+- **A build is finished when GitHub is green** (owner, 2026-11-07, after six red checks sat on main
+  for a day while three more changes landed on top). The session that lands a build waits for
+  GitHub's result (about ten minutes; Monitor, not polling) and fixes any red itself before it
+  reports or takes the next item. For each failing check it first looks whether the app is wrong
+  (a fault: fix the app) or the app changed on purpose and the check is outdated (update the check
+  to the agreement), and names which on the backlog item. Never hand red to "a new session".
 - No rounds for nice-to-haves: a review or test note that isn't a fault goes in one line of the
   report or on the backlog, never back to the builder. Only a fault against the agreement goes back.
 - Never rerun a check that passed; never run the full suite locally.
@@ -380,6 +386,10 @@ off. Don't ship a near miss.
   rebase onto main), run the project's static check and read its exit code, not a piped tail. A new
   finding means no push: it gets fixed first. Never add a new finding to the baseline to get green,
   and never get round the push lock (see `CHECKS.md`).
+- **Rule changes are asked first** (owner, 2026-11-07: "Your deciding all kinds of stuff... I don't
+  know what it means"; "That's better. Less waste"). A change to how the Keeper works (this file,
+  `.claude/keeper/`, the agents, CLAUDE.md) is shown to the owner in plain words, one line each,
+  saying what changes for them, and written in only after their yes.
 - After pushing, check that the project's automatic checks on `main` went green (owner, 2026-10-21:
   they had been red on 30+ pushes in a row without anyone noticing). Red is work now: find out
   why and fix it, or tell the owner what is failing and why it isn't fixed yet.

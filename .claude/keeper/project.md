@@ -115,8 +115,9 @@ Only on request, never on its own.
 `.claude/keeper/builders/` before every job; the Keeper keeps those files up to date.
 
 **Testing:** one generic `tester` for all areas, on Sonnet. It tests the app the way a player
-meets it, so cross-area breakage shows up, and checks the agreement line by line. Runs only when the owner asks (owner, 2026-11-07: "less tests…
-Its a small question application..get a grip"; before that it ran after every build).
+meets it, so cross-area breakage shows up, and checks the agreement line by line. Runs once on builds that change what players see or how they play, never on small fixes, and
+whenever the owner asks (owner, 2026-11-07; earlier that day "only when the owner asks", before
+that after every build).
 
 **Code review:** the `reviewer` (read-only, on Sonnet) reads the code every build changed:
 logic, placement, duplication, current good practice. Runs after every build, next to the
