@@ -261,7 +261,7 @@ function fillMenu() {
   document.querySelectorAll('#d-twist, #s-twist').forEach(line => line.classList.toggle('disabled', !canTwist()));
   document.getElementById('twistAct').textContent = currentTwist ? 'Undo' : 'Twist';
   // Save has something to save from the first card on; on the start screen the line isn't there
-  document.querySelectorAll('#d-save, #s-save').forEach(line => { line.hidden = !state.sessionLog.length; });
+  document.querySelectorAll('#d-save, #s-save').forEach((/** @type {HTMLElement} */ line) => { line.hidden = !state.sessionLog.length; });
   const tokCats = document.getElementById('tokCats');
   document.querySelectorAll('[data-menu-state]').forEach((/** @type {HTMLElement} */ el) => {
     const spans = states[el.dataset.menuState].map(text => Object.assign(document.createElement('span'), { textContent: text }));
