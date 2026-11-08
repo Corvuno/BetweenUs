@@ -73,8 +73,7 @@ let _undoCard = null, _undoIndex = null, _undoTimer = null, _undoLog = null, _un
 const HINTS = {
   tok:       { key: 'bu.tokTaught',       cls: 'tok-taught' },          // "· tap to change"
   spotlight: { key: 'bu.hintSpotTaught',  cls: 'hint-spot-taught' },    // under Spotlight
-  change:    { key: 'bu.hintChangeTaught', cls: 'hint-change-taught' }, // under Change (end of hand)
-  save:      { key: 'bu.hintSaveTaught',  cls: 'hint-save-taught' },     // under Save (end of hand)
+  save:      { key: 'bu.hintSaveTaught',  cls: 'hint-save-taught' },     // under Save (Spotlight's place at the end of a hand)
   lines:     { key: 'bu.hintLinesTaught', cls: 'hint-lines-taught' },    // "Hold a category…" under each chapter opened (phone)
   ways:      { key: 'bu.hintWaysTaught',  cls: 'hint-ways-taught' }      // under Ways to play (menu)
 };

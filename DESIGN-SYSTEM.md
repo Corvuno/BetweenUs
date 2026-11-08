@@ -47,7 +47,7 @@ a real screen first, not just a mockup.
 
 ### Quiet text-buttons — 1 resting tone
 ```
---btn-quiet: #8f8171   /* Spotlight and Menu (under the card), Change, Save, After Dark,
+--btn-quiet: #8f8171   /* Spotlight, Save and Menu (under the card; top right on a computer), After Dark,
                            All/None, Explore categories, Categories, ⓘ info,
                            the pick-toggle, limit buttons… */
 ```
@@ -110,10 +110,29 @@ menu), so the question is the brightest thing.
   left ends, Menu under the right; Spotlight's first-visit hint (`.row-hint`, `--row-hint`) sits under its
   word and retires after the first tap; Menu has no hint. Reason for Jost and `--btn-quiet` rather than the
   celadon Federo of the old play row: they are secondary and must not compete with Next card or the question.
-- Wide screens draw the same figure under the card (owner, 2026-11-06): ticks and count centred above, Next card
-  centred between its three hairlines (as long as the card is wide), Spotlight and Menu under the outer ends. The
-  app grid's middle column is Next card's own width (`auto`: the `14.5em` bar), so the lines start 6 units from the bar; the
-  100px in `--pcW` is the figure's extra height. Only the header (Selected deck, logo) stays at the top.
+- Wide screens (#128, 2026-11-08) draw the figure without its words: ticks and count centred above, Next card
+  centred between its three hairlines (as long as the card is wide), nothing under the line ends. The app grid's
+  middle column is Next card's own width (`auto`: the `14.5em` bar), so the lines start 6 units from the bar.
+  `--pcW` (the card's width) takes `168px * --k + 100px` as everything on screen that isn't the card (header,
+  margins, ticks, count, Next card; fitted to the measured layout at 1280 to 1920 wide, the card and the top groups
+  agree within 4px).
+- Wide screens, top right: Spotlight above Menu, right-aligned with the card's right edge, mirroring Selected deck on
+  the left (two lines each side). Each is the same `.quiet-word` with an icon (Spotlight: nested squares, Menu: three
+  lines, Save: two chevrons over a line; all 24x24, stroke 1.7, miter) at the outer edge: Jost, `max(11px, 14px * --k)`,
+  `.22em`, `--btn-quiet`, gold on hover and keyboard focus. The pitch is 31px * `--k` (the pitch of Spotlight's own
+  Close button). The hint (`.row-hint`, italic, `--row-hint`, `max(13px, 16px * --k)`) sits left of the word, shown on
+  hover and focus only, never at rest. Reason: the owner wanted the pre-redesign top-right stack back, with Three and
+  Twist gone from it, and Menu and Spotlight moved up from under the card.
+- End of a hand (phone and computer): Save (`#btnSave`, the evening's file, the same function as Played > Download the
+  list) takes Spotlight's place: the same slot, size and style, so nothing moves between a card and the pause; on the
+  phone Save is the left word under the card with the hint "take this evening with you" (time of day follows the
+  device, `renderHandSide`), on a computer it takes Spotlight's slot top right. The hint retires after the first tap
+  (`HINTS.save`, `hint-save-taught`) and comes back with "Show hints again". Change and the icon row (`#handActionsRow`)
+  are gone; The Deck stays in the Menu and under Selected deck. Colbert and The 36 hide Spotlight but keep Save.
+- Menu, first row: Save (`#d-save` phone drawer, `#s-save` computer panel), line "take this evening with you", action
+  word "Save", in the existing row style; hidden until the first card is drawn (`state.sessionLog` is empty before).
+- Menu panel on a computer: a panel from the right edge (under its button), with Played, Favourites and Ways to play
+  opening in its place on the same side; The Deck from the left. Close buttons stay at the top right of each panel.
 
 ### Three, Twist (moved 2026-11-06, #113)
 Three is a setting in The Deck (`#pickToggle`, Off / On, the same picked / not-picked look as Shuffle and
@@ -236,26 +255,7 @@ the list. Earlier look (0.35s, `perspective(1100px)`, edge at 175ms, no size dip
 down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words: "Tap to
 flip card" on Intermezzo, "Hold to continue" on the list.
 
-**End-of-hand row words** (`#handActionsRow` `.row-lbl`: Change, Save): Jost, 400, `.72rem`, `.22em`, uppercase, as the row sets. (Three, Spotlight and Twist used to share this row; since 2026-11-06 they live elsewhere, see "Under the card".)
-
-**Change / Save at hand end** (`#handActionsRow`, swapped in for `#screenRow` via
-`body.showing-hand-summary`): the row that Three / Spotlight / Twist used to share.
-The `#screenRow` rules in styles.css ("The play-style row") list `#handActionsRow` as a
-second selector, so rules above and below, `--celadon` capitals (Jost, `.72rem`, `.22em`),
-17px icon, gold on hover/press and the italic `.row-hint` line (`--row-hint`) are one
-definition. Markup is the same pattern: `button > .row-top (svg + .row-lbl)` then
-`.row-hint`. Two items, no separator diamond. Icons: 24x24 viewBox, `fill:none`, stroke
-`currentColor` 1.7, miter, butt (as Twist).
-- Change: a deco dial — outer arc, inner arc at `.55` opacity, base line, needle ending in a
-  filled diamond. (It opens the category sheet, which sets which questions are drawn.)
-- Save: two stacked chevrons over a line.
-Hints (owner's words, lowercase): Change "set which questions are drawn"; Save follows the
-device's local time when the end-of-hand row is shown — 05:00-11:59 "take this morning with
-you", 12:00-17:59 "take this afternoon with you", 18:00-23:59 "take this evening with you",
-00:00-04:59 "take tonight with you" (set in `renderHandSide`, presentation.js). Both hints
-retire the first time their button is used, like the others: `HINTS` entries `change` and
-`save` in state.js, body classes `hint-change-taught` / `hint-save-taught`, and "Show hints
-again" brings them back. Fullscreen has no Change/Save, so none there.
+**End of a hand under the card:** Save takes Spotlight's place; the old Change / Save icon row is gone. See "Under the card".
 
 **The hand list** (`.hd-list`, `.hd-row`): Bodoni Moda italic questions in `--cream`
 (readable, not muted). Size is set once per breakpoint with `--hd-fs`, as a rule against
@@ -435,7 +435,7 @@ presets read picked / not picked and wanted one look for everything pickable.
 ### The Deck, docked on a computer (owner, 2026-10-29: "the deck menu looks like it came straight out of a phone on pc")
 
 On a wide window with a mouse (min-width 1280px, min-height 560px, aspect 5/4 or wider, hover and
-fine pointer) The Deck is a panel docked to the right edge, beside the card, instead of a window over
+fine pointer) The Deck is a panel docked to the left edge (under Selected deck, which opens it), beside the card, instead of a window over
 it. 1280px is the width where the header (Selected line, logo, Three / Spotlight / Twist) still has its
 room with the panel open: the card is then 604px, the same as docked at 1280x720; narrower, the header
 would collide. Below that, or touch only, the phone sheet and the centred window are exactly as before.
@@ -443,11 +443,11 @@ The condition is written twice in `styles.css` (once excluding the centred windo
 and once in `ui.js` (`dockedQuery`); `syncDock()` applies it on open and when the window is resized
 while the panel is open.
 - **Panel** (`.cat-area` in the dock block, "THE DECK, DOCKED"): `--dock-w` = `clamp(560px,42vw,640px)`,
-  full height, `--surface`, one `--border-strong` line on its left, and a 3px gold rail on that edge
+  full height, `--surface`, one `--border-strong` line on its right, and a 3px gold rail on that edge
   (the chapter rail's dark-light-dark sweep in gold, no glow). No scrim, no radius.
-- **Motion**: the panel slides in from the right (.64s) and out (.5s), both on `--ease-sheet`. The main
-  screen moves with it over the same time and curve: the body's right padding grows by `--dock-w` (so
-  `body` carries `transition: padding-right`), and the app's width `--pcW` is 100% of the room that is
+- **Motion**: the panel slides in from the left (.64s) and out (.5s), both on `--ease-sheet`. The main
+  screen moves with it over the same time and curve: the body's left padding grows by `--dock-w` (so
+  `body` carries `transition: padding-left`), and the app's width `--pcW` is 100% of the room that is
   left, so the header, card and bottom row ease left and right in step with the panel, in both
   directions, with nothing under the panel on the way. (An earlier version animated a registered
   length on `html` and the card jumped; do not go back to it.) Instant under reduced motion.

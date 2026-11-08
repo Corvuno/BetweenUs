@@ -248,6 +248,7 @@ function menuStates() {
   return {
     cats: [document.getElementById('valCats').textContent, handSizeLabel(state.cardLimit)],
     start: total ? [`${seenCount} seen`, `${total - seenCount} left`] : [],
+    save: ['Save'],
     twist: currentTwist ? ['on'] : [],
     played: [drawn ? `${drawn} drawn so far` : 'Nothing drawn yet', ...(saved ? [`${saved} saved`] : [])],
     favs: [starred ? `${starred} starred` : 'None starred yet'],
@@ -259,6 +260,8 @@ function fillMenu() {
   // Twist acts on the card in front of you: dim when there is none (start, end of a hand, a wildcard)
   document.querySelectorAll('#d-twist, #s-twist').forEach(line => line.classList.toggle('disabled', !canTwist()));
   document.getElementById('twistAct').textContent = currentTwist ? 'Undo' : 'Twist';
+  // Save has something to save from the first card on; on the start screen the line isn't there
+  document.querySelectorAll('#d-save, #s-save').forEach(line => { line.hidden = !state.sessionLog.length; });
   const tokCats = document.getElementById('tokCats');
   document.querySelectorAll('[data-menu-state]').forEach((/** @type {HTMLElement} */ el) => {
     const spans = states[el.dataset.menuState].map(text => Object.assign(document.createElement('span'), { textContent: text }));
@@ -323,6 +326,7 @@ function leaveMenuFor(openNext) {
 const MENU_ACTIONS = {
   cats: () => leaveMenuFor(() => /** @type {any} */ (window).openCats()),   // openCats is published by ui.js
   start: startOver,
+  save: () => { saveSessionFiles(); closeAllDrawers(); },
   twist: () => { if (canTwist()) { toggleTwist(); closeAllDrawers(); } },
   played: trigger => leaveMenuFor(() => { renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); }),
   favs: trigger => leaveMenuFor(() => { renderFavourites(); openDrawer('favsDrawer', trigger); }),
@@ -339,7 +343,7 @@ document.getElementById('overlay').addEventListener('click',closeAllDrawers);
 
 // ── Played: the log (what was drawn now) and the saved sessions ──
 document.getElementById('closePlayed').addEventListener('click',()=>closeAllDrawers());
-// One file for a whole evening, from the Download button in Played and from the end-of-hand Save (one
+// One file for a whole evening, from the Download button in Played, the end-of-hand Save and the Menu's Save line (one
 // function, so the two can't drift into two file formats): the evening's name, the numbered list anyone can
 // read, and at the very end the evening's state (serializeSession(), the one definition of what an evening
 // captures) in a block a reader can ignore. No-op-safe on an empty list.
@@ -362,7 +366,7 @@ function exportSessionLog() {
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
 }
 document.getElementById('btnExport').addEventListener('click', exportSessionLog);
-// Save (end-of-hand screen, ui.js): the same single file.
+// Save (end of a hand in ui.js, the Menu's first line): the same single file.
 function saveSessionFiles() { exportSessionLog(); }
 
 // A whole evening back from its file: the state and the list, added to Saved under its name as the one playing now.

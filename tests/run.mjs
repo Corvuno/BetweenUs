@@ -710,8 +710,9 @@ async function run() {
     assert(await imAtEnd(), `did not reach the end of the hand after 20 taps (${await questionText(page)})`);
     assert((await imSide()) === 'intermezzo', `end of hand did not open on Intermezzo: ${await imSide()}`);
     assert(await page.locator('#card-wrap').isVisible(), 'card-wrap disappeared at the end of the hand');
-    assert(await page.locator('#handActionsRow').isVisible(), 'the Change/Save row did not appear');
-    assert(!(await page.locator('#screenRow').isVisible()), 'three/Full Screen/Twist stayed visible at the end of the hand');
+    assert(await page.locator('#btnSave').isVisible(), 'Save did not appear in Spotlight\'s place');
+    assert(!(await page.locator('#btnParty').isVisible()), 'Spotlight stayed visible at the end of the hand');
+    assert(!(await page.locator('#btnChange').count()) && !(await page.locator('#handActionsRow').count()), 'Change or the old end-of-hand row is still in the page');
     const cls = await page.locator('#card').evaluate(el => [...el.classList]);
     assert(cls.includes('is-start') && cls.includes('is-intermezzo') && !cls.includes('is-hand-list'), `card classes at Intermezzo: ${cls}`);
     assert(await page.locator('#card .cb-fermata').isVisible(), 'the pause mark is not visible on the back');
@@ -1369,7 +1370,7 @@ async function run() {
     const r = await page.evaluate(() => {
       const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, w: b.width, h: b.height }; };
       return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnTwist', 'partyBtnTwist', 'partyPick'].filter(id => document.getElementById(id)),
-        lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: document.querySelectorAll('#btnParty svg, #btn-menu svg').length };
+        lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: [...document.querySelectorAll('#btnParty svg, #btn-menu svg')].filter(e => e.getBoundingClientRect().width).length };
     });
     assert(!r.gone.length, `old buttons are still in the page: ${r.gone}`);
     assert(Math.abs(r.next.h - 34) < 0.5, `Next card is ${r.next.h}px tall, not the slim 34px`);
@@ -2350,11 +2351,11 @@ async function run() {
     await page.evaluate(() => exitParty());
   });
 
-  await check('phone layout stays put: retiring a hint or swapping in Change/Save at the end of a hand never moves the card', async () => {
+  await check('phone layout stays put: retiring a hint or swapping Save in for Spotlight at the end of a hand never moves the card', async () => {
     const tops = await page.evaluate(() => {
-      const ALL = ['hint-three-taught', 'hint-spot-taught', 'hint-twist-taught', 'hint-change-taught', 'hint-save-taught'];
+      const ALL = ['hint-three-taught', 'hint-spot-taught', 'hint-twist-taught', 'hint-save-taught'];
       const b = document.body, before = [...b.classList], seen = new Set();
-      for (let mask = 0; mask < 32; mask++) for (const end of [false, true]) {
+      for (let mask = 0; mask < 16; mask++) for (const end of [false, true]) {
         ALL.forEach((c, i) => b.classList.toggle(c, !!(mask & (1 << i))));
         b.classList.toggle('showing-hand-summary', end);
         seen.add(Math.round(document.getElementById('card-wrap').getBoundingClientRect().top + scrollY));
@@ -2573,8 +2574,8 @@ async function run() {
       const m = await pg.evaluate(() => {
         const d = document.getElementById('menuDrawer');
         return {
-          order: [...d.querySelectorAll('.menu-head, .menu-line .menu-label, .menu-foot button')].map(e => e.textContent.trim()),
-          acts: [...d.querySelectorAll('.menu-act')].map(e => e.textContent.trim()),
+          order: [...d.querySelectorAll('.menu-head, .menu-line .menu-label, .menu-foot button')].filter(e => e.offsetParent).map(e => e.textContent.trim()),
+          acts: [...d.querySelectorAll('.menu-act')].filter(e => e.offsetParent).map(e => e.textContent.trim()),
           text: d.innerText,
           old: ['d-log', 'd-sessions', 'd-pausecolour'].filter(id => document.getElementById(id)),
           sideShown: getComputedStyle(document.getElementById('menuSideDrawer')).display !== 'none',
@@ -3112,7 +3113,7 @@ async function run() {
             cols: getComputedStyle(d.querySelector('#logList')).gridTemplateColumns.split(' ').length,
             saves: d.querySelectorAll('#sessionsList .play-save').length,
             order: (([h1, h2]) => [h1, d.querySelector('#storeSessionBtn'), d.querySelector('#sessionsList'), h2, d.querySelector('#btnExport'), d.querySelector('#logList')])(d.querySelectorAll('.menu-head')).map(e => e.getBoundingClientRect().top).every((y, i, all) => i === 0 || y >= all[i - 1]),
-            heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent), left: r.left, width: r.width,
+            heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent), right: r.right, width: r.width,
           };
         });
         assert(JSON.stringify(p.qs) === JSON.stringify([...asked].reverse()), `${name}: cards not newest first: ${JSON.stringify(p.qs)}`);
@@ -3121,18 +3122,18 @@ async function run() {
         assert(p.cols === (name === 'phone' ? 2 : 3), `${name}: ${p.cols} cards across`);
         assert(p.saves === 2, `${name}: ${p.saves} saved rows`);
         assert(p.order && p.heads.join() === 'Saved,Drawn so far', `${name}: Played is not in the order Saved, Save for later, rows, Drawn so far, tools, cards (${p.heads})`);
-        if (name === 'computer') assert(p.left === 0 && p.width > 500, `computer: Played is not the left side panel (${p.left}, ${p.width})`);
+        if (name === 'computer') assert(p.right === 1440 && p.width > 500, `computer: Played is not the right side panel (${p.right}, ${p.width})`);
         // Favourites: the starred cards, as the same small cards
         await pg.evaluate(() => closeAllDrawers());
         await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
         await pg.locator('[data-menu="favs"]:visible').click(); await pg.waitForTimeout(900);
         const f = await pg.evaluate(() => {
           const cards = [...document.querySelectorAll('#favsList .play-card')];
-          return { n: cards.length, stars: cards.every(c => c.querySelector('.play-star')), cols: getComputedStyle(document.getElementById('favsList')).gridTemplateColumns.split(' ').length, left: document.getElementById('favsDrawer').getBoundingClientRect().left };
+          return { n: cards.length, stars: cards.every(c => c.querySelector('.play-star')), cols: getComputedStyle(document.getElementById('favsList')).gridTemplateColumns.split(' ').length, right: document.getElementById('favsDrawer').getBoundingClientRect().right };
         });
         assert(f.n === 2 && f.stars, `${name}: favourites ${JSON.stringify(f)}`);
         assert(f.cols === (name === 'phone' ? 2 : 3), `${name}: favourites ${f.cols} across`);
-        if (name === 'computer') assert(f.left === 0, 'computer: Favourites is not the left side panel');
+        if (name === 'computer') assert(f.right === 1440, 'computer: Favourites is not the right side panel');
       } finally { await ctx.close(); }
     }
   });
@@ -3184,7 +3185,7 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('menu on a computer: a side panel eased in from the left with the state in the count column; the phone drawer is not shown; overlay and Escape close it', async () => {
+  await check('menu on a computer: a side panel eased in from the right with the state in the count column; the phone drawer is not shown; overlay and Escape close it', async () => {
     const { ctx, pg } = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
     try {
       await drawCards(pg, 2);
@@ -3192,23 +3193,23 @@ async function run() {
       await pg.locator('#btn-menu').click();
       // mid-slide, not a snap: the panel is partly in view a moment after the click
       await pg.waitForTimeout(120);
-      const mid = await pg.evaluate(() => { const r = document.getElementById('menuSideDrawer').getBoundingClientRect(); return { right: r.right, width: r.width, ms: getComputedStyle(document.getElementById('menuSideDrawer')).transitionDuration }; });
-      assert(mid.right > 0 && mid.right < mid.width, `the panel should be part-way in: ${JSON.stringify(mid)}`);
+      const mid = await pg.evaluate(() => { const r = document.getElementById('menuSideDrawer').getBoundingClientRect(); return { left: r.left, width: r.width, ms: getComputedStyle(document.getElementById('menuSideDrawer')).transitionDuration }; });
+      assert(mid.left > 1440 - mid.width && mid.left < 1440, `the panel should be part-way in: ${JSON.stringify(mid)}`);
       assert(parseFloat(mid.ms) > 0, `no slide: transition ${mid.ms}`);
       await pg.waitForTimeout(800);
       const m = await pg.evaluate(() => {
         const side = document.getElementById('menuSideDrawer');
         const r = side.getBoundingClientRect();
         return {
-          open: side.classList.contains('open'), left: r.left, top: r.top, height: r.height, phoneShown: getComputedStyle(document.getElementById('menuDrawer')).display !== 'none',
+          open: side.classList.contains('open'), right: r.right, top: r.top, height: r.height, phoneShown: getComputedStyle(document.getElementById('menuDrawer')).display !== 'none',
           rows: [...side.querySelectorAll('.chapter')].map(c => [c.querySelector('.ch-name').textContent, c.querySelector('.ch-ct').innerText.replace(/\s+/g, ' ').trim()]),
           focus: document.activeElement === side,
         };
       });
-      assert(m.open && m.left === 0 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
+      assert(m.open && m.right === 1440 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
       assert(m.focus, 'focus did not move into the menu');
-      assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', ''], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
-      await pg.locator('#overlay').click({ position: { x: 1300, y: 400 } }); await pg.waitForTimeout(800);
+      assert(JSON.stringify(m.rows) === JSON.stringify([['Save', 'Save'], ['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', ''], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
+      await pg.locator('#overlay').click({ position: { x: 200, y: 400 } }); await pg.waitForTimeout(800);
       assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
       await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
       await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
@@ -3223,6 +3224,91 @@ async function run() {
     try {
       assert(await calm.pg.evaluate(() => getComputedStyle(document.getElementById('menuSideDrawer')).transitionDuration === '0s'), 'the panel still slides under reduced motion');
     } finally { await calm.ctx.close(); }
+  });
+
+  // ── End of a hand and the computer's top right (#127, #128) ──────────────────────────────────
+  const finishHand = async pg => {
+    await pg.evaluate(() => { state.cardLimit = 5; });
+    for (let i = 0; i < 14 && !(await pg.evaluate(() => state.currentIndex >= state.visibleDeck.length)); i++) { await pg.evaluate(() => nextCard()); await pg.waitForTimeout(350); }
+    await pg.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 8000 });
+    await pg.waitForTimeout(900);
+  };
+  const figure = pg => pg.evaluate(() => {
+    const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return [b.left, b.top, b.right, b.bottom].map(Math.round).join(','); };
+    return ['card', 'progress', 'progCount', 'btn-next', 'btn-menu'].map(box).join(' | ');
+  });
+  const saved = async (pg, click) => {
+    const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 4000 }), click()]);
+    return /^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(dl.suggestedFilename());
+  };
+
+  for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
+    await check(`end of a hand (${name}): Save stands in Spotlight's place, Change is gone, nothing moves between the card and the pause, Save downloads the file, and Spotlight is back on the next hand`, async () => {
+      const { ctx, pg } = await freshApp(opts);
+      try {
+        await drawCards(pg, 2);
+        await pg.waitForTimeout(900);
+        const spot = await pg.evaluate(() => { const b = document.getElementById('btnParty').getBoundingClientRect(); return [b.left, b.top, b.width, b.height].map(Math.round).join(','); });
+        const during = await figure(pg);
+        await finishHand(pg);
+        const at = await pg.evaluate(() => { const b = document.getElementById('btnSave').getBoundingClientRect(); return { box: [b.left, b.top, b.width, b.height].map(Math.round).join(','), spot: document.getElementById('btnParty').offsetParent !== null, change: !!document.getElementById('btnChange') || !!document.getElementById('handActionsRow') }; });
+        assert(!at.spot && !at.change, `at the pause Spotlight shows or Change remains: ${JSON.stringify(at)}`);
+        assert(await pg.locator('#btnSave').isVisible(), 'Save does not show at the pause');
+        const [sl, st] = spot.split(','), [vl, vt] = at.box.split(',');
+        assert(Math.abs(+st - +vt) <= 1 && (name === 'computer' ? Math.abs((+sl + +spot.split(',')[2]) - (+vl + +at.box.split(',')[2])) <= 1 : Math.abs(+sl - +vl) <= 8), `Save is not in Spotlight's place: ${spot} vs ${at.box}`);
+        assert(await figure(pg) === during, `the card, ticks, count or bar moved between a card and the pause:\n${during}\n${await figure(pg)}`);
+        assert(await saved(pg, () => pg.locator('#btnSave').click()), 'Save did not download the evening file');
+        const hint = () => pg.evaluate(() => getComputedStyle(document.querySelector('#btnSave .row-hint')).visibility);
+        assert(await hint() === 'hidden', 'the hint stayed after the first tap');
+        await pg.evaluate(() => { openMenu(document.getElementById('btn-menu')); }); await pg.waitForTimeout(900);
+        await pg.locator('[data-menu="hints"]:visible').click(); await pg.waitForTimeout(500);
+        assert(await hint() === 'visible', 'Show hints again did not bring the hint back');
+        await pg.evaluate(() => { state.handSide = null; hideHandSummary(); }); await pg.waitForTimeout(300);
+        assert(await pg.evaluate(() => document.getElementById('btnParty').offsetParent !== null && document.getElementById('btnSave').offsetParent === null), 'Spotlight did not come back');
+      } finally { await ctx.close(); }
+    });
+  }
+
+  await check('menu: Save is the first line from the first card on, absent on the start screen, and downloads the evening file (phone drawer and computer panel)', async () => {
+    for (const [name, opts, menu] of [['phone', {}, 'menuDrawer'], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }, 'menuSideDrawer']]) {
+      const { ctx, pg } = await freshApp(opts);
+      try {
+        const line = `#${menu} [data-menu="save"]`;
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        assert(!(await pg.locator(line).isVisible()), `${name}: the Save line shows on the start screen`);
+        await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(700);
+        await drawCards(pg, 1); await pg.waitForTimeout(600);
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        const first = await pg.evaluate(m => document.querySelector(`#${m} .menu-lines > :nth-child(2)`).textContent.replace(/\s+/g, ' ').trim(), menu);
+        assert(/^Save/.test(first) && /take this evening with you/i.test(first), `${name}: the first line is not Save: ${first}`);
+        assert(await saved(pg, () => pg.locator(line).first().click()), `${name}: the Save line did not download the file`);
+        await pg.waitForTimeout(800);
+        assert(!(await pg.evaluate(m => document.getElementById(m).classList.contains('open'), menu)), `${name}: the menu stayed open after Save`);
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('computer: Spotlight above Menu top right on the card\'s right edge, Selected deck top left on its left edge, only the ticks, count and bar under the card, Menu opens from the right and The Deck from the left', async () => {
+    for (const [w, h] of [[1366, 768], [1440, 900], [1920, 1080]]) {
+      const { ctx, pg } = await freshApp({ viewport: { width: w, height: h }, hasTouch: false });
+      try {
+        await drawCards(pg, 2); await pg.waitForTimeout(900);
+        const g = await pg.evaluate(() => {
+          const r = id => document.getElementById(id).getBoundingClientRect();
+          return { card: r('card'), tok: r('tokCats'), spot: r('btnParty'), menu: r('btn-menu'), next: r('btn-next'), count: r('progCount'),
+            hints: [...document.querySelectorAll('#screenRow .row-hint')].map(e => +getComputedStyle(e).opacity), over: document.documentElement.scrollWidth - innerWidth };
+        });
+        assert(Math.abs(g.tok.left - g.card.left) <= 4 && Math.abs(g.spot.right - g.card.right) <= 4 && Math.abs(g.menu.right - g.card.right) <= 4, `${w}: outer edges off the card's edges: ${JSON.stringify({ card: [g.card.left, g.card.right], tok: g.tok.left, spot: g.spot.right, menu: g.menu.right })}`);
+        assert(g.spot.bottom <= g.menu.top + 1 && g.menu.bottom < g.card.top && g.spot.top < g.menu.top, `${w}: Spotlight is not above Menu, both above the card`);
+        assert(g.spot.top > g.card.bottom === false && g.next.top >= g.count.bottom && g.over <= 0, `${w}: layout: ${JSON.stringify({ over: g.over })}`);
+        assert(g.hints.every(o => o === 0), `${w}: a hint shows at rest: ${g.hints}`);
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        assert(await pg.evaluate(() => Math.round(document.getElementById('menuSideDrawer').getBoundingClientRect().right) === innerWidth), `${w}: Menu is not a panel from the right`);
+        await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
+        await pg.locator('#tokCats').click(); await pg.waitForTimeout(1000);
+        assert(await pg.evaluate(() => Math.round(document.getElementById('cat-area').getBoundingClientRect().left) === 0), `${w}: The Deck is not a panel from the left`);
+      } finally { await ctx.close(); }
+    }
   });
 
   await check('the pause takes the last card\'s colour, whatever the old Pause colour setting left on the device; the test switch is gone', async () => {

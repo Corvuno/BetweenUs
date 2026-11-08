@@ -549,17 +549,11 @@ const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
   });
 })();
 
-// ── Hand summary actions ── Change/Save, the screen-row's end-of-hand
-// content (see styles.css body.showing-hand-summary, presentation.js
-// showHandSummary()). Plain taps — the hold-to-draw-a-fresh-hand gesture
-// is Next Card itself (in hold-mode), handled by the END_HOLD_TARGETS gate.
-document.getElementById('btnChange') && document.getElementById('btnChange').addEventListener('click', () => {
-  hintRetire('change');
-  if (typeof openCats === 'function') openCats();
-});
-document.getElementById('btnSave') && document.getElementById('btnSave').addEventListener('click', () => {
+// ── Save ── Spotlight's place at the end of a hand (styles.css body.showing-hand-summary). A plain tap; the
+// hold-to-draw-a-fresh-hand gesture is Next Card itself (in hold-mode), handled by the END_HOLD_TARGETS gate.
+document.getElementById('btnSave')?.addEventListener('click', () => {
   hintRetire('save');
-  if (typeof saveSessionFiles === 'function') saveSessionFiles();
+  saveSessionFiles();
 });
 
 // ── Spice glyph buttons (one inline on the After Dark chapter in Play,

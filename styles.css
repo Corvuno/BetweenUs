@@ -491,13 +491,11 @@ body.showing-hand-summary .card-question{
 .quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
 #screenRow{grid-column:1;grid-row:4;justify-self:start;justify-content:flex-start;align-items:flex-start;}
-#screenRow #btnParty{flex-shrink:0;margin-inline:auto;}   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
-#btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;z-index:1;}   /* above the end-of-hand row, which spans under it */
-#btnParty .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
-#btnParty.disabled .row-lbl{opacity:.32;}   /* the word waits for the first card; its hint stays bright */
-/* End of a hand: Change and Save take Spotlight's row (Menu stays at its right end), so swapping them in never moves the card */
-#handActionsRow{grid-column:1 / -1;grid-row:4;padding-inline-end:64px;}
-#handActionsRow::before,#handActionsRow::after{display:none;}
+#screenRow :is(#btnParty,#btnSave){flex-shrink:0;margin-inline:auto;}   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
+.quiet-word svg{display:none;}   /* the words carry icons on a wide screen only */
+#btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
+:is(#btnParty,#btnSave) .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
+#btnParty.disabled :is(.row-lbl,svg){opacity:.32;}   /* the word waits for the first card; its hint stays bright */
 .btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 /* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
 @media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
@@ -968,19 +966,15 @@ body.showing-hand-summary .card-question{
 /* Spotlight (and Three in The Deck, and Twist in the menu) assume a hand you're mixing
    or drawing from at random — none of that applies to Colbert/The 36's
    fixed, in-order sequence, so they disappear rather than sit there meaningless. */
-body.fixed-seq-mode :is(.screen-row,#pickToggle,.seg:has(#pickToggle),#d-twist,#s-twist){display:none;}
+body.fixed-seq-mode :is(#btnParty,#pickToggle,.seg:has(#pickToggle),#d-twist,#s-twist){display:none;}
 
 /* ── PICK-3 MODE ── */
 .screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
 
-/* ── HAND SUMMARY ── the row under the draw button at the end of a
-   hand: same slot .screen-row occupies while a card is showing, swapped
-   in via body.showing-hand-summary instead of stacked on top of it, so
-   only one of the two is ever in the layout at once. */
-.screen-row--hand{display:none;}
-body.showing-hand-summary .screen-row:not(.screen-row--hand){display:none;}
-body.showing-hand-summary .screen-row--hand{display:flex;justify-content:center;gap:14px;}
-/* Change and Save: the end-of-hand row (see "The end-of-hand row" below). */
+/* ── END OF A HAND ── Save takes Spotlight's place (the same slot, so nothing moves) and Spotlight is back on the next card. */
+#btnSave{display:none;}
+body.showing-hand-summary #btnParty{display:none;}
+body.showing-hand-summary #btnSave{display:flex;}
 
 /* ── DRAW THREE · normal screen: one card split three ways ──
    The whole picker is a single card on the drawn card's own surface, border and gold
@@ -1321,6 +1315,7 @@ body.tok-taught .tok-hint{display:none;}
 .menu-line{display:grid;grid-template-columns:20px 1fr auto;grid-template-rows:auto auto;column-gap:16px;row-gap:3px;align-items:center;width:100%;padding:14px 26px;background:none;border:none;text-align:left;cursor:pointer;transition:background .15s;}
 @media (hover:hover) and (pointer:fine){.menu-line:hover{background:rgba(255,255,255,.035);}}
 .menu-line.disabled,.chapter.disabled{opacity:.32;cursor:default;}   /* Twist with no card in front of you */
+.menu-line[hidden],.chapter[hidden]{display:none;}   /* Save, until the first card */
 .menu-icon{grid-row:1/3;color:var(--celadon);opacity:.8;display:flex;}
 .menu-icon svg{width:18px;height:18px;}
 .menu-label{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);}
@@ -1737,15 +1732,15 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 @media(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine){
   /* the panel and the main screen move together: same time, same curve, out and back */
   /* the base body transition (--im-color .6s ease) repeated, because this declaration replaces it */
-  body{--dock-ms:.5s;transition:--im-color .6s ease,padding-right var(--dock-ms) var(--ease-sheet);}
-  html.deck-docked body{--dock-ms:.64s;padding-right:var(--dock-w);}
+  body{--dock-ms:.5s;transition:--im-color .6s ease,padding-left var(--dock-ms) var(--ease-sheet);}
+  html.deck-docked body{--dock-ms:.64s;padding-left:var(--dock-w);}
   .cat-scrim{display:none;}
-  .cat-area{left:auto;right:0;top:0;bottom:0;width:var(--dock-w);height:100dvh;padding:0 28px;
-    border:0;border-left:1px solid var(--border-strong);transform:translateX(102%);
+  .cat-area{left:0;right:auto;top:0;bottom:0;width:var(--dock-w);height:100dvh;padding:0 28px;
+    border:0;border-right:1px solid var(--border-strong);transform:translateX(-102%);
     transition:transform .5s var(--ease-sheet);}
   .cat-area.sheet-open{transform:none;}
   /* the gilt edge: the app's rail line, gold */
-  .cat-area::before{content:'';position:absolute;inset:0 auto 0 -1px;width:3px;pointer-events:none;
+  .cat-area::before{content:'';position:absolute;inset:0 -1px 0 auto;width:3px;pointer-events:none;
     background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 38%,var(--bg)) 0%,var(--gold) 34%,var(--gold-l) 50%,var(--gold) 66%,color-mix(in srgb,var(--gold) 38%,var(--bg)) 100%);}
   .cat-sheet-handle{display:none;}
   .cat-sheet-head{display:flex;align-items:baseline;gap:18px;padding:12px 56px 8px 0;}
@@ -1782,18 +1777,19 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .chapter-group{--ch-hover-line:var(--border-strong);}
   @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
 
-  /* The menu is a panel from the left instead of the phone drawer: under the overlay, eased in on The Deck's
-     curve, hidden (out of the keyboard's reach too) until it has slid away */
+  /* The menu is a panel from the right (under its button) instead of the phone drawer, and The Deck one from the left
+     (under Selected deck): under the overlay, eased in on The Deck's curve, hidden (out of the keyboard's reach too)
+     until it has slid away */
   #menuDrawer{display:none;}
-  .side-drawer{display:block;position:fixed;inset-block:0;inset-inline-start:0;z-index:160;width:var(--dock-w);
-    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border-inline-end:1px solid var(--border-strong);
-    transform:translateX(-102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
+  .side-drawer{display:block;position:fixed;inset-block:0;inset-inline-end:0;z-index:160;width:var(--dock-w);
+    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border-inline-start:1px solid var(--border-strong);
+    transform:translateX(102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
   .side-drawer.open,.sheet-side.open{transform:none;visibility:visible;transition:transform .5s var(--ease-sheet);}
   @media(prefers-reduced-motion:reduce){.side-drawer,.side-drawer.open,.sheet-side,.sheet-side.open{transition:none;}}
   /* Played and Favourites are the same panel: they take the menu's place and slide in the same way */
-  .sheet-side{position:fixed;inset-block:0;inset-inline:0 auto;z-index:170;width:var(--dock-w);max-height:none;
-    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border:0;border-inline-end:1px solid var(--border-strong);border-radius:0;
-    transform:translateX(-102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
+  .sheet-side{position:fixed;inset-block:0;inset-inline:auto 0;z-index:170;width:var(--dock-w);max-height:none;
+    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border:0;border-inline-start:1px solid var(--border-strong);border-radius:0;
+    transform:translateX(102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
   .sheet-side .drawer-title{text-align:left;padding-block-start:18px;}
   .sheet-side .play-grid{grid-template-columns:repeat(3,1fr);}
   .sheet-side .play-q{font-size:1.18rem;}
@@ -1834,38 +1830,10 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 .tr-svg path:nth-of-type(4){stroke:url(#trP);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
 .tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
 
-/* ── The end-of-hand row: Change · Save (#handActionsRow; it was once also the play row Three · Spotlight · Twist) ──
-   One celadon, one strength, no boxes. Two fading rules above and below,
-   rotated-square separators between items, hint line under each. Active =
-   underline under the word only. Placed last so it wins over the quiet
-   text-button rules above. */
-#handActionsRow{position:relative;gap:4px;padding-block:4px 6px;align-items:flex-start;}
-#handActionsRow::before,#handActionsRow::after{content:'';position:absolute;left:4%;right:4%;height:1px;
-  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent) 30%,color-mix(in srgb,var(--celadon) 42%,transparent) 70%,transparent);}
-#handActionsRow::before{top:0;}
-#handActionsRow::after{bottom:0;}
-#handActionsRow > button{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:14px 8px 10px;border:none;
-  font-family:'Federo','Jost',sans-serif;font-size:.72rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--celadon);}
-@media (hover:hover) and (pointer:fine){#handActionsRow > button:hover{color:var(--celadon);}}
-#handActionsRow .row-top{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
-#handActionsRow > button svg{width:17px;height:17px;flex-shrink:0;}
-#handActionsRow .row-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:.01em;
-  font-size:.95rem;line-height:1.15;color:var(--row-hint);white-space:normal;max-width:112px;text-align:center;}
-#handActionsRow > button.on .row-lbl,#handActionsRow > button.active .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}
-/* Not usable yet (before the first card; Twist also on the end screen): only the
-   symbol + word dim — the hint under them stays at full strength. */
-#handActionsRow > button.disabled{opacity:1;}
-#handActionsRow > button.disabled .row-top{opacity:.32;}
-/* Hover (pointer devices only), press and keyboard focus light up gold, like the
-   nav row's back and menu. Not while dimmed. Hint keeps its own tone. */
-#handActionsRow > button:not(.disabled):active,
-#handActionsRow > button:not(.disabled):focus-visible{color:var(--gold);}
-@media (hover:hover) and (pointer:fine){#handActionsRow > button:not(.disabled):hover{color:var(--gold);}}
 /* Hints retire per control once it has worked (see HINTS in state.js).
    Hidden, not removed: the row keeps its height, so the centred screen doesn't
-   jump when a hint retires or when Change/Save swap in at the end of a hand. */
+   jump when a hint retires or when Save swaps in for Spotlight at the end of a hand. */
 body.hint-spot-taught #btnParty .row-hint,
-body.hint-change-taught #btnChange .row-hint,
 body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* A control tapped when it can't be used (Spotlight, Three): a short horizontal shake, no words. */
 @keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
@@ -1882,17 +1850,17 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* fullscreen, end of a hand: the count slot is empty — no rules around nothing */
 .party-overlay.is-hand-end .pc-rule{display:none;}
 
-/* ══ WIDE SCREENS — PC, laptop, tablet landscape (agreement 2026-10-18-pc-layout, round 12) ══
+/* ══ WIDE SCREENS — PC, laptop, tablet landscape (agreement 2026-10-18-pc-layout, round 12; top right 2026-11-08, #128) ══
    Not the phone. The card is a real card as large as the window allows; the controls sit
-   outside it, aligned to its edges: logo + tagline top centre, Selected + Menu top left,
-   Three / Spotlight / Twist (end of a hand: Change / Save) top right, Back left, the gold
-   bar centred, progress + count right. Nothing here changes what a control does.
-   --pcW is the card's width; the 262px (scaled) plus 100px is everything on screen that isn't the card; the 100px is the bottom figure's extra rows: count, Next card, Spotlight and Menu. */
+   outside it, aligned to its edges: logo + tagline top centre, Selected deck top left,
+   Spotlight above Menu top right (Save in Spotlight's place at the end of a hand), the
+   ticks, the count and the Next card bar under the card. Nothing here changes what a control does.
+   --pcW is the card's width; 168px (scaled) plus 100px is everything on screen that isn't the card: the header, the margins, the ticks, the count and Next card. */
 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 262px * var(--k) - 100px) * 556 / 360));}
+  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 168px * var(--k) - 100px) * 556 / 360));}
   body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
   .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
-    display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto auto;
+    display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto;
     align-items:start;justify-items:stretch;}
   .controls-wrap,.nav-row{display:contents;}
   .header,.tok-line,.controls-wrap{max-width:none;}
@@ -1903,7 +1871,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .title-rule{width:calc(var(--k)*378px);margin:calc(var(--k)*10px) auto 0;}
   .subtitle{margin-top:calc(var(--k)*9px);}
 
-  /* Selected + Menu, top left */
+  /* Selected deck, top left */
   .tok-line{grid-column:1;grid-row:1;justify-self:start;width:auto;padding:calc(var(--k)*20px) 0 0;margin:0;justify-content:flex-start;}
   .tok-preset{flex-direction:column;align-items:flex-start;gap:calc(var(--k)*5px);padding:0;border-bottom:0;}
   .tok-preset .tok-lbl{font-size:max(11px,calc(var(--k)*14px));letter-spacing:.02em;text-transform:none;color:rgba(240,232,216,.85);}
@@ -1917,6 +1885,20 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
     #tokHint{font-size:0;}
     #tokHint::after{content:" \00b7  click to change";font-size:max(11px,calc(var(--k)*14px));}
   }
+
+  /* Spotlight (Save at the end of a hand) above Menu, top right: words with their icons at the card's right edge,
+     the hint beside the word on hover only. The pitch is the one Spotlight's own Close button keeps. */
+  #screenRow,#btn-menu{grid-column:3;grid-row:1 / 3;justify-self:end;align-self:start;width:auto;}
+  #screenRow{justify-content:flex-end;padding:calc(var(--k)*20px) 0 0;}
+  #screenRow .quiet-word,#btn-menu{position:relative;flex-direction:row-reverse;align-items:center;justify-content:flex-start;
+    gap:calc(var(--k)*10px);min-width:0;min-height:0;margin:0;padding:calc(var(--k)*4px) 0;font-size:max(11px,calc(var(--k)*14px));}
+  #btn-menu{margin-top:calc(var(--k)*51px);}
+  .quiet-word svg{display:block;flex:none;width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
+  #screenRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin:0 calc(var(--k)*18px) 0 0;
+    max-width:none;white-space:nowrap;text-align:right;font-size:max(13px,calc(var(--k)*16px));line-height:1.15;
+    opacity:0;transition:opacity .2s;pointer-events:none;}
+  @media (hover:hover) and (pointer:fine){#screenRow .quiet-word:hover .row-hint{opacity:1;}}
+  #screenRow .quiet-word:focus-visible .row-hint{opacity:1;}
 
   /* the card */
   .card-wrap{grid-column:1 / -1;grid-row:3;align-self:stretch;margin:0 0 calc(var(--k)*30px);width:100%;min-height:0;container-type:size;
@@ -1943,13 +1925,10 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card.is-hand-list .card-question{font-size:1rem;line-height:normal;}
   .hd-list{--hd-fs:2.2cqw;justify-content:safe center;gap:.9em;}
 
-  /* bottom row */
-  /* bottom: the phone's figure — ticks and count above, Next card between its hairlines, Spotlight and Menu under the outer ends */
+  /* bottom: the phone's figure without its words — ticks and count above, Next card between its hairlines */
   .progress{grid-column:1 / -1;grid-row:4;justify-self:center;width:min(100%,calc(var(--k)*340px));}
   .prog-count{grid-column:1 / -1;grid-row:5;margin-top:calc(var(--k)*10px);}
   .nav-lines,#btn-next{grid-row:6;margin-block-start:calc(var(--k)*12px);}
-  #screenRow,#btn-menu,#handActionsRow{grid-row:7;}
-  #screenRow{width:auto;}
   .draw-more-btn,.deck-info{display:none;}
   /* Three: the three options use the card's size, not the phone's */
   .card-area{container-type:inline-size;}
