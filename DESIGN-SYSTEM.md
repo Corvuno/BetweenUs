@@ -78,8 +78,8 @@ corners: square
 came to 46px; now `height:var(--gold-btn-h)`, a token in `:root`, `padding:0`). Reason: under the card the
 question is to be the brightest thing, and a 46px gold block outshone it; Next card is now one slim bar
 framed by hairlines (see "Under the card"). Draw Cards in The Deck takes the same height, since the
-two are one spec. Width is the part that differs: Next card is `128 * --u` wide at minimum, Draw Cards
-fills the sheet.
+two are one spec. Width is the part that differs: Next card is `14.5em` wide in every state (see "Under the
+card"), Draw Cards fills the sheet.
 
 ### Under the card (phone, added 2026-11-06, #113)
 The whole bottom of the main screen is one figure that answers the title: the coloured ticks, the count,
@@ -90,11 +90,19 @@ menu), so the question is the brightest thing.
 - `.controls-wrap` is a grid (`1fr auto 1fr`) and a size container; `--u` is 1px of the 375-wide mockup
   (`min(1.2px, 100cqw / 339)`), so 360 and 412 phones get the same figure scaled. Rows: ticks, count, Next
   card, words. Gaps between rows are the existing 11px.
-- Next card `#btn-next`: the gold button spec above, `min-width:128 * --u`, grows with its words ("Tap to flip
-  card", "Hold to continue").
+- Next card `#btn-next`: the gold button spec above, one fixed width of `14.5em` and one type (font size and
+  letter-spacing never change between Draw Card, Next Card, End of hand, Hold to continue and Tap to flip card),
+  so the bar keeps its shape and place through a hand (#131). The longest label, "Hold to continue", is 11.6em
+  wide in Jost 400 with `.14em` spacing; the rest of the 14.5em is even room each side. In em, not `--u`: the label's
+  type is in rem and steps up with the screen, so the room each side stays even on every phone, tablet and PC. The
+  first-draw and end-of-hand states change colour only (`.hold-mode`), never size or spacing. Spotlight keeps its own
+  width (`flex-shrink:0`) so the bar's width never squeezes its hint on a 360px phone.
 - Hairlines `.nav-lines`: three 1px lines at -6px, 0, +6px from the bar's centre, starting `6 * --u` from the
-  bar, outer ends 40, 24 and 40 from the screen edge (the middle one longest), gold from opacity .7 at the bar to
-  .2 at the outer end (`color-mix` of `--gold`, one gradient per line so the fade follows each line's own length).
+  bar, outer ends 40, 24 and 40 from the screen edge (the middle one longest), from opacity .7 at the bar to
+  .2 at the outer end (`color-mix` of `--nl`, one gradient per line so the fade follows each line's own length).
+  `--nl` (registered `<color>`) is the lines' colour: `--gold` in play; while the bar is in `.hold-mode` (end of a
+  hand) it is `--im-target`, the pause colour the bar reads, easing over `.6s` like the bar's own fade (`.2s` back to
+  gold on the next hand), instant under reduced motion. No glow.
   Decoration only (`aria-hidden`); hidden on PC.
 - Spotlight and Menu: `.quiet-word`, plain words (no icon, no box), Jost 400, 11.5px, `.22em`, uppercase,
   `--btn-quiet`, `--gold` on hover (mouse only), press and keyboard focus. The tap area is at least 44px
@@ -104,7 +112,7 @@ menu), so the question is the brightest thing.
   celadon Federo of the old play row: they are secondary and must not compete with Next card or the question.
 - Wide screens draw the same figure under the card (owner, 2026-11-06): ticks and count centred above, Next card
   centred between its three hairlines (as long as the card is wide), Spotlight and Menu under the outer ends. The
-  app grid's middle column is Next card's own width (`128 * 1.2px`), so the lines start 6 units from the bar; the
+  app grid's middle column is Next card's own width (`auto`: the `14.5em` bar), so the lines start 6 units from the bar; the
   100px in `--pcW` is the figure's extra height. Only the header (Selected deck, logo) stays at the top.
 
 ### Three, Twist (moved 2026-11-06, #113)

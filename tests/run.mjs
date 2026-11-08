@@ -1386,6 +1386,38 @@ async function run() {
     assert(r.spot.l < r.next.l && r.menu.r > r.next.r, 'Spotlight and Menu are not under the outer ends of the lines');
   });
 
+  await check('under the card: the Next card bar keeps one width, place and type through a hand (Draw Card to Tap to flip card), and its hairlines take the bar\'s colour at the end of a hand and go back to gold on the next', async () => {
+    await closeCategorySheet();
+    await freshHand({ three: false });
+    const bar = () => page.evaluate(() => {
+      const e = document.getElementById('btn-next'), r = e.getBoundingClientRect(), cs = getComputedStyle(e);
+      return { label: e.textContent.trim(), key: [r.left.toFixed(1), r.width.toFixed(1), cs.fontSize, cs.letterSpacing].join(' '), oneLine: e.scrollHeight <= e.clientHeight + 1 && e.scrollWidth <= e.clientWidth,
+        lines: [...document.querySelectorAll('.nav-lines')].map(l => getComputedStyle(l).getPropertyValue('--nl').trim()) };
+    });
+    const seen = new Map();
+    const note = async () => { const b = await bar(); assert(b.oneLine, `"${b.label}" does not fit on one line in the bar`); seen.set(b.label, b); return b; };
+    await note();
+    for (let i = 0; i < 20 && !(await page.evaluate(() => state.currentIndex >= state.visibleDeck.length)); i++) {
+      await page.locator('#card').click(); await page.waitForTimeout(300); await note();
+    }
+    await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+    await page.waitForTimeout(900);
+    await note();
+    await imTap('#btn-next'); await note();   // the list side: Hold to continue
+    for (const l of ['Draw Card', 'Next Card', 'End of hand', 'Hold to continue', 'Tap to flip card']) assert(seen.has(l), `the walk never showed "${l}" (${[...seen.keys()]})`);
+    const keys = new Set([...seen.values()].map(b => b.key));
+    assert(keys.size === 1, `the bar changes size, place or type between states: ${[...seen].map(([l, b]) => `${l}: ${b.key}`).join(' | ')}`);
+    const gold = (await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--gold').trim())).toLowerCase();
+    assert(seen.get('Draw Card').lines.every(c => c === 'rgb(201, 168, 76)' || c === gold), `hairlines are not gold in play: ${seen.get('Draw Card').lines}`);
+    const end = seen.get('Tap to flip card').lines;
+    const pause = await page.evaluate(() => document.body.style.getPropertyValue('--im-target').trim());
+    const rgb = await page.evaluate(c => { const d = document.createElement('i'); d.style.color = c; document.body.append(d); const v = getComputedStyle(d).color; d.remove(); return v; }, pause);
+    assert(end.every(c => c === rgb), `hairlines ${end} are not the pause colour ${rgb} at the end of a hand`);
+    const hb = await page.locator('#btn-next').boundingBox();
+    await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2); await page.mouse.down(); await page.waitForTimeout(1800); await page.mouse.up(); await page.waitForTimeout(1000);
+    assert((await bar()).lines.every(c => c === 'rgb(201, 168, 76)'), 'hairlines did not go back to gold on the next hand');
+  });
+
   await check('Three is set in The Deck: Off and On words in the settings line at the end of the list, above Draw Cards; it works and shakes at the start screen', async () => {
     await closeCategorySheet();
     await freshHand({ three: false });

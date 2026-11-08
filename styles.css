@@ -10,6 +10,7 @@
 @property --rail-l{syntax:'<color>';inherits:true;initial-value:transparent;}
 @property --bd-a{syntax:'<color>';inherits:false;initial-value:#c9a84c;}
 @property --bd-b{syntax:'<color>';inherits:false;initial-value:#a07830;}
+@property --nl{syntax:'<color>';inherits:false;initial-value:#c9a84c;}   /* the hairlines beside Next card */
 :root{
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
@@ -464,7 +465,9 @@ body.showing-hand-summary .card-question{
 .progress{grid-row:1;} .prog-count{grid-row:2;}
 .nav-row{display:contents;}
 .nav-lines{grid-row:3;justify-self:stretch;height:var(--gold-btn-h);
-  --line:color-mix(in srgb,var(--gold) 70%,transparent);--line-end:color-mix(in srgb,var(--gold) 20%,transparent);
+  --nl:var(--gold);   /* the lines take the bar's colour: gold in play, the pause colour at the end of a hand */
+  --line:color-mix(in srgb,var(--nl) 70%,transparent);--line-end:color-mix(in srgb,var(--nl) 20%,transparent);
+  transition:--nl .2s ease;
   --gap:calc(6 * var(--u));   /* bar edge to the first hairline end */
   --y-mid:calc(var(--gold-btn-h) / 2 - .5px);   /* the middle line; the others sit 6px above and below */
   background-repeat:no-repeat;
@@ -475,7 +478,11 @@ body.showing-hand-summary .card-question{
 .nav-lines--r{grid-column:3;margin-inline-start:var(--gap);
   background-image:linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(to right,var(--line),var(--line-end));
   background-position:0 calc(var(--y-mid) - 6px),0 var(--y-mid),0 calc(var(--y-mid) + 6px);}
-#btn-next{grid-column:2;grid-row:3;min-width:calc(128 * var(--u));padding-inline:calc(14 * var(--u));white-space:nowrap;}
+/* End of a hand: the lines follow the bar to the pause colour (--im-target, the one the bar reads) over the same .6s. */
+.controls-wrap:has(#btn-next.hold-mode) .nav-lines{--nl:var(--im-target);transition:--nl .6s ease;}
+/* One width in every state, so the bar never changes shape: the longest label ("Hold to continue") plus even room each side.
+   In em because the label's type is in rem and steps up with the screen; the width follows it. */
+#btn-next{grid-column:2;grid-row:3;width:14.5em;white-space:nowrap;}
 /* Spotlight and Menu: plain words in the quiet tone, no icon, no box. The tap area is 44px tall and starts a row-gap under Next card. */
 .quiet-word{display:flex;flex-direction:column;align-items:flex-start;min-width:44px;min-height:44px;padding:4px calc(6 * var(--u)) 0;
   background:none;border:none;cursor:pointer;color:var(--btn-quiet);text-align:left;
@@ -483,14 +490,15 @@ body.showing-hand-summary .card-question{
 .quiet-word:focus-visible{outline:none;text-decoration:underline solid var(--gold) 1px;text-underline-offset:6px;}   /* keyboard focus: the gold word with a thin gold underline, never a box */
 .quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
-#screenRow{grid-column:1;grid-row:4;justify-self:start;align-items:flex-start;}
+#screenRow{grid-column:1;grid-row:4;justify-self:start;justify-content:flex-start;align-items:flex-start;}
+#screenRow #btnParty{flex-shrink:0;margin-inline:auto;}   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
 #btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;z-index:1;}   /* above the end-of-hand row, which spans under it */
 #btnParty .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
 #btnParty.disabled .row-lbl{opacity:.32;}   /* the word waits for the first card; its hint stays bright */
 /* End of a hand: Change and Save take Spotlight's row (Menu stays at its right end), so swapping them in never moves the card */
 #handActionsRow{grid-column:1 / -1;grid-row:4;padding-inline-end:64px;}
 #handActionsRow::before,#handActionsRow::after{display:none;}
-.btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,font-size .2s,letter-spacing .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+.btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 /* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
 @media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
 .btn-draw:active{transform:scale(.97);}
@@ -506,14 +514,9 @@ body.showing-hand-summary .card-question{
    reading that would ease the button twice and lag it behind the diamond. */
 .btn-draw.hold-mode{
   --bd-a:color-mix(in srgb,var(--im-target) 86%,#fff);--bd-b:color-mix(in srgb,var(--im-target) 76%,#000);
-  color:var(--bg);letter-spacing:.1em;
-  transition:opacity .2s,color .2s,font-size .2s,letter-spacing .2s,transform .16s var(--ease-out),--bd-a .6s ease,--bd-b .6s ease;}
+  color:var(--bg);
+  transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .6s ease,--bd-b .6s ease;}
 /* the slow gold-to-chapter-colour ease is on .hold-mode itself, so a pointer resting on the button (hover) does not cut it short */
-/* the very first draw of a hand — before any card has been drawn, or right
-   after a settings change reset the deck. Sized up (no glow — see change
-   log) to make this the obvious "start" tap instead of looking like every
-   other "next" tap. */
-.btn-draw--start{font-size:.82rem;letter-spacing:.16em;}
 /* pressed-and-holding feedback on the end-of-draw button */
 .btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
@@ -1890,7 +1893,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 262px * var(--k) - 100px) * 556 / 360));}
   body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
   .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
-    display:grid;grid-template-columns:1fr minmax(calc(128 * 1.2px),auto) 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto auto;
+    display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto auto;
     align-items:start;justify-items:stretch;}
   .controls-wrap,.nav-row{display:contents;}
   .header,.tok-line,.controls-wrap{max-width:none;}
@@ -2005,5 +2008,5 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 
 /* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */
 @media (prefers-reduced-motion:reduce){
-  body,.btn-draw,.c-accent,.party-c-accent{transition:none;}
+  body,.btn-draw,.btn-draw.hold-mode,.nav-lines,.controls-wrap:has(#btn-next.hold-mode) .nav-lines,.c-accent,.party-c-accent{transition:none;}
 }

@@ -14,4 +14,4 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - 15 long cards reworked, 14 of them shortened so they read faster.
-- Smaller fixes throughout, including Menu that could not be tapped at the end of a hand and The Deck on a phone giving the chapters their room back.
+- Smaller fixes throughout, including Menu that could not be tapped at the end of a hand, The Deck on a phone giving the chapters their room back, and the button under the card staying steady through the end of a hand.
