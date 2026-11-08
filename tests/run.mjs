@@ -3259,10 +3259,10 @@ async function run() {
         assert(await figure(pg) === during, `the card, ticks, count or bar moved between a card and the pause:\n${during}\n${await figure(pg)}`);
         assert(await saved(pg, () => pg.locator('#btnSave').click()), 'Save did not download the evening file');
         const hint = () => pg.evaluate(() => getComputedStyle(document.querySelector('#btnSave .row-hint')).visibility);
-        assert(await hint() === 'hidden', 'the hint stayed after the first tap');
+        if (name === 'phone') assert(await hint() === 'hidden', 'the hint stayed after the first tap');
         await pg.evaluate(() => { openMenu(document.getElementById('btn-menu')); }); await pg.waitForTimeout(900);
         await pg.locator('[data-menu="hints"]:visible').click(); await pg.waitForTimeout(500);
-        assert(await hint() === 'visible', 'Show hints again did not bring the hint back');
+        if (name === 'phone') assert(await hint() === 'visible', 'Show hints again did not bring the hint back');
         await pg.evaluate(() => { state.handSide = null; hideHandSummary(); }); await pg.waitForTimeout(300);
         assert(await pg.evaluate(() => document.getElementById('btnParty').offsetParent !== null && document.getElementById('btnSave').offsetParent === null), 'Spotlight did not come back');
       } finally { await ctx.close(); }
@@ -3302,6 +3302,15 @@ async function run() {
         assert(g.spot.bottom <= g.menu.top + 1 && g.menu.bottom < g.card.top && g.spot.top < g.menu.top, `${w}: Spotlight is not above Menu, both above the card`);
         assert(g.spot.top > g.card.bottom === false && g.next.top >= g.count.bottom && g.over <= 0, `${w}: layout: ${JSON.stringify({ over: g.over })}`);
         assert(g.hints.every(o => o === 0), `${w}: a hint shows at rest: ${g.hints}`);
+        if (w === 1440) {
+          // once Spotlight has worked its hint is retired on the phone, but on a computer hovering it still shows the hint
+          await pg.evaluate(() => hintRetire('spotlight'));
+          await pg.hover('#btnParty'); await pg.waitForTimeout(400);
+          const shown = await pg.evaluate(() => { const h = document.querySelector('#btnParty .row-hint'); const cs = getComputedStyle(h); return cs.visibility === 'visible' && +cs.opacity > .9; });
+          assert(shown, 'hovering Spotlight after its hint was retired does not show the hint');
+          await pg.mouse.move(700, 450); await pg.waitForTimeout(400);
+          assert(await pg.evaluate(() => +getComputedStyle(document.querySelector('#btnParty .row-hint')).opacity === 0), 'the hint shows at rest after hover');
+        }
         await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
         assert(await pg.evaluate(() => Math.round(document.getElementById('menuSideDrawer').getBoundingClientRect().right) === innerWidth), `${w}: Menu is not a panel from the right`);
         await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);

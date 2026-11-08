@@ -248,7 +248,6 @@ function menuStates() {
   return {
     cats: [document.getElementById('valCats').textContent, handSizeLabel(state.cardLimit)],
     start: total ? [`${seenCount} seen`, `${total - seenCount} left`] : [],
-    save: ['Save'],
     twist: currentTwist ? ['on'] : [],
     played: [drawn ? `${drawn} drawn so far` : 'Nothing drawn yet', ...(saved ? [`${saved} saved`] : [])],
     favs: [starred ? `${starred} starred` : 'None starred yet'],
