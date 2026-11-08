@@ -1506,8 +1506,6 @@ body.hint-ways-taught .menu-hint{display:none;}
 .play-sect{border-left:2px solid transparent;padding-left:12px;margin-left:-12px;}
 .play-sect--1{border-left-color:var(--border-strong);}
 .play-sect--2{border-left-color:rgba(101,201,176,.35);}
-/* Shuffle, Cards and Three stay fixed at the foot of the sheet, above Draw Cards, while the chapters scroll above them */
-.play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);}
 .play-sect+.play-sect{margin-top:8px;padding-top:2px;}
 
 /* "start" bar at the foot of the sheet — .cat-area is itself the flex column
