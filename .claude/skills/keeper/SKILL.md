@@ -267,6 +267,10 @@ Runs in its own `/keeper upkeep` thread, a month or more after the last run.
 - One topic per session: a design topic and its build run in separate sessions, because every
   reply re-reads the whole conversation, screenshots included. When a design is picked, put it on
   the backlog and build in a fresh session.
+- Heavy reading goes to a cheap agent: reading a large file, a broad search, or a sweep of the
+  history, the deck or old sessions is handed to a Sonnet or Haiku agent that reports back a short
+  summary of what matters, and you work from that summary. The exception is a job that rewrites
+  that file. Not everything has to be known.
 - Measure sizes in code instead of reading screenshots back into the conversation; read back only
   screenshots that need a human eye.
 - When a conversation has grown long, say so in one line and suggest `/compact` or a fresh session.

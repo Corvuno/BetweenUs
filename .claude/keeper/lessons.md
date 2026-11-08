@@ -47,7 +47,6 @@ repeated here.
 - While a builder works, commit Keeper files by naming them (`git add <file>`), never
   `git commit -a`, and check `git status` before every commit.
 - After any scripted edit to a Keeper file, check its line count before committing.
-- Finding things (old sessions, history, the deck, notes) goes to an agent from the start.
 - Reproducing and root-causing a bug goes to an agent; you make sure you understand what the owner
   sees and expects, and say the fix back.
 
