@@ -1,0 +1,125 @@
+<title>Under the Card, Combined</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Poiret+One&family=Cormorant+Garamond:ital@0;1&family=Playfair+Display:ital@1&display=swap">
+<style>
+/* Layout: one column of moments; each moment is a pair, today on the left, the combined sketch on the right. */
+:root{--bg:#0b0a08;--panel:#15130f;--ink:#e9dfc8;--muted:#9b917e;--gold:#c9a84c;--note:#f0b46a;--line:rgba(201,168,76,.22);
+  --display:'Poiret One','Jost',sans-serif;--body:'Jost',system-ui,sans-serif;--serif:'Cormorant Garamond',Georgia,serif;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--body);}
+.wrap{max-width:1080px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+h1{font:400 clamp(28px,6vw,40px)/1.1 var(--display);color:var(--gold);letter-spacing:.06em;margin:0 0 6px;text-wrap:balance}
+.lede{color:var(--muted);max-width:62ch;margin:0 0 22px}
+.box{border-top:1px solid var(--line);padding-top:16px;margin-top:8px;max-width:70ch}
+.box h2,.moment h2{font:500 12px/1.3 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 8px}
+.box ul{margin:0;padding-left:18px}.box li{margin:3px 0}
+.box .q{font-family:var(--serif);font-style:italic;font-size:17px}
+.moment{border-top:1px solid var(--line);padding-top:18px;margin-top:30px}
+.moment p{color:var(--muted);max-width:68ch;margin:0 0 14px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pair.pc{grid-template-columns:1fr}
+@media (min-width:860px){.pair.pc{grid-template-columns:1fr 1fr}}
+figure{margin:0;min-width:0}
+figcaption{font:500 11px/1.3 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+figcaption b{color:var(--gold);font-weight:500}
+.shot{display:block;width:100%;padding:0;border:1px solid var(--line);background:#000;cursor:zoom-in;line-height:0}
+.shot img,.shot svg{width:100%;height:auto;display:block}
+.shot:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.notes{margin:10px 0 0;padding-left:18px;color:var(--ink);font-size:14px}
+.notes li{margin:2px 0}
+.note{color:var(--note)}
+a{color:var(--gold)}
+#viewer{position:fixed;inset:0;background:rgba(5,4,3,.96);z-index:20;display:flex;flex-direction:column;
+  padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+#viewer[hidden]{display:none}
+#viewer button{align-self:flex-start;background:none;border:0;color:var(--gold);font:500 14px var(--body);letter-spacing:.06em;cursor:pointer;padding:8px 0}
+#viewer .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto}
+#viewer .stage img,#viewer .stage svg{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain}
+#viewer .cap{color:var(--muted);font-size:13px;padding-top:6px}
+</style>
+
+<div class="wrap">
+  <h1>Under the card, combined</h1>
+  <p class="lede">The logo in the sketches is drawn roughly and doesn't change. Round 2 put together, as you asked: A, B and C combined, Change gone, Save only saves, Three settable. Rough sketches drawn from scratch, next to today's screen at the same moment. Tap any picture to see it large.</p>
+
+  <section class="box">
+    <h2>How I read "combine"</h2>
+    <ul>
+      <li>From B: at the end of a hand, Save takes Spotlight's word under the card. One tap, seen at every pause.</li>
+      <li>From A: Save is also the first line of the Menu from the first card on, so it's two taps whenever the evening ends mid-hand.</li>
+      <li>From C: PC gets its own frame. Selected deck and Menu sit top left, Spotlight top right (Save there at the pause), and under the card only the ticks, the count and the Next bar.</li>
+      <li>The phone with a card up stays as it is. Change is gone. Save downloads the file, nothing else.</li>
+    </ul>
+    <p class="note" style="margin-top:10px">If that isn't what you meant by combining them, say which part is off.</p>
+  </section>
+
+  <section class="box" style="margin-top:22px">
+    <h2>Decided so far (your words)</h2>
+    <ul>
+      <li><span class="q">"3. Breather"</span>: the end of a hand is a pause.</li>
+      <li><span class="q">"Evning was over. Though there needs to be a way to get players to know you can do so. (And 4 clicks is a lot in this world)"</span></li>
+      <li><span class="q">"If I do, I'll send it to someone to import it. Or keep it on my phone"</span></li>
+      <li><span class="q">"Combine a b and c"</span>, <span class="q">"Change can go."</span>, <span class="q">"Save should save. Not do anything else."</span></li>
+      <li>Asked "Can Three be set in The Deck before the first card is drawn?": <span class="q">"Three can be set."</span> (being built separately)</li>
+      <li>From the phone redesign: <span class="q">"Three in the deck sounds like logic."</span> and Three and Twist leave the space under the card. (Twist is already a line in the Menu today.)</li>
+      <li>Still standing from the phone redesign: ticks with the end diamond, the count, the slim Next bar between three lines a side, Spotlight and Menu as plain words.</li>
+    </ul>
+  </section>
+
+  <!--MOMENTS-->
+
+  <section class="box" style="margin-top:34px">
+    <h2>What I'd still look at</h2>
+    <ul>
+      <li>The Menu's small line under Save is new wording and only a placeholder here; it would go through a wording round of its own.</li>
+      <li>On PC the hint under Save shows at the pause; elsewhere on PC hints appear only on hover. Showing it at the pause is how players learn Save exists.</li>
+      <li>PC full-size sketches: <a href="pc.html">open the PC screens at real size</a>.</li>
+    </ul>
+  </section>
+</div>
+
+<div id="viewer" hidden role="dialog" aria-modal="true" aria-label="Picture">
+  <button type="button" id="back">‹ Back to the overview</button>
+  <div class="stage" id="stage"></div>
+  <div class="cap" id="cap"></div>
+</div>
+
+<script>
+/*CUR*/
+/*SKETCH*/
+const MOMENTS = [
+  { h:'Phone · start screen', logo:1, p:'Nothing drawn yet, so there is nothing to save: Save shows nowhere. Spotlight stays faint until the first card, as today.',
+    cur:null, sk:phone('start'), notes:['Same as today.'] },
+  { h:'Phone · a card up', p:'Unchanged: the figure you agreed in the phone redesign.', cur:'phone-card', sk:phone('card'),
+    notes:['Same as today.'] },
+  { h:'Phone · end of a hand, the pause card', p:'Spotlight has nothing to show here, so its word becomes Save, in the same plain style and place. Change and the row of icons with hints are gone. The bar and its lines take the pause colour together.',
+    cur:'phone-end', sk:phone('end'), notes:['Save: one tap, the file downloads.','Menu stays at the right end.','Nothing moves between a card and the pause.'] },
+  { h:'Phone · end of a hand, the list side', p:'The same under the card on the list side.', cur:null, sk:phone('list'), notes:['Hold to continue starts the next hand, as today.'] },
+  { h:'Phone · the Menu', p:'Save is the Menu’s first line, at every moment from the first card on: two taps from wherever the evening happens to end.',
+    cur:'phone-menu', sk:phoneMenu(), notes:['“take this evening with you” is Save’s existing hint, reused as the row’s line; “Save” on the right follows the other rows (Change, Shuffle, Twist).','The small line under it is placeholder wording.','Row icons left out of the sketch; they stay as today.'] },
+  { h:'PC · a card up', p:'PC drawn as its own screen: Selected deck and Menu stacked top left, Spotlight top right, the card large in the middle, and under it the ticks across the card’s width, the count and the Next bar. No stretched phone lines.',
+    cur:'pc-card', sk:pc('card'), pc:1, notes:['Hover shows a control’s hint, as the PC layout agreed.','Top right holds only Spotlight now: Three and Twist left that stack when they moved to The Deck and the Menu.','My arrangement under the card: ticks the card’s width, the count centred, then the bar, so it stays centred and balanced with no Back on the left. C’s words had the count beside the bar; this is my proposal.','The logo and the card’s star are drawn roughly here; neither changes.'] },
+  { h:'PC · end of a hand', p:'Save takes Spotlight’s place top right, with its hint showing. The bar takes the pause colour; nothing else moves.',
+    cur:'pc-end', sk:pc('end'), pc:1, notes:['Change is gone.'] },
+  { h:'PC · the Menu', p:'Opens from Menu top left, with Save as its first line.', cur:'pc-menu', sk:pcMenu(), pc:1, notes:['Same rows and words as the phone Menu.'] },
+  { h:'Spotlight · phone and PC', p:'With a card up, Spotlight opens exactly as today on both. At the pause there is no question to show, so its word under the card (top right on PC) becomes Save; on the next card it is Spotlight again. If Spotlight is already open when a hand ends, it shows the pause as today. No picture: nothing in Spotlight itself changes.', cur:null, sk:null, notes:['This is where A and B differed: A kept Spotlight at the pause, B gave its place to Save. Combined follows B here, because Save needs to be seen at the pause.'] },
+];
+const host = document.querySelector('.wrap');
+const anchor = [...host.childNodes].find(n => n.nodeType === 8 && n.data === 'MOMENTS');
+MOMENTS.forEach((m, i) => {
+  const sec = document.createElement('section'); sec.className = 'moment';
+  const curFig = (!m.cur && !m.sk) ? '' : m.cur ? `<figure><figcaption>Today</figcaption><button class="shot" type="button" data-i="${i}" data-k="cur"><img alt="Today: ${m.h}" src="${CUR[m.cur]}"></button></figure>`
+                       : `<figure><figcaption>Today</figcaption><p style="color:var(--muted);font-size:14px">Same as the pause card's row of Change and Save today.</p></figure>`;
+  sec.innerHTML = `<h2>${m.h}</h2><p>${m.p}</p><div class="pair${m.pc?' pc':''}">${curFig}${m.sk ? `<figure><figcaption><b>Combined</b> · sketch</figcaption><button class="shot" type="button" data-i="${i}" data-k="sk">${m.sk}</button></figure>` : ''}</div><ul class="notes">${m.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
+  host.insertBefore(sec, anchor);
+});
+const viewer = document.getElementById('viewer'), stage = document.getElementById('stage'), cap = document.getElementById('cap');
+let lastBtn = null;
+function openV(btn){ lastBtn = btn; const m = MOMENTS[+btn.dataset.i];
+  stage.innerHTML = btn.dataset.k === 'cur' ? `<img alt="" src="${CUR[m.cur]}">` : m.sk;
+  cap.textContent = (btn.dataset.k === 'cur' ? 'Today · ' : 'Combined · ') + m.h; viewer.hidden = false; document.getElementById('back').focus(); }
+function closeV(){ viewer.hidden = true; stage.innerHTML = ''; lastBtn && lastBtn.focus(); }
+document.addEventListener('click', e => { const b = e.target.closest('.shot'); if (b && !viewer.contains(b)) openV(b); });
+document.getElementById('back').addEventListener('click', closeV);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !viewer.hidden) closeV(); });
+</script>
