@@ -1127,7 +1127,7 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
       setChapterHidden(btn.closest('.chapter-group'), visible.length === 0);
       /* "n / total": how many of this chapter's categories are on, of those reachable here */
       const ct = btn.querySelector('.ch-ct');
-      if (ct && btn.dataset.chapter) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
+      if (ct && btn.matches('[data-chapter]')) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
     });
     updateListModeNote();
     syncFoldAll();
