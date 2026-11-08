@@ -221,7 +221,9 @@ cost.
 - Right before every push, on exactly what is pushed, run the project's static check and read its
   exit code. A new finding blocks the push; it is never added to the baseline, and the push lock
   is never bypassed.
-- After landing, wait for GitHub's checks on `main` (Monitor, not polling) and fix any red in the
+- A change that touches only rule files, docs or notes lands without any checks or waiting; just
+  push it.
+- After landing an app or deck change, wait for GitHub's checks on `main` (Monitor, not polling) and fix any red in the
   same session before reporting or taking the next item: decide per failing check whether the app
   is wrong or the check is outdated, and name which on the backlog item.
 - The backlog moves the moment something happens. Every commit names its item; the finishing
