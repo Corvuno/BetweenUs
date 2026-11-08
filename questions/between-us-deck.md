@@ -59,6 +59,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Kink** — "What turns you on that you don't fully understand?" (from an old version; owner asked to bench, 2026-11-02)
 - **Us: Intimate** — "Where's the best place we've ever had sex, and why there?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
 - **Us: Intimate** — "What do you love about how we've changed in bed since the beginning?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
+- **Bare** — "What's the most unlikely place you've met someone you ended up sleeping with?" (alternative for Bare 10; owner asked to bench, long-cards round 2026-11-08)
 
 ## WRITER BRIEFS — what each category is about
 
@@ -805,6 +806,58 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
+
+## Patch v7.35 — the long cards shortened, part 1 (#122)
+
+- **Body 7**
+  - Old: "Which part of your body do you like keeping to yourself, and which part is happily on display for the general public?"
+  - New: "Which part of your body do you keep to yourself, and which is happily on display for everyone?"
+  - Why: over 95 characters (117); owner: questions should be quick to read. Owner's pick, 94 characters.
+- **Attract 4**
+  - Old: "You tell yourself you have a type — does that correspond with the traits you see in the person you end up with?"
+  - New: "You tell yourself you have a type — do the people you end up with actually have those traits?"
+  - Why: over 95 characters (111); owner: questions should be quick to read. Owner's pick, 93 characters.
+- **Carnal 5**
+  - Old: "When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?"
+  - New: "What did you last do in bed on pure instinct?"
+  - Why: over 95 characters (110); owner: questions should be quick to read. Owner's pick, 45 characters.
+- **Connect 2**
+  - Old: "Where were you when a conversation with someone you'd just met went far deeper than either of you planned?"
+  - New: "When did a talk with someone you'd just met go far deeper than either of you planned?"
+  - Why: over 95 characters (106); owner: questions should be quick to read. Owner's pick, 85 characters.
+- **Culture 5**
+  - Old: "What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?"
+  - New: "What place, open to everyone, would you take someone to impress them without saying a word?"
+  - Why: over 95 characters (105); owner: questions should be quick to read. Owner's pick, 91 characters.
+- **Attract 1**
+  - Old: "Tell about the moment you realised someone was flirting with you — how long did it take you to notice?"
+  - New: "What finally made the penny drop that someone was flirting with you?"
+  - Why: over 95 characters (102); owner: questions should be quick to read. Owner's pick, 68 characters.
+- **Attract 6**
+  - Old: "Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?"
+  - New: "Which outfit on someone else never fails on you?"
+  - Why: over 95 characters (102); owner: questions should be quick to read. Owner's pick, 48 characters.
+- **Values 12**
+  - Old: "Where in your life do you let someone have power over you that you never actually agreed to give them?"
+  - New: "Who has power over you that you never agreed to?"
+  - Why: over 95 characters (102); owner: questions should be quick to read. Owner's pick, 48 characters.
+- **Bare 10**
+  - Old: "Where do you actually meet the people you end up sleeping with — and has that changed over the years?"
+  - New: "Where do you actually meet the people you end up sleeping with — and has that changed?"
+  - Why: over 95 characters (101); owner: questions should be quick to read. Owner's pick, 86 characters.
+- **Romance 9**
+  - Old: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?"
+  - New: "In a relationship, what age difference makes you hesitate, whatever anyone else thinks?"
+  - Why: over 95 characters (98); owner: questions should be quick to read. Owner's pick, 87 characters.
+- **Values 3**
+  - Old: "If you had to guess, what percentage of your life is choice, and what percentage is circumstance?"
+  - New: "If you had to guess, how much of your life is choice and how much is circumstance?"
+  - Why: over 95 characters (97); owner: questions should be quick to read. Owner's pick, 82 characters.
+- **Bare 11**
+  - Old: "Where has sex taken you that was breathtaking — or completely absurd — and how did you get there?"
+  - New: "Where's the most breathtaking or absurd place you've had sex?"
+  - Why: over 95 characters (97); owner: questions should be quick to read. Owner's pick, 61 characters.
+- Still open: Kink 4 and World 5 (owner's edits to confirm) and Kink 5 (owner rejected all three: it's about the contrast, not only in bed).
 
 ## Patch v7.34 — Flesh 8 shortened (#107)
 

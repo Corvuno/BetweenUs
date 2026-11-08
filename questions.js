@@ -57,7 +57,7 @@ const NEWDECK_CARDS = [
   { level: "culture", question: "Something universally loved leaves you completely cold..." },
   { level: "culture", question: "What's a piece of clothing that changes how you carry yourself the second you put it on?" },
   { level: "culture", question: "What's something you used to think was sophisticated that now makes you laugh?" },
-  { level: "culture", question: "What's a place, open to everyone, you'd take someone if you wanted to impress them without saying a word?" },
+  { level: "culture", question: "What place, open to everyone, would you take someone to impress them without saying a word?" },
   { level: "culture", question: "Which everyday object is so well made it makes you happy every time you use it?" },
   { level: "culture", question: "Is there an artist or song you can't explain loving — it just doesn't fit, and you don't care?" },
   { level: "culture", question: "What's something you appreciate far more now that you understand how it actually works?" },
@@ -157,7 +157,7 @@ const NEWDECK_CARDS = [
   { level: "body", question: "What music reaches your body before it reaches your head — and what happens?" },
   { level: "body", question: "The moment I first felt proud of how I look..." },
   { level: "body", question: "Which scar still carries the best story?" },
-  { level: "body", question: "Which part of your body do you like keeping to yourself, and which part is happily on display for the general public?" },
+  { level: "body", question: "Which part of your body do you keep to yourself, and which is happily on display for everyone?" },
   { level: "body", question: "Which version of your body do you still compare this one to?" },
   { level: "body", question: "What's the best physical feeling you know that's not sexual?" },
   { level: "body", question: "What's your actual relationship with food?" },
@@ -195,7 +195,7 @@ const NEWDECK_CARDS = [
 
   // ─── CONNECT ───
   { level: "connect", question: "What's the smallest thing you've done for someone that they still bring up years later?" },
-  { level: "connect", question: "Where were you when a conversation with someone you'd just met went far deeper than either of you planned?" },
+  { level: "connect", question: "When did a talk with someone you'd just met go far deeper than either of you planned?" },
   { level: "connect", question: "Who taught you the most about how to be close to someone?" },
   { level: "connect", question: "Do you wait to make the first move, even when you're the one missing them?" },
   { level: "connect", question: "Who do you let interrupt you without ever getting annoyed?" },
@@ -230,18 +230,18 @@ const NEWDECK_CARDS = [
   { level: "date", question: "What relationship rule do you question more than you admit?" },
   { level: "date", question: "Which frightens you more: a relationship costing your freedom, or no relationship at all?" },
   { level: "date", question: "Have you ever loved two people at the same time — and what did you do about it?" },
-  { level: "date", question: "In a relationship, what age difference makes you hesitate, no matter what anyone else would think?" },
+  { level: "date", question: "In a relationship, what age difference makes you hesitate, whatever anyone else thinks?" },
   { level: "date", question: "Which love story — your own or borrowed — do you retell most gladly?" },
   { level: "date", question: "What are you like single — and do you like that version?" },
   { level: "date", question: "The one that got away, and whether they really did..." },
 
   // ─── ATTRACT ───
-  { level: "attract", question: "Tell about the moment you realised someone was flirting with you — how long did it take you to notice?" },
+  { level: "attract", question: "What finally made the penny drop that someone was flirting with you?" },
   { level: "attract", question: "Tell about a moment of chemistry with a stranger that went absolutely nowhere." },
   { level: "attract", question: "Tell about turning someone down — and admit whether you liked being asked." },
-  { level: "attract", question: "You tell yourself you have a type — does that correspond with the traits you see in the person you end up with?" },
+  { level: "attract", question: "You tell yourself you have a type — do the people you end up with actually have those traits?" },
   { level: "attract", question: "Whose look stopped you mid-sentence — and what was it about them in that moment?" },
-  { level: "attract", question: "Which outfit on someone else has never failed on you — and is it the outfit, or the person wearing it?" },
+  { level: "attract", question: "Which outfit on someone else never fails on you?" },
   { level: "attract", question: "Who's occupying your daydreams — and has anyone inconvenient ever taken that spot?" },
   { level: "attract", question: "Who is your celebrity crush — and does that line up with your actual type?" },
   { level: "attract", question: "Tell about a voice that made you lose track of what was actually being said." },
@@ -252,7 +252,7 @@ const NEWDECK_CARDS = [
   // ─── VALUES ───
   { level: "values", question: "There's something you'd refuse to do, whatever it cost..." },
   { level: "values", question: "Who's the most decent person you know, and what makes them so?" },
-  { level: "values", question: "If you had to guess, what percentage of your life is choice, and what percentage is circumstance?" },
+  { level: "values", question: "If you had to guess, how much of your life is choice and how much is circumstance?" },
   { level: "values", question: "What line have you watched someone cross that told you everything?" },
   { level: "values", question: "Quote the sentence your parents repeated — that you now live by, or against." },
   { level: "values", question: "What's something you pretend to have a strong opinion on, but don't care about at all?" },
@@ -261,7 +261,7 @@ const NEWDECK_CARDS = [
   { level: "values", question: "What are the outer limits of your compassion?" },
   { level: "values", question: "What's a rule you break on purpose, every time, without a shred of guilt?" },
   { level: "values", question: "What do you defend in public and doubt in private?" },
-  { level: "values", question: "Where in your life do you let someone have power over you that you never actually agreed to give them?" },
+  { level: "values", question: "Who has power over you that you never agreed to?" },
 
   // ─── WORLD ───
   { level: "world", question: "What's something the next generation will judge this one harshly for?" },
@@ -464,7 +464,7 @@ const NEWDECK_CARDS = [
   { level: "carnal", question: "Take us through the best sex you've ever had — what made it that good?" },
   { level: "carnal", question: "Think of the best sex you've had and some you've forgotten. What separated them?" },
   { level: "carnal", question: "Ask anyone you've slept with, and they'd say your strength as a lover is..." },
-  { level: "carnal", question: "When did you last do something in bed on pure instinct, without thinking it through — and how did it turn out?" },
+  { level: "carnal", question: "What did you last do in bed on pure instinct?" },
   { level: "carnal", question: "Which moment in bed replays in your head more than any other?" },
   { level: "carnal", question: "What makes sex feel wrong, even when nothing is technically wrong?" },
   { level: "carnal", question: "What's the worst state you, the other person and the room have been left in after sex?" },
@@ -483,8 +483,8 @@ const NEWDECK_CARDS = [
   { level: "bare", question: "Tell about the moment sex went most embarrassingly wrong." },
   { level: "bare", question: "What is something considered 'taboo' by society that you actually find quite appealing?" },
   { level: "bare", question: "What's a health conversation you've avoided having, right when you should have had it?" },
-  { level: "bare", question: "Where do you actually meet the people you end up sleeping with — and has that changed over the years?" },
-  { level: "bare", question: "Where has sex taken you that was breathtaking — or completely absurd — and how did you get there?" },
+  { level: "bare", question: "Where do you actually meet the people you end up sleeping with — and has that changed?" },
+  { level: "bare", question: "Where's the most breathtaking or absurd place you've had sex?" },
   { level: "bare", question: "Have you ever faked something in bed — what, and why?" },
 
   // ─── KINKS ───
