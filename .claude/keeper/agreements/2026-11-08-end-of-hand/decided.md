@@ -17,7 +17,9 @@ Backlog: "Design what's under the card at the end of a hand" (#127) and "Under t
 - "Save should save. Not do anything else." (2026-11-08): no share menu; Save downloads the file as now.
 - Three before the first card: "Three can be set." (2026-11-08)
 
+- PC: "The bottom of the pc isn't the issue. It's the top." / "Move menu and spotlight up and be done, that's the most logical. The position of the menus (left and right need to change though. As they are opposites of where the button is...)" (2026-11-08)
+
 ## Open
-- Whether the Keeper's reading of "combine" is what the owner meant; the sketches show it at every moment.
+- None. The reading of "combine" drew no objection; the owner corrected only PC.
 
 ## Keeper's proposals (not decided)
