@@ -21,3 +21,8 @@ Card round for "Shorten the cards over 95 characters" (#122). Question-length th
 ## Keeper's own proposals (not decided)
 
 - An automatic check that fails on new cards over 95 ("New questions are at most 95 characters", #121).
+
+## Owner's picks (2026-11-08)
+- 14 of 15 cards now at 95 or fewer (owner's picks; Kink 4 and World 5 with the owner's own additions).
+- Bare 10 alternative 2 benched at the owner's request.
+- Kink 5: owner rejected all three ("it's about the contrast and does not have to be about in bed"), then wrote its own wording at 108 characters and decided: "Then it stays over 95." Kink 5 is an allowed exception; the 95 check (#121) must let it through.

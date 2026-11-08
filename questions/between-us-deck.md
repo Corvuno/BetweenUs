@@ -807,6 +807,14 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.37 — the long cards shortened, part 3: Kink 5 (#122)
+
+- **Kink 5**
+  - Old: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?"
+  - New: "Which kink once felt too far that's now just a Tuesday — and what still gives you pause on a Saturday night?"
+  - Why: owner: "it's about the contrast and does not have to be about in bed". Owner's own wording, 108 characters. Kept over 95 on purpose (owner, 2026-11-08: "Then it stays over 95"): the Saturday-night half is the contrast.
+- All 15 cards over 95 are settled; Kink 5 is the one card allowed over 95.
+
 ## Patch v7.36 — the long cards shortened, part 2 (#122)
 
 - **Kink 4**

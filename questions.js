@@ -492,7 +492,7 @@ const NEWDECK_CARDS = [
   { level: "kinks", question: "Watching, or being watched — which does more for you?" },
   { level: "kinks", question: "What's a specific time pain, given or taken, brought pleasure along with it?" },
   { level: "kinks", question: "Who outside the bedroom knows about your kinky side — and do they understand?" },
-  { level: "kinks", question: "What once felt too far in bed that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
+  { level: "kinks", question: "Which kink once felt too far that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
   { level: "kinks", question: "Is there a kink or fantasy you have that you've never fully acted on?" },
   { level: "kinks", question: "Quote the words that turned you on instantly." },
   { level: "kinks", question: "Who do you turn into in bed — and what does someone do to bring them out?" },

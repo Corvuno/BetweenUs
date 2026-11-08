@@ -13,5 +13,5 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- 14 long cards shortened so they read faster.
+- 15 long cards reworked, 14 of them shortened so they read faster.
 - Smaller fixes throughout, including Menu that could not be tapped at the end of a hand.
