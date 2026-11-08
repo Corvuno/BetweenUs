@@ -807,6 +807,18 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 - Bench: Friendship "What happened when friends from different parts of your life finally met?" added (owner asked to bench, round 3 2026-10-23).
 - Writer briefs added for Connect, Friendship, Romance and Family (WRITER BRIEFS).
 
+## Patch v7.36 — the long cards shortened, part 2 (#122)
+
+- **Kink 4**
+  - Old: "Who in your normal life knows about the kinky side of you — do they understand, and who will never find out?"
+  - New: "Who outside the bedroom knows about your kinky side — and do they understand?"
+  - Why: over 95 characters (108). Owner's pick (alternative 3) with their addition "and do they understand?", 77 characters.
+- **World 5**
+  - Old: "Which law or decision from above landed right in your own life — and did you understand why it is there?"
+  - New: "Which law has touched your own life the most — and did you get why it's there?"
+  - Why: over 95 characters (104). Owner's pick (alternative 3) with the understand-why half put back at their request, 78 characters.
+- Still open: Kink 5.
+
 ## Patch v7.35 — the long cards shortened, part 1 (#122)
 
 - **Body 7**
