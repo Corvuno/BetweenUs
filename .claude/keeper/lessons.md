@@ -74,6 +74,7 @@ repeated here.
 - Back on the left, forward on the right.
 - Another device keeps the same feeling and a compatible look; it may draw its own elements and
   must not copy the phone's parts one to one.
+- On PC, balance is a frame: each of the four corners around the card carries a group of matching weight, mirrored across the centre line that holds the logo and Next. A corner left empty or a group piled in the middle breaks it.
 - PC is mouse-first at desk distance: controls at normal desktop-app size, only the question sized
   for distance, everything clickable, no key legend.
 - When something grows, fine lines keep their physical weight; only lengths and icons may grow a
