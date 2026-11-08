@@ -46,3 +46,4 @@ Format: **date** — what happened / what to do instead.
 - **A colour change hidden at the faint point still shows unless it is near zero** (2026-11-02, #94). The start
   card's diamond stepped colour at 45% strength and the owner saw it as a jolt. Blend colour changes over the dim
   phase (register the custom property as `<color>` so it can interpolate) instead of stepping them.
+- **2026-11-08** — A design covers every moment the area shows in (start, card up, end of a hand, Spotlight, PC), and a visible fix is judged by looking, not by a passing check (from lesson 2026-11-08).

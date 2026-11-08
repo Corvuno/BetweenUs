@@ -137,6 +137,10 @@ letter for the owner to confirm.
   that restyled the same parts: the rules were there and were read past, so the check now
   happens at the moment of output, by someone else). Holds for every design round (looks, deck,
   menu, anything), also one handed to a builder.
+  00. **Every moment the area appears in** (owner, 2026-11-08, after the end of a hand was left
+     undesigned by the under-the-card round). A design starts by listing every moment of the game
+     the area shows in (start screen, a card up, end of a hand, Spotlight, PC …); each option shows
+     all of them, and the build is checked on all of them.
   0. **Ask about the experience before designing** (owner, 2026-11-07: "don't asks me where does
      this go? Asks me; what do you use, feel, see. That i can answer. And if you have to little to
      go on, ask, dont build. That would improve millions"). Before a round, ask the owner what they
@@ -386,6 +390,10 @@ off. Don't ship a near miss.
   rebase onto main), run the project's static check and read its exit code, not a piped tail. A new
   finding means no push: it gets fixed first. Never add a new finding to the baseline to get green,
   and never get round the push lock (see `CHECKS.md`).
+- **A visible fix is judged by looking** (owner, 2026-11-08: "you saw the error, moved the Save and
+  said, works. Didn't think, looks horrendous"). A fix that changes anything on screen is judged as a
+  player and a designer would: does it look right, does it work. A passing check is not "fixed". When
+  a fix shows a screen was never designed, say so and put the design on the backlog.
 - **Rule changes are asked first** (owner, 2026-11-07: "Your deciding all kinds of stuff... I don't
   know what it means"; "That's better. Less waste"). A change to how the Keeper works (this file,
   `.claude/keeper/`, the agents, CLAUDE.md) is shown to the owner in plain words, one line each,
