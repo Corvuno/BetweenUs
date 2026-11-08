@@ -1386,11 +1386,14 @@ async function run() {
     assert(r.spot.l < r.next.l && r.menu.r > r.next.r, 'Spotlight and Menu are not under the outer ends of the lines');
   });
 
-  await check('Three is set in The Deck: Off and On words in the settings line at the foot of the sheet, above Draw Cards; it works and shakes at the start screen', async () => {
+  await check('Three is set in The Deck: Off and On words in the settings line at the end of the list, above Draw Cards; it works and shakes at the start screen', async () => {
     await closeCategorySheet();
     await freshHand({ three: false });
     await page.evaluate(() => openCats());
     await page.waitForTimeout(900);
+    // only Draw Cards is fixed at the foot; the settings line scrolls with the list, so go to its end
+    await page.evaluate(() => { const p = document.querySelector('.pane-play.on'); if (p) p.scrollTop = p.scrollHeight; });
+    await page.waitForTimeout(300);
     const lay = await page.evaluate(() => { const t = document.getElementById('pickToggle').getBoundingClientRect(), g = document.getElementById('catGoBtn').getBoundingClientRect(), s = document.getElementById('shuffleToggle').getBoundingClientRect(); return { tb: t.bottom, gt: g.top, vis: t.height > 0, sameLine: Math.abs(t.top - s.top) < 200, labels: [...document.querySelectorAll('#pickToggle .three-opt')].map(e => e.textContent.trim()) }; });
     assert(lay.vis && lay.tb <= lay.gt && lay.labels.join() === 'Off,On', `Three setting in The Deck: ${JSON.stringify(lay)}`);
     // at the start screen it is dimmed: a tap on On shakes and does nothing
