@@ -7,7 +7,7 @@ Today at the end of a hand (phone): the Intermezzo card back; ticks with the end
 What each part does:
 - Change opens The Deck. Same as "Selected deck · tap to change" above the card and The Deck in the Menu (three ways to one sheet).
 - Save downloads the evening as one file (list + state). Identical to Menu > Played > Download the list (same function). From mid-hand that is Menu, Played, Download the list: three taps plus finding it.
-- "Save for later" in Played keeps an evening inside the app. Drawn cards are not kept across a closed browser in the main app (LOG_PERSIST is off), so an evening not saved is gone.
+- "Save for later" in Played keeps an evening inside the app. The current evening (drawn cards, hand, position) already survives a closed browser in every version (LOG_PERSIST is on); only earlier evenings need "Save for later" or the file. Round 1 option C rested on the opposite and needs rewriting.
 - Spotlight has no question to show at the end of a hand.
 
 What the player handles: mostly Next card / hold for a new hand; Save at the very end of the evening, which comes at a random moment, usually mid-hand; the list side is rarely looked at.
