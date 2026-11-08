@@ -144,7 +144,7 @@ async function twistFromMenu(page) {
 
 // Three and Spotlight wait for the first card of a hand — draw it.
 async function drawFirstIfNeeded(page) {
-  if ((await cardParts(page)).index === 0) { await page.locator('#btn-next').click(); await page.waitForFunction(() => !document.getElementById('pickToggle').classList.contains('disabled'), null, { timeout: 4000 }); }
+  if ((await cardParts(page)).index === 0) { await page.locator('#btn-next').click(); await page.waitForFunction(() => !document.getElementById('btnParty').classList.contains('disabled'), null, { timeout: 4000 }); }
 }
 
 async function run() {
@@ -1033,7 +1033,7 @@ async function run() {
     assert(r.all === 12, `All should be every unseen card (12), got ${r.all}`);
   });
 
-  await check('start screen: Three (in The Deck), Spotlight and Twist (in the menu) are dimmed, shake and do nothing until the first card; usable after it', async () => {
+  await check('start screen: Spotlight and Twist (in the menu) are dimmed, shake and do nothing until the first card; Three is never dimmed; all usable after it', async () => {
     await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // fresh hand, nothing drawn
     await page.waitForTimeout(300);
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
@@ -1044,12 +1044,9 @@ async function run() {
     await page.locator('#btnParty').click();
     assert(await page.locator('#btnParty').evaluate(el => el.classList.contains('row-shake')), 'Spotlight did not shake');
     await page.waitForTimeout(450);
-    // Three: its setting in The Deck dims and shakes
+    // Three: its setting in The Deck is not dimmed at the start screen
     const three = await page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), op: +getComputedStyle(b).opacity }; });
-    assert(three.dis && three.op < 0.5, `Three not dimmed: ${JSON.stringify(three)}`);
-    await toggleThree(page);
-    assert(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake')), 'Three did not shake');
-    await page.waitForTimeout(450);
+    assert(!three.dis && three.op === 1, `Three dimmed at the start screen: ${JSON.stringify(three)}`);
     // Twist: its menu line is dimmed, and Menu is not
     await page.evaluate(() => fillMenu());
     const tw = await page.evaluate(() => ({ dis: document.getElementById('d-twist').classList.contains('disabled'), op: +getComputedStyle(document.getElementById('d-twist')).opacity, menu: +getComputedStyle(document.getElementById('btn-menu')).opacity }));
@@ -1058,7 +1055,6 @@ async function run() {
     await page.keyboard.press('ArrowLeft');
     await page.waitForTimeout(450);
     assert(!(await page.locator('#partyOverlay').evaluate(el => el.classList.contains('open'))), 'Spotlight opened before the first draw');
-    assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
     assert((await cardParts(page)).index === 0, 'a dimmed button drew a card');
     assert(await page.evaluate(() => document.body.className) === taughtBefore, 'a shake retired a hint');
     await drawFirstIfNeeded(page);
@@ -1418,7 +1414,7 @@ async function run() {
     assert((await bar()).lines.every(c => c === 'rgb(201, 168, 76)'), 'hairlines did not go back to gold on the next hand');
   });
 
-  await check('Three is set in The Deck: Off and On words in the settings line at the end of the list, above Draw Cards; it works and shakes at the start screen', async () => {
+  await check('Three is set in The Deck: Off and On words in the settings line at the end of the list, above Draw Cards; it can be set at the start screen', async () => {
     await closeCategorySheet();
     await freshHand({ three: false });
     await page.evaluate(() => openCats());
@@ -1428,12 +1424,20 @@ async function run() {
     await page.waitForTimeout(300);
     const lay = await page.evaluate(() => { const t = document.getElementById('pickToggle').getBoundingClientRect(), g = document.getElementById('catGoBtn').getBoundingClientRect(), s = document.getElementById('shuffleToggle').getBoundingClientRect(); return { tb: t.bottom, gt: g.top, vis: t.height > 0, sameLine: Math.abs(t.top - s.top) < 200, labels: [...document.querySelectorAll('#pickToggle .three-opt')].map(e => e.textContent.trim()) }; });
     assert(lay.vis && lay.tb <= lay.gt && lay.labels.join() === 'Off,On', `Three setting in The Deck: ${JSON.stringify(lay)}`);
-    // at the start screen it is dimmed: a tap on On shakes and does nothing
-    await page.locator('#pickToggle .three-opt[data-pick="on"]').click({ force: true });
-    assert(!(await page.evaluate(() => pickMode)), 'Three switched on from the start screen');
+    // at the start screen it is not dimmed: a tap on On sets Three and draws nothing by itself
+    assert(!(await page.evaluate(() => document.getElementById('pickToggle').classList.contains('disabled'))), 'Three dimmed at the start screen');
+    await page.locator('#pickToggle .three-opt[data-pick="on"]').click();
+    await page.waitForTimeout(500);
+    const start = await page.evaluate(() => ({ mode: pickMode, idx: state.currentIndex, open: state.pickerOpen, active: document.querySelector('#pickToggle .three-opt.active').dataset.pick }));
+    assert(start.mode && start.active === 'on' && start.idx === -1 && !start.open, `On at the start screen: ${JSON.stringify(start)}`);
+    // Draw Cards then starts the hand with three options as the first card
+    await page.locator('#catGoBtn').click();
+    await waitPicker(true);
+    const first = await page.evaluate(() => ({ step: state.pickOptions.step, n: document.querySelectorAll('#cardPicker .pick-opt').length }));
+    assert(first.step === 0 && first.n === 3, `first card after Draw Cards: ${JSON.stringify(first)}`);
     await closeCategorySheet();
-    await drawFirstIfNeeded(page);
-    await page.waitForTimeout(1200);
+    await toggleThree(page);   // Off: the planned card takes the step
+    await page.waitForTimeout(1500);
     await page.evaluate(() => openCats());
     await page.waitForTimeout(900);
     await page.locator('#pickToggle .three-opt[data-pick="on"]').click();
@@ -1803,7 +1807,7 @@ async function run() {
     await page.waitForTimeout(400);
   });
 
-  await check('start screen: with Three ON its button is not dimmed and switches Three off (then dims again); with Three off it stays dimmed; Spotlight and Twist stay dimmed', async () => {
+  await check('start screen: Three is not dimmed on or off and switches both ways without drawing; Spotlight and Twist stay dimmed', async () => {
     await freshHand({ three: true });
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
     const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: !canTwist() }; });
@@ -1812,12 +1816,11 @@ async function run() {
     await toggleThree(page);
     await page.waitForTimeout(450);
     s = await st();
-    assert(!s.on && !s.mode && s.dis && s.top < 0.5, `after switching off at start: ${JSON.stringify(s)}`);
-    assert(!(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake'))) && (await cardParts(page)).index === 0, 'switching off at start shook or drew a card');
-    await toggleThree(page);   // off + dimmed: shakes, does nothing
-    assert(await page.locator('#pickToggle').evaluate(el => el.classList.contains('row-shake')), 'dimmed Three did not shake');
-    await page.waitForTimeout(450);
-    assert(!(await page.evaluate(() => pickMode)), 'Three switched on before the first draw');
+    assert(!s.on && !s.mode && !s.dis && s.top === 1, `after switching off at start: ${JSON.stringify(s)}`);
+    assert((await cardParts(page)).index === 0, 'switching off at start drew a card');
+    await toggleThree(page);   // off again: on, nothing drawn
+    s = await st();
+    assert(s.on && s.mode && !s.dis && (await cardParts(page)).index === 0 && !(await page.evaluate(() => state.pickerOpen)), `switching on at start: ${JSON.stringify(s)}`);
     await freshHand({ three: false });
   });
 

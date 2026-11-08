@@ -671,13 +671,8 @@ function updateDrawMore() {
 
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
 
-  // Three and Spotlight wait for the first card of a hand (back-of-card
-  // start screen). They stay usable on the end-of-hand screen. Exception: with Three already ON it
-  // stays live on the start screen, so it can be switched off (never on).
-  // (Reads the button's 'on' class: pickMode itself is declared in ui.js,
-  // which loads after this file.)
-  const pickBtn = document.getElementById('pickToggle');
-  if (pickBtn) pickBtn.classList.toggle('disabled', state.currentIndex < 0 && !pickBtn.classList.contains('on'));
+  // Spotlight waits for the first card of a hand (back-of-card start screen).
+  // It stays usable on the end-of-hand screen. Three can be set at any time.
   const spotBtn = document.getElementById('btnParty');
   /* Options up for the first card of a hand: the hand has begun, so nothing on
      screen shows the start state */

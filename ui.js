@@ -635,7 +635,7 @@ function setPickMode(on) {
   const toggle = document.getElementById('pickToggle');
   toggle?.classList.toggle('on', on);
   toggle?.querySelectorAll('.three-opt').forEach(opt => opt.classList.toggle('active', /** @type {HTMLElement} */ (opt).dataset.pick === (on ? 'on' : 'off')));
-  updateDrawMore();   // start screen: Three off dims again, until the first card
+  updateDrawMore();
   renderShell();
 }
 
@@ -650,7 +650,6 @@ function setPickMode(on) {
      planned card; with the options on screen, the planned card takes the step
      now and the other two go back (no pick, so nothing sits out). */
   toggle.addEventListener('click', e => {
-    if (toggle.classList.contains('disabled')) { shakeRowBtn(toggle); return; }   // before the first card
     // a tap on Off or On sets it; a click on the setting as a whole (key 3, the fixed-set switch-off) flips it
     const chosen = /** @type {HTMLElement | null} */ (/** @type {Element} */ (e.target).closest('[data-pick]'))?.dataset.pick;
     const on = chosen ? chosen === 'on' : !pickMode;
@@ -659,8 +658,9 @@ function setPickMode(on) {
 
     if (pickMode) {
       // Turning this on IS the draw — show the next step's three straight
-      // away (only from the front of the hand, and only if there is a next step).
-      if (state.currentIndex === state.reachedIdx && state.currentIndex + 1 < state.visibleDeck.length) nextCard();
+      // away (only from the front of a begun hand, and only if there is a next step).
+      // At the start screen it only sets Three: Draw Cards or Draw starts the hand with three.
+      if (state.currentIndex >= 0 && state.currentIndex === state.reachedIdx && state.currentIndex + 1 < state.visibleDeck.length) nextCard();
       updateDeckInfo();
     } else if (state.pickerOpen && state.pickOptions) {
       const o = state.pickOptions;
@@ -968,7 +968,7 @@ applyToggleUI();
   })();
 
   // "Draw Cards" — closes the sheet and draws straight into the first hand
-  // of whatever's now selected, the same reshuffle-then-draw the app already
+  // of whatever's now selected (three options first with Three on), the same reshuffle-then-draw the app already
   // does elsewhere (deck.js's end-of-hand hold) — so finishing the sheet
   // never leaves the placeholder card sitting there waiting for one more tap.
   const goBtn = $('catGoBtn');
@@ -980,7 +980,7 @@ applyToggleUI();
     // category) never goes through here, so it never unbinds.
     if (typeof setActiveSessionId === 'function') setActiveSessionId('');
     initDeck();
-    _nextCardBase();
+    drawFirstCard();
     updateDeckInfo(); updateDrawMore();
     closeCats();
     if (typeof renderSessionsList === 'function') renderSessionsList();

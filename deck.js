@@ -701,10 +701,10 @@ function _nextCardBase() {
     flipToCard(state.visibleDeck[state.currentIndex], isFirstDraw);
     addToLog(state.visibleDeck[state.currentIndex]);
     updateStarUI();
-    /* Three and Spotlight are live from the moment the first card is drawn, not
+    /* Spotlight is live from the moment the first card is drawn, not
        only once its draw animation has landed (updateDrawMore runs from flipToCard
        at the end of it) */
-    if (state.currentIndex === 0) ['pickToggle', 'btnParty'].forEach(id => document.getElementById(id)?.classList.remove('disabled'));
+    if (state.currentIndex === 0) document.getElementById('btnParty')?.classList.remove('disabled');
     if (state.currentIndex === state.visibleDeck.length - 1) updateDrawMore();
   } else {
     state.currentIndex = state.visibleDeck.length; // sentinel: prevents re-trigger on repeat tap
@@ -846,6 +846,11 @@ function drawStep(step) {
    first card is offered as three like every other step. */
 function startNewHand() {
   initDeck(true);
+  drawFirstCard();
+}
+
+/* The first card of a freshly built hand: three options with Three on, else the card itself */
+function drawFirstCard() {
   if (pickMode) drawStep(0);
   else _nextCardBase();
 }

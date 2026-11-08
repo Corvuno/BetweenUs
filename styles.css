@@ -1493,7 +1493,6 @@ body.hint-ways-taught .menu-hint{display:none;}
 /* Arc / Random: a plain row of choices, picked like everything else in the sheet. */
 .shuffle-toggle,.limit-row,.three-toggle{display:flex;}
 .shuffle-toggle-opt,.limit-btn,.three-opt{--pc:var(--celadon);--pick-h:44px;flex:none;}
-#pickToggle.disabled{opacity:.32;}   /* Three waits for the first card of a hand; it still takes the tap, so it can shake */
 .cat-area .limit-btn[hidden]{display:none;}   /* All, hidden in Arc */
 
 .pane{display:none;}
@@ -1871,8 +1870,8 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* A control tapped when it can't be used (Spotlight, Three): a short horizontal shake, no words. */
 @keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
 @keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
-#btnParty.row-shake,#pickToggle.row-shake{animation:twistShake .35s ease-in-out;}
-@media (prefers-reduced-motion:reduce){#btnParty.row-shake,#pickToggle.row-shake{animation:twistBlink .35s ease-in-out;}}
+#btnParty.row-shake{animation:twistShake .35s ease-in-out;}
+@media (prefers-reduced-motion:reduce){#btnParty.row-shake{animation:twistBlink .35s ease-in-out;}}
 /* Twist landed: the word and the card's new line light up together, then settle. */
 @keyframes twistLit{from{color:var(--celadon-bright)}}
 .twist-lit{animation:twistLit .5s ease-out;}
