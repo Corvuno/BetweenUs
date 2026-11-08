@@ -1,9 +1,10 @@
 #!/bin/sh
-# Backlog lock (owner, 2026-10-31): every commit names its backlog item (a GitHub issue),
-# so the backlog can't fall behind. "Fixes #12" in the commit that finishes the work closes
+# Commit lock. 1) Rule files stay lean (scripts/check-rules.mjs).
+# 2) Every commit names its backlog item (a GitHub issue), so the backlog can't fall behind. "Fixes #12" in the commit that finishes the work closes
 # issue 12 when it lands on main. Work with no item says why: "No issue: <reason>".
 # See .claude/keeper/project.md, "The backlog".
 msg_file="$1"
+node "$(git rev-parse --show-toplevel)/scripts/check-rules.mjs" >/dev/null || exit 1
 # Merges and fixup/squash commits carry their own messages.
 git_dir="$(git rev-parse --git-dir)"
 [ -f "$git_dir/MERGE_HEAD" ] && exit 0

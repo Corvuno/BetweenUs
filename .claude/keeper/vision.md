@@ -1,137 +1,89 @@
 # Vision — Between Us
 
-Agreed with the owner on 2026-10-12, in the first Keeper session. Later changes are
-added at the bottom as dated entries, saying what changed and why.
+Agreed with the owner. When it changes, the changed part is rewritten.
 
 ## What it is
 
-A way into another person. Between Us lets a conversation go where it rarely gets to on
-its own, in steps. Every category has a weight for how deep it goes. Play can follow that
-weight the way a good evening does (warm up, go further, come back to land), or it can
-run fully random.
+A way into another person. Between Us lets a conversation go where it rarely gets to on its own,
+in steps. Every category has a weight for how deep it goes. Play can follow that weight the way a
+good evening does (warm up, go further, come back to land), or run fully random.
 
 ## What a card does
 
-It brings something up about the person: who they are, what they want, how they think. A
-story, a confession, a position or a theory about themselves all count, as long as it
-shows the person. So do the big open theory cards a table can argue about. The best cards
-catch the gap between who someone thinks they are and what they actually do. Desire and
-darkness belong to people, so they belong in the deck, open to whoever goes there.
+It brings something up about the person: who they are, what they want, how they think. A story, a
+confession, a position or a theory about themselves all count, as long as it shows the person. So
+do the big open theory cards a table can argue about. The best cards catch the gap between who
+someone thinks they are and what they actually do. Desire and darkness belong to people, so they
+belong in the deck, open to whoever goes there. After Dark is grown-up questions about sex that
+start a real conversation, never juvenile; Bare's facts and silly stories are adult ones too.
 
 ## What it leaves behind
 
-Surprise at someone else, sometimes at yourself. The pause before an answer. "I'd never
-have guessed that about you", or better, "I didn't even know this about myself". That
-works at ten minutes or at ten years.
+Surprise at someone else, sometimes at yourself. The pause before an answer. "I'd never have
+guessed that about you", or better, "I didn't even know this about myself". That works at ten
+minutes or at ten years.
 
 ## Who it's for
 
-Anyone curious about people: friends, colleagues, dates, strangers. Played so far in a
-queue with strangers, in a car on the way home, at work introductions and team-building
-sessions, with one friend or six, on dates. The ways to play adjust the deck for two
-people or for eight. The presets adjust it to who's at the table.
+Anyone curious about people: friends, colleagues, dates, strangers. Played in a queue with
+strangers, in a car on the way home, at work introductions and team-building sessions, with one
+friend or six, on dates. The ways to play adjust the deck for two people or for eight. The presets
+adjust it to who's at the table.
 
 ## How it meets people
 
-You open it and draw. Everything beyond the draw (presets, chapters, categories, Twist,
-the ways to play) is there to discover once you're curious. Spotlight (full screen) sits on
-the card screen where it fits logically, always reachable. Three is set in The Deck.
+You open it and draw. Everything beyond the draw (presets, chapters, categories, Twist, the ways to
+play) is there to discover once you're curious. Spotlight (full screen) sits on the card screen
+where it fits logically, always reachable. Three is set in The Deck.
 
-For someone looking on their own (a first visitor from a post or a link), it reads like a
-beautiful boxed deck: clearly made for an evening with other people, pretty, and exciting
-to look through. Trying a few questions on your own is part of the fun.
+For someone looking on their own (a first visitor from a post or a link), it reads like a beautiful
+boxed deck: clearly made for an evening with other people, pretty, and exciting to look through.
+Trying a few questions on your own is part of the fun.
 
 ## The screen, on every device
 
-Agreed 2026-10-15, owner's words. These hold for every layout, phone, PC or TV, and any
-design that breaks one is out before it is judged on anything else:
+Any design that breaks one of these is out before it is judged on anything else:
 
-- The screen focuses on the question, and the question alone. The controls needed to play
-  are shown.
-- Controls are hidden and/or layered, so there is less complexity.
-- Never show the next cards; they can only distract from what's now.
+- The screen focuses on the question, and the question alone. The controls needed to play (the
+  ones phone and PC show today) are shown.
+- Everything else is hidden or layered, so there is less complexity.
+- No card other than the current one is on screen, past or future. Three is the exception: its
+  three cards are all current.
+- An element exists on phone, PC and Spotlight alike, or not at all. It may be reshaped per screen;
+  the look stays consistent. Spotlight is the one allowed outlier.
 
-Elements are introduced everywhere or nowhere (owner, 2026-10-18): an element exists on
-phone, PC and Spotlight alike, or it doesn't exist. It may be redesigned or reshaped per
-screen, but the look stays consistent. Spotlight is the one allowed outlier, for obvious
-reasons.
-
-What these mean (owner, 2026-10-15): no card other than the current one is on screen,
-past or future (past is less bad than future, but still out); Three is the exception,
-because its three cards are all current. "The controls needed to play" are the ones the
-phone and PC already show today; everything else stays hidden or layered.
-These rules are for the card screen. The end-of-hand overview (the list on the back of
-Intermezzo) is a different screen and shows the whole hand on purpose (owner, 2026-10-16).
+These rules are for the card screen. The end-of-hand overview shows the whole hand on purpose.
 
 ## Its words
 
-A player draws a card: they take it, it is theirs. Nothing is dealt or handed out, and
-the language stays clear of gambling and card-table words. "Draw" is the verb.
+A player draws a card: they take it, it is theirs. Nothing is dealt or handed out, and the language
+stays clear of gambling and card-table words. "Draw" is the verb for every card action.
 
 ## How it looks
 
-Art deco: its geometry, symmetry and line work. Pretty and elegant, and also bold and
-out there. Modern elements are welcome as long as the whole stays bold. Every element is made for this deck: original ornament, such as the
-hairline, the mark and the woven card back, in place of stock design. The accent colour is
-still open.
+Art deco is the language: its geometry, symmetry and line work. Pretty and elegant, and also bold
+and out there. Modern elements are welcome as long as the whole stays bold. An element may also
+simply be pretty without deco ornament, as long as it sits well with the rest. Every element is made
+for this deck: original ornament, such as the hairline, the mark and the woven card back, in place
+of stock design. The accent colour is still open.
 
 ## Where it's going
 
-Its own website, free, in English, shared by the owner and posted wherever people gather
-to find good things (Reddit, XDA and the like). The deck, the looks and the app move
-forward side by side; the owner starts the conversations on each.
+Its own website, free, in English, shared by the owner and posted wherever people gather to find
+good things (Reddit, XDA and the like). The deck, the looks and the app move forward side by side;
+the owner starts the conversations on each.
 
-- **Deck:** every card earns its slot, nothing repeats, and every category is wide enough
-  to stay fun. The weakest cards are the first work.
-- **Looks:** good enough to release. The four spots that were left (the bottom of the screen,
-  the end of a hand, the evening chooser, the desktop layout) are settled (owner, 2026-11-02).
-- **App:** as smooth as the cards. One language, English. The Dutch goes.
+- **Deck:** every card earns its slot, nothing repeats, and every category is wide enough to stay
+  fun. The weakest cards are the first work.
+- **Looks:** good enough to release. The bottom of the screen, the end of a hand, The Deck and the
+  desktop layout are settled.
+- **App:** as smooth as the cards. One language, English.
 
-Later doors, kept open: a printed deck (which could also bring in money), and an offshoot
-with no shape yet.
+Later doors, kept open: a printed deck (which could also bring in money), and an offshoot with no
+shape yet.
 
-The classic edition (v5.2.2, the original questions from before the restart) stays
-reachable on its own link, to illustrate how it used to be.
-
-## Where it started
-
-The first version (also on its own link) was one page of 60 questions for a date, in five
-levels: Warm, Deep, Raw, Edge, Playful. "Draw Card" was the button from day one. The
-signature was already there: "What do you pretend to want less than you actually do?",
-"What's the story you tell about yourself that you're least sure is actually true?" From
-there it grew from two people to any table, and from 60 cards to 408 in a layered
-structure. Its cards also show what the house style later moved past: feeling-talk
-("What does loneliness feel like for you?"), a fixed asker ("What do you think I find
-attractive about you?"), and long cards with a second question attached.
-
-## Changes
-
-- **2026-10-12** — Looks: "art deco in neon" taken out, the direction is art deco. The owner
-  saw a quick sketch of the end-of-hand screen in neon art deco next to the current one
-  (https://claude.ai/artifact/L89RGKuqjF31G4U9AFfX1L) and said neon is not the direction.
-  Removed text: "Art deco in neon: the geometry, symmetry and line work of deco, lit up and
-  turned up."
-- **2026-10-12** — Added "Its words": players draw, nothing is dealt. Drawing gives the
-  player ownership and keeps the app away from gambling. Came from the owner's reaction to
-  "Deal another hand" in the sketch.
-- **2026-10-13** — Added "Where it started", from the very first version the owner shared.
-- **2026-10-15** — Added "The screen, on every device": three rules the owner set after the
-  first PC layout round, where three options broke them (controls spread around the card, the
-  whole menu always open, the deck and drawn cards on the table).
-- **2026-10-18** — After Dark, made explicit: it is grown-up questions about sex, the start of
-  a real conversation — never juvenile. Not the drunk sex-talk register ("we did it after
-  buying a vibrator" trivia the owner doesn't care about). That holds for every After Dark
-  category, Bare included: Bare's facts and silly stories are still adult ones.
-- **2026-11-02** — On the backlog the owner closed "What the work version should become" ("There
-  is a work version. Case closed right?") and "Which four looks spots count as settled" ("All
-  four are done in different threads"). Removed text: "and the work version is reworked";
-  "once the remaining spots are settled: the bottom of the screen, the end of a hand, the
-  evening chooser, and the desktop layout."
-- **2026-11-06** — Looks: Art Deco is the language, not a test every element must pass. Owner: "Also;
-  not everything should be only deco. It may also just be pretty... That's fine too!" An element can be
-  simply beautiful without deco ornament, as long as it sits well with the rest.
-- **2026-11-06** — Spotlight and Three no longer "right next to the draw". Owner (bottom of the screen,
-  try two): "I dont think I knew that was a vision line. Spotlight should be somewhere in the screen where
-  it fits logicaly. So its reachable for the player." and "three moving to the deck feels logical."
-  Removed text: "Three and Full screen belong right next to the draw. Three especially helps people who
-  are new to it."
+The classic edition (the original questions from before the restart) and the first version (one
+page of 60 date questions) stay reachable on their own links, to show how it used to be. House style
+has moved past what those show: feeling-talk ("What does loneliness feel like for you?"), a fixed
+asker ("What do you think I find attractive about you?"), and long cards with a second question
+attached.

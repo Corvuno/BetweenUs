@@ -1,207 +1,122 @@
 # The Keeper — Between Us
 
-The project-specific half of the Keeper. The general process is in
-`.claude/skills/keeper/SKILL.md`; this file says what it means for Between Us.
-
-## Name
-
-The Keeper. Started with `/keeper`.
+The project's half of the Keeper. The general process is `.claude/skills/keeper/SKILL.md`.
 
 ## The areas
 
-**A) The deck** — questions, categories and chapters, as one layered whole.
-- Card text lives only in `questions.js`. Categories and chapters are records in
-  `categories.js` since 2026-10-30 (the CATEGORIES table: label, colour, band, focus, chapter, bucket, …).
-  The bench, house style, retired names and change log are in
-  `questions/between-us-deck.md`.
-- Way of working: CLAUDE.md's card rules apply in full and are the strictest in the repo.
-  Card proposals are issue cards (plain text, never a code block), three alternatives that
-  differ in substance, the current card quoted in full, cards always cited as
-  `Category, number, "question text"`. Before proposing, work out what the card is meant to
-  get out of people, then write the question. Each open card's brief names two or three lines of
-  thought, and its three alternatives spread over them: three alternatives on one subject count as
-  one (owner, 2026-10-29). The owner approves the exact words of every
-  card before it is written. No exceptions, including on the fast path.
-- Category descriptions (agreed 2026-10-13/14): every category gets two — an app line
-  (short, in the app) and a writer brief in `questions/between-us-deck.md` (what it's about,
-  the subjects a card may cover, where it stops; the list's order means nothing). A category
-  gets this treatment when it is reworked, **and** whenever it is hit as a boundary while
-  writing cards for another category and actually collides. Built up as we go, not all at once.
-- Subjects in a writer brief are a direction, not a boundary (owner, 2026-10-16): a subject not
-  on the list still belongs if it fits "what the category is about". Build the list outward
-  from the category's purpose — never by summarising the cards it already has. The subjects
-  are thought lines to write cards in — the feeling and the box the writer should look into,
-  not a checklist; it's fine that many have no card (owner, 2026-10-18).
-- After Dark is never juvenile (owner, 2026-10-18, see vision): grown-up questions about sex
-  that start a real conversation — not drunk sex-talk trivia. Screen every After Dark subject
-  and card for this, Bare included.
-- **Standard method for redesigning a category** (owner, 2026-10-18): (1) define it first — app
-  line, what it's about, lines of thought (built outward from its purpose), where it stops, with
-  the borders to neighbouring categories named; (2) then look at its twelve cards as a whole: what
-  stays and what goes; (3) only then write new cards for the open slots.
-- Lines of thought are built outward, not converted from the cards (owner, 2026-10-18: "else this
-  exercise is worthless"). Check before showing a list: most lines must be subjects no current
-  card touches; mark the ones that come from existing cards.
-- Read `.claude/keeper/taste.md` before proposing wording; add to it whenever the owner likes or
-  turns something down.
-- **Writer test — finished 2026-10-23** (owner confirmed 2026-10-29): writer A 8 picks, writer B 7,
-  too close to call, so writer A (the normal method) is the default writer. Not run again unless
-  the owner asks. The rule as it was:
-  **Writer test (owner, 2026-10-21), for the next batch of card proposals.** Two writers write
-  every card in the batch independently, from the same brief: writer A with the normal method
-  (CLAUDE.md, HOUSE STYLE, taste.md), writer B with the same method plus the `humanizer` skill,
-  using HOUSE STYLE and the current deck as its voice sample. Each writes three alternatives per
-  card that pass every card rule. The Keeper screens both sets the same way, then shows the owner
-  all six per card in one shuffled, numbered list, with no hint of which writer wrote which. The
-  key goes in `.claude/keeper/writer-test-key.md`, which the Keeper doesn't mention or open in
-  front of the owner until the owner has picked every card in the batch. Afterwards: count the
-  picks per writer, tell the owner the result, record it in lessons.md, and the winner becomes
-  the default writer. If six per card turns out too heavy to read, the owner can switch to two
-  from each writer.
-- App lines: three options per line, and vary the structure — not every line "X, Y, Z — and
-  why it matters". Mix short phrases, images, questions, contrasts (owner, 2026-10-18).
-- Card forms may vary (owner, 2026-10-15): a question, an open "..." prompt, a statement or a
-  command are all fine — variety in how cards ask is welcome.
-- **Vary how a card asks — a rule, not a wish** (owner, 2026-10-27: "all questions start with a W
-  or H"). In every slot at least one of the alternatives uses another form: "Tell about…",
-  "Quote…", "Name…", "Describe…", "Point to…", an open "…" sentence to finish, or a command. A
-  round's new cards are not all questions, and a category never ends a round with fewer
-  non-question cards than it started with. (The deck is about 80% question words; rounds 1–4
-  replaced several open prompts with questions.)
-- **Depth stays per category** (owner, 2026-10-26): no per-card depth score. Every card in a
-  category sits at most one depth step either side of the category's band (categories.js `band`, 1–7),
-  so Arc works on categories and nobody notices. Every round checks each card against this; a card
-  outside it either goes or the band moves (the owner decides which).
-- Builder: `deck-builder`.
+**A) The deck**: questions, categories and chapters, as one layered whole. Builder: `deck-builder`.
+- Card text lives only in `questions.js`. Categories and chapters are records in the CATEGORIES
+  table in `categories.js` (label, colour, band, focus, chapter, bucket …). The bench, HOUSE
+  STYLE, retired names, writer briefs and change log are in `questions/between-us-deck.md`.
+- CLAUDE.md's card rules apply in full, on the fast path too: the owner approves the exact words
+  of every card before it is written.
+- Each open card's brief names two or three lines of thought; its three alternatives spread over
+  them. Three alternatives on one subject count as one.
+- Every category has an app line (short, in the app) and a writer brief in the deck notes (what
+  it's about, the subjects a card may cover, where it stops). A category gets both when it is
+  reworked, or when it collides as a boundary while writing cards for another category.
+- A writer brief's subjects are a direction, not a boundary, built outward from the category's
+  purpose, never summarised from its current cards. Most lines of thought must be subjects no
+  current card touches; mark the ones that come from existing cards. Many subjects without a
+  card is fine.
+- Redesigning a category goes in three steps: (1) define it (app line, what it's about, lines of
+  thought, where it stops, borders with neighbours named); (2) judge its twelve cards as a whole,
+  what stays and what goes; (3) write cards for the open slots.
+- After Dark is grown-up questions about sex that start a real conversation, never juvenile or
+  drunk sex-talk trivia, Bare included. Screen every After Dark subject and card for this.
+- App lines: three options per line, each a different shape (short phrase, image, question,
+  contrast), never all "X, Y, Z — and why it matters".
+- Card forms vary: questions, open "…" prompts, statements and commands are all fine. In every
+  slot at least one alternative uses a non-question form ("Tell about…", "Name…", "Describe…", an
+  open sentence to finish, a command). A category never ends a round with fewer non-question
+  cards than it started with.
+- Depth is per category: every card sits at most one depth step either side of its category's
+  `band` (1–7). A card outside it goes, or the band moves; the owner decides which.
+- Read `taste.md` before proposing wording; add to it when the owner likes or turns something
+  down.
+- The card panel (`panel.md`) gives feedback on proposed cards when useful; it never approves
+  or writes cards.
 
-**B) Looks** — how anything appears: colours, lines, type, layout, card faces, animation.
-- References: the owner's Art Deco reference images live in `.claude/keeper/references/`. Read it
-  before any looks round (owner, 2026-11-05).
-- Way of working: agreement first (what it's for, what it should feel like), then models in
-  words, then rounds of real mockups, each checked by the `design-gate` agent first (Keeper
-  step 2, "A design round goes in four steps", owner 2026-11-06). Every round shows the current design next to the options, each round gets
-  its own new artifact link (never overwrite a round the owner has seen), options sit side by side with the current one
-  (owner, 2026-10-21), and you explain why
-  each option works or doesn't without picking one. The builder builds only from the mockup
-  the owner chose. Follows `DESIGN-SYSTEM.md`.
-- Placement, form, size and colour are decided by the Keeper and the builder, shown as options. The owner is not asked where things go (owner, 2026-10-16: "I am not a designer"). The Keeper also says so plainly when an owner's own design instruction is a bad plan.
-- Hard rules from the owner (2026-10-17):
-  - No glowing effects to draw attention.
-  - Every question uses the same font size; no sizing by length.
-  - Chapter and category colours are never changed without asking the owner first, not even a tint to make one fit.
-  - Layout tests use cards from the owner's own deck only, never the optional sets (Colbert, The 36, Magical).
-- Builder: `looks-builder`.
+**B) Looks**: colours, lines, type, layout, card faces, animation. Builder: `looks-builder`.
+- Read `.claude/keeper/references/` before any looks round; each option names the references it
+  drew from.
+- Way of working: agreement first (what it's for, how it should feel), then models in words, then
+  rounds of mockups, each checked by the `design-gate` first (SKILL.md, "A design round"). Each
+  round gets its own new artifact link, shows the current design side by side with the options,
+  and says why each option works or doesn't. The builder builds only from the mockup the owner
+  chose. `DESIGN-SYSTEM.md` applies.
+- Placement, form, size and colour are decided by the Keeper and builders and shown as options.
+  The owner is never asked where things go. When an owner's own design instruction is a bad plan,
+  say so.
+- Hard rules: no glow to draw attention; every question uses one font size, never sized by
+  length; chapter and category colours never change without asking the owner, not even a tint;
+  layout tests use only the core deck, never Colbert, The 36 or Magical.
 
-**Player-facing words** (owner, 2026-11-02): hints, descriptions and any copy a player reads never
-use the application's own language: no "line", "app line", "category", "chapter", "preset", "Arc",
-"bucket", "band" or other names we use among ourselves. Say what it does or what happens, in plain
-words. Check every proposal for this before showing it.
-"Category" is allowed: the owner chose "Hold a category to see what it's about" for the long-press
-hint (2026-11-02, #85) knowing it uses the word.
+**C) How the app works**: behaviour, screens, flows, settings, profiles, saving, offline.
+Builder: `app-builder`. Way of working: plain-language options with trade-offs, decided by the
+owner.
 
-**Names we use:** "the evening chooser" = the sheet now headed **The Deck** (named 2026-10-19; was only "What kind of evening?"; code: `#cat-area`). In the app it is The Deck; "Selected deck" on the card screen points to it.
+**Player-facing words**: hints, descriptions and any copy a player reads never use internal
+names ("line", "app line", "chapter", "preset", "Arc", "bucket", "band"); they say what happens in
+plain words. "Category" is allowed. Check every proposal for this before showing it.
 
-**C) How the app works** — behaviour, screens, flows, settings, profiles, saving, offline.
-- Way of working: plain-language options with trade-offs, decided by the owner.
-- Builder: `app-builder`.
+**Names we use**: "The Deck" is the sheet where the evening is set up (code: `#cat-area`); "Selected
+deck" on the card screen points to it.
 
-**Finding things:** when the owner asks whether something has been done, agreed, or is
-being worked on in another thread, hand the question to the `searcher` agent (read-only,
-on Haiku since 2026-10-21: finding is lookup work, not judgment). It looks in the Keeper notes, the project and its history, and the owner's
-Claude Code conversations of the last two months; further back only when the owner asks.
-Only on request, never on its own.
+## Agents
 
-**Builder notes:** each builder (and the tester) reads its own corrections file in
-`.claude/keeper/builders/` before every job; the Keeper keeps those files up to date.
-
-**Testing:** one generic `tester` for all areas, on Sonnet. It tests the app the way a player
-meets it, so cross-area breakage shows up, and checks the agreement line by line. Runs once on builds that change what players see or how they play, never on small fixes, and
-whenever the owner asks (owner, 2026-11-07; earlier that day "only when the owner asks", before
-that after every build).
-
-**Code review:** the `reviewer` (read-only, on Sonnet) reads the code every build changed:
-logic, placement, duplication, current good practice. Runs after every build, next to the
-tester. One plain sentence of its verdict goes into the report to the owner.
+- `searcher` (Haiku, read-only): finds whether something was done, agreed or is being worked on,
+  in the Keeper notes, the project and its history, and the owner's Claude Code conversations of
+  the last two months (further back when the owner asks). Only when the owner asks.
+- `reviewer` (Sonnet, read-only): reads the diff of medium and large builds.
+- `tester` (Sonnet): tests like a player across all areas, against the acceptance criteria, once
+  on builds that change what players see or how they play, and whenever the owner asks.
+- `design-gate` (Sonnet): checks every design round before the owner sees it.
+- The builders read `.claude/keeper/build-rules.md` and their own agent file.
 
 ## How the areas pull on each other
 
-Make these explicit whenever a wish touches one of them:
-- A new or changed category or chapter (A) changes the selection screens and filters (C), and
+- A new or changed category or chapter (A) changes the selection screens and filters (C) and
   usually needs a colour and a place on screen (B).
-- A looks change (B) can change how something works (C), e.g. moving or hiding a control.
+- A looks change (B) can change how something works (C), for example moving or hiding a control.
 - A chapter change (A) changes what "Draw" plays by default (C, `DEFAULT_SELECTION` in
-  `config.js`, which stays there; the chapters themselves are in `categories.js`) and the chapter colours (B).
+  `config.js`) and the chapter colours (B).
 
 ## Report extras
 
-On top of the general report: any card that changed is cited in full, old and new
-(`Category, number, "question text"`).
-
-## Things every builder must know (also in their own files)
-
-- `between-us.html` is the one real shell. `between-us-work.html` and `between-us-dev.html`
-  are redirects; never edit them.
-- Every `?v=` cache-busting value in `between-us.html` is bumped together when CSS/JS changes.
-- Tests: `node tests/run.mjs between-us.html` (see `tests/README.md`). A build runs only the 7-check
-  smoke run and the checks for its own addition; the full suite and the type check + lint are
-  GitHub's, and the build looks at GitHub's result after landing, except a small change, which doesn't wait;
-  every session starts by reading GitHub's last result on main and fixes red first (owner,
-  2026-11-04/05; `CHECKS.md`, "Which checks a build runs").
-- Every commit touching the app or deck ends with the `Change:` / `Note:` lines from CLAUDE.md.
+Every card that changed is cited in full, old and new.
 
 ## The backlog
 
-Since 2026-10-31 the backlog is GitHub Issues on this repo: https://github.com/Corvuno/BetweenUs/issues
-(owner: "a real system, not a file that needs updating… I might want to change things myself";
-the file had items twice or missing). One issue is one backlog item; the body is the story,
-task or decision as the Keeper writes it (kinds and acceptance criteria as in the Keeper's step 3).
-Read and change it with the GitHub tools (`list_issues`, `search_issues`, `issue_write`,
-`add_issue_comment`).
+GitHub Issues on this repo: https://github.com/Corvuno/BetweenUs/issues. One issue is one item;
+its body is the story, task or decision (SKILL.md step 3). Use the GitHub tools (`list_issues`,
+`issue_write`, `add_issue_comment`; search with `gh api -X GET search/issues`).
 
-- **Where it stands** is a label: `Refine` (needs the owner), `Next` (ready to build), `Building now`, `Parked`. Done is
-  closed as completed; dropped is closed as not planned. Exactly one of these per open issue.
-- **The board** (owner, 2026-10-31; the owner made it from GitHub's Kanban template on
-  2026-11-02): the owner's GitHub project with the columns Backlog, Refinement, Ready,
-  In progress, Done. Sessions never touch the board; they change labels and open/closed, and
-  `.github/workflows/backlog-board.yml` (`scripts/backlog-board.mjs`) moves the card at once:
-  no status label or `Parked` → Backlog, `Refine` → Refinement, `Next` → Ready,
-  `Building now` → In progress, closed → Done, closed as not planned → off the board. A card
-  the owner drags changes the labels within about 15 minutes (newer change wins; moves the
-  board makes by itself never count). Every 15 minutes Ready is also put in queue order.
-  The columns are the owner's; the job never renames them. It needs the repo secret
-  `BOARD_TOKEN` (a classic key the owner made with `project` and `public_repo`); without it
-  the job only warns. If the board stops moving, check that job's runs first.
-- **The owner's own items.** The owner adds and closes issues on github.com. An open issue with
-  no where-it-stands label is the owner's new wish: at session start, give it one, keep the owner's
-  words at the top of the body and write the story under them. An issue the owner closed stays
-  closed; never reopen it without asking.
-- **The owner's comments** (owner, 2026-11-02: "can you also see the comments I make in
-  GitHub?"). A comment the owner writes on an item gets the label `Owner comment` by itself.
-  At session start, read every open or recently closed item with that label: a comment counts
-  like a message in the chat (a correction, an answer, a wish). Act on it by the usual rules,
-  answer on the item in one or two plain lines, and then remove the label. Before building an
-  item, read all its comments.
-- **The owner moved a card from Refinement to Ready** (often with a comment answering it). Before
-  building, the Keeper checks that everything the item asked the owner is now answered, writes
-  the answers into the item (story, acceptance criteria, Touches) so the builder gets them, and
-  names in one line on the item what it took from the comment. The builder gets the item text,
-  never a bare comment. If anything is still open, it doesn't guess: the card goes back to
-  Refinement with the question on the item.
-- **No doubles.** Before creating an issue, search open and closed ones for the same wish. If
-  it exists, update it or comment on it instead.
-- **Building now** gets a comment with the session link when the builder starts; the label
-  comes off when the work lands or is handed back.
-- **Commits name their item** (enforced by `.githooks/commit-msg`, on in every session through the
-  SessionStart hook): `Backlog: #12` in any commit for issue 12 (a line starting with `#` is a comment and doesn't count); `Fixes #12` in the commit that finishes it,
-  which closes the issue by itself when it reaches `main`. A commit that fits no item says
-  `No issue: <why>`. Never get round the lock with `--no-verify`.
-- **Order of Next** (owner, 2026-11-02): oldest first, by issue number, so a new item lands at
-  the bottom. An item the owner puts at the top gets the label `Top`; `Top` items come first,
-  oldest `Top` first. Items labelled `Fill` (work for scheduled jobs, such as the Friday
-  clean-up) always come last. Nothing else reorders Next.
-- **Clash check, the bookkeeping exception:** the `?v=` values in `between-us.html` and
-  `RELEASE-NOTES-NEXT.md` don't count as a shared file between builds; any other change to
-  `between-us.html` does.
-- **History.** `.claude/keeper/backlog.md` holds everything up to 2026-10-31 and is no longer
-  updated. The old backlog page (https://claude.ai/artifact/67V3Fw68avj2944kjZ71zS) shows that
-  last state with a note pointing here; don't republish it.
+- **Status** is exactly one label per open issue: `Refine` (needs the owner), `Next` (ready to
+  build), `Building now`, `Parked`. Done is closed as completed; dropped is closed as not planned.
+- **Order of Next**: `Top` items first, then the rest, each oldest issue number first; `Fill`
+  items always last. Nothing else reorders Next.
+- **The board** is the owner's GitHub project (columns Backlog, Refinement, Ready, In progress,
+  Done). Sessions never touch it; they change labels and open/closed, and
+  `.github/workflows/backlog-board.yml` moves the cards. A card the owner drags changes the labels
+  within about 15 minutes. The job needs the repo secret `BOARD_TOKEN`; if the board stops moving,
+  check that job's runs first.
+- **The owner's own items**: an open issue with no status label is the owner's new wish. At
+  session start give it a label, keep the owner's words at the top and write the story under
+  them. An issue the owner closed is never reopened without asking.
+- **The owner's comments**: a comment by the owner gets the label `Owner comment` automatically.
+  At session start read every open or recently closed item with that label; the comment counts as
+  a chat message. Act on it, answer on the item in one or two plain lines, remove the label. Read
+  all comments of an item before building it.
+- **Moved from Refinement to Ready by the owner**: check that every question on the item is
+  answered, write the answers into the story, criteria and Touches, and name on the item what was
+  taken from the comment. The builder gets the item text, never a bare comment. Anything still
+  open sends it back to `Refine` with the question.
+- **No doubles**: search open and closed issues before creating one; update or comment instead.
+- **Building now** gets a comment with the session link when building starts.
+- **Commits** name their item, enforced by `.githooks/commit-msg`: `Backlog: #12`, `Fixes #12` in
+  the finishing commit, or `No issue: <why>`. A line starting with `#` is a comment and doesn't
+  count. Never bypass the lock with `--no-verify`.
+- **Clash check exception**: the `?v=` values in `between-us.html` and `RELEASE-NOTES-NEXT.md`
+  don't count as shared files; any other change to `between-us.html` does.
+- The old backlog file and page are in `.claude/keeper/history/`; never update or republish them.

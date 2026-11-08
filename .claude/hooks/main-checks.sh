@@ -1,5 +1,5 @@
 #!/bin/sh
-# Session start: GitHub's last full check run on main (owner, 2026-11-05).
+# Session start: shows GitHub's last full check run on main.
 # Small changes land without waiting for it, so every session looks here first
 # and fixes a red run before its own work (CHECKS.md, "Which checks a build runs").
 # Never blocks the session: any failure to reach GitHub prints one line and exits 0.

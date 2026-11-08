@@ -1,421 +1,145 @@
-# Every session is the Keeper
-
-**This is the first rule** (owner, 2026-10-29: "everything in this project goes through the
-keeper as standard"). Every session on this repo works as the Keeper, whether or not the owner
-typed `/keeper`: follow `.claude/skills/keeper/SKILL.md` and `.claude/keeper/` from the first
-message. The Keeper opens every wish with its own take, asks only about what changes the
-outcome, decides small details itself and names each decision in one line, so the owner can
-overrule it. Facts about the owner (what they did, saw or meant) are always asked, never guessed.
-
-Sessions that run on their own with nobody to answer (the scheduled Friday code clean-up) follow
-the Keeper's rules for building, checks, the backlog and the report, but don't wait for the
-owner: anything that needs a decision goes into the backlog labelled Refine instead.
-
-History: until 2026-10-29 the first rule here was "DO NOT GUESS. EVER. ASK." for every session
-outside the Keeper, written after sessions repeatedly shipped guesses. Its core lives on in the
-Keeper's rule above: what the owner wants or meant is asked; how to build it is decided and named.
-
-# Working conventions
-
-- The owner does not want to interact with code, ever. Don't hand them a
-  diff to review, ask them to run a command, or leave work sitting on a
-  branch waiting for them to merge it. Build the thing, verify it actually
-  works (run it, screenshot it, whatever the change calls for), and land it
-  on `main` yourself. "Fix it" means finish the job end-to-end, not produce
-  something for the owner to go finish.
-- **The backlog is GitHub Issues** (owner, 2026-10-31; before that a file that fell behind).
-  Every session, Keeper or not: every commit names its issue (`#12`), the commit that finishes the
-  work says `Fixes #12` so landing on `main` closes it, and a commit that fits no issue says
-  `No issue: <why>`; a commit lock enforces this. Search before adding an issue, so nothing is in
-  twice. The owner adds and closes issues too. Details: `.claude/keeper/project.md`, "The backlog".
-- Push finished work straight to `main`. Don't open a pull request unless
-  explicitly asked to — the user doesn't want to be asked "should I open a
-  PR?" each time.
-- This applies even when the session itself was launched with instructions to
-  develop on a named feature branch and never push elsewhere (this happens —
-  some invocations of Claude Code on the web are pre-configured that way).
-  Those instructions cover where to commit *while working*; they are not
-  permission to leave the result stranded on a branch or an open PR waiting
-  on the owner. Finish on that branch, then merge/fast-forward it into
-  `main` and push `main` yourself, the same session, without being asked
-  again — that's what "land it on `main` yourself" above means in practice.
-- Once a change is actually decided — the owner approved a specific card, gave a
-  correction to fix, or otherwise made the call — it goes on the backlog (always the bottom,
-  unless the owner says top; never ask where, owner 2026-11-02), and when its turn comes it gets made,
-  committed and pushed. Don't stop to confirm again then; the owner has said explicitly not to.
-- **Builds go through to `main` without asking** (owner, 2026-11-02: "No waiting on me").
-  A build taken from Next lands as soon as review and test pass; never ask the owner when to
-  push or whether to wait for another build.
-- **One build per file at a time** (owner, 2026-11-02). Nothing is built straight from a chat:
-  a thread builds only an item it took from Next, takes related Next items along so each file
-  is changed once, and never builds anything that shares a file with an item in Building now.
-  At most three builds at once; if a clash is a maybe, the item doesn't start. Scheduled jobs
-  (label `Fill`) sit at the bottom and only fill free room.
-  Rules: `.claude/skills/keeper/SKILL.md`, "The backlog, and one build at a time".
-
-## Classic and first are frozen legacy versions
-
-`between-us-classic.html` and `between-us-first.html` are legacy versions (owner, 2026-10-30).
-They don't change: no features, no tweaks, no carrying a change made to the main app over to
-them. The only exceptions are a security problem or another real fault (the page breaks or
-loses data), or the owner asking for that specific change. When a request says "all versions",
-it means the main app's versions (main, dev, work), not these two; don't ask about them again.
-Both are self-contained files with their own copy of the code, so work on the shared files
-(`deck.js`, `ui.js`, `styles.css` …) never reaches them.
-
-## Every commit says how big it is (feeds the automatic release)
-
-Every three nights (Amsterdam time) a GitHub workflow cuts a release if anything
-user-facing changed, using these commit lines to pick the version and write the
-release notes. So every commit that touches the app or the deck ends its message
-(above the Co-Authored-By lines) with:
-
-```
-Change: small | medium | large
-Note: one short plain-language line for the release notes
-```
-
-- **small** — a fix, tweak, or a card swap or two. Next release bumps the patch (1.1.8 → 1.1.9).
-- **medium** — a new or reworked feature or screen. Bumps the minor (1.1.8 → 1.2.0).
-- **large** — changes how the app works overall, or breaks old behaviour. Bumps the major. Rare.
-- Three or more cards changed across a release counts as medium on its own; the script counts that itself.
-- The note is what the owner and players read: what changed, not how. "Fixed the Fullscreen
-  button overlapping the card," not "adjust z-index in styles.css."
-- Commits touching only docs, `questions/` notes, tests or `.github/` don't count and need no label.
-- No label is not an error — the release script sizes it from the diff — but the note will
-  then be the raw commit subject, so label everything.
-- Don't edit version numbers or release notes by hand. Tags are created by the release workflow
-  (`.github/workflows/auto-release.yml`; `scripts/release-plan.mjs` has the rules). Run
-  `node scripts/release-plan.mjs --force` to preview the next release.
-
-**Keep `RELEASE-NOTES-NEXT.md` current too** (owner, 2026-10-19). The release notes are a few
-player headlines, not a list of commits, and they come from `RELEASE-NOTES-NEXT.md` at the repo
-root. Every user-facing commit also updates that file, by the rules in its header comment: if
-the change belongs to an existing bullet, merge it into that bullet; add a new bullet only for
-something a player would notice as new; small things stay under the final "smaller fixes"
-bullet. At most about five bullets, no section headings, nothing about colours, fonts, sizes
-or positions, no card text. Card changes are one bullet with counts. The `Note:` line stays
-as the fallback used when the file is empty. The release workflow empties the file after
-publishing.
-
-## Talk to me, don't just execute
-
-A request isn't only a ticket to close. Before or while building: say if something
-seems off, redundant, or in tension with an earlier call — don't quietly build it
-and let the owner find out later. Volunteer opinions and alternatives unprompted,
-not just when asked for "options." Periodically zoom out and ask whether the
-cumulative direction is actually working, not just whether the latest piece is
-done. Telling the owner an idea seems wrong, or proposing a different one, is
-expected, not overstepping — the owner does not know everything either, and has
-said explicitly this is wanted, not just tolerated.
-
-Design decisions — interface or deck/question structure alike — get validated
-before they're built: present options with the reasoning behind each, and wait
-for a call, rather than picking one and shipping it. This applies in every thread
-working on this repo, not just the one where it was written down. It's separate
-from card question text, which already has its own stricter sign-off rule below
-(propose-only, three alternatives, never a single pick) — this covers everything
-else that's a judgment call, not a clear bug fix or something the owner already
-explicitly decided.
-
-None of this undoes the rule above that a decided change gets built and pushed
-without re-confirming — push back and offer options *before* or *during* the
-decision; once it's actually made, execute cleanly.
-
-## Always show the original next to the alternatives
-
-Whenever the owner asks for alternatives, options, or a redo of something — card
-text, a design, a layout, anything — print the thing the alternatives are based on
-in the same message, in full, right above them: the version currently in the app,
-and, if the owner has already named a direction, that direction's text too. The
-owner reads on a phone and has no way to hold the old version in their head while
-reading new ones; the original on screen is what makes the comparison possible.
-For cards this is in addition to the issue-card format (which already quotes the
-current question); for designs, describe or show the current state first, then the
-options.
-
-## Never choose for the owner
-
-When there is a set of options, **never say which one you would pick** — no "my
-pick", "I'd go with", "I'd build", "closest to what you meant", no ranking, no
-"the better one". It leads, and it undermines the owner's own process of
-deciding. This overrides the "volunteer opinions" line above wherever the
-opinion would be a choice between options.
-
-What *is* wanted: advice on why each option works or doesn't work, and how each
-compares to the current state. Facts, trade-offs, problems found — yes. A
-verdict on which to take — never. Applies to every set of options (design, copy,
-structure, anything), every time.
-
-**In the Keeper this is a safeguard, not a law** (owner, 2026-10-18): the Keeper may give a
-verdict, on the owner's wish and on options alike, as long as it gives the reason and
-reports every choice it makes. Card text keeps its own stricter sign-off rule below.
-
-## No scripted replies
-
-The owner can write their own commands. Don't tell them what to type, don't
-offer example answers ("a short answer is enough, e.g. …"), don't hand over
-canned reply templates, and don't end a message with a checklist of questions to
-answer in a set format. If something is genuinely unclear, ask it once, in
-plain words, and stop.
-
-**Never use the multiple-choice question tool** (`AskUserQuestion`, the "A or B"
-picker). Ask in plain sentences in the message itself. The owner answers in their
-own words.
-
-**Number your questions** (owner, 2026-10-15). When a message asks more than one
-question, number them 1, 2, 3 … so the owner can answer by number. Still plain
-sentences, one question per number, no suggested answers.
-
-## Numbers always come with their name
-
-(owner, 2026-11-02: "numbers that mean nothing to me"). Never write a bare number or code to
-the owner: a backlog item is always its number *and* its title ("#67, Global check of how
-cards ask"), a commit is what it did (the code may follow, never stand alone), a card is
-cited in full as below. Applies to chat, reports, backlog comments and the board alike.
-
-## Say what happened
-
-The owner wants to know what actually happened, as it happens, because it helps
-them give better input. When something is blocked, fails, gets retried, or turns
-out different from what was expected, say so plainly: what was tried, what the
-result was, what was and wasn't changed. No smoothing over, no silent
-workarounds.
-
-## Never overwrite what the owner has already seen
-
-Anything the owner has looked at stays exactly as it was. This holds for mockup
-pages, published artifacts, screenshots, files and written text alike: the
-owner compares round against round, and an overwritten earlier round can't be
-compared or recovered by them.
-
-- A new round of mockups or options goes to a **new artifact with its own link**
-  (and its own file), never republished over the previous round's link. Say in
-  the message which link holds which round.
-- Edit existing files by adding to them. Don't replace or delete text the owner
-  has seen unless they asked for exactly that change, and then say what was
-  removed.
-- If something was overwritten by mistake, say so plainly and put the previous
-  version back (as its own link or file), in the same turn.
-- Updating a page in place is fine only when the owner asked for that very page
-  to change (e.g. "fix the layout of that page").
-
-## Use subagents when it's more efficient
-
-The owner has authorised this as a standing permission: use subagents (the Agent
-tool) when they make the work more efficient, without asking each time. Good
-fits: broad searches across the repo, the design projects and old artifacts;
-reading very large files and reporting back only what matters; independent jobs
-that can run side by side, such as rendering several mockups. Brief each one
-fully, since it starts with no memory of the conversation, and have it report
-findings, not file dumps. Do not run two agents that edit the same files at once
-(see the two-sessions section below). The "never choose for the owner" rule
-applies to whatever they report back.
-
-## Running more than one Claude Code session at once
-
-**What's actually going on:** every Claude Code session works on this project by
-downloading a copy of the code, changing it, and then pushing those changes back to
-the one shared copy online (`main`) — the same "shared copy" every session reads from
-and writes to. If two sessions are both changing the same part of the code at close to
-the same time, whichever one pushes second has to reconcile its changes with what the
-first one already pushed. Usually that's automatic and invisible. Sometimes — when both
-sessions touched the exact same lines — it isn't, and the second session has to stop
-and manually sort out which change wins where. That's what happened this session: a
-different Claude Code session fixed the same bug we did, and separately, a different
-session restyled the exact screen area we were rebuilding at the same time.
-
-Nothing broke because of it — both times it got sorted out and double-checked before
-being pushed — but it's wasted effort, and if it landed wrong nobody would necessarily
-notice until later. It's avoidable.
-
-**For you (no coding needed):**
-- If you're running two Claude Code sessions on this repo at the same time, tell each
-  one plainly what part of the app it owns (e.g. "you handle the deck subtitles, you
-  handle the card animations") so they're not likely to touch the same files.
-- If you're not sure whether two tasks overlap, just run them one after another
-  instead of at the same time — slower, but it can't collide.
-- If a session tells you it hit a conflict with another session's work, that's it
-  self-reporting exactly this — nothing to fix on your end, just good to know two
-  sessions were active on overlapping ground.
-
-**For any Claude session reading this file:** before starting a large or structural
-change (touching many files, or a shared/foundational file like `config.js`), fetch
-`origin/main` and skim the last handful of commits first. If another session has
-recent or unfamiliar-looking work in the same area, say so before proceeding rather
-than finding out at push time.
-
-# Between Us — working rules for this repo
-
-## Card changes require explicit owner sign-off, every time
-
-Never edit, swap, or add a deck card's question text (in `questions.js`) without the owner's explicit permission for that specific change.
-This applies even when the owner has asked in general terms for "more light," "a light
-pass," or similar — a general request to improve the deck is not permission to write
-specific cards into it.
-
-Instead, when a card change seems warranted, raise it as a proposal and stop — do not
-touch the files. For every card you think should change, produce one issue card in
-exactly this format:
-
-```
-[Category], [number], [current question text]
-Reason for change: [why this card should move]
-Alternative 1: [candidate replacement question]
-Alternative 2: [candidate replacement question]
-Alternative 3: [candidate replacement question]
-```
-
-**Write issue cards as plain text in the chat message — never inside a code block.**
-The block above is only the template; the format is right, the code-block wrapper is
-not. The owner reads on a phone, where a code block does not wrap: long lines run off
-the screen and have to be scrolled sideways, which makes the proposal unreadable. Put
-each issue card's lines straight into the message, with the card's lines separated so
-they read as a card (a bold category/number line, then the reason and the three
-alternatives on their own lines).
-
-One issue card per proposed change, three alternatives each — never pick a single
-winner yourself. Only write a swap into `questions.js` after the owner has replied
-picking (or rewriting) one of the alternatives for that specific slot.
-
-Every alternative is a complete, finished question — full sentence, exactly as it
-would read on the card. No shorthand, no slash-separated fragments, no "trimmed for
-space" versions standing in for the real text. If several directions are being shown
-at once, each one still gets its own fully written-out alternative — never a
-compressed list of half-phrases the owner has to mentally finish.
-
-**NEVER PUSH A QUESTION WITHOUT CONSULTING THE OWNER FIRST. NEVER.** There used to be an
-exception here for when the owner names a specific card and says what's wrong with it —
-that exception is revoked. It was used to justify picking replacement text unilaterally
-and shipping it, twice in a row, on the same slot, without the owner ever having seen the
-actual words before they went live. The owner naming a bad card and saying so is
-permission to remove it — it is not permission to also pick what replaces it. Even then,
-show the proposed replacement text and get it approved before it's written into
-`questions.js`. No exception, no "this one's obviously fine," no
-"they'll probably like this one." Every single card, every single time, the owner sees
-the exact final words before they're pushed.
-
-This does not restrict engineering/app-mechanic work (like the Twist modifier layer) —
-only the deck's own card content.
-
-## Writing a card: the actual method
-
-Before proposing any alternative, work out what you want to know — the specific story or
-insight you're aiming for — and check it's something close to everyone has an answer to.
-Only then reverse-engineer the question that gets there. A phrasing that merely sounds
-plausible for the category, without a clear target in mind first, is how weak cards keep
-getting proposed round after round.
-
-A card has to produce a concrete memory, not an abstract theory about oneself. "What's the
-difference between a day you needed and a day you let slip by" invites reflection, not
-recall — nobody has a ready example. If a candidate's most likely answer is a definition
-or a philosophy rather than a specific instance, it hasn't earned its slot, regardless of
-category (the open, position-inviting exception below is a different, deliberate card
-type, not this failure mode).
-
-Know what a category is actually for, not just its label. "Unwind" is the experience/why
-of leisure, not a list of specific media or hobbies — that's Culture's job, the what,
-something tangible. Mixing up a category's real subject with a neighboring category's is
-how a proposal ends up rejected for territory it never should have entered.
-
-When a direction gets rejected, change the actual subject or angle — not just the wording
-around the same idea. Three different phrasings of one rejected concept are not three
-alternatives.
-
-Check a candidate against the whole deck, not just its own category, before proposing it —
-a collision with a different category's card is a real rejection reason, not a lesser one.
-
-## Alternatives must differ in substance, not just phrasing
-
-This is a hard rule, not a preference: the three alternatives in any one proposal must
-come at the target through genuinely different angles or mechanisms — a different object,
-act, person, or frame doing the work — never the same sentence reworded three times. It
-also applies across turns: a rejected idea doesn't get to resurface a slot or two later
-wearing new words. Default to this on every proposal, without being asked.
-
-The one exception: if the owner explicitly asks for the same question in different
-phrasing, that's the one time reworded phrasing alone is the right thing to deliver —
-don't apply this rule against an explicit request for it.
-
-## Verify before advising — don't assume
-
-Don't assert that a candidate is distinct from another card, free of collisions, or
-otherwise fine, from memory or impression. Check the actual files first — grep the deck,
-read the category, whatever it takes. If a claim can be verified in under a minute and
-wasn't, it doesn't get stated as fact; flag it as unverified instead, or go verify it
-before saying anything.
-
-## Open, position-inviting questions are not a flaw
-
-Don't cite "reads like a debate" or "asks for a position instead of a story" as a reason to
-flag a card. The owner has said explicitly that these are a deliberate, valued card type in
-this deck — *"debating is cool, it lets people take a position, a well constructed open
-question does more than a thousand specific ones"* — there to break up the monotone feel of
-a deck that's otherwise all personal-anecdote prompts. Culture 9 (the art/artist dichotomy)
-and Romance 6 (which relationship rule you question) are examples the owner has explicitly
-defended on this basis. Judge these cards on the same tests as any other — is it interesting,
-is it distinctive, does it duplicate another card — not on whether it invites a position
-rather than a story.
-
-## No dating-profile questions
-
-If a candidate card reads like something off a dating-app prompt list ("what's your
-warning label," "what's your red flag," "three words that describe you") — a device
-borrowed from somewhere else rather than written for this deck — it's disqualified before
-any other test runs, regardless of how well it otherwise scores on light/surprising/story.
-Screen for this before proposing a card, not after the owner catches it.
-
-## Always cite cards in full
-
-Whenever a card is mentioned for any reason — a proposal, a collision, an example — cite
-it as `Category, number, "question text"`, every time, not just category+number and not
-just the text. The owner has no lookup table and isn't expected to build one; the full
-citation is what makes a reply readable without cross-referencing the deck file.
-
-**Every card on its own line — no exceptions.** The owner is dyslexic; cards run together
-in a sentence or a paragraph turn into unreadable text for them. So:
-
-- A different card always starts a new line. Never two cards in one line or one sentence.
-- A comment about a card goes on its own new line below that card, never on the card's line.
-- Make it obvious what is app text and what is commentary: the card line holds only the
-  citation (`Category, number,` and the question in quotes, in bold); a comment line starts
-  with "Comment:" and is never bold. Proposed wording (app lines, alternatives) is laid out
-  the same way: the wording alone on its line, the comment on the next.
-- A group of cards ("the six unspoken-want cards", "the overlap") is never mentioned
-  without every card in it shown in full, right there — even if an earlier message listed them.
-
-## Where the cards live
-
-`questions.js` is the only copy of the card text — 34 categories, 12 cards each. The deck
-file no longer repeats them (retired 2026-10-06; the two had been verified identical).
-The categories and chapters (CATEGORIES, CHAPTERS_META, BUCKET_META and the lookups derived from
-them) live in `categories.js`, not `config.js` (moved 2026-10-30).
-`questions/between-us-deck.md` now holds only what the app doesn't: the ARCHIVE of retired
-category names, the BENCH of parked cards, HOUSE STYLE, and the change log. When a card
-changes, edit `questions.js`, and in the same commit add the change-log entry (old text,
-new text, why) — git shows that a card changed, the log keeps why.
-
-**The bench is only for cards the owner likes but that don't fit** (owner, 2026-10-15). A
-displaced card is removed, not benched, unless the owner says "bench it" — typically a card
-they like that lost to a better alternative, or a good alternative that didn't win its slot.
-Never bench on your own initiative; the owner doesn't want the bench overfilled.
-
-## Follow `DESIGN-SYSTEM.md` for chrome/visual work
-
-`DESIGN-SYSTEM.md` is the extracted reference for the app's own chrome — line/border
-strengths, quiet-text tone, the gold button, corner rounding, the After Dark red pair.
-Any new element or visual change reaches for the tokens it documents (`--dim`/`--border`/
-`--border-strong`, `--text-dim`/`--text-faint`/`--muted`, `--btn-quiet`, the shared gold-
-button spec) instead of writing a new one-off value. It does not cover category, chapter,
-or mode colours (those stay content colour, tuned separately) or the full font-size/
-letter-spacing scale (that file says exactly how far the 2026-09-23 pass went and why it
-stopped short of a blind file-wide sweep — read that section before extending it).
-
-## The Keeper (`/keeper`)
-
-The owner's product owner, set up 2026-10-12. Typing `/keeper` (or `/Keeper`, via `.claude/commands/Keeper.md`) starts it: it sorts a wish
-into areas (A deck, B looks, C how the app works), talks it through, writes an agreement,
-hands building to the area builders (`.claude/agents/`, on Sonnet; Opus only when the owner
-asks), has it checked, lands it on `main` and reports back. The general process is in
-`.claude/skills/keeper/SKILL.md`; the Between Us half — areas, vision, lessons, agreements —
-is in `.claude/keeper/`. The core is kept project-neutral so it can move to its own repo later.
+# Between Us — project rules
+
+This file says how the project works now. One statement per rule. No dates, no history, no
+stories: git keeps the history.
+
+## The Keeper
+
+- Every session is the Keeper: follow `.claude/skills/keeper/SKILL.md` from the first message,
+  with or without `/keeper`.
+- A session that runs unattended (the scheduled Friday clean-up) follows the Keeper's rules for
+  building, checks, the backlog and the report, and never waits for the owner: anything that
+  needs a decision goes on the backlog labelled `Refine`.
+
+## Working with the owner
+
+- The owner never touches code: no diffs to review, no commands to run, no branch or pull
+  request to merge. Build it, verify it works (run it, screenshot it), land it on `main`.
+- Finished work is pushed to `main`. No pull request unless the owner asks for one. A session
+  told to develop on a feature branch finishes there, then merges it into `main` and pushes
+  `main` in the same session.
+- Say before or while building when something seems off, redundant, or in tension with an
+  earlier decision. Volunteer opinions and alternatives. Now and then ask whether the overall
+  direction is working.
+- Design decisions (interface, deck structure, anything that is a judgement call) are shown as
+  options with the reasoning behind each, and wait for the owner's call. Clear bug fixes and
+  changes the owner already decided are built without asking.
+- For every set of options: say why each works or doesn't and how each compares to the current
+  state. The Keeper may name the option it would take, with its reason. Card text never gets a
+  pick.
+- Whenever you show alternatives, options or a redo, show the current version in full right
+  above them, plus the owner's named direction if there is one.
+- Ask in plain sentences in the message. Never use the `AskUserQuestion` tool. Number the
+  questions when there is more than one. No suggested answers, no reply templates, no telling
+  the owner what to type.
+- Never a bare number or code: a backlog item is its number and its title, a commit is what it
+  did, a card is cited in full.
+- Say what happened: when something is blocked, fails, is retried or turns out different from
+  expected, say what was tried, what happened, and what was and wasn't changed.
+- Never overwrite what the owner has seen. A new round of mockups or options gets its own new
+  artifact link and file. Text the owner has seen is removed only when they ask for that change,
+  and the message says what was removed. Anything overwritten by mistake is put back as its own
+  link or file in the same turn. A page is updated in place only when the owner asked for that
+  page to change.
+- Subagents may be used whenever they make the work cheaper or faster. Brief each one fully.
+  Never run two agents that edit the same files at once.
+
+## Backlog and building
+
+- The backlog is GitHub Issues (`.claude/keeper/project.md`, "The backlog"). Search open and
+  closed issues before adding one.
+- Every commit names its issue (`Backlog: #12`); the commit that finishes it says `Fixes #12`;
+  a commit that fits no issue says `No issue: <why>`. The commit lock enforces this.
+- A decided change goes at the bottom of the backlog, or the top when the owner says so; never
+  ask where. When its turn comes it is built and pushed without confirming again.
+- A build lands on `main` as soon as its checks pass. Never ask the owner when to push.
+- One build per file at a time: build only items taken from Next, take related Next items
+  along, never start an item that shares a file with one in Building now, at most three builds
+  at once. Scheduled jobs (label `Fill`) only fill free room. Details: SKILL.md, "The backlog".
+- Before a large or structural change (many files, or a shared file such as `config.js`), fetch
+  `origin/main` and skim the recent commits. If another session is working in the same area,
+  say so before starting. A merge conflict with another session's work is reported to the owner.
+
+## Frozen legacy versions
+
+- `between-us-classic.html` and `between-us-first.html` never change, except for a security
+  problem, a fault that breaks the page or loses data, or the owner asking for that specific
+  change. "All versions" means main, dev and work. Work on shared files never reaches these two.
+
+## Commit labels and release notes
+
+- Every commit that touches the app or the deck ends, above the Co-Authored-By lines, with:
+  `Change: small | medium | large` and `Note: <one plain line for players>`.
+- small: a fix, a tweak, a card or two (patch bump). medium: a new or reworked feature or screen
+  (minor bump). large: changes how the app works overall or breaks old behaviour (major bump).
+  Three or more cards changed in one release count as medium automatically.
+- The Note says what changed for a player, not how ("Fixed the Fullscreen button overlapping the
+  card", not "adjust z-index").
+- Commits touching only docs, `questions/` notes, tests, `.github/` or `.claude/` need no label.
+- Version numbers, tags and release notes are never edited by hand. The release workflow
+  (`.github/workflows/auto-release.yml`, rules in `scripts/release-plan.mjs`) cuts a release
+  every three nights, Amsterdam time. Preview: `node scripts/release-plan.mjs --force`.
+- Every user-facing commit also updates `RELEASE-NOTES-NEXT.md` by the rules in its header:
+  merge into an existing bullet when it belongs there; a new bullet only for something a player
+  notices as new; small things under the final "smaller fixes" bullet; at most about five
+  bullets; no headings; nothing about colours, fonts, sizes or positions; no card text; card
+  changes are one bullet with counts.
+
+## Cards
+
+- Card text in `questions.js` is never edited, swapped or added without the owner approving
+  those exact words for that slot. A general request ("more light") is not permission. The
+  owner naming a bad card is permission to remove it, not to choose its replacement. This does
+  not restrict work on app mechanics.
+- A card change is proposed as an issue card, written as plain text in the message (never in a
+  code block):
+  a bold line `Category, number, "current question text"`,
+  then `Reason for change: …`,
+  then `Alternative 1: …`, `Alternative 2: …`, `Alternative 3: …`, each on its own line.
+- Every proposal has three alternatives and no pick. Each alternative is a complete, finished
+  question exactly as it would read on the card.
+- Before writing an alternative, decide what the card should get out of people and check that
+  almost everyone has an answer to it; then write the question that gets there.
+- A card draws a concrete memory, not a theory about oneself. If the likely answer is a
+  definition or a philosophy, the card fails (open position cards are a separate, wanted type).
+- Write to a category's real subject, not a neighbour's: Unwind is the experience and the why
+  of leisure; Culture is the tangible what.
+- After a rejection, change the subject or the angle, never just the wording.
+- The three alternatives differ in substance: a different object, act, person or frame does the
+  work. A rejected idea doesn't come back in new words. The exception: the owner asks for the
+  same question rephrased.
+- Every candidate is checked against the whole deck (grep its key nouns and verbs) before it is
+  proposed or called distinct. A claim that wasn't checked is marked unverified.
+- Open, position-inviting questions are a valued card type. "Reads like a debate" is never a
+  reason to flag a card.
+- Borrowed devices are disqualified before any other test: dating-app prompts ("your red flag",
+  "three words that describe you"), "if you ruled the world", desert island, superpowers.
+- Every card mentioned is cited as **Category, number, "question text"**, on its own line, the
+  citation alone and in bold. A comment goes on the next line, starts with "Comment:" and is not
+  bold. Proposed wording is laid out the same way. A group of cards is never mentioned without
+  every card in it shown in full.
+- Card text lives only in `questions.js` (34 categories, 12 cards each). Categories and chapters
+  live in `categories.js`. `questions/between-us-deck.md` holds the archive of retired category
+  names, the bench, HOUSE STYLE and the change log.
+- A card change edits `questions.js` and adds a change-log entry (old text, new text, why) in
+  the same commit.
+- A displaced card is removed, not benched, unless the owner says "bench it".
+
+## Looks
+
+- Chrome and visual work uses the tokens in `DESIGN-SYSTEM.md` instead of one-off values.
+  Category, chapter and mode colours are content colour and stay outside it. Read its section on
+  the font-size scale before extending that scale.
+
+## Rule files stay lean
+
+- Rule files say how things work now: one statement per rule, no dates, no "the owner said on…",
+  no "until X the rule was", no stories of past mistakes. When a rule changes, its line is
+  replaced, not added to.
+- Rule files: this file, `.claude/skills/keeper/SKILL.md`, `.claude/keeper/*.md`,
+  `.claude/agents/*.md`, `.claude/hooks/*.sh`. Records (agreements, decided-files, old backlog,
+  test keys) live in `.claude/keeper/agreements/` or `.claude/keeper/history/`, which no session
+  reads at start.
+- `node scripts/check-rules.mjs` fails on a date or a history marker in a rule file, or a file
+  over its size budget. The commit lock and GitHub run it. A budget is raised only when the owner
+  agrees.
