@@ -12,11 +12,12 @@ Backlog: "Design what's under the card at the end of a hand" (#127) and "Under t
 - PC as built is wrong: "Last redesign of the lower menu fucked the PC layout; it looks a 100% out of place and wonky." (2026-11-08)
 - From the PC layout round (still standing): PC keeps the same feeling and a compatible look, may draw its own elements, mouse-first at desk distance (lessons.md).
 
+- Round 2 model: "Combine a b and c" (2026-11-08). Keeper's reading, shown in the sketches for the owner to correct: Save at the pause in Spotlight's place (B), Save also the Menu's first line from the first card with a first-time hint (A), PC with its own frame around the card (C).
+- "Change can go." (2026-11-08)
+- "Save should save. Not do anything else." (2026-11-08): no share menu; Save downloads the file as now.
+- Three before the first card: "Three can be set." (2026-11-08)
+
 ## Open
-- How the figure under the card is drawn on PC.
-- Where taking the evening along lives, and how a player learns it.
-- What Spotlight does at the end of a hand (now it disappears).
+- Whether the Keeper's reading of "combine" is what the owner meant; the sketches show it at every moment.
 
 ## Keeper's proposals (not decided)
-- Save opens the phone's own share menu with the evening file (send it in a chat or keep it on the phone in one step); on PC it downloads as now.
-- Change can go from the end of a hand: The Deck is already one tap away through "Selected deck" above the card and through the Menu.
