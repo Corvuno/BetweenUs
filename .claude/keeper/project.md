@@ -41,7 +41,7 @@ The project's half of the Keeper. The general process is `.claude/skills/keeper/
 - Read `.claude/keeper/references/` before any looks round; each option names the references it
   drew from.
 - Way of working: agreement first (what it's for, how it should feel), then models in words, then
-  rounds of mockups, each checked by the `design-gate` first (SKILL.md, "A design round"). Each
+  rounds of mockups, each made by the `designer` (SKILL.md, "A design round"). Each
   round gets its own new artifact link, shows the current design side by side with the options,
   and says why each option works or doesn't. The builder builds only from the mockup the owner
   chose. `DESIGN-SYSTEM.md` applies.
@@ -71,7 +71,8 @@ deck" on the card screen points to it.
 - `reviewer` (Sonnet, read-only): reads the diff of medium and large builds.
 - `tester` (Sonnet): tests like a player across all areas, against the acceptance criteria, once
   on builds that change what players see or how they play, and whenever the owner asks.
-- `design-gate` (Sonnet): checks every design round before the owner sees it.
+- `designer` (Sonnet, Opus for hard rounds): makes every design round in one pass with one design
+  skill. `design-gate` is kept but not used; it returns if rounds start missing again.
 - The builders read `.claude/keeper/build-rules.md` and their own agent file.
 
 ## How the areas pull on each other

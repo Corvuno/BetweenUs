@@ -102,18 +102,13 @@ handed to a builder:
    player does differently, without positions, colours or ornaments. Pictures come only after the
    owner picks a model; the first pictures are rough sketches made from scratch, not built inside
    the live app. After a "variation" or "reshuffle" verdict, the next reply is words only.
-6. **Design it right first.** Whoever draws works from a brief: every line of lessons.md
-   "Design", taste.md, the references, and the screens the owner already chose for this area.
-   Check each picture against that brief line by line, then run `design:design-critique` on it
-   (required; your own look never replaces it), then fix it. Three to five
-   strong options, one a real rethink, each naming its source.
-7. **The gate.** A fresh `design-gate` agent gives a short last check, once per round. A block
-   is a design miss: write its lesson into lessons.md before redrawing. Never show a blocked
-   round. A rejected design adds the rule it broke to lessons.md first.
+6. **The designer.** Every round is made by the `designer` agent in one pass, with one design
+   skill it picks, from a brief: the agreement, `decided.md`, the moments, and the screens the
+   owner already chose. It runs on Sonnet; `model: "opus"` for a rethink or a round after a
+   rejection. A rejected design adds one line to `.claude/keeper/designer-notes.md`.
 
 The round message opens with a filled-in checklist: the decided-file, each option's one-line
-idea, the gate's verdict, and which design skills were used and what each changed
-(`design:design-critique`, `design:design-system`, `emil-design-eng`).
+idea, and the design skill the designer used and why.
 
 ### 3. The agreement
 
