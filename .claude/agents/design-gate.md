@@ -49,6 +49,9 @@ Read `.claude/keeper/lessons.md`, `.claude/keeper/taste.md`, `.claude/keeper/vis
 8. **Thinking handed to the owner:** a question like "where should X go?" that the Keeper could work
    out. Questions to the owner are about facts and taste only.
 
+9. **A design lesson broken.** Check each picture against every line of lessons.md "Design" and
+   against what the owner chose earlier for the same screen; name the line it breaks.
+
 ## Report
 
 - First line: **PASS** or **BLOCK**.

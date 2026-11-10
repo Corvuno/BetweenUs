@@ -102,22 +102,23 @@ handed to a builder:
    player does differently, without positions, colours or ornaments. Pictures come only after the
    owner picks a model; the first pictures are rough sketches made from scratch, not built inside
    the live app. After a "variation" or "reshuffle" verdict, the next reply is words only.
-6. **Design for beauty.** Start looks rounds from the owner's references and the screens that
-   already work; each option names its source and why it is beautiful. Critique every picture
-   with `design:design-critique` and fix what you see. Three to five strong options, at least one
-   a real rethink.
-7. **The gate.** Before the owner sees a round, give the decided-file, the overview and the
-   one-line ideas (and pictures, once there are any) to a fresh `design-gate` agent, once per
-   round. On BLOCK, rethink the round and check again; never show a blocked round. The gate is a
-   safety net; each option is designed to be good before it goes there.
+6. **Design it right first.** Whoever draws works from a brief: every line of lessons.md
+   "Design", taste.md, the references, and the screens the owner already chose for this area.
+   Check each picture against that brief line by line and fix it before anyone else sees it.
+   Three to five strong options, one a real rethink, each naming its source.
+7. **The gate.** A fresh `design-gate` agent gives a short last check, once per round. A block
+   is a design miss: write its lesson into lessons.md before redrawing. Never show a blocked
+   round. A design the owner turns down adds the rule it broke to lessons.md first.
 
 The round message opens with a filled-in checklist: the decided-file, each option's one-line
 idea, the gate's verdict, and which design skills were used and what each changed
 (`design:design-critique`, `design:design-system`, `emil-design-eng`).
 
-### 3. The backlog item
+### 3. The agreement
 
-When it's clear, write it as one of three kinds:
+Every build and every design round starts with an agreement in the chat: who notices what (or
+Task), what changes, what stays, your own choices, Done when, size and checks. Nothing is built
+or drawn before the owner's yes; a short instruction is never a yes to what you add. Kinds:
 - **Story**: a change someone using the product notices, from a player, host, first-time visitor
   or colleague, never from the owner. It names a concrete moment and a concrete change. If the
   sentence would fit almost any change in that area, rewrite it.
@@ -128,8 +129,7 @@ Every item gets numbered acceptance criteria ("Done when", 3 to 6, each somethin
 see or do, including what deliberately doesn't change), its area, and **Touches:** the exact
 files it will change.
 
-Show it in the chat. After the owner's yes, search open and closed items, then add it (or update
-the existing one).
+After the owner's yes, search open and closed items, then add it (or update the existing one).
 
 ### The backlog, and one build at a time
 
@@ -198,8 +198,8 @@ cost.
 - **Small change** (a fix or tweak, one or two files, nothing on screen changes beyond the fix):
   one agent. The builder builds, runs the smoke run and its own check (a bug fix adds a test that
   fails before and passes after), and reviews its own diff against the review checklist in
-  `.claude/keeper/build-rules.md`. For anything visible, you look at one to three screenshots.
-  No reviewer, no tester.
+  `.claude/keeper/build-rules.md`; then a short `reviewer` pass: logical and tidy, nothing more.
+  For anything visible, look at one to three new screenshots. No tester.
 - **Medium or large change** (a new or reworked feature, anything that changes how the product
   looks or plays on purpose): after the builder, the `reviewer` reads the diff once. A "must fix"
   goes back to the builder. Then the `tester` runs once, only when players see or play something
@@ -273,8 +273,8 @@ Runs in its own `/keeper upkeep` thread, a month or more after the last run.
   history, the deck or old sessions is handed to a Sonnet or Haiku agent that reports back a short
   summary of what matters, and you work from that summary. The exception is a job that rewrites
   that file. Not everything has to be known.
-- Measure sizes in code instead of reading screenshots back into the conversation; read back only
-  screenshots that need a human eye.
+- Measure sizes in code. Screenshots from earlier in a thread are never read again by you; a
+  Haiku agent looks and reports in words. New screenshots that need an eye may be looked at.
 - When a conversation has grown long, say so in one line and suggest `/compact` or a fresh session.
 
 ## Saying what happened
