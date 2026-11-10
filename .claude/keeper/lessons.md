@@ -61,6 +61,8 @@ repeated here.
 - The logo, emblem included, is never touched unless the owner asks.
 - Ornament grows out of the space it sits in and the screen's own pieces; agree first what it is
   made of and how big a role it plays.
+- When a control has nothing to do at a moment, its place goes to the control that has use then (Save at the pause, Ways to play before the draw); never a mode of the idle control.
+- A fix on one device is checked against the same problem already solved on the other device, and solved the same way.
 - A control's place follows from what it does and what it belongs with. Sort controls by function
   and frequency, keep each group together, and ask what the device offers before placing
   anything.
