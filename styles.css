@@ -1325,7 +1325,6 @@ body.tok-taught .tok-hint{display:none;}
 .menu-rule{height:1px;background:var(--dim);margin:10px 26px;}
 .menu-line{display:grid;grid-template-columns:20px 1fr auto;grid-template-rows:auto auto;column-gap:16px;row-gap:3px;align-items:center;width:100%;padding:14px 26px;background:none;border:none;text-align:left;cursor:pointer;transition:background .15s;}
 @media (hover:hover) and (pointer:fine){.menu-line:hover{background:rgba(255,255,255,.035);}}
-.menu-line.disabled,.chapter.disabled{opacity:.32;cursor:default;}   /* Twist with no card in front of you */
 .menu-line[hidden],.chapter[hidden]{display:none;}   /* Save, until the first card */
 .menu-icon{grid-row:1/3;color:var(--celadon);opacity:.8;display:flex;}
 .menu-icon svg{width:18px;height:18px;}

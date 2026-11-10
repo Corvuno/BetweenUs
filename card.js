@@ -267,7 +267,7 @@ function setCardDisplay(card) {
   }
   // Update party display
   updatePartyDisplay(card);
-  twistCard(card);
+  twistCard(card);   // a card shown without the flip (a restored session): it gets its line here
 }
 
 // flipToCard — shows a card: the first draw of a hand lands (CSS, styles.css .drawing-in), every card after

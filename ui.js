@@ -266,8 +266,8 @@ function fillPartyWays() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
-    /* scrolling the hand's list is not a tap or a swipe of the card */
-    if (e.target.closest('.hd-list')) {
+    /* scrolling the hand's list or the ways to play is not a tap or a swipe of the card */
+    if (e.target.closest('.hd-list, .party-ways')) {
       const [sdx, sdy] = touchDelta(e);
       if (Math.abs(sdy) > 10 && Math.abs(sdy) >= Math.abs(sdx)) return;
     }
