@@ -495,7 +495,6 @@ body.showing-hand-summary .card-question{
 .quiet-word svg{display:none;}   /* the words carry icons on a wide screen only */
 #btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
 :is(#btnParty,#btnSave) .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
-#btnParty.disabled :is(.row-lbl,svg){opacity:.32;}   /* the word waits for the first card; its hint stays bright */
 .btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 /* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
 @media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
@@ -788,9 +787,11 @@ body.showing-hand-summary .card-question{
 .party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .38s var(--ease-out);}
 .party-overlay.idle .party-chrome{opacity:.28;}
 /* grid (not space-between) so the count is centred on the screen regardless of Close/★ widths */
-/* the count in the middle with the star under it (the count needs room from the top edge) */
+/* Twist top-left, Three top-right, the count between them with the star under it (the count needs room from the top edge) */
 .party-top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;padding:max(58px,env(safe-area-inset-top)) 26px 0;}
 .party-top .party-count-wrap{grid-column:2;justify-self:center;}
+.party-top .party-twist{justify-self:start;padding:0;}
+.party-top .party-pick{justify-self:end;padding:0;}
 /* L2: back and next in the bottom corners, Close in gold between them, where Spotlight opened */
 .party-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
 .party-prev-btn{justify-self:start;} .party-next-btn{justify-self:end;}
@@ -809,6 +810,8 @@ body.showing-hand-summary .card-question{
 .party-chrome .party-star{color:var(--gold);opacity:.18;transition:opacity .2s;}
 @media (hover:hover) and (pointer:fine){.party-chrome .party-star:hover{color:var(--gold);opacity:.65;}}
 .party-chrome .party-star.on{opacity:1;}
+.party-twist.on .row-lbl,.party-pick.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* same underline as #screenRow .on */
+.party-twist svg,.party-pick svg{width:16px;height:16px;flex-shrink:0;}
 .party-key{display:none;color:var(--muted);margin-left:6px;}
 
 /* count: a short rule each side (hidden on phone portrait), the star underneath */
@@ -887,9 +890,18 @@ body.showing-hand-summary .card-question{
 .party-overlay.picking .party-chrome button{pointer-events:auto;}
 .party-picker .picker-options{margin-bottom:var(--pk-x,0px);}
 
+/* Before the first card: the ways to play fill the frame between the top and bottom chrome, and scroll. */
+.party-ways{display:none;position:absolute;inset:56px 0 92px;z-index:3;overflow-y:auto;padding:0 26px;}
+.party-overlay.is-ways .party-ways{display:block;}
+.party-ways .drawer-title{padding-top:0;}
+.party-ways .help-content{max-width:760px;margin:0 auto;}
+.party-overlay.is-ways :is(.party-inner,.party-zone-prev,.party-zone-next,.party-count-wrap,.party-twist,.party-pick){display:none;}
+.party-overlay.is-ways .party-bottom{margin-top:auto;}   /* with the card gone, the bottom row keeps the bottom */
+
 /* ── phone landscape ── */
 @media (orientation:landscape) and (max-height:500px){
   .party-frame{--fi:10px;--fs:20px;}
+  .party-ways{inset:14px 0 60px;padding:0 48px;}
   .party-top{padding:14px 48px 0;}
   .pc-rule{display:flex;}
   .party-bottom{padding:0 48px 12px;}
@@ -926,6 +938,8 @@ body.showing-hand-summary .card-question{
 @media (min-width:900px) and (min-height:501px){
   .party-frame{--fi:24px;--fs:40px;}
   .party-top{padding:44px 88px 0;}
+  .party-top .party-twist,.party-top .party-pick{gap:10px;}
+  .party-ways{inset:96px 0 112px;padding:0 88px;}
   .pc-rule{display:flex;} .pc-rule::before{width:40px;}
   .party-count{font-size:18px;letter-spacing:.24em;}
   .party-bottom{padding:16px 88px 46px;}
@@ -1260,6 +1274,7 @@ body.tok-taught .tok-hint{display:none;}
 
   .party-overlay.orient-landscape .party-frame{--fi:10px;--fs:20px;}
   .party-overlay.orient-landscape .party-top{padding:14px 48px 0;}
+  .party-overlay.orient-landscape .party-ways{inset:14px 0 60px;padding:0 48px;}
   .party-overlay.orient-landscape .pc-rule{display:flex;}
   .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;}
 
@@ -1830,11 +1845,6 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
    jump when a hint retires or when Save swaps in for Spotlight at the end of a hand. */
 body.hint-spot-taught #btnParty .row-hint,
 body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
-/* A control tapped when it can't be used (Spotlight, Three): a short horizontal shake, no words. */
-@keyframes twistShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-6px)}35%{transform:translateX(5px)}55%{transform:translateX(-4px)}75%{transform:translateX(3px)}}
-@keyframes twistBlink{0%,100%{opacity:.32}40%{opacity:.8}}
-#btnParty.row-shake{animation:twistShake .35s ease-in-out;}
-@media (prefers-reduced-motion:reduce){#btnParty.row-shake{animation:twistBlink .35s ease-in-out;}}
 /* Twist landed: the word and the card's new line light up together, then settle. */
 @keyframes twistLit{from{color:var(--celadon-bright)}}
 .twist-lit{animation:twistLit .5s ease-out;}
@@ -1943,17 +1953,20 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .twist-sentence.twist{font-size:3.3cqw;line-height:1.3;}
 }
 
-/* Spotlight on wide screens: Close takes the place Spotlight has on the main screen's top-right,
-   and leaves the bottom centre. Phone and sideways phone are untouched. */
+/* Spotlight on wide screens: Three / Close / Twist take the same places as on the main screen's
+   top-right stack (Three, Spotlight, Twist), Close in Spotlight's own slot. Close leaves the
+   bottom centre, Twist leaves the top left. Phone and sideways phone are untouched. */
 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
   .party-card{--sx:88px;}
   .party-bottom .party-prev-btn{grid-column:1;} .party-bottom .party-next-btn{grid-column:3;}
-  .party-bottom .party-exit{
+  .party-top .party-pick,.party-top .party-twist,.party-bottom .party-exit{
     position:fixed;right:var(--sx);left:auto;height:calc(var(--k)*31px);min-width:0;padding:0 !important;z-index:6;
     flex-direction:row-reverse;justify-content:flex-start;gap:calc(var(--k)*10px);font-size:max(11px,calc(var(--k)*14px));letter-spacing:.22em;}
-  .party-bottom .party-exit{top:calc(var(--k)*20px);}   /* the top of the stack: Three and Twist are no longer in it */
-  .party-chrome .party-exit svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-  .party-chrome .party-exit .party-key{margin:0 calc(var(--k)*4px) 0 0;}
+  .party-top .party-pick{top:calc(var(--k)*20px);}
+  .party-bottom .party-exit{top:calc(var(--k)*51px);}
+  .party-top .party-twist{top:calc(var(--k)*82px);}
+  .party-chrome :is(.party-pick,.party-twist,.party-exit) svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
+  .party-chrome :is(.party-pick,.party-twist,.party-exit) .party-key{margin:0 calc(var(--k)*4px) 0 0;}
 }
 
 /* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;

@@ -184,24 +184,25 @@ function spotlightBrightenOnce() {
 }
 
 // ── Fullscreen party ──
+// Before the first card Spotlight shows the ways to play: the Menu sheet's own words, copied in once.
+function fillPartyWays() {
+  const ways = document.getElementById('partyWays');
+  if (ways.childElementCount) return;
+  const sheet = document.getElementById('helpDrawer');
+  ways.append(...['.drawer-title', '.help-content'].map(sel => sheet.querySelector(sel).cloneNode(true)));
+}
 (function(){
   const btn = document.getElementById('btnParty');
   if (btn) {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      if (btn.classList.contains('disabled')) { shakeRowBtn(btn); return; }   // before the first card
       hintRetire('spotlight');
       state.partyMode = true;
+      fillPartyWays();
       document.getElementById('partyOverlay').classList.add('open');
       movePickerToScreen();   // Three options up: they move along into Spotlight
       if (broughtBack) {
         updatePartyDisplay(broughtBack);   // a card brought back from Played or Favourites is the one on screen
-      } else if (state.currentIndex < 0 && state.visibleDeck.length > 0 && !state.pickerOpen) {   // first-card options up: nothing is drawn yet
-        state.currentIndex = 0;
-        setCardDisplay(state.visibleDeck[0]);
-        renderProgress();
-        updateStarUI();
-        updateDrawMore();
       } else if (state.currentIndex >= 0 && state.visibleDeck[state.currentIndex]) {
         updatePartyDisplay(state.visibleDeck[state.currentIndex]);
       } else if (state.handSide) {
@@ -220,6 +221,10 @@ function spotlightBrightenOnce() {
     newOv.classList.remove('open');
     movePickerToScreen();   // Three options up: they move along back to the main screen
   });
+
+  // Three and Twist — the same settings as The Deck's Three and the Menu's Twist
+  newOv.querySelector('#partyPick')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('pickToggle').click(); });
+  newOv.querySelector('#partyBtnTwist')?.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
 
   // Next/prev — chrome buttons forward to the same nav the tap zones use
   const partyNextBtn = newOv.querySelector('#partyNext');

@@ -656,7 +656,7 @@ async function run() {
   });
 
   // ── J2. Spotlight mirrors the main screen: star lights, Twist keeps its icon and key hint ──
-  await check('Spotlight: tapping the star lights #partyStar; Twist keeps icon and T hint', async () => {
+  await check('Spotlight: tapping the star lights #partyStar; Twist and Three buttons keep icon and key hint', async () => {
     await closeCategorySheet();
     await drawFirstIfNeeded(page);
     await page.locator('#btnParty').click();
@@ -670,11 +670,12 @@ async function run() {
     await page.locator('#partyStar').click();   // put it back
     await page.waitForTimeout(150);
     assert((await starOn()) === was, 'star did not toggle back');
-    await page.evaluate(() => toggleTwist());
+    await page.locator('#partyBtnTwist').click();
     await page.waitForTimeout(200);
-    const tw = await page.evaluate(() => ({ line: document.getElementById('party-number').textContent.trim().length > 0, buttons: !!document.getElementById('partyBtnTwist') || !!document.getElementById('partyPick') }));
-    assert(tw.line && !tw.buttons, 'Spotlight shows the Twist line and has no Twist or Three buttons: ' + JSON.stringify(tw));
-    await page.evaluate(() => clearTwist());
+    const tw = await page.evaluate(() => ({ line: document.getElementById('party-number').textContent.trim().length > 0, on: document.getElementById('partyBtnTwist').classList.contains('on'),
+      icons: ['partyBtnTwist', 'partyPick'].every(id => !!document.querySelector(`#${id} svg`)), keys: ['partyBtnTwist', 'partyPick'].map(id => document.querySelector(`#${id} .party-key`).textContent).join('') }));
+    assert(tw.line && tw.on && tw.icons && tw.keys === 'T3', 'Spotlight shows the Twist line and its on state, and both buttons keep icon and key: ' + JSON.stringify(tw));
+    await page.locator('#partyBtnTwist').click();
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
   });
@@ -1034,36 +1035,55 @@ async function run() {
     assert(r.all === 12, `All should be every unseen card (12), got ${r.all}`);
   });
 
-  await check('start screen: Spotlight and Twist (in the menu) are dimmed, shake and do nothing until the first card; Three is never dimmed; all usable after it', async () => {
+  await check('start screen: Spotlight is live and opens to the ways to play (no Three or Twist there); closing returns; Twist and Three are live; all usable after the first card', async () => {
     await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // fresh hand, nothing drawn
     await page.waitForTimeout(300);
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
     const taughtBefore = await page.evaluate(() => document.body.className);
-    // Spotlight: the word dims, its hint stays bright; it shakes and does nothing
-    const spot = await page.evaluate(() => { const b = document.getElementById('btnParty'); return { dis: b.classList.contains('disabled'), lbl: +getComputedStyle(b.querySelector('.row-lbl')).opacity, hint: +getComputedStyle(b.querySelector('.row-hint')).opacity }; });
-    assert(spot.dis && spot.lbl < 0.5 && spot.hint === 1, `Spotlight not dimmed with a bright hint: ${JSON.stringify(spot)}`);
+    const spot = await page.evaluate(() => { const b = document.getElementById('btnParty'); return { dis: b.classList.contains('disabled'), lbl: +getComputedStyle(b.querySelector('.row-lbl')).opacity }; });
+    assert(!spot.dis && spot.lbl === 1, `Spotlight is dimmed at the start screen: ${JSON.stringify(spot)}`);
     await page.locator('#btnParty').click();
-    assert(await page.locator('#btnParty').evaluate(el => el.classList.contains('row-shake')), 'Spotlight did not shake');
+    await page.waitForTimeout(500);
+    const w = await page.evaluate(() => {
+      const box = sel => { const r = document.querySelector(sel).getBoundingClientRect(); return { w: r.width, h: r.height }; };
+      const shown = sel => getComputedStyle(document.querySelector(sel)).display !== 'none';
+      return { open: document.getElementById('partyOverlay').classList.contains('open'), ways: shown('#partyWays'), tiles: document.querySelectorAll('#partyWays .hp-tile').length,
+        same: document.getElementById('partyWays').querySelector('.help-content').innerText === document.querySelector('#helpDrawer .help-content').innerText,
+        twist: shown('#partyBtnTwist'), three: shown('#partyPick'), close: shown('#partyExit'), frame: box('#partyWays'), vh: innerHeight, drawn: state.currentIndex };
+    });
+    assert(w.open && w.ways && w.tiles === 7 && w.same, `Spotlight at the start does not show the ways to play: ${JSON.stringify(w)}`);
+    assert(!w.twist && !w.three && w.close, `Three or Twist show over the ways to play (or Close is gone): ${JSON.stringify(w)}`);
+    assert(w.drawn === -1 && w.frame.h > w.vh * 0.5, `the ways to play do not fill Spotlight's frame, or a card was drawn: ${JSON.stringify(w)}`);
+    await page.locator('#partyExit').click();
     await page.waitForTimeout(450);
-    // Three: its setting in The Deck is not dimmed at the start screen
+    assert(await page.evaluate(() => !document.getElementById('partyOverlay').classList.contains('open') && state.currentIndex === -1), 'closing the ways to play did not return to the start screen');
+    assert(await page.evaluate(() => document.body.className) === taughtBefore, 'opening Spotlight at the start retired a hint');
+    // Three and Twist are live at the start screen: Three is never dimmed, Twist's menu line is not dimmed either, and it switches on without a card
     const three = await page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), op: +getComputedStyle(b).opacity }; });
     assert(!three.dis && three.op === 1, `Three dimmed at the start screen: ${JSON.stringify(three)}`);
-    // Twist: its menu line is dimmed, and Menu is not
     await page.evaluate(() => fillMenu());
-    const tw = await page.evaluate(() => ({ dis: document.getElementById('d-twist').classList.contains('disabled'), op: +getComputedStyle(document.getElementById('d-twist')).opacity, menu: +getComputedStyle(document.getElementById('btn-menu')).opacity }));
-    assert(tw.dis && tw.op < 0.5 && tw.menu === 1, `Twist line not dimmed (or Menu dimmed): ${JSON.stringify(tw)}`);
-    assert(!(await page.evaluate(() => { toggleTwist(); return !!currentTwist; })), 'Twist worked before the first card');
-    await page.keyboard.press('ArrowLeft');
-    await page.waitForTimeout(450);
-    assert(!(await page.locator('#partyOverlay').evaluate(el => el.classList.contains('open'))), 'Spotlight opened before the first draw');
-    assert((await cardParts(page)).index === 0, 'a dimmed button drew a card');
-    assert(await page.evaluate(() => document.body.className) === taughtBefore, 'a shake retired a hint');
+    const tw = await page.evaluate(() => ({ dis: document.getElementById('d-twist').classList.contains('disabled'), op: +getComputedStyle(document.getElementById('d-twist')).opacity }));
+    assert(!tw.dis && tw.op === 1, `Twist line dimmed at the start screen: ${JSON.stringify(tw)}`);
+    await page.evaluate(() => toggleTwist());
+    assert(await page.evaluate(() => twistOn && currentTwist === null), 'Twist did not switch on at the start screen without a card');
+    await page.evaluate(() => toggleTwist());
+    // Next from the ways to play draws the first card in Spotlight, as usual
+    await page.locator('#btnParty').click();
+    await page.waitForTimeout(400);
+    await page.locator('#partyNext').click();
+    await page.waitForTimeout(1500);
+    const d = await page.evaluate(() => ({ idx: state.currentIndex, ways: getComputedStyle(document.getElementById('partyWays')).display !== 'none', q: document.getElementById('party-question').textContent.trim().length > 0, twist: getComputedStyle(document.getElementById('partyBtnTwist')).display !== 'none' }));
+    assert(d.idx === 0 && !d.ways && d.q && d.twist, `Next in the ways to play did not start the hand: ${JSON.stringify(d)}`);
+    await page.locator('#partyExit').click();
+    await page.waitForTimeout(400);
+    await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // back to the start screen for the rest of the check
+    await page.waitForTimeout(300);
     await drawFirstIfNeeded(page);
     await page.waitForTimeout(1200);
     for (const id of ['pickToggle', 'btnParty']) {
       assert(!(await page.locator('#' + id).evaluate(el => el.classList.contains('disabled'))), `${id} still dimmed after the first card`);
     }
-    assert(await page.evaluate(() => canTwist()), 'Twist still unavailable after the first card');
+    assert(!(await page.evaluate(() => document.getElementById('d-twist').classList.contains('disabled'))), 'Twist line dimmed after the first card');
     // Spotlight opened after the first draw leaves the card's category title showing
     await page.click('#btnParty');
     await page.waitForTimeout(200);
@@ -1079,6 +1099,7 @@ async function run() {
     await page.evaluate(({ three, mode }) => {
       if (state.partyMode) exitParty();
       closePicker(); state.pickOptions = null;
+      setTwist(false);
       pickMode = three;
       document.getElementById('pickToggle').classList.toggle('on', three);
       state.randomMode = mode; state.cardLimit = 5; syncLimitButtons();
@@ -1369,7 +1390,7 @@ async function run() {
     await page.waitForTimeout(1100);
     const r = await page.evaluate(() => {
       const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, w: b.width, h: b.height }; };
-      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnTwist', 'partyBtnTwist', 'partyPick'].filter(id => document.getElementById(id)),
+      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnTwist'].filter(id => document.getElementById(id)),
         lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: [...document.querySelectorAll('#btnParty svg, #btn-menu svg')].filter(e => e.getBoundingClientRect().width).length };
     });
     assert(!r.gone.length, `old buttons are still in the page: ${r.gone}`);
@@ -1452,18 +1473,31 @@ async function run() {
     await closeCategorySheet();
   });
 
-  await check('Twist is a line in the menu: it twists the card in front of you, closes the menu, and the line then undoes it', async () => {
+  await check('Twist is a setting in the menu: it shows Off, tapping it switches it On and closes the menu, every card after has a line, tapping again switches it Off', async () => {
     await closeCategorySheet();
     await freshHand({ three: false });
     await page.locator('#card').click();
     await waitForCardIndex(page, 1);
     await page.waitForTimeout(1100);
-    await twistFromMenu(page);
-    assert(await page.evaluate(() => !!currentTwist && document.getElementById('twistSentence').textContent.length > 0 && !document.querySelector('#menuDrawer.open')), 'Twist from the menu did not twist the card and close the menu');
     await page.locator('#btn-menu').click(); await page.waitForTimeout(900);
-    assert((await page.locator('#twistAct').textContent()) === 'Undo', 'the Twist line does not offer Undo while twisted');
+    assert((await page.locator('#twistAct').textContent()) === 'Off', 'the Twist line does not show Off while Twist is off');
     await page.locator('[data-menu="twist"]:visible').click(); await page.waitForTimeout(500);
-    assert(await page.evaluate(() => !currentTwist), 'a second tap on the Twist line did not undo it');
+    assert(await page.evaluate(() => twistOn && !!currentTwist && document.getElementById('twistSentence').textContent.length > 0 && !document.querySelector('#menuDrawer.open')), 'Twist from the menu did not switch on, twist the card and close the menu');
+    await page.locator('#btn-menu').click(); await page.waitForTimeout(900);
+    assert((await page.locator('#twistAct').textContent()) === 'On', 'the Twist line does not show On while Twist is on');
+    await page.keyboard.press('Escape'); await page.waitForTimeout(700);
+    // three more cards: each has a line, none the same as the one before
+    const lines = [await page.evaluate(() => document.getElementById('twistSentence').textContent)];
+    for (let i = 0; i < 3; i++) {
+      await page.locator('#card').click(); await page.waitForTimeout(1300);
+      lines.push(await page.evaluate(() => document.getElementById('twistSentence').textContent));
+    }
+    assert(lines.every(l => l.length > 0) && lines.every((l, i) => !i || l !== lines[i - 1]), `Twist lines over four cards: ${JSON.stringify(lines)}`);
+    await page.locator('#btn-menu').click(); await page.waitForTimeout(900);
+    await page.locator('[data-menu="twist"]:visible').click(); await page.waitForTimeout(500);
+    assert(await page.evaluate(() => !twistOn && !currentTwist && document.getElementById('twistSentence').textContent === ''), 'a second tap on the Twist line did not switch it off');
+    await page.locator('#card').click(); await page.waitForTimeout(1300);
+    assert(await page.evaluate(() => document.getElementById('twistSentence').textContent === ''), 'a card after switching Twist off still has a line');
   });
 
   await check('Three is live right after the first draw (button and Spotlight not dimmed) and the 3 key toggles it on the main screen', async () => {
@@ -1605,7 +1639,7 @@ async function run() {
     await page.locator('#partyNext').click();
     await page.waitForTimeout(300);
     assert(await page.evaluate(() => state.pickerOpen && state.currentIndex) === idx, 'Next drew a card under the options');
-    await page.keyboard.press('t');   // the T key: Twist has no button in Spotlight
+    await page.keyboard.press('t');   // the T key, as the Twist button
     await page.waitForTimeout(200);
     assert(await page.evaluate(() => !!currentTwist), 'Twist did not respond over the options');
     await page.locator('#partyExit').click();   // Close: the options go back to the main screen
@@ -1636,7 +1670,7 @@ async function run() {
     await page.waitForTimeout(300);
   });
 
-  await check('Spotlight layout: arrows in the bottom corners, celadon Close between, no Twist or Three buttons, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
+  await check('Spotlight layout: arrows in the bottom corners, celadon Close between, Twist and Three buttons in the top corners, star under the count, no line under the question; Sideways switch turns the layout; PC stacks the options', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();
     await waitForCardIndex(page, 1);
@@ -1647,7 +1681,8 @@ async function run() {
     const [pv, ex, nx, st, ct] = await Promise.all(['#partyPrevBtn', '#partyExit', '#partyNext', '#partyStar', '#party-count'].map(box));
     assert(pv.l < ex.l && ex.r < nx.r && Math.abs(pv.t - ex.t) < 30 && ex.t > 844 - 140, 'back / Close / next are not in one bottom row');
     assert(Math.abs(ex.cx - 195) < 4, 'Close is not centred at the bottom');
-    assert(!(await page.locator('#partyBtnTwist, #partyPick').count()), 'Spotlight still has Twist or Three buttons');
+    const [tb, pb] = await Promise.all(['#partyBtnTwist', '#partyPick'].map(box));
+    assert(tb.l < 60 && pb.r > 330 && tb.t < 120 && pb.t < 120 && tb.r < ct.l && pb.l > ct.r, `Twist top left and Three top right are missing or misplaced: ${JSON.stringify({ tb, pb, ct })}`);
     assert(Math.abs(ct.l + ct.r - 390) < 6, 'the count is not centred at the top');
     assert(st.t >= ct.b - 2 && Math.abs(st.cx - ct.cx) < 6, 'the star is not under the count');
     assert(await page.evaluate(() => getComputedStyle(document.querySelector('.twist-div')).display === 'none'), 'the divider under the question is showing without a Twist');
@@ -1808,12 +1843,12 @@ async function run() {
     await page.waitForTimeout(400);
   });
 
-  await check('start screen: Three is not dimmed on or off and switches both ways without drawing; Spotlight and Twist stay dimmed', async () => {
+  await check('start screen: Three is not dimmed on or off and switches both ways without drawing; Spotlight and Twist are live', async () => {
     await freshHand({ three: true });
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
-    const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: !canTwist() }; });
+    const st = () => page.evaluate(() => { const b = document.getElementById('pickToggle'); return { dis: b.classList.contains('disabled'), on: b.classList.contains('on'), top: +getComputedStyle(b).opacity, mode: pickMode, spotDis: document.getElementById('btnParty').classList.contains('disabled'), twistDis: document.getElementById('d-twist').classList.contains('disabled') }; });
     let s = await st();
-    assert(!s.dis && s.on && s.mode && s.top === 1 && s.spotDis && s.twistDis, `Three on at start: ${JSON.stringify(s)}`);
+    assert(!s.dis && s.on && s.mode && s.top === 1 && !s.spotDis && !s.twistDis, `Three on at start: ${JSON.stringify(s)}`);
     await toggleThree(page);
     await page.waitForTimeout(450);
     s = await st();
@@ -2567,6 +2602,83 @@ async function run() {
   const menuLine = (pg, key) => pg.evaluate(k => document.querySelector(`#menuDrawer [data-menu-state="${k}"]`).textContent, key);
   const openPhoneMenu = async pg => { await pg.evaluate(() => closeAllDrawers()); await pg.locator('#btn-menu').click(); await pg.waitForTimeout(150); };
 
+  await check('Twist stays on into the next hand; a wildcard shows no line and the card after it does; starting a fixed set switches it off', async () => {
+    const { ctx, pg } = await freshApp({ wildcards: true });
+    try {
+      await pg.evaluate(() => {
+        const normal = ALL_CARDS.filter(c => c.level === 'culture').slice(0, 3);
+        state.visibleDeck = [normal[0], WILDCARD_CARDS[0], normal[1]];
+        state.fullDeck = [...state.visibleDeck];
+        state.currentIndex = -1; state.reachedIdx = -1; renderProgress(); setCardDisplay(null);
+      });
+      await pg.evaluate(() => toggleTwist());   // on at the start screen, before any card
+      const line = () => pg.evaluate(() => document.getElementById('twistSentence').textContent);
+      await drawCards(pg, 1); await pg.waitForTimeout(1000);
+      assert((await line()).length > 0, 'the first card has no Twist line');
+      await drawCards(pg, 1); await pg.waitForTimeout(1000);
+      assert(await pg.evaluate(() => document.getElementById('card-level').textContent === 'Wildcard' && twistOn && document.getElementById('twistSentence').textContent === ''), 'a wildcard shows a Twist line, or Twist went off');
+      await drawCards(pg, 1); await pg.waitForTimeout(1000);
+      assert((await line()).length > 0, 'the card after a wildcard has no Twist line');
+      // the end of the hand and a new hand
+      await drawCards(pg, 1); await pg.waitForTimeout(1200);
+      assert(await pg.evaluate(() => twistOn && document.getElementById('twistSentence').textContent === ''), 'Twist went off at the end of the hand, or the summary shows a line');
+      await pg.evaluate(() => startOver()); await pg.waitForTimeout(500);
+      await drawCards(pg, 1); await pg.waitForTimeout(1000);
+      assert(await pg.evaluate(() => twistOn) && (await line()).length > 0, 'the first card of the next hand has no Twist line');
+      // a fixed set switches it off
+      await pg.evaluate(() => applyPreset('colbertmode')); await pg.waitForTimeout(300);
+      assert(await pg.evaluate(() => !twistOn && !currentTwist), 'starting a fixed set did not switch Twist off');
+    } finally { await ctx.close(); }
+  });
+
+  await check('Spotlight Three and Twist buttons (phone, sideways phone, PC): visible with a card up, show their state, Three and Twist switch the settings The Deck and the Menu show; Close, Next and the arrow keys work as before', async () => {
+    const views = [['phone', { viewport: { width: 412, height: 915 } }], ['sideways phone', { viewport: { width: 915, height: 412 } }], ['PC', { viewport: { width: 1440, height: 900 }, hasTouch: false }]];
+    for (const [name, opts] of views) {
+      const { ctx, pg } = await freshApp(opts);
+      try {
+        await drawCards(pg, 1); await pg.waitForTimeout(1200);
+        await pg.locator('#btnParty').click(); await pg.waitForTimeout(500);
+        const geo = await pg.evaluate(() => Object.fromEntries(['partyPick', 'partyExit', 'partyBtnTwist'].map(id => { const r = document.getElementById(id).getBoundingClientRect(); return [id, { l: r.left, r: r.right, t: r.top, b: r.bottom, w: r.width, h: r.height }]; })));
+        for (const id of ['partyPick', 'partyBtnTwist']) {
+          assert(geo[id].w > 0 && geo[id].h > 0 && geo[id].t >= 0 && geo[id].b <= (name === 'sideways phone' ? 412 : name === 'PC' ? 900 : 915), `${name}: #${id} is not on screen: ${JSON.stringify(geo[id])}`);
+          const covered = await pg.evaluate(id => { const el = document.getElementById(id), r = el.getBoundingClientRect(), t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !(t === el || el.contains(t)); }, id);
+          assert(!covered, `${name}: #${id} is covered`);
+        }
+        if (name === 'PC') assert(geo.partyPick.t < geo.partyExit.t && geo.partyExit.t < geo.partyBtnTwist.t && Math.abs(geo.partyPick.r - geo.partyExit.r) < 2 && Math.abs(geo.partyBtnTwist.r - geo.partyExit.r) < 2, `PC: the stack is not Three, Close, Twist: ${JSON.stringify(geo)}`);
+        else assert(geo.partyBtnTwist.l < geo.partyPick.l, `${name}: Twist is not on the left and Three on the right`);
+        const on = id => pg.evaluate(id => document.getElementById(id).classList.contains('on'), id);
+        assert(!(await on('partyPick')) && !(await on('partyBtnTwist')), `${name}: both buttons show on while both settings are off`);
+        // Three: the same setting as The Deck's
+        await pg.locator('#partyPick').click(); await pg.waitForTimeout(500);
+        assert(await pg.evaluate(() => pickMode && document.getElementById('pickToggle').classList.contains('on') && !!document.querySelector('#pickToggle .three-opt.active[data-pick="on"]')) && await on('partyPick'), `${name}: Three in Spotlight did not switch Three on in The Deck`);
+        await pg.waitForFunction(() => state.pickerOpen, null, { timeout: 4000 });   // turning Three on from the front of the hand is the draw
+        assert((await pg.locator('#partyPickerOptions .pick-opt').count()) === 3, `${name}: the next card is not three options`);
+        await pg.locator('#partyPick').click(); await pg.waitForTimeout(500);   // off again: the planned card takes the step
+        assert(await pg.evaluate(() => !pickMode && !state.pickerOpen && !document.getElementById('pickToggle').classList.contains('on')) && !(await on('partyPick')), `${name}: Three in Spotlight did not switch Three off`);
+        // Twist: the same setting as the Menu's
+        await pg.locator('#partyBtnTwist').click(); await pg.waitForTimeout(300);
+        assert(await pg.evaluate(() => twistOn && document.getElementById('party-number').textContent.trim().length > 0) && await on('partyBtnTwist'), `${name}: Twist in Spotlight did not give the card a line`);
+        await pg.locator('#partyExit').click(); await pg.waitForTimeout(450);
+        await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+        const act = await pg.evaluate(() => [...document.querySelectorAll('#twistAct, #s-twist [data-menu-state]')].filter(e => e.offsetParent).map(e => e.textContent.trim()));
+        assert(act.length && act.every(t => t === 'On'), `${name}: the Menu does not show Twist On: ${JSON.stringify(act)}`);
+        await pg.keyboard.press('Escape'); await pg.waitForTimeout(700);
+        await pg.evaluate(() => closeAllDrawers());
+        await pg.locator('#btnParty').click(); await pg.waitForTimeout(400);
+        await pg.locator('#partyBtnTwist').click(); await pg.waitForTimeout(300);
+        assert(await pg.evaluate(() => !twistOn && document.getElementById('party-number').textContent === '') && !(await on('partyBtnTwist')), `${name}: Twist in Spotlight did not switch off and take the line away`);
+        // Next and the arrow keys still move through the hand
+        const idx = await pg.evaluate(() => state.currentIndex);
+        await pg.locator('#partyNext').click(); await pg.waitForFunction(at => state.currentIndex > at, idx, { timeout: 4000 });
+        await pg.waitForTimeout(900);
+        await pg.keyboard.press('ArrowLeft'); await pg.waitForTimeout(900);
+        assert(await pg.evaluate(at => state.currentIndex === at, idx), `${name}: Next and Back in Spotlight did not move through the hand`);
+        await pg.locator('#partyExit').click(); await pg.waitForTimeout(450);
+        assert(await pg.evaluate(() => !state.partyMode), `${name}: Close did not leave Spotlight`);
+      } finally { await ctx.close(); }
+    }
+  });
+
   await check('menu: Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
     const { ctx, pg } = await freshApp();
     try {
@@ -2584,7 +2696,7 @@ async function run() {
       });
       assert(m.open && !m.sideShown, `the phone menu should be the one showing: ${JSON.stringify({ open: m.open, sideShown: m.sideShown })}`);
       assert(JSON.stringify(m.order) === JSON.stringify(['Tonight', 'The Deck', 'Start over', 'Twist', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
-      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Twist', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
+      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Off', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
       assert(m.old.length === 0, `old menu items still there: ${m.old}`);
       assert(!/\b(mode|preset|session|category|chapter)\b/i.test(m.text), `the menu uses our own words: ${m.text}`);
       assert(await menuLine(pg, 'cats') === 'Balanced, five cards', `The Deck line: ${await menuLine(pg, 'cats')}`);
@@ -2988,18 +3100,18 @@ async function run() {
       assert(back.side === 'list' && !back.closing, `Back landed on ${JSON.stringify(back)}`);
       await openFromMenu(pg, 'favs');
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(900);
-      assert(await pg.evaluate(() => canTwist()), 'Twist is disabled with a brought-back card up');
+      assert(!(await pg.evaluate(() => document.getElementById('d-twist').classList.contains('disabled'))), 'Twist is disabled with a brought-back card up');
       await twistFromMenu(pg);
       assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work at the end of a hand on a brought-back card');
     } finally { await ctx.close(); }
   });
 
-  await check('real taps: draw, star, Start over, Favourites, tap the card, then Back (at once, and after everything settles) returns to the start card with Back, Twist and Spotlight disabled as on a fresh start card; also with Three\'s options up', async () => {
+  await check('real taps: draw, star, Start over, Favourites, tap the card, then Back (at once, and after everything settles) returns to the start card with Back disabled and Spotlight showing the ways to play as on a fresh start card; also with Three\'s options up', async () => {
     for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
       for (const settle of [150, 2500]) {
         const { ctx, pg } = await freshApp(opts);
         try {
-          const flags = () => pg.evaluate(() => [!canGoBack(), !canTwist(), document.getElementById('btnParty').classList.contains('disabled')]);
+          const flags = () => pg.evaluate(() => [!canGoBack(), document.getElementById('partyOverlay').classList.contains('is-ways')]);
           await pg.locator('#btn-next').click(); await pg.waitForTimeout(2500);
           await pg.locator('#cardStar').click(); await pg.waitForTimeout(300);
           await toggleThree(pg); await pg.waitForTimeout(200);   // Three on (it cannot be switched on at the start card)
@@ -3012,7 +3124,7 @@ async function run() {
           };
           await startOver();
           const fresh = await flags();
-          assert(fresh.every(Boolean), `${name}: a fresh start card should have all three disabled: ${fresh}`);
+          assert(fresh.every(Boolean), `${name}: a fresh start card should have Back disabled and the ways to play up: ${fresh}`);
           await bringAndBack();
           assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), `${name} (${settle}ms): Back did not return to the start card`);
           assert(JSON.stringify(await flags()) === JSON.stringify(fresh), `${name} (${settle}ms): after Back to the start card: ${await flags()}`);
@@ -3208,7 +3320,7 @@ async function run() {
       });
       assert(m.open && m.right === 1440 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
       assert(m.focus, 'focus did not move into the menu');
-      assert(JSON.stringify(m.rows) === JSON.stringify([['Save', 'Save'], ['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', ''], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
+      assert(JSON.stringify(m.rows) === JSON.stringify([['Save', 'Save'], ['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', 'Off'], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
       await pg.locator('#overlay').click({ position: { x: 200, y: 400 } }); await pg.waitForTimeout(800);
       assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
       await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
@@ -3415,9 +3527,10 @@ async function run() {
       assert(f.level === 'Wildcard' && f.q === wild, `face: ${JSON.stringify(f)}`);
       assert(f.mark && /Federo/.test(f.font) && f.inlineColour === '' && f.watermark === 'flex', `look: ${JSON.stringify(f)}`);
       assert(f.tick.toLowerCase() === '#c9a84c', `the wildcard's place in the progress line is ${f.tick}, not gold`);
-      // Twist is off on it
+      // Twist switched on shows no line on it
       await pg.evaluate(() => toggleTwist());
-      assert(await pg.evaluate(() => currentTwist === null), 'Twist applied to a wildcard');
+      assert(await pg.evaluate(() => twistOn && currentTwist === null), 'Twist applied to a wildcard');
+      await pg.evaluate(() => toggleTwist());
       // the next card is a normal one: the wildcard look goes with it
       await drawCards(pg, 1); await pg.waitForTimeout(900);
       assert(await pg.evaluate(() => !document.getElementById('card').classList.contains('mark-wildcard') && document.getElementById('card-level').textContent === 'Culture' ), 'the wildcard look stayed on the next card');

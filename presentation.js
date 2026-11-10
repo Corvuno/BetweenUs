@@ -248,7 +248,7 @@ function menuStates() {
   return {
     cats: [document.getElementById('valCats').textContent, handSizeLabel(state.cardLimit)],
     start: total ? [`${seenCount} seen`, `${total - seenCount} left`] : [],
-    twist: currentTwist ? ['on'] : [],
+    twist: [twistOn ? 'On' : 'Off'],
     played: [drawn ? `${drawn} drawn so far` : 'Nothing drawn yet', ...(saved ? [`${saved} saved`] : [])],
     favs: [starred ? `${starred} starred` : 'None starred yet'],
   };
@@ -256,9 +256,7 @@ function menuStates() {
 
 function fillMenu() {
   const states = menuStates();
-  // Twist acts on the card in front of you: dim when there is none (start, end of a hand, a wildcard)
-  document.querySelectorAll('#d-twist, #s-twist').forEach(line => line.classList.toggle('disabled', !canTwist()));
-  document.getElementById('twistAct').textContent = currentTwist ? 'Undo' : 'Twist';
+  document.getElementById('twistAct').textContent = twistOn ? 'On' : 'Off';
   // Save has something to save from the first card on; on the start screen the line isn't there
   document.querySelectorAll('#d-save, #s-save').forEach((/** @type {HTMLElement} */ line) => { line.hidden = !state.sessionLog.length; });
   const tokCats = document.getElementById('tokCats');
@@ -326,7 +324,7 @@ const MENU_ACTIONS = {
   cats: () => leaveMenuFor(() => /** @type {any} */ (window).openCats()),   // openCats is published by ui.js
   start: startOver,
   save: () => { saveSessionFiles(); closeAllDrawers(); },
-  twist: () => { if (canTwist()) { toggleTwist(); closeAllDrawers(); } },
+  twist: () => { toggleTwist(); closeAllDrawers(); },
   played: trigger => leaveMenuFor(() => { renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); }),
   favs: trigger => leaveMenuFor(() => { renderFavourites(); openDrawer('favsDrawer', trigger); }),
   help: trigger => { hintRetire('ways'); leaveMenuFor(() => openDrawer('helpDrawer', trigger)); },
@@ -654,6 +652,17 @@ function renderShell() {
   // that the main-screen Shuffle token is gone.
   document.querySelectorAll('.shuffle-toggle-opt').forEach(b =>
     b.classList.toggle('active', b.dataset.mode === state.randomMode));
+  syncSpotlightSettings();
+}
+
+// Spotlight's Three and Twist buttons show the two settings (Three is read off The Deck's own toggle, which loads later).
+function syncSpotlightSettings() {
+  const on = { partyPick: document.getElementById('pickToggle')?.classList.contains('on'), partyBtnTwist: twistOn };
+  for (const [id, isOn] of Object.entries(on)) {
+    const btn = document.getElementById(id);
+    btn?.classList.toggle('on', !!isOn);
+    btn?.setAttribute('aria-pressed', String(!!isOn));
+  }
 }
 
 // Back has something to go back to once a card is behind it, or while a card brought back from Played or
@@ -661,6 +670,18 @@ function renderShell() {
 function canGoBack() { return state.currentIndex > 0 || !!broughtBack; }
 // The hand has begun: a card is drawn, Three's options for the first card are up, or a card was brought back.
 function handBegun() { return state.currentIndex >= 0 || state.pickerOpen || !!broughtBack; }
+
+// The end of a hand says what to do next on the main screen's hint and in Spotlight's quiet line:
+// same words, the verb picked out in gold there (CSS shows it at hand end only).
+function paintEndHints(text) {
+  const hintEl = document.getElementById('endHint');
+  if (hintEl) hintEl.textContent = text;
+  const fsHint = document.getElementById('partyEndHint');
+  if (!fsHint) return;
+  const [verb, ...rest] = text.split(' ');
+  const v = document.createElement('b'); v.textContent = verb;
+  fsHint.replaceChildren(v, ' ' + rest.join(' '));
+}
 
 function updateDrawMore() {
   // This runs after every deck-state change (nextCard, skipCard, initDeck,
@@ -674,18 +695,17 @@ function updateDrawMore() {
 
   const atSummary  = state.visibleDeck.length > 0 && state.currentIndex >= state.visibleDeck.length;      // end-of-draw screen
 
-  // Spotlight waits for the first card of a hand (back-of-card start screen).
-  // It stays usable on the end-of-hand screen. Three can be set at any time.
-  const spotBtn = document.getElementById('btnParty');
   /* Options up for the first card of a hand: the hand has begun, so nothing on
      screen shows the start state */
   const begun = handBegun();
-  if (spotBtn) spotBtn.classList.toggle('disabled', !begun);
+  // Spotlight before the first card shows the ways to play instead of a card.
+  document.getElementById('partyOverlay')?.classList.toggle('is-ways', !begun);
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
 
   if (atSummary) {
+    clearTwist();   // the end of the hand has no card to twist (the setting stays on)
     setPauseColour();   // the button, the diamond and the rule are this hand's last card colour from the first frame
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
     // pile 10 extra cards onto the finished hand instead of drawing a new one).
@@ -696,16 +716,7 @@ function updateDrawMore() {
     // Intermezzo: the first hold turns the card to the list; on the list the
     // next hold starts the next hand (until Intermezzo is up, a hold continues).
     nextBtn.textContent = state.handSide === 'intermezzo' ? 'Tap to flip card' : 'Hold to continue';
-    const hintEl = document.getElementById('endHint');
-    if (hintEl) hintEl.textContent = nextBtn.textContent;
-    // Fullscreen's quiet line: same words, the verb picked out in gold (CSS shows it at hand end only).
-    const fsHint = document.getElementById('partyEndHint');
-    if (fsHint) {
-      const [verb, ...rest] = nextBtn.textContent.split(' ');
-      fsHint.textContent = '';
-      const v = document.createElement('b'); v.textContent = verb;
-      fsHint.append(v, ' ' + rest.join(' '));
-    }
+    paintEndHints(nextBtn.textContent);
   } else {
     nextBtn.classList.remove('hold-mode');
     // On the last card, the tap ahead lands on the end of the hand, not another

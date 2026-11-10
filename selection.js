@@ -127,7 +127,7 @@ function applyPreset(mode) {
     // controls out from under an active state
     const pt = document.getElementById('pickToggle');
     if (pt && pt.classList.contains('on')) pt.click();
-    clearTwist();
+    setTwist(false);
   }
   // Bring the active mode button into the centre of its own horizontal
   // strip — scrolling that strip's element directly (.preset-wrap's own

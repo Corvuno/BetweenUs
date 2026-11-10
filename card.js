@@ -9,21 +9,24 @@
 // changing who's telling the story or what it costs to tell it — never a
 // request to critique or reverse an answer already given, and never an
 // abstract argument-for/against move (this deck is stories, not positions).
-// The trigger is the Twist line in the Menu sheet (and the T key in Spotlight); using it doesn't replace
-// anything on the card — it just shows the modifier at the bottom of the card, underneath the question
-// (#twistSentence, main mode) or in the party header (#party-number, party
-// mode). Never survives a new card; flipToCard/clearTwist reset it every
-// draw.
+// Twist is a setting, like Three: on in the Menu's Twist line, in Spotlight's Twist button or with the T key
+// in Spotlight, it stays on across cards and hands until switched off. While it is on, every card shown gets
+// a fresh line (never the same twice in a row), shown at the bottom of the card, underneath the question
+// (#twistSentence, main mode) or in the party header (#party-number, party mode). A wildcard shows none, and
+// Twist stays on for the card after it.
 const MODIFIERS = [
   { en: "How would you have answered this five years ago?" },
   { en: "What do you suspect you'll answer differently five years from now?" },
   { en: "What would someone close to you notice about this before you do?" },
   { en: "What would you say if there were no consequences at all?" },
 ];
-let currentTwist = null;
+let twistOn = false;       // the setting
+let currentTwist = null;   // the line on the card showing now
+let lastTwist = null;      // the line before it, so no line comes twice in a row
 function pickTwist() {
-  const pool = MODIFIERS.filter(m => m !== currentTwist);
-  return (pool.length ? pool : MODIFIERS)[Math.floor(Math.random() * (pool.length ? pool.length : MODIFIERS.length))];
+  const pool = MODIFIERS.filter(m => m !== lastTwist);
+  lastTwist = pool[Math.floor(Math.random() * pool.length)];
+  return lastTwist;
 }
 // Applies (or clears) the twist text on a counter element. party-number shows
 // only the Twist sentence (the count lives in #party-count), so clearing it
@@ -42,20 +45,19 @@ function renderTwist() {
   applyTwistToCounter(document.getElementById('twistSentence'));
   applyTwistToCounter(document.getElementById('party-number'));
 }
-// Twist is a lens on a drawn card, so it only makes sense while one is showing (shownCard() in presentation.js):
-// not before the first draw and not on the end-of-hand screen.
-// No card showing, or a wildcard (it already asks you to ask your own): nothing to twist.
-function canTwist() {
-  const card = shownCard();
-  return !!card && card.level !== WILDCARD_LEVEL;
-}
-function toggleTwist() {
-  if (!canTwist()) return;
-  if (currentTwist) { clearTwist(); return; }   // tap again to untwist
-  currentTwist = pickTwist();
+// A card is on screen: with Twist on it gets its line (a wildcard none: it already asks you to ask your own).
+function twistCard(card) {
+  currentTwist = twistOn && card && card.level !== WILDCARD_LEVEL ? pickTwist() : null;
   renderTwist();
-  flashTwist();
 }
+// Twist on or off; the card showing now gets or loses its line, and everything that mirrors the setting follows.
+function setTwist(on) {
+  twistOn = on;
+  twistCard(shownCard());
+  if (currentTwist) flashTwist();
+  syncSpotlightSettings();
+}
+function toggleTwist() { setTwist(!twistOn); }
 // Restart a one-shot CSS animation class on an element.
 function replayClass(el, cls, ms) {
   if (!el) return;
@@ -64,15 +66,11 @@ function replayClass(el, cls, ms) {
   el.classList.add(cls);
   setTimeout(() => el.classList.remove(cls), ms);
 }
-// Spotlight or Three tapped at a moment it can't be
-// used: it shakes (blinks instead under reduced motion). Does not count as
-// using it, so its hint stays.
-function shakeRowBtn(btn) { replayClass(btn, 'row-shake', 400); }
 // Twist just landed: the new line on the card lights up, then settles.
 function flashTwist() {
   replayClass(document.getElementById('twistSentence'), 'twist-lit', 520);
 }
-function clearTwist() { currentTwist = null; renderTwist(); }
+function clearTwist() { currentTwist = null; renderTwist(); }   // the line only: the setting stays
 
 // ── TRANSLATION ───────────────────────────────────────────────────────────────
 function translateQ(card) {
@@ -269,7 +267,7 @@ function setCardDisplay(card) {
   }
   // Update party display
   updatePartyDisplay(card);
-  renderTwist();   // same modifier, re-rendered for the new card
+  twistCard(card);
 }
 
 // flipToCard — shows a card: the first draw of a hand lands (CSS, styles.css .drawing-in), every card after
@@ -388,6 +386,7 @@ function flipToCard(card, isFirstDraw) {
   const finishFace = shown => {
     renderProgress();
     updatePartyDisplay(shown);
+    twistCard(shown);
     autoSaveSession();   // auto-save on every card
   };
 

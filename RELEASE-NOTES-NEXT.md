@@ -13,3 +13,6 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+
+- Twist now stays on until you switch it off: every card comes with its own twist line, across cards and hands.
+- Spotlight is open from the start: before the first draw it shows the ways to play, and with a card up it has Three and Twist buttons so you can switch them without leaving it.
