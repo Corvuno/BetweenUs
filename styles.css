@@ -1775,8 +1775,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .ch-main{padding-block:3px;gap:1px;}
   .play-sect--2{position:sticky;bottom:0;z-index:2;background:var(--surface);border-left:0;margin:0;
     padding:8px 0 0;border-top:1px solid var(--dim);}
-  .seg-row{--row-inset:0;display:flex;flex-wrap:wrap;align-items:center;gap:0 10px;margin:0;}   /* Shuffle, Cards and Three on one line; wraps on a narrow panel */
-  .seg-head{width:auto;margin-inline-end:2px;}
+  .seg-row{--row-inset:0;margin:0;}   /* each setting keeps its own line, as on the phone; the foot has no chapter-name inset */
   .cat-go-bar{padding:8px 0 12px;background:none;}
   /* every pickable thing answers the mouse the same way: its picked colour, lightly underlined */
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt):hover{color:var(--tc);}

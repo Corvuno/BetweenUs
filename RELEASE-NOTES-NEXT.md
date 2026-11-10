@@ -16,3 +16,4 @@ Rules:
 
 - Twist now stays on until you switch it off: every card comes with its own twist line, across cards and hands.
 - Spotlight is open from the start: before the first draw it shows the ways to play, and with a card up it has Three and Twist buttons so you can switch them without leaving it.
+- Smaller fixes throughout: on a computer, The Deck's Shuffle, Cards and Three settings each get their own line.

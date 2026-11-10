@@ -410,6 +410,8 @@ line, Draw Cards fixed. Chapter and category colours stay content colour, set fr
   chapter-name inset (16px) and has a fixed 5.5rem column so the choices of both lines align. The
   choices are picked items (celadon word and dot), 48px tall, no boxes. The spice mark's "on"
   state is colour only (no glow).
+  On a computer (wide block) the same two lines plus Three keep this structure, one setting per line,
+  but with no 16px inset (the foot sits flush with the panel edge); the foot sticks to the panel bottom.
 
 ### The one picked look (owner, 2026-10-19)
 `.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)`: presets, categories in open
