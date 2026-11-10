@@ -190,6 +190,7 @@ function fillPartyWays() {
   if (ways.childElementCount) return;
   const sheet = document.getElementById('helpDrawer');
   ways.append(...['.drawer-title', '.help-content'].map(sel => sheet.querySelector(sel).cloneNode(true)));
+  ways.querySelector('h4').remove();   // the sheet's section label repeats the title above it
 }
 (function(){
   const btn = document.getElementById('btnParty');

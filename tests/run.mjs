@@ -673,8 +673,8 @@ async function run() {
     await page.locator('#partyBtnTwist').click();
     await page.waitForTimeout(200);
     const tw = await page.evaluate(() => ({ line: document.getElementById('party-number').textContent.trim().length > 0, on: document.getElementById('partyBtnTwist').classList.contains('on'),
-      icons: ['partyBtnTwist', 'partyPick'].every(id => !!document.querySelector(`#${id} svg`)), keys: ['partyBtnTwist', 'partyPick'].map(id => document.querySelector(`#${id} .party-key`).textContent).join('') }));
-    assert(tw.line && tw.on && tw.icons && tw.keys === 'T3', 'Spotlight shows the Twist line and its on state, and both buttons keep icon and key: ' + JSON.stringify(tw));
+      icons: ['partyBtnTwist', 'partyPick'].every(id => !!document.querySelector(`#${id} svg`)), keys: document.querySelectorAll('.party-key').length }));
+    assert(tw.line && tw.on && tw.icons && tw.keys === 0, 'Spotlight shows the Twist line and its on state, and both buttons keep their icon and show no key legend: ' + JSON.stringify(tw));
     await page.locator('#partyBtnTwist').click();
     await page.locator('#partyExit').click();
     await page.waitForTimeout(300);
@@ -1048,9 +1048,12 @@ async function run() {
       const box = sel => { const r = document.querySelector(sel).getBoundingClientRect(); return { w: r.width, h: r.height }; };
       const shown = sel => getComputedStyle(document.querySelector(sel)).display !== 'none';
       return { open: document.getElementById('partyOverlay').classList.contains('open'), ways: shown('#partyWays'), tiles: document.querySelectorAll('#partyWays .hp-tile').length,
-        same: document.getElementById('partyWays').querySelector('.help-content').innerText === document.querySelector('#helpDrawer .help-content').innerText,
+        same: document.getElementById('partyWays').querySelector('.help-content').innerText === document.querySelector('#helpDrawer .help-content').innerText.replace('WAYS TO PLAY\n', ''),
+        title: [...document.querySelectorAll('#partyWays .drawer-title, #partyWays h4')].filter(e => /ways to play/i.test(e.textContent)).length,
+        sw: (() => { const a = document.getElementById('partyWays').getBoundingClientRect(), o = document.getElementById('partyOrient').getBoundingClientRect(); return o.width > 0 && o.left < a.right - parseFloat(getComputedStyle(document.getElementById('partyWays')).paddingRight) + 1 && o.bottom > a.top && o.top < a.bottom; })(),
         twist: shown('#partyBtnTwist'), three: shown('#partyPick'), close: shown('#partyExit'), frame: box('#partyWays'), vh: innerHeight, drawn: state.currentIndex };
     });
+    assert(w.title === 1 && !w.sw, `Ways to play title shows ${w.title} times, or the Sideways switch overlaps the content (${w.sw})`);
     assert(w.open && w.ways && w.tiles === 7 && w.same, `Spotlight at the start does not show the ways to play: ${JSON.stringify(w)}`);
     assert(!w.twist && !w.three && w.close, `Three or Twist show over the ways to play (or Close is gone): ${JSON.stringify(w)}`);
     assert(w.drawn === -1 && w.frame.h > w.vh * 0.5, `the ways to play do not fill Spotlight's frame, or a card was drawn: ${JSON.stringify(w)}`);
@@ -2675,6 +2678,31 @@ async function run() {
         assert(await pg.evaluate(at => state.currentIndex === at, idx), `${name}: Next and Back in Spotlight did not move through the hand`);
         await pg.locator('#partyExit').click(); await pg.waitForTimeout(450);
         assert(await pg.evaluate(() => !state.partyMode), `${name}: Close did not leave Spotlight`);
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('Twist line on the phone card stays clear of the corner mark at 360 and 412 wide, with a ~95-character question and the longest Twist line, and the question keeps its size', async () => {
+    for (const width of [360, 412]) {
+      const { ctx, pg } = await freshApp({ viewport: { width, height: 915 } });
+      try {
+        await drawCards(pg, 1); await pg.waitForTimeout(1200);
+        const r = await pg.evaluate(() => {
+          const longQ = ALL_CARDS.filter(c => c.question.length >= 90 && c.question.length <= 100)[0] ?? ALL_CARDS.reduce((a, c) => Math.abs(c.question.length - 95) < Math.abs(a.question.length - 95) ? c : a);
+          const longT = MODIFIERS.reduce((a, m) => m.en.length > a.en.length ? m : a);
+          const qEl = document.getElementById('card-question');
+          qEl.textContent = longQ.question;
+          const before = getComputedStyle(qEl).fontSize;
+          twistOn = true; currentTwist = longT; renderTwist();
+          const card = document.getElementById('card'), cr = card.getBoundingClientRect(), br = getComputedStyle(card, '::after');
+          const cornerTop = cr.bottom - parseFloat(br.bottom) - parseFloat(br.height);
+          const t = document.getElementById('twistSentence'), tr = t.getBoundingClientRect(), body = document.querySelector('.card-body-inner');
+          const cs = getComputedStyle(t), cornerLeft = cr.right - parseFloat(br.right) - parseFloat(br.width);
+          const textRight = tr.right - parseFloat(cs.paddingRight), textBottom = tr.bottom - parseFloat(cs.paddingBottom);
+          return { len: longQ.question.length, textRight, cornerLeft, tBottom: textBottom, cornerTop, size: [before, getComputedStyle(qEl).fontSize], scrolls: body.scrollHeight > body.clientHeight + 1, qTop: qEl.getBoundingClientRect().top - cr.top };
+        });
+        assert(r.tBottom <= r.cornerTop || r.textRight <= r.cornerLeft, `${width}: the Twist line runs into the corner mark (${JSON.stringify(r)})`);
+        assert(r.size[0] === r.size[1] && !r.scrolls, `${width}: the question changed size or the card face scrolls (${JSON.stringify(r)})`);
       } finally { await ctx.close(); }
     }
   });

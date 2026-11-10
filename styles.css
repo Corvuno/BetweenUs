@@ -619,7 +619,7 @@ body.showing-hand-summary .card-question{
   .card.mark-wildcard .card-level{font-size:calc(15.2 * var(--u));}
   .card-question{font-size:calc(26.496 * var(--u));}
   .card .end-msg{font-size:calc(16 * var(--u));}
-  .card .twist-sentence{padding:0 calc(28 * var(--u)) calc(12 * var(--u));}
+  .card .twist-sentence{padding:0 calc(48 * var(--u)) calc(12 * var(--u));}   /* the line stops short of the bottom-right corner mark (20u in, 24u wide) */
   .card .twist-sentence.twist{font-size:calc(15.36 * var(--u));}
 }
 /* everything in a row is sized from the question's own size, so diamonds and stars grow with it */
@@ -812,7 +812,6 @@ body.showing-hand-summary .card-question{
 .party-chrome .party-star.on{opacity:1;}
 .party-twist.on .row-lbl,.party-pick.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* same underline as #screenRow .on */
 .party-twist svg,.party-pick svg{width:16px;height:16px;flex-shrink:0;}
-.party-key{display:none;color:var(--muted);margin-left:6px;}
 
 /* count: a short rule each side (hidden on phone portrait), the star underneath */
 .party-count-wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 10px;}
@@ -894,6 +893,7 @@ body.showing-hand-summary .card-question{
 .party-ways{display:none;position:absolute;inset:56px 0 92px;z-index:3;overflow-y:auto;padding:0 26px;}
 .party-overlay.is-ways .party-ways{display:block;}
 .party-ways .drawer-title{padding-top:0;}
+@media(max-width:899px){.party-ways{padding-right:52px;}}   /* clear of the Sideways switch on the right edge */
 .party-ways .help-content{max-width:760px;margin:0 auto;}
 .party-overlay.is-ways :is(.party-inner,.party-zone-prev,.party-zone-next,.party-count-wrap,.party-twist,.party-pick){display:none;}
 .party-overlay.is-ways .party-bottom{margin-top:auto;}   /* with the card gone, the bottom row keeps the bottom */
@@ -944,7 +944,6 @@ body.showing-hand-summary .card-question{
   .party-count{font-size:18px;letter-spacing:.24em;}
   .party-bottom{padding:16px 88px 46px;}
   .party-chrome button{font-size:15px;} /* readable on desktop */
-  .party-key{display:inline;}
   .party-exit svg{width:18px;height:18px;}
   .party-prev-btn,.party-next-btn{font-size:18px !important;}
 
@@ -1966,7 +1965,6 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .party-bottom .party-exit{top:calc(var(--k)*51px);}
   .party-top .party-twist{top:calc(var(--k)*82px);}
   .party-chrome :is(.party-pick,.party-twist,.party-exit) svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-  .party-chrome :is(.party-pick,.party-twist,.party-exit) .party-key{margin:0 calc(var(--k)*4px) 0 0;}
 }
 
 /* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;
