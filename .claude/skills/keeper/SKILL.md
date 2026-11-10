@@ -104,11 +104,12 @@ handed to a builder:
    the live app. After a "variation" or "reshuffle" verdict, the next reply is words only.
 6. **Design it right first.** Whoever draws works from a brief: every line of lessons.md
    "Design", taste.md, the references, and the screens the owner already chose for this area.
-   Check each picture against that brief line by line and fix it before anyone else sees it.
-   Three to five strong options, one a real rethink, each naming its source.
+   Check each picture against that brief line by line, then run `design:design-critique` on it
+   (required; your own look never replaces it), then fix it. Three to five
+   strong options, one a real rethink, each naming its source.
 7. **The gate.** A fresh `design-gate` agent gives a short last check, once per round. A block
    is a design miss: write its lesson into lessons.md before redrawing. Never show a blocked
-   round. A design the owner turns down adds the rule it broke to lessons.md first.
+   round. A rejected design adds the rule it broke to lessons.md first.
 
 The round message opens with a filled-in checklist: the decided-file, each option's one-line
 idea, the gate's verdict, and which design skills were used and what each changed
@@ -272,7 +273,7 @@ Runs in its own `/keeper upkeep` thread, a month or more after the last run.
 - Heavy reading goes to a cheap agent: reading a large file, a broad search, or a sweep of the
   history, the deck or old sessions is handed to a Sonnet or Haiku agent that reports back a short
   summary of what matters, and you work from that summary. The exception is a job that rewrites
-  that file. Not everything has to be known.
+  that file.
 - Measure sizes in code. Screenshots from earlier in a thread are never read again by you; a
   Haiku agent looks and reports in words. New screenshots that need an eye may be looked at.
 - When a conversation has grown long, say so in one line and suggest `/compact` or a fresh session.

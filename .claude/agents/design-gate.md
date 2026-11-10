@@ -51,6 +51,7 @@ Read `.claude/keeper/lessons.md`, `.claude/keeper/taste.md`, `.claude/keeper/vis
 
 9. **A design lesson broken.** Check each picture against every line of lessons.md "Design" and
    against what the owner chose earlier for the same screen; name the line it breaks.
+10. **No design critique.** A picture without its `design:design-critique` result is a block.
 
 ## Report
 
