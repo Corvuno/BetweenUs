@@ -3392,8 +3392,22 @@ async function run() {
       const wide = name === 'computer';
       try {
         // the word's place: its top, and the edge it hangs from (right edge on a computer, centre on a phone)
-        const place = id => pg.evaluate(({ id, wide }) => { const b = document.getElementById(id).getBoundingClientRect(); return { shown: document.getElementById(id).offsetParent !== null, top: Math.round(b.top), h: Math.round(b.height), x: Math.round(wide ? b.right : b.left + b.width / 2) }; }, { id, wide });
-        const same = (a, b, what) => assert(a.shown && b.shown && Math.abs(a.top - b.top) <= 1 && a.h === b.h && Math.abs(a.x - b.x) <= 1, `${name}: ${what} is not in the same place: ${JSON.stringify(a)} vs ${JSON.stringify(b)}`);
+        // The whole page settles once after load (web fonts arriving re-flow the header, card and bar together), so a
+        // measurement waits until the page has stopped moving: the card's top, the bar's top and the slot's top equal for 3 samples.
+        const settled = async () => {
+          let last = '', still = 0;
+          for (let i = 0; i < 40 && still < 3; i++) {
+            const now = await pg.evaluate(() => ['card', 'btn-next', 'screenRow'].map(id => document.getElementById(id).getBoundingClientRect().top.toFixed(1)).join());
+            still = now === last ? still + 1 : 0; last = now;
+            await pg.waitForTimeout(150);
+          }
+        };
+        const place = async id => {
+          await settled();
+          return pg.evaluate(({ id, wide }) => { const b = document.getElementById(id).getBoundingClientRect(); return { shown: document.getElementById(id).offsetParent !== null, top: Math.round(b.top), h: Math.round(b.height), x: Math.round(wide ? b.right : b.left + b.width / 2) }; }, { id, wide });
+        };
+        // on a phone the box includes the hint, whose line count follows the font, so only its top and centre are compared there
+        const same = (a, b, what) => assert(a.shown && b.shown && Math.abs(a.top - b.top) <= 1 && (!wide || a.h === b.h) && Math.abs(a.x - b.x) <= 1, `${name}: ${what} is not in the same place: ${JSON.stringify(a)} vs ${JSON.stringify(b)}`);
         const hintOf = () => pg.evaluate(() => { const h = document.querySelector('#btnWays .row-hint'); const cs = getComputedStyle(h); return { vis: cs.visibility, op: +cs.opacity, text: h.textContent }; });
         const ways = await place('btnWays');
         assert(ways.shown && !(await place('btnParty')).shown && !(await place('btnSave')).shown, `${name}: Ways to play is not alone in the place before the first card`);
