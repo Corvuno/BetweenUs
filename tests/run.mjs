@@ -1035,32 +1035,22 @@ async function run() {
     assert(r.all === 12, `All should be every unseen card (12), got ${r.all}`);
   });
 
-  await check('start screen: Spotlight is live and opens to the ways to play (no Three or Twist there); closing returns; Twist and Three are live; all usable after the first card', async () => {
+  await check('start screen: Ways to play stands in Spotlight\'s place and opens the Menu\'s ways to play (closing returns, no card drawn); Spotlight has no ways view; Twist and Three are live; Spotlight is back after the first card', async () => {
     await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // fresh hand, nothing drawn
     await page.waitForTimeout(300);
     assert((await cardParts(page)).index === 0, 'expected no card drawn yet');
-    const taughtBefore = await page.evaluate(() => document.body.className);
-    const spot = await page.evaluate(() => { const b = document.getElementById('btnParty'); return { lbl: +getComputedStyle(b.querySelector('.row-lbl')).opacity }; });
-    assert(spot.lbl === 1, `Spotlight is dimmed at the start screen: ${JSON.stringify(spot)}`);
-    await page.locator('#btnParty').click();
-    await page.waitForTimeout(500);
-    const w = await page.evaluate(() => {
-      const box = sel => { const r = document.querySelector(sel).getBoundingClientRect(); return { w: r.width, h: r.height }; };
-      const shown = sel => getComputedStyle(document.querySelector(sel)).display !== 'none';
-      return { open: document.getElementById('partyOverlay').classList.contains('open'), ways: shown('#partyWays'), tiles: document.querySelectorAll('#partyWays .hp-tile').length,
-        same: document.getElementById('partyWays').querySelector('.help-content').innerText === document.querySelector('#helpDrawer .help-content').innerText.replace('WAYS TO PLAY\n', ''),
-        title: [...document.querySelectorAll('#partyWays .drawer-title, #partyWays h4')].filter(e => /ways to play/i.test(e.textContent)).length,
-        sw: (() => { const a = document.getElementById('partyWays').getBoundingClientRect(), o = document.getElementById('partyOrient').getBoundingClientRect(); return o.width > 0 && o.left < a.right - parseFloat(getComputedStyle(document.getElementById('partyWays')).paddingRight) + 1 && o.bottom > a.top && o.top < a.bottom; })(),
-        twist: shown('#partyBtnTwist'), three: shown('#partyPick'), close: shown('#partyExit'), frame: box('#partyWays'), vh: innerHeight, drawn: state.currentIndex };
-    });
-    assert(w.title === 1 && !w.sw, `Ways to play title shows ${w.title} times, or the Sideways switch overlaps the content (${w.sw})`);
-    assert(w.open && w.ways && w.tiles === 7 && w.same, `Spotlight at the start does not show the ways to play: ${JSON.stringify(w)}`);
-    assert(!w.twist && !w.three && w.close, `Three or Twist show over the ways to play (or Close is gone): ${JSON.stringify(w)}`);
-    assert(w.drawn === -1 && w.frame.h > w.vh * 0.5, `the ways to play do not fill Spotlight's frame, or a card was drawn: ${JSON.stringify(w)}`);
-    await page.locator('#partyExit').click();
-    await page.waitForTimeout(450);
-    assert(await page.evaluate(() => !document.getElementById('partyOverlay').classList.contains('open') && state.currentIndex === -1), 'closing the ways to play did not return to the start screen');
-    assert(await page.evaluate(() => document.body.className) === taughtBefore, 'opening Spotlight at the start retired a hint');
+    const slot = await page.evaluate(() => { const on = id => document.getElementById(id).offsetParent !== null; return { ways: on('btnWays'), spot: on('btnParty'), save: on('btnSave'), label: document.querySelector('#btnWays .row-lbl').textContent.trim() }; });
+    assert(slot.ways && !slot.spot && !slot.save && slot.label === 'Ways to play', `the start screen should show Ways to play alone in Spotlight's place: ${JSON.stringify(slot)}`);
+    await page.locator('#btnWays').click();
+    await page.waitForTimeout(700);
+    const w = await page.evaluate(() => ({ open: document.getElementById('helpDrawer').classList.contains('open'), tiles: document.querySelectorAll('#helpDrawer .hp-tile').length, party: document.getElementById('partyOverlay').classList.contains('open'), drawn: state.currentIndex }));
+    assert(w.open && w.tiles === 7 && !w.party && w.drawn === -1, `Ways to play did not open the Menu's sheet, or a card was drawn: ${JSON.stringify(w)}`);
+    await page.evaluate(() => closeAllDrawers());
+    await page.waitForTimeout(600);
+    assert(await page.evaluate(() => !document.getElementById('helpDrawer').classList.contains('open') && state.currentIndex === -1), 'closing the ways to play did not return to the start screen');
+    assert(await page.evaluate(() => document.body.classList.contains('hint-ways-word-taught')), 'tapping Ways to play did not retire its hint');
+    await page.evaluate(() => hintsReset());
+    assert(await page.evaluate(() => !document.body.classList.contains('hint-ways-word-taught')), 'Show hints again did not bring the Ways to play hint back');
     // Three and Twist are live at the start screen: Three is never dimmed, Twist's menu line is not dimmed either, and it switches on without a card
     const three = await page.evaluate(() => ({ op: +getComputedStyle(document.getElementById('pickToggle')).opacity }));
     assert(three.op === 1, `Three dimmed at the start screen: ${JSON.stringify(three)}`);
@@ -1070,15 +1060,6 @@ async function run() {
     await page.evaluate(() => toggleTwist());
     assert(await page.evaluate(() => twistOn && currentTwist === null), 'Twist did not switch on at the start screen without a card');
     await page.evaluate(() => toggleTwist());
-    // Next from the ways to play draws the first card in Spotlight, as usual
-    await page.locator('#btnParty').click();
-    await page.waitForTimeout(400);
-    await page.locator('#partyNext').click();
-    await page.waitForTimeout(1500);
-    const d = await page.evaluate(() => ({ idx: state.currentIndex, ways: getComputedStyle(document.getElementById('partyWays')).display !== 'none', q: document.getElementById('party-question').textContent.trim().length > 0, twist: getComputedStyle(document.getElementById('partyBtnTwist')).display !== 'none' }));
-    assert(d.idx === 0 && !d.ways && d.q && d.twist, `Next in the ways to play did not start the hand: ${JSON.stringify(d)}`);
-    await page.locator('#partyExit').click();
-    await page.waitForTimeout(400);
     await page.evaluate(() => { document.querySelector('.limit-btn').click(); });   // back to the start screen for the rest of the check
     await page.waitForTimeout(300);
     await drawFirstIfNeeded(page);
@@ -1086,6 +1067,7 @@ async function run() {
     for (const id of ['pickToggle', 'btnParty']) {
       assert(!(await page.locator('#' + id).evaluate(el => el.classList.contains('disabled'))), `${id} still dimmed after the first card`);
     }
+    assert(await page.evaluate(() => document.getElementById('btnParty').offsetParent !== null && document.getElementById('btnWays').offsetParent === null && !document.getElementById('partyWays')), 'after the first card Spotlight should stand in the place, with no ways view inside it');
     // Spotlight opened after the first draw leaves the card's category title showing
     await page.click('#btnParty');
     await page.waitForTimeout(200);
@@ -2704,16 +2686,6 @@ async function run() {
     }
   });
 
-  await check('Spotlight at the start screen (phone): a finger scrolling the ways to play up or down never draws the first card', async () => {
-    const { ctx, pg } = await freshApp({ viewport: { width: 412, height: 915 } });
-    try {
-      await pg.locator('#btnParty').click(); await pg.waitForTimeout(500);
-      await swipe(pg, '#partyWays', 0, -200); await pg.waitForTimeout(500);
-      await swipe(pg, '#partyWays', 0, 200); await pg.waitForTimeout(500);
-      assert(await pg.evaluate(() => state.currentIndex === -1 && !state.pickerOpen && getComputedStyle(document.getElementById('partyWays')).display !== 'none'), 'scrolling the ways to play drew a card or left them');
-    } finally { await ctx.close(); }
-  });
-
   await check('menu: Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
     const { ctx, pg } = await freshApp();
     try {
@@ -3139,12 +3111,12 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('real taps: draw, star, Start over, Favourites, tap the card, then Back (at once, and after everything settles) returns to the start card with Back disabled and Spotlight showing the ways to play as on a fresh start card; also with Three\'s options up', async () => {
+  await check('real taps: draw, star, Start over, Favourites, tap the card, then Back (at once, and after everything settles) returns to the start card with Back disabled and Ways to play in Spotlight\'s place as on a fresh start card; also with Three\'s options up', async () => {
     for (const [name, opts] of [['phone', {}], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
       for (const settle of [150, 2500]) {
         const { ctx, pg } = await freshApp(opts);
         try {
-          const flags = () => pg.evaluate(() => [!canGoBack(), document.getElementById('partyOverlay').classList.contains('is-ways')]);
+          const flags = () => pg.evaluate(() => [!canGoBack(), document.body.classList.contains('before-first-card') && document.getElementById('btnWays').offsetParent !== null]);
           await pg.locator('#btn-next').click(); await pg.waitForTimeout(2500);
           await pg.locator('#cardStar').click(); await pg.waitForTimeout(300);
           await toggleThree(pg); await pg.waitForTimeout(200);   // Three on (it cannot be switched on at the start card)
@@ -3157,7 +3129,7 @@ async function run() {
           };
           await startOver();
           const fresh = await flags();
-          assert(fresh.every(Boolean), `${name}: a fresh start card should have Back disabled and the ways to play up: ${fresh}`);
+          assert(fresh.every(Boolean), `${name}: a fresh start card should have Back disabled and Ways to play in Spotlight's place: ${fresh}`);
           await bringAndBack();
           assert(await pg.evaluate(() => state.currentIndex === -1 && document.getElementById('card').classList.contains('is-start')), `${name} (${settle}ms): Back did not return to the start card`);
           assert(JSON.stringify(await flags()) === JSON.stringify(fresh), `${name} (${settle}ms): after Back to the start card: ${await flags()}`);
@@ -3413,6 +3385,62 @@ async function run() {
       } finally { await ctx.close(); }
     });
   }
+
+  for (const [name, opts] of [['phone 412', { viewport: { width: 412, height: 915 } }], ['phone 360', { viewport: { width: 360, height: 800 } }], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }]]) {
+    await check(`Spotlight's place (${name}): Ways to play before the first card, Spotlight from the first card, Save at the end of a hand; one place, nothing moves; Ways to play opens the Menu's sheet and its hint follows the hint rules`, async () => {
+      const { ctx, pg } = await freshApp(opts);
+      const wide = name === 'computer';
+      try {
+        // the word's place: its top, and the edge it hangs from (right edge on a computer, centre on a phone)
+        const place = id => pg.evaluate(({ id, wide }) => { const b = document.getElementById(id).getBoundingClientRect(); return { shown: document.getElementById(id).offsetParent !== null, top: Math.round(b.top), h: Math.round(b.height), x: Math.round(wide ? b.right : b.left + b.width / 2) }; }, { id, wide });
+        const same = (a, b, what) => assert(a.shown && b.shown && Math.abs(a.top - b.top) <= 1 && a.h === b.h && Math.abs(a.x - b.x) <= 1, `${name}: ${what} is not in the same place: ${JSON.stringify(a)} vs ${JSON.stringify(b)}`);
+        const hintOf = () => pg.evaluate(() => { const h = document.querySelector('#btnWays .row-hint'); const cs = getComputedStyle(h); return { vis: cs.visibility, op: +cs.opacity, text: h.textContent }; });
+        const ways = await place('btnWays');
+        assert(ways.shown && !(await place('btnParty')).shown && !(await place('btnSave')).shown, `${name}: Ways to play is not alone in the place before the first card`);
+        const h0 = await hintOf();
+        assert(/seven ways round the table/.test(h0.text) && h0.vis === 'visible' && (wide ? h0.op === 0 : h0.op === 1), `${name}: first-visit hint wrong: ${JSON.stringify(h0)}`);
+        if (wide) {
+          await pg.locator('#btnWays').hover(); await pg.waitForTimeout(400);
+          assert((await hintOf()).op === 1, 'computer: the hint does not show on hover');
+          await pg.mouse.move(5, 5);
+        }
+        await pg.locator('#btnWays').click(); await pg.waitForTimeout(800);
+        assert(await pg.evaluate(() => document.getElementById('helpDrawer').classList.contains('open') && state.currentIndex === -1), `${name}: tapping Ways to play did not open the sheet`);
+        await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(700);
+        if (!wide) assert((await hintOf()).vis === 'hidden', 'phone: the hint stayed after the first tap');
+        await pg.evaluate(() => hintsReset());
+        if (!wide) assert((await hintOf()).vis === 'visible', 'phone: Show hints again did not bring the hint back');
+        await drawCards(pg, 2); await pg.waitForTimeout(900);
+        const spot = await place('btnParty');
+        assert(!(await place('btnWays')).shown, `${name}: Ways to play still shows with a card up`);
+        same(ways, spot, 'Spotlight (against Ways to play)');
+        await finishHand(pg);
+        const save = await place('btnSave');
+        assert(!(await place('btnParty')).shown && !(await place('btnWays')).shown, `${name}: Spotlight or Ways to play shows at the end of a hand`);
+        same(ways, save, 'Save (against Ways to play)');
+        await pg.evaluate(() => { openMenu(document.getElementById('btn-menu')); }); await pg.waitForTimeout(900);
+        await pg.locator('[data-menu="start"]:visible').click(); await pg.waitForTimeout(1500);
+        same(ways, await place('btnWays'), 'Ways to play after Start over');
+      } finally { await ctx.close(); }
+    });
+  }
+
+  await check('The Deck on a computer: only Draw Cards stays fixed; Shuffle, Cards and Three scroll at the end of the list and show above it, uncovered', async () => {
+    const { ctx, pg } = await freshApp({ viewport: { width: 1366, height: 768 }, hasTouch: false });
+    try {
+      await pg.evaluate(() => openCats()); await pg.waitForTimeout(900);
+      const top = await pg.evaluate(() => ({ pos: getComputedStyle(document.querySelector('.play-sect--2')).position, go: getComputedStyle(document.querySelector('.cat-go-bar')).position }));
+      assert(top.pos !== 'sticky' && top.pos !== 'fixed', `Shuffle, Cards and Three are still fixed at the foot (${top.pos})`);
+      await pg.evaluate(() => { const p = document.getElementById('panePlay'); p.scrollTop = p.scrollHeight; }); await pg.waitForTimeout(300);
+      const r = await pg.evaluate(() => {
+        const box = el => el.getBoundingClientRect();
+        const rows = ['shuffleToggle', 'limitBtnsDrawer', 'pickToggle'].map(id => box(document.getElementById(id)));
+        const go = box(document.querySelector('.cat-go-bar')), pane = box(document.getElementById('panePlay'));
+        return { rows: rows.map(b => [Math.round(b.top), Math.round(b.bottom)]), goTop: Math.round(go.top), paneBottom: Math.round(pane.bottom), paneH: Math.round(pane.height) };
+      });
+      assert(r.rows.every(([t, b]) => t >= 0 && b <= r.goTop + 1) && r.paneBottom <= r.goTop + 1, `at the end of the list the settings are covered by Draw Cards: ${JSON.stringify(r)}`);
+    } finally { await ctx.close(); }
+  });
 
   await check('menu: Save is the first line from the first card on, absent on the start screen, and downloads the evening file (phone drawer and computer panel)', async () => {
     for (const [name, opts, menu] of [['phone', {}, 'menuDrawer'], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }, 'menuSideDrawer']]) {

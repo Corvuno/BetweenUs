@@ -698,8 +698,8 @@ function updateDrawMore() {
   /* Options up for the first card of a hand: the hand has begun, so nothing on
      screen shows the start state */
   const begun = handBegun();
-  // Spotlight before the first card shows the ways to play instead of a card.
-  document.getElementById('partyOverlay')?.classList.toggle('is-ways', !begun);
+  // Ways to play takes Spotlight's place until a card is up (styles.css body.before-first-card).
+  document.body.classList.toggle('before-first-card', !begun);
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;

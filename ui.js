@@ -183,15 +183,13 @@ function spotlightBrightenOnce() {
   replayClass(document.getElementById('btnParty'), 'spot-bright', 1050);
 }
 
+// ── Ways to play ── Spotlight's place before the first card: the same sheet as Menu > Ways to play.
+document.getElementById('btnWays')?.addEventListener('click', e => {
+  hintRetire('waysWord');
+  openDrawer('helpDrawer', e.currentTarget);
+});
+
 // ── Fullscreen party ──
-// Before the first card Spotlight shows the ways to play: the Menu sheet's own words, copied in once.
-function fillPartyWays() {
-  const ways = document.getElementById('partyWays');
-  if (ways.childElementCount) return;
-  const sheet = document.getElementById('helpDrawer');
-  ways.append(...['.drawer-title', '.help-content'].map(sel => sheet.querySelector(sel).cloneNode(true)));
-  ways.querySelector('h4').remove();   // the sheet's section label repeats the title above it
-}
 (function(){
   const btn = document.getElementById('btnParty');
   if (btn) {
@@ -199,7 +197,6 @@ function fillPartyWays() {
       e.stopPropagation();
       hintRetire('spotlight');
       state.partyMode = true;
-      fillPartyWays();
       document.getElementById('partyOverlay').classList.add('open');
       movePickerToScreen();   // Three options up: they move along into Spotlight
       if (broughtBack) {
@@ -266,8 +263,8 @@ function fillPartyWays() {
 
   newOv.addEventListener('touchend', e => {
     if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
-    /* scrolling the hand's list or the ways to play is not a tap or a swipe of the card */
-    if (e.target.closest('.hd-list, .party-ways')) {
+    /* scrolling the hand's list is not a tap or a swipe of the card */
+    if (e.target.closest('.hd-list')) {
       const [sdx, sdy] = touchDelta(e);
       if (Math.abs(sdy) > 10 && Math.abs(sdy) >= Math.abs(sdx)) return;
     }

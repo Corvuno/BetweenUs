@@ -20,9 +20,9 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261110d">
+<link rel="stylesheet" href="styles.css?v=20261110e">
 </head>
-<body>
+<body class="before-first-card">
 <div class="app">
 
   <!-- HEADER -->
@@ -256,8 +256,9 @@
       <span class="nav-lines nav-lines--r" aria-hidden="true"></span>
       <button class="quiet-word" id="btn-menu" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M4 7h16M4 12h11M4 17h6"/></svg><span class="row-lbl">Menu</span></button>
     </div>
-    <!-- Spotlight's place: Spotlight with a card up, Save at the end of a hand (body.showing-hand-summary swaps them; both are words on the phone, words with icons top right on a computer) -->
+    <!-- Spotlight's place: Ways to play before the first card, Spotlight with a card up, Save at the end of a hand (body.before-first-card and body.showing-hand-summary swap them; words on the phone, words top right on a computer; Ways to play has no icon) -->
     <div class="screen-row" id="screenRow">
+      <button class="quiet-word" id="btnWays" type="button" aria-haspopup="dialog"><span class="row-lbl">Ways to play</span><span class="row-hint">seven ways round the table</span></button>
       <button class="quiet-word" id="btnParty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><rect x="8" y="8" width="8" height="8"/></svg><span class="row-lbl">Spotlight</span><span class="row-hint">the question takes the stage</span></button>
       <button class="quiet-word" id="btnSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M6 4 12 10 18 4M6 9 12 15 18 9"/><path d="M4 20H20"/></svg><span class="row-lbl">Save</span><span class="row-hint" id="saveHint">take this evening with you</span></button>
     </div>
@@ -467,8 +468,6 @@
     <div class="party-zone-prev" id="party-zone-prev"></div>
     <div class="party-zone-next" id="party-zone-next"></div>
 
-    <div class="party-ways" id="partyWays"></div><!-- before the first card: the ways to play, filled from the Menu's sheet -->
-
     <div class="party-inner">
       <div class="party-level" id="party-level"></div>
       <div class="party-question" id="party-question">Tap to begin.</div>
@@ -497,18 +496,18 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261110d"></script>
-<script src="categories.js?v=20261110d"></script>
-<script src="config.js?v=20261110d"></script>
-<script src="gilt.js?v=20261110d"></script>
-<script src="state.js?v=20261110d"></script>
-<script src="deck.js?v=20261110d"></script>
-<script src="card.js?v=20261110d"></script>
-<script src="library.js?v=20261110d"></script>
-<script src="session.js?v=20261110d"></script>
-<script src="selection.js?v=20261110d"></script>
-<script src="presentation.js?v=20261110d"></script>
-<script src="ui.js?v=20261110d"></script>
+<script src="questions.js?v=20261110e"></script>
+<script src="categories.js?v=20261110e"></script>
+<script src="config.js?v=20261110e"></script>
+<script src="gilt.js?v=20261110e"></script>
+<script src="state.js?v=20261110e"></script>
+<script src="deck.js?v=20261110e"></script>
+<script src="card.js?v=20261110e"></script>
+<script src="library.js?v=20261110e"></script>
+<script src="session.js?v=20261110e"></script>
+<script src="selection.js?v=20261110e"></script>
+<script src="presentation.js?v=20261110e"></script>
+<script src="ui.js?v=20261110e"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.

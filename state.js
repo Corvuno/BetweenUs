@@ -75,7 +75,8 @@ const HINTS = {
   spotlight: { key: 'bu.hintSpotTaught',  cls: 'hint-spot-taught' },    // under Spotlight
   save:      { key: 'bu.hintSaveTaught',  cls: 'hint-save-taught' },     // under Save (Spotlight's place at the end of a hand)
   lines:     { key: 'bu.hintLinesTaught', cls: 'hint-lines-taught' },    // "Hold a category…" under each chapter opened (phone)
-  ways:      { key: 'bu.hintWaysTaught',  cls: 'hint-ways-taught' }      // under Ways to play (menu)
+  ways:      { key: 'bu.hintWaysTaught',  cls: 'hint-ways-taught' },     // under Ways to play (menu)
+  waysWord:  { key: 'bu.hintWaysWordTaught', cls: 'hint-ways-word-taught' }   // under Ways to play (Spotlight's place before the first card)
 };
 function hintIsTaught(id) {
   try { return !!localStorage.getItem(HINTS[id].key); }

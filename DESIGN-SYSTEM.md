@@ -123,6 +123,11 @@ menu), so the question is the brightest thing.
   Close button). The hint (`.row-hint`, italic, `--row-hint`, `max(13px, 16px * --k)`) sits left of the word, shown on
   hover and focus only, never at rest. Reason: the owner wanted the pre-redesign top-right stack back, with Three and
   Twist gone from it, and Menu and Spotlight moved up from under the card.
+- Before the first card (the start screen, and after Start over until a card is drawn): Ways to play (`#btnWays`, no
+  icon) takes Spotlight's place, the same slot and style, so nothing moves when the word changes (`body.before-first-card`
+  swaps it with Spotlight; the icon-less word keeps Spotlight's box height on a computer). It opens the Menu's Ways to
+  play sheet. Its hint is the Menu's "seven ways round the table", retired after the first tap (`HINTS.waysWord`,
+  `hint-ways-word-taught`), on a computer on hover. Spotlight has no ways-to-play view.
 - End of a hand (phone and computer): Save (`#btnSave`, the evening's file, the same function as Played > Download the
   list) takes Spotlight's place: the same slot, size and style, so nothing moves between a card and the pause; on the
   phone Save is the left word under the card with the hint "take this evening with you" (time of day follows the
@@ -136,8 +141,7 @@ menu), so the question is the brightest thing.
 
 ### Three, Twist (moved 2026-11-06, #113)
 Three is a setting in The Deck (`#pickToggle`, Off / On, the same picked / not-picked look as Shuffle and
-Cards, `.three-opt`), in the settings line that is fixed at the foot of the sheet above Draw Cards on
-every screen size (it wraps to a second row on a narrow panel). Twist is a line in the Menu sheet, in the
+Cards, `.three-opt`), in the settings lines at the end of the chapters list, above Draw Cards (each on its own line on a computer). Twist is a line in the Menu sheet, in the
 menu's own row style, dimmed (opacity .32) when no card is in front of you. Neither has a button on the
 main screen or in Spotlight; keys 3 and T still work in Spotlight.
 
@@ -455,8 +459,8 @@ while the panel is open.
   length on `html` and the card jumped; do not go back to it.) Instant under reduced motion.
 - **Layout**: head on one line (name, question, close at the right); presets stay at the top (sticky,
   wrap to two or three lines: Everything and Balanced on the first, the "Who's here" caption on its own
-  line below them, left-aligned (as on the tablet sheet, where it is centred), then the people presets); chapters scroll between; Shuffle and
-  Cards on one line and Draw Cards as a full-width gold bar stay at the foot (sticky). Chapter rows
+  line below them, left-aligned (as on the tablet sheet, where it is centred), then the people presets); chapters scroll between, with Shuffle, Cards and Three on their own lines at the end of the
+  list; only Draw Cards, a full-width gold bar, stays at the foot (sticky). Chapter rows
   48px, preset buttons 34px (desk-size controls). None and Open all stay at the Chapters heading
   (Open all reads "Close all" once every chapter is open, as on the phone).
 - **Hover** (this block only, mouse): a pickable shows its picked colour with a faint underline (.35);
