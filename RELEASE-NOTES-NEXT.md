@@ -16,4 +16,4 @@ Rules:
 
 - Twist now stays on until you switch it off: every card comes with its own twist line, across cards and hands.
 - Before the first card, Ways to play stands where Spotlight does, one tap from the ways to play; with a card up, Spotlight has Three and Twist buttons so you can switch them without leaving it.
-- Smaller fixes throughout: on a computer, The Deck's Shuffle, Cards and Three settings each get their own line and scroll with the list. Wildcards lights up in The Deck when it is on, like a chapter.
+- Smaller fixes throughout: on a computer, The Deck's Shuffle, Cards and Three settings each get their own line and scroll with the list. Wildcards lights up in The Deck when it is on, like a chapter. Categories that belong together now sit together in The Deck.
