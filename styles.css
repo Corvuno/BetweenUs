@@ -1528,8 +1528,9 @@ body.hint-ways-taught .menu-hint{display:none;}
    lines of .ch-desc at its current font-size/line-height plus the row's
    own 15px top/bottom padding; align-items:center (not baseline) so a
    one-line row centers inside that height instead of sitting at the top. */
+.chapter,.chapter-group--switch>.ch-fold--row{
+  --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
 .chapter{--ch:var(--gold);position:relative;
-  --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);
   display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
   transition:background var(--ch-ease),border-color var(--ch-ease);}
@@ -1538,9 +1539,9 @@ body.hint-ways-taught .menu-hint{display:none;}
    chapter is fully on, drawn by ::before over the 3px border so it can fade in and
    out; a partly-on chapter keeps a flat line of its colour, in between, along the
    same full length. gilt.js paints the stop colours (--rail-d/-m/-l) on the row from each chapter's colour — see ui.js. */
-.chapter::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
+.chapter::before,.chapter-group--switch>.ch-fold--row::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
   background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
-.chapter.on::before{opacity:1;}
+.chapter.on::before,.chapter-group--switch>.ch-fold--row[aria-checked="true"]::before{opacity:1;}
 /* hover (mouse only): the brighter outline goes round the whole chapter, header and open part together.
    The left line keeps its state colour; the header's bottom edge stays open while it is unfolded. */
 @media (hover:hover) and (pointer:fine){
@@ -1575,8 +1576,8 @@ body.hint-ways-taught .menu-hint{display:none;}
 .chapter.part{border-left-color:color-mix(in srgb, var(--ch) 70%, var(--dim));
   background:color-mix(in srgb, var(--ch) 6.5%, transparent);}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
-.chapter.on{background:color-mix(in srgb, var(--ch) 9%, transparent);}
-.chapter.on .ch-name{color:var(--ch);}
+.chapter.on,.chapter-group--switch>.ch-fold--row[aria-checked="true"]{background:color-mix(in srgb, var(--ch) 9%, transparent);}
+.chapter.on .ch-name,.chapter-group--switch>.ch-fold--row[aria-checked="true"] .ch-name{color:var(--ch);}
 .chapter-group{display:block;max-height:30rem;transition:max-height .26s var(--ease-out),opacity .26s ease-out,margin-block-end .26s var(--ease-out),visibility 0s;}
 /* an open chapter is never cut off, whatever its categories and lines add up to */
 .chapter-group.open{max-height:none;}
@@ -1585,7 +1586,8 @@ body.hint-ways-taught .menu-hint{display:none;}
 .chapter-group.ch-hidden{max-height:0;opacity:0;overflow:hidden;visibility:hidden;margin-block-end:-4px;
   transition:max-height .2s var(--ease-out),opacity .2s ease-out,margin-block-end .2s var(--ease-out),visibility 0s .2s;}
 @media (prefers-reduced-motion:reduce){
-  .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden{transition:none;}
+  .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden,
+  .chapter-group--switch>.ch-fold--row,.chapter-group--switch>.ch-fold--row::before,.chapter-group--switch .ch-name{transition:none;}
 }
 /* the unfolded panel: categories, each its own tap target */
 .chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;}
@@ -1606,6 +1608,10 @@ body.hint-ways-taught .menu-hint{display:none;}
 .ch-fold--row{width:100%;min-height:49px;flex-direction:row;gap:12px;padding:0 0 0 13px;
   border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;color:var(--celadon);}
 .ch-fold--row::before{display:none;}
+/* Wildcards lights like an on chapter: the rail (::before, rules above), the wash and the name in its colour, eased over --ch-ease */
+.chapter-group--switch>.ch-fold--row{--ch:var(--gold);transition:background var(--ch-ease);}
+.chapter-group--switch>.ch-fold--row::before{display:block;}
+.chapter-group--switch .ch-name{transition:color var(--ch-ease);}
 .ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
 .ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
 .chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
@@ -1771,7 +1777,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt):hover{color:var(--tc);}
   .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active),.three-opt:not(.active)):hover::after{opacity:.35;}
   .chapter:hover .ch-name,.ch-fold--row:hover .ch-name{color:var(--cream);}
-  .chapter:is(.on,.part):hover .ch-name{color:var(--ch);}
+  .chapter:is(.on,.part):hover .ch-name,.chapter-group--switch>.ch-fold--row[aria-checked="true"]:hover .ch-name{color:var(--ch);}
   .chapter-group{--ch-hover-line:var(--border-strong);}
   @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
 
@@ -1960,7 +1966,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;
    pulled a pinch back toward the chapter colour, everything else as it was. */
 @media (min-width:1024px){
-  .chapter{--ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 70%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
+  .chapter,.chapter-group--switch>.ch-fold--row{--ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 70%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
 }
 
 /* Side rails on wide screens (owner, 2026-10-21): Three and Spotlight's pick-three rails were the phone's 3px beside

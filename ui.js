@@ -1045,6 +1045,10 @@ document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   el.style.setProperty('--ch', labelColor(meta.color));
   if (el.parentElement) el.parentElement.style.setProperty('--ch', labelColor(meta.color)); // the unfolded panel's paled left line
 });
+// Wildcards lights up like an on chapter, in the wildcard card colour.
+const wildcardRow = document.getElementById('wildcardToggle');
+giltRailPaint(wildcardRow, levelColor(WILDCARD_LEVEL));
+wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
 
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
    Play asks what kind of evening this is: six chapters you can mix, and two

@@ -376,6 +376,7 @@ line, Draw Cards fixed. Chapter and category colours stay content colour, set fr
   a flat line of the chapter colour 70% into `--dim`, row tint 6.5%, name `--ch` 70% into `--muted`,
   count "n / total" in `--ch`; measured halfway between off and on. Names carry **no glow**.
   The row is one tap target (name button stretched over it) that switches the chapter.
+- **Wildcards row, on** (`.chapter-group--switch>.ch-fold--row[aria-checked="true"]`): lit exactly like a fully-on chapter, through the same rules. The gilt rail (`--ch-rail`, painted by `ui.js` from the wildcard card colour via `giltRailPaint`, phone and 1024px+ versions shared with `.chapter`), the 9% `--ch` wash and the name in `--ch` (`labelColor` of the wildcard level colour), all eased over `--ch-ease`. Off: unchanged. The "On/Off" state label keeps its own celadon. Why: the owner wanted an on switch to read as lit as an on chapter.
 - **Chapters change gently** (2026-10-20): tint, line, name and count colour ease over `--ch-ease`
   (.4s ease-out, a local variable on `.chapter`); only rows whose state class changed move. A count's
   number simply changes (no fade; the owner found a fading count annoying). A chapter
