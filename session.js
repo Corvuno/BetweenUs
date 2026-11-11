@@ -75,6 +75,23 @@ function savedCardId(ref) {
   if (typeof ref === 'string' && /^\d+$/.test(ref)) return +ref;
   return cardByWording(ref)?.id;
 }
+const skippedSeenIds = refs => (Array.isArray(refs) ? refs : []).map(savedCardId).filter(Number.isInteger);
+const sitOutById = sitOut => Object.fromEntries(Object.entries(sitOut && typeof sitOut === 'object' ? sitOut : {})
+  .map(([ref, handNo]) => [savedCardId(ref), handNo]).filter(([id]) => Number.isInteger(id)));
+
+/* A snapshot saved before cards had numbers (deckQuestions) in the numbered form, found by wording this one
+   time; the log keeps its saved wording. Unmatched cards leave the hand, unmatched log entries keep id null.
+   A snapshot that already has numbers comes back as it is. */
+function numberedSession(data) {
+  if (!data || data.deckIds || !Array.isArray(data.deckQuestions)) return data;
+  const { deckQuestions, fullDeckQuestions, ...rest } = data;
+  const hand = liveHand(deckQuestions, data.position);
+  return { ...rest, deckIds: hand.cards.map(c => c.id), fullDeckIds: liveHand(fullDeckQuestions ?? deckQuestions).cards.map(c => c.id), position: hand.position,
+    sessionLog: Array.isArray(data.sessionLog) ? data.sessionLog.map(c => ({ ...c, id: cardOfEntry(c)?.id ?? null })) : data.sessionLog,
+    skippedSeen: Array.isArray(data.skippedSeen) ? skippedSeenIds(data.skippedSeen) : data.skippedSeen,
+    sitOut: data.sitOut && typeof data.sitOut === 'object' ? sitOutById(data.sitOut) : data.sitOut };
+}
+
 /* A saved hand's live cards. A card that is retired or no longer matches is left out, and the position moves
    with it so the player lands on the same card they were on. */
 function liveHand(refs, position) {
@@ -104,10 +121,9 @@ function restoreSessionData(data) {
       state.sessionLog = data.sessionLog.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string').map(currentEntry);
       state.seenFrom = Math.min(Math.max(+data.seenFrom || 0, 0), state.sessionLog.length);
       state.loggedQuestions = new Set(state.sessionLog.map(c => c.id).filter(Number.isInteger));
-      state.skippedSeen = new Set((Array.isArray(data.skippedSeen) ? data.skippedSeen : []).map(savedCardId).filter(Number.isInteger));
+      state.skippedSeen = new Set(skippedSeenIds(data.skippedSeen));
       state.handNo = Math.max(+data.handNo || 0, 0);
-      state.sitOut = Object.fromEntries(Object.entries(data.sitOut && typeof data.sitOut === 'object' ? data.sitOut : {})
-        .map(([ref, handNo]) => [savedCardId(ref), handNo]).filter(([id]) => Number.isInteger(id)));
+      state.sitOut = sitOutById(data.sitOut);
       renderLog();
     }
     // sync spice glyph
@@ -156,12 +172,16 @@ function autoSaveSession() {
 // at boot; if nothing was ever saved this is a no-op and the default preset
 // draw from ui.js's init block stands.
 function autoResumeSession() {
+  getStoredSessions();   // reading the saved evenings rewrites any from before card numbers, once
   try { state.activeSessionId = localStorage.getItem('bu-active-session-id') || ''; }
   catch(e) { state.activeSessionId = ''; }
   try {
     const v = localStorage.getItem('bu-session');
     if (!v) return;
-    restoreSessionData(JSON.parse(v));
+    const data = JSON.parse(v);
+    const numbered = numberedSession(data);
+    if (numbered !== data) localStorage.setItem('bu-session', JSON.stringify(numbered));   // found by wording once, then kept by number
+    restoreSessionData(numbered);
   } catch(e) { console.error('autoResumeSession:',e); }
 }
 
@@ -170,8 +190,12 @@ function autoResumeSession() {
 // playing with one person doesn't overwrite where you left off with another.
 // ═══════════════════════════════════════════════════════════
 function getStoredSessions() {
-  try { return JSON.parse(localStorage.getItem('bu-sessions') || '[]'); }
-  catch(e) { return []; }
+  try {
+    const list = JSON.parse(localStorage.getItem('bu-sessions') || '[]');
+    const numbered = list.map(s => { const data = numberedSession(s.data); return data === s.data ? s : { ...s, data }; });
+    if (numbered.some((s, i) => s !== list[i])) saveStoredSessions(numbered);   // evenings from before card numbers are rewritten once
+    return numbered;
+  } catch(e) { return []; }
 }
 function saveStoredSessions(list) {
   try { localStorage.setItem('bu-sessions', JSON.stringify(list)); } catch(e) {}

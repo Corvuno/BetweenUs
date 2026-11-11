@@ -199,11 +199,11 @@ KNOWN_CARDS.forEach(card => {
 function cardSlot(card) { return CARD_SLOTS.get(card); }
 /** The place a card holds in its category, 1-based ("Friendship 7" reads its 7). */
 function cardPlace(card) { return CARD_PLACES.get(card); }
-const CARDS_BY_WORDING = new Map(KNOWN_CARDS.map(c => [c.question, c]));
-const CARDS_BY_TIDY_WORDING = new Map(KNOWN_CARDS.map(c => [c.question.trim().toLowerCase(), c]));
-/** The live card a saved question stands for, by its wording (older saves, pasted lists): exact, then trimmed and lowercased. */
+const tidyWording = question => question.trim().toLowerCase();
+const CARDS_BY_WORDING = new Map(KNOWN_CARDS.map(c => [tidyWording(c.question), c]));
+/** The live card a saved question stands for, by its wording (older saves, pasted lists), ignoring case and outer spaces. */
 function cardByWording(question) {
-  return typeof question === 'string' ? (CARDS_BY_WORDING.get(question) ?? CARDS_BY_TIDY_WORDING.get(question.trim().toLowerCase()) ?? null) : null;
+  return typeof question === 'string' ? (CARDS_BY_WORDING.get(tidyWording(question)) ?? null) : null;
 }
 /** The live card a saved entry ({id, level, question}, or an older one with the wording only) stands for; null for a retired or unknown one. */
 function cardOfEntry(entry) {

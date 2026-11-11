@@ -7,13 +7,22 @@
 /* Saved list from localStorage, or [] when nothing usable is stored: missing,
    unreadable, not JSON, not a list. Entries without a level and question are dropped. Each entry comes
    back as {id, level, question}: by its id, or (saved before cards had numbers) by its wording once;
-   a card since retired keeps the wording it was saved with. */
+   a card since retired keeps the wording it was saved with. Two entries for one card become one. A list
+   with entries from before cards had numbers is written back at once with their numbers (saved wording kept),
+   so the wording match happens only once. */
 function readSavedCards(key) {
   try {
     const saved = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(saved)
-      ? saved.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string').map(currentEntry)
-      : [];
+    if (!Array.isArray(saved)) return [];
+    const valid = saved.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string');
+    const seen = new Set();
+    const kept = valid.map(c => ({ saved: c, entry: currentEntry(c) }))
+      .filter(({ entry }) => { const k = entry.id ?? `q:${entry.question}`; return !seen.has(k) && seen.add(k); });
+    if (kept.length !== valid.length || valid.some(c => !('id' in c))) {
+      try { localStorage.setItem(key, JSON.stringify(kept.map(({ saved: c, entry }) => ({ ...c, id: entry.id })))); }
+      catch (error) { console.warn(`Could not write "${key}" with card numbers:`, error); }
+    }
+    return kept.map(({ entry }) => entry);
   } catch (error) {
     console.warn(`Ignoring unreadable saved data "${key}":`, error);
     return [];

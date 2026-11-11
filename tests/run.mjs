@@ -3826,6 +3826,52 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  await check('older saves are rewritten with card numbers at load, with no draw or star; a duplicate favourite becomes one; a later rewording keeps the star and the card in the evening', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      const old = await pg.evaluate(() => {
+        const [a, b, c] = ALL_CARDS.filter(x => x.level === 'life');
+        const data = { deckQuestions: [a.question, b.question, c.question], fullDeckQuestions: [a.question, b.question, c.question], position: 1, toggles: ['life'], randomMode: 'wild', cardLimit: 5, activePreset: '',
+          sessionLog: [{ question: a.question, level: a.level }, { question: 'Gone for good', level: 'life' }], seenFrom: 0, skippedSeen: [c.question], handNo: 1, sitOut: { [c.question]: 4 }, savedAt: new Date().toISOString() };
+        localStorage.setItem('bu-session', JSON.stringify(data));
+        localStorage.setItem('bu-sessions', JSON.stringify([{ id: 'sess-old', name: 'Old evening', savedAt: data.savedAt, data }]));
+        localStorage.setItem('bu-favourites', JSON.stringify([{ question: b.question, level: b.level }, { question: ` ${b.question.toUpperCase()} `, level: b.level }, { question: 'Gone for good', level: 'life' }]));
+        return { ids: [a.id, b.id, c.id], bq: b.question };
+      });
+      await pg.reload(); await pg.waitForSelector('#card', { state: 'visible' }); await pg.waitForTimeout(700);
+      const read = () => pg.evaluate(() => ({ session: JSON.parse(localStorage.getItem('bu-session')), sessions: JSON.parse(localStorage.getItem('bu-sessions')), favs: JSON.parse(localStorage.getItem('bu-favourites')), raw: ['bu-session', 'bu-sessions', 'bu-favourites'].map(k => localStorage.getItem(k)) }));
+      const s = await read();
+      const inIds = d => d.deckIds?.join() === old.ids.join() && d.fullDeckIds?.join() === old.ids.join() && d.deckQuestions === undefined && d.position === 1
+        && d.sessionLog[0].id === old.ids[0] && d.sessionLog[1].id === null && d.sessionLog[1].question === 'Gone for good' && d.skippedSeen.join() === String(old.ids[2]) && JSON.stringify(d.sitOut) === JSON.stringify({ [old.ids[2]]: 4 });
+      assert(inIds(s.session) && inIds(s.sessions[0].data), `saves not in number form after load: ${JSON.stringify(s.session).slice(-260)} / ${JSON.stringify(s.sessions[0].data).slice(-260)}`);
+      assert(s.favs.length === 2 && s.favs[0].id === old.ids[1] && s.favs[0].question === old.bq && s.favs[1].id === null, `favourites after load: ${JSON.stringify(s.favs)}`);
+      await pg.reload(); await pg.waitForSelector('#card', { state: 'visible' }); await pg.waitForTimeout(700);
+      assert(JSON.stringify((await read()).raw) === JSON.stringify(s.raw), 'a second load wrote the saves again');
+    } finally { await ctx.close(); }
+    // the same card reworded afterwards: the star and the evening's card follow it
+    const ctx2 = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const p2 = await ctx2.newPage();
+    p2.on('pageerror', (e) => consoleErrors.push(e.message));
+    try {
+      await p2.goto(`http://127.0.0.1:${port}/${TARGET}`); await p2.waitForSelector('#card', { state: 'visible' });
+      const b = await p2.evaluate(() => {
+        const [a, b, c] = ALL_CARDS.filter(x => x.level === 'life');
+        const data = { deckQuestions: [a.question, b.question, c.question], position: 1, toggles: ['life'], randomMode: 'wild', cardLimit: 5, savedAt: new Date().toISOString() };
+        localStorage.setItem('bu-sessions', JSON.stringify([{ id: 'sess-old', name: 'Old evening', savedAt: data.savedAt, data }]));
+        localStorage.setItem('bu-favourites', JSON.stringify([{ question: b.question, level: b.level }]));
+        return { id: b.id, q: b.question };
+      });
+      await p2.reload(); await p2.waitForSelector('#card', { state: 'visible' }); await p2.waitForTimeout(500);
+      await p2.route('**/questions.js*', async route => {
+        const text = await (await import('node:fs/promises')).readFile(path.join(ROOT, 'questions.js'), 'utf8');
+        await route.fulfill({ contentType: 'text/javascript', body: text.replace(b.q.replace(/"/g, '\\"'), 'Reworded after the move to numbers') });
+      });
+      await p2.reload(); await p2.waitForSelector('#card', { state: 'visible' }); await p2.waitForTimeout(700);
+      const r = await p2.evaluate(() => { openStoredSession('sess-old'); return { fav: state.favourites[0].question, starred: isFavouriteCard(state.visibleDeck[1]), at: state.visibleDeck[state.currentIndex].question, n: state.visibleDeck.length }; });
+      assert(r.fav === 'Reworded after the move to numbers' && r.starred && r.at === r.fav && r.n === 3, `after the rewording: ${JSON.stringify(r)}`);
+    } finally { await ctx2.close(); }
+  });
+
   await check('the dev build names the card on the card screen ("Friendship 7 · Question 214"); the public and work builds show nothing', async () => {
     for (const [profile, shows] of [['editor', true], ['public', false], ['work', false]]) {
       const { ctx, pg } = await goToLink(`?profile=${profile}&q=friendship-7`);
