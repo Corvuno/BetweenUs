@@ -67,7 +67,7 @@ Read in full before every job, together with your own agent file.
 
 ## Review checklist
 
-A small change is reviewed by its own builder against points 1, 6 and 8. The `reviewer` uses all of
+A small change is reviewed by whoever built it against points 1, 6 and 8. The `checker` uses all of
 them on medium and large builds.
 
 1. The logic does what the item says, traced with a real case. A rule that runs after the decision

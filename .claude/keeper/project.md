@@ -40,8 +40,8 @@ The project's half of the Keeper. The general process is `.claude/skills/keeper/
 **B) Looks**: colours, lines, type, layout, card faces, animation. Builder: `looks-builder`.
 - Read `.claude/keeper/references/` before any looks round; each option names the references it
   drew from.
-- Way of working: agreement first (what it's for, how it should feel), then models in words, then
-  rounds of mockups, each made by the `designer` (SKILL.md, "A design round"). Each
+- Way of working: agreement first (what it's for, how it should feel), then how it works in
+  words, then a sketch, then the finished look (SKILL.md, "A design round"). Each
   round gets its own new artifact link, shows the current design side by side with the options,
   and says why each option works or doesn't. The builder builds only from the mockup the owner
   chose. `DESIGN-SYSTEM.md` applies.
@@ -68,11 +68,9 @@ deck" on the card screen points to it.
 - `searcher` (Haiku, read-only): finds whether something was done, agreed or is being worked on,
   in the Keeper notes, the project and its history, and the owner's Claude Code conversations of
   the last two months (further back when the owner asks). Only when the owner asks.
-- `reviewer` (Sonnet, read-only): reads the diff of medium and large builds.
-- `tester` (Sonnet): tests like a player across all areas, against the acceptance criteria, once
-  on builds that change what players see or how they play, and whenever the owner asks.
-- `designer` (Sonnet, Opus for hard rounds): makes every design round in one pass with one design
-  skill. `design-gate` is kept but not used; it returns if rounds start missing again.
+- `checker` (Sonnet, read-only): on medium and large builds, reads the diff and tests the change
+  like a player against the acceptance criteria, in one pass; also whenever the owner asks.
+- `design-gate` is kept but not used.
 - The builders read `.claude/keeper/build-rules.md` and their own agent file.
 
 ## How the areas pull on each other
