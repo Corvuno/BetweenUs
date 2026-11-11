@@ -3876,6 +3876,9 @@ async function run() {
     for (const [profile, shows] of [['editor', true], ['public', false], ['work', false]]) {
       const { ctx, pg } = await goToLink(`?profile=${profile}&q=friendship-7`);
       try {
+        // The card is shown once its question is on the face; the dev line is painted with it.
+        await pg.waitForFunction(() => document.getElementById('card-question').textContent === ALL_CARDS.filter(c => c.level === 'friends')[6].question, null, { timeout: 5000 });
+        if (shows) await pg.waitForFunction(() => document.getElementById('cardId').textContent !== '', null, { timeout: 5000 });
         const r = await pg.evaluate(() => {
           const el = document.getElementById('cardId'), card = ALL_CARDS.filter(c => c.level === 'friends')[6];
           return { text: el.textContent, shown: getComputedStyle(el).display !== 'none', want: `Friendship 7 · Question ${card.id}` };
