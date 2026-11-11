@@ -55,7 +55,7 @@ function getOrderedSolo(lvl) {
 
 function getOrderedColbert() {
   let cards = ALL_CARDS.filter(c => c.level === 'colbert');
-  if (COLBERT_STRICT) cards = cards.filter(c => !COLBERT_OPTIONAL.includes(c.question));
+  if (COLBERT_STRICT) cards = cards.filter(c => !COLBERT_OPTIONAL.includes(c.id));
   return cards;
 }
 
@@ -194,13 +194,13 @@ function initDeck(isContinuation) {
    just moves seenFrom to the end of it and empties skippedSeen. */
 function _seenSet(){
   const from = Math.min(Math.max(state.seenFrom || 0, 0), state.sessionLog.length);
-  const seen = new Set(state.sessionLog.slice(from).map(c => c.question));
-  state.skippedSeen.forEach(q => seen.add(q));
+  const seen = new Set(state.sessionLog.slice(from).map(c => c.id));
+  state.skippedSeen.forEach(id => seen.add(id));
   return seen;
 }
 function _unseenCount(cards){
   const seen = _seenSet();
-  return cards.filter(c => !seen.has(c.question)).length;
+  return cards.filter(c => !seen.has(c.id)).length;
 }
 /* A fresh pass: every card counts as unseen again; the log itself stays. */
 function startFreshPass(){
@@ -227,7 +227,7 @@ function _newHandBookkeeping(){
   if (state.pickerOpen) closePicker();
   state.pickOptions = null;
 }
-function _sittingOut(c){ return (state.sitOut[c.question] || 0) > state.handNo; }
+function _sittingOut(c){ return (state.sitOut[c.id] || 0) > state.handNo; }
 
 const RUN = 5;      // a run: five consecutive cards of a hand, the unit of an Arc and of the spread
 const RUN_CAP = 2;  // most cards of one category in a run
@@ -355,7 +355,7 @@ function _swapKeeps(cards, i, j, holds) {
    follow so fullDeck still holds the whole selection. */
 function _unseenFirst(cards){
   const seen = _seenSet();
-  const unseenCards = cards.filter(c => !seen.has(c.question));
+  const unseenCards = cards.filter(c => !seen.has(c.id));
   /* cards passed over in a Three pick sit out this hand; if that would leave
      nothing to draw, they are let back in rather than building an empty hand */
   let eligible = unseenCards.filter(c => !_sittingOut(c));
@@ -575,28 +575,29 @@ function applyLimit() {
 
 
 // ── ?Q= TEST DECK ─────────────────────────────────────────────────────────
-// Debug/demo shortcut: ?Q=Work1,Life7,Carnal4 renders exactly those cards, in
-// that order, as the whole hand — instead of the normal random draw — so a
-// specific card can be pulled up or shown to someone without clicking
-// through category selection. Id = a CATEGORIES key (case-insensitive) plus
-// a 1-based index counted in questions.js order for that category, e.g.
-// "Work1" is the first Work card as currently written; inserting a card
-// earlier in a category shifts every later number in it, so these are
-// throwaway test addresses, not stable ones. An id that doesn't parse or
-// doesn't resolve is skipped rather than breaking the whole link. Sets
-// state.queryDeckActive so autoSaveSession() (session.js) leaves the real
-// saved session alone.
+// Test/demo link: ?Q=214,friendship-7,the36-5 (or ?q=, any case) renders exactly those cards, in that order,
+// as the whole hand — instead of the normal random draw — so a specific card can be pulled up or shown to
+// someone without clicking through category selection. Each comma-separated token is one of:
+//   - a question number (214): stable, it stays with the card when its wording is improved;
+//   - a slot (friendship7 or friendship-7, usfriends4, the36-5): the category's display name and the card's
+//     place in it as the deck is laid out today (cardSlot, categories.js), so it moves if cards are added or
+//     removed ahead of it in that category;
+//   - an older code-key form (date3, friends7, kinks2): the category's key and its place, same caveat.
+// A token that doesn't resolve is skipped rather than breaking the whole link. Sets state.queryDeckActive
+// so autoSaveSession() (session.js) leaves the real saved session alone.
+function cardForQueryToken(token) {
+  const t = token.trim().toLowerCase();
+  if (/^\d+$/.test(t)) return CARDS_BY_ID.get(+t) ?? null;
+  const bySlot = CARDS_BY_SLOT.get(t.replace('-', ''));
+  if (bySlot) return bySlot;
+  const m = t.match(/^([a-z]+)(\d+)$/);
+  return m ? (ALL_CARDS.filter(c => c.level === m[1])[+m[2] - 1] ?? null) : null;
+}
 function applyQueryDeck() {
-  const raw = new URLSearchParams(location.search).get('Q');
+  const params = new URLSearchParams(location.search);
+  const raw = params.get('Q') ?? params.get('q');
   if (!raw) return false;
-  const byLevel = {};
-  ALL_CARDS.forEach(c => { (byLevel[c.level] = byLevel[c.level] || []).push(c); });
-  const cards = raw.split(',').map(s => s.trim()).filter(Boolean).map(id => {
-    const m = id.match(/^([a-zA-Z]+)(\d+)$/);
-    if (!m) return null;
-    const pool = byLevel[m[1].toLowerCase()];
-    return pool ? (pool[parseInt(m[2], 10) - 1] || null) : null;
-  }).filter(Boolean);
+  const cards = raw.split(',').map(cardForQueryToken).filter(Boolean);
   if (!cards.length) return false;
 
   state.queryDeckActive = true;
@@ -769,11 +770,11 @@ function skipCard() {
     _undoReachedShift = state.currentIndex < state.reachedIdx;
     if (_undoReachedShift) state.reachedIdx--;
     state.reachedIdx = Math.min(state.reachedIdx, state.visibleDeck.length - 1);
-    state.skippedCards.add(removed.question);
+    state.skippedCards.add(removed.id);
     /* a skipped card counts as seen (not drawn again this pass) but is not
        part of the history list: out of the log, into skippedSeen */
-    state.skippedSeen.add(removed.question);
-    _undoLog = removeFromLog(removed.question);
+    state.skippedSeen.add(removed.id);
+    _undoLog = removeFromLog(removed.id);
     // Show next card (or skipped-all state)
     if (state.visibleDeck.length === 0) {
       state.currentIndex = state.visibleDeck.length; // sentinel: past end
@@ -894,10 +895,10 @@ function nextCard() {
 function buildPickOptions(step) {
   const planned = state.visibleDeck[step];
   if (!planned) return [];
-  const inHand = new Set(state.visibleDeck.map(c => c.question));
+  const inHand = new Set(state.visibleDeck.map(c => c.id));
   const seen = _seenSet();
   const all = getFilteredCards();
-  const others = all.filter(c => !inHand.has(c.question) && !state.handOffered.has(c.question));
+  const others = all.filter(c => !inHand.has(c.id) && !state.handOffered.has(c.id));
   const isArc = state.randomMode === 'arc';
   const isAD = c => SPICY_LEVELS.includes(c.level);
   const noADOpener = isArc && !isAD(planned) && step <= 1 && !(step === 1 && Math.random() < 0.05);
@@ -906,10 +907,10 @@ function buildPickOptions(step) {
      sit-outs from last hand (unseen first). Later tiers only top up what the
      earlier ones couldn't supply, so Three keeps working late in a pass. */
   const tiers = [
-    others.filter(c => !seen.has(c.question) && !_sittingOut(c)),
-    others.filter(c => seen.has(c.question) && !_sittingOut(c)),
-    others.filter(c => !seen.has(c.question) && _sittingOut(c)),
-    others.filter(c => seen.has(c.question) && _sittingOut(c)),
+    others.filter(c => !seen.has(c.id) && !_sittingOut(c)),
+    others.filter(c => seen.has(c.id) && !_sittingOut(c)),
+    others.filter(c => !seen.has(c.id) && _sittingOut(c)),
+    others.filter(c => seen.has(c.id) && _sittingOut(c)),
   ];
   /* Category spread: a pick takes this step's place in its run of five, so an
      option from a category the rest of that run already holds twice would make
@@ -980,8 +981,8 @@ function choosePick(chosen, options, step, noConsequence) {
   state.visibleDeck[step] = chosen;
   if (!noConsequence) {
     options.forEach(c => {
-      state.handOffered.add(c.question);
-      if (c.question !== chosen.question) state.sitOut[c.question] = state.handNo + 2;
+      state.handOffered.add(c.id);
+      if (c.id !== chosen.id) state.sitOut[c.id] = state.handNo + 2;
     });
   }
   state.currentIndex = step;

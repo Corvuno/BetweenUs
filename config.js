@@ -35,6 +35,7 @@
       SPICE_MODE:       false,   // true → adult categories pre-activated
       SPICE_AVAILABLE:  true,    // false → hides the ✦ spice-bias toggle entirely
       SHOW_BACKUP:      true,    // true → shows the hidden Backup overflow category
+      SHOW_CARD_ID:     false,   // true → the card screen names the card's place and question number
       LOG_PERSIST:      true,    // true → the session log survives a page reload
       COLBERT_STRICT:   true,    // true → Colbert plays its canonical 15, in order
       // what "Draw" plays, and what the app opens on. mode 'chapters' unions the
@@ -58,6 +59,7 @@
       SPICE_MODE:       false,
       SPICE_AVAILABLE:  false,
       SHOW_BACKUP:      false,
+      SHOW_CARD_ID:     false,
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
       // narrower room, and a touch softer than balanced — still a real conversation,
@@ -77,6 +79,7 @@
       SPICE_MODE:       true,
       SPICE_AVAILABLE:  true,
       SHOW_BACKUP:      true,
+      SHOW_CARD_ID:     true,
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
       DEFAULT_SELECTION: { mode:'all', intensity:50, focus:50 },
@@ -186,9 +189,10 @@ const PRESETS = {
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 
-// COLBERT_OPTIONAL: questions present in the deck but not in the canonical 15.
+// COLBERT_OPTIONAL: question numbers of the Colbert cards present in the deck but not in the canonical 15
+// ("Window or aisle?", "Earliest memory?", "Cats or dogs?").
 // When COLBERT_STRICT = true (profile setting), these are filtered out during Colbert-solo play.
-const COLBERT_OPTIONAL = ['Window or aisle?','Earliest memory?','Cats or dogs?'];
+const COLBERT_OPTIONAL = [416, 422, 423];
 const COLBERT_STRICT = window.COLBERT_STRICT || false;
 
 // deck.js treats any saved session whose randomMode isn't 'arc' as plain

@@ -29,20 +29,20 @@ const state = {
   drawUnseen: undefined,  // how many of fullDeck this session hasn't shown yet; set by buildFullDeck()
   currentIndex: -1,
   handSide: null,         // end of a hand: 'intermezzo' (card back + pause mark) or 'list' (the hand's questions); null otherwise (presentation.js)
-  skippedCards: new Set(),
+  skippedCards: new Set(),   // question numbers
   partyMode: false,
-  sessionLog: [],
+  sessionLog: [],               // {id, level, question} per card drawn
   seenFrom: 0,                  // index into sessionLog: cards logged from here on count as "seen" this pass (a fresh pass moves it to the end; the log itself is never wiped)
-  loggedQuestions: new Set(),   // per-round guard against duplicate log entries
-  skippedSeen: new Set(),       // questions skipped this pass: they count as seen (_seenSet) without being in the history list; cleared when a fresh pass starts (seenFrom moves)
+  loggedQuestions: new Set(),   // question numbers; per-round guard against duplicate log entries
+  skippedSeen: new Set(),       // question numbers skipped this pass: they count as seen (_seenSet) without being in the history list; cleared when a fresh pass starts (seenFrom moves)
   handNo: 0,                    // counts the hands built this session (initDeck/applyLimit); the clock for sitOut
-  sitOut: {},                   // question -> first handNo it may be drawn again: the cards passed over in a Three pick sit out the next hand
+  sitOut: {},                   // question number -> first handNo it may be drawn again: the cards passed over in a Three pick sit out the next hand
   reachedIdx: -1,               // furthest index of this hand that has been shown (Three only offers options on steps not reached yet)
-  handOffered: new Set(),       // questions already offered as Three options in this hand (never offered twice)
+  handOffered: new Set(),       // question numbers already offered as Three options in this hand (never offered twice)
   pickOptions: null,            // {step, options, planned} while the Three options are on screen
   colbertPrevLimit: null,       // limit to restore after Colbert-solo play
   favourites: [],
-  handStarred: new Set(),   // questions actually starred during THIS hand, via the star
+  handStarred: new Set(),   // question numbers actually starred during THIS hand, via the star
                             // button — cleared by initDeck(). A card that was already a
                             // favourite from an earlier session doesn't count as "starred"
                             // for this hand's end-of-set summary unless the star was
@@ -52,7 +52,7 @@ const state = {
                           // hand under unchanged settings (Draw more, hold-to-continue),
                           // so only a hand that starts from an actual settings change
                           // gets the "thrown onto the table" animation
-  queryDeckActive: false, // set by applyQueryDeck() (?Q=Work1,Life7,...) — a hand pinned
+  queryDeckActive: false, // set by applyQueryDeck() (?Q=214,friendship-7,...) — a hand pinned
                            // to specific cards by URL, for testing/demoing. Blocks
                            // autoSaveSession() so opening a test link never overwrites a
                            // real in-progress saved session.

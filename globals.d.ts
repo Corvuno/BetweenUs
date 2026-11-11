@@ -2,3 +2,6 @@
 // one and cannot see them, so each is declared here (add more as they are fixed properly).
 declare function labelColor(baseHex: string): string;
 declare function giltRailPaint(el: Element | null, baseHex: string | null): void;
+
+// Profile flags config.js copies onto `window` (add more as they are fixed properly).
+interface Window { SHOW_CARD_ID?: boolean }

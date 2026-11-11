@@ -5,18 +5,28 @@
 
 
 /* Saved list from localStorage, or [] when nothing usable is stored: missing,
-   unreadable, not JSON, not a list. Entries without a level and question are dropped. */
+   unreadable, not JSON, not a list. Entries without a level and question are dropped. Each entry comes
+   back as {id, level, question}: by its id, or (saved before cards had numbers) by its wording once;
+   a card since retired keeps the wording it was saved with. */
 function readSavedCards(key) {
   try {
     const saved = JSON.parse(localStorage.getItem(key));
     return Array.isArray(saved)
-      ? saved.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string')
+      ? saved.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string').map(currentEntry)
       : [];
   } catch (error) {
     console.warn(`Ignoring unreadable saved data "${key}":`, error);
     return [];
   }
 }
+
+/* Where a card (or a log entry) sits in the favourites, or -1. Entries are matched by id; an old entry no card
+   matched has none, so it is matched by its saved wording. */
+function favouriteIndex(c) {
+  if (!c) return -1;
+  return state.favourites.findIndex(f => Number.isInteger(c.id) ? f.id === c.id : (!Number.isInteger(f.id) && f.question === c.question));
+}
+function isFavouriteCard(c) { return favouriteIndex(c) >= 0; }
 
 function loadFavourites() {
   state.favourites = readSavedCards('bu-favourites');
@@ -29,7 +39,7 @@ function loadFavourites() {
 // (presentation.js); i is its place in the list it came from.
 function smallCardHTML(c, i) {
   const colour = levelColor(c.level);
-  const star = state.favourites.some(f => f.question === c.question) ? '<span class="play-star" aria-label="Starred">★</span>' : '';
+  const star = isFavouriteCard(c) ? '<span class="play-star" aria-label="Starred">★</span>' : '';
   return `<button type="button" class="play-card" data-i="${i}" style="--lvl:${colour}">${star}<span class="play-cat" style="color:${labelColor(colour)}">${LEVEL_LABELS[c.level] || esc(c.level)}</span><span class="play-q">${esc(c.question)}</span></button>`;
 }
 

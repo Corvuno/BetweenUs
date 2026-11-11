@@ -593,8 +593,8 @@ document.getElementById('btnSave')?.addEventListener('click', () => {
     clearTimeout(_undoTimer);
     undoBtn.classList.remove('visible');
     // Re-insert card at original position and remove from skipped set
-    state.skippedCards.delete(_undoCard.question);
-    state.skippedSeen.delete(_undoCard.question);
+    state.skippedCards.delete(_undoCard.id);
+    state.skippedSeen.delete(_undoCard.id);
     restoreToLog(_undoLog);
     const insertAt = Math.min(_undoIndex, state.visibleDeck.length);
     state.visibleDeck.splice(insertAt, 0, _undoCard);
@@ -1354,7 +1354,7 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
   syncIntentUI();
 })();
 
-applyQueryDeck();   // ?Q=Work1,Life7,... overrides the drawn default hand, if present
+applyQueryDeck();   // ?Q=214,friendship-7,... overrides the drawn default hand, if present
 
 // Silently resume whatever was last live (the ephemeral autosave slot, and
 // the stored session it may be bound to) — after the default draw and the

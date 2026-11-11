@@ -761,7 +761,7 @@ async function run() {
     const was = await page.evaluate(q => state.favourites.some(f => f.question === q), q0);
     await page.locator('#card .hd-star').first().click();
     await page.waitForTimeout(150);
-    const now = await page.evaluate(q => ({ fav: state.favourites.some(f => f.question === q), starred: state.handStarred.has(q), on: document.querySelector('#card .hd-star').classList.contains('on'), side: state.handSide, idx: state.currentIndex }), q0);
+    const now = await page.evaluate(q => ({ fav: state.favourites.some(f => f.question === q), starred: state.handStarred.has(cardByWording(q).id), on: document.querySelector('#card .hd-star').classList.contains('on'), side: state.handSide, idx: state.currentIndex }), q0);
     assert(now.fav === !was && now.on === !was, `star did not toggle the favourite: ${JSON.stringify(now)}`);
     assert(now.side === 'list' && now.idx === await page.evaluate(() => state.visibleDeck.length), 'tapping a star moved the hand or flipped the card');
     await page.locator('#card .hd-star').first().click();
@@ -819,12 +819,12 @@ async function run() {
     const names = files.map(f => f.suggestedFilename());
     assert(files.length === 1 && /^between-us-\d{4}-\d{2}-\d{2}\.txt$/.test(names[0]), `Save gave ${files.length} files: ${names}`);
     const text = await fsp.readFile(await files[0].path(), 'utf8');
-    const live = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), log: state.sessionLog.map(c => c.question), name: eveningName() }));
+    const live = await page.evaluate(() => ({ q: state.visibleDeck.map(c => c.question), ids: state.visibleDeck.map(c => c.id), log: state.sessionLog.map(c => c.question), name: eveningName() }));
     assert(text.split('\n')[0] === live.name, `the first line should be the evening's name "${live.name}", got "${text.split('\n')[0]}"`);
     const mark = text.indexOf('you can ignore everything below this line');
     assert(mark > 0 && live.log.every(q => text.indexOf(q) > -1 && text.indexOf(q) < mark), 'the readable list is not above the state block');
     const json = JSON.parse(text.slice(text.indexOf('{', mark)));
-    assert(json.format === 'between-us-state' && JSON.stringify(json.data.deckQuestions) === JSON.stringify(live.q), 'the state block does not hold this hand');
+    assert(json.format === 'between-us-state' && json.version === 2 && JSON.stringify(json.data.deckIds) === JSON.stringify(live.ids) && json.data.deckQuestions === undefined, 'the state block does not hold this hand');
     assert(json.data.position === live.q.length - 1, `state position ${json.data.position} (at the end of a hand it is the last card)`);
     // wreck the live state, then open the file
     await page.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); document.getElementById('d-reshuffle').click(); });
@@ -1018,10 +1018,10 @@ async function run() {
       const keep = { lim: state.cardLimit, log: state.sessionLog, from: state.seenFrom, on: intentOn, ii: intentIntensity, fo: intentFocus };
       intentOn = true; intentIntensity = 0.9; intentFocus = 0.1;
       const sel = getFilteredCards(), unseenN = 12;
-      const seed = () => { state.sessionLog = shuffle(sel).slice(0, sel.length - unseenN).map(c => ({ question: c.question, level: c.level })); state.seenFrom = 0; };
+      const seed = () => { state.sessionLog = shuffle(sel).slice(0, sel.length - unseenN).map(c => entryOf(c)); state.seenFrom = 0; };
       const out = { sizes: [] };
       state.cardLimit = 5; seed();
-      for (let i = 0; i < 3; i++) { initDeck(true); out.sizes.push(state.visibleDeck.length); state.visibleDeck.forEach(c => state.sessionLog.push({ question: c.question, level: c.level })); }
+      for (let i = 0; i < 3; i++) { initDeck(true); out.sizes.push(state.visibleDeck.length); state.visibleDeck.forEach(c => state.sessionLog.push(entryOf(c))); }
       const logLen = state.sessionLog.length;
       initDeck(true);
       out.fresh = { size: state.visibleDeck.length, seenFrom: state.seenFrom, logLen, logKept: state.sessionLog.length === logLen };
@@ -1101,7 +1101,7 @@ async function run() {
     for (let i = 0; i < 5; i++) {
       if (i === 0) await page.locator('#card').click(); else await page.locator('#btn-next').click();
       await waitPicker(true);
-      const before = await page.evaluate(() => { const pl = state.pickOptions.planned; const hand = new Set(state.visibleDeck.map(c => c.question)); const seen = _seenSet(); return { n: getFilteredCards().filter(c => levelDepth(c.level) === levelDepth(pl.level) && !hand.has(c.question) && !seen.has(c.question) && !_sittingOut(c) && !state.handOffered.has(c.question)).length, handLen: state.visibleDeck.length }; });
+      const before = await page.evaluate(() => { const pl = state.pickOptions.planned; const hand = new Set(state.visibleDeck.map(c => c.question)); const seen = _seenSet(); return { n: getFilteredCards().filter(c => levelDepth(c.level) === levelDepth(pl.level) && !hand.has(c.question) && !seen.has(c.id) && !_sittingOut(c) && !state.handOffered.has(c.id)).length, handLen: state.visibleDeck.length }; });
       const info = await pickInfo();
       assert(info.step === i, `options were for step ${info.step}, expected ${i}`);
       assert(info.qs.length === 3 && new Set(info.qs).size === 3, `step ${i}: expected 3 distinct options, got ${info.qs.length}`);
@@ -1134,8 +1134,8 @@ async function run() {
         state.sitOut = {}; state.skippedSeen.clear(); state.seenFrom = 0;
         state.loggedQuestions.clear();
         const all = getFilteredCards();
-        state.sessionLog = all.slice(0, all.length - 7).map(c => ({ question: c.question, level: c.level }));
-        state.sessionLog.forEach(c => state.loggedQuestions.add(c.question));
+        state.sessionLog = all.slice(0, all.length - 7).map(c => entryOf(c));
+        state.sessionLog.forEach(c => state.loggedQuestions.add(c.id));
         renderLog(); initDeck(); renderShell();
       }, mode);
       await page.waitForTimeout(250);
@@ -1185,7 +1185,7 @@ async function run() {
           resetSeen(); state.handOffered = new Set(); initDeck();
           const planned = state.visibleDeck[step], hand = new Set(state.visibleDeck.map(c => c.question));
           const same = getFilteredCards().filter(c => c.level === planned.level && !hand.has(c.question));
-          getFilteredCards().filter(c => c.level !== planned.level).forEach(c => { state.sessionLog.push({ question: c.question, level: c.level }); state.loggedQuestions.add(c.question); });
+          getFilteredCards().filter(c => c.level !== planned.level).forEach(c => { state.sessionLog.push(entryOf(c)); state.loggedQuestions.add(c.id); });
           const o = buildPickOptions(step);
           const extras = o.filter(c => c.question !== planned.question);
           out.late.push({ mode, step, n: same.length, ok: extras.length === 2 && extras.every(c => c.level === planned.level) });
@@ -1212,7 +1212,7 @@ async function run() {
       const setPool = (levels, perOther, perBig) => {
         const keep = new Set();
         levels.forEach(l => all.filter(c => c.level === l).slice(0, l === big ? perBig : perOther).forEach(c => keep.add(c.question)));
-        state.sessionLog = all.filter(c => !keep.has(c.question)).map(c => ({ question: c.question, level: c.level }));
+        state.sessionLog = all.filter(c => !keep.has(c.question)).map(c => entryOf(c));
         state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {};
         return keep.size;
       };
@@ -1257,7 +1257,7 @@ async function run() {
         state.randomMode = mode; state.cardLimit = lim;
         const keep = new Set();
         lv.slice().sort(() => Math.random() - 0.5).slice(0, shape.length).forEach((l, j) => all.filter(c => c.level === l).slice(0, shape[j]).forEach(c => keep.add(c.question)));
-        state.sessionLog = all.filter(c => !keep.has(c.question)).map(c => ({ question: c.question, level: c.level }));
+        state.sessionLog = all.filter(c => !keep.has(c.question)).map(c => entryOf(c));
         state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {}; state.handNo++;
         const b = buildFullDeck(); const hand = sliceVisibleDeck(b.deck, b.unseen);
         const counts = Object.values(Object.groupBy(b.deck.slice(0, b.unseen), c => c.level)).map(g => g.length);
@@ -1537,12 +1537,12 @@ async function run() {
     const r = await page.evaluate((passed) => {
       const unseenPart = () => new Set(state.fullDeck.slice(0, state.drawUnseen).map(c => c.question));
       const logged = state.sessionLog.map(c => c.question);
-      const out = { loggedPassed: passed.some(q => logged.includes(q)), sit: passed.map(q => state.sitOut[q]), hand: state.handNo };
+      const out = { loggedPassed: passed.some(q => logged.includes(q)), sit: passed.map(q => state.sitOut[cardByWording(q).id]), hand: state.handNo };
       initDeck(true);   // hand 2
       out.h2 = passed.some(q => unseenPart().has(q) || state.visibleDeck.some(c => c.question === q));
       initDeck(true);   // hand 3
       out.h3 = passed.every(q => unseenPart().has(q));
-      out.h3sit = passed.some(q => q in state.sitOut);
+      out.h3sit = passed.some(q => cardByWording(q).id in state.sitOut);
       return out;
     }, passed);
     assert(!r.loggedPassed, 'a passed-over card was logged as seen');
@@ -1746,7 +1746,7 @@ async function run() {
     await swipe(page, '#card', 0, 100);
     await page.waitForTimeout(400);
     const r = await page.evaluate((q) => {
-      const out = { seen: state.skippedSeen.has(q), inLog: state.sessionLog.some(c => c.question === q), inDrawer: document.getElementById('logList').textContent.replace(/\u00A0/g, ' ').includes(q) };
+      const out = { seen: state.skippedSeen.has(cardByWording(q).id), inLog: state.sessionLog.some(c => c.question === q), inDrawer: document.getElementById('logList').textContent.replace(/\u00A0/g, ' ').includes(q) };
       out.back = [];
       for (let i = 0; i < 6; i++) { initDeck(true); out.back.push(state.fullDeck.slice(0, state.drawUnseen).some(c => c.question === q) || state.visibleDeck.some(c => c.question === q)); }
       return out;
@@ -1763,13 +1763,13 @@ async function run() {
     await page.waitForTimeout(300);
     await page.locator('#skipUndo').click();
     await page.waitForTimeout(400);
-    const u = await page.evaluate((q) => ({ seen: state.skippedSeen.has(q), inLog: state.sessionLog.filter(c => c.question === q).length }), q2);
+    const u = await page.evaluate((q) => ({ seen: state.skippedSeen.has(cardByWording(q).id), inLog: state.sessionLog.filter(c => c.question === q).length }), q2);
     assert(!u.seen && u.inLog === 1, `undo-skip: ${JSON.stringify(u)}`);
     // when the whole selection is used up (skipped ones included) a fresh pass starts and empties the set
     const f = await page.evaluate(() => {
       const sel = getFilteredCards();
-      state.sessionLog = sel.slice(1).map(c => ({ question: c.question, level: c.level })); state.seenFrom = 0;
-      state.skippedSeen = new Set(); state.skippedSeen.add(sel[0].question);
+      state.sessionLog = sel.slice(1).map(c => entryOf(c)); state.seenFrom = 0;
+      state.skippedSeen = new Set(); state.skippedSeen.add(sel[0].id);
       initDeck(true);
       return { seenFrom: state.seenFrom, len: state.sessionLog.length, sk: state.skippedSeen.size, hand: state.visibleDeck.length };
     });
@@ -1789,7 +1789,7 @@ async function run() {
       const r = await page.evaluate((a) => {
         const b = state.visibleDeck[state.currentIndex].question;
         return { b, differs: b !== a, aLogged: state.sessionLog.some(c => c.question === a), bLogged: state.sessionLog.filter(c => c.question === b).length,
-                 bInDrawer: document.getElementById('logList').textContent.includes(b), bSeen: _seenSet().has(b), aSeen: _seenSet().has(a), n: state.sessionLog.length };
+                 bInDrawer: document.getElementById('logList').textContent.includes(b), bSeen: _seenSet().has(cardByWording(b).id), aSeen: _seenSet().has(cardByWording(a).id), n: state.sessionLog.length };
       }, a);
       assert(r.differs && !r.aLogged && r.aSeen && r.bLogged === 1 && r.bInDrawer && r.bSeen && r.n === 1, `skip gap (spotlight=${spot}): ${JSON.stringify(r)}`);
       await page.locator('#skipUndo').evaluate(el => el.click());
@@ -2725,9 +2725,9 @@ async function run() {
       // what the line should say, worked out from the log and the selection itself rather than from the app's own count
       const expected = () => pg.evaluate(() => {
         const all = getFilteredCards ? (orderedSoloLevel() ? state.fullDeck : getFilteredCards()) : [];
-        const seen = new Set(state.sessionLog.slice(state.seenFrom).map(c => c.question));
-        state.skippedSeen.forEach(q => seen.add(q));
-        const n = all.filter(c => seen.has(c.question)).length;
+        const seen = new Set(state.sessionLog.slice(state.seenFrom).map(c => c.id));
+        state.skippedSeen.forEach(id => seen.add(id));
+        const n = all.filter(c => seen.has(c.id)).length;
         return `${n} seen, ${all.length - n} left`;
       });
       const said = async () => { await openPhoneMenu(pg); return menuLine(pg, 'start'); };
@@ -2923,7 +2923,7 @@ async function run() {
       // a state with no deck restores nothing and adds nothing
       const before = await pg.evaluate(() => { localStorage.removeItem('bu-sessions'); setActiveSessionId(''); document.getElementById('d-reshuffle').click(); return state.visibleDeck.map(c => c.question); });
       await pg.waitForTimeout(400);
-      await open(await make('bu-nodeck.txt', 'Empty evening', { ...body.data, deckQuestions: [], fullDeckQuestions: [] }));
+      await open(await make('bu-nodeck.txt', 'Empty evening', { ...body.data, deckIds: [], fullDeckIds: [] }));
       s = await snap();
       assert(s.names.length === 0, `an evening with no deck was added to Saved: ${JSON.stringify(s.names)}`);
       assert(before.length > 0, 'no hand to compare with');
@@ -3669,6 +3669,174 @@ async function run() {
         assert(next.idx === 0 && next.level !== 'Wildcard' && next.count === `1/${next.len}` && next.ticks === next.len, `${tag}: new hand ${JSON.stringify(next)}`);
       }
     } finally { await ctx.close(); }
+  });
+
+  // ── #139: every card has a question number; saves, stars and Three's memory keep the number, not the wording ──
+  await check('card numbers: every card has its own whole number, no number is both live and retired, and slots are worked out from the category names', async () => {
+    const r = await page.evaluate(() => {
+      const ids = KNOWN_CARDS.map(c => c.id), retired = RETIRED_CARDS.map(c => c.id);
+      return {
+        badId: KNOWN_CARDS.filter(c => !Number.isInteger(c.id)).map(c => c.question),
+        dupes: ids.filter((id, i) => ids.indexOf(id) !== i),
+        retiredDupes: retired.filter((id, i) => retired.indexOf(id) !== i),
+        both: ids.filter(id => retired.includes(id)),
+        retiredBad: RETIRED_CARDS.filter(c => !Number.isInteger(c.id) || typeof c.question !== 'string' || typeof c.level !== 'string').length,
+        next: nextFreeCardId(), top: Math.max(...ids, ...retired),
+        slots: [CARDS_BY_ID.get(1), WILDCARD_CARDS[0], WILDCARD_CARDS[1], ALL_CARDS.filter(c => c.level === 'aron')[4], ALL_CARDS.filter(c => c.level === 'usfriend')[3]].map(cardSlot),
+        optional: COLBERT_OPTIONAL.map(id => CARDS_BY_ID.get(id)?.question),
+        allSlotsOnce: new Set(KNOWN_CARDS.map(cardSlot)).size === KNOWN_CARDS.length,
+        stored: (json => KNOWN_CARDS.some(c => json.includes(`"${cardSlot(c)}"`)))(JSON.stringify(serializeSession())),
+      };
+    });
+    assert(!r.badId.length, `cards without a whole-number id: ${r.badId.join(' | ')}`);
+    assert(!r.dupes.length, `a question number is used twice: ${r.dupes}`);
+    assert(!r.retiredDupes.length && !r.both.length && !r.retiredBad, `retired cards: repeated ${r.retiredDupes}, also live ${r.both}, malformed ${r.retiredBad}`);
+    assert(r.next === r.top + 1, `next free number ${r.next}, expected ${r.top + 1}`);
+    assert(r.slots.join() === `${r.slots[0]},wildcard-1,wildcard-2,the36-5,usfriends-4` && /^[a-z0-9]+-1$/.test(r.slots[0]), `slots: ${r.slots}`);
+    assert(r.allSlotsOnce, 'two cards share a slot');
+    assert(r.optional.join('|') === 'Window or aisle?|Earliest memory?|Cats or dogs?', `Colbert's optional cards: ${r.optional}`);
+    assert(!r.stored, 'a slot was written into a save');
+  });
+
+  const goToLink = async query => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const pg = await ctx.newPage();
+    pg.on('pageerror', (e) => consoleErrors.push(e.message));
+    await pg.goto(`http://127.0.0.1:${port}/${TARGET}${query}`);
+    await pg.waitForSelector('#card', { state: 'visible' });
+    await pg.waitForTimeout(500);
+    return { ctx, pg };
+  };
+  await check('test link: ?q= lowercase, ?Q=, a question number, a slot with or without its hyphen, a display-name slot and an old code-key slot all pull up the card', async () => {
+    const want = await page.evaluate(() => {
+      const nth = (level, n) => ALL_CARDS.filter(c => c.level === level)[n - 1].id;
+      return { number: CARDS_BY_ID.get(214).id, friendship7: nth('friends', 7), usfriends4: nth('usfriend', 4), the365: nth('aron', 5), date3: nth('date', 3), kinks2: nth('kinks', 2), wild: WILDCARD_CARDS[1].id };
+    });
+    const links = [
+      ['?q=214', [214]],
+      ['?Q=214', [214]],
+      ['?q=Friendship-7', [want.friendship7]],
+      ['?q=friendship7,USFRIENDS4', [want.friendship7, want.usfriends4]],
+      ['?q=the36-5', [want.the365]],
+      ['?q=date3,kinks2', [want.date3, want.kinks2]],
+      ['?q=wildcard-2,nonsense,99999,214', [want.wild, 214]],
+    ];
+    for (const [query, ids] of links) {
+      const { ctx, pg } = await goToLink(query);
+      try {
+        const got = await pg.evaluate(() => ({ ids: state.visibleDeck.map(c => c.id), active: state.queryDeckActive }));
+        assert(got.active && JSON.stringify(got.ids) === JSON.stringify(ids), `${query} gave ${JSON.stringify(got.ids)}, expected ${JSON.stringify(ids)}`);
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('a reworded card keeps its place in a saved evening, its star and its entry in Played; a retired card is left out of the hand and still reads in Favourites and Played', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3);
+      await pg.waitForTimeout(500);
+      const r = await pg.evaluate(() => {
+        const out = {};
+        const second = state.visibleDeck[1], fourth = state.visibleDeck[3], third = state.visibleDeck[2];
+        toggleFavourite(second);
+        const data = JSON.parse(JSON.stringify(serializeSession()));
+        out.keys = Object.keys(data).filter(k => /Questions$/.test(k));
+        out.logHasIds = data.sessionLog.every(c => Number.isInteger(c.id) && c.question && c.level);
+        out.favHasIds = JSON.parse(localStorage.getItem('bu-favourites')).every(c => Number.isInteger(c.id));
+        // the wording is improved after the evening was saved
+        const was = second.question;
+        second.question = 'A reworded question, after the evening was saved';
+        const oldWording = third.question;
+        state.visibleDeck = []; state.fullDeck = []; state.sessionLog = []; state.favourites = [];
+        restoreSessionData(data); loadFavourites();
+        out.pos = state.currentIndex; out.expectPos = data.position;
+        out.sameCards = state.visibleDeck.map(c => c.id).join() === data.deckIds.join();
+        out.logWording = state.sessionLog[1].question;
+        out.favWording = state.favourites[0].question;
+        out.starred = isFavouriteCard(second) && document.getElementById('cardStar').classList.contains('active') === isFavouriteCard(shownCard());
+        out.drawer = (renderFavourites(), document.getElementById('favsList').textContent.includes('A reworded question'));
+        second.question = was;
+        // a card retired after the save: left out of the hand, position follows the card the player was on
+        const retired = { id: 90001, level: 'life', question: 'A question that was retired' };
+        const withRetired = { ...data, deckIds: [data.deckIds[0], retired.id, ...data.deckIds.slice(1)], position: data.position + 1,
+          sessionLog: [...data.sessionLog, retired], seenFrom: 0 };
+        localStorage.setItem('bu-favourites', JSON.stringify([retired, ...JSON.parse(localStorage.getItem('bu-favourites'))]));
+        restoreSessionData(withRetired); loadFavourites();
+        out.retiredLeftOut = state.visibleDeck.length === data.deckIds.length && state.visibleDeck.every(c => c.id !== retired.id);
+        out.samePlace = state.currentIndex === data.position && state.visibleDeck[state.currentIndex].id === data.deckIds[data.position];
+        out.retiredLog = state.sessionLog.at(-1).question;
+        out.retiredFav = state.favourites[0].question;
+        out.retiredNeverSeen = !state.loggedQuestions.has(null);
+        void fourth; void oldWording;
+        return out;
+      });
+      assert(!r.keys.length, `a save still holds cards by wording: ${r.keys}`);
+      assert(r.logHasIds && r.favHasIds, 'the log or the favourites were saved without question numbers');
+      assert(r.sameCards && r.pos === r.expectPos, `restored hand differs: same cards ${r.sameCards}, position ${r.pos} of ${r.expectPos}`);
+      assert(r.logWording.startsWith('A reworded question') && r.favWording.startsWith('A reworded question'), `Played reads "${r.logWording}", Favourites "${r.favWording}"`);
+      assert(r.starred && r.drawer, 'the star did not hold on the reworded card');
+      assert(r.retiredLeftOut && r.samePlace, `retired card: left out ${r.retiredLeftOut}, same place ${r.samePlace}`);
+      assert(r.retiredLog === 'A question that was retired' && r.retiredFav === 'A question that was retired', `retired wording: "${r.retiredLog}" / "${r.retiredFav}"`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('older saves that hold the wording still open: matched once by wording, written with numbers from then on; an unmatched entry is dropped from the hand and kept in Played and Favourites', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 2);
+      const r = await pg.evaluate(() => {
+        const [a, b, c] = state.visibleDeck;
+        const out = {};
+        const legacy = {
+          deckQuestions: [a.question, 'A question no card has any more', b.question.toUpperCase() + '  ', c.question],
+          fullDeckQuestions: [a.question, b.question, c.question],
+          position: 3, toggles: [...state.activeToggles], randomMode: 'wild', cardLimit: 5, activePreset: state.activePreset,
+          sessionLog: [{ question: a.question, level: a.level }, { question: 'A question no card has any more', level: 'life' }],
+          seenFrom: 0, skippedSeen: [c.question], handNo: 2, sitOut: { [b.question]: 9, 'not a card': 9 },
+        };
+        localStorage.setItem('bu-favourites', JSON.stringify([{ question: a.question, level: a.level }, { question: 'A question no card has any more', level: 'life' }]));
+        state.visibleDeck = []; state.fullDeck = []; state.sessionLog = []; state.favourites = [];
+        restoreSessionData(JSON.parse(JSON.stringify(legacy))); loadFavourites();
+        out.deck = state.visibleDeck.map(x => x.id).join() === [a, b, c].map(x => x.id).join();
+        out.pos = state.currentIndex; out.onC = state.visibleDeck[state.currentIndex]?.id === c.id;
+        out.full = state.fullDeck.length;
+        out.log = state.sessionLog.map(x => [x.id, x.question === a.question || x.question]);
+        out.skipped = [...state.skippedSeen].join() === String(c.id);
+        out.sit = JSON.stringify(state.sitOut) === JSON.stringify({ [b.id]: 9 });
+        out.favs = state.favourites.map(x => x.id === a.id ? 'live' : x.id === null ? x.question : 'other');
+        out.starred = isFavouriteCard(a);
+        const saved = JSON.parse(JSON.stringify(serializeSession()));
+        out.rewritten = Array.isArray(saved.deckIds) && saved.deckQuestions === undefined && saved.sessionLog[0].id === a.id;
+        return out;
+      });
+      assert(r.deck && r.onC && r.pos === 2 && r.full === 3, `old hand: same cards ${r.deck}, position ${r.pos}, on the last card ${r.onC}, full deck ${r.full}`);
+      assert(JSON.stringify(r.log) === JSON.stringify([[r.log[0][0], true], [null, 'A question no card has any more']]) && Number.isInteger(r.log[0][0]), `old log: ${JSON.stringify(r.log)}`);
+      assert(r.skipped && r.sit, `old skipped / sit-out memory: skipped ${r.skipped}, sit out ${r.sit}`);
+      assert(r.favs.join('|') === 'live|A question no card has any more' && r.starred, `old favourites: ${r.favs}`);
+      assert(r.rewritten, 'the next save did not write numbers');
+      // an old state file (version 1, wording) and an old plain list open the same way
+      const opened = await pg.evaluate(() => {
+        const [a, b] = state.visibleDeck;
+        const file = `Old evening\n${'─'.repeat(40)}\n\n1. [Life]\n   ${a.question}\n\n${'─'.repeat(40)}\n${STATE_BLOCK_MARK}\n` + JSON.stringify({ format: STATE_FILE_FORMAT, version: 1, data: { deckQuestions: [a.question, b.question], position: 1, sessionLog: [], toggles: [...state.activeToggles] } });
+        state.visibleDeck = []; state.fullDeck = [];
+        const ok = openEveningFile(file);
+        return { ok, ids: state.visibleDeck.map(c => c.id).join(), want: [a.id, b.id].join() };
+      });
+      assert(opened.ok && opened.ids === opened.want, `an old state file opened as ${opened.ids}, expected ${opened.want}`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('the dev build names the card on the card screen ("Friendship 7 · Question 214"); the public and work builds show nothing', async () => {
+    for (const [profile, shows] of [['editor', true], ['public', false], ['work', false]]) {
+      const { ctx, pg } = await goToLink(`?profile=${profile}&q=friendship-7`);
+      try {
+        const r = await pg.evaluate(() => {
+          const el = document.getElementById('cardId'), card = ALL_CARDS.filter(c => c.level === 'friends')[6];
+          return { text: el.textContent, shown: getComputedStyle(el).display !== 'none', want: `Friendship 7 · Question ${card.id}` };
+        });
+        assert(r.shown === shows && (shows ? r.text === r.want : r.text === ''), `${profile}: line "${r.text}" ${r.shown ? 'shown' : 'hidden'}, expected ${shows ? r.want : 'nothing'}`);
+      } finally { await ctx.close(); }
+    }
   });
 
   await check('no uncaught page errors were raised during the run', async () => {

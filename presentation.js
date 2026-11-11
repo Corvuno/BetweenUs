@@ -120,7 +120,7 @@ function updatePartyDisplay(card) {
     requestAnimationFrame(()=>requestAnimationFrame(()=>pq.classList.remove('entering')));
   }
   if (pc) pc.textContent = countLabel(state.currentIndex+1, state.visibleDeck.length);
-  if (ps) ps.classList.toggle('on', state.favourites.some(f => f.question === card.question));
+  if (ps) ps.classList.toggle('on', isFavouriteCard(card));
 }
 
 function toggleCategories() {
@@ -241,7 +241,7 @@ function handSizeLabel(limit) {
 function menuStates() {
   const seen = _seenSet();
   const total = state.fullDeck.length;
-  const seenCount = state.fullDeck.filter(c => seen.has(c.question)).length;
+  const seenCount = state.fullDeck.filter(c => seen.has(c.id)).length;
   const drawn = state.sessionLog.length;
   const saved = getStoredSessions().length;
   const starred = state.favourites.length;
@@ -348,15 +348,15 @@ const STATE_FILE_FORMAT = 'between-us-state';
 const STATE_BLOCK_MARK = '— state (for Open a list; you can ignore everything below this line) —';
 function exportSessionLog() {
   if (!state.sessionLog.length) return;
-  const favQ = new Set((state.favourites || []).map(f => f.question));
   const lines = state.sessionLog.map((c,i) => {
-    const star = favQ.has(c.question) ? ' ★' : '';
+    const star = isFavouriteCard(c) ? ' ★' : '';
     return `${i+1}. [${LEVEL_LABELS[c.level]||c.level}]${star}\n   ${c.question}`;
   }).join('\n\n');
   // at the end of a hand the position is the last card (the hand's end is not a card to come back to)
   const data = serializeSession();
-  if (data.deckQuestions.length && data.position >= data.deckQuestions.length) data.position = data.deckQuestions.length - 1;
-  const stateBlock = JSON.stringify({ format: STATE_FILE_FORMAT, version: 1, data }, null, 2);
+  if (data.deckIds.length && data.position >= data.deckIds.length) data.position = data.deckIds.length - 1;
+  // version 2 holds cards by question number (deckIds); version 1 held their wording (deckQuestions); Open a list reads both
+  const stateBlock = JSON.stringify({ format: STATE_FILE_FORMAT, version: 2, data }, null, 2);
   const rule = '─'.repeat(40);
   const text = `${eveningName()}\nBetween Us — ${new Date().toLocaleDateString()}\n${rule}\n\n${lines}\n\n${rule}\n${STATE_BLOCK_MARK}\n${stateBlock}\n`;
   const blob = new Blob([text],{type:'text/plain'});
@@ -375,7 +375,7 @@ function openEveningFile(text) {
   if (at < 0) return false;
   let file = null;
   try { file = JSON.parse(text.slice(at + line.length)); } catch (error) { console.warn('Could not read the state in this file:', error); return false; }
-  if (file?.format !== STATE_FILE_FORMAT || !file.data?.deckQuestions?.length) return false;   // nothing to restore: treat as an unreadable block
+  if (file?.format !== STATE_FILE_FORMAT || !(file.data?.deckIds ?? file.data?.deckQuestions)?.length) return false;   // nothing to restore: treat as an unreadable block
   const name = text.split('\n')[0].trim().slice(0, 80) || autoSessionName();
   restoreSessionData(file.data);
   setActiveSessionId('');
@@ -396,11 +396,10 @@ document.getElementById('btnImport') && document.getElementById('btnImport').add
       if (file && file.format === STATE_FILE_FORMAT && file.data) { restoreSessionData(file.data); closeAllDrawers(); }
       return;
     }
-    const qMap={}; KNOWN_CARDS.forEach(c=>{qMap[c.question.toLowerCase().trim()]=c;});
     const imported=[]; text.split('\n').forEach((line,i,arr)=>{
-      if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(qMap[q.toLowerCase()]||{question:q,level:'deep'});}
+      if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(currentEntry({question:q,level:'deep'}));}
     });
-    if(imported.length){state.sessionLog=imported;state.seenFrom=0;state.loggedQuestions=new Set(imported.map(c=>c.question));renderLog();closeAllDrawers();openDrawer('playedDrawer');}
+    if(imported.length){state.sessionLog=imported;state.seenFrom=0;state.loggedQuestions=new Set(imported.map(c=>c.id).filter(Number.isInteger));renderLog();closeAllDrawers();openDrawer('playedDrawer');}
   }; inp.click();
 });
 
@@ -777,7 +776,6 @@ function setPauseColour() {
 
 const HAND_STAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.6l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 
-function isFavouriteCard(c) { return !!c && state.favourites.some(f => f.question === c.question); }
 
 // The hand's questions, in the order they were drawn: category diamond,
 // the question in full, its own star (outline = not a favourite, filled = one).

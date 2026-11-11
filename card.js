@@ -94,9 +94,9 @@ async function toggleFavourite(forCard) {
   // passes the question it is starring, so both go through this one store.
   const card = forCard || shownCard();
   if (!card) return;
-  const idx = state.favourites.findIndex(f => f.question === card.question);
-  if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.question); }
-  else { state.favourites.push({ question: card.question, level: card.level }); state.handStarred.add(card.question); }
+  const idx = favouriteIndex(card);
+  if (idx >= 0) { state.favourites.splice(idx, 1); state.handStarred.delete(card.id); }
+  else { state.favourites.push(entryOf(card)); state.handStarred.add(card.id); }
   try { localStorage.setItem('bu-favourites', JSON.stringify(state.favourites)); }
   catch (error) { console.warn('Could not save favourites:', error); }
   updateStarUI();
@@ -112,10 +112,19 @@ function paintLevelLabel(el, card) {
   el.style.color = card.level === WILDCARD_LEVEL ? '' : labelColor(levelColor(card.level));
 }
 
+/* Dev build only (SHOW_CARD_ID): the card's place in its category and its question number, in a small line
+   on the card ("Friendship 7 · Question 214"). A card with no live number (retired) shows nothing. */
+function paintCardId(card) {
+  const el = document.getElementById('cardId');
+  if (!el) return;
+  const live = window.SHOW_CARD_ID && card ? CARDS_BY_ID.get(card.id) : null;
+  el.textContent = live ? `${LEVEL_LABELS[live.level].replace(' \u2726', '')} ${cardPlace(live)} \u00b7 Question ${live.id}` : '';
+}
+
 function updateStarUI() {
   const card = shownCard();
   const star = document.getElementById('cardStar');
-  const starred = !!card && state.favourites.some(f => f.question === card.question);
+  const starred = isFavouriteCard(card);
   if (star) star.classList.toggle('active', starred);
   const pStar = document.getElementById('partyStar');   // Spotlight's twin lights with it
   if (pStar) pStar.classList.toggle('on', starred);
@@ -196,6 +205,7 @@ function clearCardFace() {
   applyCardMark(document.getElementById('card'), null);
   const lvlEl = document.getElementById('card-level');
   if (lvlEl) { lvlEl.textContent = ''; lvlEl.classList.remove('in'); }
+  paintCardId(null);
   const qEl = document.getElementById('card-question');
   if (qEl) { qEl.textContent = ''; qEl.classList.remove('in'); }
   ['party-question', 'party-level', 'party-count'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
@@ -254,6 +264,7 @@ function setCardDisplay(card) {
     giltRailPaint(accent, color);
   }
   paintLevelLabel(lvlEl, card);
+  paintCardId(card);
   if (qEl)   qEl.textContent = translateQ(card);
   /* .card-level and .card-question are invisible until they carry `in` —
      every route that shows a card without the flip (Spotlight before the first
@@ -375,6 +386,7 @@ function flipToCard(card, isFirstDraw) {
     const color = levelColor(shown.level);
     giltRailPaint(accent, color);
     paintLevelLabel(lvlEl, shown);
+    paintCardId(shown);
     if (qEl)   qEl.textContent = translateQ(shown);
     lvlEl?.classList.add('in');
     qEl?.classList.add('in');

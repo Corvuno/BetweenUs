@@ -165,16 +165,60 @@ const LEVEL_LABELS    = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]
 const CATEGORY_DESCRIPTIONS = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.desc]));
 // Wildcards (#76): cards that belong to no category or chapter, so they are not in CATEGORIES. They carry
 // their own level key so every place that shows a card finds a label ("Wildcard"); the colour (gold) and the
-// depth fall back to levelColor's / levelDepth's defaults. To add one, add a line to WILDCARD_QUESTIONS.
+// depth fall back to levelColor's / levelDepth's defaults. To add one, add a line to WILDCARD_QUESTIONS with the next free number (nextFreeCardId).
 const WILDCARD_LEVEL = 'wildcard';
 LEVEL_LABELS[WILDCARD_LEVEL] = 'Wildcard';
 const WILDCARD_QUESTIONS = [
-  "Ask anyone here the question you've been saving.",
-  "Ask someone at the table what you really want to know.",
+  { id: 493, question: "Ask anyone here the question you've been saving." },
+  { id: 494, question: "Ask someone at the table what you really want to know." },
 ];
-const WILDCARD_CARDS = WILDCARD_QUESTIONS.map(question => ({ level: WILDCARD_LEVEL, question }));
+const WILDCARD_CARDS = WILDCARD_QUESTIONS.map(({ id, question }) => ({ id, level: WILDCARD_LEVEL, question }));
 /** Every card a saved hand or a pasted list can name: the deck and the wildcards. */
 const KNOWN_CARDS = [...ALL_CARDS, ...WILDCARD_CARDS];
+
+// ── CARD IDENTITY ────────────────────────────────────────────────────────────
+// A card is known by its `id`, the question number written on it in questions.js (wildcards: above). Every
+// place that remembers a card (saved evenings, Favourites, Played, Three's memory) keeps the id, so a card
+// reworded in place is still the same card. The slot is the card's address as the deck is laid out today:
+// its category's display name, lowercased and cut to letters and digits, a hyphen, and its place among that
+// category's cards in file order ("friendship-7"). It is worked out here at load and never stored, so a
+// renamed category's slots follow its new name.
+const slotKey = label => label.toLowerCase().replace(/[^a-z0-9]/g, '');
+const CARD_SLOTS = new Map();         // card -> slot
+const CARD_PLACES = new Map();        // card -> its 1-based place among its category's cards
+const CARDS_BY_SLOT = new Map();      // slot without its hyphen ("friendship7") -> card
+const CARDS_BY_ID = new Map(KNOWN_CARDS.map(c => [c.id, c]));
+const PLACE_IN_LEVEL = {};            // level -> cards counted so far
+KNOWN_CARDS.forEach(card => {
+  const place = PLACE_IN_LEVEL[card.level] = (PLACE_IN_LEVEL[card.level] || 0) + 1;
+  const key = slotKey(LEVEL_LABELS[card.level] || card.level);
+  CARD_SLOTS.set(card, `${key}-${place}`);
+  CARD_PLACES.set(card, place);
+  CARDS_BY_SLOT.set(`${key}${place}`, card);
+});
+function cardSlot(card) { return CARD_SLOTS.get(card); }
+/** The place a card holds in its category, 1-based ("Friendship 7" reads its 7). */
+function cardPlace(card) { return CARD_PLACES.get(card); }
+const CARDS_BY_WORDING = new Map(KNOWN_CARDS.map(c => [c.question, c]));
+const CARDS_BY_TIDY_WORDING = new Map(KNOWN_CARDS.map(c => [c.question.trim().toLowerCase(), c]));
+/** The live card a saved question stands for, by its wording (older saves, pasted lists): exact, then trimmed and lowercased. */
+function cardByWording(question) {
+  return typeof question === 'string' ? (CARDS_BY_WORDING.get(question) ?? CARDS_BY_TIDY_WORDING.get(question.trim().toLowerCase()) ?? null) : null;
+}
+/** The live card a saved entry ({id, level, question}, or an older one with the wording only) stands for; null for a retired or unknown one. */
+function cardOfEntry(entry) {
+  if (Number.isInteger(entry?.id)) return CARDS_BY_ID.get(entry.id) ?? null;
+  return cardByWording(entry?.question);
+}
+/** A saved entry as the app holds it: {id, level, question} with the live card's current wording; one with no live card keeps its saved wording. */
+function currentEntry(entry) {
+  const card = cardOfEntry(entry);
+  return card ? { id: card.id, level: card.level, question: card.question } : { id: Number.isInteger(entry.id) ? entry.id : null, level: entry.level, question: entry.question };
+}
+/** A card as a log or favourites entry. */
+function entryOf(card) { return { id: card.id, level: card.level, question: card.question }; }
+/** The next question number to give a new card: past every live and retired one. */
+function nextFreeCardId() { return Math.max(...KNOWN_CARDS.map(c => c.id), ...RETIRED_CARDS.map(c => c.id)) + 1; }
 
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }

@@ -741,6 +741,8 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 # Change log
 
+Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
+
 ## Patch v7.20 — category scope rework round 3: Connect, Friendship, Romance, Family
 
 - **Connect 1**

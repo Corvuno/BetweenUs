@@ -9,12 +9,12 @@
 // ── LOG ───────────────────────────────────────────────────────────────────────
 function addToLog(card) {
   if (!card) return;
-  if (state.loggedQuestions.has(card.question)) return;   // re-visiting via prev/next must not re-log
-  state.loggedQuestions.add(card.question);
+  if (state.loggedQuestions.has(card.id)) return;   // re-visiting via prev/next must not re-log
+  state.loggedQuestions.add(card.id);
   /* Three can set a card already seen this pass beside the unseen ones; if it is
      picked it is already in the history and counted as seen — no second entry */
-  if (state.sessionLog.slice(Math.max(state.seenFrom || 0, 0)).some(c => c.question === card.question)) return;
-  state.sessionLog.push({ question: card.question, level: card.level });
+  if (state.sessionLog.slice(Math.max(state.seenFrom || 0, 0)).some(c => c.id === card.id)) return;
+  state.sessionLog.push(entryOf(card));
   if (state.sessionLog.length === 3) spotlightBrightenOnce();
   renderLog();
 }
@@ -22,10 +22,10 @@ function addToLog(card) {
 /* Skip takes a card back out of the history list (the card was logged when it
    was shown). Returns what is needed to put it back (undo), or null. seenFrom
    is kept pointing at the same card. */
-function removeFromLog(question) {
+function removeFromLog(id) {
   let idx = -1;
-  for (let i = state.sessionLog.length - 1; i >= 0; i--) if (state.sessionLog[i].question === question) { idx = i; break; }
-  state.loggedQuestions.delete(question);
+  for (let i = state.sessionLog.length - 1; i >= 0; i--) if (state.sessionLog[i].id === id) { idx = i; break; }
+  state.loggedQuestions.delete(id);
   if (idx < 0) return null;
   const entry = state.sessionLog.splice(idx, 1)[0];
   const movedSeenFrom = idx < state.seenFrom;
@@ -38,7 +38,7 @@ function restoreToLog(info) {
   const at = Math.min(info.idx, state.sessionLog.length);
   state.sessionLog.splice(at, 0, info.entry);
   if (info.movedSeenFrom) state.seenFrom++;
-  state.loggedQuestions.add(info.entry.question);
+  state.loggedQuestions.add(info.entry.id);
   renderLog();
 }
 
@@ -50,10 +50,13 @@ function renderLog() {
     : state.sessionLog.map((c, i) => smallCardHTML(c, i)).reverse().join('');
 }
 
+/* What a saved evening holds: cards by their question number (deckIds, fullDeckIds, skippedSeen, sitOut), the
+   log as {id, level, question}. Saves from before cards had numbers hold the wording (deckQuestions,
+   fullDeckQuestions, wording in skippedSeen and sitOut); restoreSessionData reads both. */
 function serializeSession() {
   return {
-    deckQuestions: state.visibleDeck.map(c=>c.question),
-    fullDeckQuestions: state.fullDeck.map(c=>c.question),
+    deckIds: state.visibleDeck.map(c=>c.id),
+    fullDeckIds: state.fullDeck.map(c=>c.id),
     position: state.currentIndex, toggles:[...state.activeToggles],
     safeMode: state.safeMode, spiceMode: state.spiceMode, randomMode: state.randomMode, cardLimit: state.cardLimit,
     activePreset: state.activePreset,
@@ -64,6 +67,20 @@ function serializeSession() {
     sitOut: window.LOG_PERSIST ? state.sitOut : undefined,
     savedAt: new Date().toISOString(),
   };
+}
+
+/* A saved reference to a card: its number, or (older saves) its wording. The live card's number, or undefined. */
+function savedCardId(ref) {
+  if (typeof ref === 'number') return ref;
+  if (typeof ref === 'string' && /^\d+$/.test(ref)) return +ref;
+  return cardByWording(ref)?.id;
+}
+/* A saved hand's live cards. A card that is retired or no longer matches is left out, and the position moves
+   with it so the player lands on the same card they were on. */
+function liveHand(refs, position) {
+  const cards = refs.map(ref => CARDS_BY_ID.get(savedCardId(ref)) ?? null);
+  const at = position ?? -1;
+  return { cards: cards.filter(Boolean), position: at < 0 ? -1 : cards.slice(0, at).filter(Boolean).length };
 }
 
 // Shared by the silent boot-time resume and openStoredSession() — puts a
@@ -84,21 +101,22 @@ function restoreSessionData(data) {
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.activePreset));
     // restore session log
     if (window.LOG_PERSIST && Array.isArray(data.sessionLog)) {
-      state.sessionLog = data.sessionLog;
+      state.sessionLog = data.sessionLog.filter(c => typeof c?.question === 'string' && typeof c?.level === 'string').map(currentEntry);
       state.seenFrom = Math.min(Math.max(+data.seenFrom || 0, 0), state.sessionLog.length);
-      state.loggedQuestions = new Set(state.sessionLog.map(c => c.question));
-      state.skippedSeen = new Set(Array.isArray(data.skippedSeen) ? data.skippedSeen : []);
+      state.loggedQuestions = new Set(state.sessionLog.map(c => c.id).filter(Number.isInteger));
+      state.skippedSeen = new Set((Array.isArray(data.skippedSeen) ? data.skippedSeen : []).map(savedCardId).filter(Number.isInteger));
       state.handNo = Math.max(+data.handNo || 0, 0);
-      state.sitOut = (data.sitOut && typeof data.sitOut === 'object') ? data.sitOut : {};
+      state.sitOut = Object.fromEntries(Object.entries(data.sitOut && typeof data.sitOut === 'object' ? data.sitOut : {})
+        .map(([ref, handNo]) => [savedCardId(ref), handNo]).filter(([id]) => Number.isInteger(id)));
       renderLog();
     }
     // sync spice glyph
     if (window.syncSpiceGlyph) window.syncSpiceGlyph();
     updateAfterDarkBtn(); applyToggleUI();
-    const qMap={}; KNOWN_CARDS.forEach(c=>{qMap[c.question]=c;});
-    state.visibleDeck=(data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
-    state.fullDeck=(data.fullDeckQuestions||data.deckQuestions||[]).map(q=>qMap[q]).filter(Boolean);
-    state.currentIndex=data.position??-1;
+    const hand = liveHand(data.deckIds ?? data.deckQuestions ?? [], data.position);
+    state.visibleDeck=hand.cards;
+    state.fullDeck=liveHand(data.fullDeckIds ?? data.fullDeckQuestions ?? data.deckIds ?? data.deckQuestions ?? []).cards;
+    state.currentIndex=hand.position;
     state.reachedIdx=state.currentIndex;
     syncLimitButtons();
     updateDeckInfo(); updateDrawMore(); renderProgress();
