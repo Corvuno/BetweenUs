@@ -114,15 +114,19 @@ stories: git keeps the history.
   reason to flag a card.
 - Borrowed devices are disqualified before any other test: dating-app prompts ("your red flag",
   "three words that describe you"), "if you ruled the world", desert island, superpowers.
-- Every card mentioned is cited as **Category, number, "question text"**, on its own line, the
+- Every card mentioned is cited as **Category, number, "question text"** (the category's current
+  name and the card's slot number, e.g. Friendship, 7), on its own line, the
   citation alone and in bold. A comment goes on the next line, starts with "Comment:" and is not
   bold. Proposed wording is laid out the same way. A group of cards is never mentioned without
   every card in it shown in full.
 - Card text lives only in `questions.js` (34 categories, 12 cards each). Categories and chapters
   live in `categories.js`. `questions/between-us-deck.md` holds the archive of retired category
   names, the bench, HOUSE STYLE and the change log.
-- A card change edits `questions.js` and adds a change-log entry (old text, new text, why) in
-  the same commit.
+- A card change edits `questions.js` and adds a change-log entry (slot, question number, old
+  text, new text, why, rewording or replacement) in the same commit.
+- A rewording keeps the card's question number; a replacement gets the next free number and
+  moves the old card to `RETIRED_CARDS` (the graveyard in `questions.js`). Numbers are never
+  reused.
 - A displaced card is removed, not benched, unless the owner says "bench it".
 
 ## Looks
