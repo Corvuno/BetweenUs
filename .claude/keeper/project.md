@@ -40,6 +40,8 @@ The project's half of the Keeper. The general process is `.claude/skills/keeper/
 **B) Looks**: colours, lines, type, layout, card faces, animation. Builder: `looks-builder`.
 - Read `.claude/keeper/references/` before any looks round; each option names the references it
   drew from.
+- A topic with no fitting references starts with a mood board the owner reacts to, before any
+  sketch. What the owner picks joins the references.
 - Way of working: agreement first (what it's for, how it should feel), then how it works in
   words, then a sketch, then the finished look (SKILL.md, "A design round"). Each
   round gets its own new artifact link, shows the current design side by side with the options,

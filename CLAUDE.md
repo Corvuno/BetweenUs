@@ -104,7 +104,11 @@ stories: git keeps the history.
   definition or a philosophy, the card fails (open position cards are a separate, wanted type).
 - Write to a category's real subject, not a neighbour's: Unwind is the experience and the why
   of leisure; Culture is the tangible what.
-- After a rejection, change the subject or the angle, never just the wording.
+- A "no" to a proposed card, or no answer to it, retires its subject: the next alternatives are
+  about something else. "I like the subject, not the question" keeps the subject and gets a new
+  question on it.
+- A comment on one card changes that card only; what the owner didn't comment on (tone, depth,
+  kind of answer) stays as it was.
 - The three alternatives differ in substance: a different object, act, person or frame does the
   work. A rejected idea doesn't come back in new words. The exception: the owner asks for the
   same question rephrased.
