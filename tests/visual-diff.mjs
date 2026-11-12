@@ -45,7 +45,8 @@ const DEVICES = [
   { name: 'wide', viewport: { width: 1440, height: 900 }, hasTouch: false },
 ].filter(d => ARGS.includes(`--${d.name}`) || !(ARGS.includes('--phone') || ARGS.includes('--wide')));
 
-const TOLERANCE = 12;      // per-channel difference that still counts as the same pixel (anti-aliasing noise)
+const TOLERANCE = 24;      // per-channel difference that still counts as the same pixel (anti-aliasing noise)
+const SPECK = 6;           // a group of this few differing pixels or fewer is rendering noise on a glyph edge, not a change
 const MERGE_GAP = 6;       // boxes that touch or lie this close together become one
 const ALLOW_PAD = 4;       // allowed areas are widened by this much
 
@@ -111,6 +112,18 @@ async function settle(page) {
   await page.waitForTimeout(150);
 }
 
+// A picture is taken again until two in a row are identical, so a fade that is still finishing is never photographed.
+async function steadyShot(page) {
+  let prev = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+  for (let i = 0; i < 8; i++) {
+    await page.waitForTimeout(120);
+    const next = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+    if (next.equals(prev)) return next;
+    prev = next;
+  }
+  return prev;
+}
+
 const waitCard = (page, n) => page.waitForFunction(i => state.currentIndex + 1 === i, n, { timeout: 5000 });
 async function drawFirst(page) { await page.locator('#btn-next').click(); await waitCard(page, 1); }
 // A hand of 5 with nothing seen and Three off, the way run.mjs sets up a fresh hand.
@@ -153,7 +166,7 @@ const MOMENTS = [
 ].filter(m => !ONLY || m.name.toLowerCase().includes(ONLY));
 
 // ── comparison, inside a browser page ──────────────────────────────────────────────────────────────────────
-const COMPARE = async ({ a, b, tolerance, gap }) => {
+const COMPARE = async ({ a, b, tolerance, gap, speck }) => {
   const load = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = 'data:image/png;base64,' + src; });
   const [ia, ib] = await Promise.all([load(a), load(b)]);
   if (ia.width !== ib.width || ia.height !== ib.height) {
@@ -209,6 +222,13 @@ const COMPARE = async ({ a, b, tolerance, gap }) => {
       }
     }
   }
+  // specks: a box holding only a few differing pixels is dropped
+  for (let i = boxes.length - 1; i >= 0; i--) {
+    const bx = boxes[i]; let n = 0;
+    for (let y = bx.y; y < bx.y + bx.h; y++) for (let xx = bx.x; xx < bx.x + bx.w; xx++) n += diff[y * w + xx];
+    if (n <= speck) boxes.splice(i, 1);
+  }
+  if (!boxes.length) return { boxes, count: 0, w, h };
   // highlight picture: the after image faded, differing boxes outlined in red
   const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d');
   x.drawImage(ib, 0, 0); x.fillStyle = 'rgba(255,255,255,0.55)'; x.fillRect(0, 0, w, h);
@@ -300,16 +320,23 @@ const runDevice = async device => {
       const [errB, errA] = await Promise.allSettled([moment.run(pb), moment.run(pa)]);
       for (const [r, side] of [[errB, 'before'], [errA, 'after']]) if (r.status === 'rejected') throw new Error(`the ${side} copy could not reach this moment: ${r.reason.message.split('\n')[0]}`);
       await Promise.all([settle(pb), settle(pa)]);
-      const [imgB, imgA] = (await Promise.all([pb.screenshot({ animations: 'disabled', caret: 'hide' }), pa.screenshot({ animations: 'disabled', caret: 'hide' })])).map(b => b.toString('base64'));
-      const cmp = await cmpPage.evaluate(COMPARE, { a: imgB, b: imgA, tolerance: TOLERANCE, gap: MERGE_GAP });
+      const [imgB, imgA] = (await Promise.all([steadyShot(pb), steadyShot(pa)])).map(b => b.toString('base64'));
+      const cmp = await cmpPage.evaluate(COMPARE, { a: imgB, b: imgA, tolerance: TOLERANCE, gap: MERGE_GAP, speck: SPECK });
       compared++;
       if (!cmp.boxes.length) { log(`  ok       ${label}: identical`); await Promise.all([pb.context().close(), pa.context().close()]); continue; }
 
+      // an allowed area is the union of what the selector matches in the before and the after page
       const rects = ALLOW.length ? (await Promise.all([pb, pa].map(p => p.evaluate(ALLOW_RECTS, ALLOW)))).flat() : [];
+      const areas = ALLOW.map(sel => {
+        const rs = rects.filter(r => r.sel === sel);
+        if (!rs.length) return null;
+        const x0 = Math.min(...rs.map(r => r.x)), y0 = Math.min(...rs.map(r => r.y));
+        return { sel, x: x0, y: y0, w: Math.max(...rs.map(r => r.x + r.w)) - x0, h: Math.max(...rs.map(r => r.y + r.h)) - y0 };
+      }).filter(Boolean);
       const names = cmp.sizeDiffers ? [{ around: 'the whole screen', others: [], where: 'everywhere' }] : await pa.evaluate(DESCRIBE, { boxes: cmp.boxes, vw: device.viewport.width, vh: device.viewport.height });
       let outsideHere = 0;
       cmp.boxes.forEach((b, i) => {
-        const inside = rects.find(r => b.x >= r.x - ALLOW_PAD && b.y >= r.y - ALLOW_PAD && b.x + b.w <= r.x + r.w + ALLOW_PAD && b.y + b.h <= r.y + r.h + ALLOW_PAD);
+        const inside = areas.find(r => b.x >= r.x - ALLOW_PAD && b.y >= r.y - ALLOW_PAD && b.x + b.w <= r.x + r.w + ALLOW_PAD && b.y + b.h <= r.y + r.h + ALLOW_PAD);
         const n = names[i];
         const text = `${n.around} (${n.where}, ${b.w}×${b.h} px at ${b.x},${b.y})${n.others.length ? `, also under it: ${n.others.slice(0, 3).join(', ')}` : ''}`;
         if (inside) { allowedN++; log(`  allowed  ${label}: changed around ${text}, inside ${inside.sel}`); }

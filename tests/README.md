@@ -40,3 +40,29 @@ smoke run and the checks for the change's own addition; GitHub runs everything o
 The full suite runs on GitHub on every push to main (see `CHECKS.md`); it covers all
 three HTML files — they're kept behaviourally identical (see the root
 README's "Build profiles" section).
+
+## Visual diff
+
+`tests/visual-diff.mjs` compares whole-screen pictures of the app before and after a change and fails
+when anything changed outside the area the change was allowed to touch. It needs no setup beyond the
+Playwright lookup above, and no model has to look at the pictures when it passes.
+
+```
+node tests/visual-diff.mjs --allow='#btn-next'          # the change may alter #btn-next, nothing else
+node tests/visual-diff.mjs                              # nothing may change at all
+```
+
+- "Before" is `origin/main` (`--base=<git ref>`), exported with `git archive` into a temp directory;
+  the working tree, index and branch are never touched. "After" is the working tree
+  (`--after-dir=<dir>` for another copy).
+- It photographs six moments on a phone (412x915) and a wide screen (1440x900): the start card, a card
+  in a hand, The Deck sheet, the menu, Spotlight and the end of a hand. `--only=<word>` limits the
+  moments, `--phone` / `--wide` the devices.
+- `--allow=<selector>[,<selector>]`: a difference inside the box of a matching element (before or after
+  page, padded a few pixels) is allowed. Every difference is named in words with its place and size.
+- Exit 0: nothing outside the allowed area. Exit 1: something is, or a moment could not be reached.
+  Before, after and highlighted pictures of failing moments go to `--out=<dir>` (default: a new temp
+  directory, printed), never into the repo.
+- Runs are deterministic (fixed random numbers and clock, clean storage, reduced motion, fonts loaded,
+  animations finished, each picture repeated until two in a row match). Groups of six or fewer
+  differing pixels are glyph-edge noise and ignored.

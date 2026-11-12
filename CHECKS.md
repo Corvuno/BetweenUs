@@ -27,6 +27,9 @@ every push to main. A build never runs those by hand. Locally it runs only:
   `node tests/run.mjs --smoke --only=word` (a word from its name). A new check for a bug fix is
   also run once against the old code, to show it fails there.
 - **Looks only** (font, colour, spacing, a line): the smoke run and before/after screenshots.
+- **The visual diff:** every build that touches `between-us.html`, `styles.css` or any app `.js` file runs
+  `node tests/visual-diff.mjs --allow=<the area the item names>` before landing (about 40 seconds). A
+  difference outside the allowed area stops the build and is reported, never waved through.
 
 The push lock below still runs the type check + lint by itself on every push to main (about 10
 seconds, nobody has to start it): faults it finds never reach the live site.

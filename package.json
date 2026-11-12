@@ -4,6 +4,7 @@
   "scripts": {
     "typecheck": "tsc -p jsconfig.json && tsc -p jsconfig.sw.json",
     "lint": "eslint .",
+    "check:visual": "node tests/visual-diff.mjs",
     "check:static": "node scripts/check.mjs",
     "check:baseline": "node scripts/check.mjs --update-baseline",
     "check": "node tests/run.mjs between-us.html && node scripts/check.mjs"
