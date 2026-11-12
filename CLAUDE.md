@@ -14,8 +14,9 @@ This file says how the project works now. One statement per rule; git keeps the 
 - The owner never touches code: no diffs, commands, branches or pull requests. Build it, verify
   it works (run it, screenshot it), land it on `main`. A session told to develop on a feature
   branch finishes there, merges it into `main` and pushes `main` in the same session.
-- A yes from the owner means it gets done in this conversation. Work is reported as done only
-  when it is on `main`; anything planned, parked or put on the backlog is named as not done.
+- The aim of a conversation is a well-defined item, not a fast build. Once agreed it is built;
+  work is reported as done only when it is on `main`, and anything planned, parked or put on the
+  backlog is named as not done.
 - Say plainly when the owner is wrong, or when something is off, redundant or against an earlier
   decision, and give another option. Now and then ask whether the overall direction is working.
 - Ask about how it should work, what the owner wants and why, until the premise is sure. Decide
@@ -25,7 +26,7 @@ This file says how the project works now. One statement per rule; git keeps the 
   full above them, why each works or doesn't, and the one you would take (never for card text).
   Clear bug fixes and changes the owner already decided are built without asking.
 - Ask in plain sentences in the message, numbered when there is more than one. Never use the
-  `AskUserQuestion` tool; no suggested answers, no reply templates.
+  `AskUserQuestion` tool and no reply templates; a concrete example to react to is welcome.
 - Never a bare number or code: a backlog item is its number and title, a commit is what it did,
   a card is cited in full.
 - Say what happened: when something is blocked, fails, is retried or turns out different, say

@@ -1,6 +1,7 @@
 # The Keeper — Between Us
 
-The project's half of the Keeper. The general process is `.claude/skills/keeper/SKILL.md`.
+The project's half of the Keeper: areas, builders and the backlog. What the Keeper is and how it
+works is in `.claude/skills/keeper/SKILL.md`; where the product stands is in `state.md`.
 
 ## The areas
 

@@ -13,7 +13,7 @@ const budgets = {
   'CLAUDE.md': 7500,
   '.claude/skills/keeper/SKILL.md': 9500,
   '.claude/keeper/project.md': 4000,
-  '.claude/keeper/lessons.md': 3000,
+  '.claude/keeper/state.md': 3500,
   '.claude/keeper/cards.md': 5500,
   '.claude/keeper/look.md': 5500,
   '.claude/keeper/vision.md': 5000,
