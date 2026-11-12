@@ -35,8 +35,8 @@ This file is the general process. The project's own half is in `.claude/keeper/`
    session first and say so in one line; a wish already typed is taken up straight after.
 3. Fetch `origin/main` and glance at the last few commits. Read the open backlog, give a status
    label to any issue the owner added without one, and act on issues labelled `Owner comment`
-   (project.md, "The backlog"). Tell the owner in one line what is being built and what is next,
-   and name the one thing you would do next for the product and why. "Nothing, it is good as it
+   (project.md, "The backlog"). Never recite the backlog to the owner; name only the one
+   thing you would do next for the product and why. "Nothing, it is good as it
    is" is a full answer.
 4. Read `upkeep.md`. If the last upkeep is a month old or more, say so in one line and ask the
    owner to start it in its own thread (`/keeper upkeep`). The upkeep never runs inside a wish.
@@ -166,8 +166,8 @@ owner changes there wins.
   with the question on the item.
 - After a landing, the same thread takes the next item it may take, until nothing is left that it
   can start; then it reports.
-- `Building now` means a builder is at work. An item leaves it when it lands (closed, with the
-  commit) or is handed back (to `Next` or `Refine`, with why). An item in `Building now` for over
+- An item leaves `Building now` when it lands (closed, with the commit) or is handed back (to
+  `Next` or `Refine`, with why). An item in `Building now` for over
   a day with no new commits is stale: check its session, land its finished work or move it back,
   and say which.
 
@@ -229,8 +229,8 @@ cost.
 - After landing an app or deck change, wait for GitHub's checks on `main` (Monitor, not polling) and fix any red in the
   same session before reporting or taking the next item: decide per failing check whether the app
   is wrong or the check is outdated, and name which on the backlog item.
-- The backlog moves the moment something happens. Every commit names its item; the finishing
-  commit closes it.
+- The backlog moves the moment something happens. Every commit names its item; the commit that
+  lands the build closes it. Follow-ups are new items; none stays open for them.
 - Nothing finished stays only on a side branch.
 - A change to how the Keeper works (this file, `.claude/keeper/`, the agents, `CLAUDE.md`) is
   shown to the owner in plain words first, one line each, and written in after their yes.
