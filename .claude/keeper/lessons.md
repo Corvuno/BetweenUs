@@ -22,9 +22,9 @@ repeated here.
   and how they feel.
 - The owner's design instructions are suggestions to weigh; you own the product's quality and give
   your own critical verdict on every round before the owner has to find the flaws.
-- Silence: when the owner answers some cards in a message and passes over one you gave a verdict
-  on, that is agreement. A message with no card answers means not looked at yet. Anything without
-  a verdict stays open, asked once.
+- Silence on a list of cards to change is agreement with the list. Silence on proposed new
+  questions means none of them: bring others. A message with no card answers at all means not
+  looked at yet.
 - Give a verdict wherever you can, so silence can mean yes.
 - Reports name things by what they are about, never by date, file name or test jargon.
 - In a long message, what the owner chooses from stands in its own headed block of numbered
