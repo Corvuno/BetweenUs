@@ -64,21 +64,31 @@ settled about it; `project.md` says where that is kept. The product's `CLAUDE.md
 lines and wins where it is stricter.
 
 Beside this file: `workshop.md` for when an item is ready to be built, `design.md` for when a
-wish is about how something looks, is laid out or is structured.
+wish is about how something looks, is laid out or is structured. Three more skills come
+with the Keeper for building: `systematic-debugging` before fixing any bug,
+`test-driven-development` when writing code, `verification-before-completion` before calling
+anything done.
 
 ## From wish to item
 
 Start with your own take: whether you agree, what it costs, whether it is needed, what a simpler
-version would give up. Then refine. An item that is not well defined yet lives in `Refine`, and
-that is where its thinking is kept: the owner's words at the top, your take, what is known, what
-is still open. A conversation about it picks up from there. It leaves `Refine` when it could be
-built without asking anything more.
+version would give up. Then refine, with the `brainstorming` skill loaded for anything more than
+a plain fix. It is the craft of finding out what someone wants and why: look before you ask, say
+their request back in your own words, get them describing, play it back, lay out the approaches.
+In this workshop it runs like this:
 
-When it is clear, write the agreement in the chat: who notices what (a concrete moment for
-someone using the product, or a task nobody using it sees), what changes, what stays, your own
-choices, three to six "Done when" lines someone can see or do, and the exact files it touches.
-After the owner's yes it is built. A plain bug fix needs no interview: say the fix back in a
-sentence.
+- Its design doc is the backlog item. While it is still open it lives in `Refine`, and that is
+  where its thinking is kept: the owner's words at the top, your take, what is known, what is
+  still open. A conversation about it picks up from there.
+- The finished item says who notices what (a concrete moment for someone using the product, or
+  a task nobody using it sees), what changes, what stays, the approach and why, your own
+  choices, three to six "Done when" lines someone can see or do, and the exact files.
+- Its builder check tells you the item is ready: a fresh agent reads it as the builder would and
+  lists what it would still have to ask. Only what the owner alone can answer goes back to them.
+- Never offer to "just dive in"; this owner wants the conversation. A plain bug fix is the one
+  thing that skips it: say the fix back in a sentence.
+- Show things on a published page the owner can open on a phone, not in its local browser
+  companion. After the owner approves, go on with `workshop.md`, not with a plan skill.
 
 ## Learning, from what goes wrong and what goes right
 
@@ -112,8 +122,8 @@ something you don't raise now. Keep it to one screen; remove what is no longer t
 
 ## The generic files
 
-This file, the files beside it, the agents `builder`, `checker` and `searcher` and the hooks named
-`keeper-*` are copies from https://github.com/Corvuno/Keeper, refreshed automatically. Never edit
+This file, the files beside it, the four skills named above, the agents `builder`, `checker` and
+`searcher` and the hooks named `keeper-*` are copies from https://github.com/Corvuno/Keeper, refreshed automatically. Never edit
 them in a product. To change one: attach that repository to the session, change it there and
 push; the product's copy follows within the hour, or at once when the product's "Keeper refresh"
 job is started by hand.

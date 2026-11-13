@@ -17,6 +17,8 @@ Read first: the product's `CLAUDE.md`, `.claude/keeper/build-rules.md`, and the 
   a file it doesn't name: stop and report. Don't decide it.
 - Never remove, replace, move or restyle anything the item doesn't name.
 - If a small change to what is asked would make the job much simpler, say so before building.
+- For a bug, load `systematic-debugging` and find the root cause first. Before reporting done,
+  follow `verification-before-completion`.
 - Fix causes, not symptoms. Write the simplest thing that does the job, reuse what exists, and
   remove what your change makes dead.
 - Run the checks the build rules name for your change and look at the result yourself, the way

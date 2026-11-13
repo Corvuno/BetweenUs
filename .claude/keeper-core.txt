@@ -1,11 +1,28 @@
 # Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
-# Source commit: 96135a5
+# Source commit: d0b8243
 agents/builder.md
 agents/checker.md
 agents/searcher.md
 hooks/keeper-main-checks.sh
 hooks/keeper-reminder.sh
+skills/brainstorming/SKILL.md
+skills/brainstorming/builder-check-prompt.md
+skills/brainstorming/scripts/frame-template.html
+skills/brainstorming/scripts/helper.js
+skills/brainstorming/scripts/server.cjs
+skills/brainstorming/scripts/start-server.sh
+skills/brainstorming/scripts/stop-server.sh
+skills/brainstorming/visual-companion.md
 skills/keeper/SKILL.md
 skills/keeper/design.md
 skills/keeper/owner.md
 skills/keeper/workshop.md
+skills/systematic-debugging/SKILL.md
+skills/systematic-debugging/condition-based-waiting-example.ts
+skills/systematic-debugging/condition-based-waiting.md
+skills/systematic-debugging/defense-in-depth.md
+skills/systematic-debugging/find-polluter.sh
+skills/systematic-debugging/root-cause-tracing.md
+skills/test-driven-development/SKILL.md
+skills/test-driven-development/writing-good-tests.md
+skills/verification-before-completion/SKILL.md
