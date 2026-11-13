@@ -11,10 +11,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Size budgets in bytes. A budget is raised only when the owner agrees.
 const budgets = {
   'CLAUDE.md': 4500,
-  '.claude/skills/keeper/SKILL.md': 9000,
-  '.claude/skills/keeper/owner.md': 3500,
-  '.claude/skills/keeper/workshop.md': 4000,
-  '.claude/skills/keeper/design.md': 2500,
   '.claude/keeper/project.md': 4000,
   '.claude/keeper/state.md': 3500,
   '.claude/keeper/cards.md': 5500,
@@ -24,11 +20,16 @@ const budgets = {
   '.claude/keeper/build-rules.md': 6500,
   '.claude/keeper/panel.md': 2000,
   '.claude/keeper/upkeep.md': 500,
-  '.claude/hooks/keeper-reminder.sh': 800,
-  '.claude/hooks/keeper-main-checks.sh': 2000,
 };
 const agentBudget = 2500;
-const totalBudget = 57000;
+const totalBudget = 36000;
+
+// The generic Keeper files are copies from Corvuno/Keeper and have their own size limit there
+// (install.sh); this check covers only what belongs to this product.
+const generic = new Set(
+  (existsSync(join(root, '.claude/keeper-core.txt')) ? readFileSync(join(root, '.claude/keeper-core.txt'), 'utf8') : '')
+    .split('\n').filter((l) => l && !l.startsWith('#')).map((l) => `.claude/${l}`),
+);
 
 const agents = readdirSync(join(root, '.claude/agents'))
   .filter((f) => f.endsWith('.md'))
@@ -37,7 +38,7 @@ const keeperFiles = readdirSync(join(root, '.claude/keeper'))
   .filter((f) => f.endsWith('.md'))
   .map((f) => `.claude/keeper/${f}`);
 const files = [...new Set([...Object.keys(budgets), ...keeperFiles, ...agents])]
-  .filter((f) => existsSync(join(root, f)));
+  .filter((f) => existsSync(join(root, f)) && !generic.has(f));
 
 const markers = [
   [/\b20\d\d-\d\d-\d\d\b/, 'a date'],
