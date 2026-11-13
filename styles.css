@@ -1537,8 +1537,8 @@ body.hint-ways-taught .menu-hint{display:none;}
   --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
 .chapter{--ch:var(--gold);position:relative;
   display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
-  background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;
-  transition:background var(--ch-ease),border-color var(--ch-ease);}
+  background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;}
+.chapter,.chapter-group--switch>.ch-fold--row{transition:background var(--ch-ease),border-color var(--ch-ease);}
 /* the left rail: one continuous line down the whole row. A vertical metal sweep
    (same gilt.js stops as the card accent, at 190deg instead of 100deg) once a
    chapter is fully on, drawn by ::before over the 3px border so it can fade in and
@@ -1563,7 +1563,8 @@ body.hint-ways-taught .menu-hint{display:none;}
 .ch-hit::after{content:'';position:absolute;inset:0;}
 .spice-glyph--inline{position:relative;z-index:1;flex-shrink:0;align-self:center;padding:8px 8px;}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
-  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;transition:color var(--ch-ease);}
+  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;}
+:is(.chapter,.chapter-group--switch) .ch-name{transition:color var(--ch-ease);}
 .chapter .ch-desc{font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--muted-l);
   line-height:1.35;}
 /* fold target: count over a chevron, set off by a hairline */
@@ -1583,16 +1584,24 @@ body.hint-ways-taught .menu-hint{display:none;}
 .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
 .chapter.on,.chapter-group--switch>.ch-fold--row[aria-checked="true"]{background:color-mix(in srgb, var(--ch) 9%, transparent);}
 .chapter.on .ch-name,.chapter-group--switch>.ch-fold--row[aria-checked="true"] .ch-name{color:var(--ch);}
-.chapter-group{display:block;max-height:30rem;transition:max-height .26s var(--ease-out),opacity .26s ease-out,margin-block-end .26s var(--ease-out),visibility 0s;}
+/* a chapter that comes or goes with a preset: it opens up and fades in, settling down from just above
+   its place; it leaves the same way back, the fade a little ahead of the fold. Rows that change together
+   go one after another from the top (--ch-delay, 40ms apart, set by ui.js). Under reduced motion it simply
+   appears or goes. */
+.chapter-group{display:block;max-height:30rem;--ch-move:.28s;
+  transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),margin-block-end var(--ch-move) var(--ease-out) var(--ch-delay,0s),
+    transform var(--ch-move) var(--ease-out) var(--ch-delay,0s),opacity .22s ease-out calc(var(--ch-delay,0s) + .06s),visibility 0s;}
 /* an open chapter is never cut off, whatever its categories and lines add up to */
 .chapter-group.open{max-height:none;}
-/* a chapter with nothing reachable under the current preset fades and collapses (the
-   gap of .chapters goes with it) instead of jumping out; visibility keeps it out of reach */
-.chapter-group.ch-hidden{max-height:0;opacity:0;overflow:hidden;visibility:hidden;margin-block-end:-4px;
-  transition:max-height .2s var(--ease-out),opacity .2s ease-out,margin-block-end .2s var(--ease-out),visibility 0s .2s;}
+/* while it opens or folds, nothing of it shows outside its own height */
+.chapter-group.ch-moving{overflow:hidden;}
+/* visibility keeps a gone chapter out of reach; the gap of .chapters goes with it */
+.chapter-group.ch-hidden{max-height:0;opacity:0;transform:translateY(-6px);overflow:hidden;visibility:hidden;margin-block-end:-4px;
+  transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),margin-block-end var(--ch-move) var(--ease-out) var(--ch-delay,0s),
+    transform var(--ch-move) var(--ease-out) var(--ch-delay,0s),opacity .16s ease-out var(--ch-delay,0s),visibility 0s calc(var(--ch-delay,0s) + var(--ch-move));}
 @media (prefers-reduced-motion:reduce){
-  .chapter,.chapter::before,.chapter .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden,
-  .chapter-group--switch>.ch-fold--row,.chapter-group--switch>.ch-fold--row::before,.chapter-group--switch .ch-name{transition:none;}
+  .chapter,.chapter::before,:is(.chapter,.chapter-group--switch) .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden,
+  .chapter-group--switch>.ch-fold--row,.chapter-group--switch>.ch-fold--row::before,.chapter-group--switch .wc-state{transition:none;}
 }
 /* the unfolded panel: categories, each its own tap target */
 .chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;}
@@ -1614,9 +1623,8 @@ body.hint-ways-taught .menu-hint{display:none;}
   border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;color:var(--celadon);}
 .ch-fold--row::before{display:none;}
 /* Wildcards lights like an on chapter: the rail (::before, rules above), the wash and the name in its colour, eased over --ch-ease */
-.chapter-group--switch>.ch-fold--row{--ch:var(--gold);transition:background var(--ch-ease);}
+.chapter-group--switch>.ch-fold--row{--ch:var(--gold);}
 .chapter-group--switch>.ch-fold--row::before{display:block;}
-.chapter-group--switch .ch-name{transition:color var(--ch-ease);}
 .ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
 .ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
 .chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
@@ -1626,7 +1634,7 @@ body.hint-ways-taught .menu-hint{display:none;}
 .chapter-group--fixed{--ch:var(--cream);}
 /* Wildcards: a switch in Fixed Sets' row shape; its state sits where Fixed Sets has its chevron, celadon like a chosen option */
 .wc-state{flex:none;width:60px;text-align:center;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);transition:color .4s ease;}
+  color:var(--muted);transition:color var(--ch-ease);}
 .wc-state::before{content:'\25CF\00a0';}
 .ch-fold--row[aria-checked="true"] .wc-state{color:var(--celadon);}
 .ch-fold--row[aria-checked="false"] .wc-state::before{content:'\25CB\00a0';}

@@ -25,9 +25,12 @@ as an on chapter.
 
 **Chapters change gently.** Tint, line, name and count colour ease over `--ch-ease` (.4s ease-out,
 a local variable on `.chapter` and on `.chapter-group`); only rows whose state class changed move.
-A count's number simply changes (no fade: a fading count is annoying). A chapter a preset hides
-(`.chapter-group.ch-hidden`) fades and collapses (`max-height` to 0, opacity, the 4px gap)
-instead of disappearing at once. No glow, flash or extra colour. Instant under reduced motion.
+A count's number simply changes (no fade: a fading count is annoying). Wildcards follows the same rules.
+A chapter a preset (or Colbert / The 36) hides or brings back opens or folds by its real height
+(`setChapterHidden` in `ui.js` pins it, then moves `max-height`; `.28s` `--ease-out`), settling
+from 6px above while it fades (in: fade trails by .06s; out: fade .16s, ahead of the fold); rows
+that change together go 40ms apart from the top. No glow, flash or extra colour. Instant under
+reduced motion.
 
 **Fold target** (`.ch-fold`, right of the row, 60px wide): the count "n / total" in `--muted-l`
 (`--cream` when partly on) over a celadon chevron, 7px apart, set off from the row by a 1px

@@ -1102,25 +1102,38 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
     });
   }
 
-  /* An open chapter has no height cap (max-height:none), which cannot ease to or from the hidden 0: pin its
-     real height for the move so it slides shut / open like a closed one does. */
-  function setChapterHidden(group, hidden){
-    if (!group || group.classList.contains('ch-hidden') === hidden) return;
-    if (!group.classList.contains('open')) { group.classList.toggle('ch-hidden', hidden); return; }
-    if (hidden) {
-      group.style.maxHeight = `${group.offsetHeight}px`;
-      group.getBoundingClientRect();   // settle the pinned height, so the move to 0 starts from it
-      group.style.maxHeight = '';
-      group.classList.add('ch-hidden');
-      return;
+  /* A chapter that comes or goes with a preset opens or folds by its real height: pinned at where it is now,
+     then moved to its full height or to 0, so an arriving row pushes the rest down gently instead of jumping
+     (its cap is far above its height, or none when open) and a row caught halfway turns back from there.
+     `delay` lets rows changing together go one after another. Under reduced motion it simply appears or goes. */
+  function setChapterHidden(group, hidden, delay){
+    if (!group || group.classList.contains('ch-hidden') === hidden) return false;
+    if (!group.getClientRects().length || matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      group.classList.toggle('ch-hidden', hidden);   // nothing on screen to move, or the player asked for less motion
+      return true;
     }
-    group.classList.remove('ch-hidden');
-    group.style.maxHeight = '0px';
-    group.getBoundingClientRect();
-    group.style.maxHeight = `${group.scrollHeight}px`;
-    group.addEventListener('transitionend', () => { group.style.maxHeight = ''; }, { once: true });
+    group.style.setProperty('--ch-delay', `${delay}ms`);
+    group.style.maxHeight = `${group.offsetHeight}px`;
+    group.classList.add('ch-moving');
+    group.classList.toggle('ch-hidden', hidden);
+    group.getBoundingClientRect();   // settle the pinned height, so the move starts from it
+    group.style.maxHeight = hidden ? '' : `${group.scrollHeight}px`;
+    return true;
   }
+  /* the move is over: back to the stylesheet's cap. Also when it was cut off because the row left the screen
+     (Colbert or The 36 put the chapters away); a move turned back halfway carries on and ends here later. */
+  function endChapterMove(e){
+    const group = e.target;
+    if (!group.matches('.chapter-group.ch-moving') || e.propertyName !== 'max-height') return;
+    if (e.type === 'transitioncancel' && group.getClientRects().length) return;
+    group.classList.remove('ch-moving');
+    group.style.maxHeight = '';
+    group.style.removeProperty('--ch-delay');
+  }
+  ['transitionend', 'transitioncancel'].forEach(type => $('chapters').addEventListener(type, endChapterMove));
   function syncIntentUI(){
+    let moved = 0;   // rows that come or go together take turns from the top, 40ms apart
+    const listMode = state.activePreset in LIST_MODE_TEXT;
     document.querySelectorAll('.chapter').forEach(btn => {
       const visible = visibleLevels(btn.dataset.chapter);
       const st = stateOf(visible);
@@ -1130,12 +1143,13 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
          belong on screen at all — the same rule an Explore drawer already
          follows (bkt-hidden), applied one level up. Applies to any chapter
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
-         Work/Date/New people. */
-      setChapterHidden(btn.closest('.chapter-group'), visible.length === 0);
+         Work/Date/New people. Colbert and The 36 put every chapter away. */
+      if (setChapterHidden(btn.closest('.chapter-group'), listMode || visible.length === 0, moved * 40)) moved++;
       /* "n / total": how many of this chapter's categories are on, of those reachable here */
       const ct = btn.querySelector('.ch-ct');
       if (ct && btn.matches('[data-chapter]')) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
     });
+    setChapterHidden(document.querySelector('.chapter-group--switch'), listMode, moved * 40);
     updateListModeNote();
     syncFoldAll();
     $('deselectAll').textContent = state.activeToggles.size ? 'None' : 'All';
@@ -1144,8 +1158,9 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
 
   // Colbert / The 36 aren't evenings built from chapters — they're fixed,
   // ordered lists, so "What kind of evening?" has nothing under it to show
-  // once one is picked. Rather than leave that blank, swap the chapter grid
-  // for a line saying what's actually playing.
+  // once one is picked. The chapters step aside (syncIntentUI; Fixed Sets
+  // stays, so you can switch from one set to the other) and a line says
+  // what's actually playing.
   const LIST_MODE_TEXT = {
     colbertmode: CATEGORY_DESCRIPTIONS.colbert,
     aronmode:    CATEGORY_DESCRIPTIONS.aron,
@@ -1153,18 +1168,9 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
   function updateListModeNote(){
     const note  = $('listModeNote');
     if (!note) return;
-    const chaps = $('chapters');
     const text = LIST_MODE_TEXT[state.activePreset];
-    // The Fixed Sets row stays visible even in list mode, so you can switch
-    // from one set to the other; only the chapters step aside.
-    if (text) {
-      note.textContent = text;
-      note.style.display = 'block';
-      if (chaps) chaps.querySelectorAll('.chapter-group:not(.chapter-group--fixed)').forEach(g => g.style.display = 'none');
-    } else {
-      note.style.display = 'none';
-      if (chaps) chaps.querySelectorAll('.chapter-group').forEach(g => g.style.display = '');
-    }
+    if (text) note.textContent = text;
+    note.style.display = text ? 'block' : 'none';
   }
 
   function commit(){

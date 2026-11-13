@@ -2498,6 +2498,49 @@ async function run() {
     }
   });
 
+  await check('a chapter a preset brings back opens up gradually (the rows below are not pushed down at once); Colbert folds the chapters away and back', async () => {
+    try {
+      await openCategorySheet();
+      await page.locator('.mode-btn[data-mode="work"]').click(); await page.waitForTimeout(700);
+      const heights = await page.evaluate(async () => {
+        const g = document.querySelector('.chapter-group[data-group="deeper"]'), out = [];
+        document.querySelector('.mode-btn[data-mode="friends"]').click();
+        for (let i = 0; i < 8; i++) { out.push(Math.round(g.getBoundingClientRect().height)); await new Promise(r => setTimeout(r, 30)); }
+        return out;
+      });
+      const full = Math.max(...heights);
+      assert(full > 40 && heights.some(h => h > 2 && h < full - 4), `a returning chapter jumped to its full height: ${heights}`);
+      await page.waitForTimeout(500);
+      await page.evaluate(() => document.querySelector('.mode-btn[data-mode="colbertmode"]').click()); await page.waitForTimeout(800);
+      assert(await page.evaluate(() => [...document.querySelectorAll('.chapter-group:not(.chapter-group--fixed)')].every(g => g.getBoundingClientRect().height === 0)), 'Colbert left a chapter on screen');
+      await page.evaluate(() => document.querySelector('.mode-btn[data-mode="balanced"]').click()); await page.waitForTimeout(900);
+      assert(await page.evaluate(() => [...document.querySelectorAll('.chapter-group')].every(g => g.getBoundingClientRect().height > 40 && !g.style.maxHeight && !g.classList.contains('ch-moving'))), 'a chapter did not come back whole after Colbert');
+    } finally {
+      await closeCategorySheet();
+    }
+  });
+
+  await check('chapters and the Wildcards row light up the same way: both ease, and both switch at once when the device asks for less motion', async () => {
+    for (const reducedMotion of ['no-preference', 'reduce']) {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion });
+      const p = await ctx.newPage();
+      try {
+        await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+        await p.waitForSelector('#card', { state: 'visible' });
+        const eases = await p.evaluate(() => {
+          const lasts = el => getComputedStyle(el).transitionDuration.split(',').some(d => parseFloat(d) > 0);
+          const row = document.querySelector('.chapter[data-chapter="deeper"]'), wc = document.querySelector('#wildcardToggle');
+          return { chapter: lasts(row) && lasts(row.querySelector('.ch-name')), wildcards: lasts(wc) && lasts(wc.querySelector('.ch-name')),
+            wcAny: lasts(wc) || lasts(wc.querySelector('.ch-name')) || lasts(wc.querySelector('.wc-state')) };
+        });
+        if (reducedMotion === 'reduce') assert(!eases.chapter && !eases.wcAny, `under reduced motion something still eases: ${JSON.stringify(eases)}`);
+        else assert(eases.chapter && eases.wildcards, `a row does not ease: ${JSON.stringify(eases)}`);
+      } finally {
+        await ctx.close();
+      }
+    }
+  });
+
   await check('phone: a touch hold on any category, released after the lines have shifted the layout, picks nothing anywhere (no chapter or category toggled by the release click)', async () => {
     const cdp = await page.context().newCDPSession(page);
     const touch = (type, x, y) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x, y }] });
