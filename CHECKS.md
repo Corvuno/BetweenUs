@@ -38,7 +38,7 @@ seconds, nobody has to start it): faults it finds never reach the live site.
 minutes. **Small changes don't wait** (owner, 2026-11-05: "Can small changes go around the wait
 on GitHub?" / "Sounds good."): a commit labelled `Change: small`, or one with no app change
 (docs, notes, tests), lands and reports straight away. **Every session starts with GitHub's last
-result on main** (`.claude/hooks/main-checks.sh`, run by the SessionStart hook, prints it):
+result on main** (`.claude/hooks/keeper-main-checks.sh`, run by the SessionStart hook, prints it):
 red is fixed before any other work. Medium and large changes still wait: the build looks once
 at GitHub's result for its commit before reporting
 (`gh api "repos/Corvuno/BetweenUs/actions/workflows/checks.yml/runs?head_sha=<sha>"`, waited

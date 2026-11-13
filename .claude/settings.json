@@ -29,7 +29,7 @@
           },
           {
             "type": "command",
-            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/main-checks.sh\""
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/keeper-main-checks.sh\""
           }
         ]
       }
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/dont-guess.sh\""
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/keeper-reminder.sh\""
           }
         ]
       }

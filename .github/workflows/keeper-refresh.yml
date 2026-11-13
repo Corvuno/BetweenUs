@@ -1,0 +1,38 @@
+name: Keeper refresh
+
+# Brings the generic Keeper files in this product up to date with https://github.com/Corvuno/Keeper.
+# Runs every hour and when started by hand. Only the copied files change; nothing else is touched.
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: keeper-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the Keeper
+        run: git clone --depth 1 https://github.com/Corvuno/Keeper.git "$RUNNER_TEMP/keeper"
+      - name: Install it
+        run: sh "$RUNNER_TEMP/keeper/install.sh" "$RUNNER_TEMP/keeper" .
+      - name: Land the change, if there is one
+        run: |
+          git add -A .claude
+          if git diff --cached --quiet; then echo "Already up to date."; exit 0; fi
+          SHA=$(git -C "$RUNNER_TEMP/keeper" rev-parse --short HEAD)
+          git config user.name "Keeper refresh"
+          git config user.email "keeper-refresh@users.noreply.github.com"
+          git commit -m "Keeper refreshed to $SHA" -m "No issue: automatic refresh of the generic Keeper files from Corvuno/Keeper."
+          for i in 1 2 3; do
+            git pull --rebase -q origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 5
+          done
+          exit 1

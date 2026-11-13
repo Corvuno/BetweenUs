@@ -36,14 +36,13 @@ down to one small scale (#148); a row of accessibility fixes in `Next`.
 - A design mood board for Between Us, starting with controls and the PC layout (#147): in its
   own conversation; it opens by asking what the board should help decide.
 - What makes a design enjoyable for them, in their words. Never asked directly.
-- The new way of designing (understanding, sketch, one design believed in) is untried.
+- The new way of designing (understanding, sketch, one design believed in) is untried, and so
+  is the generic Keeper as a whole: the owner judges it by using it.
 
 ## Noticed, not yet raised or settled
 
-- Wildcards in The Deck lights up gold with an "On" mark; Fixed Sets beside it has no lit state,
-  and chapters light in their own colour. The owner saw Wildcards got more than the rest and
-  wants the question put: this on all of them, or on none?
 - On the phone card screen Spotlight carries a line of explanation and Menu carries none, so the
   two ends of one row are unequal.
 - Whether very long questions still run off the card on a phone was closed without a test.
-- Seven design connectors fail at the start of every session.
+- Seven design connectors fail at the start of every session, and the five design-skill plugins
+  named in the settings do not load in cloud sessions.

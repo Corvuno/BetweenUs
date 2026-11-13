@@ -1,6 +1,6 @@
 # Build rules — for everyone who builds
 
-Read in full before every job; a builder also reads its own agent file.
+Read in full before every job, with the part for the area you work in.
 
 ## Scope
 
@@ -65,6 +65,32 @@ Whoever built a small change checks points 1, 6 and 8; the `checker` uses all of
 6. It is the simplest code that does the job.
 7. Touched code is in modern style.
 8. A bug fix comes with a test that reproduces the bug.
+
+## Building the deck
+
+- Read `cards.md`. Write only card text that is in the item word for word; if the exact final
+  words aren't there, stop and report. Re-read every card you wrote character by character.
+- A retired category name goes to the archive in `questions/between-us-deck.md`.
+
+## Building looks
+
+- Read `DESIGN-SYSTEM.md`, the screen's file in `design/` and `look.md`. Build what the chosen
+  design shows: take every value from its own code. Update the screen's file in `design/` (or
+  `DESIGN-SYSTEM.md`) in the same job.
+- All CSS is in `styles.css`, markup in `between-us.html`. Category and chapter colours come from
+  `categories.js`: never folded into the named values, never tinted, never averaged.
+- Check phone, tablet and wide widths (wide shots need `--disable-gpu --use-gl=swiftshader`),
+  sideways overflow, and every profile the change shows in; before and after pictures go in the
+  scratchpad.
+- Motion: record it and look at a frame strip at real speed, after one open and close. A colour
+  change is blended over its fade (register the property as `<color>`); an animation is cleaned
+  up on `animationend`. After Dark's dark colours are on purpose.
+
+## Building how the app works
+
+- Freshness beats variety when cards are chosen: an unseen card outranks every other quality.
+- Click through the changed behaviour in a real browser, with what sits next to it, in every
+  profile it reaches. Add a check for new behaviour the tests don't cover.
 
 ## Words a player reads
 

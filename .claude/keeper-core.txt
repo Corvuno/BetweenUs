@@ -1,0 +1,11 @@
+# Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
+# Source commit: 96135a5
+agents/builder.md
+agents/checker.md
+agents/searcher.md
+hooks/keeper-main-checks.sh
+hooks/keeper-reminder.sh
+skills/keeper/SKILL.md
+skills/keeper/design.md
+skills/keeper/owner.md
+skills/keeper/workshop.md

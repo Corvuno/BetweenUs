@@ -10,21 +10,24 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Size budgets in bytes. A budget is raised only when the owner agrees.
 const budgets = {
-  'CLAUDE.md': 7500,
-  '.claude/skills/keeper/SKILL.md': 9500,
+  'CLAUDE.md': 4500,
+  '.claude/skills/keeper/SKILL.md': 9000,
+  '.claude/skills/keeper/owner.md': 3500,
+  '.claude/skills/keeper/workshop.md': 4000,
+  '.claude/skills/keeper/design.md': 2500,
   '.claude/keeper/project.md': 4000,
   '.claude/keeper/state.md': 3500,
   '.claude/keeper/cards.md': 5500,
   '.claude/keeper/look.md': 5500,
   '.claude/keeper/vision.md': 5000,
   '.claude/keeper/taste.md': 5500,
-  '.claude/keeper/build-rules.md': 5000,
+  '.claude/keeper/build-rules.md': 6500,
   '.claude/keeper/panel.md': 2000,
   '.claude/keeper/upkeep.md': 500,
-  '.claude/hooks/dont-guess.sh': 700,
-  '.claude/hooks/main-checks.sh': 2000,
+  '.claude/hooks/keeper-reminder.sh': 800,
+  '.claude/hooks/keeper-main-checks.sh': 2000,
 };
-const agentBudget = 3000;
+const agentBudget = 2500;
 const totalBudget = 57000;
 
 const agents = readdirSync(join(root, '.claude/agents'))
