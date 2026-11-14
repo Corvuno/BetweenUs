@@ -24,9 +24,13 @@ Twins and what they share (main / Spotlight):
 - **Count**: Poiret One `.22em`, `--gold`; flanking rules `.prog-count-rule` / `.pc-rule::before`
   are one shared rule (gold at 30%, fading outward); only the length differs (44px main, 20px
   Spotlight).
-- **Corner markers** `.card::before/::after` / `.party-frame i`: gold at opacity `.35`, size
-  scales. Deck marks (After Dark red, Colbert, The 36) come from the same `applyCardMark()`
-  (card.js) on both, `var(--mark)` at `.55`. Spotlight's picker corners use the same `.35`.
+- **Frame** `.card-frame` / `.party-frame`: the card's double line with four stepped corners runs
+  round the whole screen, through the same rules in `styles.css` (outer line gold, inner line
+  `--cat` from `applyCardMark()`, After Dark `--mark`, a Wildcard gold; see `card-face.md`). Each
+  sets its own `--frame-*` sizes and `--frame-ground`. In Spotlight it sits close to the edge
+  (phone 8/12px, top 11/15px, turned sideways top 5/9px to stay above the count; PC 9/14px, top 10/15px) so every control stays inside it with air;
+  the Sideways switch sits 10px from the right edge to clear the inner line. The name and the
+  question are as they were. Spotlight's picker corners keep their own `.35` marks.
 - **Category label**: Jost 600, tracking `.16em` phone / `.2em` PC (the main label's), size larger
   in Spotlight: fullscreen party-level label 17px phone / 16px PC.
 - **Sideways/Upright switch** (Spotlight only): follows the play row: celadon word (Jost 400,
