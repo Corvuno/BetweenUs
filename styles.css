@@ -322,11 +322,14 @@ body.showing-hand-summary :is(.card.mark-full .card-frame,.party-frame.mark-full
   position:absolute;top:calc(27 * var(--u));left:calc(46 * var(--u));right:calc(46 * var(--u));display:flex;align-items:center;gap:calc(11 * var(--u));   /* centred by the flex row, so the swap can still lift it with a transform */
   font-family:'Jost',sans-serif;font-size:var(--name-size);font-weight:600;letter-spacing:.26em;line-height:1;text-transform:uppercase;white-space:nowrap;
   opacity:0;transition:color .5s ease,opacity .35s ease;}
-/* the two pairs of hairline stripes either side of the name, in the name's own colour, fading outward (The Deck's name wears them too) */
-:is(.card-level,.cat-sheet-name)::before,:is(.card-level,.cat-sheet-name)::after{content:'';flex:1;height:calc(7 * var(--u));opacity:.8;background-repeat:no-repeat;background-size:100% 1px,58% 1px;
-  background-image:linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);}
-:is(.card-level,.cat-sheet-name)::before{background-position:0 0,100% 100%;-webkit-mask:linear-gradient(to right,transparent,#000 50%);mask:linear-gradient(to right,transparent,#000 50%);}
-:is(.card-level,.cat-sheet-name)::after{margin-left:-.26em;background-position:0 0,0 100%;-webkit-mask:linear-gradient(to left,transparent,#000 50%);mask:linear-gradient(to left,transparent,#000 50%);}   /* the last letter's trailing space */
+/* the two pairs of hairline stripes either side of the name, in the name's own colour, fading outward (The Deck's name wears them too).
+   Drawn as borders, like the frame's lines, and at the frame line's strength, so every coloured line on the card is equally sharp and strong.
+   The mask's upper half fades the long stripe outward; its lower half keeps the inner 58% of the short one. */
+:is(.card-level,.cat-sheet-name)::before,:is(.card-level,.cat-sheet-name)::after{content:'';flex:1;height:calc(7 * var(--u));
+  border:solid color-mix(in srgb,currentColor var(--frame-line),transparent);border-width:1px 0;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 50%;mask-size:100% 50%;-webkit-mask-position:0 0,0 100%;mask-position:0 0,0 100%;}
+:is(.card-level,.cat-sheet-name)::before{--stripes:linear-gradient(to right,transparent,#000 50%),linear-gradient(to right,transparent 42%,rgba(0,0,0,.84) 42%,#000 50%);-webkit-mask-image:var(--stripes);mask-image:var(--stripes);}
+:is(.card-level,.cat-sheet-name)::after{margin-left:-.26em;--stripes:linear-gradient(to left,transparent,#000 50%),linear-gradient(to left,transparent 42%,rgba(0,0,0,.84) 42%,#000 50%);-webkit-mask-image:var(--stripes);mask-image:var(--stripes);}   /* the last letter's trailing space */
 .card-level.in{opacity:.95;}
 .card-question{
   font-size:1.38rem;
@@ -1948,7 +1951,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card-frame::before,.card-frame::after,.card-frame i{border-width:1.5px;}
   .card-level{top:5.9cqw;left:14cqw;right:14cqw;gap:2.2cqw;}
   .card.mark-wildcard .card-level{font-size:2.3cqw;}
-  .card-level::before,.card-level::after{height:1.5cqw;background-size:100% 1.5px,58% 1.5px;}
+  .card-level::before,.card-level::after{height:1.5cqw;border-width:1.5px 0;}
   .card-star{font-size:clamp(22px,2.2cqw,28px);top:calc(4.6cqw - 10px);right:calc(3.8cqw - 10px);padding:10px;opacity:.35;}
   @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.75;}}.card-star.active{opacity:1;}
   .card-ad-mark{font-size:38.4cqw;}
