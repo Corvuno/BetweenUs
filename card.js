@@ -295,14 +295,15 @@ const DRAW_TIMING = {
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 /* Next/Back swap (owner's "B+C", 2026-10-21), Web Animations on transform and opacity only.
-   Out (110ms): the rail flares lighter from the centre, the card tightens a hair, the label
+   Out (110ms): the rail flares lighter from the centre, the card tightens a hair, the frame dips, the label
    and question fade out with a small lift. The text changes while invisible. In (230ms): the rail settles, the
-   card eases back, the new text rises from below. The lift and the rise are shares of the card's width, so they read the same on every
+   card eases back, the frame returns (in the new card's colour), the new text rises from below. The lift and the rise are shares of the card's width, so they read the same on every
    card size (the chosen preview's 178px card: 2px and 8px). Under reduced motion: an 80ms fade out, 120ms fade in.
    The question is never scaled: the card tightens as a whole and the text block carries the exact inverse
    scale, so the text's own scale stays 1. */
 const SWAP_EASE = { leave: 'cubic-bezier(.4,0,1,1)', settle: 'cubic-bezier(.16,1,.3,1)', breath: 'cubic-bezier(.3,0,.4,1)' };
 const FRAME_TIGHT = .992;
+const FRAME_DIP = .4;
 const FLARE_PEAK = .95;
 const TEXT_LIFT_SHARE = 2 / 178;
 const TEXT_RISE_SHARE = 8 / 178;
@@ -310,29 +311,31 @@ const TEXT_RISE_SHARE = 8 / 178;
 /* The out beat starts from `from`: by default the resting look (flare hidden), or, on a restart during the in beat,
    the look at that moment, so a fast tap never snaps. A keyframe left empty starts from the element's resting value;
    a single keyframe on the in beat, with offset 0, ends there. */
-const currentLook = ({ card, body, lift, text }) => {
+const currentLook = ({ card, body, lift, frame, text }) => {
   const look = (e, ...props) => Object.fromEntries(props.map(p => [p, getComputedStyle(e)[p]]));
   return {
     lift: look(lift, 'opacity', 'transform'),
     card: look(card, 'transform'),
     body: look(body, 'transform'),
+    frame: look(frame, 'opacity'),
     text: text.map(e => look(e, 'opacity', 'transform')),
   };
 };
-const RESTING_LOOK = { lift: { opacity: 0, transform: 'scaleX(.5)' }, card: {}, body: {}, text: [{}, {}] };
+const RESTING_LOOK = { lift: { opacity: 0, transform: 'scaleX(.5)' }, card: {}, body: {}, frame: {}, text: [{}, {}] };
 
-function playSwapOut({ card, body, lift, text }, reduced, from = RESTING_LOOK) {
+function playSwapOut({ card, body, lift, frame, text }, reduced, from = RESTING_LOOK) {
   if (reduced) return text.map((e, i) => e.animate([from.text[i], { opacity: 0 }], { duration: 80, easing: 'linear', fill: 'forwards' }));
   const hold = { duration: 110, easing: SWAP_EASE.breath, fill: 'forwards' };
   return [
     lift.animate([from.lift, { opacity: FLARE_PEAK, transform: 'scaleX(1)' }], { ...hold, easing: SWAP_EASE.settle }),
     card.animate([from.card, { transform: `scale(${FRAME_TIGHT})` }], hold),
     body.animate([from.body, { transform: `scale(${1 / FRAME_TIGHT})` }], hold),
+    frame.animate([from.frame, { opacity: FRAME_DIP }], hold),
     ...text.map((e, i) => e.animate([from.text[i], { opacity: 0, transform: `translateY(${-TEXT_LIFT_SHARE * card.offsetWidth}px)` }], { duration: 80, delay: 30, easing: SWAP_EASE.leave, fill: 'both' })),
   ];
 }
 
-function playSwapIn({ card, body, lift, text }, reduced) {
+function playSwapIn({ card, body, lift, frame, text }, reduced) {
   if (reduced) return text.map(e => e.animate([{ offset: 0, opacity: 0 }], { duration: 120, easing: 'linear', fill: 'backwards' }));
   const settle = { duration: 230, easing: SWAP_EASE.settle };
   const rise = delay => ({ duration: 190, delay, easing: SWAP_EASE.settle, fill: 'backwards' });
@@ -340,6 +343,7 @@ function playSwapIn({ card, body, lift, text }, reduced) {
     lift.animate([{ offset: 0, opacity: FLARE_PEAK }], settle),
     card.animate([{ offset: 0, transform: `scale(${FRAME_TIGHT})` }], settle),
     body.animate([{ offset: 0, transform: `scale(${1 / FRAME_TIGHT})` }], settle),
+    frame.animate([{ offset: 0, opacity: FRAME_DIP }], settle),
     ...text.map((e, i) => e.animate([{ offset: 0, opacity: 0, transform: `translateY(${TEXT_RISE_SHARE * card.offsetWidth}px)` }], rise(20 * (i + 1)))),   // label slightly ahead of the question
   ];
 }
@@ -362,7 +366,7 @@ function flipToCard(card, isFirstDraw) {
   const qEl     = document.getElementById('card-question');
   const accent  = document.getElementById('c-accent');
   const nextBtn = document.getElementById('btn-next');
-  const parts   = { card: el, body: el.querySelector('.card-body-inner'), lift: document.getElementById('c-lift'), text: [lvlEl, qEl] };
+  const parts   = { card: el, body: el.querySelector('.card-body-inner'), lift: document.getElementById('c-lift'), frame: el.querySelector('.card-frame'), text: [lvlEl, qEl] };
   const from    = swap ? currentLook(parts) : undefined;   // a restart during the in beat continues from what is on screen
   pendingFlip?.cancel();
   hideHandSummary();

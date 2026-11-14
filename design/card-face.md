@@ -9,8 +9,10 @@ picker have their own corners and are not part of this.
   strength), and four `<i>` stepped squares, one centred on each corner of the two lines (card
   ground, `--border-strong` outline). On After Dark (`.mark-full`) the inner line is `--mark`; on a
   Wildcard it is `--gold` (`--cat` is not set). The inner line's colour eases (.5s, instant under
-  reduced motion). The frame is hidden on the card back (`.is-start`); it stays on the end-of-hand
-  list and message.
+  reduced motion). The frame sits above the card back (z 6 over 5), so the start card and
+  the Intermezzo wear it too and their lattice fills its inner line; it stays on the end-of-hand
+  list and message. On a change of card it dips to `FRAME_DIP` and returns with the new card
+  (`card.js` `playSwapOut` / `playSwapIn`).
 - **Colour:** `card.js applyCardMark` sets `--cat` on the card to the colour the name has
   (`labelColor(levelColor(level))`) and removes it for a Wildcard or no card.
 - **Name:** `.card-level` stands free at the top of `.card-body-inner` (absolute, centred by a flex
@@ -38,9 +40,9 @@ and the bottom), `--frame-e` (how far a corner square sticks out), `--name-size`
 | corner square overhang | 3.5u | 3.5u | .7 |
 | line width | 1px | 1px | 1.5px |
 | name size | 18u | 14.4px (.9rem); 1.07rem from 768; 1.125rem from 1024; 1.18rem from 1180; 1.24rem from 1600; 1.125rem on a short window | 2.4 (Wildcard 2.3) |
-| name top, side margin, gap | 23u, 46u, 11u | same, in u | 5.3, 14, 2.2 |
+| name top, side margin, gap | 27u, 46u, 11u | same, in u | 5.9, 14, 2.2 |
 | stripe height | 7u | 7u | 1.5 |
-| question area top / bottom | 47u / 24u | 47u / 24u | 7 / 3 |
+| question area top / bottom | 47u / 24u | 47u / 24u | 8 / 3 |
 | star top / right | 14u / 12u | 14u / 12u | 4.6 - 10px / 3.8 - 10px |
 
 Tablet sizes follow the old steps: the frame and the star by the corner-bracket steps (20px, 26px

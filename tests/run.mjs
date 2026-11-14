@@ -2728,11 +2728,11 @@ async function run() {
     }
   });
 
-  await check('card face: on a drawn card the frame shows and the name sits above the question inside it; on the start back the frame is gone', async () => {
+  await check('card face: on a drawn card the frame shows and the name sits above the question inside it; the start back wears the frame too', async () => {
     const { ctx, pg } = await freshApp({ viewport: { width: 412, height: 915 } });
     try {
       const box = sel => pg.evaluate(s => { const e = document.querySelector(s), r = e.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, display: getComputedStyle(e).display }; }, sel);
-      assert((await box('#card .card-frame')).display === 'none', 'the frame shows on the start back');
+      assert((await box('#card .card-frame')).display !== 'none', 'the frame is missing on the start back');
       await drawCards(pg, 1); await pg.waitForTimeout(1500);
       const [frame, name, q] = [await box('#card .card-frame'), await box('#card-level'), await box('#card-question')];
       const inset = await pg.evaluate(() => { const l = getComputedStyle(document.querySelector('#card .card-frame'), '::after'); return { top: parseFloat(l.top), left: parseFloat(l.left) }; });
