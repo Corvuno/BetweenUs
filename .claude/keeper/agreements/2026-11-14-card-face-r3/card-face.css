@@ -1,0 +1,32 @@
+/* prototype round 3: free name with stripes (sketch 1) + unbroken double frame (sketch 3); the colour differs per variant */
+.card::before,.card::after{display:none;}
+.card.mark-wildcard{outline:none;}
+.card:not(.is-start):not(.mark-full){border-color:color-mix(in srgb,var(--cat,var(--gold)) 42%,transparent);}
+.cf{position:absolute;inset:0;z-index:0;pointer-events:none;--fo:calc(9*var(--u));--fi:calc(13*var(--u));--fe:calc(3.5*var(--u));}
+.card.is-start .cf,.card.is-hand-list .cf{display:none;}
+.cf::before,.cf::after{content:'';position:absolute;border:1px solid var(--border-strong);}
+.cf::before{inset:var(--fo);}
+.cf::after{inset:var(--fi);}
+.cf i{position:absolute;z-index:1;width:calc(var(--fi) - var(--fo) + 2*var(--fe));aspect-ratio:1;border:1px solid var(--border-strong);background:var(--card-bg);}
+.cf i:nth-of-type(1){top:calc(var(--fo) - var(--fe));left:calc(var(--fo) - var(--fe));}
+.cf i:nth-of-type(2){top:calc(var(--fo) - var(--fe));right:calc(var(--fo) - var(--fe));}
+.cf i:nth-of-type(3){bottom:calc(var(--fo) - var(--fe));left:calc(var(--fo) - var(--fe));}
+.cf i:nth-of-type(4){bottom:calc(var(--fo) - var(--fe));right:calc(var(--fo) - var(--fe));}
+.cf svg{display:none;position:absolute;inset:var(--fi);width:calc(100% - 2*var(--fi));height:calc(100% - 2*var(--fi));color:var(--cat);opacity:.16;}
+/* the name: free, with the stripes of sketch 1 */
+.card .card-level{position:absolute;top:calc(21*var(--u));left:calc(46*var(--u));right:calc(46*var(--u));display:flex;align-items:center;gap:calc(11*var(--u));
+  font-size:calc(18*var(--u));letter-spacing:.26em;line-height:1;white-space:nowrap;}
+.card.mark-wildcard .card-level{font-size:calc(17*var(--u));}
+.card .card-level::before,.card .card-level::after{content:'';flex:1;height:calc(7*var(--u));opacity:.8;background-repeat:no-repeat;background-size:100% 1px,58% 1px;
+  background-image:linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);}
+.card .card-level::before{background-position:0 0,100% 100%;-webkit-mask:linear-gradient(to right,transparent,#000 50%);mask:linear-gradient(to right,transparent,#000 50%);}
+.card .card-level::after{margin-left:-.26em;background-position:0 0,0 100%;-webkit-mask:linear-gradient(to left,transparent,#000 50%);mask:linear-gradient(to left,transparent,#000 50%);}
+.card .card-body-inner{padding-top:calc(46*var(--u));padding-bottom:calc(24*var(--u));}
+.card .card-star{top:calc(11*var(--u));right:calc(12*var(--u));}
+/* A · the colour in the lines */
+body.vA .cf::after{border-color:color-mix(in srgb,var(--cat,var(--gold)) 62%,transparent);}
+body.vA .card.mark-full .cf::after{border-color:color-mix(in srgb,var(--mark) 62%,transparent);}
+/* B · an even ground of colour inside the frame */
+body.vB .card:not(.mark-full) .cf::after{background:color-mix(in srgb,var(--cat,transparent) 10%,transparent);}
+/* C · the fan in colour */
+body.vC .card:not(.mark-full):not(.mark-wildcard) .cf svg{display:block;}
