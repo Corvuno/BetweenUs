@@ -70,6 +70,10 @@ ornament; corner markers anywhere but corners; controls that make people think.
   stretched card; a ribbon to pull; type-set controls; controls on the card; a hand of card backs, a
   radio dial or a programme of acts as controls ("way too convoluted… it should be about the
   questions").
+- Liked: things that have attention, "something going on"; metal on lines (The Deck, the menu, the
+  card's top line); small words made more readable, as long as the elegance of thin letters and wide
+  spacing stays. Turned down: a screen where everything is muted and scattered; groups of plain
+  hairlines beside a control ("the standard deco flair for AI").
 - Screenshots of the card are shared (WhatsApp) with what's under it, so the controls are seen by
   people who don't hold the phone.
 
