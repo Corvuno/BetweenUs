@@ -49,11 +49,13 @@ What follows are this product's hard lines. Everything else is understanding, in
   section on the font-size scale before extending that scale. Category, chapter and mode colours
   are content colour and stay outside it.
 
-## These files stay small
+## The Keeper's files
 
-- The Keeper's files say how things are now: no dates, no history. A miss leads to changing the
-  text that should have covered it, not to a new line (`SKILL.md`, "Learning").
-- `node scripts/check-rules.mjs` fails on a date, a history marker or a file over its size limit;
-  a limit is raised only when the owner agrees. The files under `.claude/skills/keeper/`, the
-  agents `builder`, `checker`, `searcher` and the `keeper-*` hooks are copies from
-  https://github.com/Corvuno/Keeper and are changed there, never here.
+- They say how things are now: no dates, no history; `node scripts/check-rules.mjs` refuses a
+  commit that adds either. A miss leads to changing the text that should have covered it, not
+  to a new line (`SKILL.md`, "Learning").
+- There is no size limit. When the files have grown a lot since the last upkeep, a note says so
+  at the start of a session; it is a prompt to look, never a block.
+- The files under `.claude/skills/` that came with the Keeper, the agents `builder`, `checker`,
+  `searcher` and the `keeper-*` hooks are copies from https://github.com/Corvuno/Keeper
+  (`.claude/keeper-core.txt` lists them) and are changed there, never here.

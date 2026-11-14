@@ -1,10 +1,11 @@
 # Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
-# Source commit: d0b8243
+# Source commit: 2b5426f
 agents/builder.md
 agents/checker.md
 agents/searcher.md
 hooks/keeper-main-checks.sh
 hooks/keeper-reminder.sh
+hooks/keeper-size.sh
 skills/brainstorming/SKILL.md
 skills/brainstorming/builder-check-prompt.md
 skills/brainstorming/scripts/frame-template.html

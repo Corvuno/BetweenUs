@@ -1,5 +1,5 @@
 // Keeps the rule files lean: they say how things work now, never how they got there.
-// Fails on a date or a history marker in a rule file, or a file over its size budget.
+// Fails on a date or a history marker in a rule file. Size is not limited, only signalled.
 // Records belong in .claude/keeper/agreements/ or .claude/keeper/history/ (not checked).
 //   node scripts/check-rules.mjs
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -8,24 +8,9 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-// Size budgets in bytes. A budget is raised only when the owner agrees.
-const budgets = {
-  'CLAUDE.md': 4500,
-  '.claude/keeper/project.md': 4000,
-  '.claude/keeper/state.md': 3500,
-  '.claude/keeper/cards.md': 5500,
-  '.claude/keeper/look.md': 5500,
-  '.claude/keeper/vision.md': 5000,
-  '.claude/keeper/taste.md': 5500,
-  '.claude/keeper/build-rules.md': 6500,
-  '.claude/keeper/panel.md': 2000,
-  '.claude/keeper/upkeep.md': 500,
-};
-const agentBudget = 2500;
-const totalBudget = 36000;
-
-// The generic Keeper files are copies from Corvuno/Keeper and have their own size limit there
-// (install.sh); this check covers only what belongs to this product.
+// The generic Keeper files are copies from Corvuno/Keeper; this check covers only what belongs
+// to this product. There is no size limit: growth is signalled at session start
+// (.claude/hooks/keeper-size.sh), never refused.
 const generic = new Set(
   (existsSync(join(root, '.claude/keeper-core.txt')) ? readFileSync(join(root, '.claude/keeper-core.txt'), 'utf8') : '')
     .split('\n').filter((l) => l && !l.startsWith('#')).map((l) => `.claude/${l}`),
@@ -37,7 +22,7 @@ const agents = readdirSync(join(root, '.claude/agents'))
 const keeperFiles = readdirSync(join(root, '.claude/keeper'))
   .filter((f) => f.endsWith('.md'))
   .map((f) => `.claude/keeper/${f}`);
-const files = [...new Set([...Object.keys(budgets), ...keeperFiles, ...agents])]
+const files = [...new Set(['CLAUDE.md', ...keeperFiles, ...agents])]
   .filter((f) => existsSync(join(root, f)) && !generic.has(f));
 
 const markers = [
@@ -56,8 +41,6 @@ for (const file of files) {
   const text = readFileSync(join(root, file), 'utf8');
   const size = Buffer.byteLength(text);
   total += size;
-  const budget = budgets[file] ?? (file.startsWith('.claude/agents/') ? agentBudget : 3000);
-  if (size > budget) problems.push(`${file}: ${size} bytes, over its budget of ${budget}`);
   text.split('\n').forEach((line, i) => {
     if (allowed(file, line)) return;
     for (const [pattern, what] of markers) {
@@ -65,7 +48,6 @@ for (const file of files) {
     }
   });
 }
-if (total > totalBudget) problems.push(`all rule files together: ${total} bytes, over the budget of ${totalBudget}`);
 
 if (problems.length) {
   console.error('Rule files must say how things work now, without history (CLAUDE.md, "Rule files stay lean"):');
@@ -73,4 +55,4 @@ if (problems.length) {
   console.error('Rewrite the rule as it is now; history lives in git, records in .claude/keeper/history/.');
   process.exit(1);
 }
-console.log(`Rule files lean: ${files.length} files, ${total} bytes, no history.`);
+console.log(`Keeper files: ${files.length} files, ${total} bytes, no history.`);

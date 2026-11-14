@@ -1,0 +1,17 @@
+3539 CLAUDE.md
+8966 .claude/skills/keeper/SKILL.md
+1748 .claude/skills/keeper/design.md
+2631 .claude/skills/keeper/owner.md
+3298 .claude/skills/keeper/workshop.md
+5717 .claude/keeper/build-rules.md
+4239 .claude/keeper/cards.md
+4103 .claude/keeper/look.md
+1308 .claude/keeper/panel.md
+3088 .claude/keeper/project.md
+2407 .claude/keeper/state.md
+5446 .claude/keeper/taste.md
+195 .claude/keeper/upkeep.md
+4588 .claude/keeper/vision.md
+1758 .claude/agents/builder.md
+1507 .claude/agents/checker.md
+1498 .claude/agents/searcher.md

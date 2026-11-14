@@ -50,4 +50,6 @@ names its backlog, its areas and its checks; `build-rules.md` says how its code 
 Once a month (`upkeep.md` holds the date), in its own conversation: read all Keeper files of the
 product and the cases, shorten what has grown, and look for the same kind of miss appearing more
 than once. Each repeat is raised with the owner, with what was tried before, to find out what
-they expected; then the text is modified. Nothing is added by default.
+they expected; then the text is modified. Nothing is added by default. At the end, record the
+sizes (`sh .claude/hooks/keeper-size.sh --record`): there is no size limit, only a signal at the
+start of a session when the files have grown a lot since then.
