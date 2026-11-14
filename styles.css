@@ -15,7 +15,7 @@
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
-  --border-strong:rgba(201,168,76,0.38);
+  --border-strong:rgba(201,168,76,0.38);--frame-rest:38%;   /* how much of its colour the frame's inner line keeps at the end of a hand */
   /* motion: strong ease-out for things entering or responding (starts fast, settles soft); --ease-sheet is the
      fast-start, soft-settle curve of drawers and sheets sliding in */
   --ease-out:cubic-bezier(.23,1,.32,1);--ease-sheet:cubic-bezier(.32,.72,0,1);
@@ -200,23 +200,24 @@ body{
   --name-size:.9rem;   /* the old label sizes (.8, .95, 1, 1.05, 1.1rem) grown by an eighth, as the phone's 16 became 18 */
   --body-top:calc(47 * var(--u));--body-bottom:calc(24 * var(--u));
 }
-.card-frame{position:absolute;inset:0;z-index:6;pointer-events:none;}   /* above the card back (z 5): the back wears the same frame, so it stays put through the first draw and the end of a hand */
-.card-frame::before,.card-frame::after{content:'';position:absolute;border:1px solid var(--border-strong);}
-.card-frame::before{inset:var(--frame-o-top) var(--frame-o) var(--frame-o);}
-.card-frame::after{inset:var(--frame-i-top) var(--frame-i) var(--frame-i);border-color:var(--cat,var(--gold));transition:border-color .5s ease;}   /* the category's colour, set by card.js applyCardMark; gold on a Wildcard */
-.card.mark-full .card-frame::after{border-color:var(--mark);}
-.card-frame i{position:absolute;z-index:1;width:calc(var(--frame-i) - var(--frame-o) + 2 * var(--frame-e));   /* a square: the top and the sides differ by the same amount */aspect-ratio:1;border:1px solid var(--border-strong);background:var(--card-bg);}
-.card-frame i:nth-of-type(1){top:calc(var(--frame-o-top) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
-.card-frame i:nth-of-type(2){top:calc(var(--frame-o-top) - var(--frame-e));right:calc(var(--frame-o) - var(--frame-e));}
-.card-frame i:nth-of-type(3){bottom:calc(var(--frame-o) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
-.card-frame i:nth-of-type(4){bottom:calc(var(--frame-o) - var(--frame-e));right:calc(var(--frame-o) - var(--frame-e));}
+.card-frame{position:absolute;inset:0;z-index:6;pointer-events:none;--frame-ground:var(--card-bg);}   /* above the card back (z 5): the back wears the same frame, so it stays put through the first draw and the end of a hand */
+/* one frame for the card and for Spotlight (.party-frame): each sets the --frame-* sizes and the ground its corner squares cover */
+.card-frame::before,.card-frame::after,.party-frame::before,.party-frame::after{content:'';position:absolute;border:1px solid var(--border-strong);}
+.card-frame::before,.party-frame::before{inset:var(--frame-o-top) var(--frame-o) var(--frame-o);}
+.card-frame::after,.party-frame::after{inset:var(--frame-i-top) var(--frame-i) var(--frame-i);border-color:var(--cat,var(--gold));transition:border-color .5s ease;}   /* the category's colour, set by card.js applyCardMark; gold on a Wildcard */
+.card.mark-full .card-frame::after,.party-frame.mark-full::after{border-color:var(--mark);}
+/* the end of a hand (the Intermezzo and the list, on the card and in Spotlight): the coloured line steps back */
+body.showing-hand-summary :is(.card-frame,.party-frame)::after{border-color:color-mix(in srgb,var(--cat,var(--gold)) var(--frame-rest),transparent);}
+body.showing-hand-summary :is(.card.mark-full .card-frame,.party-frame.mark-full)::after{border-color:color-mix(in srgb,var(--mark) var(--frame-rest),transparent);}
+.card-frame i,.party-frame i{position:absolute;z-index:1;width:calc(var(--frame-i) - var(--frame-o) + 2 * var(--frame-e));   /* a square: the top and the sides differ by the same amount */
+  aspect-ratio:1;border:1px solid var(--border-strong);background:var(--frame-ground);}
+:is(.card-frame,.party-frame) i:nth-of-type(1){top:calc(var(--frame-o-top) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
+:is(.card-frame,.party-frame) i:nth-of-type(2){top:calc(var(--frame-o-top) - var(--frame-e));right:calc(var(--frame-o) - var(--frame-e));}
+:is(.card-frame,.party-frame) i:nth-of-type(3){bottom:calc(var(--frame-o) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
+:is(.card-frame,.party-frame) i:nth-of-type(4){bottom:calc(var(--frame-o) - var(--frame-e));right:calc(var(--frame-o) - var(--frame-e));}
 /* Deck-identity marking, set via --mark and a class from card.js:
    .mark-full  — After Dark cards: frame line + border tint + radial wash + watermark
    .mark-border — Colbert / The 36: border tint only, no wash/watermark (their frame line is the category colour like any other) */
-.party-frame.mark-full i,.party-frame.mark-border i{   /* Spotlight's corners take the same mark (card.js applyCardMark runs on both) */
-  border-color:var(--mark);
-  opacity:.55;
-}
 .card.mark-full,.card.mark-border{
   border-color:color-mix(in srgb, var(--mark) 40%, transparent);
 }
@@ -238,13 +239,11 @@ body{
 /* Wildcard (#76): the card stays dark; its title is lettered like Intermezzo and set in light gold, a second
    hairline frame sits inside the first (the card face's own frame on the main card), and a faint "?" stands behind the text. Same on Spotlight (the
    mark class sits on .party-frame there). Its rail is plain gold: levelColor's fallback. */
-.party-frame.mark-wildcard{outline:1px solid var(--border-strong);outline-offset:-10px;}
 .card.mark-wildcard{border-color:var(--border-strong);}
 .card.mark-wildcard .wc-mark,.party-frame.mark-wildcard .wc-mark{display:flex;}
 .card.mark-wildcard .card-level,.party-card:has(.mark-wildcard) .party-level{
   font-family:'Federo','Jost',sans-serif;font-weight:400;letter-spacing:.32em;color:var(--gold-l);}
 .card.mark-wildcard .card-level{font-size:calc(var(--name-size) * 17 / 18);}
-.party-frame.mark-wildcard{--fi:22px;}
 .party-frame.mark-wildcard .wc-mark{font-size:min(55vh,48vw);opacity:.08;}
 .party-card:has(.mark-wildcard) .party-level{font-size:19px;}
 @media (min-width:768px){.card.mark-wildcard .wc-mark{font-size:24rem;opacity:.08;}}
@@ -795,11 +794,8 @@ body.showing-hand-summary .card-question{
 .party-c-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:6;background:linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);transition:--rail-d .6s ease,--rail-m .6s ease,--rail-l .6s ease;
   -webkit-mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14% 86%,transparent);}
 
-/* two card corners: top-left, bottom-right */
-.party-frame{--fi:12px;--fs:24px;position:absolute;inset:0;pointer-events:none;z-index:1;}
-.party-frame i{position:absolute;width:var(--fs);height:var(--fs);border:solid var(--gold);border-width:0;opacity:.35;}
-.party-frame i:nth-child(1){top:var(--fi);left:var(--fi);border-width:1px 0 0 1px;}
-.party-frame i:nth-child(2){bottom:var(--fi);right:var(--fi);border-width:0 1px 1px 0;}
+/* the card's frame round the whole screen (rules shared with .card-frame above): the top keeps more room, for the colour line */
+.party-frame{--frame-o:8px;--frame-i:12px;--frame-o-top:11px;--frame-i-top:15px;--frame-e:3px;--frame-ground:var(--bg);position:absolute;inset:0;pointer-events:none;z-index:1;}
 
 /* chrome */
 .party-chrome{position:relative;z-index:5;display:flex;align-items:center;transition:opacity .38s var(--ease-out);}
@@ -909,7 +905,7 @@ body.showing-hand-summary .card-question{
 
 /* ── phone landscape ── */
 @media (orientation:landscape) and (max-height:500px){
-  .party-frame{--fi:10px;--fs:20px;}
+  .party-frame{--frame-o-top:5px;--frame-i-top:9px;}   /* the count sits high here: the top line stays above it */
   .party-top{padding:14px 48px 0;}
   .pc-rule{display:flex;}
   .party-bottom{padding:0 48px 12px;}
@@ -944,7 +940,8 @@ body.showing-hand-summary .card-question{
 
 /* ── desktop ── */
 @media (min-width:900px) and (min-height:501px){
-  .party-frame{--fi:24px;--fs:40px;}
+  .party-frame{--frame-o:9px;--frame-i:14px;--frame-o-top:10px;--frame-i-top:15px;--frame-e:4px;}   /* close to the edge: the buttons in the top corner keep their air */
+  .party-frame::before,.party-frame::after,.party-frame i{border-width:1.5px;}
   .party-top{padding:44px 88px 0;}
   .party-top .party-twist,.party-top .party-pick{gap:10px;}
   .pc-rule{display:flex;} .pc-rule::before{width:40px;}
@@ -1268,7 +1265,7 @@ body.tok-taught .tok-hint{display:none;}
 @media(max-width:899px){
   /* the switch: a word set upright along the right edge between two short fading hairlines.
      "Sideways" in portrait, "Upright" once switched (ui.js sets data-land). Above the picker (z-index 30). */
-  .party-orient{display:block;position:fixed;right:6px;bottom:112px;width:34px;height:170px;z-index:40;transition:opacity .5s ease;}
+  .party-orient{display:block;position:fixed;right:10px;bottom:112px;width:34px;height:170px;z-index:40;transition:opacity .5s ease;}
   .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
   .party-orient-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:34px;height:170px;
     background:none;border:0;padding:0;cursor:pointer;color:var(--celadon);font-family:'Jost',sans-serif;-webkit-tap-highlight-color:transparent;}
@@ -1282,7 +1279,7 @@ body.tok-taught .tok-hint{display:none;}
   .party-orient[data-land="0"] [data-s="p"],.party-orient[data-land="1"] [data-s="l"]{display:block;}
   .party-overlay:not(.orient-landscape) .party-picker{padding-right:44px;}
 
-  .party-overlay.orient-landscape .party-frame{--fi:10px;--fs:20px;}
+  .party-overlay.orient-landscape .party-frame{--frame-o-top:5px;--frame-i-top:9px;}
   .party-overlay.orient-landscape .party-top{padding:14px 48px 0;}
   .party-overlay.orient-landscape .pc-rule{display:flex;}
   .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;}
@@ -2017,5 +2014,5 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 
 /* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */
 @media (prefers-reduced-motion:reduce){
-  body,.btn-draw,.btn-draw.hold-mode,.nav-lines,.controls-wrap:has(#btn-next.hold-mode) .nav-lines,.c-accent,.party-c-accent,.card-frame::after{transition:none;}
+  body,.btn-draw,.btn-draw.hold-mode,.nav-lines,.controls-wrap:has(#btn-next.hold-mode) .nav-lines,.c-accent,.party-c-accent,.card-frame::after,.party-frame::after{transition:none;}
 }
