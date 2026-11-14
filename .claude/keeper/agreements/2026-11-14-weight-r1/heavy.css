@@ -1,0 +1,49 @@
+/* the softer inner line, as shown in the card-face rounds (62% of the category's colour) */
+body.soft .card-frame::after{border-color:color-mix(in srgb,var(--cat,var(--gold)) 62%,transparent);}
+body.soft .card.mark-full .card-frame::after{border-color:color-mix(in srgb,var(--mark) 62%,transparent);}
+
+/* ── weight: letters ── */
+body.hv{--btn-quiet:#cdbfa8;}
+body.hv .subtitle{font-weight:500;color:#b9ab96;}
+body.hv .tok-lbl{color:#c4b6a0;}
+body.hv .tok-hint{color:#9c8f7e;}
+body.hv .tok-val{font-weight:500;}
+body.hv .tok-preset{border-bottom:2px solid color-mix(in srgb,var(--tokc,var(--gold)) 55%,transparent);}
+body.hv .tok-rule{height:2px;width:22px;opacity:.9;}
+body.hv .prog-count-num{font-size:19px;color:var(--gold-l);}
+body.hv .prog-count-rule{height:2px;width:52px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 60%,transparent));}
+body.hv .prog-count-rule:last-child{background:linear-gradient(90deg,color-mix(in srgb,var(--gold) 60%,transparent),transparent);}
+body.hv .btn-draw{font-weight:600;}
+body.hv .quiet-word{font-weight:600;font-size:12.5px;}
+body.hv .row-hint{color:#a89b88;}
+/* ── weight: thick beside thin ── */
+body.hv .nav-lines{--line:color-mix(in srgb,var(--nl) 90%,transparent);--line-end:color-mix(in srgb,var(--nl) 28%,transparent);
+  background-size:calc(100% - 22 * var(--u)) 1px,calc(58%) 3px,calc(100% - 22 * var(--u)) 1px;}
+body.hv .nav-lines--l{background-image:linear-gradient(to left,var(--line),var(--line-end)),linear-gradient(var(--line),var(--line)),linear-gradient(to left,var(--line),var(--line-end));
+  background-position:100% calc(var(--y-mid) - 7px),100% calc(var(--y-mid) - 1px),100% calc(var(--y-mid) + 7px);}
+body.hv .nav-lines--r{background-image:linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(var(--line),var(--line)),linear-gradient(to right,var(--line),var(--line-end));
+  background-position:0 calc(var(--y-mid) - 7px),0 calc(var(--y-mid) - 1px),0 calc(var(--y-mid) + 7px);}
+/* ── The Deck ── */
+body.hv .cat-area,body.hv .drawer{border-top:3px solid var(--gold);box-shadow:inset 0 4px 0 var(--surface),inset 0 5px 0 color-mix(in srgb,var(--gold) 55%,transparent);}
+body.hv .cat-sheet-name{display:flex;align-items:center;justify-content:center;gap:14px;font-size:1rem;font-weight:600;letter-spacing:.26em;padding:6px 40px 8px;}
+body.hv .cat-sheet-name::before,body.hv .cat-sheet-name::after{content:'';flex:1;height:7px;background-repeat:no-repeat;background-size:100% 1px,58% 1px;
+  background-image:linear-gradient(var(--gold),var(--gold)),linear-gradient(var(--gold),var(--gold));opacity:.8;}
+body.hv .cat-sheet-name::before{background-position:0 0,100% 100%;-webkit-mask:linear-gradient(to right,transparent,#000 50%);mask:linear-gradient(to right,transparent,#000 50%);}
+body.hv .cat-sheet-name::after{margin-left:-.26em;background-position:0 0,0 100%;-webkit-mask:linear-gradient(to left,transparent,#000 50%);mask:linear-gradient(to left,transparent,#000 50%);}
+body.hv .cat-sheet-head-title{color:rgba(240,232,216,.85);font-weight:500;}
+body.hv .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){font-weight:500;}
+body.hv .cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active){font-weight:600;}
+body.hv .cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::after{height:2px;opacity:1;}
+body.hv .chapter .ch-name{font-weight:600;font-size:.86rem;}
+body.hv .chapter .ch-desc{color:#b9ab96;}
+body.hv .ch-ct{font-weight:500;color:#b9ab96;}
+body.hv .chapter::before{width:5px;left:-5px;}
+body.hv .sect-lbl{color:var(--gold-l);}
+body.hv .menu-head{font-weight:600;color:var(--gold-l);}
+body.hv .deselect-btn{font-weight:500;}
+/* ── the menu ── */
+body.hv .menu-label{font-weight:600;font-size:.8rem;}
+body.hv .menu-state{font-weight:500;opacity:1;}
+body.hv .menu-icon{opacity:1;}
+body.hv .menu-icon svg{width:20px;height:20px;stroke-width:2.2;}
+body.hv .menu-rule{height:3px;background:color-mix(in srgb,var(--gold) 45%,transparent);margin:14px 26px;width:56px;}
