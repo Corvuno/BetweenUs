@@ -182,7 +182,7 @@ body{
    aspect-ratio acts as a *default* height that a flex column grows past when a
    long question + Twist text needs more room; .card-area, an unstyled wrapper,
    just follows along. */
-.card-area{width:100%;position:relative;}
+.card-area{width:100%;position:relative;--u:1px;}   /* the card's unit: 1px on a tablet, 1.3px from 1024px (the old corner-bracket steps, 20px and 26px), 1/376 of the card's width on a phone (the phone block after the .hd-list rules) */
 .card{
   position:relative;width:100%;aspect-ratio:12/7;background:var(--card-bg);border:1px solid var(--border);
   box-shadow:0 4px 32px rgba(0,0,0,.44),0 1px 4px rgba(0,0,0,.3);
@@ -191,18 +191,29 @@ body{
   -webkit-touch-callout:none;touch-action:manipulation;
 }
 .card:active{transform:scale(.997);}
-.card{--bracket-inset:20px;--text-gap:8px;}   /* the question's side padding = bracket inset + gap (28px on a 412px phone; phones scale it with the card, see the phone block after the .hd-list rules): it uses the width between the corner lines, with a margin (owner, 2026-11-05) */
-.card::before,.card::after{
-  content:'';position:absolute;width:24px;height:24px;border-style:solid;z-index:2;
-  border-color:var(--gold);opacity:.35;pointer-events:none;
+.card{--bracket-inset:calc(20 * var(--u));--text-gap:8px;}   /* the question's side padding = bracket inset + gap (28px on a 412px phone; phones scale it with the card, see the phone block after the .hd-list rules): it uses the width between the corner lines, with a margin (owner, 2026-11-05) */
+/* The card face (#159, design/card-face.md): a double hairline frame with a stepped square at each corner, and the category's name standing
+   free at the top between two pairs of fading stripes. Sizes are numbers of --u; the computer re-sets them in cqw. */
+.card{
+  --frame-o:calc(9 * var(--u));--frame-i:calc(13 * var(--u));--frame-e:calc(3.5 * var(--u));   /* outer and inner line from the sides and the bottom; how far a corner square sticks out past them */
+  --frame-o-top:calc(12 * var(--u));--frame-i-top:calc(16 * var(--u));   /* the top edge keeps more room, for the name's line */
+  --name-size:.9rem;   /* the old label sizes (.8, .95, 1, 1.05, 1.1rem) grown by an eighth, as the phone's 16 became 18 */
+  --body-top:calc(47 * var(--u));--body-bottom:calc(24 * var(--u));
 }
-.card::before{top:var(--bracket-inset);left:var(--bracket-inset);border-width:1px 0 0 1px;}
-.card::after{bottom:var(--bracket-inset);right:var(--bracket-inset);border-width:0 1px 1px 0;}
+.card-frame{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.card.is-start .card-frame{display:none;}
+.card-frame::before,.card-frame::after{content:'';position:absolute;border:1px solid var(--border-strong);}
+.card-frame::before{inset:var(--frame-o-top) var(--frame-o) var(--frame-o);}
+.card-frame::after{inset:var(--frame-i-top) var(--frame-i) var(--frame-i);border-color:var(--cat,var(--gold));transition:border-color .5s ease;}   /* the category's colour, set by card.js applyCardMark; gold on a Wildcard */
+.card.mark-full .card-frame::after{border-color:var(--mark);}
+.card-frame i{position:absolute;z-index:1;width:calc(var(--frame-i) - var(--frame-o) + 2 * var(--frame-e));   /* a square: the top and the sides differ by the same amount */aspect-ratio:1;border:1px solid var(--border-strong);background:var(--card-bg);}
+.card-frame i:nth-of-type(1){top:calc(var(--frame-o-top) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
+.card-frame i:nth-of-type(2){top:calc(var(--frame-o-top) - var(--frame-e));right:calc(var(--frame-o) - var(--frame-e));}
+.card-frame i:nth-of-type(3){bottom:calc(var(--frame-o) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
+.card-frame i:nth-of-type(4){bottom:calc(var(--frame-o) - var(--frame-e));right:calc(var(--frame-o) - var(--frame-e));}
 /* Deck-identity marking, set via --mark and a class from card.js:
-   .mark-full  — After Dark cards: corners + border tint + radial wash + watermark
-   .mark-border — Colbert / The 36: corners + border tint only, no wash/watermark */
-.card.mark-full::before,.card.mark-full::after,
-.card.mark-border::before,.card.mark-border::after,
+   .mark-full  — After Dark cards: frame line + border tint + radial wash + watermark
+   .mark-border — Colbert / The 36: border tint only, no wash/watermark (their frame line is the category colour like any other) */
 .party-frame.mark-full i,.party-frame.mark-border i{   /* Spotlight's corners take the same mark (card.js applyCardMark runs on both) */
   border-color:var(--mark);
   opacity:.55;
@@ -226,14 +237,14 @@ body{
 .wc-mark{display:none;position:absolute;inset:0;z-index:0;align-items:center;justify-content:center;
   font:italic 400 9rem/1 'Bodoni Moda','Cormorant Garamond',serif;color:var(--gold);opacity:.1;pointer-events:none;}
 /* Wildcard (#76): the card stays dark; its title is lettered like Intermezzo and set in light gold, a second
-   hairline frame sits inside the first, and a faint "?" stands behind the text. Same on Spotlight (the
+   hairline frame sits inside the first (the card face's own frame on the main card), and a faint "?" stands behind the text. Same on Spotlight (the
    mark class sits on .party-frame there). Its rail is plain gold: levelColor's fallback. */
-.card.mark-wildcard,.party-frame.mark-wildcard{outline:1px solid var(--border-strong);outline-offset:-10px;}
+.party-frame.mark-wildcard{outline:1px solid var(--border-strong);outline-offset:-10px;}
 .card.mark-wildcard{border-color:var(--border-strong);}
 .card.mark-wildcard .wc-mark,.party-frame.mark-wildcard .wc-mark{display:flex;}
 .card.mark-wildcard .card-level,.party-card:has(.mark-wildcard) .party-level{
   font-family:'Federo','Jost',sans-serif;font-weight:400;letter-spacing:.32em;color:var(--gold-l);}
-.card.mark-wildcard .card-level{font-size:.95rem;}
+.card.mark-wildcard .card-level{font-size:calc(var(--name-size) * 17 / 18);}
 .party-frame.mark-wildcard{--fi:22px;}
 .party-frame.mark-wildcard .wc-mark{font-size:min(55vh,48vw);opacity:.08;}
 .party-card:has(.mark-wildcard) .party-level{font-size:19px;}
@@ -256,7 +267,7 @@ body{
   font-family:'Federo','Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--text-helper);}
 .card-id:empty,.card.is-start .card-id,.card.is-hand-list .card-id,.card:has(.end-msg) .card-id{display:none;}
 .card-star{
-  position:absolute;top:9px;right:11px;z-index:4;
+  position:absolute;top:calc(14 * var(--u));right:calc(12 * var(--u));z-index:4;
   background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
 }
 @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.65;}}.card-star.active{opacity:1;}
@@ -265,7 +276,7 @@ body{
    (card.js setStartBack toggles .is-start on #card).
    Owner's "B · Lattice" back, redrawn to sit on the card itself: the lattice
    runs out to the card edge and a calm window in the card's own ground colour
-   is cut out of it, with a double line (one outer, one thin inner). No corner brackets — those belong to the front. Sizes scale off
+   is cut out of it, with a double line (one outer, one thin inner). No frame — that belongs to the front. Sizes scale off
    the card's height (cqh); the lattice tile steps up with the card so the
    hairlines stay hairlines. Decorative only — clicks pass through. */
 .card-back{
@@ -305,8 +316,16 @@ body{
   font-size:calc(var(--d)*.135);line-height:1.25;text-align:center;color:var(--cream);
   white-space:nowrap;
 }
-.card-body-inner{position:relative;z-index:1;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px calc(var(--bracket-inset) + var(--text-gap)) 10px;gap:10px;}
-.card-level{font-family:'Jost',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:0;transition:color .5s ease,opacity .35s ease;}
+.card-body-inner{position:relative;z-index:1;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--body-top) calc(var(--bracket-inset) + var(--text-gap)) var(--body-bottom);}
+.card-level{
+  position:absolute;top:calc(23 * var(--u));left:calc(46 * var(--u));right:calc(46 * var(--u));display:flex;align-items:center;gap:calc(11 * var(--u));   /* centred by the flex row, so the swap can still lift it with a transform */
+  font-family:'Jost',sans-serif;font-size:var(--name-size);font-weight:600;letter-spacing:.26em;line-height:1;text-transform:uppercase;white-space:nowrap;
+  opacity:0;transition:color .5s ease,opacity .35s ease;}
+/* the two pairs of hairline stripes either side of the name, in the name's own colour, fading outward */
+.card-level::before,.card-level::after{content:'';flex:1;height:calc(7 * var(--u));opacity:.8;background-repeat:no-repeat;background-size:100% 1px,58% 1px;
+  background-image:linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);}
+.card-level::before{background-position:0 0,100% 100%;-webkit-mask:linear-gradient(to right,transparent,#000 50%);mask:linear-gradient(to right,transparent,#000 50%);}
+.card-level::after{margin-left:-.26em;background-position:0 0,0 100%;-webkit-mask:linear-gradient(to left,transparent,#000 50%);mask:linear-gradient(to left,transparent,#000 50%);}   /* the last letter's trailing space */
 .card-level.in{opacity:.95;}
 .card-question{
   font-size:1.38rem;
@@ -327,7 +346,8 @@ body{
 .end-msg>span{padding-left:.32em;}   /* the last letter's trailing space would push the line off-centre */
 .end-msg.out{opacity:0;}
 @media (prefers-reduced-motion:reduce){.end-msg{transition:none;}}
-.card-body-inner:has(.end-msg){padding-bottom:18px;}      /* even padding, so the message sits in the middle of the card */
+.card:has(.twist-sentence.twist) .card-body-inner{padding-bottom:0;}   /* the Twist line below stands in the bottom room, so a long question keeps the room it had */
+.card-body-inner:has(.end-msg){padding-block:var(--body-bottom);}      /* even padding, so the message sits in the middle of the card */
 .card-body-inner:has(.end-msg) .card-level{display:none;}
 .party-inner:has(.is-end-msg) .twist-div{display:none;}
 .party-question.is-end-msg{align-self:stretch;text-align:center;font-size:clamp(1.1rem,1.6vw,1.5rem);line-height:1.5;}
@@ -364,7 +384,7 @@ body.showing-hand-summary .card-question{
    draw. In-flow (not position:absolute) like .party-number, so a long modifier
    sentence pushes the question's flex area to make room instead of floating
    over it or the card's corner marks. */
-.twist-sentence{display:none;flex:0 0 auto;width:100%;text-align:center;padding:0 28px 12px;}
+.twist-sentence{display:none;flex:0 0 auto;width:100%;text-align:center;padding:0 28px calc(var(--frame-i) + 6 * var(--u));}   /* the line stays above the frame's inner line */
 .twist-sentence.twist{
   display:block;color:var(--celadon);
   font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
@@ -605,26 +625,20 @@ body.showing-hand-summary .card-question{
    Every phone shows the card exactly as a 412px phone does (owner, 2026-11-05, #112): .card-area is the
    container and --u is 1px on that reference card (376px wide), so everything on the card is a number of
    --u: the whole card scales with its width, never with the question's length, and every question breaks
-   into the same lines on every phone. Hairlines (borders, bracket strokes, the top bar) stay 1px/3px.
+   into the same lines on every phone. Hairlines (borders, frame lines, the top bar) stay 1px/3px.
    It sits here, after the hand list and Twist rules, so it wins over their plain sizes. */
 @media(max-width:559px){
   .card-area{container-type:inline-size;--u:calc(100cqw / 376);}
-  .card{aspect-ratio:556/360;overflow:hidden;--bracket-inset:calc(20 * var(--u));--text-gap:calc(8 * var(--u));}
-  .card::before,.card::after{width:calc(24 * var(--u));height:calc(24 * var(--u));}
-  .card.mark-wildcard{outline-offset:calc(-10 * var(--u));}
+  .card{aspect-ratio:556/360;overflow:hidden;--text-gap:calc(8 * var(--u));--name-size:calc(18 * var(--u));}
   .card-id{top:calc(12 * var(--u));font-size:calc(12.8 * var(--u));}
-  .card-star{top:calc(9 * var(--u));right:calc(11 * var(--u));padding:calc(10 * var(--u));font-size:calc(14.4 * var(--u));}
+  .card-star{padding:calc(10 * var(--u));font-size:calc(14.4 * var(--u));}
   .card-ad-mark,.wc-mark{font-size:calc(144 * var(--u));}
   .card-body-inner{min-height:0;overflow-y:auto;justify-content:safe center;overscroll-behavior:contain;
-    padding-block:calc(18 * var(--u)) calc(10 * var(--u));gap:calc(10 * var(--u));
     /* the card's 1px border does not scale, so the sides give back (u - 1px): the text area is then exactly 312 * u wide, which keeps the line breaks the same */
     padding-inline:calc(var(--bracket-inset) + var(--text-gap) + var(--u) - 1px);}
-  .card-body-inner:has(.end-msg){padding-bottom:calc(18 * var(--u));}
-  .card-level{font-size:calc(16 * var(--u));}
-  .card.mark-wildcard .card-level{font-size:calc(15.2 * var(--u));}
   .card-question{font-size:calc(26.496 * var(--u));}
   .card .end-msg{font-size:calc(16 * var(--u));}
-  .card .twist-sentence{padding:0 calc(48 * var(--u)) calc(12 * var(--u));}   /* the line stops short of the bottom-right corner mark (20u in, 24u wide) */
+  .card .twist-sentence{padding-inline:calc(48 * var(--u));}   /* the line stops short of the frame's corner squares */
   .card .twist-sentence.twist{font-size:calc(15.36 * var(--u));}
 }
 /* everything in a row is sized from the question's own size, so diamonds and stars grow with it */
@@ -1034,23 +1048,24 @@ body.showing-hand-summary #btnSave{display:flex;}
 /* ── RESPONSIVE ── */
 @media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:.88rem;}}
 @media(min-width:768px){
-  .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.card-level{font-size:.95rem;letter-spacing:.18em;}.twist-sentence.twist{font-size:.98rem;}
+  .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.twist-sentence.twist{font-size:.98rem;}
+  .card{--name-size:1.07rem;}
   .btn-draw{font-size:.85rem;letter-spacing:.16em;}
   .cat-toggle-lbl{font-size:.8rem;}
 }
 @media(min-width:1024px){
-  .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.card-level{font-size:1rem;}.twist-sentence.twist{font-size:1.05rem;}
+  .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.twist-sentence.twist{font-size:1.05rem;}
   .btn-draw{font-size:.88rem;}
   /* chrome sized for a 364px mobile card reads thin at 720px — scale the rail,
-     corner brackets and star (mobile 3px rail/24px corners/.9rem star).
+     frame and star (mobile 3px rail/.9rem star).
      Rail is 5px: desktop uses the hard-edged "intense" gilt.js derivation (see
      giltRailPaint() in gilt.js), which reads as a warning bar at anything thinner.
      filter:none is explicit: nothing sets a filter on .c-accent, and nothing
      should. */
   .c-accent{height:5px;filter:none;}
-  .card{--bracket-inset:26px;}
-  .card::before,.card::after{width:30px;height:30px;}
-  .card-star{font-size:1.05rem;top:12px;right:15px;}
+  .card-area{--u:1.3px;}
+  .card{--name-size:1.125rem;}
+  .card-star{font-size:1.05rem;}
 }
 
 /* ── CATEGORY TOOLTIP ── */
@@ -1441,10 +1456,9 @@ body.hint-ways-taught .menu-hint{display:none;}
   .drawer-title{font-size:.9rem;}
   .help-content p{font-size:1.15rem;}
   .card-question{line-height:1.42;}
-  .card-body-inner{padding:30px calc(var(--bracket-inset) + var(--text-gap)) 20px;gap:22px;}
   .card-question{font-size:2.6rem;}
   .twist-sentence.twist{font-size:1.15rem;}
-  .card-level{font-size:1.05rem;letter-spacing:.2em;}
+  .card{--name-size:1.18rem;}
   .tok{font-size:.85rem;}
   .btn-draw{font-size:.9rem;}
 }
@@ -1452,14 +1466,14 @@ body.hint-ways-taught .menu-hint{display:none;}
   .app{max-width:1000px;}
   .card-question{font-size:2.85rem;}
   .twist-sentence.twist{font-size:1.2rem;}
-  .card-level{font-size:1.1rem;}
+  .card{--name-size:1.24rem;}
 }
 
 /* short desktop windows: keep everything on one screen */
 @media(min-width:768px) and (max-height:820px){
   .app{max-width:820px;}
   .card-question{font-size:2.1rem;}
-  .card-level{font-size:1rem;}
+  .card{--name-size:1.125rem;}
   .twist-sentence.twist{font-size:.98rem;}
 }
 
@@ -1476,7 +1490,6 @@ body.hint-ways-taught .menu-hint{display:none;}
 /* the smaller card on short windows: question a touch smaller so the longest ones still fit */
 @media(min-width:768px) and (max-height:820px){
   .card-question{font-size:1.8rem;}
-  .card-body-inner{padding:20px calc(var(--bracket-inset) + var(--text-gap)) 12px;gap:14px;}
 }
 
 /* ══ PLAY · EXPLORE ══════════════════════════════════════════════════════
@@ -1921,20 +1934,22 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card-area{width:min(100cqw, calc(100cqh * 556 / 360));aspect-ratio:556/360;flex:none;}
   .card{width:100%;height:100%;aspect-ratio:auto;max-width:none;margin:0;container-type:inline-size;overflow:hidden;}
   /* the card's details on a big card (owner's option C, 2026-10-21): a heavier top line with a sharp glint at the sheen's
-     peak and ends fading over a fixed run, 1.5px corner marks with longer arms, a slightly bigger star */
+     peak and ends fading over a fixed run, 1.5px frame lines, a slightly bigger star */
   .c-accent{height:clamp(5px,.48cqw,6px);
     -webkit-mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
     mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
     background:linear-gradient(to right,transparent 38%,var(--rail-l) 46% 54%,transparent 62%) 0 2px / 100% 1px no-repeat,
       linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 55%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
-  .card::before,.card::after{width:clamp(44px,4.3cqw,54px);height:clamp(44px,4.3cqw,54px);}
-  .card::before{top:clamp(32px,3.1cqw,40px);left:clamp(32px,3.1cqw,40px);border-top-width:1.5px;border-left-width:1.5px;}
-  .card::after{bottom:clamp(32px,3.1cqw,40px);right:clamp(32px,3.1cqw,40px);border-bottom-width:1.5px;border-right-width:1.5px;}
-  .card-star{font-size:clamp(22px,2.2cqw,28px);top:clamp(12px,1.1cqw,14px);right:clamp(16px,1.4cqw,18px);padding:10px;opacity:.35;}
+  /* the card face (design/card-face.md) at the card's own size: the frame, the name, the star and the room round the question, in cqw */
+  .card{--frame-o-top:2.6cqw;--frame-i-top:3.5cqw;--frame-o:2cqw;--frame-i:2.9cqw;--frame-e:.7cqw;--name-size:2.4cqw;--body-top:7cqw;--body-bottom:3cqw;}
+  .card-frame::before,.card-frame::after,.card-frame i{border-width:1.5px;}
+  .card-level{top:5.3cqw;left:14cqw;right:14cqw;gap:2.2cqw;}
+  .card.mark-wildcard .card-level{font-size:2.3cqw;}
+  .card-level::before,.card-level::after{height:1.5cqw;background-size:100% 1.5px,58% 1.5px;}
+  .card-star{font-size:clamp(22px,2.2cqw,28px);top:calc(4.6cqw - 10px);right:calc(3.8cqw - 10px);padding:10px;opacity:.35;}
   @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.75;}}.card-star.active{opacity:1;}
   .card-ad-mark{font-size:38.4cqw;}
-  .card-body-inner{padding:calc(var(--k)*14px) 7cqw 0;gap:2cqw;}
-  .card-level{font-size:2cqw;}
+  .card-body-inner{padding-inline:7cqw;}
   .card-question{font-size:6.8cqw;line-height:1.12;}
   .card.is-hand-list .card-body-inner{padding:calc(var(--k)*48px) 7cqw calc(var(--k)*48px);}
   .card.is-hand-list .card-question{font-size:1rem;line-height:normal;}
@@ -1957,7 +1972,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card-area .picker-options::after{bottom:calc(var(--k)*24px);right:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
 
   /* Twist: a line you read from across the table, about half the question's size */
-  .twist-sentence{padding:0 7cqw 2.6cqw;}
+  .twist-sentence{padding:0 7cqw calc(var(--frame-i) + 1.5cqw);}
   .twist-sentence.twist{font-size:3.3cqw;line-height:1.3;}
 }
 
@@ -2003,5 +2018,5 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 
 /* Colour changes ease (~.6s); under reduced motion they are instant. Last in the file so it wins. */
 @media (prefers-reduced-motion:reduce){
-  body,.btn-draw,.btn-draw.hold-mode,.nav-lines,.controls-wrap:has(#btn-next.hold-mode) .nav-lines,.c-accent,.party-c-accent{transition:none;}
+  body,.btn-draw,.btn-draw.hold-mode,.nav-lines,.controls-wrap:has(#btn-next.hold-mode) .nav-lines,.c-accent,.party-c-accent,.card-frame::after{transition:none;}
 }

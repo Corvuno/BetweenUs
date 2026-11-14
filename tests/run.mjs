@@ -2704,7 +2704,7 @@ async function run() {
     }
   });
 
-  await check('Twist line on the phone card stays clear of the corner mark at 360 and 412 wide, with a ~95-character question and the longest Twist line, and the question keeps its size', async () => {
+  await check('Twist line on the phone card stays clear of the frame at 360 and 412 wide, with a ~95-character question and the longest Twist line, and the question keeps its size', async () => {
     for (const width of [360, 412]) {
       const { ctx, pg } = await freshApp({ viewport: { width, height: 915 } });
       try {
@@ -2716,17 +2716,29 @@ async function run() {
           qEl.textContent = longQ.question;
           const before = getComputedStyle(qEl).fontSize;
           twistOn = true; currentTwist = longT; renderTwist();
-          const card = document.getElementById('card'), cr = card.getBoundingClientRect(), br = getComputedStyle(card, '::after');
-          const cornerTop = cr.bottom - parseFloat(br.bottom) - parseFloat(br.height);
+          const frame = document.querySelector('#card .card-frame'), fr = frame.getBoundingClientRect(), line = getComputedStyle(frame, '::after');
+          const lineTop = fr.bottom - parseFloat(line.bottom) - parseFloat(line.borderBottomWidth);   // the inner line's top edge along the bottom
           const t = document.getElementById('twistSentence'), tr = t.getBoundingClientRect(), body = document.querySelector('.card-body-inner');
-          const cs = getComputedStyle(t), cornerLeft = cr.right - parseFloat(br.right) - parseFloat(br.width);
-          const textRight = tr.right - parseFloat(cs.paddingRight), textBottom = tr.bottom - parseFloat(cs.paddingBottom);
-          return { len: longQ.question.length, textRight, cornerLeft, tBottom: textBottom, cornerTop, size: [before, getComputedStyle(qEl).fontSize], scrolls: body.scrollHeight > body.clientHeight + 1, qTop: qEl.getBoundingClientRect().top - cr.top };
+          const textBottom = tr.bottom - parseFloat(getComputedStyle(t).paddingBottom);
+          return { len: longQ.question.length, textBottom, lineTop, size: [before, getComputedStyle(qEl).fontSize], scrolls: body.scrollHeight > body.clientHeight + 1 };
         });
-        assert(r.tBottom <= r.cornerTop || r.textRight <= r.cornerLeft, `${width}: the Twist line runs into the corner mark (${JSON.stringify(r)})`);
+        assert(r.textBottom <= r.lineTop, `${width}: the Twist line runs into the frame (${JSON.stringify(r)})`);
         assert(r.size[0] === r.size[1] && !r.scrolls, `${width}: the question changed size or the card face scrolls (${JSON.stringify(r)})`);
       } finally { await ctx.close(); }
     }
+  });
+
+  await check('card face: on a drawn card the frame shows and the name sits above the question inside it; on the start back the frame is gone', async () => {
+    const { ctx, pg } = await freshApp({ viewport: { width: 412, height: 915 } });
+    try {
+      const box = sel => pg.evaluate(s => { const e = document.querySelector(s), r = e.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, display: getComputedStyle(e).display }; }, sel);
+      assert((await box('#card .card-frame')).display === 'none', 'the frame shows on the start back');
+      await drawCards(pg, 1); await pg.waitForTimeout(1500);
+      const [frame, name, q] = [await box('#card .card-frame'), await box('#card-level'), await box('#card-question')];
+      const inset = await pg.evaluate(() => { const l = getComputedStyle(document.querySelector('#card .card-frame'), '::after'); return { top: parseFloat(l.top), left: parseFloat(l.left) }; });
+      assert(frame.display !== 'none' && frame.right > frame.left && frame.bottom > frame.top, 'the frame is not showing on a drawn card');
+      assert(name.bottom <= q.top && name.top >= frame.top + inset.top && name.left >= frame.left + inset.left && name.right <= frame.right - inset.left, `the name is not above the question inside the frame: ${JSON.stringify({ frame, name, q, inset })}`);
+    } finally { await ctx.close(); }
   });
 
   await check('menu: Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {

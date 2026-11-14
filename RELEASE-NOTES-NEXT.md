@@ -15,3 +15,4 @@ Rules:
 -->
 - The downloadable single-file version now works fully without an internet connection.
 - The Deck: chapters that come and go with your choice of evening now open and fold smoothly, and every row lights up the same gentle way.
+- Every card now has a frame, with its category named at the top.

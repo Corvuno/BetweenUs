@@ -72,7 +72,7 @@ gold while touched). Custom edition colouring: `design/custom-colours.md`.
 | `--dock-w` | `clamp(560px,42vw,640px)` | The Deck docked panel width |
 | `--pick-ease` | .2s, .45s while category lines are on | how fast a category's state eases (`deck-category-lines.md`) |
 | `--k`, `--pcW` | wide screens | scale and the card's width (`under-card.md`) |
-| `--u`, `--bracket-inset`, `--text-gap` | on `.card-area` / `.card` | phone card scaling and the question's side padding (`card-question-width.md`) |
+| `--u`, `--bracket-inset`, `--text-gap` | on `.card-area` / `.card` | phone card scaling and the question's side padding (`card-question-width.md`); the card face's frame and name sizes (`card-face.md`) |
 
 ### Motion curves
 `--ease-out: cubic-bezier(.23,1,.32,1)` (things that enter or respond; starts fast, settles soft),
@@ -104,7 +104,7 @@ the card-closing ring and frame.
 - One rule at the end of `styles.css` sets `transition:none` on all of these under reduced motion.
 
 **Corners.** Buttons and the question card are square (the card is a physical playing card with
-drawn corner brackets). Containers that hold content (drawers, category sheet, picker) share one
+a drawn double frame and stepped corner squares). Containers that hold content (drawers, category sheet, picker) share one
 soft radius.
 
 **The gold button** is one spec: `.btn-draw` (Next Card) and `.cat-go-btn` (Draw Cards). Font-size
@@ -136,9 +136,9 @@ Font sizes and letter-spacing are scoped to what was reviewed, not swept file-wi
 sampled 11 sans sizes, 9 serif sizes and 10 letter-spacing amounts from phone screens; the real
 file has more (including the dormant "end-of-set" screen). Only these approved examples are tidied:
 - the "EN" language icon: 11px (`#dLangIcon`, inline)
-- the fullscreen party-level label: 17px phone / 16px PC, tracking `.16em` phone / `.2em` PC, as
-  the main card label (see `design/spotlight.md`)
-- the card-level label on phone: 16px
+- the fullscreen party-level label: 17px phone / 16px PC, tracking `.16em` phone / `.2em` PC
+  (see `design/spotlight.md`)
+- the card's name on phone: 18px (a number of `--u`; `card-face.md` for the other sizes)
 - the `I / V` progress counter: 14px
 
 Extending the scale needs its own pass: a full value inventory shown to the owner before it is
@@ -157,5 +157,6 @@ applied, never a blind `sed` across the file.
 - `deck-category-lines.md`: category lines in The Deck.
 - `wide-rails.md`: rails and The Deck on a mouse at 1024px and up.
 - `motion-details.md`: first draw, Next/Back swap, drawers, fold-outs, entrance.
+- `card-face.md`: the card's frame and its category name, phone, tablet, computer.
 - `card-question-width.md`: question side margin and phone card scaling.
 - `custom-colours.md`: how the Custom edition is coloured.

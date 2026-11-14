@@ -130,18 +130,19 @@ function updateStarUI() {
   if (pStar) pStar.classList.toggle('on', starred);
 }
 
-// Deck-identity marking on the card face itself: After Dark categories get
-// the full treatment (corners + border tint + radial wash + watermark, in
-// the decided Alarm Red); Colbert and The 36 get corners + border tint only,
-// each in its own existing CATEGORIES colour, no wash or watermark. Every
-// other category is untouched. One place so setCardDisplay and flipToCard
+// Marking on the card face itself: every category sets --cat (the frame's inner line, in the name's colour).
+// After Dark categories get the full treatment (frame line + border tint + radial wash + watermark, in
+// the decided Alarm Red); Colbert and The 36 get a border tint only,
+// each in its own existing CATEGORIES colour, no wash or watermark. One place so setCardDisplay and flipToCard
 // (the two card-render paths) can't drift apart on this.
 function applyCardMark(el, card) {
   if (!el) return;
   el.classList.remove('mark-full', 'mark-border', 'mark-wildcard');
   el.style.removeProperty('--mark');
+  el.style.removeProperty('--cat');
   if (!card) return;
   if (card.level === WILDCARD_LEVEL) { el.classList.add('mark-wildcard'); return; }
+  el.style.setProperty('--cat', labelColor(levelColor(card.level)));   // the category's colour, as its name has it: the frame's inner line
   const meta = CATEGORIES[card.level];
   if (!meta) return;
   if (meta.bucket === 'afterdarkb') {
@@ -294,7 +295,7 @@ const DRAW_TIMING = {
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 /* Next/Back swap (owner's "B+C", 2026-10-21), Web Animations on transform and opacity only.
-   Out (110ms): the rail flares lighter from the centre, the card tightens a hair, the corners lift, the label
+   Out (110ms): the rail flares lighter from the centre, the card tightens a hair, the label
    and question fade out with a small lift. The text changes while invisible. In (230ms): the rail settles, the
    card eases back, the new text rises from below. The lift and the rise are shares of the card's width, so they read the same on every
    card size (the chosen preview's 178px card: 2px and 8px). Under reduced motion: an 80ms fade out, 120ms fade in.
@@ -302,7 +303,6 @@ const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
    scale, so the text's own scale stays 1. */
 const SWAP_EASE = { leave: 'cubic-bezier(.4,0,1,1)', settle: 'cubic-bezier(.16,1,.3,1)', breath: 'cubic-bezier(.3,0,.4,1)' };
 const FRAME_TIGHT = .992;
-const CORNER_LIFT = .6;
 const FLARE_PEAK = .95;
 const TEXT_LIFT_SHARE = 2 / 178;
 const TEXT_RISE_SHARE = 8 / 178;
@@ -316,11 +316,10 @@ const currentLook = ({ card, body, lift, text }) => {
     lift: look(lift, 'opacity', 'transform'),
     card: look(card, 'transform'),
     body: look(body, 'transform'),
-    corners: { opacity: getComputedStyle(card, '::before').opacity },
     text: text.map(e => look(e, 'opacity', 'transform')),
   };
 };
-const RESTING_LOOK = { lift: { opacity: 0, transform: 'scaleX(.5)' }, card: {}, body: {}, corners: {}, text: [{}, {}] };
+const RESTING_LOOK = { lift: { opacity: 0, transform: 'scaleX(.5)' }, card: {}, body: {}, text: [{}, {}] };
 
 function playSwapOut({ card, body, lift, text }, reduced, from = RESTING_LOOK) {
   if (reduced) return text.map((e, i) => e.animate([from.text[i], { opacity: 0 }], { duration: 80, easing: 'linear', fill: 'forwards' }));
@@ -329,7 +328,6 @@ function playSwapOut({ card, body, lift, text }, reduced, from = RESTING_LOOK) {
     lift.animate([from.lift, { opacity: FLARE_PEAK, transform: 'scaleX(1)' }], { ...hold, easing: SWAP_EASE.settle }),
     card.animate([from.card, { transform: `scale(${FRAME_TIGHT})` }], hold),
     body.animate([from.body, { transform: `scale(${1 / FRAME_TIGHT})` }], hold),
-    ...['::before', '::after'].map(pseudoElement => card.animate([from.corners, { opacity: CORNER_LIFT }], { ...hold, pseudoElement })),
     ...text.map((e, i) => e.animate([from.text[i], { opacity: 0, transform: `translateY(${-TEXT_LIFT_SHARE * card.offsetWidth}px)` }], { duration: 80, delay: 30, easing: SWAP_EASE.leave, fill: 'both' })),
   ];
 }
@@ -342,7 +340,6 @@ function playSwapIn({ card, body, lift, text }, reduced) {
     lift.animate([{ offset: 0, opacity: FLARE_PEAK }], settle),
     card.animate([{ offset: 0, transform: `scale(${FRAME_TIGHT})` }], settle),
     body.animate([{ offset: 0, transform: `scale(${1 / FRAME_TIGHT})` }], settle),
-    ...['::before', '::after'].map(pseudoElement => card.animate([{ offset: 0, opacity: CORNER_LIFT }], { ...settle, pseudoElement })),
     ...text.map((e, i) => e.animate([{ offset: 0, opacity: 0, transform: `translateY(${TEXT_RISE_SHARE * card.offsetWidth}px)` }], rise(20 * (i + 1)))),   // label slightly ahead of the question
   ];
 }
