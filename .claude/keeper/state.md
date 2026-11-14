@@ -8,6 +8,8 @@ Backlog items are named by number and title.
 - The line under the title and the logo: the owner calls them awesome. They are the source of
   the look, and they came from many references.
 - The card back (lattice and emblem), the richest object in the app.
+- The card face: the category named at the top with its stripes, in a double frame with the
+  category's colour in the inner line. The owner chose it from pictures of the live app.
 - The deck: every card has a number and a slot, the long cards are shortened, categories sit in
   pairs. The owner's ear for cards is sharp and recorded in `taste.md`.
 - The Deck sheet and its chapters work.
@@ -16,7 +18,6 @@ Backlog items are named by number and title.
 
 - Design overall: "takes rounds and rounds, and the end result is almost always mediocre".
   Controls and the computer layout are the hardest.
-- The card face has less character than the card back, though the evening is spent on it.
 - The bottom of the phone screen: "still lacking to the rest of it". Below the controls a third
   of the screen is empty.
 - The balance of the card screen on a computer.
@@ -24,7 +25,7 @@ Backlog items are named by number and title.
 
 ## What the owner wants next, in their order
 
-1. The card face gets a character of its own (#159).
+1. Spotlight gets the card's frame lines (#173): drawn first, with its corner controls.
 2. The bottom of the phone screen, with a new idea (#160).
 3. The balance of the card screen on a computer (#161).
 Around these: Plain words for The Deck's settings (#157); Save, Clear and Start over say what
@@ -36,8 +37,9 @@ down to one small scale (#148); a row of accessibility fixes in `Next`.
 - A design mood board for Between Us, starting with controls and the PC layout (#147): in its
   own conversation; it opens by asking what the board should help decide.
 - What makes a design enjoyable for them, in their words. Never asked directly.
-- The new way of designing (understanding, sketch, one design believed in) is untried, and so
-  is the generic Keeper as a whole: the owner judges it by using it.
+- Designing the card face went well when rough sketches on real cards came first and the owner
+  could name the parts they liked; it went wrong when a liked part came back reshaped.
+- Testing: a sample is enough, and what works is left alone. The owner judges by using it.
 
 ## Noticed, not yet raised or settled
 
