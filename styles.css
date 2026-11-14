@@ -15,7 +15,7 @@
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
-  --border-strong:rgba(201,168,76,0.38);
+  --border-strong:rgba(201,168,76,0.38);--frame-rest:38%;   /* how much of its colour the frame's inner line keeps at the end of a hand */
   /* motion: strong ease-out for things entering or responding (starts fast, settles soft); --ease-sheet is the
      fast-start, soft-settle curve of drawers and sheets sliding in */
   --ease-out:cubic-bezier(.23,1,.32,1);--ease-sheet:cubic-bezier(.32,.72,0,1);
@@ -206,6 +206,9 @@ body{
 .card-frame::before,.party-frame::before{inset:var(--frame-o-top) var(--frame-o) var(--frame-o);}
 .card-frame::after,.party-frame::after{inset:var(--frame-i-top) var(--frame-i) var(--frame-i);border-color:var(--cat,var(--gold));transition:border-color .5s ease;}   /* the category's colour, set by card.js applyCardMark; gold on a Wildcard */
 .card.mark-full .card-frame::after,.party-frame.mark-full::after{border-color:var(--mark);}
+/* the end of a hand (the Intermezzo and the list, on the card and in Spotlight): the coloured line steps back */
+body.showing-hand-summary :is(.card-frame,.party-frame)::after{border-color:color-mix(in srgb,var(--cat,var(--gold)) var(--frame-rest),transparent);}
+body.showing-hand-summary :is(.card.mark-full .card-frame,.party-frame.mark-full)::after{border-color:color-mix(in srgb,var(--mark) var(--frame-rest),transparent);}
 .card-frame i,.party-frame i{position:absolute;z-index:1;width:calc(var(--frame-i) - var(--frame-o) + 2 * var(--frame-e));   /* a square: the top and the sides differ by the same amount */
   aspect-ratio:1;border:1px solid var(--border-strong);background:var(--frame-ground);}
 :is(.card-frame,.party-frame) i:nth-of-type(1){top:calc(var(--frame-o-top) - var(--frame-e));left:calc(var(--frame-o) - var(--frame-e));}
