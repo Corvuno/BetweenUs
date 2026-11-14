@@ -5,13 +5,13 @@ picker have their own corners and are not part of this.
 
 ## What it is
 - **Frame:** `<i class="card-frame">` in `#card` before `.card-body-inner`: two hairlines drawn as
-  `::before` (outer, `--border-strong`) and `::after` (inner, the category's colour at full
-  strength), and four `<i>` stepped squares, one centred on each corner of the two lines (card
+  `::before` (outer, `--border-strong`) and `::after` (inner, the category's colour at `--frame-line`, 80%,
+  of full strength), and four `<i>` stepped squares, one centred on each corner of the two lines (card
   ground, `--border-strong` outline). On After Dark (`.mark-full`) the inner line is `--mark`; on a
   Wildcard it is `--gold` (`--cat` is not set). The inner line's colour eases (.5s, instant under
   reduced motion). The frame sits above the card back (z 6 over 5), so the start card and
   the Intermezzo wear it too and their lattice fills its inner line; it stays on the end-of-hand
-  list and message, where the inner line keeps `--frame-rest` of its colour
+  list and message, where the inner line keeps `--frame-rest` of that (a share of the 80%, not of the full colour)
   (`body.showing-hand-summary`, also in Spotlight). On a change of card it dips to `FRAME_DIP` and returns with the new card
   (`card.js` `playSwapOut` / `playSwapIn`).
 - **Colour:** `card.js applyCardMark` sets `--cat` on the card to the colour the name has

@@ -30,9 +30,17 @@ their symbol on hover, press and keyboard focus.
 | Token | Value | For |
 |---|---|---|
 | `--muted` | #7a6e60 | quiet warm-brown label, disabled state; "Selected deck · tap to change" |
-| `--muted-l` | #9c8f7e | a lighter tone of its own (not a duplicate of `--muted`); title subtitle |
-| `--text-helper` | #8c8071 | helper lines that explain a control or section: The Deck's "Start from" and "Chapters" headings, `.cat-line`. 5.1:1 on the dark ground (`--muted` 3.9:1, `--muted-l` 6.2:1) |
-| `--btn-quiet` | #8f8171 | resting tone of every plain text-button (no border; `--gold` on hover/active/focus): Spotlight, Save and Menu, After Dark, All/None, Explore categories, Categories, ⓘ info, the pick-toggle, limit buttons |
+| `--muted-l` | #9c8f7e | a lighter tone of its own (not a duplicate of `--muted`) |
+| `--text-helper` | #8c8071 | helper lines that explain a control or section: `.cat-line`. 5.1:1 on the dark ground (`--muted` 3.9:1, `--muted-l` 6.2:1) |
+| `--btn-quiet` | #b3a590 | resting tone of every plain text-button (no border; `--gold` on hover/active/focus): Spotlight, Save and Menu, After Dark, All/None, Explore categories, Categories, ⓘ info, the pick-toggle, limit buttons |
+| `--quiet-text` | #ab9e8a | quiet words a step lighter: the tagline, chapter descriptions, chapter counts (`.subtitle`, `.chapter .ch-desc`, `.ch-ct`) |
+| `--quiet-label` | #b5a892 | the start screen's small labels (`.tok-lbl`) |
+
+Small words are Jost 500, never heavier (the exceptions are the category name on the card and in Spotlight, and the few labels declared at 600, which the font link serves as a real 600): the preset's
+name, Next card, Spotlight and Menu, the picked option in The Deck, chapter names, the menu's labels,
+The Deck's name. Letter spacing stays as it was; The Deck's name takes the card name's `.26em`.
+The count under the card is 17px in `--gold-l`, its two rules 50% gold. "Start from", "Chapters",
+"Tonight" and "Yours" are `--gold-l`.
 
 Do not fold the cream-alpha text values (help body copy, sheet heading, section labels, chapter
 names off-state) into shared steps, and do not merge `--muted-l` into `--muted`: both read darker
@@ -69,10 +77,18 @@ gold while touched). Custom edition colouring: `design/custom-colours.md`.
 |---|---|---|
 | `--gold-btn-h` | 34px | the gold button's height (Next card, Draw Cards) |
 | `--under-row-h` | 90px | the row under Next card: Spotlight's word and hint, or Change and Save, whichever is taller |
+| `--frame-line` | 80% | how much of its colour the card frame's inner line keeps (category, After Dark's mark, Wildcard's gold; the same in Spotlight). At the end of a hand `--frame-rest` takes its share of this, not of the full colour (`card-face.md`) |
 | `--dock-w` | `clamp(560px,42vw,640px)` | The Deck docked panel width |
 | `--pick-ease` | .2s, .45s while category lines are on | how fast a category's state eases (`deck-category-lines.md`) |
 | `--k`, `--pcW` | wide screens | scale and the card's width (`under-card.md`) |
 | `--u`, `--bracket-inset`, `--text-gap` | on `.card-area` / `.card` | phone card scaling and the question's side padding (`card-question-width.md`); the card face's frame and name sizes (`card-face.md`) |
+
+### The metal line
+| Token | Value | For |
+|---|---|---|
+| `--metal` | horizontal gold sweep (`#7d6426` / `#c9a84c` / `#f1dc9c` at the middle), fading to transparent at both ends | the top of The Deck and of the phone's menu drawer (3px, with a 1px hairline 3px under it), and the menu's divider (2px) |
+
+The side panels on a computer keep their own edges (The Deck's gilt edge; the menu panel has none).
 
 ### Motion curves
 `--ease-out: cubic-bezier(.23,1,.32,1)` (things that enter or respond; starts fast, settles soft),
