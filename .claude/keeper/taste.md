@@ -56,10 +56,10 @@ ornament; corner markers anywhere but corners; controls that make people think.
 
 ## Design liked and turned down
 
-- Liked on the card face: the category name standing free at the top with short stripes in its
-  colour to both sides ("the best"); a double line frame with stepped corners; more of the
-  category's colour. Turned down: the name on a solid tab, the name in a gap cut out of the frame
-  ("still sit in a tab, just a cutout"), a glow of colour from below ("too much contrived").
+- Liked on the card face: the category name free at the top with short stripes in its colour to
+  both sides ("the best"); a double line frame with stepped corners; the category's colour in the
+  lines. Turned down: the name on a tab or in a gap cut from the frame, a glow of colour from
+  below ("contrived"), a ground of the category's colour ("too much").
 - A part the owner liked is carried over as they saw it; reshaping it is a new proposal.
 - Liked: the coloured progress line under the card, mildly ("not married to it"); a line laid along
   the card's edge; a thumb bar; a single gold control with Spotlight and Three as its ends ("has
