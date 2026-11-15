@@ -700,7 +700,7 @@ function updateDrawMore() {
   const begun = handBegun();
   // Ways to play takes Spotlight's place until a card is up (styles.css body.before-first-card).
   document.body.classList.toggle('before-first-card', !begun);
-  document.getElementById('btn-prev').disabled = !canGoBack();   // Back on a computer looks unavailable with no earlier card
+  document.getElementById('btn-prev').toggleAttribute('disabled', !canGoBack());   // Back on a computer looks unavailable with no earlier card
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;
