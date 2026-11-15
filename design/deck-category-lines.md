@@ -13,11 +13,11 @@ Every category in an open chapter carries its own line (`.cat-line`, the categor
   `html[data-lines="on"] .chapter-panel[data-chapter]`, not a docked-only one.
 - **Computer** (docked panel, `dockedQuery` in `selection.js`, the same switch as "THE DECK,
   DOCKED"): lines always on. No hover `title` on a category.
-- **Phone / sheet:** lines off by default; a hold of 550ms (the end-of-hand hold) on any category
+- **Phone / sheet:** lines off by default; a hold of 550ms on any category
   switches them on or off for every chapter at once. The choice is remembered (`bu.catLines`).
   `html[data-lines="on"|"off"]` carries the state; JS sets it (docked = on).
-- **The hold.** The held category presses in (`scale(.98)`, 160ms) and dims to `.5` across the hold
-  (the way Next Card dims while held at the end of a hand); a hold never picks or opens the browser
+- **The hold.** The held category presses in (`scale(.98)`, 160ms) and dims to `.5` across the hold;
+  a hold never picks or opens the browser
   menu. Instant under reduced motion.
 - **The hint** (`.cat-hint`, a `HINTS` entry `lines` in `state.js`, so "Show hints again" brings it
   back): "Hold a category to see what it's about", Federo `.9rem` in `--muted-l` (the tone
