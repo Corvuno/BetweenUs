@@ -72,9 +72,18 @@ again". Change and the icon row (`#handActionsRow`) are gone; The Deck stays in 
 Selected deck. Colbert and The 36 hide Spotlight but keep Save.
 
 ## Menu
-- First row: Save (`#d-save` phone drawer, `#s-save` computer panel), line "take this evening with
-  you", action word "Save", in the existing row style; hidden until the first card is drawn
-  (`state.sessionLog` is empty before).
+- Three groups, each under its heading, in this order: "How you play" (The Deck, Three, Twist),
+  "Tonight" (Start over, Save), "Yours" (Played, Favourites). Ways to play and Show hints again
+  stay at the foot. On the phone a metal divider (`.menu-rule`) sits between the groups, two in all;
+  the computer's panel separates them by their headings.
+- Three (`#d-three` phone drawer, `#s-three` computer panel) is built like Twist's line: Three's own
+  icon (the one of `#btnPick`), "Three", "pick one of three", On / Off at the right. A tap flips
+  `#pickToggle` (The Deck's own setting, so The Deck, the top-right button and Spotlight follow),
+  then closes the menu; `fillMenu` reads On / Off from `pickMode` each time the menu opens. It is
+  hidden in the fixed sets, with Twist.
+- Save (`#d-save` phone drawer, `#s-save` computer panel), line "take this evening with you", action
+  word "Save", in the existing row style; hidden until the first card is drawn (`state.sessionLog` is
+  empty before), so before it "Tonight" holds Start over alone.
 - On a computer: a panel from the right edge (under its button); Played, Favourites and Ways to
   play open in its place on the same side; The Deck from the left. Close buttons stay at the top
   right of each panel.

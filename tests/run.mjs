@@ -2741,7 +2741,7 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('menu: Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
+  await check('menu: How you play / Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
     const { ctx, pg } = await freshApp();
     try {
       await openPhoneMenu(pg);
@@ -2757,8 +2757,8 @@ async function run() {
         };
       });
       assert(m.open && !m.sideShown, `the phone menu should be the one showing: ${JSON.stringify({ open: m.open, sideShown: m.sideShown })}`);
-      assert(JSON.stringify(m.order) === JSON.stringify(['Tonight', 'The Deck', 'Start over', 'Twist', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
-      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Off', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
+      assert(JSON.stringify(m.order) === JSON.stringify(['How you play', 'The Deck', 'Three', 'Twist', 'Tonight', 'Start over', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
+      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Off', 'Off', 'Shuffle', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
       assert(m.old.length === 0, `old menu items still there: ${m.old}`);
       assert(!/\b(mode|preset|session|category|chapter)\b/i.test(m.text), `the menu uses our own words: ${m.text}`);
       assert(await menuLine(pg, 'cats') === 'Balanced, five cards', `The Deck line: ${await menuLine(pg, 'cats')}`);
@@ -2772,6 +2772,36 @@ async function run() {
       await pg.locator('#d-cats').click(); await pg.waitForTimeout(700);
       assert(await pg.evaluate(() => document.getElementById('cat-area').classList.contains('sheet-open') && !document.getElementById('menuDrawer').classList.contains('open')), 'The Deck line did not open The Deck');
     } finally { await ctx.close(); }
+  });
+
+  await check('menu: Three is a line next to Twist in both menus; switching it there sets The Deck and the next draw is three cards, before the first card and mid-hand, and the other way round', async () => {
+    const order = (pg, id) => pg.evaluate(sel => [...document.querySelectorAll(`${sel} .menu-head, ${sel} .menu-line .menu-label, ${sel} .ch-name`)].filter(e => e.offsetParent).map(e => e.textContent.trim()), id);
+    const { ctx, pg } = await freshApp();
+    try {
+      await openPhoneMenu(pg);
+      assert(JSON.stringify(await order(pg, '#menuDrawer')) === JSON.stringify(['How you play', 'The Deck', 'Three', 'Twist', 'Tonight', 'Start over', 'Yours', 'Played', 'Favourites']), `phone order before a card: ${JSON.stringify(await order(pg, '#menuDrawer'))}`);
+      assert(await pg.evaluate(() => document.querySelectorAll('#menuDrawer .menu-rule').length === 2 && document.querySelector('#d-three .menu-state').textContent === 'pick one of three'), 'two dividers and the line "pick one of three"');
+      // before the first card: Three on from the menu, the first draw offers three
+      await pg.locator('[data-menu="three"]:visible').click(); await pg.waitForTimeout(500);
+      assert(await pg.evaluate(() => pickMode && document.getElementById('pickToggle').classList.contains('on') && !document.querySelector('#menuDrawer.open')), 'Three from the menu did not switch on in The Deck and close the menu');
+      await pg.evaluate(() => nextCard()); await pg.waitForFunction(() => state.pickerOpen && state.pickOptions, null, { timeout: 4000 });
+      assert(await pg.evaluate(() => state.pickOptions.options.length === 3), 'the first draw did not offer three cards');
+      // mid-hand, off from the menu, then on in The Deck: the menu reads it
+      await openPhoneMenu(pg);
+      assert(await pg.evaluate(() => document.getElementById('threeAct').textContent === 'On'), 'the Three line does not read On while it is on');
+      await pg.locator('[data-menu="three"]:visible').click(); await pg.waitForTimeout(500);
+      assert(await pg.evaluate(() => !pickMode && !state.pickerOpen && document.querySelector('#pickToggle .three-opt.active').dataset.pick === 'off'), 'Three off from the menu mid-hand did not switch it off in The Deck');
+      await pg.evaluate(() => document.getElementById('pickToggle').click());
+      await openPhoneMenu(pg);
+      assert(await pg.evaluate(() => document.getElementById('threeAct').textContent === 'On'), 'The Deck switched Three on but the menu does not read On');
+    } finally { await ctx.close(); }
+    const wide = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
+    try {
+      await wide.pg.locator('#btn-menu').click(); await wide.pg.waitForTimeout(900);
+      assert(JSON.stringify(await order(wide.pg, '#menuSideDrawer')) === JSON.stringify(['How you play', 'The Deck', 'Three', 'Twist', 'Tonight', 'Start over', 'Yours', 'Played', 'Favourites']), `computer order: ${JSON.stringify(await order(wide.pg, '#menuSideDrawer'))}`);
+      await wide.pg.locator('#menuSideDrawer [data-menu="three"]').click(); await wide.pg.waitForTimeout(500);
+      assert(await wide.pg.evaluate(() => pickMode && document.getElementById('btnPick').classList.contains('on')), 'Three from the computer menu did not switch on Three, and the top-right button');
+    } finally { await wide.ctx.close(); }
   });
 
   await check('menu: Start over shows the cards seen and left of the whole selected deck, in a normal hand, Colbert, After Dark on and off, and after Start over; numbers refresh on each open', async () => {
@@ -3380,7 +3410,7 @@ async function run() {
       });
       assert(m.open && m.right === 1440 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
       assert(m.focus, 'focus did not move into the menu');
-      assert(JSON.stringify(m.rows) === JSON.stringify([['Save', 'Save'], ['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', 'Off'], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
+      assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Three', 'Off'], ['Twist', 'Off'], ['Start over', `2 seen ${total - 2} left`], ['Save', 'Save'], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
       await pg.locator('#overlay').click({ position: { x: 200, y: 400 } }); await pg.waitForTimeout(800);
       assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
       await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
@@ -3511,7 +3541,7 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('menu: Save is the first line from the first card on, absent on the start screen, and downloads the evening file (phone drawer and computer panel)', async () => {
+  await check('menu: Save is the last line of Tonight, after Start over, from the first card on, absent on the start screen, and downloads the evening file (phone drawer and computer panel)', async () => {
     for (const [name, opts, menu] of [['phone', {}, 'menuDrawer'], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }, 'menuSideDrawer']]) {
       const { ctx, pg } = await freshApp(opts);
       try {
@@ -3521,8 +3551,8 @@ async function run() {
         await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(700);
         await drawCards(pg, 1); await pg.waitForTimeout(600);
         await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
-        const first = await pg.evaluate(m => document.querySelector(`#${m} .menu-lines > :nth-child(2)`).textContent.replace(/\s+/g, ' ').trim(), menu);
-        assert(/^Save/.test(first) && /take this evening with you/i.test(first), `${name}: the first line is not Save: ${first}`);
+        const first = await pg.evaluate(m => document.querySelector(`#${m} [data-menu="save"]`).closest('#d-save, #s-save').textContent.replace(/\s+/g, ' ').trim(), menu);
+        assert(/^Save/.test(first) && /take this evening with you/i.test(first), `${name}: the Save line reads wrong: ${first}`);
         assert(await saved(pg, () => pg.locator(line).first().click()), `${name}: the Save line did not download the file`);
         await pg.waitForTimeout(800);
         assert(!(await pg.evaluate(m => document.getElementById(m).classList.contains('open'), menu)), `${name}: the menu stayed open after Save`);

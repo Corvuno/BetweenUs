@@ -988,7 +988,7 @@ body.showing-hand-summary .card-question{
 /* Spotlight (and Three in The Deck, and Twist in the menu) assume a hand you're mixing
    or drawing from at random — none of that applies to Colbert/The 36's
    fixed, in-order sequence, so they disappear rather than sit there meaningless. */
-body.fixed-seq-mode :is(#btnParty,#btnPick,#btnTwist,#pickToggle,.seg:has(#pickToggle),#d-twist,#s-twist){display:none;}
+body.fixed-seq-mode :is(#btnParty,#btnPick,#btnTwist,#pickToggle,.seg:has(#pickToggle),#d-three,#s-three,#d-twist,#s-twist){display:none;}
 
 /* ── PICK-3 MODE ── */
 .screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
