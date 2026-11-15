@@ -8,7 +8,9 @@ don'ts.
 
 - The line under the title and the logo are the source: fine gold line work, layered diamonds,
   symmetry about a centre. A new element is family of these, or adapts one reference from
-  `.claude/keeper/references/` faithfully and richly, and says which.
+  `.claude/keeper/references/` faithfully and richly, and says which. Faithful means its way of
+  being built comes first: the line weight, how lines group, run and meet, where it is dense and
+  where it is empty. Its objects come after; borrowed objects alone read as loose parts.
 - Ornament grows out of the space it sits in and the screen's own pieces. An element may also
   simply be pretty.
 - The logo and its emblem stay as they are unless the owner asks. The small diamond belongs to
