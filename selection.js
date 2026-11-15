@@ -204,7 +204,7 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
 // every chapter at once, and the phone remembers the choice. A hold never picks.
 const dockedQuery = matchMedia('(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine)');
 const LINES_KEY = 'bu.catLines';
-const HOLD_MS = 550;                // the same hold as the end of a hand (ui.js)
+const HOLD_MS = 550;                // a press-and-hold
 const LINES_EASE_MS = 450;          // names glide, lines fade, the panel resizes: all about .45s
 const LINES_FADE_OUT_MS = 250;      // lines leave first, before the names glide back
 const LINES_FADE_IN_DELAY_MS = 180; // lines arrive once the names are nearly home

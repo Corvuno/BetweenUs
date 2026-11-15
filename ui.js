@@ -89,14 +89,8 @@ if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
 
 // Draw controls
 document.getElementById('drawMoreBtn').addEventListener('click', drawMore);
-// At Intermezzo (end of a hand, side 'intermezzo') a tap flips the card to the hand's
-// list; a hold skips the list and continues (END_HOLD_TARGETS gate below, whose
-// capture-phase click guard swallows the release of a hold before it gets here).
-// Before Intermezzo is up (the 500 ms after the last card) a tap does what it always did.
-document.getElementById('btn-next').addEventListener('click', () => {
-  if (state.handSide === 'intermezzo') { flipHandList(); return; }
-  nextCard();
-});
+// The main button: the next card, Three's other options, and at the end of a hand ("Next hand") the next hand.
+document.getElementById('btn-next').addEventListener('click', nextCard);
 
 // Card star
 document.getElementById('cardStar').addEventListener('click', e => {
@@ -129,7 +123,7 @@ document.getElementById('card').addEventListener('click', e => {
     if (dragged) return; // was a drag-select, not a tap
   }
   if (window.getSelection && String(window.getSelection()).length > 0) return;
-  if (state.handSide === 'intermezzo') { flipHandList(); return; }   // a tap on the Intermezzo card turns it over
+  if (atEnd()) { flipHandSide(); return; }   // a tap on the card at the end of a hand turns it over, either way (the button is Next hand)
   nextCard();
   updateDeckInfo();
 });
@@ -258,6 +252,14 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
     setTimeout(() => { partyBusy = false; }, 350);
   };
 
+  // A tap on the card: Back on its left zone, the card turning over at the end of a hand, otherwise the next card (outside the card: nothing)
+  const partyTap = target => {
+    if (!target.closest('.party-card')) return;
+    if (target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
+    else if (atEnd())                        partyThrottle(flipHandSide);
+    else                                     partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
+  };
+
   newOv.addEventListener('touchstart', e => {
     ptsx = e.touches[0].clientX;
     ptsy = e.touches[0].clientY;
@@ -273,13 +275,6 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
       const [sdx, sdy] = touchDelta(e);
       if (Math.abs(sdy) > 10 && Math.abs(sdy) >= Math.abs(sdx)) return;
     }
-    /* a hold just continued the draw — its release must not advance again.
-       Reads the flag, doesn't clear it: the click handler below checks it
-       too, in case this touchend's preventDefault doesn't fully suppress a
-       trailing click (inconsistent across browsers after a long hold) —
-       clearing it here would leave that click unprotected. start() clears
-       it at the top of the next press. */
-    if (window._endHoldFired) { e.preventDefault(); return; }
     e.preventDefault(); // suppresses subsequent click event on mobile
     const [dx, dy] = touchDelta(e);
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
@@ -287,11 +282,7 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
       if (dx < 0) partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
       else         partyThrottle(() => { prevCard();  updateDeckInfo(); });
     } else {
-      // tap — only act on card area
-      if (!e.target.closest('.party-card')) return;
-      if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
-      else if (state.handSide === 'intermezzo') partyThrottle(() => { flipHandList(); });
-      else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
+      partyTap(e.target);
     }
   }, { passive: false });
 
@@ -299,11 +290,7 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
   newOv.addEventListener('click', function(e) {
     e.stopPropagation(); // prevent document-level handler from also firing
     if (e.target.closest('.party-chrome, .party-picker, .party-orient, .hd-star')) return;
-    if (window._endHoldFired) { return; }
-    if (!e.target.closest('.party-card')) return; // outside card = no action
-    if (e.target.closest('.party-zone-prev')) partyThrottle(() => { prevCard();  updateDeckInfo(); });
-    else if (state.handSide === 'intermezzo') partyThrottle(() => { flipHandList(); });
-    else                                       partyThrottle(() => { nextCard();  updateDeckInfo(); updateDrawMore(); });
+    partyTap(e.target);
   });
 })();
 
@@ -501,64 +488,8 @@ setTimeout(()=>document.getElementById('controls-wrap').classList.add('in'),380)
   if(qEl) setTimeout(()=>qEl.classList.add('in'),400);
 })();
 
-// End of a hand: pressing and holding the card, Next Card or the fullscreen overlay
-// continues into a fresh hand (on Intermezzo and on the list alike).
-const END_HOLD_TARGETS = ['card','btn-next','partyOverlay'];
-(function(){
-  const HOLD = 550;
-  let timer = null;
-  window._nudgeEndHold = function(){
-    const el = document.getElementById('endHint');
-    if (!el) return;
-    el.classList.remove('nudge'); void el.offsetWidth; el.classList.add('nudge');
-  };
-  function holdBtn(){ return document.getElementById('btn-next'); }
-  function start(e){
-    /* a new press starts a new gesture — never inherit a stale swallow flag */
-    window._endHoldFired = false;
-    if (!atEnd()) return;
-    /* a star in the hand's list is a tap, never a hold */
-    if (e && e.target && e.target.closest && e.target.closest('.hd-star')) return;
-    clearTimeout(timer);
-    const b = holdBtn();
-    if (b && e && e.currentTarget === b) b.classList.add('holding');
-    timer = setTimeout(() => {
-      if (b) b.classList.remove('holding');
-      /* Swallow the release, however long the press lasted. A time window here
-         expired mid-hold, letting the release advance a second card. */
-      window._endHoldFired = true;
-      hint(false);
-      /* A hold continues into the next hand from either side of Intermezzo (on the
-         Intermezzo side a tap flips instead — see the click handlers). */
-      window._endHoldOK    = true;
-      if (typeof nextCard === 'function') nextCard();
-    }, HOLD);
-  }
-  function cancel(){
-    clearTimeout(timer); timer = null;
-    const b = holdBtn(); if (b) b.classList.remove('holding');
-  }
-  END_HOLD_TARGETS.forEach(id => {
-    const el = document.getElementById(id); if (!el) return;
-    el.addEventListener('pointerdown', start);
-    ['pointerup','pointerleave','pointercancel'].forEach(ev => el.addEventListener(ev, cancel));
-    /* swallow the click that a completed hold leaves behind. Reads the flag
-       but never clears it here — on the party overlay, touchend checks the
-       same flag before this does, and if it were the one to clear it, a
-       trailing click that slips through anyway (preventDefault doesn't
-       always suppress it, especially after a long hold rather than a quick
-       tap) would find the flag already gone and double-advance. start()
-       is the only place that resets it, at the top of the next press. */
-    el.addEventListener('click', e => {
-      if (window._endHoldFired) {
-        e.stopImmediatePropagation(); e.preventDefault();
-      }
-    }, true);
-  });
-})();
-
 // ── Save ── Spotlight's place at the end of a hand (styles.css body.showing-hand-summary). A plain tap; the
-// hold-to-draw-a-fresh-hand gesture is Next Card itself (in hold-mode), handled by the END_HOLD_TARGETS gate.
+// next hand is Next Card itself (in hold-mode).
 document.getElementById('btnSave')?.addEventListener('click', () => {
   hintRetire('save');
   saveSessionFiles();
@@ -971,7 +902,7 @@ applyToggleUI();
 
   // "Draw Cards" — closes the sheet and draws straight into the first hand
   // of whatever's now selected (three options first with Three on), the same reshuffle-then-draw the app already
-  // does elsewhere (deck.js's end-of-hand hold) — so finishing the sheet
+  // does elsewhere (deck.js's end of a hand) — so finishing the sheet
   // never leaves the placeholder card sitting there waiting for one more tap.
   const goBtn = $('catGoBtn');
   if (goBtn) goBtn.addEventListener('click', () => {
@@ -1384,3 +1315,31 @@ function setWideScale() {
 }
 setWideScale();
 window.addEventListener('resize', setWideScale);
+
+// ── The phone's back button ── Closes what is open (the Menu, a sheet, The Deck, Spotlight) and stays in the app.
+// One history entry stands while any layer is open: pushed when the first one opens, popped by back (which closes
+// the top layer), and given up with history.back() when the layers are closed by their own controls.
+(function() {
+  const layers = () => [...document.querySelectorAll('[id$="Drawer"], #cat-area, #partyOverlay')];
+  const anyOpen = () => !!document.querySelector('[id$="Drawer"].open, #cat-area.sheet-open, #partyOverlay.open');
+  let entryStands = false, givingUp = false;
+  const closeTopLayer = () => {
+    if (document.querySelector('[id$="Drawer"].open')) closeAllDrawers();
+    else if (document.getElementById('cat-area').classList.contains('sheet-open')) /** @type {any} */ (window).closeCats();
+    else if (state.partyMode) exitParty();
+  };
+
+  const sync = () => {
+    if (anyOpen() && !entryStands) { history.pushState({ buLayer: true }, ''); entryStands = true; }
+    else if (!anyOpen() && entryStands && !givingUp) { givingUp = true; history.back(); }
+  };
+  window.addEventListener('popstate', () => {
+    entryStands = false;
+    if (givingUp) givingUp = false;   // our own history.back(): nothing is open, nothing to close
+    else closeTopLayer();
+    sync();   // a layer still open (or opened meanwhile) gets its entry back
+  });
+  if (history.state?.buLayer) history.replaceState(null, '');   // a reload leaves no layer open: the entry it kept is plain
+  const watch = new MutationObserver(sync);
+  layers().forEach(el => watch.observe(el, { attributes: true, attributeFilter: ['class'] }));
+})();

@@ -12,9 +12,9 @@ the Menu (the computer shows all three, see Wide screens). So the question is th
   ticks, count, Next card, words. Gaps between rows are 11px.
 - Next card `#btn-next`: the gold button spec (see `DESIGN-SYSTEM.md`), one fixed width of
   `14.5em`, one type: font size and letter-spacing never change between Draw Card, Next Card,
-  End of hand, Hold to continue and Tap to flip card, so the bar keeps its shape and place through
-  a hand. The longest label, "Hold to continue", is 11.6em wide in Jost 400 with `.14em` spacing;
-  the rest of the 14.5em is even room each side. It is in em, not `--u`: the label's type is in
+  End of hand, Next hand and Three others, so the bar keeps its shape and place through a hand.
+  Every label fits well inside the 14.5em in Jost 400 with `.14em` spacing; the rest is even room
+  each side. It is in em, not `--u`: the label's type is in
   rem and steps up with the screen, so the room each side stays even on every phone, tablet and
   PC. The first-draw and end-of-hand states change colour only (`.hold-mode`), never size or
   spacing. Spotlight keeps its own width (`flex-shrink:0`) so the bar's width never squeezes its

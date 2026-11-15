@@ -359,8 +359,8 @@ body.showing-hand-summary :is(.card.mark-full .card-frame,.party-frame.mark-full
 /* The one place that selectable text is a problem, not a feature: the
    end-of-hand summary reuses this same element (showHandSummary() in
    presentation.js writes the hand list into #card-question),
-   and that screen's whole interaction is holding the card to continue —
-   a hold that starts on selectable text tries to select it instead. Locked
+   and that screen's whole interaction is tapping the card to turn it —
+   a press that starts on selectable text tries to select it instead. Locked
    back down for exactly this one screen, same as the rest of the card. */
 body.showing-hand-summary .card-question{
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;
@@ -509,7 +509,7 @@ body.showing-hand-summary .card-question{
   background-position:0 calc(var(--y-mid) - 6px),0 var(--y-mid),0 calc(var(--y-mid) + 6px);}
 /* End of a hand: the lines follow the bar to the pause colour (--im-target, the one the bar reads) over the same .6s. */
 .controls-wrap:has(#btn-next.hold-mode) .nav-lines{--nl:var(--im-target);transition:--nl .6s ease;}
-/* One width in every state, so the bar never changes shape: the longest label ("Hold to continue") plus even room each side.
+/* One width in every state, so the bar never changes shape: wide enough for every label, with even room each side.
    In em because the label's type is in rem and steps up with the screen; the width follows it. */
 #btn-next{grid-column:2;grid-row:3;width:14.5em;white-space:nowrap;}
 /* Spotlight and Menu: plain words in the quiet tone, no icon, no box. The tap area is 44px tall and starts a row-gap under Next card. */
@@ -532,7 +532,7 @@ body.showing-hand-summary .card-question{
 .btn-draw:active{transform:scale(.97);}
 
 /* ── LIMIT ── */
-/* hold-mode: btn-next transforms at the end-of-hand screen, needs a hold */
+/* hold-mode (the name is from when it needed a hold): btn-next at the end-of-hand screen, "Next hand" */
 /* End of a hand: the button takes the pause colour (--im-color, the last drawn card's category colour,
    set on <body> by presentation.js setPauseColour, from the moment the end message appears) — a gradient of it, dark text, the gold button's size and type.
    It reads --im-target (the same colour, set without easing) because --im-color already eases on <body>:
@@ -542,8 +542,6 @@ body.showing-hand-summary .card-question{
   color:var(--bg);
   transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .6s ease,--bd-b .6s ease;}
 /* the slow gold-to-chapter-colour ease is on .hold-mode itself, so a pointer resting on the button (hover) does not cut it short */
-/* pressed-and-holding feedback on the end-of-draw button */
-.btn-draw.holding{opacity:.72;}
 .limit-row{display:flex;align-items:center;}
 .draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:border-color .2s,color .2s;display:none;}
 .draw-more-btn.visible{display:block;}
@@ -1224,17 +1222,15 @@ body.tok-taught .tok-hint{display:none;}
 .cat-topbar{flex-shrink:0;justify-content:center;padding:0 0 6px;}
 .cat-topbar--legacy{display:none!important;}   /* logic kept, row no longer shown */
 
-/* Not shown on screen — the draw button already reads "Hold to continue"
+/* Not shown on screen — the draw button already reads "Next hand"
    at the end of a hand, so this second copy at the bottom of the viewport
    was redundant. Left in the DOM (display:none, not removed) because
    updateDrawMore()/hint() still toggle its "visible" class as the explicit
-   end-of-hand signal the hold-to-continue tests check. */
+   end-of-hand signal the tests check. */
 .end-hint{display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
   font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--gold);opacity:0;pointer-events:none;transition:opacity .3s ease;}
 .end-hint.visible{opacity:.75;}
-.end-hint.nudge{animation:endNudge .32s ease;}
-@keyframes endNudge{0%,100%{transform:translateX(-50%) scale(1);}40%{transform:translateX(-50%) scale(1.12);opacity:1;}}
 
 /* presets (former modes) at the top of the categories drawer, as a wrapped
    grid — never a scrolling bar. */
@@ -1265,9 +1261,6 @@ body.tok-taught .tok-hint{display:none;}
 /* ── MAIN COLUMN ── */
 .card-wrap{margin-top:20px;}
 
-/* Next Card's little shimmy when a hold-gated tap needs nudging into view */
-.btn-draw.nudge{animation:drawNudge .3s ease;}
-@keyframes drawNudge{0%,100%{transform:none;}30%{transform:translateX(-3px);}60%{transform:translateX(3px);}}
 
 .party-orient{display:none;}  /* phone only, see below */
 /* ── FULLSCREEN — phone orientation toggle ──

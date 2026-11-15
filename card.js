@@ -194,7 +194,7 @@ function setStartBack(text) {
   el.classList.remove('is-hand-list');
 }
 
-/* The card between two hands of the same session (hold-to-continue, Draw more): the ended hand's
+/* The card between two hands of the same session (Next hand, Draw more): the ended hand's
    face is emptied, and nothing else is painted. The card is not "back at the start", so the start
    card (logo, the start line) must not show: whatever back is up (Intermezzo) stays until the
    first card's flip dissolves it, and the list side just empties. The rails keep their colour until
@@ -278,10 +278,6 @@ function setCardDisplay(card) {
      stays at opacity 0. */
   if (lvlEl) lvlEl.classList.add('in');
   if (qEl)   qEl.classList.add('in');
-  if (nextBtn) {
-    nextBtn.textContent = 'Next Card';
-    nextBtn.classList.remove('btn-draw--start');
-  }
   // Update party display
   updatePartyDisplay(card);
   twistCard(card);   // a card shown without the flip (a restored session): it gets its line here
