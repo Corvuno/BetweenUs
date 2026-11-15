@@ -78,6 +78,7 @@ gold while touched). Custom edition colouring: `design/custom-colours.md`.
 | `--gold-btn-h` | 34px | the gold button's height (Next card, Draw Cards) |
 | `--under-row-h` | 90px | the row under Next card: Spotlight's word and hint, or Change and Save, whichever is taller |
 | `--frame-line` | 80% | how much of its colour the card frame's inner line keeps (category, After Dark's mark, Wildcard's gold; the same in Spotlight). At the end of a hand `--frame-rest` takes its share of this, not of the full colour (`card-face.md`) |
+| `--title-stroke` | .012em | the title's stroke in its own colour (`.title`): Poiret One has one cut, so the stroke firms it; in em, so it scales with the title on every screen |
 | `--dock-w` | `clamp(560px,42vw,640px)` | The Deck docked panel width |
 | `--pick-ease` | .2s, .45s while category lines are on | how fast a category's state eases (`deck-category-lines.md`) |
 | `--k`, `--pcW` | wide screens | scale and the card's width (`under-card.md`) |

@@ -14,3 +14,4 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - Three now sits in the menu next to Twist, and the menu is sorted into three groups.
+- The title is firmer, and on a computer the line under it keeps clear of the card.
