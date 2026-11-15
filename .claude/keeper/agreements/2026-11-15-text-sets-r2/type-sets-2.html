@@ -1,0 +1,173 @@
+<title>Between Us text sets 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Poiret+One&family=Jost:wght@300;400;500&family=Federo&display=swap">
+<style>
+/* Layout: one narrow column, the app's own dark ground; every comparison is Now / Tight / Loose in that order. */
+:root{
+  color-scheme:dark;
+  --bg:#0e0c0a; --surface:#161310; --line:rgba(201,168,76,.22); --line-soft:rgba(201,168,76,.12);
+  --gold:#e8c97a; --cream:#f0e8d8; --soft:#b5a892; --quiet:#9c8f7e; --tap:#a9c7b6;
+  --sans:'Jost',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif; --title:'Poiret One','Jost',sans-serif; --mark:'Federo','Jost',sans-serif;
+}
+html{background:var(--bg);}
+body{background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:18px;line-height:1.5;
+  padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:44px;}
+h1{font-family:var(--title);font-weight:400;font-size:34px;letter-spacing:.08em;color:var(--gold);margin:0;line-height:1.15;text-wrap:balance;}
+h2{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0 0 4px;}
+h3{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:0;}
+p{margin:0;max-width:62ch;}
+section{display:flex;flex-direction:column;gap:14px;}
+.lead{color:var(--soft);}
+.note{font-size:16px;color:var(--quiet);}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent);}
+/* numbers */
+.tbl{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:15px;font-variant-numeric:tabular-nums;}
+th,td{text-align:right;padding:9px 6px;border-bottom:1px solid var(--line-soft);font-weight:400;}
+th:first-child,td:first-child{text-align:left;color:var(--soft);}
+thead th{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+td.big{color:var(--cream);font-size:19px;}
+/* ladders */
+.ladder{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.ladder span{font-family:var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--cream);white-space:nowrap;}
+.ladder small{font-family:var(--sans);font-size:10px;letter-spacing:.04em;color:var(--quiet);margin-left:4px;text-transform:none;}
+.sw{display:flex;flex-wrap:wrap;gap:8px 8px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.sw i{display:block;width:34px;height:34px;border-radius:50%;}
+.sw .gap{width:10px;}
+/* Federo */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-soft);background:var(--surface);}
+.pair>div{padding:10px 14px;border-bottom:1px solid var(--line-soft);min-width:0;}
+.pair>div:nth-last-child(-n+2){border-bottom:0;}
+.pair .hd{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+.f{font-family:var(--mark);} .j{font-family:var(--sans);}
+.q1{font-size:14.4px;letter-spacing:.02em;color:#8c8071;} .q2{font-size:12.8px;letter-spacing:.02em;color:#ab9e8a;} .q3{font-size:12.8px;letter-spacing:.05em;color:#9c8f7e;}
+.keep{display:flex;flex-direction:column;gap:8px;padding:14px;background:var(--surface);border:1px solid var(--line-soft);}
+.keep .a{font-family:var(--mark);font-size:17px;letter-spacing:.02em;color:var(--gold);}
+.keep .b{font-family:var(--mark);font-size:17px;letter-spacing:.02em;color:#d2c9b8;}
+.keep .c{font-family:var(--mark);font-size:15px;letter-spacing:.32em;text-transform:uppercase;color:var(--quiet);}
+/* screens */
+.dev{display:flex;gap:8px;}
+.seg{display:flex;border:1px solid var(--line);}
+.seg button{appearance:none;background:none;border:0;color:var(--soft);font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:11px 16px;cursor:pointer;min-height:44px;}
+.seg button+button{border-left:1px solid var(--line);}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#0e0c0a;font-weight:500;}
+.seg button:focus-visible,.shot:focus-visible,.x:focus-visible{outline:2px solid var(--tap);outline-offset:2px;}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-bottom:1px solid var(--line-soft);}
+.screen{display:flex;flex-direction:column;gap:8px;}
+.shot{appearance:none;border:1px solid var(--line-soft);background:#000;padding:0;cursor:zoom-in;display:block;width:100%;max-width:412px;}
+.shot.wide{max-width:100%;}
+.shot img{display:block;width:100%;height:auto;}
+.cap{font-size:16px;color:var(--soft);}
+/* viewer */
+#viewer{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;}
+#viewer .top{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--line-soft);}
+#viewer .scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;}
+#viewer img{display:block;width:100%;max-width:none;height:auto;}
+#viewer.wide img{width:1440px;}
+.x{appearance:none;background:none;border:1px solid var(--line);color:var(--cream);font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:11px 14px;min-height:44px;cursor:pointer;}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:62ch;}
+</style>
+<style>
+.opt{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.opt b{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);}
+.opt span{font-size:17px;color:var(--soft);}
+.cmp{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;border:1px solid var(--line-soft);background:var(--surface);align-items:baseline;}
+.cmp>div{padding:9px 12px;border-bottom:1px solid var(--line-soft);min-width:0;}
+.cmp .hd{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+.cmp .J{font-family:var(--sans);} .cmp .F{font-family:var(--mark);}
+.caps{font-size:12.8px;letter-spacing:.22em;text-transform:uppercase;color:#b3a590;}
+.capsb{font-size:12.8px;letter-spacing:.14em;text-transform:uppercase;color:#0e0c0a;background:linear-gradient(135deg,#c9a84c,#a07830);padding:6px 10px;display:inline-block;}
+.sent{font-size:14.4px;letter-spacing:.02em;color:#c3bcaf;}
+</style>
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Text sets, round two</h1>
+    <p class="lead">Loose is the base in every picture here. The empty star is one notch darker than in round one. The two greens stay. What is left to choose is where Federo goes.</p>
+    <p class="note">"Now" is the app as it is today, with the firmer small words that landed since round one.</p>
+  </header>
+
+  <section>
+    <h2>Where Federo goes</h2>
+    <div class="opt"><b>Now</b><span>The app today. Federo on "Selected deck", the chapter lines, the headings in The Deck and the menu's small words. Jost on everything in capitals.</span></div>
+    <div class="opt"><b>1 · Federo where it is today</b><span>Only the loose sizes and tones change. Federo and Jost keep their places. Calm, and the firmer capitals stay firm.</span></div>
+    <div class="opt"><b>2 · Federo by default, names in Jost</b><span>Everything goes Federo, capitals too: Menu, Spotlight, the gold button, The Deck's title, the menu's labels. Jost keeps the names: the decks, the chapters, the categories, the picked deck, and "Just enough edge."</span></div>
+    <div class="opt"><b>3 · Federo everywhere</b><span>The names and the tagline go Federo as well. One face for all the small text.</span></div>
+  </section>
+
+  <section>
+    <h2>The two faces, same words</h2>
+    <div class="cmp">
+      <div class="hd"></div><div class="hd">Jost</div><div class="hd">Federo</div>
+      <div class="hd">Small words</div><div class="J sent">Selected deck</div><div class="F sent">Selected deck</div>
+      <div class="hd">Capitals</div><div class="J caps" style="font-weight:500">Spotlight</div><div class="F caps">Spotlight</div>
+      <div class="hd">Button</div><div><span class="J capsb" style="font-weight:500">Next card</span></div><div><span class="F capsb">Next card</span></div>
+    </div>
+    <ul class="note">
+      <li>Federo comes in one thickness. Wherever it replaces Jost, the firmer capitals you chose yesterday become thin again. Look at "Menu", "Spotlight" and the gold button in 2 and 3.</li>
+      <li>In The Deck the picked option can no longer show by being firmer; it shows by its colour and its underline only.</li>
+      <li>Federo's capitals are wider. In 3 the row of decks on a phone takes five lines where it takes four today.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The screens</h2>
+    <p class="note">One switch flips every picture in place. Tap a picture for full size.</p>
+    <div class="bar">
+      <div class="seg" id="segV" role="group" aria-label="Which version">
+        <button type="button" id="vNow" data-v="now" aria-pressed="true">Now</button>
+        <button type="button" id="v1" data-v="today" aria-pressed="false">1</button>
+        <button type="button" id="v2" data-v="names" aria-pressed="false">2</button>
+        <button type="button" id="v3" data-v="all" aria-pressed="false">3</button>
+      </div>
+    </div>
+    <h3>Phone</h3>
+    <div id="phone" style="display:flex;flex-direction:column;gap:26px"></div>
+    <div class="rule"></div>
+    <h3>Computer</h3>
+    <div id="wide" style="display:flex;flex-direction:column;gap:26px"></div>
+  </section>
+
+  <section>
+    <h2>What this round does not do</h2>
+    <ul class="note">
+      <li>It is a drawing laid over the live app, not built. Nothing in the app has changed.</li>
+      <li>The question, the title, the name on the card and every category and chapter colour are not touched.</li>
+      <li>Not checked: After Dark, Three, Twist, a very long question.</li>
+    </ul>
+  </section>
+</main>
+
+<div id="viewer" hidden>
+  <div class="top">
+    <div class="seg" role="group" aria-label="Which version">
+      <button type="button" id="wNow" data-v="now" aria-pressed="true">Now</button>
+      <button type="button" id="w1" data-v="today" aria-pressed="false">1</button>
+      <button type="button" id="w2" data-v="names" aria-pressed="false">2</button>
+      <button type="button" id="w3" data-v="all" aria-pressed="false">3</button>
+    </div>
+    <button type="button" class="x" id="closeViewer">Back</button>
+  </div>
+  <div class="scroll"><img id="viewerImg" alt=""></div>
+</div>
+
+<script>
+const PHONE=[['start','The start','"Selected deck" is Federo in all three. Watch "Ways to play", "Menu" and the gold button.'],['card','A card','The empty star, one notch down.'],['deck','The Deck','Watch the row of decks and the chapter names.'],['deck2','The Deck, further down',''],['menu','The menu',''],['spot','Spotlight',''],['end','The end of a hand',''],['help','Ways to play',''],['played','Played','']];
+const WIDE=[['start','The start',''],['card','A card',''],['deck','The Deck beside the page',''],['menu','The menu','']];
+let V='now';
+const src=(d,k,v)=>`shots/${d}-${k}-${v}.jpg`;
+function build(id,d,list){document.getElementById(id).innerHTML=list.map(([k,n,c])=>`<div class="screen"><h3>${n}</h3><button type="button" class="shot ${d==='wide'?'wide':''}" data-d="${d}" data-k="${k}" aria-label="${n}, full size"><img alt="${n}" src="${src(d,k,V)}" loading="lazy"></button>${c?`<p class="cap">${c}</p>`:''}</div>`).join('');}
+build('phone','phone',PHONE);build('wide','wide',WIDE);
+let open=null;
+function setV(v){V=v;document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));
+  document.querySelectorAll('.shot').forEach(b=>{b.querySelector('img').src=src(b.dataset.d,b.dataset.k,v);});
+  if(open)document.getElementById('viewerImg').src=src(open.d,open.k,v);}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setV(b.dataset.v)));
+const viewer=document.getElementById('viewer');
+document.querySelectorAll('.shot').forEach(b=>b.addEventListener('click',()=>{open={d:b.dataset.d,k:b.dataset.k};viewer.classList.toggle('wide',open.d==='wide');document.getElementById('viewerImg').src=src(open.d,open.k,V);viewer.hidden=false;document.getElementById('closeViewer').focus();}));
+function closeV(){viewer.hidden=true;open=null;}
+document.getElementById('closeViewer').addEventListener('click',closeV);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)closeV();});
+for(const [d,l] of [['phone',PHONE],['wide',WIDE]])for(const [k] of l)for(const v of ['today','names','all']){const i=new Image();i.src=src(d,k,v);}
+</script>

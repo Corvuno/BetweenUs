@@ -2780,6 +2780,24 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  await check('menu on a phone: every line and the foot are on screen without scrolling, with a card drawn (Save showing), on a tall, a browser-height and a small phone', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await pg.evaluate(() => nextCard()); await waitForCardIndex(pg, 1);
+      for (const [width, height] of [[412, 915], [412, 780], [360, 640]]) {
+        await pg.setViewportSize({ width, height });
+        await openPhoneMenu(pg);
+        await pg.waitForFunction(() => Math.abs(document.getElementById('menuDrawer').getBoundingClientRect().bottom - innerHeight) < 1, null, { timeout: 4000 });   // the sheet has finished sliding in
+        const m = await pg.evaluate(() => { const d = document.getElementById('menuDrawer'); const lines = [...d.querySelectorAll('.menu-line')].filter(e => e.offsetParent);
+          return { over: d.scrollHeight - d.clientHeight, top: d.getBoundingClientRect().top, footBottom: d.querySelector('.menu-foot').getBoundingClientRect().bottom, vh: innerHeight, minLine: Math.min(...lines.map(e => e.getBoundingClientRect().height)), lines: lines.length }; });
+        assert(m.lines === 7, `${width}x${height}: expected the seven lines, saw ${m.lines}`);
+        assert(m.over <= 0 && m.top >= 0 && m.footBottom <= m.vh, `${width}x${height}: the menu does not fit: ${JSON.stringify(m)}`);
+        assert(m.minLine >= 44, `${width}x${height}: a line is ${m.minLine}px tall, under a finger's 44`);
+        await pg.keyboard.press('Escape'); await pg.waitForFunction(() => !document.querySelector('#menuDrawer.open'), null, { timeout: 3000 });
+      }
+    } finally { await ctx.close(); }
+  });
+
   await check('menu: Three is a line next to Twist in both menus; switching it there sets The Deck and the next draw is three cards, before the first card and mid-hand, and the other way round', async () => {
     const order = (pg, id) => pg.evaluate(sel => [...document.querySelectorAll(`${sel} .menu-head, ${sel} .menu-line .menu-label, ${sel} .ch-name`)].filter(e => e.offsetParent).map(e => e.textContent.trim()), id);
     const { ctx, pg } = await freshApp();
