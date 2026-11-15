@@ -248,6 +248,7 @@ function menuStates() {
   return {
     cats: [document.getElementById('valCats').textContent, handSizeLabel(state.cardLimit)],
     start: total ? [`${seenCount} seen`, `${total - seenCount} left`] : [],
+    three: [pickMode ? 'On' : 'Off'],
     twist: [twistOn ? 'On' : 'Off'],
     played: [drawn ? `${drawn} drawn so far` : 'Nothing drawn yet', ...(saved ? [`${saved} saved`] : [])],
     favs: [starred ? `${starred} starred` : 'None starred yet'],
@@ -256,6 +257,7 @@ function menuStates() {
 
 function fillMenu() {
   const states = menuStates();
+  document.getElementById('threeAct').textContent = pickMode ? 'On' : 'Off';
   document.getElementById('twistAct').textContent = twistOn ? 'On' : 'Off';
   // Save has something to save from the first card on; on the start screen the line isn't there
   document.querySelectorAll('#d-save, #s-save').forEach((/** @type {HTMLElement} */ line) => { line.hidden = !state.sessionLog.length; });
@@ -324,6 +326,7 @@ const MENU_ACTIONS = {
   cats: () => leaveMenuFor(() => /** @type {any} */ (window).openCats()),   // openCats is published by ui.js
   start: startOver,
   save: () => { saveSessionFiles(); closeAllDrawers(); },
+  three: () => { document.getElementById('pickToggle').click(); closeAllDrawers(); },   // The Deck's own setting, so every mirror follows
   twist: () => { toggleTwist(); closeAllDrawers(); },
   played: trigger => leaveMenuFor(() => { renderLog(); renderSessionsList(); openDrawer('playedDrawer', trigger); }),
   favs: trigger => leaveMenuFor(() => { renderFavourites(); openDrawer('favsDrawer', trigger); }),
@@ -654,9 +657,10 @@ function renderShell() {
   syncSpotlightSettings();
 }
 
-// Spotlight's Three and Twist buttons show the two settings (Three is read off The Deck's own toggle, which loads later).
+// The Three and Twist buttons (top right on a computer, and in Spotlight) show the two settings (Three is read off The Deck's own toggle, which loads later).
 function syncSpotlightSettings() {
-  const on = { partyPick: document.getElementById('pickToggle')?.classList.contains('on'), partyBtnTwist: twistOn };
+  const three = document.getElementById('pickToggle')?.classList.contains('on');
+  const on = { partyPick: three, btnPick: three, partyBtnTwist: twistOn, btnTwist: twistOn };
   for (const [id, isOn] of Object.entries(on)) {
     const btn = document.getElementById(id);
     btn?.classList.toggle('on', !!isOn);
@@ -699,6 +703,7 @@ function updateDrawMore() {
   const begun = handBegun();
   // Ways to play takes Spotlight's place until a card is up (styles.css body.before-first-card).
   document.body.classList.toggle('before-first-card', !begun);
+  document.getElementById('btn-prev').toggleAttribute('disabled', !canGoBack());   // Back on a computer looks unavailable with no earlier card
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;

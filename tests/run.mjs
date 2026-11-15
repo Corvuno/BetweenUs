@@ -1374,10 +1374,10 @@ async function run() {
     await page.waitForTimeout(1100);
     const r = await page.evaluate(() => {
       const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, w: b.width, h: b.height }; };
-      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnTwist'].filter(id => document.getElementById(id)),
+      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnPick', 'btnTwist'].filter(id => document.getElementById(id).offsetParent !== null),
         lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: [...document.querySelectorAll('#btnParty svg, #btn-menu svg')].filter(e => e.getBoundingClientRect().width).length };
     });
-    assert(!r.gone.length, `old buttons are still in the page: ${r.gone}`);
+    assert(!r.gone.length, `a computer-only button shows on the phone: ${r.gone}`);
     assert(Math.abs(r.next.h - 34) < 0.5, `Next card is ${r.next.h}px tall, not the slim 34px`);
     assert(r.lines.length === 2 && r.lines.every(n => n === 3), `Next card should have three hairlines a side: ${r.lines}`);
     assert(r.icons === 0, 'Spotlight or Menu has an icon');
@@ -2741,7 +2741,7 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('menu: Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
+  await check('menu: How you play / Tonight / Yours, in order, with the state on each line and its action word; no Log, Sessions or Pause colour', async () => {
     const { ctx, pg } = await freshApp();
     try {
       await openPhoneMenu(pg);
@@ -2757,8 +2757,8 @@ async function run() {
         };
       });
       assert(m.open && !m.sideShown, `the phone menu should be the one showing: ${JSON.stringify({ open: m.open, sideShown: m.sideShown })}`);
-      assert(JSON.stringify(m.order) === JSON.stringify(['Tonight', 'The Deck', 'Start over', 'Twist', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
-      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Shuffle', 'Off', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
+      assert(JSON.stringify(m.order) === JSON.stringify(['How you play', 'The Deck', 'Three', 'Twist', 'Tonight', 'Start over', 'Yours', 'Played', 'Favourites', 'Ways to play', 'Show hints again']), `menu order: ${JSON.stringify(m.order)}`);
+      assert(JSON.stringify(m.acts) === JSON.stringify(['Change', 'Off', 'Off', 'Shuffle', 'Open', 'Open']), `action words: ${JSON.stringify(m.acts)}`);
       assert(m.old.length === 0, `old menu items still there: ${m.old}`);
       assert(!/\b(mode|preset|session|category|chapter)\b/i.test(m.text), `the menu uses our own words: ${m.text}`);
       assert(await menuLine(pg, 'cats') === 'Balanced, five cards', `The Deck line: ${await menuLine(pg, 'cats')}`);
@@ -2772,6 +2772,36 @@ async function run() {
       await pg.locator('#d-cats').click(); await pg.waitForTimeout(700);
       assert(await pg.evaluate(() => document.getElementById('cat-area').classList.contains('sheet-open') && !document.getElementById('menuDrawer').classList.contains('open')), 'The Deck line did not open The Deck');
     } finally { await ctx.close(); }
+  });
+
+  await check('menu: Three is a line next to Twist in both menus; switching it there sets The Deck and the next draw is three cards, before the first card and mid-hand, and the other way round', async () => {
+    const order = (pg, id) => pg.evaluate(sel => [...document.querySelectorAll(`${sel} .menu-head, ${sel} .menu-line .menu-label, ${sel} .ch-name`)].filter(e => e.offsetParent).map(e => e.textContent.trim()), id);
+    const { ctx, pg } = await freshApp();
+    try {
+      await openPhoneMenu(pg);
+      assert(JSON.stringify(await order(pg, '#menuDrawer')) === JSON.stringify(['How you play', 'The Deck', 'Three', 'Twist', 'Tonight', 'Start over', 'Yours', 'Played', 'Favourites']), `phone order before a card: ${JSON.stringify(await order(pg, '#menuDrawer'))}`);
+      assert(await pg.evaluate(() => document.querySelectorAll('#menuDrawer .menu-rule').length === 2 && document.querySelector('#d-three .menu-state').textContent === 'pick one of three'), 'two dividers and the line "pick one of three"');
+      // before the first card: Three on from the menu, the first draw offers three
+      await pg.locator('[data-menu="three"]:visible').click(); await pg.waitForTimeout(500);
+      assert(await pg.evaluate(() => pickMode && document.getElementById('pickToggle').classList.contains('on') && !document.querySelector('#menuDrawer.open')), 'Three from the menu did not switch on in The Deck and close the menu');
+      await pg.evaluate(() => nextCard()); await pg.waitForFunction(() => state.pickerOpen && state.pickOptions, null, { timeout: 4000 });
+      assert(await pg.evaluate(() => state.pickOptions.options.length === 3), 'the first draw did not offer three cards');
+      // mid-hand, off from the menu, then on in The Deck: the menu reads it
+      await openPhoneMenu(pg);
+      assert(await pg.evaluate(() => document.getElementById('threeAct').textContent === 'On'), 'the Three line does not read On while it is on');
+      await pg.locator('[data-menu="three"]:visible').click(); await pg.waitForTimeout(500);
+      assert(await pg.evaluate(() => !pickMode && !state.pickerOpen && document.querySelector('#pickToggle .three-opt.active').dataset.pick === 'off'), 'Three off from the menu mid-hand did not switch it off in The Deck');
+      await pg.evaluate(() => document.getElementById('pickToggle').click());
+      await openPhoneMenu(pg);
+      assert(await pg.evaluate(() => document.getElementById('threeAct').textContent === 'On'), 'The Deck switched Three on but the menu does not read On');
+    } finally { await ctx.close(); }
+    const wide = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
+    try {
+      await wide.pg.locator('#btn-menu').click(); await wide.pg.waitForTimeout(900);
+      assert(JSON.stringify(await order(wide.pg, '#menuSideDrawer')) === JSON.stringify(['How you play', 'The Deck', 'Three', 'Twist', 'Tonight', 'Start over', 'Yours', 'Played', 'Favourites']), `computer order: ${JSON.stringify(await order(wide.pg, '#menuSideDrawer'))}`);
+      await wide.pg.locator('#menuSideDrawer [data-menu="three"]').click(); await wide.pg.waitForTimeout(500);
+      assert(await wide.pg.evaluate(() => pickMode && document.getElementById('btnPick').classList.contains('on')), 'Three from the computer menu did not switch on Three, and the top-right button');
+    } finally { await wide.ctx.close(); }
   });
 
   await check('menu: Start over shows the cards seen and left of the whole selected deck, in a normal hand, Colbert, After Dark on and off, and after Start over; numbers refresh on each open', async () => {
@@ -3380,7 +3410,7 @@ async function run() {
       });
       assert(m.open && m.right === 1440 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
       assert(m.focus, 'focus did not move into the menu');
-      assert(JSON.stringify(m.rows) === JSON.stringify([['Save', 'Save'], ['The Deck', 'BALANCED five cards'], ['Start over', `2 seen ${total - 2} left`], ['Twist', 'Off'], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
+      assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Three', 'Off'], ['Twist', 'Off'], ['Start over', `2 seen ${total - 2} left`], ['Save', 'Save'], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
       await pg.locator('#overlay').click({ position: { x: 200, y: 400 } }); await pg.waitForTimeout(800);
       assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
       await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
@@ -3511,7 +3541,7 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('menu: Save is the first line from the first card on, absent on the start screen, and downloads the evening file (phone drawer and computer panel)', async () => {
+  await check('menu: Save is the last line of Tonight, after Start over, from the first card on, absent on the start screen, and downloads the evening file (phone drawer and computer panel)', async () => {
     for (const [name, opts, menu] of [['phone', {}, 'menuDrawer'], ['computer', { viewport: { width: 1440, height: 900 }, hasTouch: false }, 'menuSideDrawer']]) {
       const { ctx, pg } = await freshApp(opts);
       try {
@@ -3521,8 +3551,8 @@ async function run() {
         await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(700);
         await drawCards(pg, 1); await pg.waitForTimeout(600);
         await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
-        const first = await pg.evaluate(m => document.querySelector(`#${m} .menu-lines > :nth-child(2)`).textContent.replace(/\s+/g, ' ').trim(), menu);
-        assert(/^Save/.test(first) && /take this evening with you/i.test(first), `${name}: the first line is not Save: ${first}`);
+        const first = await pg.evaluate(m => document.querySelector(`#${m} [data-menu="save"]`).closest('#d-save, #s-save').textContent.replace(/\s+/g, ' ').trim(), menu);
+        assert(/^Save/.test(first) && /take this evening with you/i.test(first), `${name}: the Save line reads wrong: ${first}`);
         assert(await saved(pg, () => pg.locator(line).first().click()), `${name}: the Save line did not download the file`);
         await pg.waitForTimeout(800);
         assert(!(await pg.evaluate(m => document.getElementById(m).classList.contains('open'), menu)), `${name}: the menu stayed open after Save`);
@@ -3530,19 +3560,20 @@ async function run() {
     }
   });
 
-  await check('computer: Spotlight above Menu top right on the card\'s right edge, Selected deck top left on its left edge, only the ticks, count and bar under the card, Menu opens from the right and The Deck from the left', async () => {
+  await check('computer: Three, Spotlight, Twist stacked top right on the card\'s right edge, Selected deck with Menu under it top left on its left edge, Back left, Next card centred and ticks with count right under the card, no hairlines; Menu opens from the right and The Deck from the left', async () => {
     for (const [w, h] of [[1366, 768], [1440, 900], [1920, 1080]]) {
       const { ctx, pg } = await freshApp({ viewport: { width: w, height: h }, hasTouch: false });
       try {
         await drawCards(pg, 2); await pg.waitForTimeout(900);
         const g = await pg.evaluate(() => {
           const r = id => document.getElementById(id).getBoundingClientRect();
-          return { card: r('card'), tok: r('tokCats'), spot: r('btnParty'), menu: r('btn-menu'), next: r('btn-next'), count: r('progCount'),
+          return { card: r('card'), tok: r('tokCats'), spot: r('btnParty'), pick: r('btnPick'), twist: r('btnTwist'), back: r('btn-prev'), prog: r('progress'), menu: r('btn-menu'), next: r('btn-next'), count: r('progCount'), lines: [...document.querySelectorAll('.nav-lines')].filter(e => getComputedStyle(e).display !== 'none').length,
             hints: [...document.querySelectorAll('#screenRow .row-hint')].map(e => +getComputedStyle(e).opacity), over: document.documentElement.scrollWidth - innerWidth };
         });
-        assert(Math.abs(g.tok.left - g.card.left) <= 4 && Math.abs(g.spot.right - g.card.right) <= 4 && Math.abs(g.menu.right - g.card.right) <= 4, `${w}: outer edges off the card's edges: ${JSON.stringify({ card: [g.card.left, g.card.right], tok: g.tok.left, spot: g.spot.right, menu: g.menu.right })}`);
-        assert(g.spot.bottom <= g.menu.top + 1 && g.menu.bottom < g.card.top && g.spot.top < g.menu.top, `${w}: Spotlight is not above Menu, both above the card`);
-        assert(g.spot.top > g.card.bottom === false && g.next.top >= g.count.bottom && g.over <= 0, `${w}: layout: ${JSON.stringify({ over: g.over })}`);
+        const near = (a, b) => Math.abs(a - b) <= 4;
+        assert(near(g.tok.left, g.card.left) && near(g.menu.left, g.card.left) && near(g.back.left, g.card.left) && near(g.pick.right, g.card.right) && near(g.spot.right, g.card.right) && near(g.twist.right, g.card.right) && near(g.prog.right, g.card.right) && near(g.count.right, g.card.right), `${w}: outer edges off the card's edges: ${JSON.stringify({ card: [g.card.left, g.card.right], tok: g.tok.left, menu: g.menu.left, back: g.back.left, pick: g.pick.right, spot: g.spot.right, twist: g.twist.right, prog: g.prog.right })}`);
+        assert(g.pick.bottom <= g.spot.top + 1 && g.spot.bottom <= g.twist.top + 1 && g.twist.bottom < g.card.top && g.menu.top >= g.tok.bottom - 1 && g.menu.bottom < g.card.top, `${w}: Three, Spotlight, Twist are not stacked above the card, or Menu is not under Selected deck`);
+        assert(Math.abs((g.next.left + g.next.right) / 2 - w / 2) <= 2 && g.back.top >= g.card.bottom && g.next.top >= g.card.bottom && g.prog.top >= g.card.bottom && g.count.top >= g.prog.bottom - 1 && g.lines === 0 && g.over <= 0, `${w}: bottom row: ${JSON.stringify({ lines: g.lines, over: g.over })}`);
         assert(g.hints.every(o => o === 0), `${w}: a hint shows at rest: ${g.hints}`);
         if (w === 1440) {
           // once Spotlight has worked its hint is retired on the phone, but on a computer hovering it still shows the hint
@@ -3560,6 +3591,36 @@ async function run() {
         assert(await pg.evaluate(() => Math.round(document.getElementById('cat-area').getBoundingClientRect().left) === 0), `${w}: The Deck is not a panel from the left`);
       } finally { await ctx.close(); }
     }
+  });
+
+  await check('computer: clicking Back with the mouse shows the previous card (and is unavailable on the first); Three and Twist switch from the top right and agree with The Deck and the menu; the phone has none of the three', async () => {
+    const { ctx, pg } = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
+    try {
+      await drawCards(pg, 3); await pg.waitForTimeout(900);
+      const asked = await pg.evaluate(() => state.visibleDeck.slice(0, 3).map(c => c.question));
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.currentIndex) === 1 && await questionText(pg) === asked[1].replace(/ /g, ' ').trim(), 'clicking Back did not show the previous card');
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.currentIndex) === 0 && await questionText(pg) === asked[0].replace(/ /g, ' ').trim(), 'a second click on Back did not show the card before');
+      assert(await pg.locator('#btn-prev').isDisabled(), 'Back looks available on the first card');
+      // Three and Twist: the words top right switch the same settings as The Deck's Three and the menu's Twist, and show it
+      const on = id => pg.evaluate(id => document.getElementById(id).getAttribute('aria-pressed') === 'true' && document.getElementById(id).classList.contains('on'), id);
+      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(200);
+      assert(await pg.evaluate(() => twistOn) && await on('btnTwist') && await on('partyBtnTwist'), 'the top-right Twist did not switch Twist on everywhere');
+      await pg.evaluate(() => openMenu(document.getElementById('btn-menu'))); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => document.querySelector('#menuSideDrawer [data-menu-state="twist"]').textContent.trim()) === 'On', 'the menu does not say Twist is on');
+      await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
+      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(200);
+      assert(!(await pg.evaluate(() => twistOn)) && !(await on('btnTwist')), 'the top-right Twist did not switch Twist off');
+      await pg.locator('#btnPick').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => pickMode && document.getElementById('pickToggle').classList.contains('on')) && await on('btnPick'), 'the top-right Three did not switch Three on in The Deck too');
+      await pg.evaluate(() => document.getElementById('pickToggle').click()); await pg.waitForTimeout(500);
+      assert(!(await pg.evaluate(() => pickMode)) && !(await on('btnPick')), 'switching Three off in The Deck did not show on the top-right Three');
+    } finally { await ctx.close(); }
+    const ph = await freshApp({});
+    try {
+      assert(await ph.pg.evaluate(() => ['btn-prev', 'btnPick', 'btnTwist'].every(id => document.getElementById(id).offsetParent === null)), 'the phone shows Back, Three or Twist');
+    } finally { await ph.ctx.close(); }
   });
 
   await check('the pause takes the last card\'s colour, whatever the old Pause colour setting left on the device; the test switch is gone', async () => {

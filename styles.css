@@ -522,7 +522,9 @@ body.showing-hand-summary .card-question{
 #screenRow :is(#btnWays,#btnParty,#btnSave){flex-shrink:0;margin-inline:auto;}   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
 .quiet-word svg{display:none;}   /* the words carry icons on a wide screen only */
 #btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
-:is(#btnWays,#btnParty,#btnSave) .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
+#btn-prev,#btnPick,#btnTwist{display:none;}   /* Back is a swipe on the phone, Three a setting in The Deck, Twist a line in the Menu; the buttons are for a computer */
+.quiet-word:disabled{opacity:.32;pointer-events:none;}   /* as Spotlight's Back */
+:is(#btnPick,#btnWays,#btnParty,#btnSave,#btnTwist) .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
 .btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 /* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
 @media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
@@ -986,7 +988,7 @@ body.showing-hand-summary .card-question{
 /* Spotlight (and Three in The Deck, and Twist in the menu) assume a hand you're mixing
    or drawing from at random — none of that applies to Colbert/The 36's
    fixed, in-order sequence, so they disappear rather than sit there meaningless. */
-body.fixed-seq-mode :is(#btnParty,#pickToggle,.seg:has(#pickToggle),#d-twist,#s-twist){display:none;}
+body.fixed-seq-mode :is(#btnParty,#btnPick,#btnTwist,#pickToggle,.seg:has(#pickToggle),#d-three,#s-three,#d-twist,#s-twist){display:none;}
 
 /* ── PICK-3 MODE ── */
 .screen-row{display:flex;justify-content:center;align-items:center;gap:22px;width:100%;}
@@ -1883,15 +1885,16 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 
 /* ══ WIDE SCREENS — PC, laptop, tablet landscape (agreement 2026-10-18-pc-layout, round 12; top right 2026-11-08, #128) ══
    Not the phone. The card is a real card as large as the window allows; the controls sit
-   outside it, aligned to its edges: logo + tagline top centre, Selected deck top left,
-   Spotlight above Menu top right (Save in Spotlight's place at the end of a hand), the
-   ticks, the count and the Next card bar under the card. Nothing here changes what a control does.
-   --pcW is the card's width; 168px (scaled) plus 100px is everything on screen that isn't the card: the header, the margins, the ticks, the count and Next card. */
+   outside it, aligned to its edges: logo + tagline top centre, Selected deck with Menu under it top left,
+   Three / Spotlight / Twist top right (Ways to play before the first card and Save at the end of a hand
+   stand in Spotlight's slot), Back left, the Next card bar centred and the ticks with the count right under the card.
+   Nothing here changes what a control does.
+   --pcW is the card's width; 174px (scaled) plus 54px is everything on screen that isn't the card: the header, the margins and the bottom row. */
 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 168px * var(--k) - 100px) * 556 / 360));}
+  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 174px * var(--k) - 54px) * 556 / 360));}
   body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
   .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
-    display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto auto;
+    display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto;
     align-items:start;justify-items:stretch;}
   .controls-wrap,.nav-row{display:contents;}
   .header,.tok-line,.controls-wrap{max-width:none;}
@@ -1917,13 +1920,19 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
     #tokHint::after{content:" \00b7  click to change";font-size:max(11px,calc(var(--k)*14px));}
   }
 
-  /* Spotlight (Save at the end of a hand) above Menu, top right: words with their icons at the card's right edge,
-     the hint beside the word on hover only. The pitch is the one Spotlight's own Close button keeps. */
-  #screenRow,#btn-menu{grid-column:3;grid-row:1 / 3;justify-self:end;align-self:start;width:auto;}
-  #screenRow{justify-content:flex-end;padding:calc(var(--k)*20px) 0 0;}
-  #screenRow .quiet-word,#btn-menu{position:relative;flex-direction:row-reverse;align-items:center;justify-content:flex-start;
+  /* Menu under Selected deck, top left: the icon at the outer edge */
+  #btn-menu{grid-column:1;grid-row:2;justify-self:start;align-self:start;}
+  /* Three, Spotlight, Twist top right, right-aligned: words with their icons at the card's right edge, the hint beside the
+     word on hover only. Ways to play (before the first card) and Save (at the end of a hand) take Spotlight's slot.
+     The pitch is the one Spotlight's own Close button keeps. */
+  #screenRow{grid-column:3;grid-row:1 / 3;justify-self:end;align-self:start;width:auto;flex-direction:column;justify-content:flex-start;align-items:flex-end;
+    gap:calc(var(--k)*3px);padding:calc(var(--k)*20px) 0 0;}
+  #screenRow .quiet-word,#btn-menu,#btn-prev{position:relative;align-items:center;justify-content:flex-start;
     gap:calc(var(--k)*10px);min-width:0;min-height:0;margin:0;padding:calc(var(--k)*4px) 0;font-size:max(11px,calc(var(--k)*14px));}
-  #btn-menu{margin-top:calc(var(--k)*51px);}
+  #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;}   /* the phone centres these in their column */
+  #screenRow .quiet-word{flex-direction:row-reverse;}
+  #btn-menu,#btn-prev{flex-direction:row;}
+  #btn-prev,#btnPick,#btnTwist{display:flex;}
   .quiet-word svg{display:block;flex:none;width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
   #screenRow #btnWays{min-height:calc(var(--k)*28px);}   /* no icon, but the same box as Spotlight and Save (icon plus padding) */
   #screenRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin:0 calc(var(--k)*18px) 0 0;
@@ -1933,6 +1942,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   body #screenRow .quiet-word .row-hint{visibility:visible;}
   @media (hover:hover) and (pointer:fine){#screenRow .quiet-word:hover .row-hint{opacity:1;}}
   #screenRow .quiet-word:focus-visible .row-hint{opacity:1;}
+  #btnPick.on .row-lbl,#btnTwist.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* "on": the same underline Spotlight's own Three and Twist wear */
 
   /* the card */
   .card-wrap{grid-column:1 / -1;grid-row:3;align-self:stretch;margin:0 0 calc(var(--k)*30px);width:100%;min-height:0;container-type:size;
@@ -1961,10 +1971,12 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card.is-hand-list .card-question{font-size:1rem;line-height:normal;}
   .hd-list{--hd-fs:2.2cqw;justify-content:safe center;gap:.9em;}
 
-  /* bottom: the phone's figure without its words — ticks and count above, Next card between its hairlines */
-  .progress{grid-column:1 / -1;grid-row:4;justify-self:center;width:min(100%,calc(var(--k)*340px));}
-  .prog-count{grid-column:1 / -1;grid-row:5;margin-top:calc(var(--k)*10px);}
-  .nav-lines,#btn-next{grid-row:6;margin-block-start:calc(var(--k)*12px);}
+  /* bottom row, on the card's edges: Back left, the Next card bar centred, the ticks with the count under them right */
+  #btn-prev{grid-column:1;grid-row:4 / 6;justify-self:start;align-self:center;}
+  #btn-next{grid-column:2;grid-row:4 / 6;align-self:center;}
+  .nav-lines,.prog-count-rule{display:none;}   /* the hairlines beside Next card are the phone's */
+  .progress{grid-column:3;grid-row:4;justify-self:end;width:calc(var(--k)*190px);}
+  .prog-count{grid-column:3;grid-row:5;justify-self:end;margin-top:calc(var(--k)*4px);}
   .draw-more-btn,.deck-info{display:none;}
   /* Three: the three options use the card's size, not the phone's */
   .card-area{container-type:inline-size;}
