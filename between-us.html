@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261114e">
+<link rel="stylesheet" href="styles.css?v=20261114t">
 </head>
 <body class="before-first-card">
 <div class="app">
@@ -253,16 +253,19 @@
     </div>
     <!-- Under the card: Next card between three hairlines a side (the title's figure), Spotlight and Menu as plain words under the outer ends -->
     <div class="nav-row">
+      <button class="quiet-word" id="btn-prev" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M21 12H10"/><path d="M13 6 4 12l9 6z" fill="currentColor"/></svg><span class="row-lbl">Back</span></button>
       <span class="nav-lines nav-lines--l" aria-hidden="true"></span>
       <button class="btn-draw" id="btn-next">Draw Card</button>
       <span class="nav-lines nav-lines--r" aria-hidden="true"></span>
       <button class="quiet-word" id="btn-menu" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M4 7h16M4 12h11M4 17h6"/></svg><span class="row-lbl">Menu</span></button>
     </div>
-    <!-- Spotlight's place: Ways to play before the first card, Spotlight with a card up, Save at the end of a hand (body.before-first-card and body.showing-hand-summary swap them; words on the phone, words top right on a computer; Ways to play has no icon) -->
+    <!-- Spotlight's place: Ways to play before the first card, Spotlight with a card up, Save at the end of a hand (body.before-first-card and body.showing-hand-summary swap them; words on the phone, words top right on a computer, between Three and Twist, which only a computer shows; Ways to play has no icon) -->
     <div class="screen-row" id="screenRow">
+      <button class="quiet-word" id="btnPick" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><rect x="2" y="7" width="5.5" height="13"/><rect x="9.2" y="4" width="5.5" height="16"/><rect x="16.5" y="7" width="5.5" height="13"/></svg><span class="row-lbl">Three</span><span class="row-hint">pick one of three</span></button>
       <button class="quiet-word" id="btnWays" type="button" aria-haspopup="dialog"><span class="row-lbl">Ways to play</span><span class="row-hint">seven ways round the table</span></button>
       <button class="quiet-word" id="btnParty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><rect x="8" y="8" width="8" height="8"/></svg><span class="row-lbl">Spotlight</span><span class="row-hint">the question takes the stage</span></button>
       <button class="quiet-word" id="btnSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><path d="M6 4 12 10 18 4M6 9 12 15 18 9"/><path d="M4 20H20"/></svg><span class="row-lbl">Save</span><span class="row-hint" id="saveHint">take this evening with you</span></button>
+      <button class="quiet-word" id="btnTwist" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="miter" stroke-linecap="butt" aria-hidden="true"><rect x="4" y="4" width="16" height="16"/><path d="M12 2 22 12 12 22 2 12z"/></svg><span class="row-lbl">Twist</span><span class="row-hint">same question, new angle</span></button>
     </div>
     <button class="draw-more-btn" id="drawMoreBtn">+ Draw 10 more</button>
     <div class="deck-info" id="deckInfo" style="display:none;"></div>
@@ -498,18 +501,18 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261114e"></script>
-<script src="categories.js?v=20261114e"></script>
-<script src="config.js?v=20261114e"></script>
-<script src="gilt.js?v=20261114e"></script>
-<script src="state.js?v=20261114e"></script>
-<script src="deck.js?v=20261114e"></script>
-<script src="card.js?v=20261114e"></script>
-<script src="library.js?v=20261114e"></script>
-<script src="session.js?v=20261114e"></script>
-<script src="selection.js?v=20261114e"></script>
-<script src="presentation.js?v=20261114e"></script>
-<script src="ui.js?v=20261114e"></script>
+<script src="questions.js?v=20261114t"></script>
+<script src="categories.js?v=20261114t"></script>
+<script src="config.js?v=20261114t"></script>
+<script src="gilt.js?v=20261114t"></script>
+<script src="state.js?v=20261114t"></script>
+<script src="deck.js?v=20261114t"></script>
+<script src="card.js?v=20261114t"></script>
+<script src="library.js?v=20261114t"></script>
+<script src="session.js?v=20261114t"></script>
+<script src="selection.js?v=20261114t"></script>
+<script src="presentation.js?v=20261114t"></script>
+<script src="ui.js?v=20261114t"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.

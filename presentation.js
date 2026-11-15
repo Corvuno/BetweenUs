@@ -654,9 +654,10 @@ function renderShell() {
   syncSpotlightSettings();
 }
 
-// Spotlight's Three and Twist buttons show the two settings (Three is read off The Deck's own toggle, which loads later).
+// The Three and Twist buttons (top right on a computer, and in Spotlight) show the two settings (Three is read off The Deck's own toggle, which loads later).
 function syncSpotlightSettings() {
-  const on = { partyPick: document.getElementById('pickToggle')?.classList.contains('on'), partyBtnTwist: twistOn };
+  const three = document.getElementById('pickToggle')?.classList.contains('on');
+  const on = { partyPick: three, btnPick: three, partyBtnTwist: twistOn, btnTwist: twistOn };
   for (const [id, isOn] of Object.entries(on)) {
     const btn = document.getElementById(id);
     btn?.classList.toggle('on', !!isOn);
@@ -699,6 +700,7 @@ function updateDrawMore() {
   const begun = handBegun();
   // Ways to play takes Spotlight's place until a card is up (styles.css body.before-first-card).
   document.body.classList.toggle('before-first-card', !begun);
+  document.getElementById('btn-prev').disabled = !canGoBack();   // Back on a computer looks unavailable with no earlier card
 
   const nextBtn = document.getElementById('btn-next');
   if (!nextBtn) return;

@@ -224,6 +224,11 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
   newOv.querySelector('#partyPick')?.addEventListener('click', e => { e.stopPropagation(); document.getElementById('pickToggle').click(); });
   newOv.querySelector('#partyBtnTwist')?.addEventListener('click', e => { e.stopPropagation(); toggleTwist(); });
 
+  // The computer's top right: Three and Twist, the same two settings, and Back, what a swipe right and the left arrow do
+  document.getElementById('btnPick')?.addEventListener('click', () => document.getElementById('pickToggle').click());
+  document.getElementById('btnTwist')?.addEventListener('click', toggleTwist);
+  document.getElementById('btn-prev')?.addEventListener('click', () => { prevCard(); updateDeckInfo(); });
+
   // Next/prev — chrome buttons forward to the same nav the tap zones use
   const partyNextBtn = newOv.querySelector('#partyNext');
   if (partyNextBtn) partyNextBtn.addEventListener('click', e => {

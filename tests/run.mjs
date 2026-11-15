@@ -1374,10 +1374,10 @@ async function run() {
     await page.waitForTimeout(1100);
     const r = await page.evaluate(() => {
       const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, w: b.width, h: b.height }; };
-      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnTwist'].filter(id => document.getElementById(id)),
+      return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnPick', 'btnTwist'].filter(id => document.getElementById(id).offsetParent !== null),
         lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: [...document.querySelectorAll('#btnParty svg, #btn-menu svg')].filter(e => e.getBoundingClientRect().width).length };
     });
-    assert(!r.gone.length, `old buttons are still in the page: ${r.gone}`);
+    assert(!r.gone.length, `a computer-only button shows on the phone: ${r.gone}`);
     assert(Math.abs(r.next.h - 34) < 0.5, `Next card is ${r.next.h}px tall, not the slim 34px`);
     assert(r.lines.length === 2 && r.lines.every(n => n === 3), `Next card should have three hairlines a side: ${r.lines}`);
     assert(r.icons === 0, 'Spotlight or Menu has an icon');
@@ -3530,19 +3530,20 @@ async function run() {
     }
   });
 
-  await check('computer: Spotlight above Menu top right on the card\'s right edge, Selected deck top left on its left edge, only the ticks, count and bar under the card, Menu opens from the right and The Deck from the left', async () => {
+  await check('computer: Three, Spotlight, Twist stacked top right on the card\'s right edge, Selected deck with Menu under it top left on its left edge, Back left, Next card centred and ticks with count right under the card, no hairlines; Menu opens from the right and The Deck from the left', async () => {
     for (const [w, h] of [[1366, 768], [1440, 900], [1920, 1080]]) {
       const { ctx, pg } = await freshApp({ viewport: { width: w, height: h }, hasTouch: false });
       try {
         await drawCards(pg, 2); await pg.waitForTimeout(900);
         const g = await pg.evaluate(() => {
           const r = id => document.getElementById(id).getBoundingClientRect();
-          return { card: r('card'), tok: r('tokCats'), spot: r('btnParty'), menu: r('btn-menu'), next: r('btn-next'), count: r('progCount'),
+          return { card: r('card'), tok: r('tokCats'), spot: r('btnParty'), pick: r('btnPick'), twist: r('btnTwist'), back: r('btn-prev'), prog: r('progress'), menu: r('btn-menu'), next: r('btn-next'), count: r('progCount'), lines: [...document.querySelectorAll('.nav-lines')].filter(e => getComputedStyle(e).display !== 'none').length,
             hints: [...document.querySelectorAll('#screenRow .row-hint')].map(e => +getComputedStyle(e).opacity), over: document.documentElement.scrollWidth - innerWidth };
         });
-        assert(Math.abs(g.tok.left - g.card.left) <= 4 && Math.abs(g.spot.right - g.card.right) <= 4 && Math.abs(g.menu.right - g.card.right) <= 4, `${w}: outer edges off the card's edges: ${JSON.stringify({ card: [g.card.left, g.card.right], tok: g.tok.left, spot: g.spot.right, menu: g.menu.right })}`);
-        assert(g.spot.bottom <= g.menu.top + 1 && g.menu.bottom < g.card.top && g.spot.top < g.menu.top, `${w}: Spotlight is not above Menu, both above the card`);
-        assert(g.spot.top > g.card.bottom === false && g.next.top >= g.count.bottom && g.over <= 0, `${w}: layout: ${JSON.stringify({ over: g.over })}`);
+        const near = (a, b) => Math.abs(a - b) <= 4;
+        assert(near(g.tok.left, g.card.left) && near(g.menu.left, g.card.left) && near(g.back.left, g.card.left) && near(g.pick.right, g.card.right) && near(g.spot.right, g.card.right) && near(g.twist.right, g.card.right) && near(g.prog.right, g.card.right) && near(g.count.right, g.card.right), `${w}: outer edges off the card's edges: ${JSON.stringify({ card: [g.card.left, g.card.right], tok: g.tok.left, menu: g.menu.left, back: g.back.left, pick: g.pick.right, spot: g.spot.right, twist: g.twist.right, prog: g.prog.right })}`);
+        assert(g.pick.bottom <= g.spot.top + 1 && g.spot.bottom <= g.twist.top + 1 && g.twist.bottom < g.card.top && g.menu.top >= g.tok.bottom - 1 && g.menu.bottom < g.card.top, `${w}: Three, Spotlight, Twist are not stacked above the card, or Menu is not under Selected deck`);
+        assert(Math.abs((g.next.left + g.next.right) / 2 - innerWidth / 2) <= 2 && g.back.top >= g.card.bottom && g.next.top >= g.card.bottom && g.prog.top >= g.card.bottom && g.count.top >= g.prog.bottom - 1 && g.lines === 0 && g.over <= 0, `${w}: bottom row: ${JSON.stringify({ lines: g.lines, over: g.over })}`);
         assert(g.hints.every(o => o === 0), `${w}: a hint shows at rest: ${g.hints}`);
         if (w === 1440) {
           // once Spotlight has worked its hint is retired on the phone, but on a computer hovering it still shows the hint
@@ -3560,6 +3561,36 @@ async function run() {
         assert(await pg.evaluate(() => Math.round(document.getElementById('cat-area').getBoundingClientRect().left) === 0), `${w}: The Deck is not a panel from the left`);
       } finally { await ctx.close(); }
     }
+  });
+
+  await check('computer: clicking Back with the mouse shows the previous card (and is unavailable on the first); Three and Twist switch from the top right and agree with The Deck and the menu; the phone has none of the three', async () => {
+    const { ctx, pg } = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
+    try {
+      await drawCards(pg, 3); await pg.waitForTimeout(900);
+      const asked = await pg.evaluate(() => state.visibleDeck.slice(0, 3).map(c => c.question));
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.currentIndex) === 1 && await questionText(pg) === asked[1].replace(/ /g, ' ').trim(), 'clicking Back did not show the previous card');
+      await pg.locator('#btn-prev').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => state.currentIndex) === 0 && await questionText(pg) === asked[0].replace(/ /g, ' ').trim(), 'a second click on Back did not show the card before');
+      assert(await pg.locator('#btn-prev').isDisabled(), 'Back looks available on the first card');
+      // Three and Twist: the words top right switch the same settings as The Deck's Three and the menu's Twist, and show it
+      const on = id => pg.evaluate(id => document.getElementById(id).getAttribute('aria-pressed') === 'true' && document.getElementById(id).classList.contains('on'), id);
+      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(200);
+      assert(await pg.evaluate(() => twistOn) && await on('btnTwist') && await on('partyBtnTwist'), 'the top-right Twist did not switch Twist on everywhere');
+      await pg.evaluate(() => openMenu(document.getElementById('btn-menu'))); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => document.querySelector('#menuSideDrawer [data-menu-state="twist"]').textContent.trim()) === 'On', 'the menu does not say Twist is on');
+      await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
+      await pg.locator('#btnTwist').click(); await pg.waitForTimeout(200);
+      assert(!(await pg.evaluate(() => twistOn)) && !(await on('btnTwist')), 'the top-right Twist did not switch Twist off');
+      await pg.locator('#btnPick').click(); await pg.waitForTimeout(900);
+      assert(await pg.evaluate(() => pickMode && document.getElementById('pickToggle').classList.contains('on')) && await on('btnPick'), 'the top-right Three did not switch Three on in The Deck too');
+      await pg.evaluate(() => document.getElementById('pickToggle').click()); await pg.waitForTimeout(500);
+      assert(!(await pg.evaluate(() => pickMode)) && !(await on('btnPick')), 'switching Three off in The Deck did not show on the top-right Three');
+    } finally { await ctx.close(); }
+    const ph = await freshApp({});
+    try {
+      assert(await ph.pg.evaluate(() => ['btn-prev', 'btnPick', 'btnTwist'].every(id => document.getElementById(id).offsetParent === null)), 'the phone shows Back, Three or Twist');
+    } finally { await ph.ctx.close(); }
   });
 
   await check('the pause takes the last card\'s colour, whatever the old Pause colour setting left on the device; the test switch is gone', async () => {
