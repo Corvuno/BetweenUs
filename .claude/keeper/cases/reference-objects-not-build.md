@@ -1,4 +1,4 @@
-# A reference was used for its objects, not for how it is built
+# A reference was used as a template
 
 Resolved.
 
@@ -13,4 +13,10 @@ Resolved.
   the edges and cross, ornament only where lines meet, an empty middle that is the shape the lines
   leave. The round of three variations broke `design.md`'s line that options differing only in
   detail are one option.
-- Changed: `look.md`, "Where the look comes from": what adapting a reference faithfully means.
+- Then the opposite: sent tarot boxes "just to help a bit", the Keeper redrew the teal box's
+  layout and pieces in gold. The owner: "You just copied the card right? Why the fuck?"
+- Cause of both: the reference was treated as the thing to make, first its objects, then its whole
+  layout, instead of as a lesson in qualities to build from this deck's own source. The vision
+  already said every element is made for this deck.
+- Changed: `look.md`, "Where the look comes from": what carries over from a reference and what
+  never does.
