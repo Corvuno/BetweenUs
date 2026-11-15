@@ -1353,6 +1353,17 @@ body.tok-taught .tok-hint{display:none;}
 [data-menu-state].tok-multi .menu-deck{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
 .menu-act{grid-column:3;grid-row:1/3;font-family:'Federo','Jost',sans-serif;font-size:.8rem;letter-spacing:.05em;color:var(--celadon-hint);}
 .menu-foot{display:flex;justify-content:center;align-items:flex-start;gap:22px;margin:16px 0 2px;}
+/* The phone's menu shows all of itself without scrolling: three groups, seven lines and the foot. --m is the rhythm
+   every gap in it is a share of; it steps down on shorter screens (the browser's bars take height on a phone), so
+   nothing falls below the edge. Each line stays finger-sized (its two lines of text plus --m above and below). */
+#menuDrawer{--m:10px;max-height:92vh;max-height:92dvh;}
+#menuDrawer .menu-line{padding-block:var(--m);}
+#menuDrawer .menu-head{padding-block:calc(var(--m) * .8) calc(var(--m) * .2);}
+#menuDrawer .menu-rule{margin-block:calc(var(--m) * .8);}
+#menuDrawer .menu-foot{margin-top:var(--m);}
+#menuDrawer .drawer-handle{padding-block:calc(var(--m) + 2px);}
+@media (max-height:760px){#menuDrawer{--m:7px;}}
+@media (max-height:680px){#menuDrawer{--m:5px;}#menuDrawer .drawer-body{padding-bottom:max(10px,env(safe-area-inset-bottom));}}
 .menu-foot button{background:none;border:none;font-family:'Federo','Jost',sans-serif;font-size:.82rem;letter-spacing:.05em;color:var(--celadon);cursor:pointer;padding:10px 2px;}
 .menu-foot-item{display:flex;flex-direction:column;align-items:center;}
 /* the once-only line under Ways to play, like the hints under Three, Spotlight and Twist */

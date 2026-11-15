@@ -87,3 +87,7 @@ Selected deck. Colbert and The 36 hide Spotlight but keep Save.
 - On a computer: a panel from the right edge (under its button); Played, Favourites and Ways to
   play open in its place on the same side; The Deck from the left. Close buttons stay at the top
   right of each panel.
+- The phone's menu shows all of itself without scrolling. Every gap in it is a share of `--m` on
+  `#menuDrawer` (10px; 7px on screens up to 760px high; 5px up to 680px), and the sheet may take 92% of
+  the screen's height. A line stays at least 44px tall. Adding a line means checking it still fits
+  (the test "menu on a phone: every line and the foot are on screen").
