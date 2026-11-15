@@ -180,7 +180,7 @@ async function run() {
   // near the top of the file.
   await check('initial load shows the "draw a card" placeholder, not a card', async () => {
     const q = await questionText(page);
-    assert(/draw a card|trek een kaart|place to begin|plek om te beginnen/i.test(q), `expected the draw-to-begin placeholder, got "${q}"`);
+    assert(/draw a card|door, left slightly open/i.test(q), `expected the draw-to-begin placeholder, got "${q}"`);
     const { index } = await cardParts(page);
     assert(index === 0, `expected no card drawn yet (index 0, i.e. currentIndex -1), got index ${index}`);
   });
@@ -1494,7 +1494,7 @@ async function run() {
     await page.keyboard.press('3');
     await page.waitForTimeout(400);
     assert(!(await page.evaluate(() => pickMode || state.pickerOpen)), 'the 3 key did not switch Three off');
-    assert((await questionText(page)).length > 0 && !/place to begin/i.test(await questionText(page)), 'the card face is wrong after toggling during the first draw');
+    assert((await questionText(page)).length > 0 && !/door, left slightly open/i.test(await questionText(page)), 'the card face is wrong after toggling during the first draw');
   });
 
   await check('Three on and off mid-hand acts from the next card: no restart, card count unchanged, off with options up shows the planned card', async () => {
@@ -1508,7 +1508,7 @@ async function run() {
     let mid = await page.evaluate(() => ({ hand: state.handNo, deck: state.visibleDeck.map(c => c.question), lim: state.cardLimit, step: state.pickOptions.step, planned: state.pickOptions.planned.question, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ').trim() }));
     assert(mid.hand === before.hand && mid.lim === before.lim && mid.lim === 5, `switching on changed the hand or the limit: ${JSON.stringify({ b: before.hand, m: mid.hand, lim: mid.lim })}`);
     assert(mid.deck.join('|') === before.deck.join('|') && mid.step === 1 && mid.idx === 0, 'switching on restarted or changed the hand');
-    assert(!/place to begin|draw a card/i.test(mid.q), 'switching on went back to the start card');
+    assert(!/door, left slightly open|draw a card/i.test(mid.q), 'switching on went back to the start card');
     await toggleThree(page);   // off with the options up: the planned card takes the step
     await page.waitForTimeout(500);
     const after = await page.evaluate(() => ({ open: state.pickerOpen, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' ').trim(), cur: state.visibleDeck[state.currentIndex].question, sit: Object.keys(state.sitOut).length, hand: state.handNo, len: state.visibleDeck.length, lim: state.cardLimit, qq: [...state.sessionLog].map(c => c.question) }));
@@ -2282,7 +2282,7 @@ async function run() {
   });
 
   // Frame-by-frame look at the card (one sample per animation frame). A frame is "wrong" when a
-  // player could see the start card (its logo, "A place to begin…", Spotlight's "Draw a card to begin.")
+  // player could see the start card (its logo, the start line, Spotlight's "Draw a card to begin.")
   // or the question / list of a hand that is over.
   const FRAME_WATCH = (old) => {
     window.__frames = [];
@@ -2293,7 +2293,7 @@ async function run() {
       const backOn = seen(back);
       const wrong = [];
       if (backOn && (seen(c.querySelector('.cb-text')) || seen(c.querySelector('.cb-mark:not(.cb-fermata)')))) wrong.push('start logo/text');
-      if (seen(q) && seen(q.parentElement) && /A place to begin/.test(q.textContent)) wrong.push('start text');
+      if (seen(q) && seen(q.parentElement) && /door, left slightly open/.test(q.textContent)) wrong.push('start text');
       if (seen(q) && !c.classList.contains('is-start') && (q.querySelector('.hd-list') || old.some(t => q.textContent.includes(t)))) wrong.push('old hand: ' + q.textContent.slice(0, 30));
       if (document.getElementById('partyOverlay').classList.contains('open') && /Draw a card to begin/.test(pq.textContent)) wrong.push('start text in Spotlight');
       window.__frames.push({ t: Math.round(performance.now()), wrong: wrong.join(' | '), cls: [...c.classList].join(' ') });
