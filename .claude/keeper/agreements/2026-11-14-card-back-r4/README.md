@@ -15,5 +15,7 @@ deck's colour. A dark field of rays in three lengths, with diamonds and dots rid
 leading to the medallion. The medallion: a star of slim points in three lengths, a ring of ticks, a
 double edge, the logo, the name in the title's font, the short line and the start words.
 
+Turned down: it redraws the teal box's layout and pieces ("You just copied the card right?"). Not to be built from or reused.
+
 Nothing here is chosen. How the back arrives at the end of a hand, and what the Intermezzo shows in
 the window, are not designed in this round.
