@@ -17,3 +17,4 @@ Rules:
 - The Deck: chapters that come and go with your choice of evening now open and fold smoothly, and every row lights up the same gentle way.
 - Every card now has a frame, with its category named at the top.
 - The small words are easier to read, and The Deck and the menu open under a line that shines like metal.
+- The first screen now says what the deck is, before the first draw.
