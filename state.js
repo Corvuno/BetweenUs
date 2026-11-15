@@ -49,7 +49,7 @@ const state = {
                             // actually tapped this time.
   categoriesCollapsed: DEFAULT_COLLAPSED,
   skipDrawAnim: false,   // set by initDeck(isContinuation) — true while drawing a fresh
-                          // hand under unchanged settings (Draw more, hold-to-continue),
+                          // hand under unchanged settings (Draw more, Next hand),
                           // so only a hand that starts from an actual settings change
                           // gets the "thrown onto the table" animation
   queryDeckActive: false, // set by applyQueryDeck() (?Q=214,friendship-7,...) — a hand pinned

@@ -135,8 +135,9 @@ function restoreSessionData(data) {
     state.currentIndex=hand.position;
     state.reachedIdx=state.currentIndex;
     syncLimitButtons();
-    updateDeckInfo(); updateDrawMore(); renderProgress();
+    updateDeckInfo(); renderProgress();
     setCardDisplay(state.currentIndex>=0 ? state.visibleDeck[state.currentIndex] : null);
+    updateDrawMore();   // after the face is set: the button's words follow the card now on screen
     renderShell();
   } catch(e) { console.error('restoreSessionData:',e); }
 }

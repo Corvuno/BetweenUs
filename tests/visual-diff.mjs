@@ -124,6 +124,8 @@ async function steadyShot(page) {
   return prev;
 }
 
+// A second press within half a second of a draw is ignored (NEXT_GUARD_MS in deck.js): the steps wait it out.
+const NEXT_PAUSE_MS = 600;
 const waitCard = (page, n) => page.waitForFunction(i => state.currentIndex + 1 === i, n, { timeout: 5000 });
 async function drawFirst(page) { await page.locator('#btn-next').click(); await waitCard(page, 1); }
 // A hand of 5 with nothing seen and Three off, the way run.mjs sets up a fresh hand.
@@ -140,7 +142,7 @@ async function smallHand(page) {
 // Each moment leaves the page in the state to photograph. Selectors and steps are the ones run.mjs uses.
 const MOMENTS = [
   { name: 'the start card before the first draw', run: async () => {} },
-  { name: 'a card in a hand', run: async page => { await smallHand(page); await drawFirst(page); await page.locator('#btn-next').click(); await waitCard(page, 2); } },
+  { name: 'a card in a hand', run: async page => { await smallHand(page); await drawFirst(page); await page.waitForTimeout(NEXT_PAUSE_MS); await page.locator('#btn-next').click(); await waitCard(page, 2); } },
   { name: 'The Deck sheet open', run: async page => {
     await page.locator('#tokCats').click({ force: true });
     await page.waitForFunction(() => document.getElementById('cat-area').classList.contains('sheet-open'), null, { timeout: 3000 });
@@ -158,7 +160,7 @@ const MOMENTS = [
     await smallHand(page);
     for (let i = 0; i < 20 && !(await page.evaluate(() => state.currentIndex >= state.visibleDeck.length)); i++) {
       await page.locator('#card').click();
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(NEXT_PAUSE_MS);
     }
     await page.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 8000 });
     await page.waitForTimeout(1000);
