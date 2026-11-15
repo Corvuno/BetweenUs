@@ -19,15 +19,19 @@ Backlog items are named by number and title.
 
 - Design overall: "takes rounds and rounds, and the end result is almost always mediocre".
   Controls and the computer layout are the hardest.
-- The bottom of the phone screen: "still lacking to the rest of it". Below the controls a third
-  of the screen is empty.
-- The balance of the card screen on a computer.
+- The bottom of the phone screen: "the way it works. It's terrible"; "all muted and all over the
+  place". The hairlines beside Next card irk most: generic, with no purpose but to flank a button.
+  Every piece there must have a job. Below the controls a third of the screen is empty.
+- The title: "very thin and not there". The font stays.
+- The computer's card screen has its earlier layout back (Back, and Three, Spotlight, Twist top
+  right); the owner calls it good enough until "a full design pass".
 - Type: 69 text styles in 36 sizes; "it's a mess".
 
 ## What the owner wants next, in their order
 
-1. The bottom of the phone screen, with a new idea (#160).
-2. The balance of the card screen on a computer (#161).
+1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
+2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
+3. The balance of the card screen on a computer (#161), as the full design pass.
 Around these: Plain words for The Deck's settings (#157); Save, Clear and Start over say what
 they did (#158); The card screen when the phone is turned sideways (#156); Text styles brought
 down to one small scale (#148); a row of accessibility fixes in `Next`.
@@ -39,12 +43,15 @@ down to one small scale (#148); a row of accessibility fixes in `Next`.
 - What makes a design enjoyable for them, in their words. Never asked directly.
 - Designing the card face went well when rough sketches on real cards came first and the owner
   could name the parts they liked; it went wrong when a liked part came back reshaped.
+- Weight: the middle ground is live (small words one step firmer, metal lines on The Deck and the
+  menu, the card's coloured line at four fifths). More than that "lost the elegance".
 - Testing: a sample is enough, and what works is left alone. The owner judges by using it.
 
 ## Noticed, not yet raised or settled
 
 - On the phone card screen Spotlight carries a line of explanation and Menu carries none, so the
   two ends of one row are unequal.
+- The three swipe-back tests fail when run on their own (`--only=swipe`) and pass in the full run.
 - Whether very long questions still run off the card on a phone was closed without a test.
 - Seven design connectors fail at the start of every session, and the five design-skill plugins
   named in the settings do not load in cloud sessions.
