@@ -1,0 +1,183 @@
+<title>Between Us text sets 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Poiret+One&family=Jost:wght@300;400;500&family=Federo&display=swap">
+<style>
+/* Layout: one narrow column, the app's own dark ground; every comparison is Now / Tight / Loose in that order. */
+:root{
+  color-scheme:dark;
+  --bg:#0e0c0a; --surface:#161310; --line:rgba(201,168,76,.22); --line-soft:rgba(201,168,76,.12);
+  --gold:#e8c97a; --cream:#f0e8d8; --soft:#b5a892; --quiet:#9c8f7e; --tap:#a9c7b6;
+  --sans:'Jost',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif; --title:'Poiret One','Jost',sans-serif; --mark:'Federo','Jost',sans-serif;
+}
+html{background:var(--bg);}
+body{background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:18px;line-height:1.5;
+  padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:44px;}
+h1{font-family:var(--title);font-weight:400;font-size:34px;letter-spacing:.08em;color:var(--gold);margin:0;line-height:1.15;text-wrap:balance;}
+h2{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0 0 4px;}
+h3{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:0;}
+p{margin:0;max-width:62ch;}
+section{display:flex;flex-direction:column;gap:14px;}
+.lead{color:var(--soft);}
+.note{font-size:16px;color:var(--quiet);}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent);}
+/* numbers */
+.tbl{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:15px;font-variant-numeric:tabular-nums;}
+th,td{text-align:right;padding:9px 6px;border-bottom:1px solid var(--line-soft);font-weight:400;}
+th:first-child,td:first-child{text-align:left;color:var(--soft);}
+thead th{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+td.big{color:var(--cream);font-size:19px;}
+/* ladders */
+.ladder{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.ladder span{font-family:var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--cream);white-space:nowrap;}
+.ladder small{font-family:var(--sans);font-size:10px;letter-spacing:.04em;color:var(--quiet);margin-left:4px;text-transform:none;}
+.sw{display:flex;flex-wrap:wrap;gap:8px 8px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.sw i{display:block;width:34px;height:34px;border-radius:50%;}
+.sw .gap{width:10px;}
+/* Federo */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-soft);background:var(--surface);}
+.pair>div{padding:10px 14px;border-bottom:1px solid var(--line-soft);min-width:0;}
+.pair>div:nth-last-child(-n+2){border-bottom:0;}
+.pair .hd{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+.f{font-family:var(--mark);} .j{font-family:var(--sans);}
+.q1{font-size:14.4px;letter-spacing:.02em;color:#8c8071;} .q2{font-size:12.8px;letter-spacing:.02em;color:#ab9e8a;} .q3{font-size:12.8px;letter-spacing:.05em;color:#9c8f7e;}
+.keep{display:flex;flex-direction:column;gap:8px;padding:14px;background:var(--surface);border:1px solid var(--line-soft);}
+.keep .a{font-family:var(--mark);font-size:17px;letter-spacing:.02em;color:var(--gold);}
+.keep .b{font-family:var(--mark);font-size:17px;letter-spacing:.02em;color:#d2c9b8;}
+.keep .c{font-family:var(--mark);font-size:15px;letter-spacing:.32em;text-transform:uppercase;color:var(--quiet);}
+/* screens */
+.dev{display:flex;gap:8px;}
+.seg{display:flex;border:1px solid var(--line);}
+.seg button{appearance:none;background:none;border:0;color:var(--soft);font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:11px 16px;cursor:pointer;min-height:44px;}
+.seg button+button{border-left:1px solid var(--line);}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#0e0c0a;font-weight:500;}
+.seg button:focus-visible,.shot:focus-visible,.x:focus-visible{outline:2px solid var(--tap);outline-offset:2px;}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-bottom:1px solid var(--line-soft);}
+.screen{display:flex;flex-direction:column;gap:8px;}
+.shot{appearance:none;border:1px solid var(--line-soft);background:#000;padding:0;cursor:zoom-in;display:block;width:100%;max-width:412px;}
+.shot.wide{max-width:100%;}
+.shot img{display:block;width:100%;height:auto;}
+.cap{font-size:16px;color:var(--soft);}
+/* viewer */
+#viewer{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;}
+#viewer .top{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--line-soft);}
+#viewer .scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;}
+#viewer img{display:block;width:100%;max-width:none;height:auto;}
+#viewer.wide img{width:1440px;}
+.x{appearance:none;background:none;border:1px solid var(--line);color:var(--cream);font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:11px 14px;min-height:44px;cursor:pointer;}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:62ch;}
+</style>
+<style>
+.opt{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.opt b{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);}
+.opt span{font-size:17px;color:var(--soft);}
+.cmp{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;border:1px solid var(--line-soft);background:var(--surface);align-items:baseline;}
+.cmp>div{padding:9px 12px;border-bottom:1px solid var(--line-soft);min-width:0;}
+.cmp .hd{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+.cmp .J{font-family:var(--sans);} .cmp .F{font-family:var(--mark);}
+.caps{font-size:12.8px;letter-spacing:.22em;text-transform:uppercase;color:#b3a590;}
+.capsb{font-size:12.8px;letter-spacing:.14em;text-transform:uppercase;color:#0e0c0a;background:linear-gradient(135deg,#c9a84c,#a07830);padding:6px 10px;display:inline-block;}
+.sent{font-size:14.4px;letter-spacing:.02em;color:#c3bcaf;}
+</style>
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Text sets, round three</h1>
+    <p class="lead">One proposal this time, built from what you said. The only thing left to pick is the gold of the title.</p>
+    <p class="note">"Now" is the app as it is today.</p>
+  </header>
+
+  <section>
+    <h2>What is in it</h2>
+    <div class="opt"><b>Sizes</b><span>Seven, where today has sixteen. Each text goes to the nearest step, so nothing grows a notch. The largest move on any screen is under one pixel, up or down. The count under the card keeps its own size.</span></div>
+    <div class="opt"><b>Tones</b><span>Five creams and browns. Two golds: the light one and the darker one. Two greens: the one you tap and its dimmer partner for the small line in the same button.</span></div>
+    <div class="opt"><b>The star</b><span>One notch darker than in round one, as in round two.</span></div>
+    <div class="opt"><b>Federo, by one rule</b><span>Federo is the fancy face: it names and announces. Jost and Cormorant are for reading and for the controls you scan.</span></div>
+  </section>
+
+  <section>
+    <h2>The Federo rule, piece by piece</h2>
+    <div class="cmp" style="grid-template-columns:1fr 1fr">
+      <div class="hd">Federo: names and announces</div><div class="hd">Jost: read and scanned</div>
+      <div><span class="F capsb">Next card</span></div><div class="J sent" style="font-size:12.8px;color:#ab9e8a">Get comfortable. Start talking.</div>
+      <div class="F sent">Selected deck · tap to change</div><div class="J sent" style="font-size:12.8px;color:#7f968a">Change &nbsp; Shuffle &nbsp; Off &nbsp; Open</div>
+      <div class="F sent" style="color:#e8c97a;font-size:15.2px">Start from &nbsp;·&nbsp; Chapters</div><div class="J sent" style="font-size:12.8px;color:#a9c7b6">Ways to play &nbsp; Show hints again</div>
+      <div class="F sent" style="font-size:15.2px">What kind of afternoon?</div><div class="J caps" style="font-weight:500">Menu &nbsp; Spotlight</div>
+      <div class="F caps" style="letter-spacing:.32em;color:#9c8f7e">Intermezzo</div><div class="J caps" style="font-weight:500;letter-spacing:.09em;color:#4a95b8">Balanced &nbsp; Strangers</div>
+    </div>
+    <ul class="note">
+      <li>New in Federo: the gold button, "Next card" and "Draw cards".</li>
+      <li>Leaving Federo for Jost: the chapter lines, the menu's "Change", "Shuffle", "Off" and "Open", "Ways to play" and "Show hints again" at the foot of the menu, the details of a saved hand.</li>
+      <li>Staying as they are: "Selected deck", the headings in The Deck, "Intermezzo", the Wildcards name on the card.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The title's gold</h2>
+    <div class="opt" style="align-items:center;gap:14px;padding:22px 14px">
+      <div style="font-family:var(--title);font-size:32px;letter-spacing:.1em;color:#e8c97a">Between Us</div><h3>Now · the light gold</h3>
+      <div style="font-family:var(--title);font-size:32px;letter-spacing:.1em;color:#c9a84c">Between Us</div><h3>A · the darker gold, the one the lines use</h3>
+      <div style="font-family:var(--title);font-size:32px;letter-spacing:.1em;color:#b8902f">Between Us</div><h3>B · one step deeper still</h3>
+    </div>
+    <p class="note">A and B are the same in everything else. Flip between them on the start screen below.</p>
+  </section>
+
+  <section>
+    <h2>The screens</h2>
+    <p class="note">One switch flips every picture in place. Tap a picture for full size.</p>
+    <div class="bar">
+      <div class="seg" id="segV" role="group" aria-label="Which version">
+        <button type="button" id="vNow" data-v="now" aria-pressed="true">Now</button>
+        <button type="button" id="vA" data-v="a" aria-pressed="false">A</button>
+        <button type="button" id="vB" data-v="b" aria-pressed="false">B</button>
+      </div>
+    </div>
+    <h3>Phone</h3>
+    <div id="phone" style="display:flex;flex-direction:column;gap:26px"></div>
+    <div class="rule"></div>
+    <h3>Computer</h3>
+    <div id="wide" style="display:flex;flex-direction:column;gap:26px"></div>
+  </section>
+
+  <section>
+    <h2>What this round does not do</h2>
+    <ul class="note">
+      <li>It is a drawing laid over the live app, not built. Nothing in the app has changed.</li>
+      <li>The question, the name on the card and every category and chapter colour are not touched.</li>
+      <li>Not checked: After Dark, Three, Twist, a very long question.</li>
+    </ul>
+  </section>
+</main>
+
+<div id="viewer" hidden>
+  <div class="top">
+    <div class="seg" role="group" aria-label="Which version">
+      <button type="button" id="wNow" data-v="now" aria-pressed="true">Now</button>
+      <button type="button" id="wA" data-v="a" aria-pressed="false">A</button>
+      <button type="button" id="wB" data-v="b" aria-pressed="false">B</button>
+    </div>
+    <button type="button" class="x" id="closeViewer">Back</button>
+  </div>
+  <div class="scroll"><img id="viewerImg" alt=""></div>
+</div>
+
+<script>
+const PHONE=[['start','The start','The title, and the gold button in Federo.'],['card','A card',''],['deck','The Deck','The chapter lines are in Jost; nothing wraps differently.'],['deck2','The Deck, further down',''],['menu','The menu','"Change", "Off" and "Open" in Jost and readable.'],['spot','Spotlight',''],['end','The end of a hand',''],['help','Ways to play',''],['played','Played','']];
+const WIDE=[['start','The start',''],['card','A card',''],['deck','The Deck beside the page',''],['menu','The menu','']];
+let V='now';
+const src=(d,k,v)=>`shots/${d}-${k}-${v}.jpg`;
+function build(id,d,list){document.getElementById(id).innerHTML=list.map(([k,n,c])=>`<div class="screen"><h3>${n}</h3><button type="button" class="shot ${d==='wide'?'wide':''}" data-d="${d}" data-k="${k}" aria-label="${n}, full size"><img alt="${n}" src="${src(d,k,V)}" loading="lazy"></button>${c?`<p class="cap">${c}</p>`:''}</div>`).join('');}
+build('phone','phone',PHONE);build('wide','wide',WIDE);
+let open=null;
+function setV(v){V=v;document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));
+  document.querySelectorAll('.shot').forEach(b=>{b.querySelector('img').src=src(b.dataset.d,b.dataset.k,v);});
+  if(open)document.getElementById('viewerImg').src=src(open.d,open.k,v);}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setV(b.dataset.v)));
+const viewer=document.getElementById('viewer');
+document.querySelectorAll('.shot').forEach(b=>b.addEventListener('click',()=>{open={d:b.dataset.d,k:b.dataset.k};viewer.classList.toggle('wide',open.d==='wide');document.getElementById('viewerImg').src=src(open.d,open.k,V);viewer.hidden=false;document.getElementById('closeViewer').focus();}));
+function closeV(){viewer.hidden=true;open=null;}
+document.getElementById('closeViewer').addEventListener('click',closeV);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)closeV();});
+for(const [d,l] of [['phone',PHONE],['wide',WIDE]])for(const [k] of l)for(const v of ['a','b']){const i=new Image();i.src=src(d,k,v);}
+</script>
