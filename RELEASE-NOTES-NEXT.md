@@ -18,3 +18,4 @@ Rules:
 - Every card now has a frame, with its category named at the top.
 - The small words are easier to read, and The Deck and the menu open under a line that shines like metal.
 - On a computer, Back is under the card again, and Three, Spotlight and Twist are one click away at the top right.
+- The first screen now says what the deck is, before the first draw.

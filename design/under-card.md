@@ -2,9 +2,9 @@
 
 The whole bottom of the main screen is one figure that answers the title: coloured ticks, the
 count, one slim gold Next card with three gold hairlines a side (a hairline fading outward), and
-the words Spotlight and Menu under the outer ends of the lines. Back, Three and Twist are not
-here: Back is a swipe right on the card, Three is a setting in The Deck, Twist is a line in the
-Menu. So the question is the brightest thing.
+the words Spotlight and Menu under the outer ends of the lines. On the phone Back, Three and Twist are
+not here: Back is a swipe right on the card, Three is a setting in The Deck, Twist is a line in
+the Menu (the computer shows all three, see Wide screens). So the question is the brightest thing.
 
 ## Phone
 - `.controls-wrap` is a grid (`1fr auto 1fr`) and a size container. `--u` is 1px of the 375-wide
@@ -36,21 +36,23 @@ Menu. So the question is the brightest thing.
   or the question.
 
 ## Wide screens
-- The figure is drawn without its words: ticks and count centred above, Next card centred between
-  its three hairlines (as long as the card is wide), nothing under the line ends. The app grid's
-  middle column is Next card's own width (`auto`: the `14.5em` bar), so the lines start 6 units
-  from the bar. `--pcW` (the card's width) takes `168px * --k + 100px` as everything on screen that
-  isn't the card (header, margins, ticks, count, Next card; fitted to the measured layout at 1280
-  to 1920 wide, card and top groups agree within 4px).
-- Top right: Spotlight above Menu, right-aligned with the card's right edge, mirroring Selected
-  deck on the left (two lines each side). Each is the same `.quiet-word` with an icon at the outer
-  edge (Spotlight: nested squares, Menu: three lines, Save: two chevrons over a line; viewBox 24,
-  stroke 1.7, miter; shown at `20px * --k` in `styles.css`): Jost, `max(11px, 14px * --k)`, `.22em`,
-  `--btn-quiet`, gold on hover and keyboard focus. The pitch is 31px * `--k` (the pitch of
-  Spotlight's own Close button). The hint (`.row-hint`, italic, `--row-hint`,
-  `max(13px, 16px * --k)`) sits left of the word, shown on hover and focus only, never at rest.
-  Reason: the pre-redesign top-right stack, without Three and Twist, with Menu and Spotlight moved
-  up from under the card.
+The computer keeps its layout from before the phone's bottom was redesigned (owner: "I thought the
+whole thing was good on pc. Just revert the change there"), with today's card face.
+- Top left: Selected deck, with Menu (`#btn-menu`, icon then word) under it.
+- Top right (`#screenRow`): a right-aligned stack, icons at the outer edge: Three (`#btnPick`),
+  Spotlight, Twist (`#btnTwist`), at the 31px * `--k` pitch of Spotlight's own Close. Each is a
+  `.quiet-word`; hover and keyboard focus turn it gold and show its hint (`.row-hint`) beside it,
+  never at rest. Three and Twist switch the same settings as The Deck and the menu
+  (`syncSpotlightSettings` keeps them in step) and show "on" with an underline, as in Spotlight.
+- Bottom row on the card's edges: Back (`#btn-prev`, arrow and word) left, Next card centred, the
+  ticks with the count under them right. Back does what a swipe right and the left arrow key do and
+  is dimmed (`.quiet-word:disabled`) when there is no earlier card.
+- The hairlines beside Next card and the count's two rules are not drawn on a computer.
+- `--pcW` (the card's width) is `100dvh - 174px * --k - 54px`, fitted so the card and the top
+  groups agree within 2px from 1024 to 2560 wide.
+- The menu's panel, Played, Favourites and Ways to play open from the right, The Deck from the
+  left: a menu panel on the left would open behind The Deck when it is docked.
+- On the phone Back, Three and Twist are hidden; in the fixed sets the stack hides with Spotlight.
 
 ## Before the first card
 The start screen, and after Start over until a card is drawn: Ways to play (`#btnWays`, no icon)

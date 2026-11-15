@@ -175,7 +175,7 @@ function setStartBack(text) {
   const el = document.getElementById('card');
   if (!el) return;
   const t = document.getElementById('cardBackText');
-  if (text && t) t.textContent = text;
+  if (text && t) t.replaceChildren(...text.flatMap((line, i) => (i ? [document.createElement('br'), line] : [line])));
   const wasStart = el.classList.contains('is-start');
   el.classList.toggle('is-start', !!text);
   // A start back that newly appears while the deck sheet is open or still
@@ -196,7 +196,7 @@ function setStartBack(text) {
 
 /* The card between two hands of the same session (hold-to-continue, Draw more): the ended hand's
    face is emptied, and nothing else is painted. The card is not "back at the start", so the start
-   card (logo, "A place to begin…") must not show: whatever back is up (Intermezzo) stays until the
+   card (logo, the start line) must not show: whatever back is up (Intermezzo) stays until the
    first card's flip dissolves it, and the list side just empties. The rails keep their colour until
    that card's face swap repaints them. */
 function clearCardFace() {
@@ -218,18 +218,23 @@ function clearCardFace() {
   if (prev) prev.disabled = true;
 }
 
+// What a newcomer reads before the first draw. The card back sets it as two lines, broken at the
+// comma (its text never wraps by itself); the question element carries it as one sentence.
+const START_LINES = ['Each question is a door,', 'left slightly open.'];
+const START_LINE = START_LINES.join(' ');
+
 // The start face: no card drawn yet (fresh load, settings change) or nothing to draw.
 function showStartFace({ qEl, nextBtn, accent }) {
   clearCardFace();
   if (accent)   { giltRailPaint(accent, null); }
   if (qEl)      { qEl.textContent = state.visibleDeck.length===0
     ? 'Select at least one category.'
-    : 'A place to begin…';
+    : START_LINE;
     qEl.classList.remove('in'); setTimeout(()=>qEl.classList.add('in'),20);
   }
   // nothing to draw (no categories) keeps the plain message; otherwise the
   // start card shows the same "begin" text on the card's back
-  setStartBack(state.visibleDeck.length===0 ? '' : 'A place to begin…');
+  setStartBack(state.visibleDeck.length===0 ? null : START_LINES);
   if (nextBtn) {
     nextBtn.textContent = 'Draw Card';
     // nothing's been drawn yet (fresh load, or a settings change just

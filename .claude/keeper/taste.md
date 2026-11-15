@@ -28,6 +28,8 @@ ornament; corner markers anywhere but corners; controls that make people think.
 - "Everything you love that someone else made" (Culture): the angle, needs to feel wider.
 - "The fond, the funny and the faintly ridiculous" (Warm line): a list of three is fine when it
   carries alliteration.
+- "Each question is a door, left slightly open." (start card): the owner's own door image with the word
+  "question" in it, so a stranger knows what the deck holds.
 - "When did sex last feel like play": "play" is exactly the word.
 - "Where in the world did you feel most like a foreigner — and not in the way you expected?"
 - "When did you last discover a hidden place in your own town": a story, not a fact.

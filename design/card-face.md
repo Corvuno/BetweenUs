@@ -18,8 +18,9 @@ picker have their own corners and are not part of this.
   (`labelColor(levelColor(level))`) and removes it for a Wildcard or no card.
 - **Name:** `.card-level` stands free at the top of `.card-body-inner` (absolute, centred by a flex
   row, not a transform, so the swap's lift still works), uppercase, tracking `.26em`, between two
-  stripe pairs (`::before`/`::after`: a hairline across and a shorter one at the other end, in the
-  name's own colour, faded outward by a mask). A Wildcard's name keeps Federo, gold and its own
+  stripe pairs (`::before`/`::after`: a top and a bottom border, like the frame's lines and at the
+  frame line's strength `--frame-line`, so every coloured line on the card is equally sharp and
+  strong; a two-part mask fades the long one outward and keeps the inner 58% of the short one). A Wildcard's name keeps Federo, gold and its own
   tracking at 17/18 of the size. The name stays hidden on the list and the end message.
 - **Not here any more:** the corner brackets (`.card::before/::after`) and the Wildcard's own
   inner outline.
