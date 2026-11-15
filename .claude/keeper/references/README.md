@@ -27,3 +27,18 @@ with watermarks: for reference only, never copied into the app.
 - `pattern-fans-and-stepped-frames.jpg`: a dense repeat of fans, chevrons and stepped frames.
 - `card-frame-gold-lines.jpg`: a portrait card frame of nested gold lines, diamonds and circles around an
   empty centre.
+
+Sent by the owner with the card back round 3, about a tarot deck's boxes: "This is a design I like
+very much as well. (Not deco, I know). Just to help a bit. These cards and (inner) box art I think
+are awesome!" What makes them awesome, in their words: "The balance of lines and black. The little
+flurishes that emerge, the cut of areas that get their own design. The lines that lead your eye."
+Product photos of someone else's deck: for reference only, never copied into the app.
+
+- `medallion-deck-box-teal.jpg`: a box back: a central medallion in a ring of ticks, a star of filled
+  petals, rays of varied length with diamonds and dots along them, arched end panels in a filled
+  colour with flowers in the corners and a row of dots and a swirl between them.
+- `medallion-tarot-set-box.jpg`: the same family on a tall box: an eye in a ring, crossing symbols,
+  rays and dots, corner panels.
+- `medallion-tarot-boxes-blue.jpg`: two boxes: one with a rayed medallion, a band of drop shapes and
+  arched corner panels; one with a four-petal medallion in rings of dots, scallops and a zigzag
+  border.
