@@ -15,7 +15,7 @@
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
   --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
-  --border-strong:rgba(201,168,76,0.38);--title-stroke:.012em;--frame-line:80%;--frame-rest:38%;   /* how much of its colour the frame's inner line keeps at the end of a hand */
+  --border-strong:rgba(201,168,76,0.38);--title-stroke:.017em;--frame-line:80%;--frame-rest:38%;   /* how much of its colour the frame's inner line keeps at the end of a hand */
   /* motion: strong ease-out for things entering or responding (starts fast, settles soft); --ease-sheet is the
      fast-start, soft-settle curve of drawers and sheets sliding in */
   --ease-out:cubic-bezier(.23,1,.32,1);--ease-sheet:cubic-bezier(.32,.72,0,1);
