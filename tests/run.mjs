@@ -3543,7 +3543,7 @@ async function run() {
         const near = (a, b) => Math.abs(a - b) <= 4;
         assert(near(g.tok.left, g.card.left) && near(g.menu.left, g.card.left) && near(g.back.left, g.card.left) && near(g.pick.right, g.card.right) && near(g.spot.right, g.card.right) && near(g.twist.right, g.card.right) && near(g.prog.right, g.card.right) && near(g.count.right, g.card.right), `${w}: outer edges off the card's edges: ${JSON.stringify({ card: [g.card.left, g.card.right], tok: g.tok.left, menu: g.menu.left, back: g.back.left, pick: g.pick.right, spot: g.spot.right, twist: g.twist.right, prog: g.prog.right })}`);
         assert(g.pick.bottom <= g.spot.top + 1 && g.spot.bottom <= g.twist.top + 1 && g.twist.bottom < g.card.top && g.menu.top >= g.tok.bottom - 1 && g.menu.bottom < g.card.top, `${w}: Three, Spotlight, Twist are not stacked above the card, or Menu is not under Selected deck`);
-        assert(Math.abs((g.next.left + g.next.right) / 2 - innerWidth / 2) <= 2 && g.back.top >= g.card.bottom && g.next.top >= g.card.bottom && g.prog.top >= g.card.bottom && g.count.top >= g.prog.bottom - 1 && g.lines === 0 && g.over <= 0, `${w}: bottom row: ${JSON.stringify({ lines: g.lines, over: g.over })}`);
+        assert(Math.abs((g.next.left + g.next.right) / 2 - w / 2) <= 2 && g.back.top >= g.card.bottom && g.next.top >= g.card.bottom && g.prog.top >= g.card.bottom && g.count.top >= g.prog.bottom - 1 && g.lines === 0 && g.over <= 0, `${w}: bottom row: ${JSON.stringify({ lines: g.lines, over: g.over })}`);
         assert(g.hints.every(o => o === 0), `${w}: a hint shows at rest: ${g.hints}`);
         if (w === 1440) {
           // once Spotlight has worked its hint is retired on the phone, but on a computer hovering it still shows the hint
