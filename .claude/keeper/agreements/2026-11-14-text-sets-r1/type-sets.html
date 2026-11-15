@@ -1,0 +1,203 @@
+<title>Between Us text sets</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Poiret+One&family=Jost:wght@300;400;500&family=Federo&display=swap">
+<style>
+/* Layout: one narrow column, the app's own dark ground; every comparison is Now / Tight / Loose in that order. */
+:root{
+  color-scheme:dark;
+  --bg:#0e0c0a; --surface:#161310; --line:rgba(201,168,76,.22); --line-soft:rgba(201,168,76,.12);
+  --gold:#e8c97a; --cream:#f0e8d8; --soft:#b5a892; --quiet:#9c8f7e; --tap:#a9c7b6;
+  --sans:'Jost',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif; --title:'Poiret One','Jost',sans-serif; --mark:'Federo','Jost',sans-serif;
+}
+html{background:var(--bg);}
+body{background:var(--bg);color:var(--cream);font-family:var(--serif);font-size:18px;line-height:1.5;
+  padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:44px;}
+h1{font-family:var(--title);font-weight:400;font-size:34px;letter-spacing:.08em;color:var(--gold);margin:0;line-height:1.15;text-wrap:balance;}
+h2{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin:0 0 4px;}
+h3{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:0;}
+p{margin:0;max-width:62ch;}
+section{display:flex;flex-direction:column;gap:14px;}
+.lead{color:var(--soft);}
+.note{font-size:16px;color:var(--quiet);}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent);}
+/* numbers */
+.tbl{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:15px;font-variant-numeric:tabular-nums;}
+th,td{text-align:right;padding:9px 6px;border-bottom:1px solid var(--line-soft);font-weight:400;}
+th:first-child,td:first-child{text-align:left;color:var(--soft);}
+thead th{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+td.big{color:var(--cream);font-size:19px;}
+/* ladders */
+.ladder{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.ladder span{font-family:var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--cream);white-space:nowrap;}
+.ladder small{font-family:var(--sans);font-size:10px;letter-spacing:.04em;color:var(--quiet);margin-left:4px;text-transform:none;}
+.sw{display:flex;flex-wrap:wrap;gap:8px 8px;padding:12px 14px;background:var(--surface);border:1px solid var(--line-soft);}
+.sw i{display:block;width:34px;height:34px;border-radius:50%;}
+.sw .gap{width:10px;}
+/* Federo */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-soft);background:var(--surface);}
+.pair>div{padding:10px 14px;border-bottom:1px solid var(--line-soft);min-width:0;}
+.pair>div:nth-last-child(-n+2){border-bottom:0;}
+.pair .hd{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet);}
+.f{font-family:var(--mark);} .j{font-family:var(--sans);}
+.q1{font-size:14.4px;letter-spacing:.02em;color:#8c8071;} .q2{font-size:12.8px;letter-spacing:.02em;color:#ab9e8a;} .q3{font-size:12.8px;letter-spacing:.05em;color:#9c8f7e;}
+.keep{display:flex;flex-direction:column;gap:8px;padding:14px;background:var(--surface);border:1px solid var(--line-soft);}
+.keep .a{font-family:var(--mark);font-size:17px;letter-spacing:.02em;color:var(--gold);}
+.keep .b{font-family:var(--mark);font-size:17px;letter-spacing:.02em;color:#d2c9b8;}
+.keep .c{font-family:var(--mark);font-size:15px;letter-spacing:.32em;text-transform:uppercase;color:var(--quiet);}
+/* screens */
+.dev{display:flex;gap:8px;}
+.seg{display:flex;border:1px solid var(--line);}
+.seg button{appearance:none;background:none;border:0;color:var(--soft);font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:11px 16px;cursor:pointer;min-height:44px;}
+.seg button+button{border-left:1px solid var(--line);}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#0e0c0a;font-weight:500;}
+.seg button:focus-visible,.shot:focus-visible,.x:focus-visible{outline:2px solid var(--tap);outline-offset:2px;}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-bottom:1px solid var(--line-soft);}
+.screen{display:flex;flex-direction:column;gap:8px;}
+.shot{appearance:none;border:1px solid var(--line-soft);background:#000;padding:0;cursor:zoom-in;display:block;width:100%;max-width:412px;}
+.shot.wide{max-width:100%;}
+.shot img{display:block;width:100%;height:auto;}
+.cap{font-size:16px;color:var(--soft);}
+/* viewer */
+#viewer{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;}
+#viewer .top{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:calc(8px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--line-soft);}
+#viewer .scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;}
+#viewer img{display:block;width:100%;max-width:none;height:auto;}
+#viewer.wide img{width:1440px;}
+.x{appearance:none;background:none;border:1px solid var(--line);color:var(--cream);font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:11px 14px;min-height:44px;cursor:pointer;}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:62ch;}
+</style>
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Two sets of text</h1>
+    <p class="lead">The same app three ways: as it is now, with a tight set, and with a loose set. Sizes, letter spacing, the creams and browns, the golds and the greens are brought down to a short list. Nothing moves, and no text gets smaller or darker.</p>
+    <p class="note">"Now" already has the firmer small words and the metal line that are being built in another conversation, so you compare against where the app is going, not where it was this morning.</p>
+  </header>
+
+  <section>
+    <h2>The count</h2>
+    <p class="note">Counted on the same screens you see below, phone and computer. The question, the title and the name on the card are left out: they grow with the card and are not touched.</p>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Now</th><th>Tight</th><th>Loose</th></tr></thead>
+      <tbody>
+        <tr><td>Text sizes</td><td class="big">21</td><td class="big">6</td><td class="big">10</td></tr>
+        <tr><td>Letter spacings</td><td class="big">13</td><td class="big">6</td><td class="big">8</td></tr>
+        <tr><td>Creams and browns</td><td class="big">12</td><td class="big">5</td><td class="big">7</td></tr>
+        <tr><td>Golds on text</td><td class="big">4</td><td class="big">1</td><td class="big">2</td></tr>
+        <tr><td>Greens on text</td><td class="big">5</td><td class="big">1</td><td class="big">2</td></tr>
+        <tr><td>Kinds of text in all</td><td class="big">39</td><td class="big">20</td><td class="big">28</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>The sizes, at real size</h2>
+    <h3>Now: 21, many a hair apart</h3><div class="ladder" id="lNow"></div>
+    <h3>Tight: 6 steps you can tell apart</h3><div class="ladder" id="lTight"></div>
+    <h3>Loose: 10, today's main sizes with the near-twins folded in</h3><div class="ladder" id="lLoose"></div>
+    <p class="note">Tight makes some words visibly larger, because every size moves up to the next step. Loose moves almost nothing you can see.</p>
+  </section>
+
+  <section>
+    <h2>The tones</h2>
+    <h3>Now</h3><div class="sw" id="sNow"></div>
+    <h3>Tight</h3><div class="sw" id="sTight"></div>
+    <h3>Loose</h3><div class="sw" id="sLoose"></div>
+    <ul class="note">
+      <li>Tight: five creams and browns, one gold for words, one green. Green means only "you can tap this". The small explaining lines that were green ("the question takes the stage", "Change", "Shuffle") become brown, like other reading text.</li>
+      <li>Loose: seven creams and browns, both golds, and the green keeps one softer partner for those explaining lines.</li>
+      <li>In both, the faint ones become readable: "tap to change", the menu's "Change", "Shuffle" and "Off", the close cross, and the empty star on the card.</li>
+      <li>The solid gold of the Draw button, the lines, and every category and chapter colour are not touched.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Federo, only where something should stand out</h2>
+    <p class="note">The same in both sets. The quiet lines go to Jost, the readable one. Size and spacing here are as they are now, so you see only the letters change.</p>
+    <div class="pair">
+      <div class="hd">Now, in Federo</div><div class="hd">Proposed, in Jost</div>
+      <div class="f q1">Selected deck · tap to change</div><div class="j q1">Selected deck · tap to change</div>
+      <div class="f q2">Get comfortable. Start talking.</div><div class="j q2">Get comfortable. Start talking.</div>
+      <div class="f q3">Change &nbsp; Shuffle &nbsp; Off</div><div class="j q3">Change &nbsp; Shuffle &nbsp; Off</div>
+      <div class="f q3" style="color:#a9c7b6">Ways to play</div><div class="j q3" style="color:#a9c7b6">Ways to play</div>
+    </div>
+    <h3>Federo stays on these</h3>
+    <div class="keep">
+      <div class="a">Start from &nbsp;·&nbsp; Chapters</div>
+      <div class="b">What kind of afternoon?</div>
+      <div class="c">Intermezzo</div>
+    </div>
+    <p class="note">It also stays on the Wildcards name on the card.</p>
+  </section>
+
+  <section>
+    <h2>The screens</h2>
+    <p class="note">One switch flips every picture on the page in place, so a change shows as a small jump. Tap a picture to see it full size, with the same switch.</p>
+    <div class="bar">
+      <div class="seg" id="segV" role="group" aria-label="Which version">
+        <button type="button" id="vNow" data-v="now" aria-pressed="true">Now</button>
+        <button type="button" id="vTight" data-v="tight" aria-pressed="false">Tight</button>
+        <button type="button" id="vLoose" data-v="loose" aria-pressed="false">Loose</button>
+      </div>
+    </div>
+    <h3>Phone</h3>
+    <div id="phone" style="display:flex;flex-direction:column;gap:26px"></div>
+    <div class="rule"></div>
+    <h3>Computer</h3>
+    <div id="wide" style="display:flex;flex-direction:column;gap:26px"></div>
+  </section>
+
+  <section>
+    <h2>What this round does not do</h2>
+    <ul class="note">
+      <li>It is a drawing laid over the live app, not built. Nothing in the app has changed.</li>
+      <li>The area under the card is being redesigned elsewhere; here it only takes the new sizes and tones.</li>
+      <li>How heavy the letters are is left as the firmer-words work sets it.</li>
+      <li>Checked on: the start, a card, The Deck (top and further down), the menu, Spotlight, the end of a hand, Ways to play and Played, on a phone; the start, a card, The Deck and the menu on a computer. Not checked: After Dark, Three, Twist, a very long question.</li>
+    </ul>
+  </section>
+</main>
+
+<div id="viewer" hidden>
+  <div class="top">
+    <div class="seg" role="group" aria-label="Which version">
+      <button type="button" id="wNow" data-v="now" aria-pressed="true">Now</button>
+      <button type="button" id="wTight" data-v="tight" aria-pressed="false">Tight</button>
+      <button type="button" id="wLoose" data-v="loose" aria-pressed="false">Loose</button>
+    </div>
+    <button type="button" class="x" id="closeViewer">Back</button>
+  </div>
+  <div class="scroll"><img id="viewerImg" alt=""></div>
+</div>
+
+<script>
+const SIZES={now:[11.34,11.5,11.52,12,12.48,12.8,13.12,13.6,14.4,14.72,15,15.2,16,16.2,16.32,17,17.92,18,18.4,18.88,20.8],tight:[12,13,15,17,19,21],loose:[12,12.8,13.6,14.4,15.2,16.2,17,18.4,19,20.8]};
+const TONES={now:[['#6b665e','#7a6e60','#8c8071','#9c8f7e','#ab9e8a','#a9a397','#b3a590','#b5a892','#b2ac9f','#c4bdaf','#e5ddce','#f0e8d8'],['#b19a5c','#cda124','#c9a84c','#e8c97a'],['#5b6b63','#6f8579','#6b9892','#819689','#a9c7b6']],
+  tight:[['#8c8071','#9c8f7e','#b5a892','#d2c9b8','#f0e8d8'],['#e8c97a'],['#a9c7b6']],
+  loose:[['#8c8071','#9c8f7e','#ab9e8a','#b3a590','#c3bcaf','#e5ddce','#f0e8d8'],['#c9a84c','#e8c97a'],['#7f968a','#a9c7b6']]};
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+for(const v of ['now','tight','loose']){
+  document.getElementById('l'+cap(v)).innerHTML=SIZES[v].map(s=>`<span style="font-size:${s}px">Deck<small>${s}</small></span>`).join('');
+  document.getElementById('s'+cap(v)).innerHTML=TONES[v].map(g=>g.map(c=>`<i style="background:${c}" title="${c}"></i>`).join('')).join('<span class="gap"></span>');
+}
+const PHONE=[['start','The start','"Selected deck · tap to change" is the line to watch.'],['card','A card','The empty star top right becomes visible. Under the card the green line turns brown in Tight.'],['deck','The Deck','Tight: the headings and chapter names grow a step, and the row of decks wraps one line more.'],['deck2','The Deck, further down',''],['menu','The menu','"Change", "Shuffle", "Off" and "Open" become readable.'],['spot','Spotlight',''],['end','The end of a hand',''],['help','Ways to play','Tight: the reading text grows a step.'],['played','Played','']];
+const WIDE=[['start','The start',''],['card','A card',''],['deck','The Deck beside the page',''],['menu','The menu','']];
+let V='now';
+const src=(d,k,v)=>`shots/${d}-${k}-${v}.jpg`;
+function build(id,d,list){document.getElementById(id).innerHTML=list.map(([k,n,c])=>`<div class="screen"><h3>${n}</h3><button type="button" class="shot ${d==='wide'?'wide':''}" data-d="${d}" data-k="${k}" aria-label="${n}, full size"><img alt="${n}" src="${src(d,k,V)}" loading="lazy"></button>${c?`<p class="cap">${c}</p>`:''}</div>`).join('');}
+build('phone','phone',PHONE);build('wide','wide',WIDE);
+let open=null;
+function setV(v){V=v;document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));
+  document.querySelectorAll('.shot').forEach(b=>{b.querySelector('img').src=src(b.dataset.d,b.dataset.k,v);});
+  if(open)document.getElementById('viewerImg').src=src(open.d,open.k,v);}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setV(b.dataset.v)));
+const viewer=document.getElementById('viewer');
+document.querySelectorAll('.shot').forEach(b=>b.addEventListener('click',()=>{open={d:b.dataset.d,k:b.dataset.k};viewer.classList.toggle('wide',open.d==='wide');document.getElementById('viewerImg').src=src(open.d,open.k,V);viewer.hidden=false;document.getElementById('closeViewer').focus();}));
+function closeV(){viewer.hidden=true;open=null;}
+document.getElementById('closeViewer').addEventListener('click',closeV);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)closeV();});
+// preload so the flip is instant
+for(const [d,l] of [['phone',PHONE],['wide',WIDE]])for(const [k] of l)for(const v of ['tight','loose']){const i=new Image();i.src=src(d,k,v);}
+</script>
