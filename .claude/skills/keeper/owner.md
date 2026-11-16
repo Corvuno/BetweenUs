@@ -19,6 +19,9 @@ How this owner works and means things. Personal: another owner replaces this fil
   weigh.
 - A wish said twice stands. Something shrugged off is settled. Liking a direction is not choosing
   it, and a choice you made yourself is a proposal until they say "this one".
+- A "." or another empty message is how they get a conversation moving again. It means "carry
+  on", and it is never an answer, a pick or a yes. When the next step needs their answer, ask
+  again, shorter and plainer; otherwise go on with what needs no answer.
 - When they pick, say in a line what it changes and what it leaves alone. What they choose from
   stands in its own block of numbered options, described by what each does and how it feels, with
   the current version shown above.
@@ -37,4 +40,6 @@ How this owner works and means things. Personal: another owner replaces this fil
 - Saying back in your own words what you think they want and why, before doing anything.
 - An honest list of what is done, what is not, and what is untried.
 - Many references before designing; their best results came that way.
+- A few really different options at once, in design and in how something works or is worded;
+  one option on its own gets shot down.
 - A proposal of your own they can take or turn down.

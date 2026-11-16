@@ -10,11 +10,15 @@ REPO=$(git -C "$DIR" remote get-url origin 2>/dev/null | sed -E 's#^.*github\.co
 Q="repos/$REPO/actions/workflows/$WF/runs?branch=main&per_page=1"
 F='.workflow_runs[0] | "\(.head_sha[0:7]) \(.status) \(.conclusion // "-") \(.display_title)"'
 if command -v gh >/dev/null 2>&1; then
-  R=$(timeout 15 gh api "$Q" --jq "$F" 2>/dev/null)
+  R=$(timeout 15 gh api "$Q" --jq "$F" 2>/dev/null) || R=""   # gh prints the error body on failure
 fi
 if [ -z "$R" ] && command -v curl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
   R=$(timeout 15 curl -fsS "https://api.github.com/$Q" 2>/dev/null | jq -r "$F" 2>/dev/null)
 fi
+case "$R" in null\ *)
+  echo "Checks on main: no run yet."
+  exit 0 ;;
+esac
 if [ -z "$R" ]; then
   echo "Checks on main: could not be read at session start. Look before building."
   exit 0

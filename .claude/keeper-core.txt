@@ -1,8 +1,9 @@
 # Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
-# Source commit: 2b5426f
+# Source commit: dc9ef3c
 agents/builder.md
 agents/checker.md
 agents/searcher.md
+hooks/keeper-fresh.sh
 hooks/keeper-main-checks.sh
 hooks/keeper-reminder.sh
 hooks/keeper-size.sh
