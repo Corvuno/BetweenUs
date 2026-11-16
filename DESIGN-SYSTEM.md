@@ -71,7 +71,7 @@ rule sets one step for the window and one step up from 1600x900 (`--chrome-fs`, 
 | `--gold-l` | #e8c97a | light gold: lead lines, "Start from", "Chapters", count numbers, a filled star on the hand list |
 | `--gold` | #c9a84c | the title, draw, borders, hover, drawer titles; the darker gold |
 | `--celadon` | #a9c7b6 | everything tappable besides Draw and the quiet words: Change / Save, Close in Spotlight, Twist's line, the chosen option in a choice row |
-| `--celadon-dim` | #7f968a | the dim line under a tappable row: the menu's hints and action words, the hints under the words on the start screen, a saved hand's actions, the Twist divider |
+| `--celadon-dim` | #819689 | the dim line under a tappable row: the menu's hints and action words, the hints under the words on the start screen, a saved hand's actions, the Twist divider |
 | `--celadon-bright` | #eef7f1 | the flash in `twistLit` / `spotBright`, settling to `--celadon` |
 
 **Faces.** Federo names and announces (the gold button, "Selected deck · tap to change", the headings and lead in The Deck, INTERMEZZO, the end message, the Wildcards name); Jost and Cormorant are read and scanned. Federo has one weight, 400. A `<span>` inside a `<button>` does not inherit the page font: name Jost on it.
