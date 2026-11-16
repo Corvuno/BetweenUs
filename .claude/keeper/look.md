@@ -1,6 +1,6 @@
 # How Between Us looks, moves and reads
 
-Read before any design or wording work, with `vision.md` ("The screen, on every device", "How it
+Read before any design or wording work, with `vision.md` ("How it feels to use", "How it
 looks") and `taste.md`. This describes the product; a design that fits it needs no list of
 don'ts.
 

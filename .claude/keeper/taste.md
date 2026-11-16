@@ -1,89 +1,49 @@
 # Taste — what the owner likes and turns down
 
-Read before proposing cards, app lines, wording or designs. Add a line whenever the owner likes or
-turns something down; a newer verdict on the same thing replaces the older line.
+The owner's ear and eye, as patterns to work from. A new verdict that changes a pattern rewrites
+that line; a one-off verdict on one card or one control belongs with that work, not here.
 
-## The pattern
+## Cards and words
 
-**Liked:** a concrete, specific story with a personal turn in it. Words that are pretty and still
-unmistakable. A quiet, personal moment ("when no one is asking"). Systems over blame. Play and fun
-as real subjects. Two categories visibly as two sides of one coin. Alliteration. Centre compositions
-and balance. Symmetry as the basis. Draw as the one clear main action.
+**Liked:** a concrete story with a personal turn in it. A quiet, personal moment ("What you
+believe when no one is asking"). Words that are pretty and still unmistakable ("Undressed, and
+honest about it"). Systems over blame. Play and fun as real subjects ("When did sex last feel like
+play"). Two categories as two sides of one coin ("What you do when nothing has to be done" beside
+Life). Alliteration, which also makes a list of three fine ("The fond, the funny and the faintly
+ridiculous"). A story over a fact ("When did you last discover a hidden place in your own town").
 
-**Turned down:** anything that invites a cheap, Colbert-style one-liner; juvenile or drunk sex-talk;
-borrowed devices; abstract life audits; two questions in one card; formula wording used again and
-again (the plain list of three with a dash and a twist, the mirror "X, and what X does to you");
-too explicit, and too cryptic; heavy cards in a light category; "belonging" as a feeling; subject
-lists copied from the cards; explaining words on controls; anything that reads like a menu; random
-ornament; corner markers anywhere but corners; controls that make people think.
+**Turned down:** anything that invites a cheap one-liner; juvenile or drunk sex-talk; borrowed
+devices (date-deck prompts, "if you ran your country"); abstract life audits; two questions in one
+card; feeling-talk ("What does loneliness feel like for you?"); a fixed asker ("What do you think I
+find attractive about you?"); formula wording repeated (the list of three with a dash and a twist,
+the mirror "X, and what X does to you"); too explicit, and too cryptic; heavy cards in a light
+category.
 
-## Wording liked (and why)
+A few lines that show the ear at work:
 
-- "What you believe when no one is asking" (Spirit line): a quiet, personal moment, no formula.
-- "Undressed, and honest about it" / "Sex as you actually have it, up close": pretty and still
-  unmistakable.
-- "What you do when nothing has to be done" (Unwind): two sides of one coin with Life.
-- "How you treat the only body you'll get" (Body).
-- "Dreams kept, dreams dropped": the thought (the word "dropped" can improve).
-- "Everything you love that someone else made" (Culture): the angle, needs to feel wider.
-- "The fond, the funny and the faintly ridiculous" (Warm line): a list of three is fine when it
-  carries alliteration.
-- "Each question is a door, left slightly open." (start card): the owner's own door image with the word
-  "question" in it, so a stranger knows what the deck holds.
-- "When did sex last feel like play": "play" is exactly the word.
-- "Where in the world did you feel most like a foreigner — and not in the way you expected?"
-- "When did you last discover a hidden place in your own town": a story, not a fact.
-- "Who usually starts things between us": a fresh direction.
-- World 5, "did you understand why it is there?": neutral and systemic.
-- The first-time card "early, late, or right on time".
-- "Tell about a moment of chemistry with a stranger that went absolutely nowhere."
-- The commute card (benched).
-- Roots directions: a holiday that went wrong, a well-made everyday object, a building to spend a
-  night in, saving up, a someday list, the person you're trying to become.
+- Body cards speak to you in your body (moving, dancing, how you look and feel); "your body" makes
+  it a thing you own.
+- Roots cards keep "what it's still doing", and are not built on sensory childhood scenes.
+- Home is not about belonging as a feeling.
 
-## Wording turned down (and why)
+## Design
 
-- "Your body" in Body cards: it makes the body a thing you own and creates distance; Body cards
-  speak to you in your body (moving, dancing, how you look and feel).
-- "Which piece of technology would you happily un-invent?": cheap answers.
-- "If you ran your country for a year…": date-deck prompt.
-- Bare "caught in the act", "awkward morning after", "longest and shortest", "the wrong name at the
-  wrong moment", "embarrassing purchases": juvenile.
-- "The training wheels come off", "Sex, told in full": childish. "The story, told well", "The
-  unabridged version": too cryptic.
-- "What you do for a living, and what it does to you": the mirror trick again.
-- Roots lines that drop "what it's still doing"; Roots cards built on sensory childhood scenes.
-- Attract options on turn-offs and being turned down: Attract is light and fun.
-- Home cards on belonging as a feeling.
+**Liked:** symmetry as the basis, centred and balanced. Things that have attention, "something
+going on". Metal on lines. Small words made readable while keeping thin letters and wide spacing.
+Draw as the one clear main action. A part the owner liked comes back as they saw it; reshaping it
+is a new proposal.
 
-## Design liked and turned down
+**Turned down:** a screen where everything is muted and scattered; random ornament, and plain
+hairlines beside a control ("the standard deco flair for AI"); explaining words on controls;
+anything that reads like a menu or makes people think; controls on the card; clever controls that
+take attention from the questions ("way too convoluted… it should be about the questions"); a glow
+or a ground of colour where a line would do.
 
-- Liked on the card face: the category name free at the top with short stripes in its colour to
-  both sides ("the best"); a double line frame with stepped corners; the category's colour in the
-  lines. Turned down: the name on a tab or in a gap cut from the frame, a glow of colour from
-  below ("contrived"), a ground of the category's colour ("too much").
-- A part the owner liked is carried over as they saw it; reshaping it is a new proposal.
-- Liked: the coloured progress line under the card, mildly ("not married to it"); a line laid along
-  the card's edge; a thumb bar; a single gold control with Spotlight and Three as its ends ("has
-  something"); Spotlight with arrows in the bottom corners, the gold main action in the middle and
-  small items in the top corners; the menu look for Three, Spotlight and Twist, with a hover.
-- Turned down: a tidy-up of the same parts; controls as a plinth joined to the card; two equal
-  buttons side by side off-centre; a big count as the control; Menu as a bare icon in a corner; a
-  stretched card; a ribbon to pull; type-set controls; controls on the card; a hand of card backs, a
-  radio dial or a programme of acts as controls ("way too convoluted… it should be about the
-  questions").
-- Liked: things that have attention, "something going on"; metal on lines (The Deck, the menu, the
-  card's top line); small words made more readable, as long as the elegance of thin letters and wide
-  spacing stays. Turned down: a screen where everything is muted and scattered; groups of plain
-  hairlines beside a control ("the standard deco flair for AI").
-- Screenshots of the card are shared (WhatsApp) with what's under it, so the controls are seen by
-  people who don't hold the phone.
+Screenshots of the card get shared with what's under it, so the controls are seen by people who
+don't hold the phone.
 
 ## Outside the deck
 
-- Be Free rave wall: open, uplifting intentions in a few words ("fully let go", "connect with
-  others", "find peace", "see the beauty of things"). Prompts liked: "Today I give myself permission
-  to…", "If I were my own best friend…", "This morning my body is asking me to…", "A wish for myself,
-  for today…". Turned down: prompts asking for specific objects, places, body parts or skills, and
-  "What I'm leaving on the dance floor…" (it's about what you get there). Posters: the co-brand
-  option, "clearly both".
+Be Free rave wall: open, uplifting intentions in a few words ("fully let go", "find peace"), and
+prompts like "Today I give myself permission to…". Not prompts asking for objects, places, body
+parts or skills; it's about what you get there.

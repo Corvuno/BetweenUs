@@ -22,8 +22,7 @@ move or hide a control (C).
 
 ## What else to read, and when
 
-- Any design or wording work: `look.md`, `taste.md`, and `vision.md` ("The screen, on every
-  device").
+- Any design or wording work: `look.md`, `taste.md`, and `vision.md` ("How it feels to use").
 - Any card work: `cards.md` and `taste.md`.
 - Any build: `build-rules.md`, which has a part for each area, and `CHECKS.md`.
 - What the owner already settled about a part of the app: its file in `design/`, and its
