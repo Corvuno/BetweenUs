@@ -32,9 +32,11 @@ Backlog items are named by number and title.
 1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
 2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
 3. The balance of the card screen on a computer (#161), as the full design pass.
-Around these: Plain words for The Deck's settings (#157); Save, Clear and Start over say what
-they did (#158); The card screen when the phone is turned sideways (#156); Text styles brought
-down to one small scale (#148); a row of accessibility fixes in `Next`.
+Around these: Text styles brought down to one small scale (#148), building; then, ready in
+`Next` and waiting on it for the stylesheet, Save, Clear and Start over say what they did (#158)
+and The card follows the finger, and skip goes (#165), in that order; Plain words for The Deck's
+settings (#157); a row of accessibility fixes in `Next`. The sideways phone (#156) and the
+website (#71) are parked: the owner never turns the phone, and the address comes later.
 
 ## Open with the owner
 
