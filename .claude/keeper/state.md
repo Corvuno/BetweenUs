@@ -31,9 +31,11 @@ Backlog items are named by number and title.
 1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
 2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
 3. The balance of the card screen on a computer (#161), as the full design pass.
-Around these, ready in `Next`: Save, Clear and Start over say what they did (#158)
-and The card follows the finger, and skip goes (#165), in that order; Plain words for The Deck's
-settings (#157); a row of accessibility fixes in `Next`. The sideways phone (#156) and the
+Around these: Plain words for The Deck's settings (#157), whose wording round now also covers
+"hand" (an internal word: "No one knows what a hand is"); the faint names get a lighter step,
+all but Raw, with Deep still open (#168); a row of accessibility fixes in `Next`. Live: the note
+with Undo for Save, Clear and Start over, the card that follows the finger (skip is gone),
+Spotlight's real full screen in a phone browser, and hints under Shuffle and Cards. The sideways phone (#156) and the
 website (#71) are parked: the owner never turns the phone, and the address comes later.
 
 ## Open with the owner
