@@ -7,7 +7,7 @@ Backlog items are named by number and title.
 
 - The line under the title and the logo: the owner calls them awesome. They are the source of
   the look, and they came from many references.
-- The card back, the richest object in the app; new backs are chosen (#175).
+- The card backs, the richest objects in the app: petrol streams to start, amethyst circles for the pause.
 - The card face: the category named at the top with its stripes, in a double frame with the
   category's colour in the inner line. The owner chose it from pictures of the live app.
   The start card, the Intermezzo and Spotlight wear the same frame.
@@ -47,12 +47,11 @@ website (#71) are parked: the owner never turns the phone, and the address comes
   the balance of lines and black, small flourishes that emerge from the lines, areas cut out
   with their own design, lines that lead the eye, playfulness. Turned down: clean, predictable,
   safe, too even, empty space in random places.
-- New card backs (#175) are chosen and ready in `Next`, now that the text styles have landed: petrol
-  streams on the start card, amethyst circles on the Intermezzo. What got there: references as
-  lessons, never redrawn; lines that never float, fine and quiet, full edge to edge; a window whose
-  shape the drawing makes; several really different options at once ("If you give me one, ill be
-  shooting it down all day"). Petrol and amethyst arrive as the backs' colours; the app's accent
-  colour in the vision is still open.
+- New card backs (#175) are live: petrol streams on the start card, amethyst circles on the
+  Intermezzo. What got there: references as lessons, never redrawn; lines that never float, fine
+  and quiet, full edge to edge; a window whose shape the drawing makes; several really different
+  options at once ("If you give me one, ill be shooting it down all day"). The app's accent colour
+  in the vision is still open.
 - Designing the card face went well when rough sketches on real cards came first and the owner
   could name the parts they liked; it went wrong when a liked part came back reshaped.
 - Weight: the middle ground is live (small words one step firmer, metal lines on The Deck and the
