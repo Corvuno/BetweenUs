@@ -54,6 +54,8 @@ liked somewhere else. What the owner looks for in every design:
   with a dash and a twist, the mirror "X, and what X does to you", subject lists lifted from the
   cards. A device is fine when it earns its place, like three with alliteration: "The fond, the
   funny and the faintly ridiculous".
+- **Anyone at the table can take it.** No fixed asker ("What do you think I find attractive about
+  you?") and no feeling-talk ("What does loneliness feel like for you?").
 - **Systems over blame.** Neutral and about how things work, never about who is at fault.
 - **Play and fun are real subjects**, and a light category stays light: Attract is about attraction,
   not turn-offs or being turned down.
