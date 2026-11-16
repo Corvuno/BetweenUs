@@ -1,7 +1,7 @@
 // ── STATE ────────────────────────────────────────────────────────────────────
 // The app's mutable, cross-cutting variables: the `state` object plus the few
 // loose globals read/written from more than one other file (the intent-dial
-// trio, shuffleModeIdx, the skip-undo bookkeeping). Feature-local
+// trio, shuffleModeIdx). Feature-local
 // mutable variables (currentTwist, pickMode, lastMoodWord, …) stay declared
 // next to the feature that owns them, in that feature's own file.
 
@@ -59,8 +59,6 @@ const state = {
 };
 
 let shuffleModeIdx = SHUFFLE_MODES.indexOf(state.randomMode);
-
-let _undoCard = null, _undoIndex = null, _undoTimer = null, _undoLog = null, _undoReachedShift = false;
 
 
 

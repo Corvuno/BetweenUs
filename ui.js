@@ -513,36 +513,6 @@ document.getElementById('btnSave')?.addEventListener('click', () => {
 // Fullscreen end-of-draw continue is handled by the shared end-gate above
 // (bound to #partyOverlay too).
 
-
-
-// ═══════════════════════════════════════════════════════════
-// SKIP UNDO — 3-second undo window after skip
-// ═══════════════════════════════════════════════════════════
-(function() {
-  // _undoCard / _undoIndex / _undoTimer are set by skipCard().
-  const undoBtn = document.getElementById('skipUndo');
-  if (!undoBtn) return;
-
-  undoBtn.addEventListener('click', () => {
-    if (!_undoCard) return;
-    clearTimeout(_undoTimer);
-    undoBtn.classList.remove('visible');
-    // Re-insert card at original position and remove from skipped set
-    state.skippedCards.delete(_undoCard.id);
-    state.skippedSeen.delete(_undoCard.id);
-    restoreToLog(_undoLog);
-    const insertAt = Math.min(_undoIndex, state.visibleDeck.length);
-    state.visibleDeck.splice(insertAt, 0, _undoCard);
-    if (_undoReachedShift) state.reachedIdx++;
-    state.currentIndex = insertAt;
-    flipToCard(state.visibleDeck[state.currentIndex]);
-    updateStarUI();
-    updateDeckInfo(); renderProgress(); updateDrawMore();
-    _undoCard = null; _undoIndex = null; _undoLog = null; _undoReachedShift = false;
-  });
-})();
-
-
 // ═══════════════════════════════════════════════════════════
 // SPICE_AVAILABLE — hide spice glyph if configured off
 // ═══════════════════════════════════════════════════════════

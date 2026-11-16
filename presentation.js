@@ -294,13 +294,53 @@ function openMenu(trigger) {
 // Crossing the line between the phone drawer and the side panel with a menu open: close it rather than leave a hidden drawer open under the overlay.
 dockedQuery.addEventListener('change', closeAllDrawers);
 
-// Start over: every card back in (a fresh pass; what was drawn stays in Played), and a fresh hand.
+// ── The note: the one short line that says what just happened, and may offer to take it back ──
+// One element (#note), centred near the bottom above every sheet. A new note replaces the one showing, its Undo with it.
+// A note with Undo is let go (retireNote) by anything that changes what that Undo would bring back.
+const NOTE_MS = { plain: 2500, undo: 5000 };
+let _noteTimer = 0;
+/** @type {(() => void) | null} */
+let _noteUndo = null;
+/** @param {string} text  @param {{ undo?: () => void, undoLabel?: string, ms?: number }} [opts] */
+function showNote(text, { undo, undoLabel = 'Undo', ms = undo ? NOTE_MS.undo : NOTE_MS.plain } = {}) {
+  const note = document.getElementById('note');
+  const button = /** @type {HTMLButtonElement} */ (document.getElementById('noteUndo'));
+  clearTimeout(_noteTimer);
+  _noteUndo = undo ?? null;
+  note.inert = false;
+  document.getElementById('noteText').textContent = text;
+  button.textContent = undoLabel;
+  button.hidden = !undo;
+  note.classList.add('visible');
+  _noteTimer = window.setTimeout(hideNote, ms);
+}
+function hideNote() {
+  clearTimeout(_noteTimer);
+  _noteUndo = null;
+  const note = document.getElementById('note');
+  note.classList.remove('visible');
+  note.inert = true;
+}
+function retireNote() { if (_noteUndo) hideNote(); }
+document.getElementById('noteUndo').addEventListener('click', () => {
+  const undo = _noteUndo;
+  hideNote();
+  undo?.();
+});
+
+// Start over: every card back in (a fresh pass; what was drawn stays in Played), and a fresh hand. Undo brings the hand back
+// as it was: its order, the position, the card on screen, its stars and the saved evening it was playing.
 function startOver() {
+  const was = { session: restorableSession(), activeSessionId: state.activeSessionId, handStarred: new Set(state.handStarred) };
   setActiveSessionId('');   // a fresh start: the next Save for later is a new evening, the saved one stays as it was
   startFreshPass();
   initDeck();
   updateDeckInfo(); updateDrawMore();
   closeAllDrawers();
+  showNote('Every card back in', { undo: () => {
+    restoreSessionData(was.session); setActiveSessionId(was.activeSessionId);
+    state.handStarred = was.handStarred; updateStarUI();
+  } });
 }
 
 // Menu to the next sheet in one move: the menu fades in place while the next sheet arrives as it always does,
@@ -367,19 +407,24 @@ function exportSessionLog() {
     const star = isFavouriteCard(c) ? ' ★' : '';
     return `${i+1}. [${LEVEL_LABELS[c.level]||c.level}]${star}\n   ${c.question}`;
   }).join('\n\n');
-  // at the end of a hand the position is the last card (the hand's end is not a card to come back to)
-  const data = serializeSession();
-  if (data.deckIds.length && data.position >= data.deckIds.length) data.position = data.deckIds.length - 1;
+  const data = restorableSession();
   // version 2 holds cards by question number (deckIds); version 1 held their wording (deckQuestions); Open a list reads both
   const stateBlock = JSON.stringify({ format: STATE_FILE_FORMAT, version: 2, data }, null, 2);
   const rule = '─'.repeat(40);
   const text = `${eveningName()}\nBetween Us — ${new Date().toLocaleDateString()}\n${rule}\n\n${lines}\n\n${rule}\n${STATE_BLOCK_MARK}\n${stateBlock}\n`;
   const blob = new Blob([text],{type:'text/plain'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`between-us-${new Date().toISOString().slice(0,10)}.txt`; a.click();
+  showNote('Saved as a file');
 }
 document.getElementById('btnExport').addEventListener('click', exportSessionLog);
 // Save (end of a hand in ui.js, the Menu's first line): the same single file.
 function saveSessionFiles() { exportSessionLog(); }
+
+// The state in a file, when it is one this app wrote and holds a hand: otherwise null.
+function stateFileData(file) {
+  return file?.format === STATE_FILE_FORMAT && (file.data?.deckIds ?? file.data?.deckQuestions)?.length ? file.data : null;
+}
+function parseJSON(text) { try { return JSON.parse(text); } catch (error) { console.warn('Could not read the state in this file:', error); return null; } }
 
 // A whole evening back from its file: the state and the list, added to Saved under its name as the one playing now.
 function openEveningFile(text) {
@@ -388,40 +433,54 @@ function openEveningFile(text) {
   const line = `\n${STATE_BLOCK_MARK}\n`;
   const at = text.lastIndexOf(line);
   if (at < 0) return false;
-  let file = null;
-  try { file = JSON.parse(text.slice(at + line.length)); } catch (error) { console.warn('Could not read the state in this file:', error); return false; }
-  if (file?.format !== STATE_FILE_FORMAT || !(file.data?.deckIds ?? file.data?.deckQuestions)?.length) return false;   // nothing to restore: treat as an unreadable block
+  const data = stateFileData(parseJSON(text.slice(at + line.length)));   // nothing to restore: treated as an unreadable block
+  if (!data) return false;
   const name = text.split('\n')[0].trim().slice(0, 80) || autoSessionName();
-  restoreSessionData(file.data);
+  if (!restoreSessionData(data)) return false;
   setActiveSessionId('');
   storeCurrentSession(name);
   closeAllDrawers(); renderLog(); renderSessionsList(); openDrawer('playedDrawer');
   return true;
 }
 
-document.getElementById('btnImport') && document.getElementById('btnImport').addEventListener('click',()=>{
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='.txt,.json,text/plain,application/json';
-  inp.onchange=async e=>{
-    const text=await e.target.files[0]?.text(); if(!text) return;
-    if (text.includes(STATE_BLOCK_MARK) && openEveningFile(text)) return;
-    // an older state file restores the selection, settings and position
-    if (text.trimStart().startsWith('{')) {
-      let file = null;
-      try { file = JSON.parse(text); } catch(err) {}
-      if (file && file.format === STATE_FILE_FORMAT && file.data) { restoreSessionData(file.data); closeAllDrawers(); }
-      return;
-    }
-    const imported=[]; text.split('\n').forEach((line,i,arr)=>{
-      if(/^\d+\. \[/.test(line.trim())){const q=arr[i+1]?.trim(); if(q) imported.push(currentEntry({question:q,level:'deep'}));}
-    });
-    if(imported.length){state.sessionLog=imported;state.seenFrom=0;state.loggedQuestions=new Set(imported.map(c=>c.id).filter(Number.isInteger));renderLog();closeAllDrawers();openDrawer('playedDrawer');}
+// What Open a list does with a file's text: true when it was a Between Us list and is now open.
+function openListFile(text) {
+  if (text.includes(STATE_BLOCK_MARK)) return openEveningFile(text);
+  // an older state file restores the selection, settings and position
+  if (text.trimStart().startsWith('{')) {
+    const data = stateFileData(parseJSON(text));
+    if (!data || !restoreSessionData(data)) return false;
+    closeAllDrawers();
+    return true;
+  }
+  const imported = [];
+  text.split('\n').forEach((line, i, arr) => {
+    if (/^\d+\. \[/.test(line.trim())) { const q = arr[i + 1]?.trim(); if (q) imported.push(currentEntry({ question: q, level: 'deep' })); }
+  });
+  if (!imported.length) return false;
+  state.sessionLog = imported; state.seenFrom = 0; state.loggedQuestions = new Set(imported.map(c => c.id).filter(Number.isInteger));
+  renderLog(); closeAllDrawers(); openDrawer('playedDrawer');
+  return true;
+}
+
+document.getElementById('btnImport')?.addEventListener('click', () => {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.txt,.json,text/plain,application/json';
+  inp.onchange = async e => {
+    const text = await e.target.files[0]?.text(); if (!text) return;
+    if (!openListFile(text)) showNote("That file isn't a Between Us list");
   }; inp.click();
 });
 
 document.getElementById('btnClearLog').addEventListener('click', () => {
-  state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.loggedQuestions.clear(); renderLog();
+  const was = { log: state.sessionLog, seenFrom: state.seenFrom, skippedSeen: state.skippedSeen, loggedQuestions: state.loggedQuestions, activeSessionId: state.activeSessionId };
+  state.sessionLog = []; state.seenFrom = 0; state.skippedSeen = new Set(); state.loggedQuestions = new Set(); renderLog();
   setActiveSessionId('');   // a fresh start: the next Save for later is a new evening, the saved one stays as it was
   renderSessionsList();
+  showNote('List cleared', { undo: () => {
+    Object.assign(state, { sessionLog: was.log, seenFrom: was.seenFrom, skippedSeen: was.skippedSeen, loggedQuestions: was.loggedQuestions });
+    setActiveSessionId(was.activeSessionId);
+    renderLog(); renderSessionsList();
+  } });
 });
 
 // ── Favourites ──
@@ -436,23 +495,52 @@ document.getElementById('closeFavs').addEventListener('click',()=>closeAllDrawer
 });
 
 // ── Saved (multi-slot store, in Played) ──
-document.getElementById('storeSessionBtn').addEventListener('click', ()=>{ storeCurrentSession(); });
+document.getElementById('storeSessionBtn').addEventListener('click', () => { if (storeCurrentSession()) showNote('Kept in Played'); });
 // Delegated: the list re-renders on every store/rename/delete/open, so a
 // direct per-row listener would need re-attaching each time — one listener
 // on the container reads which row and which action (open the row itself,
 // or one of the words Rename and Delete) from the click target instead.
+// Rename in place: the name turns into an editable line where it stands. Enter or leaving it keeps the new name, Escape
+// keeps the old one, an empty name keeps the old one.
+function beginRename(row, id) {
+  const entry = getStoredSessions().find(s => s.id === id);
+  const main = row.querySelector('.play-save-main');
+  if (!entry || !main) return;
+  const input = document.createElement('input');
+  input.type = 'text'; input.className = 'play-save-name play-save-edit'; input.value = entry.name; input.maxLength = 80;
+  input.setAttribute('aria-label', 'Name of this evening');
+  const field = document.createElement('div');
+  field.className = 'play-save-main';
+  field.append(input, main.querySelector('.play-save-meta'));
+  main.replaceWith(field);
+  row.classList.add('renaming');
+  let done = false;
+  const finish = keep => {
+    if (done) return;
+    done = true;
+    if (keep) renameStoredSession(id, input.value);
+    renderSessionsList();
+  };
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); finish(true); }
+    else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(false); }
+  });
+  input.addEventListener('blur', () => finish(true));
+  input.focus(); input.select();
+}
+
 document.getElementById('sessionsList').addEventListener('click', e => {
   const row = e.target.closest('[data-id]');
   if (!row) return;
   const id = row.dataset.id;
   const actionBtn = e.target.closest('[data-action]');
   const action = actionBtn ? actionBtn.dataset.action : 'open';
+  if (row.classList.contains('renaming')) return;
   if (action === 'delete') {
-    deleteStoredSession(id);
+    const gone = deleteStoredSession(id);
+    if (gone) showNote('Evening deleted', { undo: () => putBackStoredSession(gone) });
   } else if (action === 'rename') {
-    const entry = getStoredSessions().find(s => s.id === id);
-    const name = window.prompt('Rename', entry ? entry.name : '');
-    if (name) renameStoredSession(id, name);
+    beginRename(row, id);
   } else {
     openStoredSession(id);
     closeAllDrawers();

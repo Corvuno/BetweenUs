@@ -359,6 +359,7 @@ let swap = null;
 let pendingFlip = null;
 
 function flipToCard(card, isFirstDraw) {
+  retireNote();   // a card is shown: what an Undo would bring back has changed
   /* fast tap: the swap already leaving lands on the newest card. Returning before hideHandSummary()/clearTwist() is safe:
      the swap's first tap already ran them, and neither can come back during a 110ms beat */
   if (!isFirstDraw && swap?.phase === 'out') { swap.card = card; return; }
@@ -462,9 +463,7 @@ function bringBackCard(card) {
   closeAllDrawers();
   if (!broughtBack) viewBeforeBringBack = { options: state.pickerOpen ? state.pickOptions?.options : null, step: state.pickOptions?.step, handSide: state.handSide };
   closePicker();
-  // the card is on screen in place of the hand's own view: a skip that could still be undone is let go
-  document.getElementById('skipUndo')?.classList.remove('visible');
-  _undoCard = _undoIndex = _undoLog = null;
+  retireNote();   // the card is on screen in place of the hand's own view: a skip that could still be undone is let go
   broughtBack = card;
   flipToCard(card);
   updateStarUI();

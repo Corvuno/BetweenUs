@@ -69,6 +69,14 @@ function serializeSession() {
   };
 }
 
+/* serializeSession() for putting back: at the end of a hand the position is the last card (the hand's end is not a card to
+   come back to). Used by the file Save and by Start over's Undo. */
+function restorableSession() {
+  const data = serializeSession();
+  if (data.deckIds.length && data.position >= data.deckIds.length) data.position = data.deckIds.length - 1;
+  return data;
+}
+
 /* A saved reference to a card: its number, or (older saves) its wording. The live card's number, or undefined. */
 function savedCardId(ref) {
   if (typeof ref === 'number') return ref;
@@ -101,9 +109,10 @@ function liveHand(refs, position) {
 }
 
 // Shared by the silent boot-time resume and openStoredSession() — puts a
-// serializeSession() snapshot back into state and the DOM.
+// serializeSession() snapshot back into state and the DOM. True when it came back, false when it could not.
 function restoreSessionData(data) {
-  if (!data) return;
+  if (!data) return false;
+  retireNote();
   try {
     state.safeMode=data.safeMode||false; state.spiceMode=data.spiceMode||false;
     state.randomMode=data.randomMode||'wild'; state.cardLimit=data.cardLimit;
@@ -139,7 +148,8 @@ function restoreSessionData(data) {
     setCardDisplay(state.currentIndex>=0 ? state.visibleDeck[state.currentIndex] : null);
     updateDrawMore();   // after the face is set: the button's words follow the card now on screen
     renderShell();
-  } catch(e) { console.error('restoreSessionData:',e); }
+    return true;
+  } catch(e) { console.error('restoreSessionData:',e); return false; }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -257,10 +267,25 @@ function renameStoredSession(id, name) {
   renderSessionsList();
 }
 
+// Returns what Delete's Undo needs to put the evening back: the entry, its place in the list, and whether it was playing now.
 function deleteStoredSession(id) {
-  const list = getStoredSessions().filter(s => s.id !== id);
+  const all = getStoredSessions();
+  const at = all.findIndex(s => s.id === id);
+  if (at < 0) return null;
+  const entry = all[at];
+  const wasActive = state.activeSessionId === id;
+  saveStoredSessions(all.filter(s => s.id !== id));
+  if (wasActive) setActiveSessionId('');
+  renderSessionsList();
+  return { entry, at, wasActive };
+}
+
+// Delete's Undo: the whole entry back at its place, with the playing-now link if it had one.
+function putBackStoredSession({ entry, at, wasActive }) {
+  const list = getStoredSessions();
+  list.splice(Math.min(at, list.length), 0, entry);
   saveStoredSessions(list);
-  if (state.activeSessionId === id) setActiveSessionId('');
+  if (wasActive) setActiveSessionId(entry.id);
   renderSessionsList();
 }
 

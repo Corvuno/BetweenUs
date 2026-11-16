@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261116w">
+<link rel="stylesheet" href="styles.css?v=20261116x">
 </head>
 <body class="before-first-card">
 <div class="app">
@@ -254,7 +254,6 @@
         </div>
       </div>
       <div class="end-hint" id="endHint">Next hand</div>
-      <button class="skip-undo" id="skipUndo">&#8617; Undo skip</button>
       <!-- Pick-3 overlay — sibling of #card, covers it without z-index conflict -->
       <div class="card-picker" id="cardPicker">
         <div class="picker-options" id="pickerOptions"></div>
@@ -296,6 +295,8 @@
 
 <!-- OVERLAY -->
 <div class="overlay" id="overlay"></div>
+<!-- The note: the one short line that says what just happened (design/note-line.md) -->
+<div class="note" id="note" role="status" aria-live="polite" inert><span id="noteText"></span><button type="button" id="noteUndo" hidden>Undo</button></div>
 
 <!-- MAIN MENU: the phone drawer, and on a computer with a mouse (the condition The Deck is docked by) the side panel.
      Both show the same lines; ui.js/presentation.js fill the [data-menu-state] spans each time the menu opens. -->
@@ -525,18 +526,18 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261116w"></script>
-<script src="categories.js?v=20261116w"></script>
-<script src="config.js?v=20261116w"></script>
-<script src="gilt.js?v=20261116w"></script>
-<script src="state.js?v=20261116w"></script>
-<script src="deck.js?v=20261116w"></script>
-<script src="card.js?v=20261116w"></script>
-<script src="library.js?v=20261116w"></script>
-<script src="session.js?v=20261116w"></script>
-<script src="selection.js?v=20261116w"></script>
-<script src="presentation.js?v=20261116w"></script>
-<script src="ui.js?v=20261116w"></script>
+<script src="questions.js?v=20261116x"></script>
+<script src="categories.js?v=20261116x"></script>
+<script src="config.js?v=20261116x"></script>
+<script src="gilt.js?v=20261116x"></script>
+<script src="state.js?v=20261116x"></script>
+<script src="deck.js?v=20261116x"></script>
+<script src="card.js?v=20261116x"></script>
+<script src="library.js?v=20261116x"></script>
+<script src="session.js?v=20261116x"></script>
+<script src="selection.js?v=20261116x"></script>
+<script src="presentation.js?v=20261116x"></script>
+<script src="ui.js?v=20261116x"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.

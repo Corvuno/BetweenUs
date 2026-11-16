@@ -1074,20 +1074,22 @@ body.showing-hand-summary #btnSave{display:flex;}
 .grid-fade{position:sticky;bottom:-1px;left:0;right:0;height:34px;margin-top:-34px;pointer-events:none;opacity:0;transition:opacity .25s;background:linear-gradient(to bottom,rgba(14,12,10,0),#0e0c0a 85%);display:block;z-index:2;}
 .cat-grid-wrap.can-scroll .grid-fade{opacity:1;}
 
-/* ── SKIP UNDO ── */
-.skip-undo{
-  position:absolute;bottom:14px;left:50%;transform:translateX(-50%) translateY(6px);z-index:30;
-  background:var(--card-bg);border:1px solid rgba(201,168,76,.5);
-  color:var(--gold-l);font-family:'Jost',sans-serif;font-size:var(--fs-1);
-  letter-spacing:var(--track-1);text-transform:uppercase;padding:15px 32px;
-  cursor:pointer;z-index:300;opacity:0;pointer-events:none;
-  transition:opacity .25s ease, transform .25s ease;white-space:nowrap;
-  box-shadow:0 4px 24px rgba(0,0,0,.5);
+/* ── THE NOTE — one short line that says what just happened (design/note-line.md) ── */
+.note{
+  position:fixed;left:50%;top:max(16px,calc(env(safe-area-inset-top) + 8px));z-index:1000;
+  display:flex;align-items:center;gap:18px;width:max-content;max-width:calc(100vw - 32px);text-align:center;
+  transform:translateX(-50%) translateY(-6px);opacity:0;pointer-events:none;
+  background:var(--card-bg);border:1px solid rgba(201,168,76,.5);box-shadow:0 4px 24px rgba(0,0,0,.5);
+  padding:0 24px;min-height:48px;
+  font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--gold-l);
+  transition:opacity .25s var(--ease-out),transform .25s var(--ease-out);
 }
-.skip-undo.visible{
-  opacity:1;pointer-events:all;
-  transform:translateX(-50%) translateY(0);
-}
+.note.visible{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+#noteText:empty{display:none;}
+.note button{white-space:nowrap;background:none;border:none;padding:15px 0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--gold);cursor:pointer;
+  text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px;}
+@media (hover:hover) and (pointer:fine){.note button:hover{color:var(--cream);}}
+@media (prefers-reduced-motion:reduce){.note,.note.visible{transform:translateX(-50%);transition:opacity .25s linear;}}
 
 /* hide spice glyph when SPICE_AVAILABLE=false */
 .spice-hidden{display:none!important;}
@@ -1385,6 +1387,7 @@ body.hint-ways-taught .menu-hint{display:none;}
 .play-save-name{display:block;font-family:'Cormorant Garamond',serif;font-size:var(--fs-6);color:var(--cream);}
 .play-save-meta{display:block;font-family:'Jost',sans-serif;font-size:var(--fs-2);color:var(--muted-l);margin-top:2px;}
 .play-save-now{font-family:'Jost',sans-serif;font-size:var(--fs-2);color:var(--celadon);margin-inline-start:8px;}
+.play-save-edit{width:100%;line-height:inherit;box-sizing:border-box;background:none;border:none;border-bottom:1px solid var(--celadon-dim);border-radius:0;padding:0;margin:0;outline:none;}
 .play-save-act{display:flex;gap:16px;}
 .play-save-act button{background:none;border:none;padding:8px 0;font-family:'Jost',sans-serif;font-size:var(--fs-2);color:var(--celadon-dim);cursor:pointer;}
 .play-add{display:block;margin:0 auto 8px;background:none;border:none;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-2);text-transform:uppercase;color:var(--celadon);cursor:pointer;padding:10px;}

@@ -220,6 +220,7 @@ function _startFreshPassIfSpent(){
    Three's bookkeeping for the hand starts empty, and any options still on
    screen belong to the hand that just ended. */
 function _newHandBookkeeping(){
+  retireNote();
   state.handNo++;
   state.reachedIdx = -1;
   state.handOffered.clear();
@@ -749,32 +750,30 @@ function prevCard() {
 
 // ═══════════════════════════════════════════════════════════
 // SKIP CARD — swipe down (the touch handler that recognizes the gesture
-// lives in ui.js). The undo bookkeeping (_undoCard/_undoIndex/_undoTimer,
-// declared in state.js) is shared with the undo button listener in ui.js.
+// lives in ui.js). The note (presentation.js) offers Undo for 3 seconds.
 // ═══════════════════════════════════════════════════════════
+
+const SKIP_UNDO_MS = 3000;
 
 function skipCard() {
   if (dismissBroughtBack()) return;   // the card on screen was brought back, not drawn: nothing to skip
-  // Captured before the guard below, and the "show undo button" step at the
-  // end runs unconditionally too — matching the swipe-down caller, which
-  // already never invokes skipCard() outside a valid index.
-  const undoBtn = document.getElementById('skipUndo');
-  _undoLog = null; _undoReachedShift = false;
-  if (undoBtn) { _undoCard = state.visibleDeck[state.currentIndex]; _undoIndex = state.currentIndex; }
+  // Matches the swipe-down caller, which never invokes skipCard() outside a valid index: the note shows regardless.
+  const card = state.visibleDeck[state.currentIndex], index = state.currentIndex;
+  let log = null, reachedShift = false;
   if (!(state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0)) {
     // Remove from visibleDeck only — fullDeck stays intact for new rounds
     const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
     /* cards after the skipped one move down a place: when the skip is behind
        the front of the hand (after Back), reachedIdx moves with them so the
        next step not yet reached still offers three */
-    _undoReachedShift = state.currentIndex < state.reachedIdx;
-    if (_undoReachedShift) state.reachedIdx--;
+    reachedShift = state.currentIndex < state.reachedIdx;
+    if (reachedShift) state.reachedIdx--;
     state.reachedIdx = Math.min(state.reachedIdx, state.visibleDeck.length - 1);
     state.skippedCards.add(removed.id);
     /* a skipped card counts as seen (not drawn again this pass) but is not
        part of the history list: out of the log, into skippedSeen */
     state.skippedSeen.add(removed.id);
-    _undoLog = removeFromLog(removed.id);
+    log = removeFromLog(removed.id);
     // Show next card (or skipped-all state)
     if (state.visibleDeck.length === 0) {
       state.currentIndex = state.visibleDeck.length; // sentinel: past end
@@ -789,14 +788,20 @@ function skipCard() {
     }
     updateDeckInfo(); renderProgress(); updateDrawMore();
   }
-  if (undoBtn) {
-    undoBtn.classList.add('visible');
-    clearTimeout(_undoTimer);
-    _undoTimer = setTimeout(() => {
-      undoBtn.classList.remove('visible');
-      _undoCard = null; _undoIndex = null; _undoLog = null; _undoReachedShift = false;
-    }, 3000);
-  }
+  showNote('', { undoLabel: '\u21A9 Undo skip', ms: SKIP_UNDO_MS, undo: () => {
+    if (!card) return;
+    // Re-insert card at original position and remove from skipped set
+    state.skippedCards.delete(card.id);
+    state.skippedSeen.delete(card.id);
+    restoreToLog(log);
+    const insertAt = Math.min(index, state.visibleDeck.length);
+    state.visibleDeck.splice(insertAt, 0, card);
+    if (reachedShift) state.reachedIdx++;
+    state.currentIndex = insertAt;
+    flipToCard(state.visibleDeck[state.currentIndex]);
+    updateStarUI();
+    updateDeckInfo(); renderProgress(); updateDrawMore();
+  } });
 }
 
 // Skip is downward-swipe-only.

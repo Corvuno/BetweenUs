@@ -265,15 +265,15 @@ async function run() {
     const beforeQ = await questionText(page);
     await swipe(page, '#card', 0, 100);
     await page.waitForTimeout(300);
-    const undoBtn = page.locator('#skipUndo');
-    assert(await undoBtn.evaluate(el => el.classList.contains('visible')), 'undo button did not appear after a skip');
+    const undoBtn = page.locator('#noteUndo');
+    assert(await page.evaluate(() => document.getElementById('note').classList.contains('visible')), 'undo button did not appear after a skip');
     await undoBtn.click();
     await page.waitForTimeout(300);
     const after = await cardParts(page);
     const afterQ = await questionText(page);
     assert(after.total === before.total, `deck total did not restore: ${before.total} -> ${after.total}`);
     assert(afterQ === beforeQ, `card did not come back (${beforeQ} vs ${afterQ})`);
-    assert(!(await undoBtn.evaluate(el => el.classList.contains('visible'))), 'undo button stayed visible after use');
+    assert(!(await page.evaluate(() => document.getElementById('note').classList.contains('visible'))), 'undo button stayed visible after use');
   });
 
   // ── F. Category toggle reshuffles the deck and updates the token line ──────
@@ -1771,7 +1771,7 @@ async function run() {
     const q2 = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
     await swipe(page, '#card', 0, 100);
     await page.waitForTimeout(300);
-    await page.locator('#skipUndo').click();
+    await page.locator('#noteUndo').click();
     await page.waitForTimeout(400);
     const u = await page.evaluate((q) => ({ seen: state.skippedSeen.has(cardByWording(q).id), inLog: state.sessionLog.filter(c => c.question === q).length }), q2);
     assert(!u.seen && u.inLog === 1, `undo-skip: ${JSON.stringify(u)}`);
@@ -1802,7 +1802,7 @@ async function run() {
                  bInDrawer: document.getElementById('logList').textContent.includes(b), bSeen: _seenSet().has(cardByWording(b).id), aSeen: _seenSet().has(cardByWording(a).id), n: state.sessionLog.length };
       }, a);
       assert(r.differs && !r.aLogged && r.aSeen && r.bLogged === 1 && r.bInDrawer && r.bSeen && r.n === 1, `skip gap (spotlight=${spot}): ${JSON.stringify(r)}`);
-      await page.locator('#skipUndo').evaluate(el => el.click());
+      await page.locator('#noteUndo').evaluate(el => el.click());
       await page.waitForTimeout(400);
       const u = await page.evaluate(([a, b]) => ({ order: state.sessionLog.map(c => c.question), cur: state.visibleDeck[state.currentIndex].question, nextIs: state.visibleDeck[state.currentIndex + 1].question }), [a, r.b]);
       assert(u.cur === a && u.nextIs === r.b && u.order.length === 2 && u.order[0] === a && u.order[1] === r.b, `undo after skip (spotlight=${spot}): ${JSON.stringify(u)}`);
@@ -1823,7 +1823,7 @@ async function run() {
     await page.waitForTimeout(500);
     const r = await page.evaluate(() => ({ reached: state.reachedIdx, cur: state.currentIndex, len: state.visibleDeck.length, open: state.pickerOpen }));
     assert(r.reached === 1 && r.cur === 1 && r.len === 4 && !r.open, `after Back + skip: ${JSON.stringify(r)}`);
-    await page.locator('#skipUndo').evaluate(el => el.click());
+    await page.locator('#noteUndo').evaluate(el => el.click());
     await page.waitForTimeout(400);
     assert(await page.evaluate(() => state.reachedIdx) === 2, 'undo did not restore reachedIdx');
     await swipe(page, '#card', 0, 100);
@@ -3202,12 +3202,12 @@ async function run() {
       const fav = await pg.evaluate(() => state.favourites[0].question);
       // swipe-skip card 3, then bring a card back inside the Undo bar's life
       await pg.evaluate(() => skipCard());
-      assert(await pg.evaluate(() => document.getElementById('skipUndo').classList.contains('visible')), 'no Undo bar after a skip');
+      assert(await pg.evaluate(() => document.getElementById('note').classList.contains('visible')), 'no Undo bar after a skip');
       const lenBefore = await pg.evaluate(() => state.visibleDeck.length);
       await pg.evaluate(() => { renderFavourites(); openDrawer('favsDrawer'); });   // quick: the Undo bar lives 3 seconds
       await pg.waitForTimeout(700);
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(600);
-      assert(await pg.evaluate(() => !document.getElementById('skipUndo').classList.contains('visible')), 'the skip Undo bar is still up over a brought-back card');
+      assert(await pg.evaluate(() => !document.getElementById('note').classList.contains('visible')), 'the skip Undo bar is still up over a brought-back card');
       // the star is the brought-back card's
       await pg.locator('#cardStar').click(); await pg.waitForTimeout(200);
       assert(await pg.evaluate(q => !state.favourites.some(f => f.question === q), fav), 'the star acted on another card');
@@ -3426,8 +3426,8 @@ async function run() {
       assert(await pg.evaluate(qs => JSON.stringify(state.sessionLog.map(c => c.question)) === JSON.stringify(qs), asked), 'Open a list did not bring the cards back');
       assert(await pg.evaluate(() => document.getElementById('playedDrawer').classList.contains('open')), 'Played should show the opened list');
       await pg.locator('#storeSessionBtn').click(); await pg.waitForTimeout(200);
-      pg.once('dialog', d => d.accept('Friday with Sam'));
       await pg.locator('#sessionsList [data-action="rename"]').click(); await pg.waitForTimeout(200);
+      await pg.keyboard.type('Friday with Sam'); await pg.keyboard.press('Enter'); await pg.waitForTimeout(200);
       assert((await pg.locator('#sessionsList .play-save-name').textContent()).includes('Friday with Sam'), 'Rename did not rename');
       assert((await pg.locator('#sessionsList .play-save-now').textContent()) === 'playing now', 'the open one does not say playing now');
       await drawCards(pg, 1);
@@ -3436,6 +3436,193 @@ async function run() {
       await pg.evaluate(() => openDrawer('playedDrawer')); await pg.waitForTimeout(700);
       await pg.locator('#sessionsList [data-action="delete"]').click(); await pg.waitForTimeout(150);
       assert((await pg.locator('#sessionsList').textContent()).includes('Nothing saved yet'), 'Delete did not remove it');
+    } finally { await ctx.close(); }
+  });
+
+  // ── #158: Save, Clear and Start over say what they did (the note), and Rename happens in place ──
+  const noteNow = pg => pg.evaluate(() => {
+    const n = document.getElementById('note'), r = n.getBoundingClientRect();
+    return { visible: n.classList.contains('visible'), text: document.getElementById('noteText').textContent, undo: !document.getElementById('noteUndo').hidden, box: { l: r.left, t: r.top, r: r.right, b: r.bottom } };
+  });
+  // every visible button, link and field, and the question, that the shown note overlaps
+  const noteOver = pg => pg.evaluate(() => {
+    const n = document.getElementById('note').getBoundingClientRect();
+    const hit = el => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.left < n.right && r.right > n.left && r.top < n.bottom && r.bottom > n.top; };
+    return [...document.querySelectorAll('button, a[href], input, select, textarea, [role="button"], #card-question')]
+      .filter(el => !el.closest('#note') && el.checkVisibility({ opacityProperty: true, visibilityProperty: true }) && hit(el))
+      .map(el => el.id || el.className || el.tagName);
+  });
+  const noteGone = (pg, timeout = 7000) => pg.waitForFunction(() => !document.getElementById('note').classList.contains('visible'), null, { timeout });
+  const evening = pg => pg.evaluate(() => ({ log: state.sessionLog.map(c => c.question), seenFrom: state.seenFrom, skipped: [...state.skippedSeen], idx: state.currentIndex, deck: state.visibleDeck.map(c => c.id), face: document.getElementById('card-question').textContent, active: state.activeSessionId, saved: getStoredSessions().map(s => ({ id: s.id, name: s.name })), seen: _seenSet().size, stars: [...state.handStarred], starOn: document.getElementById('cardStar').classList.contains('active') }));
+  const openPlayed = pg => openFromMenu(pg, 'played');
+  const tapSaveForLater = async pg => { await openPlayed(pg); await pg.locator('#storeSessionBtn').click(); };
+  const tinyFile = async (name, text) => { const f = `${(await import('node:os')).tmpdir()}/${name}`; await (await import('node:fs/promises')).writeFile(f, text); return f; };
+
+  await check('note: Save and Save for later each show their note, which leaves by itself and never covers the question, on a small phone and a computer; Save on an empty list shows none', async () => {
+    for (const [name, vp] of [['phone', { width: 360, height: 640 }], ['tall phone', { width: 412, height: 915 }], ['computer', { width: 1440, height: 900 }]]) {
+      const { ctx, pg } = await freshApp({ viewport: vp, hasTouch: name !== 'computer' });
+      try {
+        // nothing drawn: Download the list has nothing to save and says nothing
+        await openPlayed(pg);
+        await pg.locator('#btnExport').click(); await pg.waitForTimeout(400);
+        assert(!(await noteNow(pg)).visible, `${name}: a note showed for a Save with nothing to save`);
+        await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(500);
+        await drawCards(pg, 2); await pg.waitForTimeout(1500);
+        const asked = await pg.evaluate(() => document.getElementById('card-question').getBoundingClientRect().toJSON());
+        await openPhoneMenu(pg); await pg.waitForTimeout(700);
+        const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 3000 }), pg.locator('[data-menu="save"]:visible').click()]);
+        assert(dl, 'no file');
+        await pg.waitForTimeout(500);
+        let n = await noteNow(pg);
+        assert(n.visible && n.text === 'Saved as a file' && !n.undo, `${name}: Save note: ${JSON.stringify(n)}`);
+        assert(n.box.l >= 0 && n.box.r <= vp.width && n.box.t >= 0 && n.box.b <= vp.height, `${name}: the note is off screen: ${JSON.stringify(n.box)}`);
+        assert(n.box.t >= asked.bottom || n.box.b <= asked.top || n.box.r <= asked.left || n.box.l >= asked.right, `${name}: the note covers the question: ${JSON.stringify([n.box, asked])}`);
+        assert(n.box.b < vp.height / 3, `${name}: the note is not at the top of the screen: ${JSON.stringify(n.box)}`);
+        assert((await noteOver(pg)).length === 0, `${name}: the note sits over ${await noteOver(pg)}`);
+        await noteGone(pg, 4000);
+        await tapSaveForLater(pg); await pg.waitForTimeout(500);
+        n = await noteNow(pg);
+        assert(n.visible && n.text === 'Kept in Played' && !n.undo, `${name}: Save for later note: ${JSON.stringify(n)}`);
+        assert(await pg.evaluate(() => document.getElementById('playedDrawer').classList.contains('open')), `${name}: Played is not open under the note`);
+        assert((await noteOver(pg)).length === 0, `${name}: with Played open the note sits over ${await noteOver(pg)}`);
+        await noteGone(pg, 4000);
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('note: Undo after Clear the list, Delete and Start over puts back exactly what was there; Undo goes after 5 seconds, with a new note and when a card is drawn', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 4); await pg.waitForTimeout(1200);
+      await tapSaveForLater(pg); await pg.waitForTimeout(300);
+      await pg.evaluate(() => { setActiveSessionId(''); storeCurrentSession('Second'); });
+      await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(500);
+      await pg.evaluate(() => { openStoredSession(getStoredSessions()[0].id); closeAllDrawers(); }); await pg.waitForTimeout(600);
+      const was = await evening(pg);
+      assert(was.log.length === 4 && was.saved.length === 2 && was.active === was.saved[0].id, `set-up: ${JSON.stringify(was)}`);
+
+      // Clear the list
+      await openPlayed(pg); await pg.locator('#btnClearLog').click(); await pg.waitForTimeout(400);
+      let n = await noteNow(pg);
+      assert(n.visible && n.text === 'List cleared' && n.undo, `Clear note: ${JSON.stringify(n)}`);
+      assert((await noteOver(pg)).length === 0, `the Undo note sits over ${await noteOver(pg)}`);
+      assert((await evening(pg)).log.length === 0, 'Clear did not clear');
+      await pg.locator('#noteUndo').click(); await pg.waitForTimeout(300);
+      assert(JSON.stringify(await evening(pg)) === JSON.stringify(was), `Undo after Clear did not put the list back: ${JSON.stringify(await evening(pg))} vs ${JSON.stringify(was)}`);
+      assert(!(await noteNow(pg)).visible, 'the note stayed after Undo');
+
+      // Delete: the playing-now evening, first in the stored list
+      const before = await pg.evaluate(() => JSON.stringify(getStoredSessions()));
+      await pg.locator('#sessionsList .play-save.now [data-action="delete"]').click(); await pg.waitForTimeout(300);
+      n = await noteNow(pg);
+      assert(n.visible && n.text === 'Evening deleted' && n.undo, `Delete note: ${JSON.stringify(n)}`);
+      assert(await pg.evaluate(() => getStoredSessions().length === 1 && state.activeSessionId === ''), 'Delete did not delete');
+      await pg.locator('#noteUndo').click(); await pg.waitForTimeout(300);
+      assert(await pg.evaluate(b => JSON.stringify(getStoredSessions()) === b, before), 'the evening did not come back with its name, data and place in the list');
+      assert(await pg.evaluate(() => /playing now/.test(document.querySelector('#sessionsList .play-save.now')?.textContent ?? '')), 'the playing-now link did not come back');
+
+      // a new note takes the place of the old one, and its Undo with it
+      await pg.locator('#sessionsList .play-save [data-action="delete"]').last().click(); await pg.waitForTimeout(200);
+      await pg.locator('#btnClearLog').click(); await pg.waitForTimeout(300);
+      assert((await noteNow(pg)).text === 'List cleared', 'the new note did not replace the old');
+      await pg.locator('#noteUndo').click(); await pg.waitForTimeout(300);
+      assert(await pg.evaluate(() => getStoredSessions().length === 1 && state.sessionLog.length === 4), 'the replaced note\'s Undo was still live (or Clear\'s Undo failed)');
+      await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(500);
+
+      // Start over (with a star in the hand: Undo brings it back too)
+      await pg.locator('#cardStar').click(); await pg.waitForTimeout(300);
+      const hand = await evening(pg);
+      assert(hand.stars.length === 1, `set-up: no star in the hand ${JSON.stringify(hand.stars)}`);
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
+      await pg.locator('[data-menu="start"]:visible').click(); await pg.waitForTimeout(600);
+      n = await noteNow(pg);
+      assert(n.visible && n.text === 'Every card back in' && n.undo, `Start over note: ${JSON.stringify(n)}`);
+      assert((await noteOver(pg)).length === 0, `the Start over note sits over ${await noteOver(pg)}`);
+      assert((await evening(pg)).seen === 0, 'Start over did not put every card back in');
+      await pg.locator('#noteUndo').click(); await pg.waitForTimeout(700);
+      const back = await evening(pg);
+      assert(JSON.stringify(back) === JSON.stringify(hand), `Undo after Start over: ${JSON.stringify(back)} vs ${JSON.stringify(hand)}`);
+
+      // drawing a card lets the Undo go
+      await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
+      await pg.locator('[data-menu="start"]:visible').click(); await pg.waitForTimeout(500);
+      assert((await noteNow(pg)).undo, 'no Undo after Start over');
+      await drawCards(pg, 1);
+      assert(!(await noteNow(pg)).visible, 'the Undo stayed after a card was drawn');
+
+      // the Undo goes by itself after 5 seconds
+      await openPlayed(pg); await pg.locator('#btnClearLog').click();
+      const shown = Date.now();
+      await pg.waitForTimeout(4000);
+      assert((await noteNow(pg)).visible, 'the Undo went before 5 seconds');
+      await noteGone(pg, 2500);
+      assert(Date.now() - shown >= 4800, `the Undo went after ${Date.now() - shown}ms`);
+    } finally { await ctx.close(); }
+  });
+
+  await check('note: opening a file that is not a Between Us list says so and changes nothing (plain text, broken JSON, wrong format, damaged state block); a real list still opens', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      await drawCards(pg, 3); await pg.waitForTimeout(1200);
+      await tapSaveForLater(pg); await pg.waitForTimeout(300);
+      await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(500);
+      const mark = '— state (for Open a list; you can ignore everything below this line) —';
+      const files = {
+        'plain.txt': 'Grocery list\nmilk\neggs\n',
+        'broken.json': '{ "format": "between-us-state", "data": ',
+        'wrong.json': '{"format":"something-else","data":{"deckIds":[1,2]}}',
+        'damaged.txt': `Evening\n\n1. [Culture]\n   A question\n\n${'─'.repeat(40)}\n${mark}\n{"format":"between-us-state","version":2,"data":{"deckIds":"nope"}}\n`,
+      };
+      const was = await evening(pg);
+      for (const [name, body] of Object.entries(files)) {
+        await openPlayed(pg);
+        const [chooser] = await Promise.all([pg.waitForEvent('filechooser'), pg.locator('#btnImport').click()]);
+        await chooser.setFiles(await tinyFile(`bu158-${name}`, body)); await pg.waitForTimeout(600);
+        const n = await noteNow(pg);
+        assert(n.visible && n.text === "That file isn't a Between Us list" && !n.undo, `${name}: note ${JSON.stringify(n)}`);
+        assert(JSON.stringify(await evening(pg)) === JSON.stringify(was), `${name}: something changed`);
+        await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(500);
+      }
+      // a file that is a list opens, with no note
+      await openPlayed(pg);
+      const [dl] = await Promise.all([pg.waitForEvent('download', { timeout: 3000 }), pg.locator('#btnExport').click()]);
+      await noteGone(pg, 4000);
+      const [chooser] = await Promise.all([pg.waitForEvent('filechooser'), pg.locator('#btnImport').click()]);
+      await chooser.setFiles(await dl.path()); await pg.waitForTimeout(800);
+      assert(!(await noteNow(pg)).visible, 'a real list said it was not one');
+    } finally { await ctx.close(); }
+  });
+
+  await check('rename in place: Rename turns the name into an editable line where it stands; Enter or tapping elsewhere keeps the new name, Escape and an empty name keep the old; no browser box appears', async () => {
+    const { ctx, pg } = await freshApp();
+    try {
+      let dialogs = 0;
+      pg.on('dialog', d => { dialogs++; d.dismiss(); });
+      await drawCards(pg, 2); await pg.waitForTimeout(1200);
+      await tapSaveForLater(pg); await pg.waitForTimeout(400);
+      const nameBox = () => pg.locator('#sessionsList .play-save-name').evaluate(el => { const r = el.getBoundingClientRect(), c = getComputedStyle(el); return { l: r.left, t: r.top, font: c.fontFamily, size: c.fontSize, tag: el.tagName }; });
+      const names = () => pg.evaluate(() => getStoredSessions().map(s => s.name));
+      const startName = (await names())[0];
+      const rename = async finish => {
+        const at = await nameBox();
+        await pg.locator('#sessionsList [data-action="rename"]').click(); await pg.waitForTimeout(150);
+        const edit = await nameBox();
+        assert(edit.tag === 'INPUT' && await pg.evaluate(() => document.activeElement === document.querySelector('#sessionsList input')), 'Rename did not open an editable line with the cursor in it');
+        assert(Math.abs(edit.l - at.l) <= 1 && Math.abs(edit.t - at.t) <= 4 && edit.font === at.font && edit.size === at.size, `the line is not where and how the name was: ${JSON.stringify([at, edit])}`);
+        await finish();
+        await pg.waitForTimeout(200);
+        assert(await pg.evaluate(() => !document.querySelector('#sessionsList input')), 'the editable line stayed');
+      };
+      await rename(async () => { await pg.keyboard.type('Escaped'); await pg.keyboard.press('Escape'); });
+      assert((await names())[0] === startName && await pg.evaluate(() => document.getElementById('playedDrawer').classList.contains('open')), 'Escape did not keep the old name (or closed Played)');
+      await rename(async () => { await pg.keyboard.press('Control+a'); await pg.keyboard.press('Backspace'); await pg.keyboard.press('Enter'); });
+      assert((await names())[0] === startName, 'an empty name replaced the old one');
+      await rename(async () => { await pg.keyboard.type('Friday with Sam'); await pg.keyboard.press('Enter'); });
+      assert((await names())[0] === 'Friday with Sam', `Enter did not keep the new name: ${(await names())[0]}`);
+      await rename(async () => { await pg.keyboard.type('Saturday'); await pg.locator('#playedDrawer .drawer-title').click(); });
+      assert((await names())[0] === 'Saturday', `tapping elsewhere did not keep the new name: ${(await names())[0]}`);
+      assert((await pg.locator('#sessionsList .play-save-now').textContent()) === 'playing now', 'the playing-now tag went');
+      assert(dialogs === 0, 'a browser box appeared');
     } finally { await ctx.close(); }
   });
 
