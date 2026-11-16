@@ -28,7 +28,7 @@ const NEWDECK_CARDS = [
   { id: 1, level: "quick", question: "Name the last thing you made with your hands." },
   { id: 2, level: "quick", question: "What song's been stuck in your head this week?" },
   { id: 3, level: "quick", question: "Which thing you own cost far too much, and you'd buy it again tomorrow?" },
-  { id: 4, level: "quick", question: "Which drawer in your house is the disgrace?" },
+  { id: 4, level: "quick", question: "The drawer in your house that's a disgrace..." },
   { id: 5, level: "quick", question: "You're always late for..." },
   { id: 6, level: "quick", question: "What smell makes you instantly hungry?" },
   { id: 7, level: "quick", question: "What's the strangest thing someone might find in your bag?" },
@@ -84,7 +84,7 @@ const NEWDECK_CARDS = [
   { id: 49, level: "work", question: "What's the best piece of office drama you've ever witnessed, whatever your part in it was?" },
   { id: 50, level: "work", question: "What would you do for a living if money and status played no role at all?" },
   { id: 51, level: "work", question: "What's the piece of work you're most proud of that nobody applauded?" },
-  { id: 52, level: "work", question: "What's the strangest job you've ever had?" },
+  { id: 52, level: "work", question: "The strangest job you've ever had..." },
   { id: 53, level: "work", question: "When did you first ask for a raise — and how did it go?" },
   { id: 54, level: "work", question: "Reliable or brilliant — which would you rather be seen as, and which do people actually see?" },
   { id: 55, level: "work", question: "Which colleague would you start a company with tomorrow?" },
@@ -148,7 +148,7 @@ const NEWDECK_CARDS = [
   { id: 105, level: "self", question: "Which small battle with yourself have you finally won?" },
   { id: 106, level: "self", question: "What's a part of your character you hope never changes, even when it makes life harder?" },
   { id: 107, level: "self", question: "Losing the part of your image you need the most would..." },
-  { id: 108, level: "self", question: "Which ordinary thing scares you more than it should?" },
+  { id: 108, level: "self", question: "Something perfectly ordinary scares you more than it should. What?" },
 
   // ─── CONNECT ───
   { id: 109, level: "connect", question: "What's the smallest thing you've done for someone that they still bring up years later?" },

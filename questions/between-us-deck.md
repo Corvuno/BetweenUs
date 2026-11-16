@@ -743,6 +743,21 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
 
+## Patch v7.38 — cards that ask in more ways, first three (#184)
+
+- **Quick 4, question 4** (rewording)
+  - Old: "Which drawer in your house is the disgrace?"
+  - New: "The drawer in your house that's a disgrace..."
+  - Why: the deck leans on question words (about seven cards in ten open with one); same subject as an open sentence. Owner's pick from three.
+- **Work 4, question 52** (rewording)
+  - Old: "What's the strangest job you've ever had?"
+  - New: "The strangest job you've ever had..."
+  - Why: one of four "What's the strangest…" cards; same subject as an open sentence. Owner's pick from three.
+- **Self 12, question 108** (rewording)
+  - Old: "Which ordinary thing scares you more than it should?"
+  - New: "Something perfectly ordinary scares you more than it should. What?"
+  - Why: same subject as a statement with a short ask. Owner's pick from three.
+
 ## Patch v7.20 — category scope rework round 3: Connect, Friendship, Romance, Family
 
 - **Connect 1**
