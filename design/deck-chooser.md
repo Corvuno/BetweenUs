@@ -69,6 +69,13 @@ only (no glow). On a computer (wide block) the same two lines plus Three keep th
 setting per line, with no 16px inset (the foot sits flush with the panel edge); the foot sticks to
 the panel bottom.
 
+**Their hints** (`.seg-hint`, `HINTS` entries `shuffle` and `cards` in `state.js`): one line under
+each setting's choices, aligned with them (`--seg-head-w`), in the look of the categories' hint
+(Federo `--fs-3`, `--muted-l`); phone and computer alike. Words, chosen by the owner: under Shuffle
+"Arc lets the questions go deeper step by step and come back up by the last card. Random: any
+order."; under Cards "how many questions before a pause". Each goes for good once its own setting
+is changed; "Show hints again" brings both back.
+
 ## The one picked look
 `.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)`: presets, categories in open
 chapters, Colbert, The 36, Shuffle and Cards all pick the same way, so there is one look for

@@ -2279,7 +2279,7 @@ async function run() {
         await p.waitForSelector('#card', { state: 'visible' });
         await openDeck();
         const words = await p.evaluate(() => [...document.querySelectorAll('.seg-hint')].map(h => `${h.dataset.hint}: ${h.textContent.trim()}`));
-        assert(words.join('|') === 'shuffle: Arc: easy, then deeper, then easy again|cards: how many in one hand', `${where}: the hints read ${JSON.stringify(words)}`);
+        assert(words.join('|') === 'shuffle: Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.|cards: how many questions before a pause', `${where}: the hints read ${JSON.stringify(words)}`);
         assert(await shown('shuffle') && await shown('cards'), `${where}: a fresh device does not show both hints`);
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').scrollIntoViewIfNeeded();
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').click();
@@ -2294,7 +2294,7 @@ async function run() {
         await p.waitForTimeout(500);
         await p.locator('#btn-menu').click();
         await p.waitForTimeout(500);
-        await p.locator('#d-hints').click();
+        await p.locator('[data-menu="hints"]:visible').click();   // the phone's drawer or the computer's side panel
         await p.waitForTimeout(500);
         await openDeck();
         assert(await shown('shuffle') && await shown('cards'), `${where}: Show hints again did not bring both back`);
