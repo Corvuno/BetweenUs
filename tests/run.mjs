@@ -1936,7 +1936,7 @@ async function run() {
     assert(/^(Draw Card|Next Card|Summary|Next hand)$/.test(draw), `unexpected draw button text: ${draw}`);
   });
 
-  await check('new version: picked up at a between-hands moment only (not mid-hand, offline, with a drawer open, or twice for the same version), and the player lands on the same screen', async () => {
+  await check('new version: picked up out of sight or on coming back, between hands only (not as the hand ends, mid-hand, offline, with a drawer open, or twice for the same version), and the player lands on the same screen', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     let served = null;   // the stamp a page fetch finds; page navigations always get the real file
     await ctx.route(`http://127.0.0.1:${port}/${TARGET}`, async route => {
@@ -1953,6 +1953,11 @@ async function run() {
     const backToFront = () => upd.evaluate(() => {   // a minute later, the app comes to the front
       const t = Date.now(); Date.now = () => t + 6e7;
       document.dispatchEvent(new Event('visibilitychange'));
+    });
+    const toBackground = () => upd.evaluate(() => {   // the app goes to the background (and is at once back in view for the next step)
+      Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
+      document.dispatchEvent(new Event('visibilitychange'));
+      delete document.visibilityState;
     });
     /* the new page counts as loaded only when its scripts have all run (the restore is the last of them) */
     const reloaded = () => upd.waitForFunction(() => window.__same !== true && document.readyState === 'complete', null, { timeout: 5000 });
@@ -1971,16 +1976,24 @@ async function run() {
     await toggleThree(upd);   // Three on: it has to survive the reload
     await ctx.setOffline(true);
     await upd.evaluate(() => showHandSummary());   // Intermezzo, but offline
+    await toBackground();
     await upd.waitForTimeout(500);
     assert(await alive(), 'reloaded while offline');
 
     await ctx.setOffline(false);
     await upd.evaluate(() => document.getElementById('playedDrawer').classList.add('open'));
-    await upd.evaluate(() => { document.dispatchEvent(new Event('visibilitychange')); updateDrawMore(); });
+    await toBackground();
     await upd.waitForTimeout(500);
     assert(await alive(), 'reloaded with a drawer open');
 
-    await upd.evaluate(() => { document.getElementById('playedDrawer').classList.remove('open'); updateDrawMore(); });   // the next screen change at Intermezzo applies it
+    // the hand ending, or a screen change at Intermezzo, never applies it: the reload would cut through the drawing
+    await upd.evaluate(() => { document.getElementById('playedDrawer').classList.remove('open'); state.handSide = null; state.currentIndex = state.visibleDeck.length - 1; nextCard(); });
+    await upd.waitForFunction(() => state.handSide === 'intermezzo', null, { timeout: 6000 });
+    await upd.evaluate(() => updateDrawMore());
+    await upd.waitForTimeout(800);
+    assert(await alive(), 'reloaded as the hand ended');
+
+    await toBackground();   // out of sight at Intermezzo: now it goes in
     await reloaded();
     let at = await upd.evaluate(() => ({ side: state.handSide, idx: state.currentIndex, len: state.visibleDeck.length, body: document.body.classList.contains('showing-hand-summary'), recorded: sessionStorage.getItem('bu-reloaded-for') }));
     assert(at.side === 'intermezzo' && at.idx === at.len && at.body && at.recorded === 'NEWVERSION', `after the reload: ${JSON.stringify(at)}`);

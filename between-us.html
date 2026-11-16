@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261116z">
+<link rel="stylesheet" href="styles.css?v=20261116za">
 </head>
 <body class="before-first-card">
 <div class="app">
@@ -528,18 +528,18 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261116z"></script>
-<script src="categories.js?v=20261116z"></script>
-<script src="config.js?v=20261116z"></script>
-<script src="gilt.js?v=20261116z"></script>
-<script src="state.js?v=20261116z"></script>
-<script src="deck.js?v=20261116z"></script>
-<script src="card.js?v=20261116z"></script>
-<script src="library.js?v=20261116z"></script>
-<script src="session.js?v=20261116z"></script>
-<script src="selection.js?v=20261116z"></script>
-<script src="presentation.js?v=20261116z"></script>
-<script src="ui.js?v=20261116z"></script>
+<script src="questions.js?v=20261116za"></script>
+<script src="categories.js?v=20261116za"></script>
+<script src="config.js?v=20261116za"></script>
+<script src="gilt.js?v=20261116za"></script>
+<script src="state.js?v=20261116za"></script>
+<script src="deck.js?v=20261116za"></script>
+<script src="card.js?v=20261116za"></script>
+<script src="library.js?v=20261116za"></script>
+<script src="session.js?v=20261116za"></script>
+<script src="selection.js?v=20261116za"></script>
+<script src="presentation.js?v=20261116za"></script>
+<script src="ui.js?v=20261116za"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.
@@ -550,9 +550,11 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 // A new version is picked up while the app stays open. On open and whenever the
 // app comes back to the front (online only, at most once a minute) the page is
 // fetched fresh and its ?v= stamp compared with the running one. A newer version
-// waits until the next between-hands moment (start screen, Intermezzo, hand
-// list, nothing else open), then the page reloads silently and the player lands
-// on the same screen. Never mid-hand, never offline, never twice for the same
+// is put in while nobody is looking: when the app goes to the background between
+// hands (start screen, Intermezzo, hand list, nothing else open), or at the moment
+// it opens or comes back to the front between hands. The player lands on the same
+// screen. Never as a hand ends (the reload would cut through the Intermezzo
+// drawing itself), never mid-hand, never offline, never twice for the same
 // version, and never without sessionStorage (it holds the loop guard).
 const updateStore = (() => {
   try { sessionStorage.setItem('bu-probe', '1'); sessionStorage.removeItem('bu-probe'); return sessionStorage; } catch { return null; }
@@ -605,9 +607,9 @@ if (updateStore && /^https?:$/.test(location.protocol)) {
 
   window.addEventListener('load', checkForNewVersion);
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') { checkForNewVersion(); reloadIfBetweenHands(); }
+    if (document.visibilityState === 'visible') checkForNewVersion();
+    else reloadIfBetweenHands();   // out of sight: the next look at the app is the new version
   });
-  document.addEventListener('deckchange', () => { if (state.handSide) reloadIfBetweenHands(); });   // the hand ended, or Intermezzo / the list came up
 }
 </script>
 </body>
