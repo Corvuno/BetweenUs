@@ -19,7 +19,7 @@ the card goes to Intermezzo (see `card-closes.md`). Not thin italic serif or `--
 unreadable.
 
 ## Intermezzo card back
-`.card.is-intermezzo`, fullscreen `.im-wrap`. The pause mark (fermata: two arches and a diamond)
+`.card.is-intermezzo`, fullscreen `.im-wrap`. The card's back is two great amethyst circles (`.cb-circles`, see `card-face.md`) with the pause mark, its rule and the caption in the eye-shaped window where they overlap; `.cb-edge` holds the window's two edge lines, `.cb-fill` the rest. The pause mark (fermata: two arches and a diamond)
 replaces the logo; the caption INTERMEZZO sits under it: Federo, uppercase, `.32em`, `--muted-l`,
 upright (`font-style:normal`, like `.cb-caption`, not the card question's italic), size from the
 card `calc(var(--d)*.075)` and in fullscreen `clamp(.8rem,.9vw + .4rem,1.2rem)` (`.im-word`).
@@ -40,7 +40,7 @@ to Intermezzo). 840ms (`cardTurn`; `cardTurnBack` is the mirror, used turning ba
 -90deg at 50% and back to 0. Eased, not linear: slows into the edge (`cubic-bezier(.45,0,.75,.4)`),
 eases out of it (`cubic-bezier(.25,.6,.55,1)`). Edge-on is at 420ms and that is the only moment
 the face swaps (JS: `TURN_MID_MS` 420, class removed at `TURN_END_MS` 870, both in `deck.js`;
-they follow the CSS). While turning, `.card-back` has `transition:none`, so the lattice back is
+they follow the CSS). While turning, `.card-back` has `transition:none`, so the circles back is
 there at once at the edge; the `.flipping` text fade is not used for these turns (the edge hides
 the swap). Applies to the card and the fullscreen card. A tap on the card turns Intermezzo to the
 list and a tap on the card again turns the list back (not on a star, not while the list scrolls). The message to Intermezzo does not use the turn. `.card.flipping` only serves the

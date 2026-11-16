@@ -10,7 +10,7 @@ picker have their own corners and are not part of this.
   ground, `--border-strong` outline). On After Dark (`.mark-full`) the inner line is `--mark`; on a
   Wildcard it is `--gold` (`--cat` is not set). The inner line's colour eases (.5s, instant under
   reduced motion). The frame sits above the card back (z 6 over 5), so the start card and
-  the Intermezzo wear it too and their lattice fills its inner line; it stays on the end-of-hand
+  the Intermezzo wear it too and their backs fill its inner line (the start card: gold streams in `--petrol` parting round a six-sided window, with `--amethyst` stones; the Intermezzo: two great circles in `--amethyst` whose rings cross into curved cells, with `--petrol` stones, and an eye-shaped window where they overlap; no name on either). Each back is one stretched SVG in `#cardBack` (`.cb-streams` shown on `.is-start:not(.is-intermezzo)`, `.cb-circles` on `.is-start.is-intermezzo`), in two densities: `.cb-ph` (line weight 1.1) under 400px of card height, `.cb-dk` (1.5) from 400px, switched by the card's container query. Lines keep their weight when stretched. The plate stays centred inside the window. The drawings' source is `.claude/keeper/agreements/2026-11-14-card-back-r8/backs.js`; it stays on the end-of-hand
   list and message, where the inner line keeps `--frame-rest` of that (a share of the 80%, not of the full colour)
   (`body.showing-hand-summary`, also in Spotlight). On a change of card it dips to `FRAME_DIP` and returns with the new card
   (`card.js` `playSwapOut` / `playSwapIn`).

@@ -5,10 +5,11 @@ dwell the back comes up over it. All on `--ease-move` `cubic-bezier(.45,0,.25,1)
 long soft settle):
 - the message fades 450ms;
 - the back fades in 500ms;
-- the back's own lattice grows in as a ring thickening inward from the card's edges (`closeRing`,
-  850ms after 300ms; a `clip-path` ring driven by `@property --p`, 19% / 15% at the end);
-- its double frame draws round from the top centre (`closeFrame`, 850ms after 450ms; a conic
-  `mask-image` driven by `@property --a`);
+- the back's circles (`.cb-fill`) grow in as a ring thickening inward from the card's edges over the
+  whole field (`closeRing`, 850ms after 300ms; a `clip-path` ring driven by `@property --p`, hole
+  closing to the centre);
+- the window's two edge lines (`.cb-edge`) draw round from the top centre (`closeFrame`, 850ms after
+  450ms; a conic `mask-image` driven by `@property --a`);
 - the word INTERMEZZO fades in (`closeWord`, 600ms after 900ms).
 
 The finished back then holds with an empty window (a chosen held beat; keep it) and the pause
