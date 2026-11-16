@@ -2260,6 +2260,48 @@ async function run() {
     } finally { await computer.ctx.close(); }
   });
 
+  await check('The Deck: Shuffle and Cards each carry a hint until they are used; it stays gone after a reload and Show hints again brings it back (phone 360 and computer)', async () => {
+    for (const viewport of [{ width: 360, height: 640 }, { width: 1440, height: 900 }]) {
+      const ctx = await browser.newContext({ viewport, hasTouch: viewport.width < 800, serviceWorkers: 'block' });
+      const p = await ctx.newPage();
+      try {
+        const where = `${viewport.width}px`;
+        const openDeck = async () => {
+          await p.locator('#tokCats').click({ force: true });
+          await p.waitForFunction(() => document.getElementById('cat-area').classList.contains('sheet-open'));
+          await p.waitForTimeout(500);
+        };
+        const shown = name => p.evaluate(n => {
+          const el = document.querySelector(`.seg-hint[data-hint="${n}"]`);
+          return !!el && el.getBoundingClientRect().height > 0 && getComputedStyle(el).display !== 'none';
+        }, name);
+        await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+        await p.waitForSelector('#card', { state: 'visible' });
+        await openDeck();
+        const words = await p.evaluate(() => [...document.querySelectorAll('.seg-hint')].map(h => `${h.dataset.hint}: ${h.textContent.trim()}`));
+        assert(words.join('|') === 'shuffle: Arc: easy, then deeper, then easy again|cards: how many in one hand', `${where}: the hints read ${JSON.stringify(words)}`);
+        assert(await shown('shuffle') && await shown('cards'), `${where}: a fresh device does not show both hints`);
+        await p.locator('.shuffle-toggle-opt[data-mode="wild"]').scrollIntoViewIfNeeded();
+        await p.locator('.shuffle-toggle-opt[data-mode="wild"]').click();
+        assert(!(await shown('shuffle')) && await shown('cards'), `${where}: changing Shuffle should remove only its own hint`);
+        await p.locator('.limit-btn[data-limit="10"]').click();
+        assert(!(await shown('cards')), `${where}: changing Cards left its hint`);
+        await p.reload();
+        await p.waitForSelector('#card', { state: 'visible' });
+        await openDeck();
+        assert(!(await shown('shuffle')) && !(await shown('cards')), `${where}: a hint came back after a reload`);
+        await p.evaluate(() => closeCats());
+        await p.waitForTimeout(500);
+        await p.locator('#btn-menu').click();
+        await p.waitForTimeout(500);
+        await p.locator('#d-hints').click();
+        await p.waitForTimeout(500);
+        await openDeck();
+        assert(await shown('shuffle') && await shown('cards'), `${where}: Show hints again did not bring both back`);
+      } finally { await ctx.close(); }
+    }
+  });
+
   await check('Custom with several picks: the start card diamond and rule blend into the next colour over the dim half of a breath instead of stepping', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     const p = await ctx.newPage();

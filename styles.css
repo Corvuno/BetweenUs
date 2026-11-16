@@ -1671,9 +1671,13 @@ body.hint-ways-taught .menu-hint{display:none;}
   color:var(--gold-l);margin:0 0 12px;}
 /* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
    chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
-.seg-row{--row-inset:16px;padding-inline-start:var(--row-inset);margin:6px 0 8px;white-space:nowrap;}
-.seg{display:flex;align-items:center;}
-.seg-head{flex:none;width:5.5rem;}
+.seg-row{--row-inset:16px;--seg-head-w:5.5rem;padding-inline-start:var(--row-inset);margin:6px 0 8px;white-space:nowrap;}
+.seg{display:flex;flex-wrap:wrap;align-items:center;}
+.seg-head{flex:none;width:var(--seg-head-w);}
+/* A setting's hint (a HINTS entry): one quiet line under its options, the look of the categories' hint (.cat-hint) */
+.seg-hint{flex:0 0 100%;margin:2px 0 4px;padding-inline-start:var(--seg-head-w);white-space:normal;
+  font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;color:var(--muted-l);}
+body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"]{display:none;}
 
 /* ── THE ONE PICKED LOOK ──
    Everything you can pick in The Deck: presets, categories in open chapters, Colbert and The 36,

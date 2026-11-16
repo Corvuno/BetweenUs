@@ -85,6 +85,7 @@ if (limitBtnsDrawer) limitBtnsDrawer.addEventListener('click', e => {
   const btn = e.target.closest('.limit-btn');
   if (!btn) return;
   selectCardLimit(btn.dataset.limit);
+  hintRetire('cards');
 });
 
 // Draw controls
@@ -901,6 +902,7 @@ applyToggleUI();
   if (shuffleToggle) shuffleToggle.addEventListener('click', e => {
     const btn = e.target.closest('.shuffle-toggle-opt'); if (!btn) return;
     selectShuffleMode(btn.dataset.mode);
+    hintRetire('shuffle');
   });
 
   /* token labels are rendered from state by renderShell() — no self-observation */
