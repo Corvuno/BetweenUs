@@ -7,7 +7,7 @@ Backlog items are named by number and title.
 
 - The line under the title and the logo: the owner calls them awesome. They are the source of
   the look, and they came from many references.
-- The card back (lattice and emblem), the richest object in the app.
+- The card back, the richest object in the app; new backs are chosen (#175).
 - The card face: the category named at the top with its stripes, in a double frame with the
   category's colour in the inner line. The owner chose it from pictures of the live app.
   The start card, the Intermezzo and Spotlight wear the same frame.
@@ -32,9 +32,11 @@ Backlog items are named by number and title.
 1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
 2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
 3. The balance of the card screen on a computer (#161), as the full design pass.
-Around these: Plain words for The Deck's settings (#157); Save, Clear and Start over say what
-they did (#158); The card screen when the phone is turned sideways (#156); Text styles brought
-down to one small scale (#148); a row of accessibility fixes in `Next`.
+Around these: Text styles brought down to one small scale (#148), building; then, ready in
+`Next` and waiting on it for the stylesheet, Save, Clear and Start over say what they did (#158)
+and The card follows the finger, and skip goes (#165), in that order; Plain words for The Deck's
+settings (#157); a row of accessibility fixes in `Next`. The sideways phone (#156) and the
+website (#71) are parked: the owner never turns the phone, and the address comes later.
 
 ## Open with the owner
 
@@ -44,8 +46,12 @@ down to one small scale (#148); a row of accessibility fixes in `Next`.
   the balance of lines and black, small flourishes that emerge from the lines, areas cut out
   with their own design, lines that lead the eye, playfulness. Turned down: clean, predictable,
   safe, too even, empty space in random places.
-- The card back in the direction of the gold-line card frame (#175): four rounds, the last one
-  a redrawn reference. Waits on whether a back built from the logo's own shape is the right root.
+- New card backs (#175) are chosen and wait in `Next` for the text styles (#148) to land: petrol
+  streams on the start card, amethyst circles on the Intermezzo. What got there: references as
+  lessons, never redrawn; lines that never float, fine and quiet, full edge to edge; a window whose
+  shape the drawing makes; several really different options at once ("If you give me one, ill be
+  shooting it down all day"). Petrol and amethyst arrive as the backs' colours; the app's accent
+  colour in the vision is still open.
 - Designing the card face went well when rough sketches on real cards came first and the owner
   could name the parts they liked; it went wrong when a liked part came back reshaped.
 - Weight: the middle ground is live (small words one step firmer, metal lines on The Deck and the

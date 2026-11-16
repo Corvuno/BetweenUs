@@ -139,12 +139,24 @@ function updateDeckInfo() {
   if (el) el.textContent = shown===0 ? 'No categories' : shown===total ? `${total} cards` : `${shown} / ${total}`;
 };
 
+// Spotlight in a phone browser asks for the real full screen, so the address bar goes too. The installed app is
+// edge to edge already, and a computer keeps its window. Where the phone refuses, Spotlight shows as before.
+const wantsRealFullscreen = () => matchMedia('(pointer: coarse)').matches
+  && !matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches;
+function enterRealFullscreen() {
+  if (!wantsRealFullscreen() || document.fullscreenElement) return;
+  document.documentElement.requestFullscreen?.({ navigationUI: 'hide' }).catch(() => {});
+}
+// The phone's own way out of full screen (back, or the swipe from the edge) also leaves Spotlight.
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && state.partyMode) exitParty(); });
+
 // Entering party mode is handled inline by the #btnParty click handler below.
 function exitParty() {
   state.partyMode = false;
   const overlay = document.getElementById('partyOverlay');
   if (overlay) overlay.classList.remove('open');
   movePickerToScreen();   // Three options up: they move along back to the main screen
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
 };
 
 // ── Drawer helpers ──

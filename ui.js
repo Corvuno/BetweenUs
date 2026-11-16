@@ -192,6 +192,7 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
       hintRetire('spotlight');
       state.partyMode = true;
       document.getElementById('partyOverlay').classList.add('open');
+      enterRealFullscreen();
       movePickerToScreen();   // Three options up: they move along into Spotlight
       if (broughtBack) {
         updatePartyDisplay(broughtBack);   // a card brought back from Played or Favourites is the one on screen
@@ -209,9 +210,7 @@ document.getElementById('btnWays')?.addEventListener('click', e => {
   const exitBtn = newOv.querySelector('#partyExit');
   if (exitBtn) exitBtn.addEventListener('click', function(e) {
     e.stopPropagation();
-    state.partyMode = false;
-    newOv.classList.remove('open');
-    movePickerToScreen();   // Three options up: they move along back to the main screen
+    exitParty();
   });
 
   // Three and Twist — the same settings as The Deck's Three and the Menu's Twist

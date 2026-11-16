@@ -2216,6 +2216,47 @@ async function run() {
     assert(lastLabel === 'End of hand', `the button on the last card reads "${lastLabel}"`);
   });
 
+  await check('Spotlight in a phone browser takes the real full screen; Close, and the phone leaving full screen, both return to the card screen at the same card; a computer stays windowed', async () => {
+    const open = async opts => {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', ...opts });
+      const p = await ctx.newPage();
+      await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await p.waitForSelector('#card', { state: 'visible' });
+      await p.waitForTimeout(500);
+      await p.locator('#btn-next').click();
+      await p.waitForFunction(() => state.currentIndex === 0);
+      return { ctx, p };
+    };
+    const full = p => p.evaluate(() => !!document.fullscreenElement);
+    const spot = p => p.evaluate(() => state.partyMode && document.getElementById('partyOverlay').classList.contains('open'));
+    const phone = await open({ isMobile: true, hasTouch: true });
+    try {
+      const { p } = phone;
+      const question = await p.evaluate(() => state.visibleDeck[state.currentIndex].question);
+      await p.locator('#btnParty').click();
+      await p.waitForFunction(() => !!document.fullscreenElement, null, { timeout: 3000 });
+      assert(await spot(p), 'Spotlight did not open');
+      await p.locator('#partyExit').click();
+      await p.waitForFunction(() => !document.fullscreenElement, null, { timeout: 3000 });
+      assert(!(await spot(p)), 'Close left Spotlight open');
+      // the phone's own way out (back, or the edge swipe) ends full screen without a tap on Close
+      await p.locator('#btnParty').click();
+      await p.waitForFunction(() => !!document.fullscreenElement, null, { timeout: 3000 });
+      await p.evaluate(() => document.exitFullscreen());
+      await p.waitForFunction(() => !state.partyMode, null, { timeout: 3000 });
+      assert(!(await full(p)), 'still full screen after leaving Spotlight');
+      const now = await p.evaluate(() => state.visibleDeck[state.currentIndex].question);
+      assert(now === question, `the card changed on the way out of Spotlight: "${question}" became "${now}"`);
+    } finally { await phone.ctx.close(); }
+    const computer = await open({ viewport: { width: 1440, height: 900 } });
+    try {
+      await computer.p.locator('#btnParty').click();
+      await computer.p.waitForTimeout(400);
+      assert(await spot(computer.p), 'Spotlight did not open on a computer');
+      assert(!(await full(computer.p)), 'a computer went full screen');
+    } finally { await computer.ctx.close(); }
+  });
+
   await check('Custom with several picks: the start card diamond and rule blend into the next colour over the dim half of a breath instead of stepping', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     const p = await ctx.newPage();

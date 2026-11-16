@@ -13,6 +13,11 @@ Twins and what they share (main / Spotlight):
   celadon; disabled opacity `.32`. Words Jost 400, `--track-3`, uppercase. Spotlight keeps its own size
   (`--fs-1`, `--fs-4` on PC) and its arrows stay plain glyphs (no bordered square). The main screen's
   Spotlight and Menu are quiet words (`--stone`), see `under-card.md`.
+- **The real full screen:** in a phone browser, opening Spotlight also asks the phone for the
+  real full screen, so the address bar goes (`enterRealFullscreen` in `presentation.js`). The
+  installed app and a computer don't ask. Leaving full screen the phone's way (back, the swipe
+  from the edge) leaves Spotlight; leaving Spotlight leaves full screen. Where the phone refuses
+  (an iPhone in Safari), Spotlight shows inside the browser as before.
 - **Close** (`#partyExit`) is the twin of the main Spotlight button (`#btnParty`): same
   square-in-square symbol, celadon. The `Esc` / `T` / `3` key hints are `--muted`, shown on PC only.
 - **Three and Twist** have no button in Spotlight: keys 3 and T work, and Twist's sentence still

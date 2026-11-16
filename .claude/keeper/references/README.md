@@ -42,3 +42,27 @@ Product photos of someone else's deck: for reference only, never copied into the
 - `medallion-tarot-boxes-blue.jpg`: two boxes: one with a rayed medallion, a band of drop shapes and
   arched corner panels; one with a four-petal medallion in rings of dots, scallops and a zigzag
   border.
+
+Sent by the owner during the card back rounds: "Some other cards that I like. Just use them as
+inspiration. And make something deco and fitting of it. Deco and Egyptian are close. Those can be
+mixed." Then: "Look at what all have in common. Look at the lines, how it works together."
+Product photos of other decks: inspiration only, never redrawn.
+
+- `egyptian-gold-winged-figure-corner.jpg`: close-up of a black card: a gold winged figure, a frame
+  of double lines with a woven border and a fan in the corner, fine dark hatching behind.
+- `egyptian-gold-eye-wings-deck-edge.jpg`: close-up: an eye in a diamond, feathered wings in rows,
+  crescents, a stepped corner, fine hatching in the dark.
+- `egyptian-gold-box-front.jpg`: a box: winged figure and eye stacked on the centre line, frame
+  with corner pieces.
+- `circuit-lines-heart-mark.jpg`: an ace: a frame that breaks into circuit lines with square
+  terminals, and the same card filled with circuit lines that lead to the mark.
+- `egyptian-teal-crescents-and-box.jpg`: a teal back: two crescents with winged figures meeting at
+  an eye in a diamond, rays behind; its box with a winged scarab and a fan.
+- `egyptian-black-aces-gold-lines.jpg`: black aces: gold arcs and diamonds, a winged figure in the
+  spade, pinstripe fields.
+- `gold-frames-hatched-panels-boxes.jpg`: two boxes: gold frames with stepped corners, panels of
+  cross-hatching, a banner across.
+- `egyptian-gold-box-and-back.jpg`: a box and its back: winged figures and an eye on the centre
+  line, a stepped frame, dark hatched ground.
+- `dense-geometric-star-black-white.jpg`: a black and white back packed edge to edge with geometry:
+  a star of triangles around rings, every area filled with its own small pattern.
