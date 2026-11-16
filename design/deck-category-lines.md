@@ -2,8 +2,8 @@
 
 Every category in an open chapter carries its own line (`.cat-line`, the category's `desc` from
 `categories.js`, word for word), under its name. Built from existing tokens, no new colour.
-- **Face and tone.** Federo, `.8rem`, `.02em`, the chapter line's (`.ch-desc`) size, in
-  `--text-helper`; once the category is picked it takes `rgba(240,232,216,.72)`. Never smaller than
+- **Face and tone.** Jost, `--fs-2`, `--track-text`, the chapter line's (`.ch-desc`) size, in
+  `--text-helper`; once the category is picked it takes `--sand`. Never smaller than
   the chapter line, never muted small print.
 - **The name keeps its look.** Dot and name sit on one row (grid, dot in column 1, line in column
   2); the picked underline sits under the name only (`.cat-name::after`), not the whole button.
@@ -20,7 +20,7 @@ Every category in an open chapter carries its own line (`.cat-line`, the categor
   a hold never picks or opens the browser
   menu. Instant under reduced motion.
 - **The hint** (`.cat-hint`, a `HINTS` entry `lines` in `state.js`, so "Show hints again" brings it
-  back): "Hold a category to see what it's about", Federo `.9rem` in `--muted-l` (the tone
+  back): "Hold a category to see what it's about", Federo `--fs-3` in `--muted-l` (the tone
   `.tok-hint` takes on a phone), under the categories of the first chapter opened, phone only, gone
   for good after the first hold.
 - **Motion.** One pace, about `.45s` (`--pick-ease` switches from `.2s` to `.45s` while the lines

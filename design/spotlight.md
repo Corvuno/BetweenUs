@@ -10,9 +10,9 @@ Twins and what they share (main / Spotlight):
 - **Buttons.** Spotlight's own buttons (`.party-chrome button`) follow the celadon rule: `--celadon`
   at rest; `--gold` on hover (`@media (hover:hover)` only, so it never sticks on touch), on press
   and on keyboard focus; "on" is an underline under the word (1px, offset 7px) and the colour stays
-  celadon; disabled opacity `.32`. Words Jost 400, `.22em`, uppercase. Spotlight keeps its own size
-  (12px, 15px on PC) and its arrows stay plain glyphs (no bordered square). The main screen's
-  Spotlight and Menu are quiet words (`--btn-quiet`), see `under-card.md`.
+  celadon; disabled opacity `.32`. Words Jost 400, `--track-3`, uppercase. Spotlight keeps its own size
+  (`--fs-1`, `--fs-4` on PC) and its arrows stay plain glyphs (no bordered square). The main screen's
+  Spotlight and Menu are quiet words (`--stone`), see `under-card.md`.
 - **The real full screen:** in a phone browser, opening Spotlight also asks the phone for the
   real full screen, so the address bar goes (`enterRealFullscreen` in `presentation.js`). The
   installed app and a computer don't ask. Leaving full screen the phone's way (back, the swipe
@@ -46,7 +46,7 @@ Twins and what they share (main / Spotlight):
 ## Twist divider (`.twist-div`, Spotlight only; replaces the old `.party-ornament`)
 The pick-divider flourish (hairline plus a short bar either side). Question-side bar = the card's
 category colour (`--pd-a`, set in `updatePartyDisplay`, same source as `.pick-div`); twist-side bar
-= `--celadon-soft` (`--pd-b`). Horizontal on phone and PC, starting at the text's left edge,
+= `--celadon-dim` (`--pd-b`). Horizontal on phone and PC, starting at the text's left edge,
 hairline fading out to the right (190px / 300px PC; bars 32x3 / 44x4). Sideways phone and
 forced-wide: vertical between the question and Twist columns, dimmed (`opacity:.65`) like the
 vertical pick dividers, question bar left, twist bar right. No diamond.

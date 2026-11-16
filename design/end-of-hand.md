@@ -69,7 +69,7 @@ down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Wor
 
 ## Fullscreen hint line (`.party-end-hint`)
 A quiet line just above the bottom row, same words as the phone button. Federo, uppercase,
-`.22em`, `--muted`, `.72rem` (`.85rem` from 900px wide); a leading `--gold-l` word marks the
+`--track-3`, `--text-helper`, `--fs-1` (`--fs-2` from 900px wide); a leading `--gold-l` word marks the
 action. It is a hint for a control that is already there, not text to be read for content.
 
 ## The start card's logo

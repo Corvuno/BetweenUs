@@ -13,7 +13,7 @@ the Menu (the computer shows all three, see Wide screens). So the question is th
 - Next card `#btn-next`: the gold button spec (see `DESIGN-SYSTEM.md`), one fixed width of
   `14.5em`, one type: font size and letter-spacing never change between Draw Card, Next Card,
   End of hand, Next hand and Three others, so the bar keeps its shape and place through a hand.
-  Every label fits well inside the 14.5em in Jost 400 with `.14em` spacing; the rest is even room
+  Every label fits well inside the 14.5em in Federo 400 with `--track-2` spacing; the rest is even room
   each side. It is in em, not `--u`: the label's type is in
   rem and steps up with the screen, so the room each side stays even on every phone, tablet and
   PC. The first-draw and end-of-hand states change colour only (`.hold-mode`), never size or
@@ -26,12 +26,12 @@ the Menu (the computer shows all three, see Wide screens). So the question is th
   `--gold` in play; while the bar is in `.hold-mode` (end of a hand) it is `--im-target`, easing
   over `.6s` like the bar's own fade (`.2s` back to gold on the next hand), instant under reduced
   motion. No glow. Decoration only (`aria-hidden`); hidden on PC.
-- Spotlight and Menu: `.quiet-word`, plain words (no icon, no box), Jost 400, 11.5px, `.22em`,
-  uppercase, `--btn-quiet`, `--gold` on hover (mouse only), press and keyboard focus (gold word
+- Spotlight and Menu: `.quiet-word`, plain words (no icon, no box), Jost 400, `--fs-1`, `--track-3`,
+  uppercase, `--stone`, `--gold` on hover (mouse only), press and keyboard focus (gold word
   with a thin gold underline, offset 6px, never a box). The tap area is at least 44px tall and
   wide and starts one row-gap under Next card, so it never overlaps it. Spotlight sits under the
-  left ends, Menu under the right. Spotlight's first-visit hint (`.row-hint`, `--row-hint`) sits
-  under its word and retires after the first tap; Menu has no hint. Jost and `--btn-quiet`, not
+  left ends, Menu under the right. Spotlight's first-visit hint (`.row-hint`, `--celadon-dim`) sits
+  under its word and retires after the first tap; Menu has no hint. Jost and `--stone`, not
   the celadon Federo of the old play row: they are secondary and must not compete with Next card
   or the question.
 

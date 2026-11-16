@@ -14,7 +14,13 @@
 :root{
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
-  --muted:#7a6e60;--muted-l:#9c8f7e;--ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
+  --muted:#7a6e60;   /* the empty star and the disabled state only */
+  /* The text set (DESIGN-SYSTEM.md "Text"): every piece of text takes its size, spacing and colour from these names. */
+  --fs-1:.75rem;--fs-2:.8rem;--fs-3:.9rem;--fs-4:.95rem;--fs-5:1.0125rem;--fs-6:1.15rem;--fs-7:1.3rem;   /* 12, 12.8, 14.4, 15.2, 16.2, 18.4, 20.8px */
+  --track-1:.09em;--track-2:.16em;--track-3:.24em;--track-text:.03em;   /* capitals: three spacings; small words: one */
+  --sand:#d2c9b8;--stone:#b5a892;--muted-l:#9c8f7e;--text-helper:#8c8071;   /* with --cream: five creams and browns, light to dark */
+  --celadon-dim:#819689;   /* the dim line under a tappable row; --celadon is the tappable word */
+  --ad-red:#7a1620;--dim:rgba(201,168,76,0.12);--border:rgba(201,168,76,0.22);
   --border-strong:rgba(201,168,76,0.38);--title-stroke:.017em;--frame-line:80%;--frame-rest:38%;   /* how much of its colour the frame's inner line keeps at the end of a hand */
   /* motion: strong ease-out for things entering or responding (starts fast, settles soft); --ease-sheet is the
      fast-start, soft-settle curve of drawers and sheets sliding in */
@@ -30,18 +36,14 @@
   /* design-system tokens (see DESIGN-SYSTEM.md)
      --dim / --border / --border-strong are the 3-tier line system, gold only:
      every hairline, card edge and divider reads off one of the three.
-     --btn-quiet is the one resting colour for every plain text-button (Three,
+     --stone is the one resting colour for every plain text-button (Three,
      Full Screen, Twist, Change, Save, After Dark, All/None, Explore
-     categories…); they go to --gold on hover/active. --muted-l stays its own,
-     lighter tone, and the cream-alpha text values stay per-element. */
-  --btn-quiet:#b3a590;
-  --quiet-text:#ab9e8a;   /* quiet words a step lighter: the tagline, chapter descriptions and counts */
-  --quiet-label:#b5a892;   /* the start screen's small labels (Edition, Mood...) */
+     categories…); they go to --gold on hover/active. */
   --metal:linear-gradient(in oklab 90deg,transparent 0%,#7d6426 8%,#c9a84c 30%,#f1dc9c 50%,#c9a84c 70%,#7d6426 92%,transparent 100%);   /* the metal line: the top of The Deck and the menu, the menu's divider */
   /* the bottom of the screen (see DESIGN-SYSTEM.md "Frame colours"):
      copper = the deck's own frame, celadon = the play-style row,
      --preset = the active preset's colour (set from renderShell). */
-  --copper:#C67B28;--celadon:#A9C7B6;--celadon-soft:color-mix(in srgb,var(--celadon) 74%,var(--bg));--celadon-hint:#5b6b63;--row-hint:#6f8579;--text-helper:#8c8071;--celadon-bright:#eef7f1;
+  --copper:#C67B28;--celadon:#A9C7B6;--celadon-bright:#eef7f1;
   --under-row-h:90px;   /* the row under Next card: Spotlight's word and hint, or Change and Save at the end of a hand, whichever is taller */
   --gold-btn-h:34px;   /* the gold button's height: Next card under the card and Draw Cards in The Deck */
   --preset:var(--gold);
@@ -75,13 +77,13 @@ body{
 /* ── HEADER ── */
 .header{text-align:center;padding:22px 0 16px;width:100%;opacity:0;transform:translateY(-5px);transition:opacity .38s .1s var(--ease-out),transform .38s .1s var(--ease-out);}
 .header.in{opacity:1;transform:none;}
-.title{font-family:'Poiret One',cursive;font-size:2.15rem;font-weight:400;letter-spacing:.1em;color:var(--gold-l);line-height:1;
+.title{font-family:'Poiret One',cursive;font-size:2.15rem;font-weight:400;letter-spacing:.1em;color:var(--gold);line-height:1;
   -webkit-text-stroke:var(--title-stroke) currentColor;}   /* Poiret One has one cut: a stroke in the letter's own colour firms it without changing its shape */
 .title-rule{display:flex;align-items:center;justify-content:center;
   width:min(100%,320px);margin:12px auto 0;}
 .tr-svg{display:block;width:100%;height:auto;overflow:visible;}
 .tr-svg path{vector-effect:non-scaling-stroke;}
-.subtitle{font-size:.75rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet-text);margin-top:10px;}
+.subtitle{font-size:var(--fs-1);font-weight:400;letter-spacing:var(--track-2);text-transform:uppercase;color:var(--stone);margin-top:10px;}
 
 /* ── PRESET ROW ── */
 .preset-outer{width:100%;display:flex;align-items:stretch;opacity:0;transition:opacity .4s .08s ease;}
@@ -122,19 +124,19 @@ body{
 @media(min-width:768px){
   .mode-btn--group-start{margin-left:0;}
   .mode-group-lbl{display:block;flex-basis:100%;text-align:center;
-    font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
-    color:rgba(240,232,216,.4);padding:6px 0 1px;}
+    font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;
+    color:var(--text-helper);padding:6px 0 1px;}
   .mode-group-lbl--break{height:auto;overflow:visible;}
 }
 
 /* ── CATEGORIES ── */
 .cat-topbar{display:flex;align-items:center;gap:8px;}
-.cat-toggle-lbl{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--btn-quiet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;padding:15px 0;outline:none;}
+.cat-toggle-lbl{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--stone);font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;transition:color .2s;padding:15px 0;outline:none;}
 .cat-toggle-lbl.open{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.cat-toggle-lbl:hover{color:var(--gold);}}
 .cat-chevron{display:inline-block;font-size:.5rem;transition:none;}
 .cat-controls{display:flex;align-items:center;flex-shrink:0;}
-.cat-count-lbl{font-size:.75rem;letter-spacing:.08em;color:rgba(240,232,216,.35);}
+.cat-count-lbl{font-size:var(--fs-1);letter-spacing:var(--track-text);color:var(--text-helper);}
 
 /* Spice glyph toggle */
 .spice-glyph{
@@ -149,20 +151,20 @@ body{
 /* After Dark — text link, no border */
 .after-dark-btn{
   background:none;border:none;border-bottom:1px solid transparent;
-  color:var(--btn-quiet);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--stone);
+  font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;
   padding:15px 0;cursor:pointer;transition:color .2s,border-bottom-color .2s,text-shadow .2s;
   display:flex;align-items:center;gap:5px;white-space:nowrap;
 }
-@media (hover:hover) and (pointer:fine){.after-dark-btn:hover{color:rgba(240,232,216,.85);}}
+@media (hover:hover) and (pointer:fine){.after-dark-btn:hover{color:var(--sand);}}
 .after-dark-btn.on{color:var(--ad-red);border-bottom-color:rgba(193,39,45,.5);text-shadow:0 0 10px rgba(193,39,45,.55);}
 .after-dark-btn.hidden{display:none;}
 
 /* None — a minimal text link at the right of the Chapters heading */
 .deselect-btn{
   background:none;border:none;
-  color:var(--btn-quiet);
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--stone);
+  font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;
   padding:15px 7px;cursor:pointer;transition:color .2s;
   display:flex;align-items:center;justify-content:center;text-align:center;
 }
@@ -266,13 +268,13 @@ body.showing-hand-summary :is(.card.mark-full .card-frame,.party-frame.mark-full
 @keyframes accentReveal{0%{opacity:0;transform:scaleX(.2);}55%{opacity:.65;transform:scaleX(1);}100%{opacity:.85;}}
 .card-id{   /* dev build only (SHOW_CARD_ID): the card's place and question number, empty everywhere else */
   position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:1;white-space:nowrap;pointer-events:none;
-  font-family:'Federo','Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--text-helper);}
+  font-family:'Federo','Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--text-helper);}
 .card-id:empty,.card.is-start .card-id,.card.is-hand-list .card-id,.card:has(.end-msg) .card-id{display:none;}
 .card-star{
   position:absolute;top:calc(14 * var(--u));right:calc(12 * var(--u));z-index:4;
-  background:none;border:none;cursor:pointer;font-size:.9rem;opacity:.18;color:var(--gold);padding:10px;transition:opacity .2s;
+  background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--muted);padding:10px;transition:color .2s;
 }
-@media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.65;}}.card-star.active{opacity:1;}
+@media (hover:hover) and (pointer:fine){.card-star:hover{color:var(--gold);}}.card-star.active{color:var(--gold);}
 
 /* ── START CARD ── the back of the card, shown before the first draw
    (card.js setStartBack toggles .is-start on #card).
@@ -392,8 +394,8 @@ body.showing-hand-summary .card-question{
 .twist-sentence{display:none;flex:0 0 auto;width:100%;text-align:center;padding:0 28px calc(var(--frame-i) + 6 * var(--u));}   /* the line stays above the frame's inner line */
 .twist-sentence.twist{
   display:block;color:var(--celadon);
-  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.96rem;line-height:1.45;
-  letter-spacing:.01em;opacity:1;
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:var(--fs-4);line-height:1.45;
+  letter-spacing:0;opacity:1;
 }
 /* end-of-hand message fade (deck.js renderEndMessage); the Next/Back swap is Web Animations in card.js */
 .card.flipping .card-level,.card.flipping .card-question{opacity:0;transform:translateY(6px);}
@@ -514,19 +516,20 @@ body.showing-hand-summary .card-question{
 #btn-next{grid-column:2;grid-row:3;width:14.5em;white-space:nowrap;}
 /* Spotlight and Menu: plain words in the quiet tone, no icon, no box. The tap area is 44px tall and starts a row-gap under Next card. */
 .quiet-word{display:flex;flex-direction:column;align-items:flex-start;min-width:44px;min-height:44px;padding:4px calc(6 * var(--u)) 0;
-  background:none;border:none;cursor:pointer;color:var(--btn-quiet);text-align:left;
-  font:500 11.5px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;transition:color .2s;}
+  background:none;border:none;cursor:pointer;color:var(--stone);text-align:left;
+  font:500 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-3);text-transform:uppercase;transition:color .2s;}
 .quiet-word:focus-visible{outline:none;text-decoration:underline solid var(--gold) 1px;text-underline-offset:6px;}   /* keyboard focus: the gold word with a thin gold underline, never a box */
 .quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
 #screenRow{grid-column:1;grid-row:4;justify-self:start;justify-content:flex-start;align-items:flex-start;}
-#screenRow :is(#btnWays,#btnParty,#btnSave){flex-shrink:0;margin-inline:auto;}   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
+#screenRow :is(#btnWays,#btnParty,#btnSave){flex-shrink:0;margin-inline:auto;width:calc(112px + 12 * var(--u));}   /* one slot width for the three words: the hint's 112px plus the side padding, so a longer word runs on to the right instead of widening its slot */   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
+#screenRow :is(#btnWays,#btnParty,#btnSave) .row-lbl{white-space:nowrap;}   /* the word stays on one line, running on past the slot, never wrapping */
 .quiet-word svg{display:none;}   /* the words carry icons on a wide screen only */
 #btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
 #btn-prev,#btnPick,#btnTwist{display:none;}   /* Back is a swipe on the phone, Three a setting in The Deck, Twist a line in the Menu; the buttons are for a computer */
 .quiet-word:disabled{opacity:.32;pointer-events:none;}   /* as Spotlight's Back */
-:is(#btnPick,#btnWays,#btnParty,#btnSave,#btnTwist) .row-hint{margin-top:7px;max-width:112px;font:italic 400 .95rem/1.15 'Cormorant Garamond',serif;letter-spacing:.01em;text-transform:none;color:var(--row-hint);}
-.btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
+:is(#btnPick,#btnWays,#btnParty,#btnSave,#btnTwist) .row-hint{margin-top:7px;max-width:112px;font:italic 400 var(--fs-4)/1.15 'Cormorant Garamond',serif;letter-spacing:0;text-transform:none;color:var(--celadon-dim);}
+.btn-draw{--bd-a:#c9a84c;--bd-b:#a07830;background:linear-gradient(135deg,var(--bd-a) 0%,var(--bd-b) 100%);border:none;color:var(--bg);font-family:'Federo','Jost',sans-serif;font-size:var(--fs-2);font-weight:400;letter-spacing:var(--track-2);text-transform:uppercase;height:var(--gold-btn-h);padding:0;cursor:pointer;transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .2s ease,--bd-b .2s ease;text-align:center;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 /* The gold moves with the rest of the button (.2s) in and out; only the end-of-hand colour (hold-mode) eases slowly. */
 @media (hover:hover) and (pointer:fine){.btn-draw:hover{--bd-a:#ddb85c;--bd-b:#b08840;}}
 .btn-draw:active{transform:scale(.97);}
@@ -543,10 +546,10 @@ body.showing-hand-summary .card-question{
   transition:opacity .2s,color .2s,transform .16s var(--ease-out),--bd-a .6s ease,--bd-b .6s ease;}
 /* the slow gold-to-chapter-colour ease is on .hold-mode itself, so a pointer resting on the button (hover) does not cut it short */
 .limit-row{display:flex;align-items:center;}
-.draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--muted);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:border-color .2s,color .2s;display:none;}
+.draw-more-btn{background:transparent;border:1px solid var(--dim);color:var(--text-helper);font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;padding:15px 20px;cursor:pointer;transition:border-color .2s,color .2s;display:none;}
 .draw-more-btn.visible{display:block;}
 @media (hover:hover) and (pointer:fine){.draw-more-btn:hover{border-color:var(--border);color:var(--gold);}}
-.deck-info{font-size:.75rem;letter-spacing:.06em;color:var(--muted-l);text-align:center;}
+.deck-info{font-size:var(--fs-1);letter-spacing:var(--track-text);color:var(--muted-l);text-align:center;}
 
 /* ── END OF HAND: INTERMEZZO ── (presentation.js; hooks listed there)
    Side 1: the card's back with the pause mark and INTERMEZZO in the window
@@ -635,7 +638,7 @@ body.showing-hand-summary .card-question{
 @media(max-width:559px){
   .card-area{container-type:inline-size;--u:calc(100cqw / 376);}
   .card{aspect-ratio:556/360;overflow:hidden;--text-gap:calc(8 * var(--u));--name-size:calc(18 * var(--u));}
-  .card-id{top:calc(12 * var(--u));font-size:calc(12.8 * var(--u));}
+  .card-id{top:calc(12 * var(--u));font-size:calc(var(--fs-2) * var(--u));}
   .card-star{padding:calc(10 * var(--u));font-size:calc(14.4 * var(--u));}
   .card-ad-mark,.wc-mark{font-size:calc(144 * var(--u));}
   .card-body-inner{min-height:0;overflow-y:auto;justify-content:safe center;overscroll-behavior:contain;
@@ -644,7 +647,7 @@ body.showing-hand-summary .card-question{
   .card-question{font-size:calc(26.496 * var(--u));}
   .card .end-msg{font-size:calc(16 * var(--u));}
   .card .twist-sentence{padding-inline:calc(48 * var(--u));}   /* the line stops short of the frame's corner squares */
-  .card .twist-sentence.twist{font-size:calc(15.36 * var(--u));}
+  .card .twist-sentence.twist{font-size:calc(var(--fs-4) * var(--u));}
 }
 /* everything in a row is sized from the question's own size, so diamonds and stars grow with it */
 .hd-row{font-size:var(--hd-fs);display:grid;grid-template-columns:.5em 1fr 2em;gap:.7em;align-items:start;}
@@ -718,10 +721,10 @@ body.showing-hand-summary .card-question{
 .party-overlay.is-hand-list .hd-list{--hd-fs:clamp(1.25rem,1.1vw + .95rem,1.8rem);}
 /* fullscreen hint at hand end: a quiet line just above the bottom row, same words as the phone button */
 .party-end-hint{display:none;position:absolute;left:0;right:0;bottom:100%;margin-bottom:-4px;justify-content:center;pointer-events:none;
-  font-family:'Federo','Jost',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+  font-family:'Federo','Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-3);text-transform:uppercase;color:var(--text-helper);white-space:nowrap;}
 .party-end-hint b{font-weight:400;color:var(--gold-l);margin-right:.4em;}
 .party-overlay.is-hand-end .party-end-hint{display:flex;}
-@media (min-width:900px) and (min-height:501px){.party-end-hint{font-size:.85rem;margin-bottom:0;}}
+@media (min-width:900px) and (min-height:501px){.party-end-hint{font-size:var(--fs-2);margin-bottom:0;}}
 @media (orientation:landscape) and (max-height:500px){.party-overlay.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}}
 .party-overlay.orient-landscape.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}
 .party-overlay.is-hand-list .hd-list{gap:clamp(10px,1.6vh,22px);}
@@ -750,46 +753,46 @@ body.showing-hand-summary .card-question{
 .drawer-handle{display:flex;justify-content:center;align-items:center;
   padding:14px 0;touch-action:none;}
 .handle-bar{width:36px;height:3px;border-radius:2px;background:rgba(201,168,76,.25);}
-.drawer-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:14px;transition:color .2s;}
+.drawer-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted-l);font-size:1.1rem;cursor:pointer;padding:14px;transition:color .2s;}
 @media (hover:hover) and (pointer:fine){.drawer-close:hover{color:var(--cream);}}
-.drawer-title{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-align:center;padding:4px 0 16px;}
+.drawer-title{font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-2);text-transform:uppercase;color:var(--gold);text-align:center;padding:4px 0 16px;}
 .drawer-body{padding:4px 0 max(20px,env(safe-area-inset-bottom));}
 /* secondary drawers (played, favs, custom, help) */
 .sub-drawer{position:fixed;bottom:0;left:0;right:0;z-index:170;background:var(--surface);border-top:1px solid var(--border);transform:translateY(100%);transition:transform .42s var(--ease-out);max-height:85vh;overflow-y:auto;padding:20px 20px 40px;}
 .sub-drawer.open{transform:translateY(0);transition:transform .64s var(--ease-sheet);}
-.help-content p{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:rgba(240,232,216,.8);margin-bottom:12px;}
-.help-content h4{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+.help-content p{font-family:'Cormorant Garamond',serif;font-size:var(--fs-5);line-height:1.7;color:var(--sand);margin-bottom:12px;}
+.help-content h4{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--gold);}
 .help-content strong{color:var(--cream);}
-.help-content em{font-style:italic;color:rgba(240,232,216,.9);}
-.help-content .hp-lead{font-size:1.3rem;font-style:italic;line-height:1.45;color:var(--gold-l);margin-bottom:16px;}
+.help-content em{font-style:italic;color:var(--cream);}
+.help-content .hp-lead{font-size:var(--fs-7);font-style:italic;line-height:1.45;color:var(--gold-l);margin-bottom:16px;}
 .help-content h4{position:relative;padding-top:15px;margin:30px 0 10px;}
 .help-content h4::before{content:'';position:absolute;top:0;left:0;width:24px;height:1px;background:var(--border);}
 .help-content .hp-ways{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 10px;}
 .help-content .hp-tile{border:1px solid var(--dim);background:rgba(255,255,255,.014);padding:13px 14px 12px;}
 .help-content .hp-tile svg{display:block;width:100%;max-width:168px;height:auto;margin:0 auto 9px;color:#8b8175;}
-.help-content .hp-name{display:block;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-l);margin-bottom:5px;}
+.help-content .hp-name{display:block;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--gold-l);margin-bottom:5px;}
 .help-content .hp-tile .hp-name{text-align:center;}
-.help-content .hp-tile p{margin-bottom:0;font-size:.95rem;}
+.help-content .hp-tile p{margin-bottom:0;font-size:var(--fs-4);}
 .help-content .hp-step{display:flex;gap:12px;margin-bottom:16px;}
 .help-content .hp-body{flex:1;min-width:0;}
-.help-content .hp-num{flex:0 0 23px;height:23px;margin-top:5px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:.7rem;color:var(--gold);opacity:.85;}
+.help-content .hp-num{flex:0 0 23px;height:23px;margin-top:5px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:var(--fs-1);color:var(--gold);opacity:.85;}
 .help-content .hp-step p{margin-bottom:0;}
-.help-content .hp-sub{margin-top:8px;font-size:.9rem;color:rgba(240,232,216,.55);font-style:italic;}
-.help-content .ui{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);border:1px solid var(--dim);padding:2px 7px 1px;white-space:nowrap;}
+.help-content .hp-sub{margin-top:8px;font-size:var(--fs-3);color:var(--muted-l);font-style:italic;}
+.help-content .ui{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--gold-l);border:1px solid var(--dim);padding:2px 7px 1px;white-space:nowrap;}
 .help-content .hp-gest{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 2px;}
 .help-content .hp-g{text-align:center;color:rgba(240,232,216,.55);}
 .help-content .hp-g svg{display:block;width:100%;max-width:46px;height:auto;margin:0 auto;}
-.help-content .hp-g span{display:block;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.help-content .hp-g span{display:block;font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--text-helper);margin-top:3px;}
 .help-content .hp-shuf{display:flex;align-items:center;gap:14px;margin-bottom:13px;}
 .help-content .hp-shuf svg{flex:0 0 88px;width:88px;height:auto;color:rgba(240,232,216,.55);}
-.help-content .hp-shuf-t{font-family:'Cormorant Garamond',serif;font-size:.95rem;line-height:1.5;color:rgba(240,232,216,.8);}
-.help-content .hp-shuf-t b{display:block;font-family:'Jost',sans-serif;font-weight:400;font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-l);margin-bottom:3px;}
+.help-content .hp-shuf-t{font-family:'Cormorant Garamond',serif;font-size:var(--fs-4);line-height:1.5;color:var(--sand);}
+.help-content .hp-shuf-t b{display:block;font-family:'Jost',sans-serif;font-weight:400;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--gold-l);margin-bottom:3px;}
 .help-content figure{margin:16px 0 14px;}
 .help-content figure svg{display:block;width:100%;height:auto;color:rgba(240,232,216,.65);}
-.help-content figcaption{font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px;}
+.help-content figcaption{font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--text-helper);text-align:center;margin-top:8px;}
 .help-content .hp-colbert{color:#f3c33c;}
 .help-content .hp-aron{color:#e75783;}
-.help-content .hp-note{font-style:italic;color:rgba(240,232,216,.55);}
+.help-content .hp-note{font-style:italic;color:var(--muted-l);}
 .help-content .hp-close{margin-top:28px;padding-top:20px;border-top:1px solid var(--dim);text-align:center;font-style:italic;color:var(--gold-l);opacity:.85;}
 @media(min-width:560px){.help-content .hp-ways{grid-template-columns:1fr 1fr;}}
 
@@ -817,7 +820,7 @@ body.showing-hand-summary .card-question{
 .party-bottom{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;padding:12px 26px max(34px,env(safe-area-inset-bottom));}
 .party-prev-btn{justify-self:start;} .party-next-btn{justify-self:end;}
 .party-chrome button{height:44px;min-width:44px;background:none;border:none;padding:0 6px;cursor:pointer;
-  color:var(--celadon);font:400 12px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--celadon);font:400 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-3);text-transform:uppercase;
   display:flex;align-items:center;justify-content:center;gap:6px;}
 /* Spotlight's controls follow the main screen's play row / nav row: celadon at rest, gold on hover
    (mouse only), press and keyboard focus; "on" is an underline under the word, colour unchanged. */
@@ -827,10 +830,9 @@ body.showing-hand-summary .card-question{
 .party-exit svg{width:16px;height:16px;}
 .party-prev-btn,.party-next-btn,.party-star{font:400 17px/1 'Jost',sans-serif !important;letter-spacing:0 !important;padding:0 !important;}
 .party-prev-btn:disabled{opacity:.32;pointer-events:none;}   /* as the main screen's disabled back: .32 */
-/* the star: as #cardStar - gold, .18 off, .65 on hover (mouse only), 1 when starred */
-.party-chrome .party-star{color:var(--gold);opacity:.18;transition:opacity .2s;}
-@media (hover:hover) and (pointer:fine){.party-chrome .party-star:hover{color:var(--gold);opacity:.65;}}
-.party-chrome .party-star.on{opacity:1;}
+/* the star: as #cardStar - the empty star in --muted, gold on hover (mouse only) and when starred */
+.party-chrome .party-star{color:var(--muted);transition:color .2s;}
+.party-chrome .party-star.on{color:var(--gold);}
 .party-twist.on .row-lbl,.party-pick.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* same underline as #screenRow .on */
 .party-twist svg,.party-pick svg{width:16px;height:16px;flex-shrink:0;}
 
@@ -860,9 +862,9 @@ body.showing-hand-summary .card-question{
 /* the divider between question and Twist text: only on a Twist card (the plain card has no line under the question).
    Same flourish as the pick dividers (.pick-div): a hairline with a short bar either side. --pd-a (question side)
    is the card's category colour, set per card in updatePartyDisplay (presentation.js), the same source as the pick
-   dividers; --pd-b (twist side) is --celadon-soft. Horizontal, starting at the text's left edge, hairline fading
+   dividers; --pd-b (twist side) is --celadon-dim. Horizontal, starting at the text's left edge, hairline fading
    out to the right; vertical (sideways) in the landscape rules below. */
-.twist-div{display:none;--pd-b:var(--celadon-soft);}
+.twist-div{display:none;--pd-b:var(--celadon-dim);}
 .party-inner:has(.party-number.twist) .twist-div{display:block;position:relative;width:190px;height:1px;margin:14px 0;align-self:flex-start;pointer-events:none;
   background:linear-gradient(90deg,rgba(201,168,76,.5) 0,rgba(201,168,76,.5) 78%,transparent);}
 .twist-div::before,.twist-div::after{content:'';position:absolute;left:0;width:32px;height:3px;}
@@ -872,8 +874,8 @@ body.showing-hand-summary .card-question{
 /* Twist */
 .party-number{display:none;}
 .party-number.twist{display:flex;flex-direction:column;align-items:flex-start;gap:12px;
-  font:italic 400 24px/1.28 'Cormorant Garamond',serif;letter-spacing:.01em;color:var(--celadon);text-wrap:balance;max-width:26ch;}   /* celadon like .twist-sentence.twist */
-.party-number.twist::before{content:'TWIST';font:600 12px/1 'Jost',sans-serif;font-style:normal;letter-spacing:.3em;color:var(--celadon);}
+  font:italic 400 24px/1.28 'Cormorant Garamond',serif;letter-spacing:0;color:var(--celadon);text-wrap:balance;max-width:26ch;}   /* celadon like .twist-sentence.twist */
+.party-number.twist::before{content:'TWIST';font:600 var(--fs-1)/1 'Jost',sans-serif;font-style:normal;letter-spacing:var(--track-3);color:var(--celadon);}
 
 /* Draw three */
 .party-picker{position:absolute;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;
@@ -899,7 +901,7 @@ body.showing-hand-summary .card-question{
 .party-picker .pick-opt-text{position:relative;display:flex;flex-direction:column;gap:12px;padding-left:20px;text-align:left;}
 .party-picker .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
   -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
-.party-picker .pick-opt-level{font:600 12px/1 'Jost',sans-serif;letter-spacing:.16em;text-transform:uppercase;} /* same as category */
+.party-picker .pick-opt-level{font:600 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-2);text-transform:uppercase;} /* same as category */
 .party-picker .pick-opt-q{font:italic 300 25px/1.18 'Cormorant Garamond',serif;color:var(--cream);text-wrap:pretty;}
 /* With the three up, Close, Back, Twist, Three and Next stay usable: the chrome
    rows sit above the picker and only their buttons take taps (the rows span the
@@ -941,7 +943,7 @@ body.showing-hand-summary .card-question{
   /* sideways: the divider stands upright in the gap between columns, a little dimmer */
   .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
   .party-picker .pick-opt-text{padding-left:18px;}
-  .party-picker .pick-opt-level{font-size:12px;}
+  .party-picker .pick-opt-level{font-size:var(--fs-1);}
   .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
 }
 
@@ -954,7 +956,7 @@ body.showing-hand-summary .card-question{
   .pc-rule{display:flex;} .pc-rule::before{width:40px;}
   .party-count{font-size:18px;letter-spacing:.24em;}
   .party-bottom{padding:16px 88px 46px;}
-  .party-chrome button{font-size:15px;} /* readable on desktop */
+  .party-chrome button{font-size:var(--fs-4);} /* readable on desktop */
   .party-exit svg{width:18px;height:18px;}
   .party-prev-btn,.party-next-btn{font-size:18px !important;}
 
@@ -965,7 +967,7 @@ body.showing-hand-summary .card-question{
   .party-inner:has(.party-number.twist) .twist-div{width:300px;margin:18px 0;}
   .twist-div::before,.twist-div::after{width:44px;height:4px;} .twist-div::before{bottom:4px;} .twist-div::after{top:4px;}
   .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
-  .party-number.twist::before{font-size:13px;}
+  .party-number.twist::before{font-size:var(--fs-2);}
 
   /* the three options stacked in a centred column, one above the other */
   .party-picker{padding:104px 88px 56px;}
@@ -974,7 +976,7 @@ body.showing-hand-summary .card-question{
   .party-picker .picker-options{display:flex;flex-direction:column;overflow:visible;}
   .party-picker .pick-opt{flex:1 1 0;padding:10px 0;justify-content:center;}
   .party-picker .pick-opt-text{width:100%;max-width:980px;margin:0 auto;gap:22px;padding-left:28px;}
-  .party-picker .pick-opt-level{font-size:13px;letter-spacing:.2em;}
+  .party-picker .pick-opt-level{font-size:var(--fs-2);letter-spacing:var(--track-3);}
   .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
   .party-picker .pick-div{width:300px;}
   .party-picker .pick-div::before,.party-picker .pick-div::after{width:44px;margin-left:-22px;height:4px;}
@@ -1033,7 +1035,7 @@ body.showing-hand-summary #btnSave{display:flex;}
 /* Full screen's faded category line, in front of the text */
 .card-area .pick-opt-text::before{content:'';position:absolute;left:0;top:-4px;bottom:-4px;width:3px;background:var(--pc);
   -webkit-mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);mask:linear-gradient(180deg,transparent,#000 12% 88%,transparent);}
-.card-area .pick-opt-level{font:600 .64rem/1 'Jost',sans-serif;letter-spacing:.3em;text-transform:uppercase;}
+.card-area .pick-opt-level{font:600 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-3);text-transform:uppercase;}
 .card-area .pick-opt-q{
   font-size:var(--pq,1em);line-height:1.16;color:var(--cream);text-wrap:pretty;}
 
@@ -1044,21 +1046,20 @@ body.showing-hand-summary #btnSave{display:flex;}
   .card-area .pick-opt{padding:14px 90px 14px 64px;}
   .card-area .pick-opt::after{right:40px;width:12px;height:12px;}
   .card-area .pick-opt-text{gap:10px;padding-left:26px;}
-  .card-area .pick-opt-level{font-size:.82rem;}
+  .card-area .pick-opt-level{font-size:var(--fs-2);}
   .card-area .pick-opt-q{line-height:1.22;max-width:34ch;}
 }
 
 /* ── RESPONSIVE ── */
-@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:.88rem;}}
+@media(min-width:560px){.app{max-width:520px;}.card-question{font-size:1.55rem;}.twist-sentence.twist{font-size:var(--fs-3);}}
 @media(min-width:768px){
-  .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.twist-sentence.twist{font-size:.98rem;}
+  .title{font-size:2.6rem;}.card-question{font-size:2.1rem;}.twist-sentence.twist{font-size:var(--fs-4);}
   .card{--name-size:1.07rem;}
-  .btn-draw{font-size:.85rem;letter-spacing:.16em;}
-  .cat-toggle-lbl{font-size:.8rem;}
+  .cat-toggle-lbl{font-size:var(--fs-2);}
 }
 @media(min-width:1024px){
-  .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.twist-sentence.twist{font-size:1.05rem;}
-  .btn-draw{font-size:.88rem;}
+  .title{font-size:3.2rem;}.card-question{font-size:2.3rem;}.twist-sentence.twist{font-size:var(--fs-5);}
+  .btn-draw{font-size:var(--fs-3);}
   /* chrome sized for a 364px mobile card reads thin at 720px — scale the rail,
      frame and star (mobile 3px rail/.9rem star).
      Rail is 5px: desktop uses the hard-edged "intense" gilt.js derivation (see
@@ -1081,8 +1082,8 @@ body.showing-hand-summary #btnSave{display:flex;}
 .skip-undo{
   position:absolute;bottom:14px;left:50%;transform:translateX(-50%) translateY(6px);z-index:30;
   background:var(--card-bg);border:1px solid rgba(201,168,76,.5);
-  color:var(--gold-l);font-family:'Jost',sans-serif;font-size:.75rem;
-  letter-spacing:.12em;text-transform:uppercase;padding:15px 32px;
+  color:var(--gold-l);font-family:'Jost',sans-serif;font-size:var(--fs-1);
+  letter-spacing:var(--track-1);text-transform:uppercase;padding:15px 32px;
   cursor:pointer;z-index:300;opacity:0;pointer-events:none;
   transition:opacity .25s ease, transform .25s ease;white-space:nowrap;
   box-shadow:0 4px 24px rgba(0,0,0,.5);
@@ -1117,7 +1118,7 @@ body.showing-hand-summary #btnSave{display:flex;}
 .tok{background:none;border:none;cursor:pointer;position:relative;
   font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;
   padding:10px 14px 12px;transition:opacity .2s;white-space:nowrap;}
-.tok-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet-label);transition:color .2s;}
+.tok-lbl{font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--stone);transition:color .2s;}
 /* the word itself stays centred in the token — the caret is taken out of
    the text's own box (not just appended after it) and floated just past
    its edge, so a longer word doesn't drag the whole label off-centre */
@@ -1127,7 +1128,7 @@ body.showing-hand-summary #btnSave{display:flex;}
    device that a hand-tuned pixel nudge on .tok-rule (elsewhere) that looks
    right in one browser doesn't in another. Shrinking the box itself is the
    fix that doesn't depend on guessing a constant per renderer. */
-.tok-val{position:relative;font-size:.8rem;font-weight:500;line-height:1;letter-spacing:.1em;text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
+.tok-val{position:relative;font-size:var(--fs-3);font-weight:500;line-height:1;letter-spacing:var(--track-1);text-transform:uppercase;color:var(--tokc,var(--gold));transition:color .2s;}
 .tok-val::after{content:'\25BE';position:absolute;left:100%;top:50%;transform:translateY(-50%);
   margin-left:4px;font-size:.85em;opacity:.55;transition:transform .2s;color:var(--tokc,var(--gold));}
 /* underline as its own inset bar instead of a full-width border — spanning
@@ -1163,12 +1164,12 @@ body.showing-hand-summary #btnSave{display:flex;}
 .tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
 .tok-preset.open .tok-rule{opacity:.9;}
 @media (hover:hover) and (pointer:fine){.tok-preset:hover .tok-rule{opacity:.9;}}
-.tok-hint{color:var(--muted);transition:opacity .35s var(--ease-out);}
+.tok-hint{color:var(--text-helper);transition:opacity .35s var(--ease-out);}
 body.tok-taught .tok-hint{display:none;}
 .tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 @media (hover:hover) and (pointer:fine){.tok-preset:hover{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}}
 .tok-preset:active{opacity:.7;}
-.tok-preset .tok-val{font-size:.92rem;letter-spacing:.16em;}
+.tok-preset .tok-val{font-size:var(--fs-5);letter-spacing:var(--track-2);}   /* the picked deck's name reads one step above its neighbours */
 /* Custom with 2+ categories: the name is a soft gradient of the first 2-3 picked colours (--tokg, set in renderShell) */
 .tok-multi .tok-val{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
 /* no dropdown caret on this token — the hairlines and underline already say it opens something */
@@ -1206,15 +1207,15 @@ body.tok-taught .tok-hint{display:none;}
 /* the sheet's own title — playLeadFirst, driven by updateTimeOfDayHeading()
    — sits in this row next to Close. */
 .cat-sheet-head{position:relative;padding:4px 0 16px;flex-shrink:0;}
-.cat-sheet-head-title{text-align:center;color:rgba(240,232,216,.78);}
-.cat-sheet-name{--u:1px;display:flex;align-items:center;justify-content:center;gap:13px;font-size:.9rem;font-weight:500;letter-spacing:.26em;padding:6px 44px 8px;}   /* wears the card name's stripes (.card-level) */
+.cat-sheet-head-title{text-align:center;color:var(--sand);}
+.cat-sheet-name{--u:1px;display:flex;align-items:center;justify-content:center;gap:13px;font-size:var(--fs-3);font-weight:500;letter-spacing:var(--track-3);padding:6px 44px 8px;}   /* wears the card name's stripes (.card-level) */
 /* the metal line on top of The Deck and the menu: 3px of metal and a hairline 3px under it */
 .cat-area::before,.drawer::before{content:'';position:absolute;z-index:3;top:0;left:0;right:0;height:7px;pointer-events:none;
   background:var(--metal) 0 0/100% 3px no-repeat,linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 45%,transparent) 20%,color-mix(in srgb,var(--gold) 45%,transparent) 80%,transparent) 0 6px/100% 1px no-repeat;}
 /* padding carries the tap target up toward the ~44px minimum — the glyph
    itself stays the same visual size, the invisible hit area just grows
    around it instead of stopping a few px past the "x" */
-.cat-close{position:absolute;top:4px;right:6px;background:none;border:none;color:var(--muted);
+.cat-close{position:absolute;top:4px;right:6px;background:none;border:none;color:var(--muted-l);
   font-size:1rem;cursor:pointer;padding:14px;transition:color .2s;z-index:2;
   display:flex;align-items:center;justify-content:center;}
 @media (hover:hover) and (pointer:fine){.cat-close:hover{color:var(--cream);}}
@@ -1228,7 +1229,7 @@ body.tok-taught .tok-hint{display:none;}
    updateDrawMore()/hint() still toggle its "visible" class as the explicit
    end-of-hand signal the tests check. */
 .end-hint{display:none;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:320;
-  font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+  font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-2);text-transform:uppercase;
   color:var(--gold);opacity:0;pointer-events:none;transition:opacity .3s ease;}
 .end-hint.visible{opacity:.75;}
 
@@ -1252,7 +1253,7 @@ body.tok-taught .tok-hint{display:none;}
    empty space is exactly where a description of what's actually playing
    belongs instead (see #listModeNote / updateListModeNote in ui.js). */
 .list-mode-note{display:none;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.85rem;line-height:1.5;color:rgba(240,232,216,.75);padding:8px 10px 4px;}
+  font-size:var(--fs-2);line-height:1.5;color:var(--sand);padding:8px 10px 4px;}
 
 /* suggested: in this room, not yet chosen — the exploration hint */
 
@@ -1279,7 +1280,7 @@ body.tok-taught .tok-hint{display:none;}
   .party-orient-btn .ln{flex:1;width:1px;display:block;}
   .party-orient-btn .ln:first-child{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}   /* celadon lines, same 42% as the play row's rules */
   .party-orient-btn .ln:last-child{background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}
-  .party-orient-btn .tx{font:400 12px/1 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;writing-mode:vertical-rl;margin-right:-.22em;}
+  .party-orient-btn .tx{font:400 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-3);text-transform:uppercase;writing-mode:vertical-rl;margin-right:-.22em;}
   .party-orient-btn [data-s]{display:none;}
   .party-orient[data-land="0"] [data-s="p"],.party-orient[data-land="1"] [data-s="l"]{display:block;}
   .party-overlay:not(.orient-landscape) .party-picker{padding-right:44px;}
@@ -1310,7 +1311,7 @@ body.tok-taught .tok-hint{display:none;}
   .party-overlay.orient-landscape .party-picker .pick-opt{padding:0;justify-content:center;}
   .party-overlay.orient-landscape .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
   .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:18px;}
-  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:12px;}
+  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:var(--fs-1);}
   .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
 
   /* turned a quarter on a screen the browser keeps upright: the overlay takes the swapped
@@ -1331,7 +1332,7 @@ body.tok-taught .tok-hint{display:none;}
    Each line shows where the game is now (the deck, what is seen, what is played and starred) and what a
    tap does. The phone drawer holds the lines; the side panel (computer with a mouse) holds the same
    lines in The Deck's chapter-row frames, with the state in the count column. Values are the mockup's. */
-.menu-head{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold-l);}
+.menu-head{font-family:'Cormorant Garamond',serif;font-size:var(--fs-6);color:var(--gold-l);}
 .menu-lines .menu-head{padding:10px 26px 4px;}
 .sub-drawer .menu-head{text-align:center;padding:8px 0 12px;}
 .menu-rule{height:2px;background:var(--metal);margin:10px 26px;}
@@ -1340,11 +1341,11 @@ body.tok-taught .tok-hint{display:none;}
 .menu-line[hidden],.chapter[hidden]{display:none;}   /* Save, until the first card */
 .menu-icon{grid-row:1/3;color:var(--celadon);opacity:1;display:flex;}
 .menu-icon svg{width:18px;height:18px;}
-.menu-label{font-family:'Jost',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--celadon);}
-.menu-state{grid-column:2;font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--cream);opacity:.95;}
-.menu-deck{color:var(--preset);letter-spacing:.04em;}
+.menu-label{font-family:'Jost',sans-serif;font-size:var(--fs-1);font-weight:500;letter-spacing:var(--track-1);text-transform:uppercase;color:var(--celadon);}
+.menu-state{grid-column:2;font-family:'Cormorant Garamond',serif;font-size:var(--fs-6);color:var(--cream);opacity:.95;}
+.menu-deck{color:var(--preset);letter-spacing:0;}
 [data-menu-state].tok-multi .menu-deck{background:var(--tokg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
-.menu-act{grid-column:3;grid-row:1/3;font-family:'Federo','Jost',sans-serif;font-size:.8rem;letter-spacing:.05em;color:var(--celadon-hint);}
+.menu-act{grid-column:3;grid-row:1/3;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--celadon-dim);}
 .menu-foot{display:flex;justify-content:center;align-items:flex-start;gap:22px;margin:16px 0 2px;}
 /* The phone's menu shows all of itself without scrolling: three groups, seven lines and the foot. --m is the rhythm
    every gap in it is a share of; it steps down on shorter screens (the browser's bars take height on a phone), so
@@ -1357,59 +1358,59 @@ body.tok-taught .tok-hint{display:none;}
 #menuDrawer .drawer-handle{padding-block:calc(var(--m) + 2px);}
 @media (max-height:760px){#menuDrawer{--m:7px;}}
 @media (max-height:680px){#menuDrawer{--m:5px;}#menuDrawer .drawer-body{padding-bottom:max(10px,env(safe-area-inset-bottom));}}
-.menu-foot button{background:none;border:none;font-family:'Federo','Jost',sans-serif;font-size:.82rem;letter-spacing:.05em;color:var(--celadon);cursor:pointer;padding:10px 2px;}
+.menu-foot button{background:none;border:none;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--celadon);cursor:pointer;padding:10px 2px;}
 .menu-foot-item{display:flex;flex-direction:column;align-items:center;}
 /* the once-only line under Ways to play, like the hints under Three, Spotlight and Twist */
-.menu-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;letter-spacing:.01em;font-size:.95rem;line-height:1.15;color:var(--celadon-soft);}
+.menu-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;letter-spacing:0;font-size:var(--fs-4);line-height:1.15;color:var(--celadon-dim);}
 body.hint-ways-taught .menu-hint{display:none;}
 .menu-sep{width:4px;height:4px;margin-block-start:1.1rem;background:var(--celadon);transform:rotate(45deg);opacity:.4;}
 
 /* ── PLAYED and FAVOURITES: a spread of small cards (menu round 1, option C) ──
    A sheet on the phone; where the menu is a side panel (see "THE DECK, DOCKED") the same panel. Values are the mockup's. */
-.sheet-side .drawer-title{font-size:.85rem;letter-spacing:.2em;padding:4px 0 6px;}
+.sheet-side .drawer-title{font-size:var(--fs-2);letter-spacing:var(--track-3);padding:4px 0 6px;}
 .sheet-side .menu-head{text-align:left;padding:0;margin:14px 0 8px;}
 .play-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .play-card{position:relative;display:block;inline-size:100%;margin:0;padding:10px 11px 12px;min-height:118px;font:inherit;color:inherit;text-align:start;cursor:pointer;
   border:1px solid color-mix(in srgb,var(--lvl) 45%,transparent);border-top:3px solid var(--lvl);
   background:linear-gradient(180deg,color-mix(in srgb,var(--lvl) 9%,transparent),transparent 70%);}
-.play-cat{display:block;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;}
-.play-q{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.02rem;line-height:1.3;color:var(--cream);margin:3px 0 0;}
+.play-cat{display:block;font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-2);text-transform:uppercase;}
+.play-q{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:var(--fs-5);line-height:1.3;color:var(--cream);margin:3px 0 0;}
 .play-card:focus-visible{outline:1px solid var(--celadon);outline-offset:2px;}
 .play-star{position:absolute;inset-block-start:7px;inset-inline-end:10px;color:var(--gold);font-size:.8rem;opacity:.85;}
-.play-empty{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--muted-l);padding:6px 0 4px;}
+.play-empty{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:var(--fs-5);color:var(--muted-l);padding:6px 0 4px;}
 /* the tools are quiet words, no boxes and no separators (a separator would dangle when the words wrap) */
 .play-foot{display:flex;justify-content:center;align-items:center;gap:6px 28px;margin:0 0 10px;flex-wrap:wrap;}
-.play-foot button{background:none;border:none;font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.06em;color:var(--celadon);cursor:pointer;padding:8px 2px;}
+.play-foot button{background:none;border:none;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--celadon);cursor:pointer;padding:8px 2px;}
 .play-foot .quiet{color:var(--muted-l);}
 .play-shelf{display:flex;flex-direction:column;gap:6px;}
 .play-save{display:flex;align-items:center;gap:14px;padding:12px 14px 12px 16px;border:1px solid var(--dim);border-left:3px solid var(--border-strong);cursor:pointer;}
 .play-save.now{border-left-color:var(--celadon);}
 .play-save-main{flex:1;min-width:0;display:block;background:none;border:none;padding:0;text-align:start;color:inherit;font:inherit;cursor:pointer;}
-.play-save-name{display:block;font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--cream);}
-.play-save-meta{display:block;font-family:'Federo','Jost',sans-serif;font-size:.8rem;color:var(--muted-l);margin-top:2px;}
-.play-save-now{font-family:'Federo','Jost',sans-serif;font-size:.8rem;color:var(--celadon);margin-inline-start:8px;}
+.play-save-name{display:block;font-family:'Cormorant Garamond',serif;font-size:var(--fs-6);color:var(--cream);}
+.play-save-meta{display:block;font-family:'Jost',sans-serif;font-size:var(--fs-2);color:var(--muted-l);margin-top:2px;}
+.play-save-now{font-family:'Jost',sans-serif;font-size:var(--fs-2);color:var(--celadon);margin-inline-start:8px;}
 .play-save-act{display:flex;gap:16px;}
-.play-save-act button{background:none;border:none;padding:8px 0;font-family:'Federo','Jost',sans-serif;font-size:.82rem;color:var(--celadon-soft);cursor:pointer;}
-.play-add{display:block;margin:0 auto 8px;background:none;border:none;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--celadon);cursor:pointer;padding:10px;}
+.play-save-act button{background:none;border:none;padding:8px 0;font-family:'Jost',sans-serif;font-size:var(--fs-2);color:var(--celadon-dim);cursor:pointer;}
+.play-add{display:block;margin:0 auto 8px;background:none;border:none;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-2);text-transform:uppercase;color:var(--celadon);cursor:pointer;padding:10px;}
 @media (hover:hover) and (pointer:fine){.play-foot button:hover,.play-add:hover,.play-save-act button:hover{color:var(--cream);}}
 
 /* the side panel: closed and hidden except where The Deck is docked (see "THE DECK, DOCKED") */
 .side-drawer{display:none;}
 .side-head{display:flex;align-items:center;justify-content:space-between;padding:18px 0 6px;}
-.side-title{font-family:'Jost',sans-serif;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
-.side-close{background:none;border:none;color:var(--muted);font-size:1rem;padding:4px;cursor:pointer;}
+.side-title{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-3);text-transform:uppercase;color:var(--gold);}
+.side-close{background:none;border:none;color:var(--muted-l);font-size:1rem;padding:4px;cursor:pointer;}
 @media (hover:hover) and (pointer:fine){.side-close:hover{color:var(--cream);}}
 .side-drawer .menu-lines .menu-head{padding:0;margin:16px 0 8px;}
 .side-drawer .chapter{min-height:0;margin-bottom:6px;cursor:pointer;}
 .side-drawer .ch-main{padding:10px 14px;gap:4px;}
 /* .chapter .ch-name / .ch-desc (The Deck's rows) come later in this file with the same weight, so the panel names them through .chapter too */
-.side-drawer .chapter .ch-name{font-size:.82rem;letter-spacing:.14em;color:var(--celadon);}
-.side-drawer .chapter .ch-desc{font-size:.82rem;color:var(--cream);}
+.side-drawer .chapter .ch-name{font-size:var(--fs-2);letter-spacing:var(--track-2);color:var(--celadon);}
+.side-drawer .chapter .ch-desc{font-size:var(--fs-2);color:var(--cream);}
 .side-drawer .ch-fold{pointer-events:none;width:10.5rem;padding:0 16px;margin:8px 0;border-left:1px solid var(--border);}
-.side-drawer .ch-ct{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:.85rem;letter-spacing:.1em;color:var(--cream);opacity:1;}
-.side-drawer .menu-deck{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;}
+.side-drawer .ch-ct{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--cream);opacity:1;}
+.side-drawer .menu-deck{font-size:var(--fs-2);letter-spacing:0;text-transform:uppercase;}
 .side-drawer .menu-foot{justify-content:flex-start;margin-top:22px;padding-top:14px;border-top:1px solid var(--dim);}
-.side-drawer .menu-foot button{font-size:.85rem;padding:6px 0;}
+.side-drawer .menu-foot button{font-size:var(--fs-2);padding:6px 0;}
 .side-drawer .menu-foot-item{align-items:flex-start;}
 @media (hover:hover) and (pointer:fine){
   .side-drawer .chapter:hover{border-top-color:var(--border);border-right-color:var(--border);border-bottom-color:var(--border);}
@@ -1418,7 +1419,7 @@ body.hint-ways-taught .menu-hint{display:none;}
 
 /* ── DESKTOP — a room, not a stretched phone ── */
 @media(min-width:768px){
-  .tok{font-size:.8rem;}
+  .tok{font-size:var(--fs-2);}
   .tray.open{max-height:330px;}
   .app{max-width:680px;}
 
@@ -1458,26 +1459,23 @@ body.hint-ways-taught .menu-hint{display:none;}
 }
 @media(min-width:1024px){
   /* small surfaces were phone-sized on a monitor */
-  .drawer-title{font-size:.85rem;}
-  .cat-area{--pick-size:.85rem;}
-  .help-content p{font-size:1.1rem;}
+  .drawer-title{font-size:var(--fs-2);}
+  .help-content p{font-size:var(--fs-6);}
 }
 @media(min-width:1180px){
   .app{max-width:900px;}
   /* readable at arm's length on a monitor */
-  .drawer-title{font-size:.9rem;}
-  .help-content p{font-size:1.15rem;}
+  .drawer-title{font-size:var(--fs-3);}
+  .help-content p{font-size:var(--fs-6);}
   .card-question{line-height:1.42;}
   .card-question{font-size:2.6rem;}
-  .twist-sentence.twist{font-size:1.15rem;}
+  .twist-sentence.twist{font-size:var(--fs-6);}
   .card{--name-size:1.18rem;}
-  .tok{font-size:.85rem;}
-  .btn-draw{font-size:.9rem;}
 }
 @media(min-width:1600px){
   .app{max-width:1000px;}
   .card-question{font-size:2.85rem;}
-  .twist-sentence.twist{font-size:1.2rem;}
+  .twist-sentence.twist{font-size:var(--fs-6);}
   .card{--name-size:1.24rem;}
 }
 
@@ -1486,7 +1484,7 @@ body.hint-ways-taught .menu-hint{display:none;}
   .app{max-width:820px;}
   .card-question{font-size:2.1rem;}
   .card{--name-size:1.125rem;}
-  .twist-sentence.twist{font-size:.98rem;}
+  .twist-sentence.twist{font-size:var(--fs-4);}
 }
 
 /* Desktop windows up to ~960px tall: the whole main screen (header to the
@@ -1544,7 +1542,7 @@ body.hint-ways-taught .menu-hint{display:none;}
   background:linear-gradient(to top, var(--surface) 60%, transparent);}
 .cat-go-btn{display:block;width:100%;
   background:linear-gradient(135deg,#c9a84c 0%,#a07830 100%);
-  border:none;color:var(--bg);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.14em;
+  border:none;color:var(--bg);font-family:'Federo','Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-2);
   text-transform:uppercase;height:var(--gold-btn-h);padding:0;text-align:center;cursor:pointer;transition:transform .16s var(--ease-out);}
 @media (hover:hover) and (pointer:fine){.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}}
 .cat-go-btn:active{transform:scale(.98);}
@@ -1587,16 +1585,16 @@ body.hint-ways-taught .menu-hint{display:none;}
 .ch-hit{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left;}
 .ch-hit::after{content:'';position:absolute;inset:0;}
 .spice-glyph--inline{position:relative;z-index:1;flex-shrink:0;align-self:center;padding:8px 8px;}
-.chapter .ch-name{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;
-  text-transform:uppercase;color:rgba(240,232,216,.68);white-space:nowrap;font-weight:500;}
+.chapter .ch-name{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);
+  text-transform:uppercase;color:var(--stone);white-space:nowrap;font-weight:500;}
 :is(.chapter,.chapter-group--switch) .ch-name{transition:color var(--ch-ease);}
-.chapter .ch-desc{font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.02em;color:var(--quiet-text);
+.chapter .ch-desc{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--stone);
   line-height:1.35;}
 /* fold target: count over a chevron, set off by a hairline */
 .ch-fold{position:relative;z-index:1;width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:7px;background:none;border:none;cursor:pointer;color:var(--celadon);}
 .ch-fold::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:1px;background:var(--border);}
-.ch-ct{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--quiet-text);transition:color var(--ch-ease);}
+.ch-ct{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--stone);transition:color var(--ch-ease);}
 .chapter.part .ch-ct{color:var(--ch);}
 .ch-chev{display:block;transition:transform .22s ease;}
 .ch-fold.open .ch-chev{transform:rotate(180deg);}
@@ -1653,13 +1651,13 @@ body.hint-ways-taught .menu-hint{display:none;}
 .ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
 .ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
 .chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
-.ch-fold--row .ch-name,.seg-head span{font-family:'Jost',sans-serif;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
-  color:rgba(240,232,216,.68);white-space:nowrap;}
-.ch-fold--row .ch-desc{flex:1;text-align:left;font-size:.8rem;color:var(--muted-l);}
+.ch-fold--row .ch-name,.seg-head span{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);text-transform:uppercase;
+  color:var(--stone);white-space:nowrap;}
+.ch-fold--row .ch-desc{flex:1;text-align:left;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--muted-l);}   /* a span in a button does not inherit the page font */
 .chapter-group--fixed{--ch:var(--cream);}
 /* Wildcards: a switch in Fixed Sets' row shape; its state sits where Fixed Sets has its chevron, celadon like a chosen option */
-.wc-state{flex:none;width:60px;text-align:center;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);transition:color var(--ch-ease);}
+.wc-state{flex:none;width:60px;text-align:center;font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-2);text-transform:uppercase;
+  color:var(--text-helper);transition:color var(--ch-ease);}
 .wc-state::before{content:'\25CF\00a0';}
 .ch-fold--row[aria-checked="true"] .wc-state{color:var(--celadon);}
 .ch-fold--row[aria-checked="false"] .wc-state::before{content:'\25CB\00a0';}
@@ -1685,12 +1683,12 @@ body.hint-ways-taught .menu-hint{display:none;}
    --pc  the item's own colour (dot, underline source). Set per kind above and in config/markup.
    --tc  the colour of the word. Same as --pc, except where --pc is too dark to read as small
          text on the sheet: those get a lighter version of their own colour (list below). */
-.cat-area{--pick-size:.8rem;}
+.cat-area{--pick-size:var(--fs-2);}
 .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){
   --tc:var(--pc);
   position:relative;display:flex;align-items:center;gap:7px;min-height:var(--pick-h,44px);padding:0 9px;
   background:none;border:none;border-radius:0;opacity:1;text-shadow:none;cursor:pointer;
-  font-family:'Jost',sans-serif;font-size:var(--pick-size);font-weight:300;letter-spacing:.09em;
+  font-family:'Jost',sans-serif;font-size:var(--pick-size);font-weight:300;letter-spacing:var(--track-1);
   text-transform:uppercase;white-space:nowrap;
   color:color-mix(in srgb, var(--tc) 42%, rgba(240,232,216,.5));transition:color .2s;}
 .cat-area :is(.mode-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::before,
@@ -1720,7 +1718,7 @@ body.hint-ways-taught .menu-hint{display:none;}
    Each category carries its line (.cat-line, the category's own desc). Docked (a computer with a mouse) the lines are
    always on; on the sheet they are off until a hold on any category switches them on for every chapter
    (html[data-lines], set in selection.js). Lines on is two columns everywhere, phone and docked panel alike. Off is the sheet as it always was.
-   The line is Federo at .8rem like a chapter's line (.ch-desc), in the quiet helper tone, brighter once picked. */
+   The line is Jost at --fs-2 like a chapter's line (.ch-desc), in the quiet helper tone, brighter once picked. */
 :root{--pick-ease:.2s;}   /* how fast a category's state eases: the sheet's own .2s with the lines off, .45s once they are on or moving */
 html[data-lines="on"],html.switching{--pick-ease:.45s;}
 .cat-line{display:none;}
@@ -1741,9 +1739,9 @@ html[data-lines="on"] .chapter-panel .toggle-btn.on .cat-name::after{opacity:.7;
 html[data-lines="on"] .chapter-panel .cat-dot{align-self:center;}
 html[data-lines="on"] .chapter-panel .cat-name{justify-self:start;line-height:1.6;white-space:nowrap;}
 html[data-lines="on"] .chapter-panel .cat-line{grid-column:2;margin-top:.3em;
-  font-family:'Federo','Jost',sans-serif;font-size:.8rem;font-weight:400;letter-spacing:.02em;line-height:1.35;
+  font-family:'Jost',sans-serif;font-size:var(--fs-2);font-weight:400;letter-spacing:var(--track-text);line-height:1.35;
   text-transform:none;color:var(--text-helper);}
-html[data-lines="on"] .chapter-panel .toggle-btn.on .cat-line{color:rgba(240,232,216,.72);}
+html[data-lines="on"] .chapter-panel .toggle-btn.on .cat-line{color:var(--sand);}
 @media (hover:hover) and (pointer:fine){
   html[data-lines="on"] .chapter-panel .toggle-btn:not(.on):hover .cat-name::after{opacity:.35;}
 }
@@ -1756,7 +1754,7 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
   transition:opacity .55s ease-in,transform .16s var(--ease-out),color var(--pick-ease) ease;}
 /* the hint under each chapter opened: .tok-hint's face and size, in the tone it takes on a phone (--muted-l) */
 .chapter-panel .cat-hint{flex:0 0 100%;margin:0;padding:8px 9px 6px;
-  font-family:'Federo','Jost',sans-serif;font-size:.9rem;letter-spacing:.02em;line-height:1.35;color:var(--muted-l);}
+  font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;color:var(--muted-l);}
 .chapter-panel .cat-hint{animation:catHintIn .45s ease both;}
 body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 @keyframes catHintIn{from{opacity:0}}
@@ -1835,7 +1833,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
     transform:translateX(102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
   .sheet-side .drawer-title{text-align:left;padding-block-start:18px;}
   .sheet-side .play-grid{grid-template-columns:repeat(3,1fr);}
-  .sheet-side .play-q{font-size:1.18rem;}
+  .sheet-side .play-q{font-size:var(--fs-6);}
 }
 
 /* the panel is a focus target for the keyboard, not a control: no ring around it (the controls inside keep theirs) */
@@ -1845,11 +1843,11 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
    Names of things (BALANCED, the chapter names, a card's category) stay in
    spaced capitals; hints, section headings, link text and the Three / Full
    screen / Twist row are written normally. */
-.tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
-.sect-lbl,.sect-lbl span,.cat-sheet-head-title{text-transform:none;letter-spacing:.02em;font-size:.95rem;}
+.tok-preset .tok-lbl,.tok-hint{text-transform:none;letter-spacing:var(--track-text);font-size:var(--fs-3);}
+.sect-lbl,.sect-lbl span,.cat-sheet-head-title{text-transform:none;letter-spacing:var(--track-text);font-size:var(--fs-4);}
 @media(min-width:1024px){
-  .sect-lbl,.sect-lbl span{font-size:1rem;}
-  .cat-sheet-head-title{font-size:1rem;}
+  .sect-lbl,.sect-lbl span{font-size:var(--fs-5);}
+  .cat-sheet-head-title{font-size:var(--fs-5);}
 }
 
 /* ── Type: Bodoni Moda for the questions, Federo for the sentence-case labels ──
@@ -1864,8 +1862,7 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
    as Jost (0.46), so labels keep their size; caps names stay Jost. */
 .card-question,.party-question,.party-picker .pick-opt-q,.card-area .pick-opt-q{
   font-family:'Bodoni Moda','Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size-adjust:0.36;}
-.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title,
-.chapter .ch-desc{
+.tok-preset .tok-lbl,.tok-hint,.sect-lbl,.sect-lbl span,.cat-sheet-head-title{
   font-family:'Federo','Jost',sans-serif;}
 
 /* ── Logo ornament: centre diamond copper, inner line pairs take the preset ── */
@@ -1896,7 +1893,8 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
    Nothing here changes what a control does.
    --pcW is the card's width; 174px (scaled) plus 54px is everything on screen that isn't the card: the header, the margins and the bottom row. */
 @media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 174px * var(--k) - 54px) * 556 / 360));}
+  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 174px * var(--k) - 54px) * 556 / 360));
+    --chrome-fs:var(--fs-1);--wide-hint-fs:var(--fs-2);--deck-fs:var(--fs-6);}   /* the words round the card, and the picked deck's name, at one step each; the next step up from 1600x900 (--k from .9) */
   body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
   .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
     display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto;
@@ -1913,16 +1911,16 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   /* Selected deck, top left */
   .tok-line{grid-column:1;grid-row:1;justify-self:start;width:auto;padding:calc(var(--k)*20px) 0 0;margin:0;justify-content:flex-start;}
   .tok-preset{flex-direction:column;align-items:flex-start;gap:calc(var(--k)*5px);padding:0;border-bottom:0;}
-  .tok-preset .tok-lbl{font-size:max(11px,calc(var(--k)*14px));letter-spacing:.02em;text-transform:none;color:rgba(240,232,216,.85);}
+  .tok-preset .tok-lbl{font-size:var(--chrome-fs);letter-spacing:var(--track-text);text-transform:none;color:var(--sand);}
   .tok-preset .tok-hint{color:var(--muted-l);}
   .tok-preset .tok-val-row{gap:0;}
   .tok-preset .tok-rule{display:none;}
-  .tok-preset .tok-val{font-size:max(16px,calc(var(--k)*20px));letter-spacing:.14em;}
+  .tok-preset .tok-val{font-size:var(--deck-fs);letter-spacing:var(--track-2);}
   .tok-preset .tok-val::after{display:none;}
   @media (hover:hover) and (pointer:fine){.tok-preset:hover .tok-val{filter:brightness(1.25);}}
   @media (hover:hover) and (pointer:fine){
     #tokHint{font-size:0;}
-    #tokHint::after{content:" \00b7  click to change";font-size:max(11px,calc(var(--k)*14px));}
+    #tokHint::after{content:" \00b7  click to change";font-size:var(--chrome-fs);letter-spacing:var(--track-text);}
   }
 
   /* Menu under Selected deck, top left: the icon at the outer edge */
@@ -1933,15 +1931,15 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   #screenRow{grid-column:3;grid-row:1 / 3;justify-self:end;align-self:start;width:auto;flex-direction:column;justify-content:flex-start;align-items:flex-end;
     gap:calc(var(--k)*3px);padding:calc(var(--k)*20px) 0 0;}
   #screenRow .quiet-word,#btn-menu,#btn-prev{position:relative;align-items:center;justify-content:flex-start;
-    gap:calc(var(--k)*10px);min-width:0;min-height:0;margin:0;padding:calc(var(--k)*4px) 0;font-size:max(11px,calc(var(--k)*14px));}
-  #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;}   /* the phone centres these in their column */
+    gap:calc(var(--k)*10px);min-width:0;min-height:0;margin:0;padding:calc(var(--k)*4px) 0;font-size:var(--chrome-fs);}
+  #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;width:auto;}   /* the phone centres these in their column */
   #screenRow .quiet-word{flex-direction:row-reverse;}
   #btn-menu,#btn-prev{flex-direction:row;}
   #btn-prev,#btnPick,#btnTwist{display:flex;}
   .quiet-word svg{display:block;flex:none;width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
   #screenRow #btnWays{min-height:calc(var(--k)*28px);}   /* no icon, but the same box as Spotlight and Save (icon plus padding) */
   #screenRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin:0 calc(var(--k)*18px) 0 0;
-    max-width:none;white-space:nowrap;text-align:right;font-size:max(13px,calc(var(--k)*16px));line-height:1.15;
+    max-width:none;white-space:nowrap;text-align:right;font-size:var(--wide-hint-fs);line-height:1.15;
     opacity:0;transition:opacity .2s;pointer-events:none;}
   /* hover and keyboard focus always show the hint here; "taught" only retires the phone's hint at rest */
   body #screenRow .quiet-word .row-hint{visibility:visible;}
@@ -1967,8 +1965,8 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card-level{top:5.9cqw;left:14cqw;right:14cqw;gap:2.2cqw;}
   .card.mark-wildcard .card-level{font-size:2.3cqw;}
   .card-level::before,.card-level::after{height:1.5cqw;border-width:1.5px 0;}
-  .card-star{font-size:clamp(22px,2.2cqw,28px);top:calc(4.6cqw - 10px);right:calc(3.8cqw - 10px);padding:10px;opacity:.35;}
-  @media (hover:hover) and (pointer:fine){.card-star:hover{opacity:.75;}}.card-star.active{opacity:1;}
+  .card-star{font-size:clamp(22px,2.2cqw,28px);top:calc(4.6cqw - 10px);right:calc(3.8cqw - 10px);padding:10px;}
+  @media (hover:hover) and (pointer:fine){.card-star:hover{color:var(--gold);}}.card-star.active{color:var(--gold);}
   .card-ad-mark{font-size:38.4cqw;}
   .card-body-inner{padding-inline:7cqw;}
   .card-question{font-size:6.8cqw;line-height:1.12;}
@@ -1989,7 +1987,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .card-area .pick-opt{padding:1cqw 9cqw 1cqw 7cqw;}
   .card-area .pick-opt::after{right:4cqw;width:1.1cqw;height:1.1cqw;}
   .card-area .pick-opt-text{gap:1.1cqw;padding-left:2.4cqw;}
-  .card-area .pick-opt-level{font-size:1.5cqw;letter-spacing:.2em;}
+  .card-area .pick-opt-level{font-size:1.5cqw;letter-spacing:var(--track-3);}
   .card-area .pick-opt-q{line-height:1.16;max-width:none;}
   .card-area .picker-options::before{top:calc(var(--k)*24px);left:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
   .card-area .picker-options::after{bottom:calc(var(--k)*24px);right:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
@@ -1997,6 +1995,10 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   /* Twist: a line you read from across the table, about half the question's size */
   .twist-sentence{padding:0 7cqw calc(var(--frame-i) + 1.5cqw);}
   .twist-sentence.twist{font-size:3.3cqw;line-height:1.3;}
+}
+
+@media (min-width:1600px) and (min-height:900px) and (min-aspect-ratio:5/4){
+  :root{--chrome-fs:var(--fs-3);--wide-hint-fs:var(--fs-4);--deck-fs:var(--fs-7);}
 }
 
 /* Spotlight on wide screens: Three / Close / Twist take the same places as on the main screen's
@@ -2007,7 +2009,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
   .party-bottom .party-prev-btn{grid-column:1;} .party-bottom .party-next-btn{grid-column:3;}
   .party-top .party-pick,.party-top .party-twist,.party-bottom .party-exit{
     position:fixed;right:var(--sx);left:auto;height:calc(var(--k)*31px);min-width:0;padding:0 !important;z-index:6;
-    flex-direction:row-reverse;justify-content:flex-start;gap:calc(var(--k)*10px);font-size:max(11px,calc(var(--k)*14px));letter-spacing:.22em;}
+    flex-direction:row-reverse;justify-content:flex-start;gap:calc(var(--k)*10px);font-size:var(--chrome-fs);letter-spacing:var(--track-3);}
   .party-top .party-pick{top:calc(var(--k)*20px);}
   .party-bottom .party-exit{top:calc(var(--k)*51px);}
   .party-top .party-twist{top:calc(var(--k)*82px);}
