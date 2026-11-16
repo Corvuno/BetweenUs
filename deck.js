@@ -154,7 +154,7 @@ function _arcLimit() {
 }
 
 function initDeck(isContinuation) {
-  // isContinuation: true only from startNewHand() (Draw more / hold-to-continue),
+  // isContinuation: true only from startNewHand() (Draw more / Next hand),
   // which draws a fresh hand under the SAME settings — the draw animation is
   // reserved for a hand that starts because something actually changed.
   state.skipDrawAnim = !!isContinuation;
@@ -209,7 +209,7 @@ function startFreshPass(){
 }
 /* Nothing in the selection is unseen any more: a fresh pass begins, every
    card in the selection counts as unseen again. Called when a new hand is
-   about to be built (hold-to-continue / Draw more / any settings change). */
+   about to be built (next hand / Draw more / any settings change). */
 function _startFreshPassIfSpent(){
   if (orderedSoloLevel()) return;
   const cards = getFilteredCards();
@@ -656,7 +656,7 @@ function renderEndMessage(html) {
 /* The message after the last card of a hand (in the card, and in fullscreen): it stays up long enough
    to read, then the card closes into Intermezzo (styles.css "The card closes"): the message fades,
    the back's lattice and frame draw in over it, and showHandSummary() takes over once the back is up.
-   Timers are kept so a new card or hand shown in the meantime (hold-to-continue, Back, a settings
+   Timers are kept so a new card or hand shown in the meantime (next hand, Back, a settings
    change) cancels the pending closing — hideHandSummary() calls clearEndTimers(). */
 const END_MSG_READ_MS = { 1: 1100, 2: 1900 };   // from the start of the swap to the start of the closing
 const TURN_MID_MS = 420, TURN_END_MS = 870;     // the sideways turn (Intermezzo and the list): 0.84s, edge-on at 420ms (matches styles.css cardTurn)
@@ -715,7 +715,7 @@ function _nextCardBase() {
   if (!state.visibleDeck.length) return;
   if (state.currentIndex < state.visibleDeck.length - 1) {
     // The draw animation marks a new hand actually starting from a settings
-    // change — not "Draw more"/hold-to-continue, which extends play with the
+    // change — not "Draw more"/next hand, which extends play with the
     // same settings and should feel like a plain next card, not a re-draw.
     // initDeck(isContinuation) sets skipDrawAnim accordingly on every reset.
     const isFirstDraw = state.currentIndex === -1 && !state.skipDrawAnim;
@@ -730,14 +730,14 @@ function _nextCardBase() {
   }
 }
 // nextCard is defined below (APP SHELL section) — it wraps _nextCardBase with
-// the end-of-draw hold gate and post-advance hooks (party/session summary).
+// the double-press guard and post-advance hooks (party/session summary).
 
 function prevCard() {
   if (dismissBroughtBack()) return;   // Back from a card brought back from Played or Favourites: the hand's own view
   /* Three options on screen: Back leaves them (no pick, nothing sits out) and
      is the card behind them again — the card of the step before. */
   if (state.pickerOpen && state.currentIndex < 0) return;   // first card of a hand: no card behind the options, they stay
-  if (state.pickerOpen) { closePicker(); state.pickOptions = null; return; }
+  if (state.pickerOpen) { closePicker(); state.pickOptions = null; updateDrawMore(); return; }
   /* The hand's list is up: Back turns the card over to Intermezzo (nothing else). */
   if (state.handSide === 'list') { showHandIntermezzo(); return; }
   if (state.currentIndex > 0) {
@@ -778,7 +778,7 @@ function skipCard() {
     // Show next card (or skipped-all state)
     if (state.visibleDeck.length === 0) {
       state.currentIndex = state.visibleDeck.length; // sentinel: past end
-      renderEndMessage(`<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Hold to continue.</span>`);
+      renderEndMessage(`<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Next hand.</span>`);
     } else {
       if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
       flipToCard(state.visibleDeck[state.currentIndex]);
@@ -799,29 +799,22 @@ function skipCard() {
   }
 }
 
-// Skip is downward-swipe-only; a hold always means "continue" (see the
-// end-of-draw hold gate below).
+// Skip is downward-swipe-only.
 
 // ═══════════════════════════════════════════════════════════
 // nextCard — advances the deck and runs post-advance hooks (party/session summary)
 // ═══════════════════════════════════════════════════════════
-// Pure: given the current state (plus the hold-gate flag, which is state too,
-// just not on the `state` object), decide what a "next" press should do. No
+// Pure: given the current state, decide what a "next" press should do. No
 // DOM reads, no DOM writes, no side effects — so this decision can be
 // reasoned about (or tested) on its own, separately from executing it.
 function decideNextCardAction() {
   if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) return { type: 'reshuffle' };  // all skipped: reshuffle straight into a card
   if (state.visibleDeck.length === 0) return { type: 'advance', wasAtEnd: false };  // _nextCardBase() no-ops safely on an empty deck
 
-  // Already past end (sentinel) — a tap offers a new round, but only once a
-  // completed hold has cleared it: the end of a draw is a deliberate stop,
-  // so tapping through a session can never rush past the summary unseen.
-  if (state.currentIndex >= state.visibleDeck.length) {
-    if (!window._endHoldOK) return { type: 'blocked' };
-    return { type: 'reshuffle', consumeHold: true };
-  }
+  // Already past end (sentinel): the press is "Next hand".
+  if (state.currentIndex >= state.visibleDeck.length) return { type: 'reshuffle' };
 
-  if (state.pickerOpen) return { type: 'noop' };  // pick-3 intercept (works in fullscreen too)
+  if (state.pickerOpen) return { type: 'repick' };  // Three others (works in fullscreen too)
   /* Three: each step of the hand not shown yet is offered as three cards (the
      planned one plus two). Steps already reached (after Back) just advance. */
   if (pickMode) {
@@ -843,7 +836,7 @@ function drawStep(step) {
   else openPicker(options, step);
 }
 
-/* Same settings, next hand (hold-to-continue and Draw more), drawn straight
+/* Same settings, next hand (next hand and Draw more), drawn straight
    into its first card — no draw animation, no blank card. With Three on that
    first card is offered as three like every other step. */
 function startNewHand() {
@@ -857,18 +850,35 @@ function drawFirstCard() {
   else _nextCardBase();
 }
 
+/* Three others: the options on screen are passed over like the unchosen ones of a pick (offered this hand, they
+   sit out the next) and three other cards take their place at the same step. When the selection can't supply
+   two other cards the options stay. */
+function offerOtherThree() {
+  const { step, options } = state.pickOptions;
+  const others = buildPickOptions(step, options);
+  if (others.length < 2) return;
+  options.forEach(c => { state.handOffered.add(c.id); state.sitOut[c.id] = state.handNo + 2; });
+  state.visibleDeck[step] = others[0];
+  openPicker(others, step);
+}
+
+/* The main action (button, card tap, Spotlight's next, ArrowRight, swipe left) ignores a second press for a
+   moment: after a draw, so a double tap draws one card, and while the pause after the last card arrives, so
+   "Next hand" is never hit by the tail of a double tap. The one guard, in the one entry. */
+const NEXT_GUARD_MS = { draw: 500, pause: 1000 };
+let _nextLockedUntil = 0;
+
 function nextCard() {
+  if (performance.now() < _nextLockedUntil) return;
   dismissBroughtBack();   // Draw carries on the hand where it was
   const action = decideNextCardAction();
+  _nextLockedUntil = performance.now() + (action.type === 'advance' && action.wasAtEnd ? NEXT_GUARD_MS.pause : NEXT_GUARD_MS.draw);
   switch (action.type) {
-    case 'blocked':
-      _nudgeEndHold();
-      return;
-    case 'noop':
-      return;
     case 'reshuffle':
-      if (action.consumeHold) window._endHoldOK = false;
       startNewHand();
+      return;
+    case 'repick':
+      offerOtherThree();
       return;
     case 'pick3':
       drawStep(action.step);
@@ -892,13 +902,16 @@ function nextCard() {
    in 20). If fewer than two unseen cards are left, cards already seen this
    pass fill in (so Three keeps working late in a pass), then the sit-outs from
    last hand; fewer options only when the selection can't supply two others. */
-function buildPickOptions(step) {
+function buildPickOptions(step, replacing = null) {
   const planned = state.visibleDeck[step];
   if (!planned) return [];
   const inHand = new Set(state.visibleDeck.map(c => c.id));
   const seen = _seenSet();
   const all = getFilteredCards();
-  const others = all.filter(c => !inHand.has(c.id) && !state.handOffered.has(c.id));
+  const shown = new Set((replacing ?? []).map(c => c.id));   // Three others: the options on screen are not offered again
+  const others = all.filter(c => !inHand.has(c.id) && !state.handOffered.has(c.id) && !shown.has(c.id));
+  const kept = replacing ? [] : [planned];   // Three others offers three new cards, the planned one included in the old ones
+  const need = 3 - kept.length;
   const isArc = state.randomMode === 'arc';
   const isAD = c => SPICY_LEVELS.includes(c.level);
   const noADOpener = isArc && !isAD(planned) && step <= 1 && !(step === 1 && Math.random() < 0.05);
@@ -937,18 +950,18 @@ function buildPickOptions(step) {
       const cand = (ti === 1 || ti === 3) ? shuffle(tier) : orderUnseen(tier, all);
       return cand.map((c, i) => ({ c, ti, i, k: Math.abs(levelDepth(c.level) - d) }));
     }).sort((x, y) => x.k - y.k || x.ti - y.ti || x.i - y.i);
-    while (picked.length < 2 && pool.length) {
+    while (picked.length < need && pool.length) {
       const group = pool.filter(x => x.k === pool[0].k && x.ti === pool[0].ti).map(x => x.c);
-      const used = new Set([planned.level, ...picked.map(c => c.level)]);
+      const used = new Set([...kept, ...picked].map(c => c.level));
       const card = group.find(c => !used.has(c.level) && !full(c)) ?? group.find(c => !full(c))
         ?? group.find(c => !used.has(c.level)) ?? group[0];
       picked.push(card);
       pool.splice(pool.findIndex(x => x.c === card), 1);
     }
-    return shuffle([planned, ...picked]);
+    return shuffle([...kept, ...picked]);
   }
   tiers.forEach((tier, ti) => {
-    if (picked.length >= 2 || !tier.length) return;
+    if (picked.length >= need || !tier.length) return;
     if (noADOpener) {
       const noAD = tier.filter(c => !isAD(c));
       if (noAD.length >= 2) tier = noAD;
@@ -960,15 +973,15 @@ function buildPickOptions(step) {
        within the cap, then one that only brings a new category, then the
        first. Freshness still comes first: a later tier is never used while
        this one can supply a card. */
-    while (picked.length < 2 && cand.length) {
-      const used = new Set([planned.level, ...picked.map(c => c.level)]);
+    while (picked.length < need && cand.length) {
+      const used = new Set([...kept, ...picked].map(c => c.level));
       let at = cand.findIndex(c => !used.has(c.level) && !full(c));   // the cap first, then variety
       if (at < 0) at = cand.findIndex(c => !full(c));
       if (at < 0) at = cand.findIndex(c => !used.has(c.level));
       picked.push(cand.splice(at < 0 ? 0 : at, 1)[0]);
     }
   });
-  return shuffle([planned, ...picked]);
+  return shuffle([...kept, ...picked]);
 }
 
 /* The player picks one of the options for `step`. It takes the step in the

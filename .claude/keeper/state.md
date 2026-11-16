@@ -40,7 +40,12 @@ down to one small scale (#148); a row of accessibility fixes in `Next`.
 
 - A design mood board for Between Us, starting with controls and the PC layout (#147): in its
   own conversation; it opens by asking what the board should help decide.
-- What makes a design enjoyable for them, in their words. Never asked directly.
+- What makes a design enjoyable for them, said about the card back and true for every design:
+  the balance of lines and black, small flourishes that emerge from the lines, areas cut out
+  with their own design, lines that lead the eye, playfulness. Turned down: clean, predictable,
+  safe, too even, empty space in random places.
+- The card back in the direction of the gold-line card frame (#175): four rounds, the last one
+  a redrawn reference. Waits on whether a back built from the logo's own shape is the right root.
 - Designing the card face went well when rough sketches on real cards came first and the owner
   could name the parts they liked; it went wrong when a liked part came back reshaped.
 - Weight: the middle ground is live (small words one step firmer, metal lines on The Deck and the

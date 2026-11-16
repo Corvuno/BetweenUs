@@ -7,11 +7,11 @@ don'ts.
 ## Where the look comes from
 
 - The line under the title and the logo are the source: fine gold line work, layered diamonds,
-  symmetry about a centre. A new element is family of these, or adapts one reference from
-  `.claude/keeper/references/` faithfully and richly, and says which. What carries over is the
-  quality the owner names in it (how lines and dark balance, how areas are cut, where the eye is
-  led), built from this deck's own pieces. Its layout and its objects stay in the picture: a
-  reference is never redrawn, in whole or in part.
+  symmetry about a centre. A new element is family of these. From a reference in
+  `.claude/keeper/references/` it takes only the quality the owner names in it (how lines and
+  dark balance, how areas are cut, where the eye is led) and builds that from this deck's own
+  pieces, saying which reference. A reference's layout and objects are never redrawn, in whole
+  or in part.
 - Ornament grows out of the space it sits in and the screen's own pieces. An element may also
   simply be pretty.
 - The logo and its emblem stay as they are unless the owner asks. The small diamond belongs to

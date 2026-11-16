@@ -686,6 +686,13 @@ function paintEndHints(text) {
   fsHint.replaceChildren(v, ' ' + rest.join(' '));
 }
 
+// The main button's words while a hand is in play.
+function drawLabel(atLastCard, begun) {
+  if (state.pickerOpen) return 'Three others';
+  if (atLastCard) return 'End of hand';
+  return begun ? 'Next Card' : 'Draw Card';
+}
+
 function updateDrawMore() {
   // This runs after every deck-state change (nextCard, skipCard, initDeck,
   // choosePick, …), so the end-of-hand hint updates from here too — no need
@@ -713,22 +720,16 @@ function updateDrawMore() {
     setPauseColour();   // the button, the diamond and the rule are this hand's last card colour from the first frame
     // The end-of-draw button starts a fresh hand — NOT "draw more" (which would
     // pile 10 extra cards onto the finished hand instead of drawing a new one).
-    // This is the only state that skips straight to a new hand, and it always
-    // needs the hold gesture — the last card of a hand still goes through this
-    // screen first, never a one-tap shortcut around it.
-    nextBtn.classList.add('hold-mode');   /* distinct look: this one needs a hold */
-    // Intermezzo: the first hold turns the card to the list; on the list the
-    // next hold starts the next hand (until Intermezzo is up, a hold continues).
-    nextBtn.textContent = state.handSide === 'intermezzo' ? 'Tap to flip card' : 'Hold to continue';
+    // One tap, on Intermezzo and on the list alike (the card itself turns between them).
+    nextBtn.classList.add('hold-mode');   /* distinct look: the end of a hand (class name kept from when it needed a hold) */
+    nextBtn.textContent = 'Next hand';
     paintEndHints(nextBtn.textContent);
   } else {
     nextBtn.classList.remove('hold-mode');
     // On the last card, the tap ahead lands on the end of the hand, not another
     // card — say so, instead of promising "Next Card" and surprising people.
     const atLastCard = state.currentIndex >= 0 && state.currentIndex === state.visibleDeck.length - 1;
-    nextBtn.textContent = atLastCard
-      ? 'End of hand'
-      : begun ? 'Next Card' : 'Draw Card';
+    nextBtn.textContent = drawLabel(atLastCard, begun);
     nextBtn.classList.toggle('btn-draw--start', !begun);
   }
 };
@@ -737,7 +738,7 @@ function updateDrawMore() {
 // The end of every hand is a pause, not a report. The card shows its lattice
 // back with the pause mark and the word INTERMEZZO (side 'intermezzo'); a tap
 // turns it over to the hand's questions, each with its own star (side 'list');
-// a hold on either side starts the next hand (ui.js END_HOLD_TARGETS gate). Back on the
+// the button on either side starts the next hand. Back on the
 // list side returns to Intermezzo (prevCard in deck.js). state.handSide says
 // which side is up ('intermezzo' | 'list' | null when no hand has ended).
 // Fullscreen shows the same two sides in #partyOverlay; both surfaces are
@@ -943,6 +944,8 @@ function flipHandList() {
   renderHandSide(true);
   updateDrawMore();
 }
+// A tap on the card at the end of a hand: it turns over to the other side (nothing while the message is still up).
+function flipHandSide() { if (state.handSide === 'list') showHandIntermezzo(); else flipHandList(); }
 // Back on the list side: turn it over again to Intermezzo.
 function showHandIntermezzo() {
   if (state.handSide !== 'list') return;
@@ -967,12 +970,7 @@ function hideHandSummary() {
   if (was) { const el = document.getElementById('card'); if (el) el.classList.remove('flipping'); }
 }
 
-// ── End-of-draw hold gate ──
-// The end-of-hand summary is a stop, not something you tap through: continuing takes a
-// deliberate hold, in normal mode and fullscreen alike. Releasing a hold fires
-// touchend/click, so the gate opens a short swallow window that those handlers
-// (here and on the fullscreen overlay) check, keeping one hold to one advance.
-//
+// ── End of a hand: the hint ──
 // atEnd/hint are plain top-level functions (not nested in the IIFE below) so
 // updateDrawMore() — already the one place every deck-state change routes
 // through — can call hint(atEnd()) directly. That replaces a MutationObserver

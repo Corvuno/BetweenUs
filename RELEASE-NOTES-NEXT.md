@@ -14,3 +14,5 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - Three now sits in the menu next to Twist, and the menu is sorted into three groups.
+- The title is firmer, and on a computer the line under it keeps clear of the card.
+- At the end of a hand, one tap on "Next hand" starts the next one, no holding; tap the card to turn it between the pause and the list. With Three on, the button offers "Three others", a fast double tap draws just one card, and the phone's back button closes the menu or a sheet instead of leaving the app.

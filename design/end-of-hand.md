@@ -1,7 +1,8 @@
 # The end of a hand
 
 After the last card of a hand the app shows, in order: the message, the Intermezzo card back, and
-(on a tap) the hand's list. All of it follows the colours in `DESIGN-SYSTEM.md`; the only new
+(on a tap on the card) the hand's list. The gold button reads "Next hand" on both sides and one
+tap on it starts the next hand: nothing is ever held. All of it follows the colours in `DESIGN-SYSTEM.md`; the only new
 colour is the last drawn card's chapter colour, held as `--im-color` on `<body>` (set by
 `paintHandSide` in `presentation.js`). Fullscreen shows the same things in its own layout
 (`.party-overlay.is-hand-end` / `.is-hand-list`). Under the card, Save takes Spotlight's place
@@ -41,14 +42,14 @@ eases out of it (`cubic-bezier(.25,.6,.55,1)`). Edge-on is at 420ms and that is 
 the face swaps (JS: `TURN_MID_MS` 420, class removed at `TURN_END_MS` 870, both in `deck.js`;
 they follow the CSS). While turning, `.card-back` has `transition:none`, so the lattice back is
 there at once at the edge; the `.flipping` text fade is not used for these turns (the edge hides
-the swap). Applies to the card and the fullscreen card. Intermezzo flips with a tap; a hold skips
-the list. The message to Intermezzo does not use the turn. `.card.flipping` only serves the
+the swap). Applies to the card and the fullscreen card. A tap on the card turns Intermezzo to the
+list and a tap on the card again turns the list back (not on a star, not while the list scrolls). The message to Intermezzo does not use the turn. `.card.flipping` only serves the
 end-of-hand message fade.
 
-## Hold/Tap button (`.btn-draw.hold-mode`)
+## Next hand button (`.btn-draw.hold-mode`)
 The gold button's size and type, but filled with a gradient of `--im-color` (86% mixed to white
-down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words: "Tap to flip
-card" on Intermezzo, "Hold to continue" on the list. `.holding` dims it to opacity .72.
+down to 76% mixed to black, 135deg), dark text (`--bg`). Falls back to gold. Words:
+"Next hand" on Intermezzo and on the list (the class name is from when it needed a hold).
 
 ## The hand list (`.hd-list`, `.hd-row`)
 - Bodoni Moda italic questions in `--cream` (readable, not muted). Size set once per breakpoint
