@@ -29,12 +29,11 @@ const state = {
   drawUnseen: undefined,  // how many of fullDeck this session hasn't shown yet; set by buildFullDeck()
   currentIndex: -1,
   handSide: null,         // end of a hand: 'intermezzo' (card back + pause mark) or 'list' (the hand's questions); null otherwise (presentation.js)
-  skippedCards: new Set(),   // question numbers
   partyMode: false,
   sessionLog: [],               // {id, level, question} per card drawn
   seenFrom: 0,                  // index into sessionLog: cards logged from here on count as "seen" this pass (a fresh pass moves it to the end; the log itself is never wiped)
   loggedQuestions: new Set(),   // question numbers; per-round guard against duplicate log entries
-  skippedSeen: new Set(),       // question numbers skipped this pass: they count as seen (_seenSet) without being in the history list; cleared when a fresh pass starts (seenFrom moves)
+  skippedSeen: new Set(),       // question numbers an older version skipped this pass, still read from saved evenings and files: they count as seen (_seenSet) without being in the history list; cleared when a fresh pass starts (seenFrom moves)
   handNo: 0,                    // counts the hands built this session (initDeck/applyLimit); the clock for sitOut
   sitOut: {},                   // question number -> first handNo it may be drawn again: the cards passed over in a Three pick sit out the next hand
   reachedIdx: -1,               // furthest index of this hand that has been shown (Three only offers options on steps not reached yet)

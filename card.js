@@ -463,14 +463,14 @@ function bringBackCard(card) {
   closeAllDrawers();
   if (!broughtBack) viewBeforeBringBack = { options: state.pickerOpen ? state.pickOptions?.options : null, step: state.pickOptions?.step, handSide: state.handSide };
   closePicker();
-  retireNote();   // the card is on screen in place of the hand's own view: a skip that could still be undone is let go
+  retireNote();   // the card is on screen in place of the hand's own view: a note with an Undo still up is let go
   broughtBack = card;
   flipToCard(card);
   updateStarUI();
   updateDrawMore();   // Back, Twist and Spotlight are live from the tap, not 110ms later when the face is painted
 }
 
-/* Back from a brought-back card (and the first thing Draw and Skip do): the hand's own view comes back as it was,
+/* Back from a brought-back card (and the first thing Draw does): the hand's own view comes back as it was,
    the card, the start card, the end-of-hand screen, or the Three options. Returns whether there was one to drop. */
 function dismissBroughtBack() {
   if (!broughtBack) return false;

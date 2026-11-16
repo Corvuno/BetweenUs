@@ -301,18 +301,17 @@ const NOTE_MS = { plain: 2500, undo: 5000 };
 let _noteTimer = 0;
 /** @type {(() => void) | null} */
 let _noteUndo = null;
-/** @param {string} text  @param {{ undo?: () => void, undoLabel?: string, ms?: number }} [opts] */
-function showNote(text, { undo, undoLabel = 'Undo', ms = undo ? NOTE_MS.undo : NOTE_MS.plain } = {}) {
+/** @param {string} text  @param {{ undo?: () => void }} [opts] */
+function showNote(text, { undo } = {}) {
   const note = document.getElementById('note');
   const button = /** @type {HTMLButtonElement} */ (document.getElementById('noteUndo'));
   clearTimeout(_noteTimer);
   _noteUndo = undo ?? null;
   note.inert = false;
   document.getElementById('noteText').textContent = text;
-  button.textContent = undoLabel;
   button.hidden = !undo;
   note.classList.add('visible');
-  _noteTimer = window.setTimeout(hideNote, ms);
+  _noteTimer = window.setTimeout(hideNote, undo ? NOTE_MS.undo : NOTE_MS.plain);
 }
 function hideNote() {
   clearTimeout(_noteTimer);
@@ -794,7 +793,7 @@ function drawLabel(atLastCard, begun) {
 }
 
 function updateDrawMore() {
-  // This runs after every deck-state change (nextCard, skipCard, initDeck,
+  // This runs after every deck-state change (nextCard, initDeck,
   // choosePick, …), so the end-of-hand hint updates from here too — no need
   // to separately observe the DOM for it.
   hint(atEnd());

@@ -129,45 +129,82 @@ document.getElementById('card').addEventListener('click', e => {
   updateDeckInfo();
 });
 
-// What a finished touch on the card means: a swipe that is mostly sideways always moves through the hand
-// (left = next, right = back) and never skips; only a swipe that is clearly downward skips. In between
-// (a long diagonal) nothing happens, so a slanted back swipe is never read as a skip.
-function swipeAction(dx, dy, ms) {
-  if (Math.abs(dx) > Math.abs(dy)) {
-    if (ms >= 400 || Math.abs(dx) <= 50) return null;
-    return dx < 0 ? 'next' : 'prev';
-  }
-  return dy > 65 && dy > Math.abs(dx) * 2 ? 'skip' : null;
+// What a finished touch on the card means: a swipe that is mostly sideways moves through the hand (left =
+// next, right = back) once it passes the point, a quarter of the card's width, or is a quick flick past 50px
+// (under 400ms). Anything else, downward drags and long diagonals included, does nothing.
+const SWIPE_POINT_SHARE = .25;
+const SWIPE_FLICK = { ms: 400, px: 50 };
+function swipeAction(dx, dy, ms, width) {
+  if (Math.abs(dx) <= Math.abs(dy)) return null;
+  const past = Math.abs(dx) >= width * SWIPE_POINT_SHARE || (ms < SWIPE_FLICK.ms && Math.abs(dx) > SWIPE_FLICK.px);
+  if (!past) return null;
+  return dx < 0 ? 'next' : 'prev';
 }
 
-// Card touch gestures — one handler owns all of them (swipe left/right to
-// advance/reverse, swipe down to skip), so there's exactly one place that
-// decides what a touch on the card means. Registered non-passive so it can
-// call preventDefault() and suppress the synthetic click a touch leaves
-// behind, in place of the flag-based "swallow the next call" guards that
-// pattern otherwise forces on every listener downstream.
-(function() {
-  const card = document.getElementById('card');
-  let startX = 0, startY = 0, startTime = 0;
-  card.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    startTime = Date.now();
-  }, { passive: true });
-  card.addEventListener('touchend', e => {
-    const action = swipeAction(e.changedTouches[0].clientX - startX, e.changedTouches[0].clientY - startY, Date.now() - startTime);
-    if (action === 'skip') {
-      // never on the end/summary card
-      if (state.currentIndex >= 0 && state.currentIndex < state.visibleDeck.length) {
-        e.preventDefault();
-        skipCard();
-      }
-    } else if (action) {
-      e.preventDefault();
-      action === 'next' ? nextCard() : prevCard();
-    }
-  }, { passive: false });
-})();
+// Where the card sits while the finger is dragged dx sideways: one to one up to the point, then with growing
+// resistance so it never leaves the screen. When the swipe would do nothing the resistance is there from the start.
+const DRAG_START_PX = 8;
+const DRAG_OVERSHOOT_SHARE = .15;
+const DRAG_STIFF_SHARE = .1;
+const DRAG_RETURN_MS = 200;
+function dragOffset(dx, width, goes) {
+  const point = goes ? width * SWIPE_POINT_SHARE : 0;
+  const limit = width * (goes ? DRAG_OVERSHOOT_SHARE : DRAG_STIFF_SHARE);
+  const dist = Math.abs(dx), over = Math.max(0, dist - point);
+  return Math.sign(dx) * (Math.min(dist, point) + over * limit / (over + limit));
+}
+
+// Card touch gestures: one handler owns all of them. The card follows the finger sideways on its wrapper
+// (.card-area, never #card, so the card's own animations are untouched); released, the offset eases back to
+// zero in the same moment a swipe past the point does Next or Back, or alone when it was let go early.
+// Registered non-passive so it can call preventDefault() and suppress the synthetic click a touch leaves
+// behind after a drag. Under reduced motion the card stays still and the same release rules apply.
+const cardEl = document.getElementById('card');
+const cardArea = cardEl.parentElement;
+const dragEase = getComputedStyle(document.documentElement).getPropertyValue('--ease-out').trim();
+let cardTouch = null;   // { x, y, t, mode: 'wait' | 'drag' | 'vertical', offset }
+
+// The card's wrapper goes back to its place: eased from where the finger left it.
+function letCardGo(from) {
+  cardArea.style.transform = '';
+  if (from) cardArea.animate([{ transform: `translateX(${from}px)` }, { transform: 'translateX(0)' }], { duration: DRAG_RETURN_MS, easing: dragEase });
+}
+
+// A touch becomes a drag once it has moved more than 8px, and a sideways one only if it moved more sideways than up or down.
+function dragMode(dx, dy) {
+  if (Math.max(Math.abs(dx), Math.abs(dy)) <= DRAG_START_PX) return 'wait';
+  return Math.abs(dx) > Math.abs(dy) ? 'drag' : 'vertical';
+}
+
+cardEl.addEventListener('touchstart', e => {
+  cardArea.getAnimations().forEach(a => a.cancel());
+  if (e.touches.length > 1) { letCardGo(cardTouch?.offset); cardTouch = null; return; }   // a second finger ends the drag, as an early release
+  cardTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), mode: 'wait', offset: 0 };
+}, { passive: true });
+
+cardEl.addEventListener('touchmove', e => {
+  if (cardTouch?.mode === 'vertical' || !cardTouch) return;
+  const dx = e.touches[0].clientX - cardTouch.x, dy = e.touches[0].clientY - cardTouch.y;
+  if (cardTouch.mode === 'wait') cardTouch.mode = dragMode(dx, dy);
+  if (cardTouch.mode !== 'drag') return;
+  if (e.cancelable) e.preventDefault();
+  if (prefersReducedMotion.matches) return;
+  cardTouch.offset = dragOffset(dx, cardEl.offsetWidth, dx < 0 || canGoBack());
+  cardArea.style.transform = `translateX(${cardTouch.offset}px)`;
+}, { passive: false });
+
+cardEl.addEventListener('touchend', e => {
+  if (!cardTouch) return;
+  const { x, y, t, mode, offset } = cardTouch;
+  cardTouch = null;
+  const action = mode === 'vertical' ? null : swipeAction(e.changedTouches[0].clientX - x, e.changedTouches[0].clientY - y, Date.now() - t, cardEl.offsetWidth);
+  letCardGo(offset);
+  if (mode === 'wait' && !action) return;   // a tap: the click draws
+  e.preventDefault();
+  if (action) action === 'next' ? nextCard() : prevCard();
+}, { passive: false });
+
+cardEl.addEventListener('touchcancel', () => { letCardGo(cardTouch?.offset); cardTouch = null; });
 
 // ── Spotlight brightens once ── PROVISIONAL, for testing. When the third card
 // of a session is drawn, the Spotlight button (symbol + word) brightens to near
@@ -441,7 +478,6 @@ document.addEventListener('keydown',e=>{
   } else {
     if(e.key==='ArrowRight') { nextCard(); updateDeckInfo(); }
     if(e.key==='ArrowLeft')  { prevCard(); updateDeckInfo(); }
-    if(e.key==='ArrowDown')  { e.preventDefault(); skipCard(); }
     if(e.key==='3') document.getElementById('pickToggle').click();
   }
 });
@@ -879,7 +915,7 @@ applyToggleUI();
     // Drawing a brand-new hand from the sheet is the "starting over" moment —
     // if a stored session was live, detach from it so these new cards land
     // only in the ephemeral autosave slot, never silently overwriting it.
-    // Ordinary continued play (next/prev/skip/draw more/reshuffle/toggling a
+    // Ordinary continued play (next/prev/draw more/reshuffle/toggling a
     // category) never goes through here, so it never unbinds.
     if (typeof setActiveSessionId === 'function') setActiveSessionId('');
     initDeck();

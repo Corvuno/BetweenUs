@@ -19,29 +19,6 @@ function addToLog(card) {
   renderLog();
 }
 
-/* Skip takes a card back out of the history list (the card was logged when it
-   was shown). Returns what is needed to put it back (undo), or null. seenFrom
-   is kept pointing at the same card. */
-function removeFromLog(id) {
-  let idx = -1;
-  for (let i = state.sessionLog.length - 1; i >= 0; i--) if (state.sessionLog[i].id === id) { idx = i; break; }
-  state.loggedQuestions.delete(id);
-  if (idx < 0) return null;
-  const entry = state.sessionLog.splice(idx, 1)[0];
-  const movedSeenFrom = idx < state.seenFrom;
-  if (movedSeenFrom) state.seenFrom--;
-  renderLog();
-  return { idx, entry, movedSeenFrom };
-}
-function restoreToLog(info) {
-  if (!info) return;
-  const at = Math.min(info.idx, state.sessionLog.length);
-  state.sessionLog.splice(at, 0, info.entry);
-  if (info.movedSeenFrom) state.seenFrom++;
-  state.loggedQuestions.add(info.entry.id);
-  renderLog();
-}
-
 function renderLog() {
   const el = document.getElementById('logList');
   el.classList.toggle('play-grid', state.sessionLog.length > 0);

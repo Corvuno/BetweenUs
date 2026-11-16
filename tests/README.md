@@ -2,7 +2,7 @@
 
 A plain Node script, not a test framework — this app has no build step, so
 its tests don't get one either. It drives the real HTML file in a real
-headless Chromium and asserts on real DOM state: deck load, tap/swipe/skip/
+headless Chromium and asserts on real DOM state: deck load, tap/swipe/
 hold, keyboard arrows, category toggles, the draw-three picker, drawers,
 After Dark, and fullscreen party mode.
 

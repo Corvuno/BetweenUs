@@ -118,6 +118,34 @@ async function swipe(page, selector, dx, dy, { thenClick = false } = {}) {
   }, { selector, dx, dy, thenClick });
 }
 
+// A real drag with touch events: touchstart, a run of touchmoves spread over `ms`, then (unless `release` is false) touchend.
+// Reports how far the card's wrapper (.card-area) sat from its place just before the finger lifted, and whether the
+// page would have drawn a card from the click a browser sends after a touch that did not move. A drag slower than
+// 400ms is not a flick.
+async function drag(page, dx, dy, { ms = 500, release = true } = {}) {
+  return page.evaluate(async ({ dx, dy, ms, release }) => {
+    const el = document.getElementById('card');
+    const rect = el.getBoundingClientRect();
+    const x0 = rect.left + rect.width / 2, y0 = rect.top + rect.height / 2;
+    const touch = (x, y) => new Touch({ identifier: 7, target: el, clientX: x, clientY: y });
+    const fire = (type, x, y) => { const e = new TouchEvent(type, { touches: type === 'touchend' ? [] : [touch(x, y)], changedTouches: [touch(x, y)], bubbles: true, cancelable: true }); el.dispatchEvent(e); return e; };
+    fire('touchstart', x0, y0);
+    const steps = 8;
+    for (let i = 1; i <= steps; i++) {
+      fire('touchmove', x0 + dx * i / steps, y0 + dy * i / steps);
+      await new Promise(r => setTimeout(r, ms / steps));
+    }
+    const area = el.parentElement;
+    const out = { offset: new DOMMatrix(getComputedStyle(area).transform).m41, width: rect.width, cardTransform: el.style.transform };
+    if (release) {
+      const end = fire('touchend', x0 + dx, y0 + dy);
+      if (!end.defaultPrevented && Math.hypot(dx, dy) <= 10) el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    }
+    return out;
+  }, { dx, dy, ms, release });
+}
+const areaOffset = page => page.evaluate(() => new DOMMatrix(getComputedStyle(document.getElementById('card').parentElement).transform).m41);
+
 // Three lives in The Deck sheet and Twist in the menu now. Most checks flip Three through its own element's click (what key 3 and the
 // fixed-set switch-off do); the check "Three is set in The Deck" taps the real Off/On words.
 const toggleThree = page => page.evaluate(() => document.getElementById('pickToggle').click());
@@ -232,17 +260,16 @@ async function run() {
   });
 
   // A thumb rarely swipes a straight line: a slanted back swipe is still a back swipe (#117).
-  await check('slanted swipe: mostly sideways always goes back or forward and never skips; only a clearly downward swipe skips', async () => {
+  await check('slanted swipe: mostly sideways always goes back or forward; a long diagonal does nothing', async () => {
     for (const [dx, dy, expect] of [[120, 90, -1], [110, 100, -1], [90, 70, -1], [-110, 100, 1], [-90, 80, 1]]) {
       const before = await cardParts(page);
       await swipe(page, '#card', dx, dy, { thenClick: true });
       await page.waitForTimeout(350);
       const after = await cardParts(page);
-      assert(after.total === before.total, `swipe (${dx}, ${dy}) skipped a card`);
       assert(after.index === before.index + expect, `swipe (${dx}, ${dy}): expected ${expect > 0 ? 'forward' : 'back'} one card, got ${before.index} -> ${after.index}`);
       if (expect < 0) { await swipe(page, '#card', -120, 0); await page.waitForTimeout(350); } else { await swipe(page, '#card', 120, 0); await page.waitForTimeout(350); }
     }
-    // a long diagonal that is neither sideways nor clearly down does nothing
+    // a long diagonal that is mostly down does nothing
     const before = await cardParts(page);
     await swipe(page, '#card', 60, 100);
     await page.waitForTimeout(350);
@@ -250,30 +277,118 @@ async function run() {
     assert(after.index === before.index && after.total === before.total, `a diagonal swipe did something: ${JSON.stringify(before)} -> ${JSON.stringify(after)}`);
   });
 
-  // ── E. Swipe down skips the current card ────────────────────────────────
-  await check('swipe down skips exactly one card (no double-fire from synthetic click)', async () => {
-    const before = await cardParts(page);
-    await swipe(page, '#card', 0, 100, { thenClick: true });
-    await page.waitForTimeout(300);
-    const after = await cardParts(page);
-    assert(after.total === before.total - 1, `expected total ${before.total - 1}, got ${after.total}`);
+  // ── E. The card follows the finger sideways (real touches: start, moves, end) ─────────────────
+  const dragApp = async (opts = {}) => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block', ...opts });
+    const pg = await ctx.newPage();
+    pg.on('pageerror', (e) => consoleErrors.push(e.message));
+    await pg.goto(`http://127.0.0.1:${port}/${TARGET}`);
+    await pg.waitForSelector('#card', { state: 'visible' });
+    await pg.waitForTimeout(500);
+    // three cards in: Back and Next both have somewhere to go
+    for (let i = 0; i < 3; i++) {
+      await pg.evaluate(() => nextCard());
+      await pg.waitForFunction(n => state.currentIndex === n, i, { timeout: 4000 });
+      await pg.waitForTimeout(700);
+    }
+    return { ctx, pg };
+  };
+
+  await check('dragging the card sideways past the point: it follows the finger on its wrapper, then Next (left) or Back (right) happens and the card eases back to its place', async () => {
+    const { ctx, pg } = await dragApp();
+    try {
+      for (const [dx, step] of [[-130, 1], [130, -1]]) {
+        const before = await cardParts(pg);
+        const d = await drag(pg, dx, 6);
+        assert(Math.sign(d.offset) === Math.sign(dx) && Math.abs(d.offset) > 60 && Math.abs(d.offset) < d.width * .45, `the card did not follow a ${dx}px drag: ${JSON.stringify(d)}`);
+        assert(d.cardTransform === '', `the drag moved #card itself: ${d.cardTransform}`);
+        await pg.waitForTimeout(80);
+        assert(Math.abs(await areaOffset(pg)) < Math.abs(d.offset), 'the card did not start easing back at release');
+        await pg.waitForTimeout(400);
+        const after = await cardParts(pg);
+        assert(after.index === before.index + step, `drag ${dx}: expected ${step > 0 ? 'Next' : 'Back'}, got ${before.index} -> ${after.index}`);
+        assert(await areaOffset(pg) === 0 && await pg.evaluate(() => document.getElementById('card').parentElement.getAnimations().length === 0), 'the card did not come back to its place');
+        await pg.waitForTimeout(600);
+      }
+    } finally { await ctx.close(); }
   });
 
-  // ── E2. Skip-undo: the skipped card comes back at the same position ──────
-  await check('skip-undo restores the skipped card', async () => {
-    const before = await cardParts(page);
-    const beforeQ = await questionText(page);
-    await swipe(page, '#card', 0, 100);
-    await page.waitForTimeout(300);
-    const undoBtn = page.locator('#noteUndo');
-    assert(await page.evaluate(() => document.getElementById('note').classList.contains('visible')), 'undo button did not appear after a skip');
-    await undoBtn.click();
-    await page.waitForTimeout(300);
-    const after = await cardParts(page);
-    const afterQ = await questionText(page);
-    assert(after.total === before.total, `deck total did not restore: ${before.total} -> ${after.total}`);
-    assert(afterQ === beforeQ, `card did not come back (${beforeQ} vs ${afterQ})`);
-    assert(!(await page.evaluate(() => document.getElementById('note').classList.contains('visible'))), 'undo button stayed visible after use');
+  await check('dragging the card and letting go before the point: it follows, springs back, and nothing happens (also Back on the first card, with resistance from the start)', async () => {
+    const { ctx, pg } = await dragApp();
+    try {
+      for (const dx of [-45, 45]) {
+        const before = await cardParts(pg);
+        const d = await drag(pg, dx, 0);
+        assert(Math.abs(d.offset - dx) < 4, `the card did not follow one to one before the point: ${JSON.stringify(d)}`);
+        await pg.waitForTimeout(450);
+        assert(JSON.stringify(await cardParts(pg)) === JSON.stringify(before) && await areaOffset(pg) === 0, `an early release changed something (${dx})`);
+      }
+      // far past the point the resistance keeps the card on the screen
+      const far = await drag(pg, -300, 0, { release: false });
+      assert(Math.abs(far.offset) < far.width * .45, `the card ran away with the finger: ${JSON.stringify(far)}`);
+      await pg.evaluate(() => document.getElementById('card').dispatchEvent(new TouchEvent('touchcancel', { bubbles: true })));
+      await pg.waitForTimeout(400);
+      assert(await areaOffset(pg) === 0, 'a cancelled touch left the card out of place');
+      // Back with nothing behind: the first card
+      await pg.evaluate(() => { state.currentIndex = 0; flipToCard(state.visibleDeck[0]); });
+      await pg.waitForTimeout(700);
+      const d = await drag(pg, 160, 0);
+      assert(d.offset > 0 && d.offset < d.width * .12, `Back with nothing to go back to: the card should resist from the start: ${JSON.stringify(d)}`);
+      await pg.waitForTimeout(450);
+      assert((await cardParts(pg)).index === 1 && await areaOffset(pg) === 0, 'Back on the first card did something or the card stayed out of place');
+    } finally { await ctx.close(); }
+  });
+
+  await check('a downward drag, a long diagonal and the arrow down do nothing: the card does not move, nothing is skipped, no Undo anywhere', async () => {
+    const { ctx, pg } = await dragApp();
+    try {
+      const before = await cardParts(pg);
+      for (const [dx, dy] of [[0, 120], [60, 130], [-70, 130]]) {
+        const d = await drag(pg, dx, dy);
+        assert(d.offset === 0, `the card moved for a (${dx}, ${dy}) drag: ${JSON.stringify(d)}`);
+        await pg.waitForTimeout(450);
+        assert(JSON.stringify(await cardParts(pg)) === JSON.stringify(before), `a (${dx}, ${dy}) drag changed the hand`);
+      }
+      await pg.keyboard.press('ArrowDown');
+      await pg.waitForTimeout(300);
+      assert(JSON.stringify(await cardParts(pg)) === JSON.stringify(before), 'arrow down changed the hand');
+      assert(await pg.evaluate(() => !document.getElementById('note').classList.contains('visible') && !document.body.textContent.includes('Undo skip')), 'an Undo note or "Undo skip" appeared');
+    } finally { await ctx.close(); }
+  });
+
+  await check('a fast flick still does Next and Back, with and without moves in between', async () => {
+    const { ctx, pg } = await dragApp();
+    try {
+      let at = (await cardParts(pg)).index;
+      await drag(pg, -70, 0, { ms: 120 });
+      await pg.waitForTimeout(700);
+      assert((await cardParts(pg)).index === at + 1, 'a flick left did not go forward');
+      at++;
+      await drag(pg, 70, 0, { ms: 120 });
+      await pg.waitForTimeout(700);
+      assert((await cardParts(pg)).index === at - 1, 'a flick right did not go back');
+      await drag(pg, -70, 0, { ms: 600 });   // the same distance, slow: not a flick, short of the point
+      await pg.waitForTimeout(500);
+      assert((await cardParts(pg)).index === at - 1, 'a slow short drag counted as a flick');
+    } finally { await ctx.close(); }
+  });
+
+  await check('reduced motion: the card stays still under the finger, and swipes (past the point or flicks) still work', async () => {
+    const { ctx, pg } = await dragApp({ reducedMotion: 'reduce' });
+    try {
+      let at = (await cardParts(pg)).index;
+      const d = await drag(pg, -130, 0);
+      assert(d.offset === 0, `the card followed the finger under reduced motion: ${JSON.stringify(d)}`);
+      await pg.waitForTimeout(700);
+      assert((await cardParts(pg)).index === at + 1, 'a drag past the point did not go forward');
+      at++;
+      await drag(pg, 70, 0, { ms: 120 });
+      await pg.waitForTimeout(700);
+      assert((await cardParts(pg)).index === at - 1, 'a flick right did not go back');
+      await drag(pg, -40, 0);
+      await pg.waitForTimeout(500);
+      assert((await cardParts(pg)).index === at - 1 && await areaOffset(pg) === 0, 'a short drag did something');
+    } finally { await ctx.close(); }
   });
 
   // ── F. Category toggle reshuffles the deck and updates the token line ──────
@@ -1746,35 +1861,17 @@ async function run() {
     await page.evaluate(() => { if (pickMode) document.getElementById('pickToggle').click(); });
   });
 
-  await check('skipped cards count as seen but are not in the history; undo takes them back; a fresh pass clears them', async () => {
+  await check('cards an older version skipped still count as seen, are not in the history, and a fresh pass empties them', async () => {
     await freshHand({ three: false });
     await page.locator('#card').click();
     await waitForCardIndex(page, 1);
     await page.waitForTimeout(1100);
-    const q = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
-    assert(await page.evaluate((q) => state.sessionLog.some(c => c.question === q), q), 'card was not in the log before the skip');
-    await swipe(page, '#card', 0, 100);
-    await page.waitForTimeout(400);
-    const r = await page.evaluate((q) => {
-      const out = { seen: state.skippedSeen.has(cardByWording(q).id), inLog: state.sessionLog.some(c => c.question === q), inDrawer: document.getElementById('logList').textContent.replace(/\u00A0/g, ' ').includes(q) };
-      out.back = [];
-      for (let i = 0; i < 6; i++) { initDeck(true); out.back.push(state.fullDeck.slice(0, state.drawUnseen).some(c => c.question === q) || state.visibleDeck.some(c => c.question === q)); }
-      return out;
-    }, q);
-    assert(r.seen && !r.inLog && !r.inDrawer, `skipped card state: ${JSON.stringify(r)}`);
-    assert(!r.back.some(Boolean), 'a skipped card came back in a later hand');
-    // undo puts it back
-    await freshHand({ three: false });
-    await page.locator('#card').click();
-    await waitForCardIndex(page, 1);
-    await page.waitForTimeout(1100);
-    const q2 = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
-    await swipe(page, '#card', 0, 100);
-    await page.waitForTimeout(300);
-    await page.locator('#noteUndo').click();
-    await page.waitForTimeout(400);
-    const u = await page.evaluate((q) => ({ seen: state.skippedSeen.has(cardByWording(q).id), inLog: state.sessionLog.filter(c => c.question === q).length }), q2);
-    assert(!u.seen && u.inLog === 1, `undo-skip: ${JSON.stringify(u)}`);
+    const r = await page.evaluate(() => {
+      const c = ALL_CARDS.find(x => !state.sessionLog.some(e => e.id === x.id));
+      state.skippedSeen = new Set([c.id]);
+      return { seen: _seenSet().has(c.id), inLog: state.sessionLog.some(e => e.id === c.id), inDrawer: document.getElementById('logList').textContent.replace(/\u00A0/g, ' ').includes(c.question) };
+    });
+    assert(r.seen && !r.inLog && !r.inDrawer, `old skipped card state: ${JSON.stringify(r)}`);
     // when the whole selection is used up (skipped ones included) a fresh pass starts and empties the set
     const f = await page.evaluate(() => {
       const sel = getFilteredCards();
@@ -1784,55 +1881,6 @@ async function run() {
       return { seenFrom: state.seenFrom, len: state.sessionLog.length, sk: state.skippedSeen.size, hand: state.visibleDeck.length };
     });
     assert(f.seenFrom === f.len && f.sk === 0 && f.hand === 5, `fresh pass: ${JSON.stringify(f)}`);
-  });
-
-  await check('skip gap: the card that slides in after a skip is logged and counts as seen; undo keeps it logged, no double entry (Spotlight has no skip)', async () => {
-    for (const spot of [false]) {
-      await freshHand({ three: false });
-      await page.locator('#card').click();
-      await waitForCardIndex(page, 1);
-      await page.waitForTimeout(1100);
-      if (spot) { await page.click('#btnParty'); await page.waitForTimeout(300); }
-      const a = await page.evaluate(() => state.visibleDeck[state.currentIndex].question);
-      if (spot) await page.keyboard.press('ArrowDown'); else await swipe(page, '#card', 0, 100);
-      await page.waitForTimeout(500);
-      const r = await page.evaluate((a) => {
-        const b = state.visibleDeck[state.currentIndex].question;
-        return { b, differs: b !== a, aLogged: state.sessionLog.some(c => c.question === a), bLogged: state.sessionLog.filter(c => c.question === b).length,
-                 bInDrawer: document.getElementById('logList').textContent.includes(b), bSeen: _seenSet().has(cardByWording(b).id), aSeen: _seenSet().has(cardByWording(a).id), n: state.sessionLog.length };
-      }, a);
-      assert(r.differs && !r.aLogged && r.aSeen && r.bLogged === 1 && r.bInDrawer && r.bSeen && r.n === 1, `skip gap (spotlight=${spot}): ${JSON.stringify(r)}`);
-      await page.locator('#noteUndo').evaluate(el => el.click());
-      await page.waitForTimeout(400);
-      const u = await page.evaluate(([a, b]) => ({ order: state.sessionLog.map(c => c.question), cur: state.visibleDeck[state.currentIndex].question, nextIs: state.visibleDeck[state.currentIndex + 1].question }), [a, r.b]);
-      assert(u.cur === a && u.nextIs === r.b && u.order.length === 2 && u.order[0] === a && u.order[1] === r.b, `undo after skip (spotlight=${spot}): ${JSON.stringify(u)}`);
-      if (spot) { await page.click('#partyExit'); await page.waitForTimeout(500); }
-    }
-  });
-
-  await check('Back then skip: reachedIdx moves with the cards, so the first unreached step still offers three; undo restores it', async () => {
-    await freshHand({ three: false });
-    await page.locator('#card').click(); await waitForCardIndex(page, 1);
-    await page.locator('#btn-next').click(); await waitForCardIndex(page, 2);
-    await page.locator('#btn-next').click(); await waitForCardIndex(page, 3);
-    await page.waitForTimeout(1100);
-    await goBack(page); await waitForCardIndex(page, 2);
-    await page.waitForTimeout(400);
-    await page.evaluate(() => { document.getElementById('pickToggle').click(); });   // Three on, mid-hand, behind the front
-    await swipe(page, '#card', 0, 100);
-    await page.waitForTimeout(500);
-    const r = await page.evaluate(() => ({ reached: state.reachedIdx, cur: state.currentIndex, len: state.visibleDeck.length, open: state.pickerOpen }));
-    assert(r.reached === 1 && r.cur === 1 && r.len === 4 && !r.open, `after Back + skip: ${JSON.stringify(r)}`);
-    await page.locator('#noteUndo').evaluate(el => el.click());
-    await page.waitForTimeout(400);
-    assert(await page.evaluate(() => state.reachedIdx) === 2, 'undo did not restore reachedIdx');
-    await swipe(page, '#card', 0, 100);
-    await page.waitForTimeout(500);
-    await page.locator('#btn-next').click();
-    await waitPicker(true);
-    assert(await page.evaluate(() => state.pickOptions.step) === 2 && await page.locator('#cardPicker .pick-opt').count() === 3, 'first unreached step did not offer three after Back + skip');
-    await page.evaluate(() => { document.getElementById('pickToggle').click(); });
-    await page.waitForTimeout(400);
   });
 
   await check('start screen: Three switches both ways without drawing', async () => {
@@ -3236,20 +3284,20 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('a brought-back card: the skip Undo is let go, the star is the brought-back card\'s, Twist and Spotlight work on it, Back in Spotlight returns, Skip (swipe down) and the arrow keys act on the hand, not on the wrong card', async () => {
+  await check('a brought-back card: the Undo note is let go, the star is the brought-back card\'s, Twist and Spotlight work on it, Back in Spotlight returns, the arrow keys act on the hand, not on the wrong card', async () => {
     const { ctx, pg } = await freshApp();
     try {
       await drawCards(pg, 3);
       await pg.evaluate(() => toggleFavourite(state.visibleDeck[0]));
       const fav = await pg.evaluate(() => state.favourites[0].question);
-      // swipe-skip card 3, then bring a card back inside the Undo bar's life
-      await pg.evaluate(() => skipCard());
-      assert(await pg.evaluate(() => document.getElementById('note').classList.contains('visible')), 'no Undo bar after a skip');
+      // a Clear the list Undo is up, then a card is brought back inside the Undo bar's life
+      await pg.evaluate(() => showNote('List cleared', { undo: () => {} }));
+      assert(await pg.evaluate(() => document.getElementById('note').classList.contains('visible')), 'no Undo bar');
       const lenBefore = await pg.evaluate(() => state.visibleDeck.length);
-      await pg.evaluate(() => { renderFavourites(); openDrawer('favsDrawer'); });   // quick: the Undo bar lives 3 seconds
+      await pg.evaluate(() => { renderFavourites(); openDrawer('favsDrawer'); });
       await pg.waitForTimeout(700);
       await pg.locator('#favsList .play-card').first().click(); await pg.waitForTimeout(600);
-      assert(await pg.evaluate(() => !document.getElementById('note').classList.contains('visible')), 'the skip Undo bar is still up over a brought-back card');
+      assert(await pg.evaluate(() => !document.getElementById('note').classList.contains('visible')), 'the Undo bar is still up over a brought-back card');
       // the star is the brought-back card's
       await pg.locator('#cardStar').click(); await pg.waitForTimeout(200);
       assert(await pg.evaluate(q => !state.favourites.some(f => f.question === q), fav), 'the star acted on another card');
@@ -3257,10 +3305,13 @@ async function run() {
       // Twist on the brought-back card
       await twistFromMenu(pg);
       assert(await pg.evaluate(() => document.getElementById('twistSentence').textContent.length > 0), 'Twist does not work on a brought-back card');
-      // Skip (swipe down) drops the brought-back card and skips nothing
-      await swipe(pg, '#card', 0, 100); await pg.waitForTimeout(900);
-      let h = await pg.evaluate(() => ({ len: state.visibleDeck.length, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), own: state.visibleDeck[state.currentIndex]?.question }));
-      assert(h.len === lenBefore && h.q === h.own, `swipe-down on a brought-back card: ${JSON.stringify(h)}`);
+      // a swipe down does nothing to the brought-back card
+      await drag(pg, 0, 100); await pg.waitForTimeout(900);
+      let h = await pg.evaluate(() => ({ len: state.visibleDeck.length, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), own: state.visibleDeck[state.currentIndex]?.question, back: !!broughtBack }));
+      assert(h.len === lenBefore && h.back, `swipe-down on a brought-back card: ${JSON.stringify(h)}`);
+      await pg.keyboard.press('ArrowLeft'); await pg.waitForTimeout(900);
+      h = await pg.evaluate(() => ({ len: state.visibleDeck.length, idx: state.currentIndex, q: document.getElementById('card-question').textContent.replace(/\u00A0/g, ' '), own: state.visibleDeck[state.currentIndex]?.question }));
+      assert(h.q === h.own, `Back from the brought-back card: ${JSON.stringify(h)}`);
       // arrow keys: Right draws the hand's next card; Left after a bring-back returns to where we were
       const at = h.idx;
       await openFromMenu(pg, 'favs');

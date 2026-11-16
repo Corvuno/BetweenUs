@@ -88,7 +88,7 @@
   "ui.js | no-empty | Empty block statement.": 3,
   "ui.js | no-unused-vars | 'e' is defined but never used.": 4,
   "ui.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 18 to the 15 allowed.": 1,
-  "ui.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 29 to the 15 allowed.": 1,
+  "ui.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 27 to the 15 allowed.": 1,
   "ui.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 4,
   "ui.js | sonarjs/no-nested-assignment | Extract the assignment of \"CHAPTERS[ch]\" from this expression.": 1,
   "ui.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 1,

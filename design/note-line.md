@@ -1,7 +1,7 @@
 # The note (one short line that says what just happened)
 
 One element, `#note` (`.note` in `styles.css`), the app's one way of saying something short. It is the
-old "Undo skip" line made shared: same box, same type. `showNote(text, { undo, undoLabel, ms })`,
+old "Undo skip" line made shared: same box, same type. `showNote(text, { undo })`,
 `hideNote()` and `retireNote()` are in `presentation.js`.
 
 ## Words
@@ -11,7 +11,6 @@ old "Undo skip" line made shared: same box, same type. `showNote(text, { undo, u
 - Delete a saved evening: "Evening deleted" + Undo
 - Start over: "Every card back in" + Undo
 - Open a list with a file that isn't a Between Us list: "That file isn't a Between Us list"
-- Skip (until it goes): no text, the Undo reads "Undo skip" with its arrow.
 
 A note shows only when the action did something: Save with an empty list says nothing.
 
@@ -37,7 +36,7 @@ A note shows only when the action did something: Save with an empty list says no
 ## Timings
 - Appears and leaves with opacity and a 6px drop (from above), 250ms `--ease-out`. Under reduced motion: opacity
   only, 250ms linear, no movement.
-- A plain note stays 2.5s; a note with Undo 5s; the skip line 3s (until skip goes).
+- A plain note stays 2.5s; a note with Undo 5s.
 - A new note replaces the one showing, its Undo with it. Tapping Undo puts what was there back and
   the note leaves at once. Anything that changes what Undo would bring back removes the note with
   Undo: a card shown, a new hand, a list or evening opened. A plain note is not removed by those.

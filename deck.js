@@ -1,7 +1,7 @@
 // ── DECK ─────────────────────────────────────────────────────────────────────
 // Building, filtering, shuffling and advancing through the deck: from the
 // intent dial's weighting and getFilteredCards() through applyRandomMode's
-// shuffle modes, initDeck/applyLimit, and the nextCard/skipCard/prevCard
+// shuffle modes, initDeck/applyLimit, and the nextCard/prevCard
 // advance logic. No rendering beyond the couple of DOM calls advancing a card
 // inherently needs (renderEndMessage, flipToCard calls) — the actual card-face
 // rendering lives in card.js.
@@ -158,7 +158,6 @@ function initDeck(isContinuation) {
   // which draws a fresh hand under the SAME settings — the draw animation is
   // reserved for a hand that starts because something actually changed.
   state.skipDrawAnim = !!isContinuation;
-  state.skippedCards.clear();
   state.loggedQuestions.clear();
   state.handStarred.clear();
   _newHandBookkeeping();
@@ -188,8 +187,9 @@ function initDeck(isContinuation) {
 
 
 /* Draw vs session: a draw comes from what this pass hasn't seen.
-   "Seen" = the session log from state.seenFrom onward, plus the cards skipped
-   this pass (state.skippedSeen: seen, but not in the history list). The log
+   "Seen" = the session log from state.seenFrom onward, plus the cards an older
+   version skipped this pass (state.skippedSeen, kept for saved evenings and
+   files that hold it: seen, but not in the history list). The log
    itself is the visible history and is never wiped; starting a fresh pass
    just moves seenFrom to the end of it and empties skippedSeen. */
 function _seenSet(){
@@ -639,7 +639,7 @@ function drawMore() {
 
 // ── CARD DISPLAY ──────────────────────────────────────────────────────────────
 // Shared by every "we've reached the end of this hand" case (out of fresh
-// cards, all skipped, ...): swap the card face for an end message on the same
+// cards, ...): swap the card face for an end message on the same
 // 175ms beat flipToCard() uses, so different endings don't each reinvent the
 // same DOM sequence with their own copy of the timing.
 function renderEndMessage(html) {
@@ -749,71 +749,12 @@ function prevCard() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// SKIP CARD — swipe down (the touch handler that recognizes the gesture
-// lives in ui.js). The note (presentation.js) offers Undo for 3 seconds.
-// ═══════════════════════════════════════════════════════════
-
-const SKIP_UNDO_MS = 3000;
-
-function skipCard() {
-  if (dismissBroughtBack()) return;   // the card on screen was brought back, not drawn: nothing to skip
-  // Matches the swipe-down caller, which never invokes skipCard() outside a valid index: the note shows regardless.
-  const card = state.visibleDeck[state.currentIndex], index = state.currentIndex;
-  let log = null, reachedShift = false;
-  if (!(state.currentIndex < 0 || state.currentIndex >= state.visibleDeck.length || state.visibleDeck.length === 0)) {
-    // Remove from visibleDeck only — fullDeck stays intact for new rounds
-    const removed = state.visibleDeck.splice(state.currentIndex, 1)[0];
-    /* cards after the skipped one move down a place: when the skip is behind
-       the front of the hand (after Back), reachedIdx moves with them so the
-       next step not yet reached still offers three */
-    reachedShift = state.currentIndex < state.reachedIdx;
-    if (reachedShift) state.reachedIdx--;
-    state.reachedIdx = Math.min(state.reachedIdx, state.visibleDeck.length - 1);
-    state.skippedCards.add(removed.id);
-    /* a skipped card counts as seen (not drawn again this pass) but is not
-       part of the history list: out of the log, into skippedSeen */
-    state.skippedSeen.add(removed.id);
-    log = removeFromLog(removed.id);
-    // Show next card (or skipped-all state)
-    if (state.visibleDeck.length === 0) {
-      state.currentIndex = state.visibleDeck.length; // sentinel: past end
-      renderEndMessage(`<span style="font-size:1rem;color:var(--muted)">All cards skipped.<br><br>Next hand.</span>`);
-    } else {
-      if (state.currentIndex >= state.visibleDeck.length) state.currentIndex = state.visibleDeck.length - 1;
-      flipToCard(state.visibleDeck[state.currentIndex]);
-      /* the card that slides into the slot is shown, so it is logged and
-         counts as seen like any shown card (no-op if already in the log, e.g.
-         a card visited earlier). Undo leaves it logged: it was shown. */
-      addToLog(state.visibleDeck[state.currentIndex]);
-    }
-    updateDeckInfo(); renderProgress(); updateDrawMore();
-  }
-  showNote('', { undoLabel: '\u21A9 Undo skip', ms: SKIP_UNDO_MS, undo: () => {
-    if (!card) return;
-    // Re-insert card at original position and remove from skipped set
-    state.skippedCards.delete(card.id);
-    state.skippedSeen.delete(card.id);
-    restoreToLog(log);
-    const insertAt = Math.min(index, state.visibleDeck.length);
-    state.visibleDeck.splice(insertAt, 0, card);
-    if (reachedShift) state.reachedIdx++;
-    state.currentIndex = insertAt;
-    flipToCard(state.visibleDeck[state.currentIndex]);
-    updateStarUI();
-    updateDeckInfo(); renderProgress(); updateDrawMore();
-  } });
-}
-
-// Skip is downward-swipe-only.
-
-// ═══════════════════════════════════════════════════════════
 // nextCard — advances the deck and runs post-advance hooks (party/session summary)
 // ═══════════════════════════════════════════════════════════
 // Pure: given the current state, decide what a "next" press should do. No
 // DOM reads, no DOM writes, no side effects — so this decision can be
 // reasoned about (or tested) on its own, separately from executing it.
 function decideNextCardAction() {
-  if (state.visibleDeck.length === 0 && state.skippedCards.size > 0) return { type: 'reshuffle' };  // all skipped: reshuffle straight into a card
   if (state.visibleDeck.length === 0) return { type: 'advance', wasAtEnd: false };  // _nextCardBase() no-ops safely on an empty deck
 
   // Already past end (sentinel): the press is "Next hand".
