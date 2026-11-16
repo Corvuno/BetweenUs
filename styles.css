@@ -522,7 +522,7 @@ body.showing-hand-summary .card-question{
 .quiet-word:active,.quiet-word:focus-visible{color:var(--gold);}
 @media (hover:hover) and (pointer:fine){.quiet-word:hover{color:var(--gold);}}
 #screenRow{grid-column:1;grid-row:4;justify-self:start;justify-content:flex-start;align-items:flex-start;}
-#screenRow :is(#btnWays,#btnParty,#btnSave){flex-shrink:0;margin-inline:auto;}   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
+#screenRow :is(#btnWays,#btnParty,#btnSave){flex-shrink:0;margin-inline:auto;width:calc(112px + 12 * var(--u));}   /* one slot width for the three words: the hint's 112px plus the side padding, so a longer word runs on to the right instead of widening its slot */   /* centred in its column; where the fixed Next card bar leaves the column too narrow it keeps its width and runs on to the right */
 .quiet-word svg{display:none;}   /* the words carry icons on a wide screen only */
 #btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
 #btn-prev,#btnPick,#btnTwist{display:none;}   /* Back is a swipe on the phone, Three a setting in The Deck, Twist a line in the Menu; the buttons are for a computer */
@@ -1931,7 +1931,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
     gap:calc(var(--k)*3px);padding:calc(var(--k)*20px) 0 0;}
   #screenRow .quiet-word,#btn-menu,#btn-prev{position:relative;align-items:center;justify-content:flex-start;
     gap:calc(var(--k)*10px);min-width:0;min-height:0;margin:0;padding:calc(var(--k)*4px) 0;font-size:var(--chrome-fs);}
-  #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;}   /* the phone centres these in their column */
+  #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;width:auto;}   /* the phone centres these in their column */
   #screenRow .quiet-word{flex-direction:row-reverse;}
   #btn-menu,#btn-prev{flex-direction:row;}
   #btn-prev,#btnPick,#btnTwist{display:flex;}
