@@ -57,12 +57,12 @@ right. Inside, Colbert and The 36 are built exactly like category items (same do
 height, padding), in a panel padded like a chapter panel, so they start at the same left edge.
 
 **None and Open all** (`#deselectAll`, `#foldAll`, at the Chapters heading, right): one quiet pair
-in the `.deselect-btn` style (`--btn-quiet`, .75rem, caps, hover gold), a faint middle dot (opacity
+in the `.deselect-btn` style (`--stone`, `--fs-1`, caps, hover gold), a faint middle dot (opacity
 .4) between them, the pair's right edge level with the chapter rows. "Open all" reads "Close all"
 once every shown chapter is open. There is no All here.
 
 **Shuffle and Cards** (`.seg-row`): two lines, labels SHUFFLE and CARDS in the same row-label style
-as FIXED SETS (`.82rem`, `.09em`, caps, cream .68; no Federo). The label starts at the chapter-name
+as FIXED SETS (`--fs-2`, `--track-1`, caps, `--stone`; no Federo). The label starts at the chapter-name
 inset (16px) and has a fixed 5.5rem column so the choices of both lines align. The choices are
 picked items (celadon word and dot), 48px tall, no boxes. The spice mark's "on" state is colour
 only (no glow). On a computer (wide block) the same two lines plus Three keep this structure, one
@@ -73,7 +73,7 @@ the panel bottom.
 `.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)`: presets, categories in open
 chapters, Colbert, The 36, Shuffle and Cards all pick the same way, so there is one look for
 everything pickable. The cream word and hollow ring of the category chip mark are gone.
-- A 5px dot, then the word (`--pick-size` .8rem, .85rem from 1024px; Jost 300, .09em, caps), 7px
+- A 5px dot, then the word (`--pick-size` `--fs-2`; Jost 300, `--track-1`, caps), 7px
   apart, `0 9px` padding. Not picked: word is the item colour mixed 42% into cream .5, dot at .5
   opacity. Picked: full word colour, dot at full opacity, 1px underline (.7 opacity) 1em under the
   text centre, inset 9px. No glow, no box, no ring, no outline.

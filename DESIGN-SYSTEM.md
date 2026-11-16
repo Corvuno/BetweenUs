@@ -27,35 +27,64 @@ One line colour, three volumes. Back/menu frames rest at rgba(201,168,76,.2) and
 their symbol on hover, press and keyboard focus.
 
 ### Text
+Every piece of text in the app uses one of these names for its size, its letter-spacing and its colour; a
+new piece of text picks from the list and never writes a value of its own. Excepted, because they are
+content or set by the card: the question (Bodoni, in every place it shows), the category name on the card
+and in Spotlight (`--name-size`), the title's size, the counts (`.prog-count-num`, `.party-count`),
+INTERMEZZO and the end message, the Wildcard mark, and every category, chapter and deck colour.
+
+**Sizes** (rem, 16px = 1rem). Each text takes the nearest step, never a forced step up.
 | Token | Value | For |
 |---|---|---|
-| `--muted` | #7a6e60 | quiet warm-brown label, disabled state; "Selected deck · tap to change" |
-| `--muted-l` | #9c8f7e | a lighter tone of its own (not a duplicate of `--muted`) |
-| `--text-helper` | #8c8071 | helper lines that explain a control or section: `.cat-line`. 5.1:1 on the dark ground (`--muted` 3.9:1, `--muted-l` 6.2:1) |
-| `--btn-quiet` | #b3a590 | resting tone of every plain text-button (no border; `--gold` on hover/active/focus): Spotlight, Save and Menu, After Dark, All/None, Explore categories, Categories, ⓘ info, the pick-toggle, limit buttons |
-| `--quiet-text` | #ab9e8a | quiet words a step lighter: the tagline, chapter descriptions, chapter counts (`.subtitle`, `.chapter .ch-desc`, `.ch-ct`) |
-| `--quiet-label` | #b5a892 | the start screen's small labels (`.tok-lbl`) |
+| `--fs-1` | .75rem (12px) | the small capitals: tagline, menu and Deck labels, the words under the card, Spotlight's controls, the counts and notes in Help |
+| `--fs-2` | .8rem (12.8px) | buttons and lines in The Deck, the menu and Played; chapter names and descriptions; the gold button; the picked-look words; Help's small headings |
+| `--fs-3` | .9rem (14.4px) | "Selected deck · tap to change" and the picked deck's name base; The Deck's heading name; the hint under an opened chapter; Twist's line on a short card; the gold button from 1024px |
+| `--fs-4` | .95rem (15.2px) | a sheet's heading and lead in The Deck, the hints under the words and the menu hint, Help's tile text, Twist's line |
+| `--fs-5` | 1.0125rem (16.2px) | Help's body text, the picked deck's name on the phone, a card in Played, "Played" empty line |
+| `--fs-6` | 1.15rem (18.4px) | the menu's headings and values, a saved hand's name, Help's body text from 1024px, the picked deck's name on a computer |
+| `--fs-7` | 1.3rem (20.8px) | Help's lead line; the picked deck's name on a computer from 1600x900 |
+Where a size follows the window (the words round the card on a computer, the picked deck's name), the
+rule sets one step for the window and one step up from 1600x900 (`--chrome-fs`, `--wide-hint-fs`,
+`--deck-fs`). The picked deck's name (`.tok-val`) sits one step above its neighbours.
+
+**Spacing**
+| Token | Value | For |
+|---|---|---|
+| `--track-1` | .09em | capitals that name or label: chapter and category names, the picked-look words, menu labels, small headings |
+| `--track-2` | .16em | capitals that announce: the gold button, the tagline, a drawer title, the picked deck's name |
+| `--track-3` | .24em | wide capitals: the words under and round the card, Spotlight's controls, The Deck's heading name |
+| `--track-text` | .03em | every small word that is not in capitals (Jost and Federo). Cormorant (italic lines) takes 0. Bodoni, Poiret One and the card's name keep their own |
+
+**Creams and browns.** Text takes the step equal to or lighter than it was, never darker.
+| Token | Value | For |
+|---|---|---|
+| `--cream` | #f0e8d8 | primary text: the question, full-strength labels, the open and hovered label |
+| `--sand` | #d2c9b8 | reading text: Help's body, a category's line once picked, a sheet's heading, "Selected deck" on a computer |
+| `--stone` | #b5a892 | the resting tone of every plain text-button and quiet label: Spotlight, Menu, After Dark, All/None, the tagline, a chapter's name, description and count, "Selected deck" |
+| `--muted-l` | #9c8f7e | quiet lines that still read: INTERMEZZO and the end message, the saved hand's details, Help's notes, the close cross |
+| `--text-helper` | #8c8071 | the lowest step for words: helper lines, a category's line, "· tap to change", disabled-looking labels (5.1:1 on the dark ground) |
+| `--muted` | #7a6e60 | the empty star and the disabled state only. Never for words |
+
+**Golds and greens**
+| Token | Value | For |
+|---|---|---|
+| `--gold-l` | #e8c97a | light gold: lead lines, "Start from", "Chapters", count numbers, a filled star on the hand list |
+| `--gold` | #c9a84c | the title, draw, borders, hover, drawer titles; the darker gold |
+| `--celadon` | #a9c7b6 | everything tappable besides Draw and the quiet words: Change / Save, Close in Spotlight, Twist's line, the chosen option in a choice row |
+| `--celadon-dim` | #7f968a | the dim line under a tappable row: the menu's hints and action words, the hints under the words on the start screen, a saved hand's actions, the Twist divider |
+| `--celadon-bright` | #eef7f1 | the flash in `twistLit` / `spotBright`, settling to `--celadon` |
+
+**Faces.** Federo names and announces (the gold button, "Selected deck · tap to change", the headings and lead in The Deck, INTERMEZZO, the end message, the Wildcards name); Jost and Cormorant are read and scanned. Federo has one weight, 400. A `<span>` inside a `<button>` does not inherit the page font: name Jost on it.
 
 Small words are Jost 500, never heavier (the exceptions are the category name on the card and in Spotlight, and the few labels declared at 600, which the font link serves as a real 600): the preset's
 name, Next card, Spotlight and Menu, the picked option in The Deck, chapter names, the menu's labels,
-The Deck's name. Letter spacing stays as it was; The Deck's name takes the card name's `.26em`.
-The count under the card is 17px in `--gold-l`, its two rules 50% gold. "Start from", "Chapters",
+The Deck's name. The count under the card is 17px in `--gold-l`, its two rules 50% gold. "Start from", "Chapters",
 "Tonight" and "Yours" are `--gold-l`.
-
-Do not fold the cream-alpha text values (help body copy, sheet heading, section labels, chapter
-names off-state) into shared steps, and do not merge `--muted-l` into `--muted`: both read darker
-and lower in contrast on a real device than the numbers suggest. They stay per-element literals;
-check the rendered result on a real screen before touching this family.
 
 ### Frame colours
 | Token | Value | For |
 |---|---|---|
 | `--copper` | #C67B28 | the logo's centre diamond only |
-| `--celadon` | #A9C7B6 | everything tappable besides Draw and the quiet words: Change / Save, Close in Spotlight, Twist's line; the chosen option in a choice row (Shuffle, Cards) |
-| `--celadon-soft` | `color-mix(in srgb,var(--celadon) 74%,var(--bg))` = rgb(129,150,137) | celadon at the luminance of `--muted-l` (0.284 vs 0.282): small accent bars (Twist divider) |
-| `--celadon-hint` | #5b6b63 | sub-lines in the main menu (labels celadon, icons gold) |
-| `--celadon-bright` | #eef7f1 | flash in `twistLit` / `spotBright`, settling to `--celadon` |
-| `--row-hint` | #6f8579 | `.row-hint` lines under Spotlight / Change / Save; lighter than `--celadon-hint` (3.5:1 to 4.9:1) to read on a phone; .95rem, max-width 112px (fits at 360px). PC hover hints use `--celadon` |
 | `--preset` | `renderShell`; falls back to `--gold` | which edition: logo line pairs, preset name. Strangers #8fd14f, Family #ee7a35 (`--mc`) |
 | `--preset-a` / `--preset-b` | `renderShell`, Custom with 2+ categories | first and second picked category colour (logo pairs split left/right, gradient `#trP`) |
 | `--preset-deep` | `renderShell` | preset a shade deeper (lightness -7 points, floor 45%, darker colours unchanged) for filled areas (start-card diamond and rule) |
@@ -124,8 +153,8 @@ the card-closing ring and frame.
 a drawn double frame and stepped corner squares). Containers that hold content (drawers, category sheet, picker) share one
 soft radius.
 
-**The gold button** is one spec: `.btn-draw` (Next Card) and `.cat-go-btn` (Draw Cards). Font-size
-.8rem (12.8px; `.btn-draw` steps up with the screen in `styles.css`), letter-spacing .14em, height
+**The gold button** is one spec: `.btn-draw` (Next Card) and `.cat-go-btn` (Draw Cards). Federo 400,
+`--fs-2` (`.btn-draw` steps up to `--fs-3` from 1024px), `--track-2`, height
 `var(--gold-btn-h)` (34px), padding 0 sideways, square corners; hover
 `linear-gradient(135deg,#ddb85c,#b08840)` (the gradient lightens, never `filter:brightness()`);
 press: `.btn-draw` scales to .97, `.cat-go-btn` to .98. Slim on purpose: under the card the
@@ -143,23 +172,8 @@ changed by wrapping; the hand list wraps normally. Per-screen timings: `design/m
 against the nearest comparable text on the card and check at real phone size (390x844). A layout
 never shrinks such text to fit; it changes the arrangement (wrap, stack, scroll).
 
-**Fixed file-wide:** the line tokens, the quiet-button tone, the gold button, the corner rule, the
-After Dark red mapping, and three labels that rendered in Arial instead of Jost (`.ch-desc`,
-`.cbk-chev`, `#dLangIcon`: `<span>`s inside a `<button>` do not inherit the page font).
-**Scoped, not swept:** font sizes and letter-spacing (next section).
-
-## The font-size scale
-Font sizes and letter-spacing are scoped to what was reviewed, not swept file-wide. The audit
-sampled 11 sans sizes, 9 serif sizes and 10 letter-spacing amounts from phone screens; the real
-file has more (including the dormant "end-of-set" screen). Only these approved examples are tidied:
-- the "EN" language icon: 11px (`#dLangIcon`, inline)
-- the fullscreen party-level label: 17px phone / 16px PC, tracking `.16em` phone / `.2em` PC
-  (see `design/spotlight.md`)
-- the card's name on phone: 18px (a number of `--u`; `card-face.md` for the other sizes)
-- the `I / V` progress counter: 14px
-
-Extending the scale needs its own pass: a full value inventory shown to the owner before it is
-applied, never a blind `sed` across the file.
+**Fixed file-wide:** the line tokens, the text set (sizes, spacing, tones, golds, greens, the Federo
+rule: "Text" above), the gold button, the corner rule and the After Dark red mapping.
 
 ## Index of `design/` (open one only when working on that screen)
 - `under-card.md`: bottom of the main screen, phone and wide: Next card, hairlines, Spotlight /
