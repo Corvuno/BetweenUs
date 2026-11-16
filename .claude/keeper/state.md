@@ -25,28 +25,29 @@ Backlog items are named by number and title.
 - The title: "very thin and not there". The font stays.
 - The computer's card screen has its earlier layout back (Back, and Three, Spotlight, Twist top
   right); the owner calls it good enough until "a full design pass".
-- Type: 69 text styles in 36 sizes; "it's a mess".
 
 ## What the owner wants next, in their order
 
 1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
 2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
 3. The balance of the card screen on a computer (#161), as the full design pass.
-Around these: Text styles brought down to one small scale (#148), building; then, ready in
-`Next` and waiting on it for the stylesheet, Save, Clear and Start over say what they did (#158)
+Around these, ready in `Next`: Save, Clear and Start over say what they did (#158)
 and The card follows the finger, and skip goes (#165), in that order; Plain words for The Deck's
 settings (#157); a row of accessibility fixes in `Next`. The sideways phone (#156) and the
 website (#71) are parked: the owner never turns the phone, and the address comes later.
 
 ## Open with the owner
 
+- The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
+  "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
+  now take two lines (Jost is wider than Federo was).
 - A design mood board for Between Us, starting with controls and the PC layout (#147): in its
   own conversation; it opens by asking what the board should help decide.
 - What makes a design enjoyable for them, said about the card back and true for every design:
   the balance of lines and black, small flourishes that emerge from the lines, areas cut out
   with their own design, lines that lead the eye, playfulness. Turned down: clean, predictable,
   safe, too even, empty space in random places.
-- New card backs (#175) are chosen and wait in `Next` for the text styles (#148) to land: petrol
+- New card backs (#175) are chosen and ready in `Next`, now that the text styles have landed: petrol
   streams on the start card, amethyst circles on the Intermezzo. What got there: references as
   lessons, never redrawn; lines that never float, fine and quiet, full edge to edge; a window whose
   shape the drawing makes; several really different options at once ("If you give me one, ill be
