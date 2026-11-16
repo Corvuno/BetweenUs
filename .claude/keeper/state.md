@@ -13,7 +13,9 @@ Backlog items are named by number and title.
   The start card, the Intermezzo and Spotlight wear the same frame.
 - The deck: every card has a number and a slot, the long cards are shortened, categories sit in
   pairs. The owner's ear for cards is sharp and recorded in `taste.md`.
-- The Deck sheet and its chapters work.
+- The Deck sheet and its chapters work. The owner opens it to change chapters and categories;
+  people handed the app pick presets, chapters and categories there without any explanation.
+  The owner has no complaint about it (#183 was the Keeper's own).
 
 ## Weak, in the owner's words
 
@@ -24,13 +26,13 @@ Backlog items are named by number and title.
   Every piece there must have a job. Below the controls a third of the screen is empty.
 - The title: "very thin and not there". The font stays.
 - The computer's card screen has its earlier layout back (Back, and Three, Spotlight, Twist top
-  right); the owner calls it good enough until "a full design pass".
+  right); the owner finds it fine as it is.
 
 ## What the owner wants next, in their order
 
 1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
 2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
-3. The balance of the card screen on a computer (#161), as the full design pass.
+The balance of the card screen on a computer (#161) is not wanted now.
 Around these: Plain words for The Deck's settings (#157), whose wording round now also covers
 "hand" (an internal word: "No one knows what a hand is"); the faint names get a lighter step,
 all but Raw, with Deep still open (#168); a row of accessibility fixes in `Next`. Live: the note
