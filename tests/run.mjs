@@ -1007,6 +1007,7 @@ async function run() {
     await page.keyboard.press('ArrowLeft'); await imWaitSide('intermezzo'); await turnDone();
     await page.mouse.click(cardPt[0], cardPt[1]); await page.waitForTimeout(500);   // mouse tap flips too
     assert((await imSide()) === 'list', 'a mouse click in fullscreen did not flip to the list');
+    await turnDone();   // the turn (0.9s) outlasts the double-tap guard (0.5s); a tap at exactly 0.5s may still be ignored
     await page.mouse.click(cardPt[0], cardPt[1]); await page.waitForTimeout(1000);   // a tap on the list turns it back
     assert((await imSide()) === 'intermezzo', 'a tap on the fullscreen list did not turn it back to Intermezzo');
     assert(/Next hand/.test(await ov.locator('.party-end-hint').textContent()), 'the fullscreen hint does not say Next hand');
