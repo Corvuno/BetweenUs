@@ -144,8 +144,11 @@ async function run() {
   const newContext = browser.newContext.bind(browser);
   // The double-press guard (NEXT_GUARD_MS in deck.js) is off in every page unless the context asks for it ({ guard: true },
   // the double-press checks): the checks press again within a few hundred ms and mean every press.
-  browser.newContext = async ({ wildcards = false, guard = false, ...options } = {}) => {
+  // The real full screen (Spotlight on a phone) is off unless the context asks for it ({ fullscreen: true }, the
+  // full-screen check): a window in full screen cannot be resized, and the checks turn the phone by resizing.
+  browser.newContext = async ({ wildcards = false, guard = false, fullscreen = false, ...options } = {}) => {
     const ctx = await newContext(options);
+    if (!fullscreen) await ctx.addInitScript(() => { Element.prototype.requestFullscreen = undefined; });
     if (!guard) ctx.on('page', p => p.on('load', () => p.evaluate(() => { NEXT_GUARD_MS.draw = 0; NEXT_GUARD_MS.pause = 0; }).catch(() => {})));
     if (!wildcards) await ctx.addInitScript(() => { try { if (localStorage.getItem('bu.wildcards') === null) localStorage.setItem('bu.wildcards', '0'); } catch { /* storage blocked */ } });
     return ctx;
@@ -2218,7 +2221,7 @@ async function run() {
 
   await check('Spotlight in a phone browser takes the real full screen; Close, and the phone leaving full screen, both return to the card screen at the same card; a computer stays windowed', async () => {
     const open = async opts => {
-      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', ...opts });
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', fullscreen: true, ...opts });
       const p = await ctx.newPage();
       await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
       await p.waitForSelector('#card', { state: 'visible' });
