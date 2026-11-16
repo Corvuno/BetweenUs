@@ -15,7 +15,8 @@ Backlog items are named by number and title.
   pairs. The owner's ear for cards is sharp and recorded in `taste.md`.
 - The Deck sheet and its chapters work. The owner opens it to change chapters and categories;
   people handed the app pick presets, chapters and categories there without any explanation.
-  The owner has no complaint about it (#183 was the Keeper's own).
+  Shuffle, Cards (for group size) and Three are all used; Three mostly from the menu, which is
+  quicker, and it stays in The Deck too. The Deck is left as it is.
 
 ## Weak, in the owner's words
 
