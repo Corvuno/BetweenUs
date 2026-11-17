@@ -11,3 +11,9 @@ Resolved.
   "the colour" was, where a few variants would have asked it.
 - Changed: `taste.md`, "Design liked and turned down" (the card face lines, and that a liked part
   is carried over as seen).
+- Again, on The Deck: the owner liked "the line" from the round with the doors and asked for it
+  with metal colours and without the dots. The Keeper redrew it from memory and came back with a
+  different line (outliers moved off it, names in metal, a word under every level). "This is not
+  that." Cause: the liked picture was rebuilt instead of copied, so every unasked change slipped
+  in. Changed: `look.md`, "Showing a design": a round after a pick starts from the file of the
+  picture the owner picked, changes only what was asked, and shows the two side by side.

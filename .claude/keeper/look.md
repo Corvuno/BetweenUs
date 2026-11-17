@@ -72,6 +72,9 @@ don'ts.
 
 - Start from current `main` with a fresh picture of the live app; the normal card screen comes
   first, and the app's own words stay unless the round is about words.
+- After the owner picks a picture, the next round starts from that picture's own file, changes
+  only what they asked, and shows it beside the picture they picked. Which picture is meant is
+  checked, not assumed.
 - Current and options side by side: same crop, card and moment, labelled, two to a row on a
   phone, moving options in sync. Every picture opens in a viewer on the page with a way back.
 - A computer design's main screen is also its own real-size page.

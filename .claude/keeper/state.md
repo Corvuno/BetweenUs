@@ -43,11 +43,11 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 ## Open with the owner
 
-- The Deck (#183): the owner chose the line (levels down a metal line, state in metal, no
-  colour dots). The first four groups go light to deep; Between Us and After Dark are outliers.
-  Wildcards and Fixed Sets become line items in metal, not picks. Shuffle, Cards and Three stay
-  in The Deck. Three looks for the foot are with the owner: stations on the line, a plate,
-  metal strips.
+- The Deck (#183): the owner chose round two's line (all six groups on one line, large names in
+  their colours). Asked: metal on the line, no colour dots, categories folded and one tap away,
+  Wildcards and Fixed Sets as items on the line, Shuffle, Cards and Three kept, in the plate.
+  The line with only those changes is with the owner. The first four groups go light to deep;
+  Between Us and After Dark are outliers.
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).
