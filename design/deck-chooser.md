@@ -56,7 +56,7 @@ in the `.deselect-btn` style (`--stone`, `--fs-1`, caps, hover gold), a faint mi
 .4) between them, the pair's right edge level with the chapter rows. "Open all" reads "Close all"
 once every shown chapter is open. There is no All here.
 
-**The plate** (`.seg-row`): Shuffle, Cards and Three in one double frame under the line: outer
+**The plate** (`.seg-row`): Shuffle, Cards, Three and About in one double frame under the line: outer
 1px `--border-strong`, a 4px gap, inner 1px `--border` (`--plate-gap`), a row (`.seg`) per setting
 split by `--dim` hairlines, 12px inside the inner frame (`--plate-pad`). The name is at the left
 in a fixed 5.5rem column (`.seg-head`: `--fs-2`, `--track-1`, caps, `--stone`; no Federo), the
@@ -64,12 +64,22 @@ choices right of it in the one picked look (48px tall on the phone), so every ro
 align. Cards keeps 5, 10, 20 and All (All shows outside Arc); Random and All fit one line on a
 360px phone. On a computer the plate is the same, with the foot scrolling with the list.
 
-**Their hints** (`.seg-hint`, `HINTS` entries `shuffle`, `cards` and `three` in `state.js`): one
+**About** (`#lean`, the You–Us lean, picked by the owner from round 1 as "the rail"): the chapter line
+on its side. YOU at the left and US at the right in the pick word's look, the side it leans to in the
+picked look. Between them two `--border-strong` rails 5px apart, a 22px gold mark through the middle, a
+gold mark under each of the other eight steps, longer towards the ends, and a 12px celadon diamond with a
+`--surface` halo that slides over nine steps; the stretch from the middle to the diamond fills with
+celadon metal. An invisible range input over the rail takes touch, keys and screen readers. A preset
+moves it; nothing else does. Owner on the rings option: "really cool, though way too complex for what
+it does".
+
+**Their hints** (`.seg-hint`, `HINTS` entries `shuffle`, `cards`, `three` and `lean` in `state.js`): one
 text under each setting's choices, aligned with them (`--seg-head-w`), in the look of the
 categories' hint (Federo `--fs-3`, `--muted-l`); phone and computer alike. Words, chosen by the
 owner: under Shuffle "Arc lets the questions go deeper step by step and come back up by the last
 card. Random: any order."; under Cards "how many questions before a pause"; under Three "Each draw
-shows three questions; you pick the one you ask or answer." Each goes for good once its own setting is
+shows three questions; you pick the one you ask or answer."; under About (the Keeper's words) "Towards
+You: more questions about the one answering. Towards Us: more about the two of you." Each goes for good once its own setting is
 changed (Three wherever it is changed, The Deck, the menu, Spotlight or key 3); "Show hints again"
 brings all back. A row closes up when its hint goes.
 

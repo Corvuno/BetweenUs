@@ -1156,17 +1156,21 @@ async function run() {
     await page.locator('#partyExit').click(); await page.waitForTimeout(300);
   });
 
-  await check('the You–Us lean: a preset moves it and it stays through chapter and category taps; leaning to Us brings Us cards forward', async () => {
+  await check('the You–Us lean: a preset moves it and the About slider, it stays through chapter and category taps; leaning to Us brings Us cards forward', async () => {
     const r = await page.evaluate(() => {
       const keep = { fo: intentFocus, preset: state.activePreset, on: new Set(state.activeToggles) };
       const click = el => el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       click(document.querySelector('.mode-btn[data-mode="partner"]'));
       const afterPartner = intentFocus;
+      const slider = document.getElementById('leanSlider');
+      const sliderAtPartner = slider.value, usLit = document.querySelector('.lean-word[data-end="us"]').classList.contains('on');
       click(document.querySelector('.chapter[data-chapter]'));
       const chip = document.querySelector('.chapter-panel .toggle-btn'); if (chip) click(chip);
       const afterTaps = intentFocus;
       click(document.querySelector('.mode-btn[data-mode="solo"]'));
-      const afterSolo = intentFocus;
+      const afterSolo = intentFocus, sliderAtSolo = slider.value;
+      slider.value = '1'; slider.dispatchEvent(new Event('input', { bubbles: true })); slider.dispatchEvent(new Event('change', { bubbles: true }));
+      const afterSlide = intentFocus;
       // lean statistics on the whole deck: share of Us cards (focus 1) in the first ten of the order
       const pool = ALL_CARDS.filter(c => !SPICY_LEVELS.includes(c.level));
       const usShare = lean => { intentFocus = lean; let n = 0; for (let i = 0; i < 200; i++) n += applyIntent(pool).slice(0, 10).filter(c => levelFocus(c.level) === 1).length; return n / 2000; };
@@ -1174,9 +1178,10 @@ async function run() {
       // back to the room the run was in, for the checks that follow
       const back = document.querySelector(`.mode-btn[data-mode="${keep.preset || 'balanced'}"]`); if (back) click(back);
       state.activeToggles = keep.on; intentFocus = keep.fo; applyToggleUI(); initDeck();
-      return { afterPartner, afterTaps, afterSolo, mid, us, you };
+      return { afterPartner, afterTaps, afterSolo, sliderAtPartner, usLit, sliderAtSolo, afterSlide, mid, us, you };
     });
     assert(r.afterPartner === 0.5 && r.afterTaps === 0.5 && r.afterSolo === -1, `lean did not follow the presets or did not stay: ${JSON.stringify(r)}`);
+    assert(r.sliderAtPartner === '2' && r.usLit && r.sliderAtSolo === '-4' && r.afterSlide === 0.25, `the About slider does not show or set the lean: ${JSON.stringify(r)}`);
     assert(r.us > r.mid * 2 && r.you < r.mid / 2 && r.you > 0, `lean did not weight the draw as expected: ${JSON.stringify(r)}`);
   });
 
@@ -2373,7 +2378,7 @@ async function run() {
     } finally { await computer.ctx.close(); }
   });
 
-  await check('The Deck: Shuffle, Cards and Three each carry a hint until they are used; it stays gone after a reload and Show hints again brings it back (phone 360 and computer)', async () => {
+  await check('The Deck: Shuffle, Cards, Three and About each carry a hint until they are used; it stays gone after a reload and Show hints again brings it back (phone 360 and computer)', async () => {
     for (const viewport of [{ width: 360, height: 640 }, { width: 1440, height: 900 }]) {
       const ctx = await browser.newContext({ viewport, hasTouch: viewport.width < 800, serviceWorkers: 'block' });
       const p = await ctx.newPage();
@@ -2392,19 +2397,22 @@ async function run() {
         await p.waitForSelector('#card', { state: 'visible' });
         await openDeck();
         const words = await p.evaluate(() => [...document.querySelectorAll('.seg-hint')].map(h => `${h.dataset.hint}: ${h.textContent.trim()}`));
-        assert(words.join('|') === 'shuffle: Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.|cards: how many questions before a pause|three: Each draw shows three questions; you pick the one you ask.', `${where}: the hints read ${JSON.stringify(words)}`);
-        assert(await shown('shuffle') && await shown('cards') && await shown('three'), `${where}: a fresh device does not show all three hints`);
+        assert(words.join('|') === 'shuffle: Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.|cards: how many questions before a pause|three: Each draw shows three questions; you pick the one you ask or answer.|lean: Towards You: more questions about the one answering. Towards Us: more about the two of you.', `${where}: the hints read ${JSON.stringify(words)}`);
+        assert(await shown('shuffle') && await shown('cards') && await shown('three') && await shown('lean'), `${where}: a fresh device does not show all four hints`);
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').scrollIntoViewIfNeeded();
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').click();
         assert(!(await shown('shuffle')) && await shown('cards'), `${where}: changing Shuffle should remove only its own hint`);
         await p.locator('.limit-btn[data-limit="10"]').click();
         assert(!(await shown('cards')) && await shown('three'), `${where}: changing Cards left its hint, or took Three's`);
         await p.locator('.three-opt[data-pick="on"]').click();
-        assert(!(await shown('three')), `${where}: changing Three left its hint`);
+        assert(!(await shown('three')) && await shown('lean'), `${where}: changing Three left its hint, or took About's`);
+        await p.locator('#leanSlider').focus();
+        await p.keyboard.press('ArrowRight');
+        assert(!(await shown('lean')), `${where}: moving About left its hint`);
         await p.reload();
         await p.waitForSelector('#card', { state: 'visible' });
         await openDeck();
-        assert(!(await shown('shuffle')) && !(await shown('cards')) && !(await shown('three')), `${where}: a hint came back after a reload`);
+        assert(!(await shown('shuffle')) && !(await shown('cards')) && !(await shown('three')) && !(await shown('lean')), `${where}: a hint came back after a reload`);
         await p.evaluate(() => closeCats());
         await p.waitForTimeout(500);
         await p.locator('#btn-menu').click();
@@ -2412,7 +2420,7 @@ async function run() {
         await p.locator('[data-menu="hints"]:visible').click();   // the phone's drawer or the computer's side panel
         await p.waitForTimeout(500);
         await openDeck();
-        assert(await shown('shuffle') && await shown('cards') && await shown('three'), `${where}: Show hints again did not bring all three back`);
+        assert(await shown('shuffle') && await shown('cards') && await shown('three') && await shown('lean'), `${where}: Show hints again did not bring all four back`);
       } finally { await ctx.close(); }
     }
   });
