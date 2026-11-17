@@ -1,13 +1,11 @@
 // ── STATE ────────────────────────────────────────────────────────────────────
 // The app's mutable, cross-cutting variables: the `state` object plus the few
-// loose globals read/written from more than one other file (the intent-dial
-// trio, shuffleModeIdx). Feature-local
+// loose globals read/written from more than one other file (the You–Us
+// lean, shuffleModeIdx). Feature-local
 // mutable variables (currentTwist, pickMode, lastMoodWord, …) stay declared
 // next to the feature that owns them, in that feature's own file.
 
-let intentIntensity = 0.5;   /* dial position, 0 … 1  */
-let intentFocus     = 0;     /* dial position, -1 … 1 */
-let intentOn        = false; /* Explore hands the deck back untouched */
+let intentFocus = 0;   /* the You–Us lean, -1 (about you) … 1 (about the two of you); 0 = no lean (deck.js) */
 
 
 // ── STATE ─────────────────────────────────────────────────────────────────────

@@ -666,7 +666,7 @@ applyToggleUI();
 const FOLD_BASE_MS = 170, FOLD_MS_PER_PX = 0.55, FOLD_MAX_MS = 560, FOLD_CLOSE = 0.8;
 const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + px * FOLD_MS_PER_PX) * (opening ? 1 : FOLD_CLOSE));
 
-/* ═════════ APP SHELL WIRING — trays, drawers, presets, dials ═════════ */
+/* ═════════ APP SHELL WIRING — trays, drawers, presets, the lean ═════════ */
 (function(){
   const $=id=>document.getElementById(id);
 
@@ -996,8 +996,8 @@ paintStation(document.querySelector('.chapter-group--switch'), levelColor(WILDCA
 paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
 
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
-   Play asks what kind of evening this is: six chapters you can mix, and two
-   dials that weight the draw inside them. Explore is the same deck as a
+   Play asks what kind of evening this is: six chapters you can mix, and the
+   You–Us lean that weights the draw inside them. Explore is the same deck as a
    handful of drawers, each opening onto the categories it is made of. One
    selection underneath both, and one spice toggle and After Dark link
    shared above both tabs, so neither view goes without them.            */
@@ -1146,7 +1146,6 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
     const turningOn = stateOf(controllable(levels)) !== 'on';
     if (id === 'afterdark' && turningOn && !openAfterDark()) return;
     syncCategoryButtons();   // After Dark may just have opened
-    intentOn = true;
     setLevels(levels, turningOn);
     commit();
   });
@@ -1166,7 +1165,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
 
   /* ── defaults: what the app opens on, and what Draw plays ── */
   function applyDefaultSelection(){
-    const d = window.DEFAULT_SELECTION || { mode:'preset', preset:'balanced', intensity:50, focus:50 };
+    const d = window.DEFAULT_SELECTION || { mode:'preset', preset:'balanced' };
     if (d.mode === 'preset') {
       // Routes through the exact same applyPreset() every mode button
       // uses, so the matching button legitimately shows active — a
@@ -1200,51 +1199,30 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
         });
       }
     }
-    intentIntensity = (d.intensity != null ? d.intensity : 50) / 100;
-    intentFocus     = ((d.focus != null ? d.focus : 50) / 100) * 2 - 1;
-    intentOn = true;
+    /* the lean starts where the config says, else where the preset sits; a chapter set or "all" starts in the middle */
+    setLean(d.lean ?? (d.mode === 'preset' ? (PRESET_LEAN[d.preset] ?? 0) : 0));
   }
 
-  /* A chip, preset or bulk All/None is a selection of its own — the dials
-     stop weighting it, so a chapter tapped afterwards doesn't silently
-     resume a weighting the player never asked for here. The selection
-     itself is untouched; every route in (preset, Explore, a chapter) is a
-     plain add/remove toggle on whatever's already there — nothing wipes
-     the room out from under whatever came before it. */
-  ['modeBar','deselectAll'].forEach(id => {
-    const el = $(id);
-    if (el) el.addEventListener('click', () => { intentOn = false; syncIntentUI(); }, true);
-  });
-  $('chapters').addEventListener('click', e => {
-    if (e.target.closest('.toggle-btn')) { intentOn = false; syncIntentUI(); }
-  }, true);
-
-  /* Each "Start from" room has its own natural depth and focus. The preset
-     itself still decides exactly which categories are on — this only moves
-     the dials to where that room's mood actually sits, so if the player
-     starts mixing chapters in afterwards, the dials aren't left wherever a
-     different room last set them. Strangers and Work sit light; Late Night
-     sits the most intense; Partner leans furthest toward Us. */
-  const PRESET_DIALS = {
-    open:       { intensity:50, focus:50 },
-    balanced:   { intensity:50, focus:50 },
-    newpeople:  { intensity:15, focus:30 },
-    friends:    { intensity:20, focus:45 },
-    dating:     { intensity:40, focus:55 },
-    partner:    { intensity:60, focus:75 },
-    latenight:  { intensity:90, focus:55 },
-    solo:       { intensity:45, focus:5  },
-    work:       { intensity:10, focus:25 },
-    family_p:   { intensity:30, focus:40 },
+  /* ── the You–Us lean (intentFocus, deck.js) ──
+     Each "Start from" room has its own lean: Partner, Date and Close friends
+     towards Us, Strangers and Coworkers towards You (Us questions don't fit
+     people who just met), Yourself all the way to You. Picking a preset moves
+     the lean there; the player's own setting then stays, whatever chapters or
+     categories they change, until they pick a preset again. It runs in the
+     capture phase so the lean is set before the preset rebuilds the deck. */
+  const PRESET_LEAN = {
+    open: 0, balanced: 0, friends: 0, family_p: 0,
+    dating: 0.25, latenight: 0.25, partner: 0.5,
+    newpeople: -0.5, work: -0.5, solo: -1,
   };
+  function setLean(v){
+    intentFocus = Math.max(-1, Math.min(1, v));
+  }
   const modeBarEl = $('modeBar');
   if (modeBarEl) modeBarEl.addEventListener('click', e => {
     const modeBtn = e.target.closest('.mode-btn'); if (!modeBtn) return;
-    const d = PRESET_DIALS[modeBtn.dataset.mode]; if (!d) return;
-    intentIntensity = d.intensity / 100;
-    intentFocus     = (d.focus / 100) * 2 - 1;
-    syncIntentUI();
-  });
+    if (modeBtn.dataset.mode in PRESET_LEAN) setLean(PRESET_LEAN[modeBtn.dataset.mode]);
+  }, true);
 
   /* ── folds: a chapter's count + chevron (and the whole Fixed Sets row) opens its
      panel in place. Several can be open at once; looking is not choosing, so

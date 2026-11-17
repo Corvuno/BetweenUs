@@ -1,31 +1,33 @@
 // ── DECK ─────────────────────────────────────────────────────────────────────
 // Building, filtering, shuffling and advancing through the deck: from the
-// intent dial's weighting and getFilteredCards() through applyRandomMode's
+// You–Us lean's weighting and getFilteredCards() through applyRandomMode's
 // shuffle modes, initDeck/applyLimit, and the nextCard/prevCard
 // advance logic. No rendering beyond the couple of DOM calls advancing a card
 // inherently needs (renderEndMessage, flipToCard calls) — the actual card-face
 // rendering lives in card.js.
 
 
-function intentWeight(lvl, lo, hi){
-  const target = lo + intentIntensity * (hi - lo);
-  const di = levelIntensity(lvl) - target;
-  const df = levelFocus(lvl) - intentFocus;
-  const w  = Math.exp(-(di*di) / (2*1.15*1.15)) * Math.exp(-(df*df) / (2*0.8*0.8));
-  return Math.max(w, 0.05);          /* the floor is where the surprises live */
+/* The You–Us lean: intentFocus, -1 (about you) … 1 (about the two of you),
+   set by a preset and by the player. Each category has its own lean
+   (categories.js focus, same scale). A card weighs e^(LEAN_PULL · lean ·
+   category lean): in the middle every card weighs the same, so the draw is
+   plain random; at either end a card from the far side weighs about a
+   twentieth of one from the near side, so it turns up rarely, never not at
+   all. Depth is left to the Arc and the chapters. */
+const LEAN_PULL = 1.5;
+function leanWeight(lvl){
+  return Math.exp(LEAN_PULL * intentFocus * levelFocus(lvl));
 }
 
 /* One weighted pass, no replacement, no bias in the ordering it leaves
    behind (Efraimidis–Spirakis). It only ORDERS: nothing is cut away, so every
-   card in the pool stays in play and the dial-suited ones just tend to come
-   first, fading naturally into the normal mix as they run out. `ref` is the
-   whole selection, so the dial's target doesn't drift as cards get used up. */
+   card in the pool stays in play and the cards on the leaning side just tend
+   to come first, fading into the normal mix as they run out. A selection
+   under eight cards is too small to lean and plays plain random. */
 function applyIntent(cards, ref){
   ref = ref || cards;
-  if (!intentOn || ref.length < 8) return shuffle(cards);
-  const ints = [...new Set(ref.map(c => c.level))].map(levelIntensity);
-  const lo = Math.min(...ints), hi = Math.max(...ints);
-  const keyed = cards.map(c => ({ c, k: Math.pow(Math.random(), 1 / intentWeight(c.level, lo, hi)) }));
+  if (!intentFocus || ref.length < 8) return shuffle(cards);
+  const keyed = cards.map(c => ({ c, k: Math.pow(Math.random(), 1 / leanWeight(c.level)) }));
   keyed.sort((a, b) => b.k - a.k);
   return keyed.map(x => x.c);
 }
@@ -70,10 +72,10 @@ function shuffle(arr) {
 }
 
 
-/* The order the unseen cards are drawn in: dial-weighted random when the
-   dials are on, plain random when off. Spice mode (After Dark on, not safe)
+/* The order the unseen cards are drawn in: weighted by the You–Us lean when it
+   leans, plain random in the middle. Spice mode (After Dark on, not safe)
    weaves roughly one After Dark card in three through that order, keeping
-   each side's own order so the dial weighting survives the weave. The
+   each side's own order so the lean survives the weave. The
    Random/Arc difference is only what happens inside the hand (_sliceDraw). */
 function orderUnseen(cards, ref) {
   const ordered = applyIntent(cards, ref);
@@ -300,7 +302,7 @@ function _placeCard(heads, count, fits, distinctFirst) {
    so five cards mean five categories when the pool allows) AS LONG AS the
    places still to come can be filled afterwards (_canFillRuns). That look-ahead
    keeps a heavy category from being left to pile up in the last runs;
-   otherwise the draw order (dials, After Dark weave) decides. Unseen cards
+   otherwise the draw order (the lean, After Dark weave) decides. Unseen cards
    only; cards not taken stay behind the hand, in order. */
 function _spreadRuns(ordered, handSize, distinctFirst) {
   const size = Math.min(handSize, ordered.length);
@@ -336,7 +338,7 @@ function _spreadRuns(ordered, handSize, distinctFirst) {
   return [...hand, ...rest];
 }
 
-/* Unseen cards first, in draw order (dial-weighted or random); seen cards
+/* Unseen cards first, in draw order (leaned or random); seen cards
    follow so fullDeck still holds the whole selection. */
 function _unseenFirst(cards){
   const seen = _seenSet();
@@ -750,7 +752,7 @@ function nextCard() {
    planned there plus two more drawn the way that step's card would be:
    Arc takes two unseen cards from the selection at the planned card's depth
    (levelDepth), or the nearest depth when fewer exist; Wild takes the next
-   two in the dial-weighted draw order. Never a card already in this hand,
+   two in the leaned draw order. Never a card already in this hand,
    offered earlier in this hand, and unseen cards come first. In Arc the After
    Dark opener rule holds (none as an option on step 1; on step 2 only 1 time
    in 20). If fewer than two unseen cards are left, cards already seen this

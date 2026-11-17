@@ -1156,10 +1156,34 @@ async function run() {
     await page.locator('#partyExit').click(); await page.waitForTimeout(300);
   });
 
-  await check('hand size: with most cards seen and the dials moved, a hand of 5 is 5 and All is every unseen card; running out starts a fresh pass', async () => {
+  await check('the You–Us lean: a preset moves it and it stays through chapter and category taps; leaning to Us brings Us cards forward', async () => {
     const r = await page.evaluate(() => {
-      const keep = { lim: state.cardLimit, log: state.sessionLog, from: state.seenFrom, on: intentOn, ii: intentIntensity, fo: intentFocus };
-      intentOn = true; intentIntensity = 0.9; intentFocus = 0.1;
+      const keep = { fo: intentFocus, preset: state.activePreset, on: new Set(state.activeToggles) };
+      const click = el => el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      click(document.querySelector('.mode-btn[data-mode="partner"]'));
+      const afterPartner = intentFocus;
+      click(document.querySelector('.chapter[data-chapter]'));
+      const chip = document.querySelector('.chapter-panel .toggle-btn'); if (chip) click(chip);
+      const afterTaps = intentFocus;
+      click(document.querySelector('.mode-btn[data-mode="solo"]'));
+      const afterSolo = intentFocus;
+      // lean statistics on the whole deck: share of Us cards (focus 1) in the first ten of the order
+      const pool = ALL_CARDS.filter(c => !SPICY_LEVELS.includes(c.level));
+      const usShare = lean => { intentFocus = lean; let n = 0; for (let i = 0; i < 200; i++) n += applyIntent(pool).slice(0, 10).filter(c => levelFocus(c.level) === 1).length; return n / 2000; };
+      const mid = usShare(0), us = usShare(1), you = usShare(-1);
+      // back to the room the run was in, for the checks that follow
+      const back = document.querySelector(`.mode-btn[data-mode="${keep.preset || 'balanced'}"]`); if (back) click(back);
+      state.activeToggles = keep.on; intentFocus = keep.fo; applyToggleUI(); initDeck();
+      return { afterPartner, afterTaps, afterSolo, mid, us, you };
+    });
+    assert(r.afterPartner === 0.5 && r.afterTaps === 0.5 && r.afterSolo === -1, `lean did not follow the presets or did not stay: ${JSON.stringify(r)}`);
+    assert(r.us > r.mid * 2 && r.you < r.mid / 2 && r.you > 0, `lean did not weight the draw as expected: ${JSON.stringify(r)}`);
+  });
+
+  await check('hand size: with most cards seen and the lean moved, a hand of 5 is 5 and All is every unseen card; running out starts a fresh pass', async () => {
+    const r = await page.evaluate(() => {
+      const keep = { lim: state.cardLimit, log: state.sessionLog, from: state.seenFrom, fo: intentFocus };
+      intentFocus = 0.75;
       const sel = getFilteredCards(), unseenN = 12;
       const seed = () => { state.sessionLog = shuffle(sel).slice(0, sel.length - unseenN).map(c => entryOf(c)); state.seenFrom = 0; };
       const out = { sizes: [] };
@@ -1170,7 +1194,7 @@ async function run() {
       out.fresh = { size: state.visibleDeck.length, seenFrom: state.seenFrom, logLen, logKept: state.sessionLog.length === logLen };
       state.cardLimit = null; seed(); initDeck(true); out.all = state.visibleDeck.length;
       state.cardLimit = keep.lim; state.sessionLog = keep.log; state.seenFrom = keep.from;
-      intentOn = keep.on; intentIntensity = keep.ii; intentFocus = keep.fo;
+      intentFocus = keep.fo;
       return out;
     });
     assert(r.sizes.join() === '5,5,2', `hands of 5 from 12 unseen: got ${r.sizes.join()}`);
@@ -1394,7 +1418,7 @@ async function run() {
           sum(runs.slice(k)) + sum(counts.map(n => Math.min(n, sum(runs.slice(0, k).map(r => Math.min(2, r))))))));
       };
       out.crowded = { hands: 0, avoidable: 0, short: 0 };
-      intentOn = false; state.spiceMode = false; state.handOffered.clear();
+      intentFocus = 0; state.spiceMode = false; state.handOffered.clear();
       const shapes = [[3, 6, 6, 11, 4, 4], [8, 3, 3, 3, 3], [10, 3, 3, 3, 3, 3], [12, 12, 12, 12, 12, 12], [9, 9, 2, 2, 2]];
       for (const mode of ['wild']) for (const lim of [null, 20]) for (const shape of shapes) for (let i = 0; i < 24; i++) {
         state.randomMode = mode; state.cardLimit = lim;
@@ -1411,7 +1435,7 @@ async function run() {
       /* After Dark joining an Arc hand: it never opens, and the hand still climbs from the lightest depth and lands on medium */
       const savedToggles = new Set(state.activeToggles), savedSpice = state.spiceMode, savedSafe = state.safeMode;
       SPICY_LEVELS.forEach(l => state.activeToggles.add(l));
-      state.spiceMode = true; state.safeMode = false; intentOn = false; state.randomMode = 'arc'; state.cardLimit = 5;
+      state.spiceMode = true; state.safeMode = false; intentFocus = 0; state.randomMode = 'arc'; state.cardLimit = 5;
       out.shape = { hands: 400, broken: 0 };
       const bandsOn = [...new Set(getFilteredCards().map(c => levelDepth(c.level)))].sort((a, b) => a - b);
       for (let i = 0; i < out.shape.hands; i++) {
@@ -1442,7 +1466,7 @@ async function run() {
     const r = await page.evaluate(() => {
       if (state.partyMode) exitParty();
       closePicker(); state.pickOptions = null; pickMode = false;
-      const saved = new Set(state.activeToggles), keepIntent = intentOn;
+      const saved = new Set(state.activeToggles), keepIntent = intentFocus;
       const out = { hands: 0, len: 0, shape: 0, repeats: 0, deepMiddle: 0, tops: {} };
       const broad = Object.keys(CATEGORIES).filter(k => !CATEGORIES[k].optIn && !CATEGORIES[k].gate && k !== 'backup');
       for (const sel of [saved, new Set(broad)]) for (const lim of [5, 10, 20]) for (let i = 0; i < 120; i++) {
@@ -1464,7 +1488,7 @@ async function run() {
       /* a one-card hand (the last unseen card), After Dark or not, comes back as that card */
       out.single = [ALL_CARDS.find(c => !SPICY_LEVELS.includes(c.level)), ALL_CARDS.find(c => SPICY_LEVELS.includes(c.level))]
         .every(c => { const h = _arcRuns([c], 5); return h.length === 1 && h[0] === c; });
-      state.activeToggles = saved; intentOn = keepIntent;
+      state.activeToggles = saved; intentFocus = keepIntent;
       /* All: hidden in Arc, back in Wild; Arc with All picked lands on 20 */
       const allBtn = document.querySelector('#limitBtnsDrawer .limit-btn[data-limit="all"]');
       state.randomMode = 'wild'; state.cardLimit = null; initDeck();

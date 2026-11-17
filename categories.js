@@ -32,9 +32,8 @@
 //    axes. That's why After Dark categories land all over the band scale
 //    instead of clustering at the top: flesh/bare are mostly descriptive
 //    (band 3), kinks asks you to name something you keep quiet (band 5).
-//    Intensity runs the same scale as depth (a category has one
-//    depth, not two disagreeing ones); focus runs from a question about
-//    you to a question about the two of you. ──
+//    Focus runs from a question about you to a question about the two of
+//    you; the You–Us lean in The Deck weights the draw by it (deck.js). ──
 const CATEGORIES = {
   quick:  { label:"Quick",  color:"#ecbd3a", band:1, focus:0,
             desc:"Small true things, answered before you can think",
@@ -159,7 +158,6 @@ const CATEGORIES = {
 // with it or with each other.
 const LEVEL_COLORS   = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.color]));
 const LEVEL_DEPTH     = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.band]));
-const LEVEL_INTENSITY = LEVEL_DEPTH;
 const LEVEL_FOCUS     = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.focus]));
 const LEVEL_LABELS    = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.label]));
 const CATEGORY_DESCRIPTIONS = Object.fromEntries(Object.entries(CATEGORIES).map(([k,v]) => [k, v.desc]));
@@ -222,7 +220,6 @@ function nextFreeCardId() { return Math.max(...KNOWN_CARDS.map(c => c.id), ...RE
 
 function levelColor(l){ return LEVEL_COLORS[l]||'#c9a84c'; }
 function levelDepth(l){ return LEVEL_DEPTH[l] || 3; }
-function levelIntensity(l){ return LEVEL_INTENSITY[l] != null ? LEVEL_INTENSITY[l] : 3; }
 function levelFocus(l){ return LEVEL_FOCUS[l] != null ? LEVEL_FOCUS[l] : 0; }
 
 // SPICY_LEVELS (the actual After Dark gate set, ✦ in LEVEL_LABELS),

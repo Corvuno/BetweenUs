@@ -40,13 +40,15 @@
       COLBERT_STRICT:   true,    // true → Colbert plays its canonical 15, in order
       // what "Draw" plays, and what the app opens on. mode 'chapters' unions the
       // listed chapters; mode 'all' mirrors the All button (everything except
-      // the opt-in-only lists). intensity/focus are 0-100, 50=balanced.
+      // the opt-in-only lists). lean (optional): the You–Us lean to open on,
+      // -1 … 1; a preset otherwise brings its own (PRESET_LEAN in ui.js), and
+      // a chapter set or 'all' starts in the middle.
       // "Into the Deep" starts deselected — playtesters found it too daring
       // to be on by default; people can switch it on themselves once they
       // know what they're choosing. mode:'preset' routes through the same
       // applyPreset() every mode button uses (PRESETS.balanced, below) so
       // the matching button is shown active on load.
-      DEFAULT_SELECTION: { mode:'preset', preset:'balanced', intensity:50, focus:50 },
+      DEFAULT_SELECTION: { mode:'preset', preset:'balanced' },
     },
 
     // WORK — workplace-safe: adult content hard-locked, opens in Work mode.
@@ -63,10 +65,10 @@
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
       // narrower room, and a touch softer than balanced — still a real conversation,
-      // just not one that needs Between Us or the far end of the intensity dial.
+      // just not one that needs Between Us, leaning towards You like Coworkers.
       // 'surface' carries the light everyday categories, giving Work an easy
       // on-ramp before the personal/reflective chapters.
-      DEFAULT_SELECTION: { mode:'chapters', chapters:['surface','findout','deeper'], intensity:35, focus:50 },
+      DEFAULT_SELECTION: { mode:'chapters', chapters:['surface','findout','deeper'], lean:-0.5 },
     },
 
     // EDITOR — development build: spice pre-activated, dev conveniences on.
@@ -82,7 +84,7 @@
       SHOW_CARD_ID:     true,
       LOG_PERSIST:      true,
       COLBERT_STRICT:   true,
-      DEFAULT_SELECTION: { mode:'all', intensity:50, focus:50 },
+      DEFAULT_SELECTION: { mode:'all' },
     },
 
   };

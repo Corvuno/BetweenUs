@@ -19,5 +19,6 @@ Rules:
 - At the end of a hand, one tap on "Next hand" starts the next one, no holding; tap the card to turn it between the pause and the list. With Three on, the button offers "Three others", a fast double tap draws just one card, and the phone's back button closes the menu or a sheet instead of leaving the app. On a phone the card leans a little toward your thumb as you swipe it sideways, and the opening card opens only with a tap; skip is gone, so swiping down does nothing.
 - Save, Save for later, Clear the list, Delete and Start over now say what they did in a short line, and the last three can be taken back with Undo. Opening a file that isn't a Between Us list says so, and Rename changes the name right where it is.
 - Arc plays as one curve in every hand size: an easy climb from the lightest categories you picked, a short deep stretch that mixes the deepest questions with lighter ones, and a quicker way back down to a medium last card. After Dark no longer opens a hand unless it is the lightest thing you picked.
+- Who you play with now shapes which questions come up: Partner, Date and Close friends lean towards questions about the two of you, Strangers, Coworkers and Yourself towards questions about the one answering.
 - Three cards reworded.
 - Smaller fixes throughout.
