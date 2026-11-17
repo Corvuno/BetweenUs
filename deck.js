@@ -336,22 +336,6 @@ function _spreadRuns(ordered, handSize, distinctFirst) {
   return [...hand, ...rest];
 }
 
-const _spreadHolds = run => run.every(c => run.filter(d => d.level === c.level).length <= RUN_CAP);
-/* an arc rises to its deepest card, then eases down */
-const _isArcShaped = run => {
-  const depths = run.map(c => levelDepth(c.level));
-  let i = 0;
-  while (i < depths.length - 1 && depths[i] <= depths[i + 1]) i++;
-  while (i < depths.length - 1 && depths[i] >= depths[i + 1]) i++;
-  return i >= depths.length - 1;
-};
-/* Would swapping cards i and j leave both of their runs passing `holds`? */
-function _swapKeeps(cards, i, j, holds) {
-  const swapped = [...cards];
-  [swapped[i], swapped[j]] = [swapped[j], swapped[i]];
-  return [i, j].every(k => holds(swapped.slice(Math.floor(k / RUN) * RUN, Math.floor(k / RUN) * RUN + RUN)));
-}
-
 /* Unseen cards first, in draw order (dial-weighted or random); seen cards
    follow so fullDeck still holds the whole selection. */
 function _unseenFirst(cards){
@@ -363,9 +347,9 @@ function _unseenFirst(cards){
   if (!eligible.length) eligible = unseenCards;
   const eligSet = new Set(eligible);
   const size = state.cardLimit ?? eligible.length;
-  const fresh = _isLongArc(Math.min(size, eligible.length))
-    ? _longArcRuns(orderUnseen(eligible, cards), size)
-    : _spreadRuns(orderUnseen(eligible, cards), size, state.randomMode === 'arc');
+  const fresh = state.randomMode === 'arc'
+    ? _arcRuns(orderUnseen(eligible, cards), size)
+    : _spreadRuns(orderUnseen(eligible, cards), size, false);
   const used  = shuffle(cards.filter(c => !eligSet.has(c)));
   return {deck: fresh.concat(used), unseen: fresh.length};
 }
@@ -377,184 +361,108 @@ function _sliceDraw(deck, unseen){
   return state.randomMode === 'arc' ? _arcHand(hand) : hand;
 }
 
-/* Long Arc (owner, 2026-10-30): in Arc a hand of 10 or 20 is ONE arc, not
-   arcs of five. It opens with a warm-up, spends most of the hand on deep
-   cards, and winds down over its last two or three. 20 is deeper than 10:
-     10 → 3 warm-up, 5 deep, 2 wind-down
-     20 → 4 warm-up, 13 deep, 3 wind-down
-   "Deep" follows the selection: the categories with the highest depth among
-   the ones switched on, taken from the top down until there are at least
-   three of them and enough cards, never the shallowest depth selected. A
-   hand of five stays the classic small arc (_arcHand). */
-const _isLongArc = size => state.randomMode === 'arc' && size > RUN;
+/* Arc (owner, 2026-11-17): every Arc hand, 5, 10 or 20, is one arc on the
+   same curve, set in shares of the hand rather than fixed counts, so the
+   three sizes always have the same feel. The hand of five is the model: an
+   easy climb, a short deep stretch, then a quicker way back down.
+     climb  about half the hand: from the lightest selected depth upwards,
+            never reaching the deepest
+     deep   about three in ten: the deepest selected depth mixed with the
+            depths just under it, never two of the deepest side by side
+     down   the last fifth: back down, the last card at medium depth
+   The split moves by a card either way from hand to hand (5 is 3/1/1 or
+   2/2/1), and each place's depth wobbles a little within its stretch, so
+   no two hands climb the same steps. Depth is the category's band; the
+   depths counted are only the ones the selection has. */
+const ARC_DEEP = 0.3;   // share of the hand in the deep stretch
+const ARC_DOWN = 0.2;   // share of the hand coming back down
+const _jitter = spread => (Math.random() * 2 - 1) * spread;
 
-function _longArcPlan(n) {
-  const warm = n >= 15 ? 4 : 3;
-  const cool = n >= 15 ? 3 : 2;
-  return { warm, cool, deep: Math.max(0, n - warm - cool) };
-}
-
-/* The deep categories for this draw: highest depths first, never the lowest. */
-function _deepLevels(cards, need) {
-  const bands = [...new Set(cards.map(c => levelDepth(c.level)))].sort((a, b) => b - a);
-  const deep = new Set();
-  for (const band of bands.slice(0, -1)) {
-    cards.forEach(c => { if (levelDepth(c.level) === band) deep.add(c.level); });
-    if (deep.size >= 3 && cards.filter(c => deep.has(c.level)).length >= need) break;
+/* Which depth (as a step among the selected depths, 0 = lightest) each place
+   of an `n`-card hand aims for, given `top` = the deepest step. */
+function _arcSteps(n, top) {
+  if (n < 3 || top < 1) return Array.from({ length: n }, (_, i) => Math.round(top * i / Math.max(1, n - 1)));
+  const wobble = 0.5 + n * 0.03;
+  let deep = Math.max(1, Math.round(n * ARC_DEEP + _jitter(wobble)));
+  let down = Math.max(1, Math.round(n * ARC_DOWN + _jitter(wobble * 0.6)));
+  while (n - deep - down < 2 && deep + down > 2) { if (deep >= down && deep > 1) deep--; else down--; }
+  const climb = n - deep - down;
+  const medium = Math.floor(top / 2);
+  const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, Math.round(x)));
+  /* climb: lightest first, then rising towards the step under the deepest */
+  const climbTop = Math.max(0, top - 1);
+  const up = [0, ...Array.from({ length: climb - 1 }, (_, i) =>
+    clamp(climbTop * (i + 1) / climb + _jitter(0.6), 0, climbTop))].sort((a, b) => a - b);
+  /* deep stretch: one or more of the deepest, larded with the steps under it */
+  const tops = Math.max(1, Math.min(Math.ceil(deep / 2), Math.round(deep * 0.45 + _jitter(0.5))));
+  const under = Array.from({ length: deep - tops }, () => clamp(top - 1 - (Math.random() < 0.35 ? 1 : 0), 0, top));
+  const peak = [];
+  let topFirst = Math.random() < 0.5 || tops > under.length;
+  let t = tops, u = 0;
+  while (peak.length < deep) {
+    const wantTop = t > 0 && (topFirst || u >= under.length) && peak[peak.length - 1] !== top;
+    if (wantTop || u >= under.length) { peak.push(top); t--; } else peak.push(under[u++]);
+    topFirst = !topFirst;
   }
-  return deep;
+  /* way down: from just under the deep stretch to medium, last card medium */
+  const fall = Array.from({ length: down }, (_, j) => j === down - 1 ? medium
+    : clamp((top - 1) - (top - 1 - medium) * (j + 1) / down + _jitter(0.5), medium, top - 1)).sort((a, b) => b - a);
+  return [...up, ...peak, ...fall];
 }
 
-/* `n` cards in draw order, the least-used category first each time, so a
-   stretch takes as many different categories as the pool has. */
-function _pickSpread(cards, n) {
-  const used = new Map();
-  const rest = [...cards];
-  const out = [];
-  while (out.length < n && rest.length) {
-    let best = 0;
-    for (let i = 1; i < rest.length; i++) {
-      if ((used.get(rest[i].level) ?? 0) < (used.get(rest[best].level) ?? 0)) best = i;
-    }
-    const card = rest.splice(best, 1)[0];
-    used.set(card.level, (used.get(card.level) ?? 0) + 1);
-    out.push(card);
-  }
-  return out;
-}
-
-/* Deepest to the middle: shallow to deep, placed alternately front and back. */
-function _peakInMiddle(cards) {
-  const byDepth = cards.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
-  const out = new Array(byDepth.length);
-  let lo = 0, hi = byDepth.length - 1;
-  byDepth.forEach((c, i) => { if (i % 2 === 0) out[lo++] = c; else out[hi--] = c; });
-  return out;
-}
-
-/* How many places hold the same category as the card before them. */
-const _repeats = hand => hand.reduce((n, c, i) => n + (i > 0 && c.level === hand[i - 1].level ? 1 : 0), 0);
-
-/* Never the same category twice in a row where the shape allows it. The
-   shape stays as built (which depth sits where); each place is then refilled
-   with a card of its own depth, taking the category with the most cards left
-   that differs from the card before. (Swapping repeats away one at a time got
-   stuck when the deep stretch came from only three categories.) Arc is the
-   base (owner, 2026-10-30): the depth order never changes. */
-function _breakRepeats(hand) {
-  const left = new Map();
-  hand.forEach(c => {
-    const depth = levelDepth(c.level);
-    left.set(depth, [...(left.get(depth) ?? []), c]);
-  });
-  const out = [];
-  hand.forEach(slot => {
-    const pool = left.get(levelDepth(slot.level));
-    const prev = out[out.length - 1]?.level;
-    const count = level => pool.filter(c => c.level === level).length;
-    const others = pool.filter(c => c.level !== prev);
-    const pick = others.length ? others.reduce((best, c) => (count(c.level) > count(best.level) ? c : best)) : pool[0];
-    pool.splice(pool.indexOf(pick), 1);
-    out.push(pick);
-  });
-  return out;
-}
-
-/* The long-Arc hand, already in playing order, followed by the unseen cards
-   it didn't take (in draw order). */
-function _longArcRuns(ordered, handSize) {
+/* The Arc hand, already in playing order, followed by the unseen cards it
+   didn't take (in draw order). Each place takes, at its depth (or the nearest
+   depth that still has cards), the earliest card in draw order that is not
+   the category of the card before it and keeps its run of five at two per
+   category, the least used category in the hand first. After Dark never
+   opens the hand while the opening depth has anything else, and is the
+   second card only one hand in twenty: an After Dark opener reads as a
+   different game than the one the table sat down for. When After Dark is all
+   there is, or is the lightest thing selected, it opens. */
+function _arcRuns(ordered, handSize) {
   const n = Math.min(handSize, ordered.length);
-  const plan = _longArcPlan(n);
-  const deepSet = _deepLevels(ordered, plan.deep);
-  const deepPool = ordered.filter(c => deepSet.has(c.level));
-  const endPool = ordered.filter(c => !deepSet.has(c.level));
-  let deep = _pickSpread(deepPool, plan.deep);
-  let ends = _pickSpread(endPool, plan.warm + plan.cool);
-  /* a pool too small for its places borrows from the other one */
-  const taken = () => new Set([...deep, ...ends]);
-  if (ends.length < plan.warm + plan.cool) {
-    const t = taken();
-    ends = ends.concat(_pickSpread(deepPool.filter(c => !t.has(c)), plan.warm + plan.cool - ends.length));
-  }
-  if (deep.length < plan.deep) {
-    const t = taken();
-    deep = deep.concat(_pickSpread(endPool.filter(c => !t.has(c)), plan.deep - deep.length));
-  }
-  /* the lighter end cards open the hand rising, the rest close it falling */
-  const endsByDepth = ends.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
-  const warm = endsByDepth.slice(0, Math.min(plan.warm, endsByDepth.length));
-  const cool = endsByDepth.slice(warm.length).reverse();
-  const hand = _breakRepeats([...warm, ..._peakInMiddle(deep), ...cool]);
-  const inHand = new Set(hand);
-  return [...hand, ...ordered.filter(c => !inHand.has(c))];
+  const bands = [...new Set(ordered.map(c => levelDepth(c.level)))].sort((a, b) => a - b);
+  const steps = _arcSteps(n, bands.length - 1);
+  const isAD = c => SPICY_LEVELS.includes(c.level);
+  const keepSecond = Math.random() < 0.05;
+  const rest = [...ordered];
+  const used = new Map();
+  const hand = [];
+  steps.forEach((step, i) => {
+    const runStart = Math.floor(i / RUN) * RUN;
+    const inRun = level => hand.slice(runStart).filter(c => c.level === level).length;
+    const prev = hand[i - 1]?.level;
+    /* nearest depth first; on the climb a lighter one before a deeper, on the rest the reverse */
+    const order = bands.map((b, k) => k)
+      .filter(k => rest.some(c => levelDepth(c.level) === bands[k]))
+      .sort((x, y) => Math.abs(x - step) - Math.abs(y - step) || (i < n / 2 ? x - y : y - x));
+    const atDepth = k => {
+      let at = rest.filter(c => levelDepth(c.level) === bands[k]);
+      if (i === 0 || (i === 1 && !keepSecond)) {
+        const calm = at.filter(c => !isAD(c));
+        if (calm.length) at = calm;
+      }
+      return at;
+    };
+    /* Arc is the base (owner, 2026-10-30): the depth holds; a repeat or a
+       third in the run only when that depth has nothing else */
+    const at = atDepth(order[0]);
+    const tiers = [c => c.level !== prev && inRun(c.level) < RUN_CAP, c => c.level !== prev, () => true];
+    let card;
+    for (const ok of tiers) {
+      const fit = at.filter(ok);
+      if (fit.length) { card = fit.reduce((best, c) => ((used.get(c.level) ?? 0) < (used.get(best.level) ?? 0) ? c : best)); break; }
+    }
+    rest.splice(rest.indexOf(card), 1);
+    used.set(card.level, (used.get(card.level) ?? 0) + 1);
+    hand.push(card);
+  });
+  return [...hand, ...rest];
 }
 
-/* Arc, hand of five: one small arc. (Hands of 10 and 20 are one long arc,
-   built by _longArcRuns; here they only get the After Dark opener rule.)
-   The hand's cards are taken in their draw order, five at a time, and each
-   group is shaped on its own:
-     - variety: already settled when the hand was chosen (_spreadRuns: each
-       run of five prefers different categories and never holds more than two
-       of one), so a group is simply the next five cards in line;
-     - shape: order by depth so the group opens warm, reaches its deepest card
-       around the middle and eases down after it.
-   The summary trace plots the same levelDepth, so the line reads as arcs. */
+/* An Arc hand arrives in playing order from _arcRuns. */
 function _arcHand(hand){
-  /* a long Arc arrives already in playing order (_longArcRuns); only the
-     After Dark opener rule below still applies to it */
-  const long = _isLongArc(hand.length);
-  const out = long ? hand.slice() : [];
-  let rest = long ? [] : hand.slice();
-  while (rest.length) {
-    const picked = rest.slice(0, RUN);
-    rest = rest.slice(picked.length);
-    /* deepest card to the middle: walk the cards from shallow to deep, placing
-       them alternately at the front and the back, so depth rises then falls */
-    const byDepth = picked.slice().sort((a, b) => levelDepth(a.level) - levelDepth(b.level));
-    const arc = new Array(byDepth.length);
-    let lo = 0, hi = byDepth.length - 1;
-    byDepth.forEach((c, i) => { if (i % 2 === 0) arc[lo++] = c; else arc[hi--] = c; });
-    out.push(...arc);
-  }
-
-  /* An opener from After Dark reads as a different game than the one the
-     table sat down for — fine as where a round lands, wrong as where it
-     starts. Never the hand's first card; a rare 5% chance it survives as the
-     second; free everywhere from the third card on. Skipped when the hand
-     is After-Dark-only (nothing else to open with) or has none at all.
-     A rising-then-falling arc read backwards is still an arc, so the first
-     group is turned around when that fixes the opening; only if it doesn't
-     does a later non-After-Dark card swap in. */
-  const isAD = c => SPICY_LEVELS.includes(c.level);
-  if (out.some(c => !isAD(c))) {
-    const keepSecond = Math.random() < 0.05;
-    const openOK = () => !isAD(out[0]) && (keepSecond || !isAD(out[1]));
-    if (!openOK() && !long) {
-      const n = Math.min(RUN, out.length);
-      out.splice(0, n, ...out.slice(0, n).reverse());
-      if (!openOK()) out.splice(0, n, ...out.slice(0, n).reverse());   // turn it back
-    }
-    const bump = (idx, survive) => {
-      if (!out[idx] || !isAD(out[idx]) || survive) return;
-      /* prefer a swap that keeps both the spread and the arc's shape, then one
-         that keeps the shape */
-      const later = out.flatMap((c, i) => (i > idx && !isAD(c) ? [i] : []));
-      const keepsAll = run => _spreadHolds(run) && _isArcShaped(run);
-      /* long Arc: a card of the same depth, one that brings no repeat first */
-      const noRepeat = i => { const a = out.slice(); [a[idx], a[i]] = [a[i], a[idx]]; return _repeats(a) <= _repeats(out); };
-      const sameDepth = i => levelDepth(out[i].level) === levelDepth(out[idx].level);
-      /* Arc is the base (owner, 2026-10-30): only a swap that keeps the shape;
-         if there is none, the After Dark card stays where the arc put it */
-      const swapAt = (long
-        ? later.find(i => sameDepth(i) && noRepeat(i)) ?? later.find(sameDepth)
-        : later.find(i => _swapKeeps(out, idx, i, keepsAll)) ?? later.find(i => _swapKeeps(out, idx, i, _isArcShaped)))
-        ?? -1;
-      if (swapAt !== -1) [out[idx], out[swapAt]] = [out[swapAt], out[idx]];
-    };
-    bump(0, false);        // spot 1: never
-    bump(1, keepSecond);   // spot 2: survives 5% of the time
-  }
-  return out;
+  return hand;
 }
 
 function applyLimit() {
@@ -878,8 +786,8 @@ function buildPickOptions(step, replacing = null) {
   const runStart = Math.floor(step / RUN) * RUN;
   const runLevels = state.visibleDeck.slice(runStart, runStart + RUN)
     .flatMap((c, k) => (c && runStart + k !== step ? [c.level] : []));
-  /* long Arc: also no option of the same category as the cards either side */
-  const sides = _isLongArc(state.visibleDeck.length)
+  /* Arc: also no option of the same category as the cards either side */
+  const sides = isArc
     ? [state.visibleDeck[step - 1], state.visibleDeck[step + 1]].flatMap(c => (c ? [c.level] : []))
     : [];
   const full = c => runLevels.filter(level => level === c.level).length >= RUN_CAP || sides.includes(c.level);

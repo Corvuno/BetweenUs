@@ -1388,15 +1388,17 @@ async function run() {
         if (hand.length !== Math.min(lim ?? Infinity, keep.size)) out.crowded.short++;
         if (maxRun(hand) > 2 && fillable(counts, hand.length) >= hand.length) out.crowded.avoidable++;
       }
-      /* After Dark joining an Arc hand must not break the up-then-down shape (the opener swap) */
+      /* After Dark joining an Arc hand: it never opens, and the hand still climbs from the lightest depth and lands on medium */
       const savedToggles = new Set(state.activeToggles), savedSpice = state.spiceMode, savedSafe = state.safeMode;
       SPICY_LEVELS.forEach(l => state.activeToggles.add(l));
       state.spiceMode = true; state.safeMode = false; intentOn = false; state.randomMode = 'arc'; state.cardLimit = 5;
       out.shape = { hands: 400, broken: 0 };
+      const bandsOn = [...new Set(getFilteredCards().map(c => levelDepth(c.level)))].sort((a, b) => a - b);
       for (let i = 0; i < out.shape.hands; i++) {
         state.sessionLog = []; state.seenFrom = 0; state.skippedSeen.clear(); state.sitOut = {}; state.handNo++;
         const b = buildFullDeck();
-        if (!_isArcShaped(sliceVisibleDeck(b.deck, b.unseen))) out.shape.broken++;
+        const h = sliceVisibleDeck(b.deck, b.unseen), d = h.map(c => levelDepth(c.level));
+        if (SPICY_LEVELS.includes(h[0].level) || d[0] !== bandsOn[0] || d.at(-1) !== bandsOn[Math.floor((bandsOn.length - 1) / 2)]) out.shape.broken++;
       }
       state.activeToggles = savedToggles; state.spiceMode = savedSpice; state.safeMode = savedSafe;
       /* only two categories selected: hands still fill to the size picked (long Arc too) */
@@ -1410,33 +1412,34 @@ async function run() {
     assert(r.bad === 0, `${r.bad} of ${r.hands} hands had 3+ cards of one category in a run of five (worst ${r.worst})`);
     assert(r.crowded.short === 0, `crowded hands came out short: ${r.crowded.short}/${r.crowded.hands}`);
     assert(r.crowded.avoidable === 0, `${r.crowded.avoidable} of ${r.crowded.hands} crowded long hands stacked 3+ of a category although the unseen cards could avoid it`);
-    assert(r.shape.broken === 0, `${r.shape.broken} of ${r.shape.hands} Arc hands with After Dark lost their up-then-down shape`);
+    assert(r.shape.broken === 0, `${r.shape.broken} of ${r.shape.hands} Arc hands with After Dark opened on After Dark or lost their lightest-first, medium-last shape`);
     assert(r.threeBad === 0, `${r.threeBad} Three options would stack a third card of a category`);
     assert(r.cappedOnly.got === Math.min(10, r.cappedOnly.n), `two-category selection did not fill: ${JSON.stringify(r.cappedOnly)}`);
     await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });
   });
 
-  await check('long Arc: 10 and 20 are one arc (warm-up, deep middle, wind-down of 2/3), deepest categories selected in the middle, no category twice in a row; All is Wild-only and Arc lands on 20', async () => {
+  await check('Arc curve: 5, 10 and 20 open on the lightest depth, reach the deepest only after the climb and never twice side by side, end on medium, no category twice in a row; All is Wild-only and Arc lands on 20', async () => {
     const r = await page.evaluate(() => {
       if (state.partyMode) exitParty();
       closePicker(); state.pickOptions = null; pickMode = false;
       const saved = new Set(state.activeToggles), keepIntent = intentOn;
-      const out = { hands: 0, len: 0, shape: 0, repeats: 0, deepMiddle: 0, plans: {} };
+      const out = { hands: 0, len: 0, shape: 0, repeats: 0, deepMiddle: 0, tops: {} };
       const broad = Object.keys(CATEGORIES).filter(k => !CATEGORIES[k].optIn && !CATEGORIES[k].gate && k !== 'backup');
-      for (const sel of [saved, new Set(broad)]) for (const lim of [10, 20]) for (let i = 0; i < 120; i++) {
+      for (const sel of [saved, new Set(broad)]) for (const lim of [5, 10, 20]) for (let i = 0; i < 120; i++) {
         state.activeToggles = new Set(sel); state.randomMode = 'arc'; state.cardLimit = lim;
         state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.handNo++;
         const b = buildFullDeck(); const h = sliceVisibleDeck(b.deck, b.unseen);
         out.hands++;
         if (h.length !== lim) out.len++;
-        const d = h.map(c => levelDepth(c.level)), p = _longArcPlan(h.length);
-        out.plans[lim] = `${p.warm}/${p.deep}/${p.cool}`;
-        const mid = d.slice(p.warm, p.warm + p.deep), warm = d.slice(0, p.warm), cool = d.slice(-p.cool);
-        const rises = warm.every((x, k) => k === 0 || x >= warm[k - 1]), falls = cool.every((x, k) => k === 0 || x <= cool[k - 1]);
-        if (!(rises && falls && Math.min(...mid) >= Math.max(...warm, ...cool))) out.shape++;
-        const top = Math.max(...getFilteredCards().map(c => levelDepth(c.level)));
-        if (!mid.includes(top)) out.deepMiddle++;
-        out.repeats += _repeats(h);
+        const d = h.map(c => levelDepth(c.level));
+        const bands = [...new Set(getFilteredCards().map(c => levelDepth(c.level)))].sort((a, b) => a - b);
+        const top = bands.at(-1), medium = bands[Math.floor((bands.length - 1) / 2)];
+        const early = d.slice(0, Math.floor(lim * 0.4));
+        if (d[0] !== bands[0] || d.at(-1) !== medium || early.includes(top) || d.some((x, k) => k && x === top && d[k - 1] === top)) out.shape++;
+        if (!d.includes(top)) out.deepMiddle++;
+        const tops = d.filter(x => x === top).length;
+        out.tops[lim] = Math.max(out.tops[lim] ?? 0, tops);
+        h.forEach((c, k) => { if (k && c.level === h[k - 1].level) out.repeats++; });
       }
       state.activeToggles = saved; intentOn = keepIntent;
       /* All: hidden in Arc, back in Wild; Arc with All picked lands on 20 */
@@ -1447,12 +1450,12 @@ async function run() {
       const arc = { hidden: allBtn.hidden, lim: state.cardLimit, len: state.visibleDeck.length, active: document.querySelector('#limitBtnsDrawer .limit-btn.active')?.dataset.limit };
       return { out, wild, arc };
     });
-    assert(r.out.plans[10] === '3/5/2' && r.out.plans[20] === '4/13/3', `plans are not 3/5/2 and 4/13/3: ${JSON.stringify(r.out.plans)}`);
-    assert(r.out.len === 0, `${r.out.len} long Arc hands came out short`);
+    assert(r.out.tops[5] === 1 && r.out.tops[10] <= 2 && r.out.tops[20] <= 4, `too many of the deepest depth in a hand: ${JSON.stringify(r.out.tops)}`);
+    assert(r.out.len === 0, `${r.out.len} Arc hands came out short`);
     /* Arc is the base: nothing may bend the shape, the After Dark opener swap included */
-    assert(r.out.shape === 0, `${r.out.shape} of ${r.out.hands} long Arc hands were not warm-up, deep middle, wind-down`);
-    assert(r.out.deepMiddle === 0, `${r.out.deepMiddle} long Arc hands had none of the deepest selected categories in the middle`);
-    assert(r.out.repeats === 0, `${r.out.repeats} back-to-back repeats of a category in broad long Arc hands`);
+    assert(r.out.shape === 0, `${r.out.shape} of ${r.out.hands} Arc hands did not climb from the lightest, peak after the climb with no two deepest side by side, and end on medium`);
+    assert(r.out.deepMiddle === 0, `${r.out.deepMiddle} Arc hands never reached the deepest selected depth`);
+    assert(r.out.repeats === 0, `${r.out.repeats} back-to-back repeats of a category in Arc hands`);
     assert(!r.wild.hidden && r.wild.lim === null, `All is not available in Wild: ${JSON.stringify(r.wild)}`);
     assert(r.arc.hidden && r.arc.lim === 20 && r.arc.len === 20 && r.arc.active === '20', `Arc did not hide All and land on 20: ${JSON.stringify(r.arc)}`);
     await page.evaluate(() => { state.sessionLog = []; state.seenFrom = 0; state.sitOut = {}; state.skippedSeen.clear(); state.cardLimit = 5; state.randomMode = 'arc'; initDeck(); renderShell(); });
