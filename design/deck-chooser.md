@@ -1,80 +1,68 @@
 # The evening chooser (The Deck sheet)
 
 The sheet "What kind of evening?": Start from (ten presets), a Chapters heading with None and
-Open all, six chapter rows that unfold in place, Fixed Sets as the last row, Shuffle and Cards
-(and Three) on their own lines, Draw Cards fixed. Chapter and category colours stay content
-colour, set from `config.js`. Heading: `deck-heading.md`; docked on a computer: `deck-docked.md`.
+Open all, eight stations on one metal line (six groups, Wildcards, Fixed Sets), the plate with
+Shuffle, Cards and Three, Draw Cards fixed. Chapter and category colours stay content colour, set
+from `config.js`. Heading: `deck-heading.md`; docked on a computer: `deck-docked.md`.
 
-## Chapter row (`.chapter`, 65px)
-One continuous left line (3px) down the whole row.
-- Off: `--dim` line, no tint.
-- Fully on: the gilt sweep (`--ch-rail`, painted by a `::before` over the 3px border so it can
-  fade; not a `border-image`), row tint `--ch` 9%, name in the chapter colour.
-- Partly on (`.part`): a flat line of the chapter colour 70% into `--dim`, row tint 6.5%, name
-  `--ch` 70% into `--muted`, count "n / total" in `--ch`; measured halfway between off and on, so
-  it never reads like off.
-- Names carry no glow. The row is one tap target (name button stretched over it) that switches the
-  chapter.
-
-**Wildcards row, on** (`.chapter-group--switch>.ch-fold--row[aria-checked="true"]`): lit exactly
-like a fully-on chapter through the same rules: gilt rail (`--ch-rail`, painted by `ui.js` from the
-wildcard card colour via `giltRailPaint`; phone and 1024px+ versions shared with `.chapter`), 9%
-`--ch` wash, name in `--ch` (`labelColor` of the wildcard level colour), all eased over `--ch-ease`.
-Off: unchanged. The "On/Off" state label keeps its own celadon. Reason: an on switch reads as lit
-as an on chapter.
-
-**Chapters change gently.** Tint, line, name and count colour ease over `--ch-ease` (.4s ease-out,
-a local variable on `.chapter` and on `.chapter-group`); only rows whose state class changed move.
-A count's number simply changes (no fade: a fading count is annoying). Wildcards follows the same rules.
-A chapter a preset (or Colbert / The 36) hides or brings back opens or folds by its real height
-(`setChapterHidden` in `ui.js` pins it, then moves `max-height`; `.28s` `--ease-out`), settling
-from 6px above while it fades (in: fade trails by .06s; out: fade .16s, ahead of the fold); rows
-that change together go 40ms apart from the top. No glow, flash or extra colour. Instant under
-reduced motion.
-
-**Fold target** (`.ch-fold`, right of the row, 60px wide): the count "n / total" in `--muted-l`
-(`--cream` when partly on) over a celadon chevron, 7px apart, set off from the row by a 1px
-`--border` hairline inset 14px top and bottom. No box, no outline. The chevron turns over when
-open. The count says the state, the chevron says "opens", the hairline separates the fold from the
-switch without a container.
-
-**Panel** (`.chapter-panel`, the unfolded categories) follows its chapter's row state, so an opened
-chapter with nothing picked doesn't look odd in colour. Off: left line 3px `--dim`, no tint.
-Partly on: line chapter colour 70% into `--dim`, tint 6.5%. Fully on: line full `--ch`, tint 9%
-(the row's own `.part` / `.on` values, found with `:has()` on `.chapter-group`; `--ch` is set on
-the group by `ui.js`). Eases over `--ch-ease`, instant under reduced motion. Other sides `--dim`.
-Each category is a 44px tap target; category words keep their own picked/not-picked look.
-
-**Chapter hover** (mouse only, `hover:hover` + `pointer:fine`): the brighter outline goes round the
-whole chapter, header row and open panel together, via `--ch-hover-line` on `.chapter-group`
-(`--border`; `--border-strong` on the wide docked panel). Fixed Sets uses the same rule (its open
-part keeps its own colours). The left line keeps its state colour; the header's bottom edge stays
-open while unfolded. Lighting only the header looked like a separate box.
-
-**Fixed Sets** (`.ch-fold--row`, 49px): the whole row is the fold. Name in cream `.68`, hint in
-`--muted-l`, a 1px `--border` hairline (inset 10px) and a celadon chevron in a 60px cell on the
-right. Inside, Colbert and The 36 are built exactly like category items (same dot, word, 44px
-height, padding), in a panel padded like a chapter panel, so they start at the same left edge.
+## The line (`.chapter-group` x 8 in `#chapters`)
+No row boxes, no tint, no border per row, no counts, no dots. One double hairline rail (two 1px
+`--border-strong` lines, 5px apart) runs down the left of all eight stations; each station is one
+`.chapter-group`, indented 36px from the sheet edge, and draws its own stretch of the rail, so
+a group a preset hides takes its stretch with it. A 1px `--gold` tick starts every row at the rail,
+its length by group: 12, 18, 24, 30px for Arrive to Into the Deep, then 24, 18 for Between Us and
+After Dark, 12 for Wildcards and Fixed Sets (`--tick`). Rows are 15px (`--station-pad`) above and below.
+- **Name**: Jost 300, caps, `--fs-7`, `--track-2`, line height 1.15 (`--name-lh`); wraps to a
+  second line where the room is short (Beneath the Surface at 360px). **Line** under it: Federo,
+  `--fs-3`, `--track-text`. Names and lines are the group's own words.
+- **State is the metal beside the row.** The stretch of rail between its two lines fills with the
+  group colour as the gilt sweep (`--ch-rail` from `giltRailPaint`, dark-light-dark), `--share` of the
+  group's height from the top (`ui.js` sets `--share` 0 to 1: on is 1, partly on is the share of the
+  reachable categories that are on, off is 0). Off: name `--stone`, line `--text-helper`. Partly on:
+  name `--ch` 70% into `--muted-l`, line `--sand`. Fully on: name `--ch`, line `--sand`. The fill
+  grows and shrinks over `--ch-ease` (.4s ease-out); instant under reduced motion. Tapping the name
+  switches the group (the name button stretches over the row).
+- **Fold** (`.ch-fold`): a celadon chevron alone at the right of the name row, no hairline, no box.
+  A 44px target (`--fold-w`) that reaches back over the name's last 20px (`--fold-room` is what the
+  chevron itself takes), turns over when open. It never touches the selection.
+- **Open group** (`.chapter-panel`): its categories under its line, indented with the name, no
+  border or tint; the category lines, two columns, the hold and its hint are as in
+  `deck-category-lines.md`; the picked look of a category is unchanged. The group's stretch of rail
+  runs the whole height, open part included.
+- **Wildcards** (`.ch-fold--row` in `.chapter-group--switch`): metal fill in its gold (`levelColor(WILDCARD_LEVEL)`)
+  while on; the On / Off word at the right in celadon (`--text-helper` when off) where the chevron
+  sits; still one switch for the whole row.
+- **Fixed Sets** (`.ch-fold--row` in `.chapter-group--fixed`): pale metal (`FIXED_SETS_COLOR`,
+  cream-gold #d9cfbb, in `ui.js`) only while Colbert or The 36 is picked (`.on` on the row, set in
+  `syncIntentUI`); the whole row is the fold, a chevron at the right. Colbert and The 36 inside are
+  built exactly like category items.
+- **A group a preset hides or brings back** opens or folds by its real height (`setChapterHidden`
+  in `ui.js` pins it, then moves `max-height`; `.28s` `--ease-out`), settling from 6px above while it
+  fades; rows that change together go 40ms apart from the top. Instant under reduced motion.
+- **Hover** (mouse only, docked): the name of an off or partly on row goes to cream; an on row keeps
+  its colour.
 
 **None and Open all** (`#deselectAll`, `#foldAll`, at the Chapters heading, right): one quiet pair
 in the `.deselect-btn` style (`--stone`, `--fs-1`, caps, hover gold), a faint middle dot (opacity
 .4) between them, the pair's right edge level with the chapter rows. "Open all" reads "Close all"
 once every shown chapter is open. There is no All here.
 
-**Shuffle and Cards** (`.seg-row`): two lines, labels SHUFFLE and CARDS in the same row-label style
-as FIXED SETS (`--fs-2`, `--track-1`, caps, `--stone`; no Federo). The label starts at the chapter-name
-inset (16px) and has a fixed 5.5rem column so the choices of both lines align. The choices are
-picked items (celadon word and dot), 48px tall, no boxes. The spice mark's "on" state is colour
-only (no glow). On a computer (wide block) the same two lines plus Three keep this structure, one
-setting per line, with no 16px inset (the foot sits flush with the panel edge); the foot sticks to
-the panel bottom.
+**The plate** (`.seg-row`): Shuffle, Cards and Three in one double frame under the line: outer
+1px `--border-strong`, a 4px gap, inner 1px `--border` (`--plate-gap`), a row (`.seg`) per setting
+split by `--dim` hairlines, 12px inside the inner frame (`--plate-pad`). The name is at the left
+in a fixed 5.5rem column (`.seg-head`: `--fs-2`, `--track-1`, caps, `--stone`; no Federo), the
+choices right of it in the one picked look (48px tall on the phone), so every row's choices
+align. Cards keeps 5, 10, 20 and All (All shows outside Arc); Random and All fit one line on a
+360px phone. On a computer the plate is the same, with the foot scrolling with the list.
 
-**Their hints** (`.seg-hint`, `HINTS` entries `shuffle` and `cards` in `state.js`): one line under
-each setting's choices, aligned with them (`--seg-head-w`), in the look of the categories' hint
-(Federo `--fs-3`, `--muted-l`); phone and computer alike. Words, chosen by the owner: under Shuffle
-"Arc lets the questions go deeper step by step and come back up by the last card. Random: any
-order."; under Cards "how many questions before a pause". Each goes for good once its own setting
-is changed; "Show hints again" brings both back.
+**Their hints** (`.seg-hint`, `HINTS` entries `shuffle`, `cards` and `three` in `state.js`): one
+text under each setting's choices, aligned with them (`--seg-head-w`), in the look of the
+categories' hint (Federo `--fs-3`, `--muted-l`); phone and computer alike. Words, chosen by the
+owner: under Shuffle "Arc lets the questions go deeper step by step and come back up by the last
+card. Random: any order."; under Cards "how many questions before a pause"; under Three "Each draw
+shows three questions; you pick the one you ask." Each goes for good once its own setting is
+changed (Three wherever it is changed, The Deck, the menu, Spotlight or key 3); "Show hints again"
+brings all back. A row closes up when its hint goes.
 
 ## The one picked look
 `.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)`: presets, categories in open

@@ -1546,39 +1546,10 @@ body.hint-ways-taught .menu-hint{display:none;}
 @media (hover:hover) and (pointer:fine){.cat-go-btn:hover{background:linear-gradient(135deg,#ddb85c,#b08840);}}
 .cat-go-btn:active{transform:scale(.98);}
 
-/* ── the five chapters ── */
-.chapters{display:flex;flex-direction:column;gap:4px;}
-/* min-height keeps every row the same size whether its description wraps
-   to one line or two — the wrap point depends on how long each chapter's
-   own name is (name + desc share one row), so without this the rows were
-   visibly different heights from chapter to chapter. Sized to fit two
-   lines of .ch-desc at its current font-size/line-height plus the row's
-   own 15px top/bottom padding; align-items:center (not baseline) so a
-   one-line row centers inside that height instead of sitting at the top. */
-.chapter,.chapter-group--switch>.ch-fold--row{
-  --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
-.chapter{--ch:var(--gold);position:relative;
-  display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
+/* ── the menu's rows (.side-drawer) and the names, lines and tap area they share with The Deck's groups ── */
+:where(.side-drawer) .chapter{position:relative;display:flex;align-items:stretch;width:100%;min-height:65px;text-align:left;
   background:none;border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;}
-.chapter,.chapter-group--switch>.ch-fold--row{transition:background var(--ch-ease),border-color var(--ch-ease);}
-/* the left rail: one continuous line down the whole row. A vertical metal sweep
-   (same gilt.js stops as the card accent, at 190deg instead of 100deg) once a
-   chapter is fully on, drawn by ::before over the 3px border so it can fade in and
-   out; a partly-on chapter keeps a flat line of its colour, in between, along the
-   same full length. gilt.js paints the stop colours (--rail-d/-m/-l) on the row from each chapter's colour — see ui.js. */
-.chapter::before,.chapter-group--switch>.ch-fold--row::before{content:'';position:absolute;inset:-1px auto -1px -3px;width:3px;border-radius:2px 0 0 2px;
-  background:var(--ch-rail);opacity:0;transition:opacity var(--ch-ease);pointer-events:none;}
-.chapter.on::before,.chapter-group--switch>.ch-fold--row[aria-checked="true"]::before{opacity:1;}
-/* hover (mouse only): the brighter outline goes round the whole chapter, header and open part together.
-   The left line keeps its state colour; the header's bottom edge stays open while it is unfolded. */
-@media (hover:hover) and (pointer:fine){
-  .chapter-group{--ch-hover-line:var(--border);}
-  .chapter-group:hover>:is(.chapter,.ch-fold--row){border-top-color:var(--ch-hover-line);border-right-color:var(--ch-hover-line);}
-  .chapter-group:not(.open):hover>:is(.chapter,.ch-fold--row){border-bottom-color:var(--ch-hover-line);}
-  .chapter-group.open:hover>.chapter-panel{border-right-color:var(--ch-hover-line);border-bottom-color:var(--ch-hover-line);}
-}
-/* the row is one tap target for the whole chapter: the name button stretches over
-   it (::after), and the fold target and spice mark sit above that. */
+/* the row is one tap target: the name button stretches over it (::after), and the fold target and spice mark sit above that. */
 .ch-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:8px 8px 8px 13px;}
 .ch-title{display:flex;align-items:center;gap:2px;}
 .ch-hit{background:none;border:none;padding:0;cursor:pointer;color:inherit;font:inherit;text-align:left;}
@@ -1586,82 +1557,80 @@ body.hint-ways-taught .menu-hint{display:none;}
 .spice-glyph--inline{position:relative;z-index:1;flex-shrink:0;align-self:center;padding:8px 8px;}
 .chapter .ch-name{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);
   text-transform:uppercase;color:var(--stone);white-space:nowrap;font-weight:500;}
-:is(.chapter,.chapter-group--switch) .ch-name{transition:color var(--ch-ease);}
 .chapter .ch-desc{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--stone);
   line-height:1.35;}
-/* fold target: count over a chevron, set off by a hairline */
-.ch-fold{position:relative;z-index:1;width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
+/* the menu's fold target: its state over a hairline */
+:where(.side-drawer) .ch-fold{position:relative;z-index:1;width:60px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:7px;background:none;border:none;cursor:pointer;color:var(--celadon);}
-.ch-fold::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:1px;background:var(--border);}
-.ch-ct{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--stone);transition:color var(--ch-ease);}
-.chapter.part .ch-ct{color:var(--ch);}
+:where(.side-drawer) .ch-fold::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:1px;background:var(--border);}
+.ch-ct{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--stone);}
 .ch-chev{display:block;transition:transform .22s ease;}
 .ch-fold.open .ch-chev{transform:rotate(180deg);}
-.chapter-group.open .chapter{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
-/* partly on: halfway between off and on. Line and tint sit midway between the off value
-   and the fully-on one (line: chapter colour 70% into --dim; tint 6.5% against on's 9%),
-   so the row is clearly lit but not "on". */
-.chapter.part{border-left-color:color-mix(in srgb, var(--ch) 70%, var(--dim));
-  background:color-mix(in srgb, var(--ch) 6.5%, transparent);}
-.chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted));}
-.chapter.on,.chapter-group--switch>.ch-fold--row[aria-checked="true"]{background:color-mix(in srgb, var(--ch) 9%, transparent);}
-.chapter.on .ch-name,.chapter-group--switch>.ch-fold--row[aria-checked="true"] .ch-name{color:var(--ch);}
-/* a chapter that comes or goes with a preset: it opens up and fades in, settling down from just above
-   its place; it leaves the same way back, the fade a little ahead of the fold. Rows that change together
-   go one after another from the top (--ch-delay, 40ms apart, set by ui.js). Under reduced motion it simply
-   appears or goes. */
+
+/* ── The Deck's groups: eight stations on one metal line (design/deck-chooser.md) ──
+   One double hairline rail runs down the left of all of them and a short gold tick starts each row (12/18/24/30px for
+   Arrive to Into the Deep, then back down). A group that is in fills the stretch of rail beside it, between the two
+   rail lines, with its colour as metal: the whole stretch when every category is on, the share that is on from the
+   top (--share, set by ui.js) when some are. The metal is the gilt sweep (--ch-rail, painted by ui.js with giltRailPaint). */
+.chapters{--rail-x:8px;--rail-w:5px;--rail-inset:36px;--station-pad:15px;--fold-w:44px;--fold-room:24px;--line-gap:4px;
+  --name-lh:calc(1.15*var(--fs-7));display:flex;flex-direction:column;}
+.chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;--share:0;--tick:12px;position:relative;padding-inline-start:var(--rail-inset);
+  --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
+.chapter-group:is([data-group="surface"],[data-group="afterdark"]){--tick:18px;}
+.chapter-group:is([data-group="findout"],[data-group="aboutus"]){--tick:24px;}
+.chapter-group[data-group="deeper"]{--tick:30px;}
+.chapter-group::before{content:'';position:absolute;inset-block:0;inset-inline-start:var(--rail-x);width:var(--rail-w);
+  border-inline:1px solid var(--border-strong);pointer-events:none;}
+.chapter-group::after{content:'';position:absolute;inset-block:0;inset-inline-start:calc(var(--rail-x) + 1px);width:calc(var(--rail-w) - 2px);
+  background:var(--ch-rail);transform:scaleY(var(--share));transform-origin:top;transition:transform var(--ch-ease);pointer-events:none;}
+.chapter-group>:is(.chapter,.ch-fold--row){position:relative;z-index:1;}
+.chapter-group>:is(.chapter,.ch-fold--row)::before{content:'';position:absolute;inset-block-start:0;
+  inset-inline-start:calc(var(--rail-x) - var(--rail-inset));width:var(--tick);border-top:1px solid var(--gold);pointer-events:none;}
+.chapter-group .chapter{display:flex;align-items:flex-start;padding-block:var(--station-pad);}
+.chapter-group .ch-main{padding:0;gap:var(--line-gap);}
+.chapter-group .ch-name{font-family:'Jost',sans-serif;text-transform:uppercase;font-size:var(--fs-7);font-weight:300;letter-spacing:var(--track-2);line-height:var(--name-lh);
+  white-space:normal;color:var(--stone);transition:color var(--ch-ease);}
+.chapter-group .ch-desc{font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;
+  color:var(--text-helper);transition:color var(--ch-ease);}
+/* partly on: the name halfway between off and on, so it never reads like off */
+.chapter-group .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted-l));}
+.chapter-group :is(.chapter.on,.ch-fold--row.on,.ch-fold--row[aria-checked="true"]) .ch-name{color:var(--ch);}
+.chapter-group :is(.chapter.on,.chapter.part,.ch-fold--row.on,.ch-fold--row[aria-checked="true"]) .ch-desc{color:var(--sand);}
+/* the fold: a celadon chevron alone at the right of the name row, a 44px target that reaches back over the name's last --fold-room,
+   so only the chevron itself takes room from a long name */
+.chapter-group .chapter .ch-fold{position:relative;z-index:1;flex:none;width:var(--fold-w);height:var(--fold-w);
+  margin:calc((var(--name-lh) - var(--fold-w))/2) 0 0 calc(var(--fold-room) - var(--fold-w));display:flex;align-items:center;justify-content:center;
+  background:none;border:none;cursor:pointer;color:var(--celadon);}
+/* Wildcards and Fixed Sets: the same name and line, the whole row one button; its state or chevron sits where the fold does */
+.chapter-group .ch-fold--row{display:grid;grid-template-columns:1fr var(--fold-w);row-gap:var(--line-gap);width:100%;text-align:left;
+  padding:var(--station-pad) 0;background:none;border:none;cursor:pointer;color:var(--celadon);}
+.chapter-group .ch-fold--row :is(.ch-name,.ch-desc){grid-column:1;}
+.chapter-group .ch-fold--row :is(.wc-state,.ch-chev){grid-column:2;grid-row:1;place-self:center;}
+.wc-state{font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-2);text-transform:uppercase;
+  color:var(--text-helper);transition:color var(--ch-ease);}
+.ch-fold--row[aria-checked="true"] .wc-state{color:var(--celadon);}
+/* a group a preset hides or brings back opens or folds by its real height (setChapterHidden in ui.js), settling
+   from just above its place while it fades; rows that change together go one after another from the top (--ch-delay, 40ms
+   apart, set by ui.js). Under reduced motion it simply appears or goes. */
 .chapter-group{display:block;max-height:30rem;--ch-move:.28s;
-  transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),margin-block-end var(--ch-move) var(--ease-out) var(--ch-delay,0s),
+  transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),
     transform var(--ch-move) var(--ease-out) var(--ch-delay,0s),opacity .22s ease-out calc(var(--ch-delay,0s) + .06s),visibility 0s;}
 /* an open chapter is never cut off, whatever its categories and lines add up to */
 .chapter-group.open{max-height:none;}
 /* while it opens or folds, nothing of it shows outside its own height */
 .chapter-group.ch-moving{overflow:hidden;}
-/* visibility keeps a gone chapter out of reach; the gap of .chapters goes with it */
-.chapter-group.ch-hidden{max-height:0;opacity:0;transform:translateY(-6px);overflow:hidden;visibility:hidden;margin-block-end:-4px;
-  transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),margin-block-end var(--ch-move) var(--ease-out) var(--ch-delay,0s),
+/* visibility keeps a gone group out of reach */
+.chapter-group.ch-hidden{max-height:0;opacity:0;transform:translateY(-6px);overflow:hidden;visibility:hidden;
+  transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),
     transform var(--ch-move) var(--ease-out) var(--ch-delay,0s),opacity .16s ease-out var(--ch-delay,0s),visibility 0s calc(var(--ch-delay,0s) + var(--ch-move));}
 @media (prefers-reduced-motion:reduce){
-  .chapter,.chapter::before,:is(.chapter,.chapter-group--switch) .ch-name,.ch-ct,.chapter-group,.chapter-group.ch-hidden,
-  .chapter-group--switch>.ch-fold--row,.chapter-group--switch>.ch-fold--row::before,.chapter-group--switch .wc-state{transition:none;}
+  .chapter-group,.chapter-group::after,.chapter-group.ch-hidden,.chapter-group .ch-name,.chapter-group .ch-desc,.wc-state{transition:none;}
 }
-/* the unfolded panel: categories, each its own tap target */
-.chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;}
-.chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0 6px 0 8px;
-  border:1px solid var(--dim);border-top:none;border-radius:0 0 2px 2px;border-width:0 1px 0 3px;
-  border-left-color:var(--dim);background:none;
-  transition:background var(--ch-ease),border-color var(--ch-ease);}
-/* the unfolded part follows its chapter's row: off is neutral, partly is the row's paler state, fully on is full colour
-   (same line and tint values as .chapter.part / .chapter.on above) */
-.chapter-group:has(>.chapter.part)>.chapter-panel{border-left-color:color-mix(in srgb, var(--ch) 70%, var(--dim));
-  background:color-mix(in srgb, var(--ch) 6.5%, transparent);}
-.chapter-group:has(>.chapter.on)>.chapter-panel{border-left-color:var(--ch);
-  background:color-mix(in srgb, var(--ch) 9%, transparent);}
-.chapter-panel.open{padding:2px 6px 6px 8px;border-width:0 1px 1px 3px;}
+/* the unfolded part: the group's categories under its line, indented with the name, each its own tap target */
+.chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0;}
+.chapter-panel.open{padding:0 0 var(--station-pad);}
 .chapter-panel .toggle-btn.hard-locked{pointer-events:auto;cursor:pointer;opacity:.75;}
 .chapter-panel .toggle-btn.suggested{opacity:1;}
-/* Fixed Sets: the whole row is the fold */
-.ch-fold--row{width:100%;min-height:49px;flex-direction:row;gap:12px;padding:0 0 0 13px;
-  border:1px solid var(--dim);border-left:3px solid var(--dim);border-radius:2px;color:var(--celadon);}
-.ch-fold--row::before{display:none;}
-/* Wildcards lights like an on chapter: the rail (::before, rules above), the wash and the name in its colour, eased over --ch-ease */
-.chapter-group--switch>.ch-fold--row{--ch:var(--gold);}
-.chapter-group--switch>.ch-fold--row::before{display:block;}
-.ch-fold--row::after{content:'';position:absolute;right:60px;top:10px;bottom:10px;width:1px;background:var(--border);}
-.ch-fold--row .ch-chev{flex-shrink:0;margin:0 23px 0 0;}
-.chapter-group--fixed.open .ch-fold--row{border-bottom-color:transparent;border-radius:2px 2px 0 0;}
-.ch-fold--row .ch-name,.seg-head span{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);text-transform:uppercase;
-  color:var(--stone);white-space:nowrap;}
-.ch-fold--row .ch-desc{flex:1;text-align:left;font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);color:var(--muted-l);}   /* a span in a button does not inherit the page font */
-.chapter-group--fixed{--ch:var(--cream);}
-/* Wildcards: a switch in Fixed Sets' row shape; its state sits where Fixed Sets has its chevron, celadon like a chosen option */
-.wc-state{flex:none;width:60px;text-align:center;font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-2);text-transform:uppercase;
-  color:var(--text-helper);transition:color var(--ch-ease);}
-.wc-state::before{content:'\25CF\00a0';}
-.ch-fold--row[aria-checked="true"] .wc-state{color:var(--celadon);}
-.ch-fold--row[aria-checked="false"] .wc-state::before{content:'\25CB\00a0';}
-.chapter-group--fixed .chapter-panel.fixed-seq-options{border-left-color:var(--dim);background:color-mix(in srgb, var(--cream) 3%, transparent);}
-.chapter-group--fixed .chapter-panel.fixed-seq-options:not(.open){border-width:0;}
 .cat-grid-wrap.chapter-wrap{max-height:none;border-top:none;overflow:visible;padding:0 0 6px;}
 
 /* section headings shared by Start from / Chapters / Tune / Round — one
@@ -1669,15 +1638,19 @@ body.hint-ways-taught .menu-hint{display:none;}
    inventing its own header treatment. */
 .sect-lbl{display:flex;align-items:center;justify-content:space-between;position:relative;
   color:var(--gold-l);margin:0 0 12px;}
-/* Shuffle and Cards: two lines. The label sits in the chapter-name column (same inset as the
-   chapter names and FIXED SETS); the choices start after a fixed label width, so both lines align. */
-.seg-row{--row-inset:16px;--seg-head-w:5.5rem;padding-inline-start:var(--row-inset);margin:6px 0 8px;white-space:nowrap;}
-.seg{display:flex;flex-wrap:wrap;align-items:center;}
+/* The plate: Shuffle, Cards and Three in one double frame (outer --border-strong, a gap, inner --border), a row each split by
+   --dim hairlines. The name sits at the left in a fixed column so the choices of every row align. */
+.seg-row{--seg-head-w:5.5rem;--plate-gap:4px;--plate-pad:12px;position:relative;margin:22px 0 8px;white-space:nowrap;
+  padding:calc(var(--plate-gap) + 1px) calc(var(--plate-gap) + 1px + var(--plate-pad));border:1px solid var(--border-strong);}
+.seg-row::before{content:'';position:absolute;inset:var(--plate-gap);border:1px solid var(--border);pointer-events:none;}
+.seg{display:flex;flex-wrap:wrap;align-items:center;padding-block:6px;}
+.seg+.seg{border-top:1px solid var(--dim);}
 .seg-head{flex:none;width:var(--seg-head-w);}
+.seg-head span{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-1);text-transform:uppercase;color:var(--stone);white-space:nowrap;}
 /* A setting's hint (a HINTS entry): one quiet line under its options, the look of the categories' hint (.cat-hint) */
 .seg-hint{flex:0 0 100%;margin:2px 0 4px;padding-inline-start:var(--seg-head-w);white-space:normal;
   font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;color:var(--muted-l);}
-body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"]{display:none;}
+body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"],body.hint-three-taught .seg-hint[data-hint="three"]{display:none;}
 
 /* ── THE ONE PICKED LOOK ──
    Everything you can pick in The Deck: presets, categories in open chapters, Colbert and The 36,
@@ -1807,18 +1780,14 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
   .play-sect--1{flex:1 0 auto;padding-top:2px;}
   .sect-lbl{margin-bottom:6px;}
   .deselect-btn{padding-block:6px;}
-  .chapters{gap:3px;}
-  .chapter,.ch-fold--row{min-height:48px;}
-  .ch-main{padding-block:3px;gap:1px;}
   .play-sect--2{border-left:0;margin:0;padding:8px 0 0;border-top:1px solid var(--dim);}
-  .seg-row{--row-inset:0;margin:0;}   /* each setting keeps its own line, as on the phone; the foot has no chapter-name inset */
+  .seg-row{margin:8px 0 0;}   /* each setting keeps its own row, as on the phone */
   .cat-go-bar{padding:8px 0 12px;background:none;}
   /* every pickable thing answers the mouse the same way: its picked colour, lightly underlined */
   .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt):hover{color:var(--tc);}
   .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active),.three-opt:not(.active)):hover::after{opacity:.35;}
   .chapter:hover .ch-name,.ch-fold--row:hover .ch-name{color:var(--cream);}
-  .chapter:is(.on,.part):hover .ch-name,.chapter-group--switch>.ch-fold--row[aria-checked="true"]:hover .ch-name{color:var(--ch);}
-  .chapter-group{--ch-hover-line:var(--border-strong);}
+  .chapter:is(.on,.part):hover .ch-name,.ch-fold--row:is(.on,[aria-checked="true"]):hover .ch-name{color:var(--ch);}
   @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
 
   /* The menu is a panel from the right (under its button) instead of the phone drawer, and The Deck one from the left
@@ -2022,7 +1991,7 @@ body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;
    pulled a pinch back toward the chapter colour, everything else as it was. */
 @media (min-width:1024px){
-  .chapter,.chapter-group--switch>.ch-fold--row{--ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 70%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
+  .chapter-group{--ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 70%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
 }
 
 /* Side rails on wide screens (owner, 2026-10-21): Three and Spotlight's pick-three rails were the phone's 3px beside

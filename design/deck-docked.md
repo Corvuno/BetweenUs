@@ -23,13 +23,13 @@ resized while the panel is open.
 - **Layout**: head on one line (name, question, close at the right); presets stay at the top
   (sticky, wrap to two or three lines: Everything and Balanced on the first, the "Who's here"
   caption on its own line below them, left-aligned (centred on the tablet sheet), then the people
-  presets); chapters scroll between, with Shuffle, Cards and Three on their own lines at the end
-  of the list; only Draw Cards, a full-width gold bar, stays at the foot (sticky). Chapter rows
-  48px, preset buttons 34px (desk-size controls). None and Open all stay at the Chapters heading
-  (Open all reads "Close all" once every chapter is open).
+  presets); the line (`deck-chooser.md`, "The line": eight stations on one metal line, category
+  lines always on) scrolls between, with the plate (Shuffle, Cards, Three, a row each) at the end
+  of the list; only Draw Cards, a full-width gold bar, stays at the foot (sticky). The rows, plate
+  and hints are the phone's; preset buttons 34px (desk-size controls). None and Open all stay at the
+  Chapters heading (Open all reads "Close all" once every chapter is open).
 - **Hover** (this block only, mouse): a pickable shows its picked colour with a faint underline
-  (.35); a chapter row brightens its border to `--border-strong` and its name to cream (or keeps
-  its chapter colour). The close x, None, Open all and Draw keep their existing hovers.
+  (.35); a station's name brightens to cream (an on group keeps its colour). The close x, None, Open all and Draw keep their existing hovers.
 - **Closing**: the x, Esc, or a press of the main mouse button anywhere outside the panel (right
   and middle buttons are ignored). The outside press only closes; it is swallowed so it does not
   also press Next card or anything underneath.

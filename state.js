@@ -75,7 +75,8 @@ const HINTS = {
   ways:      { key: 'bu.hintWaysTaught',  cls: 'hint-ways-taught' },     // under Ways to play (menu)
   waysWord:  { key: 'bu.hintWaysWordTaught', cls: 'hint-ways-word-taught' },  // under Ways to play (Spotlight's place before the first card)
   shuffle:   { key: 'bu.hintShuffleTaught', cls: 'hint-shuffle-taught' }, // under Shuffle in The Deck
-  cards:     { key: 'bu.hintCardsTaught',   cls: 'hint-cards-taught' }    // under Cards in The Deck
+  cards:     { key: 'bu.hintCardsTaught',   cls: 'hint-cards-taught' },   // under Cards in The Deck
+  three:     { key: 'bu.hintThreeTaught',   cls: 'hint-three-taught' }    // under Three in The Deck
 };
 function hintIsTaught(id) {
   try { return !!localStorage.getItem(HINTS[id].key); }

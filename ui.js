@@ -594,6 +594,7 @@ function setPickMode(on) {
     const on = chosen ? chosen === 'on' : !pickMode;
     if (on === pickMode) return;
     setPickMode(on);
+    hintRetire('three');
 
     if (pickMode) {
       // Turning this on IS the draw — show the next step's three straight
@@ -969,29 +970,24 @@ applyToggleUI();
     partyWasOpen=isOpen;
   }).observe(party,{attributes:true,attributeFilter:['class']});
 })();
-// Chapter rail: same gilt.js metal stops as the card accent, painted on each row
-// (--rail-d/-m/-l) off CHAPTERS_META's colour — computed once at
-// boot since, unlike a card's category, a chapter's colour never changes
-// at runtime. styles.css composes the vertical (190deg) sweep from them into --ch-rail,
-// which it paints only on .on (see
-// the on/part/off rule there) — .part and the base/off state use a flat
-// --ch-derived colour instead. CHAPTERS_META (categories.js) is the one
-// stored copy of these colours — the end-of-set screen reads the same
-// object rather than keeping its own. The label/glow colour reuses --ch
-// (already read by .chapter.on/.part in styles.css) via labelColor(),
-// which lifts After Dark's near-black lacquer to a readable tone while
-// leaving every other chapter's --ch at its base.
+// The metal beside a group: same gilt.js metal stops as the card accent, painted on each group
+// (--rail-d/-m/-l) off its colour, computed once at boot since a chapter's colour never changes at runtime.
+// styles.css composes the vertical sweep from them (--ch-rail) and runs it along the filled stretch of the line.
+// CHAPTERS_META (categories.js) is the one stored copy of the chapter colours, and the end-of-set screen reads the same
+// object. The name's colour (--ch) goes through labelColor(), which lifts After Dark's near-black lacquer to a readable
+// tone and leaves every other chapter's colour at its base.
+const FIXED_SETS_COLOR = '#d9cfbb';   // Fixed Sets' pale metal (cream-gold), lit while Colbert or The 36 is picked
+function paintStation(group, hex) {
+  giltRailPaint(group, hex);
+  group.style.setProperty('--ch', labelColor(hex));
+}
 document.querySelectorAll('.chapter[data-chapter]').forEach(el => {
   const meta = CHAPTERS_META[el.dataset.chapter];
-  if (!meta) return;
-  giltRailPaint(el, meta.color);
-  el.style.setProperty('--ch', labelColor(meta.color));
-  if (el.parentElement) el.parentElement.style.setProperty('--ch', labelColor(meta.color)); // the unfolded panel's paled left line
+  if (meta) paintStation(el.parentElement, meta.color);
 });
-// Wildcards lights up like an on chapter, in the wildcard card colour.
-const wildcardRow = document.getElementById('wildcardToggle');
-giltRailPaint(wildcardRow, levelColor(WILDCARD_LEVEL));
-wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
+// Wildcards lights up in the wildcard card colour, Fixed Sets in its pale metal.
+paintStation(document.querySelector('.chapter-group--switch'), levelColor(WILDCARD_LEVEL));
+paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
 
 /* ═════════ PLAY · EXPLORE — the two ways in ═══════════════════════════════
    Play asks what kind of evening this is: six chapters you can mix, and two
@@ -1077,7 +1073,7 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
   function syncIntentUI(){
     let moved = 0;   // rows that come or go together take turns from the top, 40ms apart
     const listMode = state.activePreset in LIST_MODE_TEXT;
-    document.querySelectorAll('.chapter').forEach(btn => {
+    document.querySelectorAll('.chapter[data-chapter]').forEach(btn => {
       const visible = visibleLevels(btn.dataset.chapter);
       const st = stateOf(visible);
       btn.classList.toggle('on',   st === 'on');
@@ -1088,11 +1084,14 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. Colbert and The 36 put every chapter away. */
       if (setChapterHidden(btn.closest('.chapter-group'), listMode || visible.length === 0, moved * 40)) moved++;
-      /* "n / total": how many of this chapter's categories are on, of those reachable here */
-      const ct = btn.querySelector('.ch-ct');
-      if (ct && btn.matches('[data-chapter]')) ct.textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
+      /* how much of the line beside the group is metal: the share of its reachable categories that are on, from the top */
+      const share = st === 'on' ? 1 : visible.filter(l => state.activeToggles.has(l)).length / (visible.length || 1);
+      btn.closest('.chapter-group').style.setProperty('--share', String(share));
     });
     setChapterHidden(document.querySelector('.chapter-group--switch'), listMode, moved * 40);
+    /* Fixed Sets is lit only while Colbert or The 36 is picked */
+    $('fixedSeqToggle').classList.toggle('on', listMode);
+    $('fixedSeqToggle').closest('.chapter-group').style.setProperty('--share', listMode ? '1' : '0');
     updateListModeNote();
     syncFoldAll();
     $('deselectAll').textContent = state.activeToggles.size ? 'None' : 'All';
@@ -1275,6 +1274,7 @@ wildcardRow.style.setProperty('--ch', labelColor(levelColor(WILDCARD_LEVEL)));
   const wildcardToggle = $('wildcardToggle');
   function syncWildcardRow(){
     wildcardToggle.setAttribute('aria-checked', String(state.wildcards));
+    wildcardToggle.closest('.chapter-group').style.setProperty('--share', state.wildcards ? '1' : '0');
     $('wildcardState').textContent = state.wildcards ? 'On' : 'Off';
   }
   wildcardToggle.addEventListener('click', () => {

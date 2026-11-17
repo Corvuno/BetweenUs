@@ -464,7 +464,7 @@ async function run() {
     }
   });
 
-  await check('a single category in an unfolded chapter toggles on its own, the chapter count follows, and None clears everything', async () => {
+  await check('a single category in an unfolded chapter toggles on its own, the metal beside the chapter follows, and None clears everything', async () => {
     try {
       await openCategorySheet();
       const row = page.locator('.chapter[data-chapter="surface"]');
@@ -475,13 +475,14 @@ async function run() {
       }
       const cat = page.locator('.chapter-panel[data-chapter="surface"] .toggle-btn:visible').first();
       const was = await cat.evaluate(el => el.classList.contains('on'));
-      const ctBefore = await row.locator('.ch-ct').textContent();
+      const metal = () => row.evaluate(el => el.closest('.chapter-group').style.getPropertyValue('--share'));   // how much of the line beside the chapter is filled
+      const ctBefore = await metal();
       await cat.click();
       await page.waitForTimeout(300);
       assert((await cat.evaluate(el => el.classList.contains('on'))) !== was, 'category did not toggle');
-      assert((await row.locator('.ch-ct').textContent()) !== ctBefore, 'chapter count did not follow the category');
+      assert((await metal()) !== ctBefore, 'the metal beside the chapter did not follow the category');
       await cat.click(); await page.waitForTimeout(300);
-      assert((await row.locator('.ch-ct').textContent()) === ctBefore, 'chapter count did not restore');
+      assert((await metal()) === ctBefore, 'the metal beside the chapter did not restore');
       const keep = await page.evaluate(() => ({ t: [...state.activeToggles], p: state.activePreset }));
       await page.locator('#deselectAll').click();
       await page.waitForTimeout(300);
@@ -2321,7 +2322,7 @@ async function run() {
     } finally { await computer.ctx.close(); }
   });
 
-  await check('The Deck: Shuffle and Cards each carry a hint until they are used; it stays gone after a reload and Show hints again brings it back (phone 360 and computer)', async () => {
+  await check('The Deck: Shuffle, Cards and Three each carry a hint until they are used; it stays gone after a reload and Show hints again brings it back (phone 360 and computer)', async () => {
     for (const viewport of [{ width: 360, height: 640 }, { width: 1440, height: 900 }]) {
       const ctx = await browser.newContext({ viewport, hasTouch: viewport.width < 800, serviceWorkers: 'block' });
       const p = await ctx.newPage();
@@ -2340,17 +2341,19 @@ async function run() {
         await p.waitForSelector('#card', { state: 'visible' });
         await openDeck();
         const words = await p.evaluate(() => [...document.querySelectorAll('.seg-hint')].map(h => `${h.dataset.hint}: ${h.textContent.trim()}`));
-        assert(words.join('|') === 'shuffle: Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.|cards: how many questions before a pause', `${where}: the hints read ${JSON.stringify(words)}`);
-        assert(await shown('shuffle') && await shown('cards'), `${where}: a fresh device does not show both hints`);
+        assert(words.join('|') === 'shuffle: Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.|cards: how many questions before a pause|three: Each draw shows three questions; you pick the one you ask.', `${where}: the hints read ${JSON.stringify(words)}`);
+        assert(await shown('shuffle') && await shown('cards') && await shown('three'), `${where}: a fresh device does not show all three hints`);
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').scrollIntoViewIfNeeded();
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').click();
         assert(!(await shown('shuffle')) && await shown('cards'), `${where}: changing Shuffle should remove only its own hint`);
         await p.locator('.limit-btn[data-limit="10"]').click();
-        assert(!(await shown('cards')), `${where}: changing Cards left its hint`);
+        assert(!(await shown('cards')) && await shown('three'), `${where}: changing Cards left its hint, or took Three's`);
+        await p.locator('.three-opt[data-pick="on"]').click();
+        assert(!(await shown('three')), `${where}: changing Three left its hint`);
         await p.reload();
         await p.waitForSelector('#card', { state: 'visible' });
         await openDeck();
-        assert(!(await shown('shuffle')) && !(await shown('cards')), `${where}: a hint came back after a reload`);
+        assert(!(await shown('shuffle')) && !(await shown('cards')) && !(await shown('three')), `${where}: a hint came back after a reload`);
         await p.evaluate(() => closeCats());
         await p.waitForTimeout(500);
         await p.locator('#btn-menu').click();
@@ -2358,7 +2361,7 @@ async function run() {
         await p.locator('[data-menu="hints"]:visible').click();   // the phone's drawer or the computer's side panel
         await p.waitForTimeout(500);
         await openDeck();
-        assert(await shown('shuffle') && await shown('cards'), `${where}: Show hints again did not bring both back`);
+        assert(await shown('shuffle') && await shown('cards') && await shown('three'), `${where}: Show hints again did not bring all three back`);
       } finally { await ctx.close(); }
     }
   });
@@ -2682,10 +2685,12 @@ async function run() {
         await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
         await p.waitForSelector('#card', { state: 'visible' });
         const eases = await p.evaluate(() => {
-          const lasts = el => getComputedStyle(el).transitionDuration.split(',').some(d => parseFloat(d) > 0);
+          const lasts = (el, pseudo) => getComputedStyle(el, pseudo).transitionDuration.split(',').some(d => parseFloat(d) > 0);
+          // the metal beside a group is its ::after; the name and the Wildcards word ease with it
           const row = document.querySelector('.chapter[data-chapter="deeper"]'), wc = document.querySelector('#wildcardToggle');
-          return { chapter: lasts(row) && lasts(row.querySelector('.ch-name')), wildcards: lasts(wc) && lasts(wc.querySelector('.ch-name')),
-            wcAny: lasts(wc) || lasts(wc.querySelector('.ch-name')) || lasts(wc.querySelector('.wc-state')) };
+          const rowMetal = lasts(row.closest('.chapter-group'), '::after'), wcMetal = lasts(wc.closest('.chapter-group'), '::after');
+          return { chapter: rowMetal && lasts(row.querySelector('.ch-name')), wildcards: wcMetal && lasts(wc.querySelector('.ch-name')),
+            wcAny: wcMetal || lasts(wc.querySelector('.ch-name')) || lasts(wc.querySelector('.wc-state')) };
         });
         if (reducedMotion === 'reduce') assert(!eases.chapter && !eases.wcAny, `under reduced motion something still eases: ${JSON.stringify(eases)}`);
         else assert(eases.chapter && eases.wildcards, `a row does not ease: ${JSON.stringify(eases)}`);
