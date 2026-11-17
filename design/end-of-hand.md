@@ -1,7 +1,9 @@
 # The end of a hand
 
 After the last card of a hand the app shows, in order: the message, the Intermezzo card back, and
-(on a tap on the card) the hand's list. The gold button reads "Next hand" on both sides and one
+(on a tap on the card) the hand's list. The list stays behind that tap, with no hint pointing to it:
+the Intermezzo asks nothing of the players, is easier on the eyes, and the list is there for whoever
+turns the card (the owner's choice). The gold button reads "Next hand" on both sides and one
 tap on it starts the next hand: nothing is ever held. All of it follows the colours in `DESIGN-SYSTEM.md`; the only new
 colour is the last drawn card's chapter colour, held as `--im-color` on `<body>` (set by
 `paintHandSide` in `presentation.js`). Fullscreen shows the same things in its own layout
