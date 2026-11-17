@@ -51,10 +51,9 @@ website (#71) are parked: the owner never turns the phone, and the address comes
   now take two lines (Jost is wider than Federo was).
 - A design mood board for Between Us, starting with controls and the PC layout (#147): in its
   own conversation; it opens by asking what the board should help decide.
-- What makes a design enjoyable for them, said about the card back and true for every design:
-  the balance of lines and black, small flourishes that emerge from the lines, areas cut out
-  with their own design, lines that lead the eye, playfulness. Turned down: clean, predictable,
-  safe, too even, empty space in random places.
+- What makes a design good for them is on `taste.md`, "Looks": bold, elegant and readable, lines
+  that lead the eye, playfulness, centre and symmetry, judged as a whole. What they said about the
+  card back (lines against black, flourishes, cut-out areas) belongs to the card back.
 - New card backs (#175) are live: petrol streams on the start card, amethyst circles on the
   Intermezzo. What got there: references as lessons, never redrawn; lines that never float, fine
   and quiet, full edge to edge; a window whose shape the drawing makes; several really different

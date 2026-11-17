@@ -1,7 +1,7 @@
 # Cards — how card work goes
 
-Read before proposing, judging or changing a card, together with `taste.md` (wording the owner
-liked and turned down). CLAUDE.md's card rules come first. `panel.md` describes the card panel,
+Read before proposing, judging or changing a card, together with `taste.md` (what makes a
+card right for the owner). CLAUDE.md's card rules come first. `panel.md` describes the card panel,
 which gives feedback only.
 
 ## Proposing a card
