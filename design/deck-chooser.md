@@ -6,7 +6,7 @@ Shuffle, Cards and Three, Draw Cards fixed. Chapter and category colours stay co
 from `config.js`. Heading: `deck-heading.md`; docked on a computer: `deck-docked.md`.
 
 ## The line (`.chapter-group` x 8 in `#chapters`)
-No row boxes, no tint, no border per row, no counts, no dots. One double hairline rail (two 1px
+No row boxes, no tint, no border per row, no dots. One double hairline rail (two 1px
 `--border-strong` lines, 5px apart) runs down the left of all eight stations; each station is one
 `.chapter-group`, indented 36px from the sheet edge, and draws its own stretch of the rail, so
 a group a preset hides takes its stretch with it. A 1px `--gold` tick starts every row at the rail,
@@ -15,16 +15,23 @@ After Dark, 12 for Wildcards and Fixed Sets (`--tick`). Rows are 15px (`--statio
 - **Name**: Jost 300, caps, `--fs-7`, `--track-2`, line height 1.15 (`--name-lh`); wraps to a
   second line where the room is short (Beneath the Surface at 360px). **Line** under it: Federo,
   `--fs-3`, `--track-text`. Names and lines are the group's own words.
-- **State is the metal beside the row.** The stretch of rail between its two lines fills with the
-  group colour as the gilt sweep (`--ch-rail` from `giltRailPaint`, dark-light-dark), `--share` of the
-  group's height from the top (`ui.js` sets `--share` 0 to 1: on is 1, partly on is the share of the
-  reachable categories that are on, off is 0). Off: name `--stone`, line `--text-helper`. Partly on:
-  name `--ch` 70% into `--muted-l`, line `--sand`. Fully on: name `--ch`, line `--sand`. The fill
-  grows and shrinks over `--ch-ease` (.4s ease-out); instant under reduced motion. Tapping the name
+- **State is the rail beside the row**, always its full length. Fully on: the stretch between the
+  two rail lines fills with the group colour as the gilt sweep (`--ch-rail` from `giltRailPaint`,
+  dark-light-dark; `--share` 1, set by `ui.js`), name `--ch`, line `--sand`. Partly on: no fill; the
+  two rail lines of the stretch take the group colour (`--ch`), hollow, name `--ch` 70% into
+  `--muted-l`, line `--sand`. Off: plain rail, name `--stone`, line `--text-helper`. Owner: half a
+  line "not working"; partly on must read as its own state. Fill and line colour change over
+  `--ch-ease` (.4s ease-out); instant under reduced motion. Tapping the name
   switches the group (the name button stretches over the row).
-- **Fold** (`.ch-fold`): a celadon chevron alone at the right of the name row, no hairline, no box.
-  A 44px target (`--fold-w`) that reaches back over the name's last 20px (`--fold-room` is what the
-  chevron itself takes), turns over when open. It never touches the selection.
+- **Fold** (`.ch-fold`): the count "n / total" (`.ch-ct`, Jost `--fs-2`, `--stone`; the group colour
+  when partly on) over a celadon chevron, 7px apart, at the right of the name row, no hairline, no
+  box. At least 44px (`--fold-w`), its own width taken from the name (`--fold-room`); the chevron
+  turns over when open. The count says there is more inside and how much of it is in (owner: it
+  "needs something to say, there's more here to explore"). It never touches the selection.
+- **Fold timing**: opening or closing a group's categories, and a group a preset hides or brings
+  back, takes `foldMs` (top of `ui.js`): 170ms plus 0.55ms per pixel travelled, at most 560ms,
+  closing at 0.8 of that, so a tall drawer takes longer than a short one (owner: "something taller
+  should take longer").
 - **Open group** (`.chapter-panel`): its categories under its line, indented with the name, no
   border or tint; the category lines, two columns, the hold and its hint are as in
   `deck-category-lines.md`; the picked look of a category is unchanged. The group's stretch of rail
@@ -37,7 +44,7 @@ After Dark, 12 for Wildcards and Fixed Sets (`--tick`). Rows are 15px (`--statio
   `syncIntentUI`); the whole row is the fold, a chevron at the right. Colbert and The 36 inside are
   built exactly like category items.
 - **A group a preset hides or brings back** opens or folds by its real height (`setChapterHidden`
-  in `ui.js` pins it, then moves `max-height`; `.28s` `--ease-out`), settling from 6px above while it
+  in `ui.js` pins it, then moves `max-height` over `foldMs` of that height, `--ease-out`), settling from 6px above while it
   fades; rows that change together go 40ms apart from the top. Instant under reduced motion.
 - **Hover** (mouse only, docked): the name of an off or partly on row goes to cream; an on row keeps
   its colour.

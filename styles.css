@@ -1570,9 +1570,10 @@ body.hint-ways-taught .menu-hint{display:none;}
 /* ── The Deck's groups: eight stations on one metal line (design/deck-chooser.md) ──
    One double hairline rail runs down the left of all of them and a short gold tick starts each row (12/18/24/30px for
    Arrive to Into the Deep, then back down). A group that is in fills the stretch of rail beside it, between the two
-   rail lines, with its colour as metal: the whole stretch when every category is on, the share that is on from the
-   top (--share, set by ui.js) when some are. The metal is the gilt sweep (--ch-rail, painted by ui.js with giltRailPaint). */
-.chapters{--rail-x:8px;--rail-w:5px;--rail-inset:36px;--station-pad:15px;--fold-w:44px;--fold-room:24px;--line-gap:4px;
+   rail lines, with its colour as metal when every category is on (--share 1, set by ui.js); when only some are, the two
+   rail lines of its stretch take its colour instead, hollow, the full length. The metal is the gilt sweep (--ch-rail,
+   painted by ui.js with giltRailPaint). The count and chevron at the right say there is more inside. */
+.chapters{--rail-x:8px;--rail-w:5px;--rail-inset:36px;--station-pad:15px;--fold-w:44px;--fold-room:var(--fold-w);--ct-gap:7px;--line-gap:4px;
   --name-lh:calc(1.15*var(--fs-7));display:flex;flex-direction:column;}
 .chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;--share:0;--tick:12px;position:relative;padding-inline-start:var(--rail-inset);
   --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
@@ -1580,7 +1581,8 @@ body.hint-ways-taught .menu-hint{display:none;}
 .chapter-group:is([data-group="findout"],[data-group="aboutus"]){--tick:24px;}
 .chapter-group[data-group="deeper"]{--tick:30px;}
 .chapter-group::before{content:'';position:absolute;inset-block:0;inset-inline-start:var(--rail-x);width:var(--rail-w);
-  border-inline:1px solid var(--border-strong);pointer-events:none;}
+  border-inline:1px solid var(--border-strong);pointer-events:none;transition:border-color var(--ch-ease);}
+.chapter-group:has(>.chapter.part)::before{border-color:var(--ch);}
 .chapter-group::after{content:'';position:absolute;inset-block:0;inset-inline-start:calc(var(--rail-x) + 1px);width:calc(var(--rail-w) - 2px);
   background:var(--ch-rail);transform:scaleY(var(--share));transform-origin:top;transition:transform var(--ch-ease);pointer-events:none;}
 .chapter-group>:is(.chapter,.ch-fold--row){position:relative;z-index:1;}
@@ -1596,11 +1598,15 @@ body.hint-ways-taught .menu-hint{display:none;}
 .chapter-group .chapter.part .ch-name{color:color-mix(in srgb, var(--ch) 70%, var(--muted-l));}
 .chapter-group :is(.chapter.on,.ch-fold--row.on,.ch-fold--row[aria-checked="true"]) .ch-name{color:var(--ch);}
 .chapter-group :is(.chapter.on,.chapter.part,.ch-fold--row.on,.ch-fold--row[aria-checked="true"]) .ch-desc{color:var(--sand);}
-/* the fold: a celadon chevron alone at the right of the name row, a 44px target that reaches back over the name's last --fold-room,
-   so only the chevron itself takes room from a long name */
-.chapter-group .chapter .ch-fold{position:relative;z-index:1;flex:none;width:var(--fold-w);height:var(--fold-w);
-  margin:calc((var(--name-lh) - var(--fold-w))/2) 0 0 calc(var(--fold-room) - var(--fold-w));display:flex;align-items:center;justify-content:center;
-  background:none;border:none;cursor:pointer;color:var(--celadon);}
+/* the fold: the count over a celadon chevron at the right of the name row, a 44px-tall target; it takes its own width from the name
+   (--fold-room), since the count needs all of it */
+.chapter-group .chapter .ch-fold{position:relative;z-index:1;flex:none;min-width:var(--fold-w);height:var(--fold-w);
+  margin:calc((var(--name-lh) - var(--fold-w))/2) 0 0 calc(var(--fold-room) - var(--fold-w));display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--ct-gap);background:none;border:none;cursor:pointer;color:var(--celadon);}
+/* the count over the chevron: stone, in the group's colour when only some are on */
+.chapter-group .ch-ct{font-family:'Jost',sans-serif;font-size:var(--fs-2);letter-spacing:var(--track-text);white-space:nowrap;
+  color:var(--stone);transition:color var(--ch-ease);}
+.chapter-group .chapter.part .ch-ct{color:var(--ch);}
 /* Wildcards and Fixed Sets: the same name and line, the whole row one button; its state or chevron sits where the fold does */
 .chapter-group .ch-fold--row{display:grid;grid-template-columns:1fr var(--fold-w);row-gap:var(--line-gap);width:100%;text-align:left;
   padding:var(--station-pad) 0;background:none;border:none;cursor:pointer;color:var(--celadon);}
@@ -1624,7 +1630,7 @@ body.hint-ways-taught .menu-hint{display:none;}
   transition:max-height var(--ch-move) var(--ease-out) var(--ch-delay,0s),
     transform var(--ch-move) var(--ease-out) var(--ch-delay,0s),opacity .16s ease-out var(--ch-delay,0s),visibility 0s calc(var(--ch-delay,0s) + var(--ch-move));}
 @media (prefers-reduced-motion:reduce){
-  .chapter-group,.chapter-group::after,.chapter-group.ch-hidden,.chapter-group .ch-name,.chapter-group .ch-desc,.wc-state{transition:none;}
+  .chapter-group,.chapter-group::before,.chapter-group::after,.chapter-group.ch-hidden,.chapter-group .ch-name,.chapter-group .ch-desc,.chapter-group .ch-ct,.wc-state{transition:none;}
 }
 /* the unfolded part: the group's categories under its line, indented with the name, each its own tap target */
 .chapter-panel{overflow:hidden;max-height:0;display:flex;flex-wrap:wrap;gap:0 2px;padding:0;}

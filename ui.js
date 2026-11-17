@@ -660,6 +660,11 @@ updateTimeOfDayHeading();
 
 applyToggleUI();
 
+/* How long a fold in The Deck takes: a fixed start plus a share of the distance it travels, so a tall group takes longer
+   than a short one at about the same speed; capped so the tallest stays quick. Closing is a little faster than opening. */
+const FOLD_BASE_MS = 170, FOLD_MS_PER_PX = 0.55, FOLD_MAX_MS = 560, FOLD_CLOSE = 0.8;
+const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + px * FOLD_MS_PER_PX) * (opening ? 1 : FOLD_CLOSE));
+
 /* ═════════ APP SHELL WIRING — trays, drawers, presets, dials ═════════ */
 (function(){
   const $=id=>document.getElementById(id);
@@ -1052,6 +1057,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
       return true;
     }
     group.style.setProperty('--ch-delay', `${delay}ms`);
+    group.style.setProperty('--ch-move', `${foldMs(hidden ? group.offsetHeight : group.scrollHeight, !hidden)}ms`);
     group.style.maxHeight = `${group.offsetHeight}px`;
     group.classList.add('ch-moving');
     group.classList.toggle('ch-hidden', hidden);
@@ -1068,6 +1074,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
     group.classList.remove('ch-moving');
     group.style.maxHeight = '';
     group.style.removeProperty('--ch-delay');
+    group.style.removeProperty('--ch-move');
   }
   ['transitionend', 'transitioncancel'].forEach(type => $('chapters').addEventListener(type, endChapterMove));
   function syncIntentUI(){
@@ -1084,9 +1091,10 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. Colbert and The 36 put every chapter away. */
       if (setChapterHidden(btn.closest('.chapter-group'), listMode || visible.length === 0, moved * 40)) moved++;
-      /* how much of the line beside the group is metal: the share of its reachable categories that are on, from the top */
-      const share = st === 'on' ? 1 : visible.filter(l => state.activeToggles.has(l)).length / (visible.length || 1);
-      btn.closest('.chapter-group').style.setProperty('--share', String(share));
+      /* the line beside the group is metal only when every reachable category is on; partly on draws it hollow (styles.css) */
+      btn.closest('.chapter-group').style.setProperty('--share', st === 'on' ? '1' : '0');
+      /* "n / total": how many of this chapter's categories are on, of those reachable here */
+      btn.querySelector('.ch-ct').textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
     });
     setChapterHidden(document.querySelector('.chapter-group--switch'), listMode, moved * 40);
     /* Fixed Sets is lit only while Colbert or The 36 is picked */
@@ -1246,8 +1254,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
     grp.classList.toggle('open', open);
     btn.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
-    const ms = open ? 260 : 200;
-    window.slideFold(panel, open, prefersReducedMotion.matches ? 1 : ms);
+    window.slideFold(panel, open, prefersReducedMotion.matches ? 1 : foldMs(panel.scrollHeight, open));
     if (open) showCategoryLinesHint(panel);
     if (typeof updateGridScrollHint === 'function') updateGridScrollHint();
   }

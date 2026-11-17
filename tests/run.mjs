@@ -464,7 +464,7 @@ async function run() {
     }
   });
 
-  await check('a single category in an unfolded chapter toggles on its own, the metal beside the chapter follows, and None clears everything', async () => {
+  await check('a single category in an unfolded chapter toggles on its own, the count beside the chapter follows, and None clears everything', async () => {
     try {
       await openCategorySheet();
       const row = page.locator('.chapter[data-chapter="surface"]');
@@ -475,14 +475,14 @@ async function run() {
       }
       const cat = page.locator('.chapter-panel[data-chapter="surface"] .toggle-btn:visible').first();
       const was = await cat.evaluate(el => el.classList.contains('on'));
-      const metal = () => row.evaluate(el => el.closest('.chapter-group').style.getPropertyValue('--share'));   // how much of the line beside the chapter is filled
+      const metal = () => row.locator('.ch-ct').textContent();   // how many of the chapter's categories are on
       const ctBefore = await metal();
       await cat.click();
       await page.waitForTimeout(300);
       assert((await cat.evaluate(el => el.classList.contains('on'))) !== was, 'category did not toggle');
-      assert((await metal()) !== ctBefore, 'the metal beside the chapter did not follow the category');
+      assert((await metal()) !== ctBefore, 'the count beside the chapter did not follow the category');
       await cat.click(); await page.waitForTimeout(300);
-      assert((await metal()) === ctBefore, 'the metal beside the chapter did not restore');
+      assert((await metal()) === ctBefore, 'the count beside the chapter did not restore');
       const keep = await page.evaluate(() => ({ t: [...state.activeToggles], p: state.activePreset }));
       await page.locator('#deselectAll').click();
       await page.waitForTimeout(300);
