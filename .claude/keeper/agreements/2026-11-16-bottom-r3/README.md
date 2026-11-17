@@ -30,3 +30,8 @@ Not drawn: an After Dark card, Three with its choices up, a tap on a blade or ti
 phone the fan comes close to the card.
 
 `draw.js` lays the options over the live app and takes the pictures (`today,fan,window,pendant`).
+
+## Owner on round 3
+"Nope. Nope nope.. It should stay together as a coherent piece." and "No... I don't know. Just
+nope.. this is just random things thrown at something". None of the three goes on. Next: what
+"coherent" means here, in words, before anything is drawn.
