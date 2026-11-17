@@ -43,11 +43,11 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 ## Open with the owner
 
-- The Deck (#183): the owner wants a new look, out of curiosity. Settled by the owner: the first
-  four groups go from light to deep, Between Us and After Dark are outliers, not a hierarchy;
-  category colour dots say nothing to anyone; categories are used by players, folded by default
-  and one step away; metal colours are liked. Round three is with them: the line in metal with
-  its state in words, and a scale of how deep with two switches.
+- The Deck (#183): the owner chose the line (levels down a metal line, state in metal, no
+  colour dots). The first four groups go light to deep; Between Us and After Dark are outliers.
+  Wildcards and Fixed Sets become line items in metal, not picks. Shuffle, Cards and Three stay
+  in The Deck. Three looks for the foot are with the owner: stations on the line, a plate,
+  metal strips.
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).

@@ -37,6 +37,8 @@ don'ts.
 - Main choices such as the presets stay in view; a screen that is too full scrolls.
 - A player never has to think about the controls. Before adding, check whether taking something
   away solves it.
+- Usability decides. A settings control that is used stays where it is used, however much it
+  looks like settings; a complaint of the Keeper's own is a question for the owner, not a brief.
 
 ## Phone and computer
 
