@@ -339,6 +339,26 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  await check('the opening card takes no swipe: dragged either way it does not move, nothing is drawn, and a tap still opens it', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const pg = await ctx.newPage();
+    pg.on('pageerror', (e) => consoleErrors.push(e.message));
+    try {
+      await pg.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await pg.waitForSelector('#card', { state: 'visible' });
+      await pg.waitForTimeout(500);
+      assert(await pg.evaluate(() => state.currentIndex === -1 && !handBegun()), 'the page did not open on the opening card');
+      for (const dx of [-140, 140]) {
+        const d = await drag(pg, dx, 0, { ms: 200 });
+        assert(d.offset === 0, `the opening card moved for a ${dx}px drag: ${JSON.stringify(d)}`);
+        await pg.waitForTimeout(450);
+        assert(await pg.evaluate(() => state.currentIndex === -1 && !handBegun()), `a ${dx}px swipe on the opening card did something`);
+      }
+      await drag(pg, 0, 0);
+      await pg.waitForFunction(() => state.currentIndex === 0, null, { timeout: 4000 });
+    } finally { await ctx.close(); }
+  });
+
   await check('a downward drag, a long diagonal and the arrow down do nothing: the card does not move, nothing is skipped, no Undo anywhere', async () => {
     const { ctx, pg } = await dragApp();
     try {

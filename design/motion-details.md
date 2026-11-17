@@ -50,6 +50,8 @@ Sideways only: no tilt, no vertical movement.
   not spring.
 - **Release before the point:** the same 260ms return, nothing happens. A cancelled touch does the
   same.
+- The opening card (before the hand has begun) takes no swipe: it does not lean and neither swipe
+  draws or goes back. A tap on it or Next card opens the hand.
 - Reduced motion: the card does not follow; the same release rules apply (the point, or a flick).
 - Spotlight is out: it has its own swipes and no card to drag.
 

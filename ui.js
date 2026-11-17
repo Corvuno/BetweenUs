@@ -158,7 +158,8 @@ function dragOffset(dx, width, goes) {
 // (.card-area, never #card, so the card's own animations are untouched); released, the small lean eases back to
 // zero in the same moment a swipe past the point does Next or Back, or alone when it was let go early.
 // Registered non-passive so it can call preventDefault() and suppress the synthetic click a touch leaves
-// behind after a drag. Under reduced motion the card stays still and the same release rules apply.
+// behind after a drag. Under reduced motion the card stays still and the same release rules apply. The opening
+// card, before the hand has begun, takes no swipe at all: it neither moves nor draws, only a tap or Next card opens it.
 const cardEl = document.getElementById('card');
 const cardArea = cardEl.parentElement;
 const dragEase = getComputedStyle(document.documentElement).getPropertyValue('--ease-move').trim();
@@ -188,7 +189,7 @@ cardEl.addEventListener('touchmove', e => {
   if (cardTouch.mode === 'wait') cardTouch.mode = dragMode(dx, dy);
   if (cardTouch.mode !== 'drag') return;
   if (e.cancelable) e.preventDefault();
-  if (prefersReducedMotion.matches) return;
+  if (prefersReducedMotion.matches || !handBegun()) return;   // the opening card does not move: it opens by a tap or Next card
   cardTouch.offset = dragOffset(dx, cardEl.offsetWidth, dx < 0 || canGoBack());
   cardArea.style.transform = `translateX(${cardTouch.offset}px)`;
 }, { passive: false });
@@ -197,7 +198,7 @@ cardEl.addEventListener('touchend', e => {
   if (!cardTouch) return;
   const { x, y, t, mode, offset } = cardTouch;
   cardTouch = null;
-  const action = mode === 'vertical' ? null : swipeAction(e.changedTouches[0].clientX - x, e.changedTouches[0].clientY - y, Date.now() - t, cardEl.offsetWidth);
+  const action = mode === 'vertical' || !handBegun() ? null : swipeAction(e.changedTouches[0].clientX - x, e.changedTouches[0].clientY - y, Date.now() - t, cardEl.offsetWidth);
   letCardGo(offset);
   if (mode === 'wait' && !action) return;   // a tap: the click draws
   e.preventDefault();
