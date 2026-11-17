@@ -27,13 +27,16 @@ on guesses. So understanding comes first, and pictures late.
   pick becomes a reference. What a reference gives is the qualities the owner names in it (how
   lines and space balance, how areas are cut, where the eye is led); built from the product's own
   pieces they become its own, while taking over its objects or its layout makes a copy.
-- **Design it yourself**, in the conversation, with one design skill loaded: a few really
-  different directions at once, each shown on every moment and saying what in the product it
-  descends from, with the one you believe in named. A single design gets turned down; different
-  directions give the owner something to choose between and combine. Options that differ only
-  in detail are one option. Before showing a round, judge it yourself against today's version and
-  against what the owner has said makes a design good for them (the product keeps that in
-  `state.md`), and say the verdict plainly with the round. "Tidier than today" is not better.
+- **Design it yourself**, in the conversation, with one design skill loaded: a round made up
+  the way `owner.md` describes, each option shown on every moment and saying what in the product it
+  descends from, with the one you believe in named. Design is whole and contextual, not a choice
+  between parts: a reaction is about that whole at that moment, and a part turned down here can
+  work there. So when the owner names parts they like, the next round brings a version that makes
+  those parts work together and also something really different; it is only a combination of
+  what they liked when they ask for exactly that. Options that differ only in detail are one
+  option. Before showing a round, judge it yourself against today's version and against what the
+  owner has said makes any design good for them (`project.md` says where the product keeps it),
+  and say the verdict plainly with the round. "Tidier than today" is not better.
   When nothing in the round is better, say so instead of showing it as progress; the owner should
   never have to ask "is this better?".
 - **After the pick**, at most one round of variations, then it is built from the chosen design.

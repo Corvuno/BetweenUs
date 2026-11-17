@@ -40,6 +40,9 @@ How this owner works and means things. Personal: another owner replaces this fil
 - Saying back in your own words what you think they want and why, before doing anything.
 - An honest list of what is done, what is not, and what is untried.
 - Many references before designing; their best results came that way.
-- A few really different options at once, in design and in how something works or is worded;
-  one option on its own gets shot down.
+- A design round: three or four sound options in the product's own style, plus one rethink that
+  changes how the part is used, a bit strange, still clearly in the style. No option is random:
+  each comes from what the part is and does. "Do something other" asks for a rethink. For how
+  something works or is worded, too, a few really different options at once; one option on its
+  own gets shot down.
 - A proposal of your own they can take or turn down.
