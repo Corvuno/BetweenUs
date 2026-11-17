@@ -60,10 +60,7 @@ don'ts.
 ## Words in the app
 
 - One adult to another: plain, never talking down, no internal names ("line", "chapter",
-  "preset", "Arc", "bucket", "band", "hand"; "category" is fine). Where a setting has to keep an
-  internal name (Arc), its hint says what it does and why it is there, for someone who has never
-  played: words come after understanding the setting's purpose, from the vision and the code
-  (the code wins over an older agreement).
+  "preset", "Arc", "bucket", "band"; "category" is fine).
 - "Draw" is the verb for every card action; nothing is dealt, no gambling words.
 - After Dark copy names sex plainly in grown-up, understated words. Bare may be blunt.
 - Copy about stored things says only what the app knows ("saved").

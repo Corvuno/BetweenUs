@@ -40,6 +40,10 @@ For someone looking on their own (a first visitor from a post or a link), it rea
 boxed deck: clearly made for an evening with other people, pretty, and exciting to look through.
 Trying a few questions on your own is part of the fun.
 
+Whatever explains something (a hint, a setting, a line of help) is written for everyone who reads
+it: the person opening it for the first time understands it as well as the one who has played for
+years.
+
 ## The screen, on every device
 
 Any design that breaks one of these is out before it is judged on anything else:
