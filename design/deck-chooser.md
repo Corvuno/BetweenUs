@@ -15,13 +15,15 @@ After Dark, 12 for Wildcards and Fixed Sets (`--tick`). Rows are 15px (`--statio
 - **Name**: Jost 300, caps, `--fs-7`, `--track-2`, line height 1.15 (`--name-lh`); wraps to a
   second line where the room is short (Beneath the Surface at 360px). **Line** under it: Federo,
   `--fs-3`, `--track-text`. Names and lines are the group's own words.
-- **State is the rail beside the row**, always its full length. Fully on: the stretch between the
-  two rail lines fills with the group colour as the gilt sweep (`--ch-rail` from `giltRailPaint`,
-  dark-light-dark; `--share` 1, set by `ui.js`), name `--ch`, line `--sand`. Partly on: no fill; the
-  two rail lines of the stretch take the group colour (`--ch`), hollow, name `--ch` 70% into
-  `--muted-l`, line `--sand`. Off: plain rail, name `--stone`, line `--text-helper`. Owner: half a
-  line "not working"; partly on must read as its own state. Fill and line colour change over
-  `--ch-ease` (.4s ease-out); instant under reduced motion. Tapping the name
+- **State is the rail beside the row.** The stretch between its two rail lines fills with the
+  group colour as the gilt sweep (`--ch-rail` from `giltRailPaint`, dark-light-dark) from the top,
+  as far as the share of its reachable categories that are on (`--share`, 0 to 1, set by `ui.js`):
+  a fill bar. Partly on, the two rail lines of the whole stretch also take the group colour (`--ch`),
+  so the fill reads against the full length. Fully on: name `--ch`, line `--sand`. Partly on: name
+  `--ch` 70% into `--muted-l`, line `--sand`. Off: plain rail, name `--stone`, line
+  `--text-helper`. Owner: the fill that grows with the categories is "really elegant"; the coloured
+  full length and the count make partly on clear. Fill and line colour change over `--ch-ease`
+  (.4s ease-out); instant under reduced motion. Tapping the name
   switches the group (the name button stretches over the row).
 - **Fold** (`.ch-fold`): the count "n / total" (`.ch-ct`, Jost `--fs-2`, `--stone`; the group colour
   when partly on) over a celadon chevron, 7px apart, at the right of the name row, no hairline, no

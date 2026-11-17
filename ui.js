@@ -1091,8 +1091,10 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
          in any mode, e.g. After Dark in New people/Solo, or Into the Deep in
          Work/Date/New people. Colbert and The 36 put every chapter away. */
       if (setChapterHidden(btn.closest('.chapter-group'), listMode || visible.length === 0, moved * 40)) moved++;
-      /* the line beside the group is metal only when every reachable category is on; partly on draws it hollow (styles.css) */
-      btn.closest('.chapter-group').style.setProperty('--share', st === 'on' ? '1' : '0');
+      /* how much of the line beside the group is metal: the share of its reachable categories that are on, from the top;
+         partly on also draws the whole stretch hollow in the group colour, so the fill reads against its full length (styles.css) */
+      const share = st === 'on' ? 1 : visible.filter(l => state.activeToggles.has(l)).length / (visible.length || 1);
+      btn.closest('.chapter-group').style.setProperty('--share', String(share));
       /* "n / total": how many of this chapter's categories are on, of those reachable here */
       btn.querySelector('.ch-ct').textContent = `${visible.filter(l => state.activeToggles.has(l)).length} / ${visible.length}`;
     });
