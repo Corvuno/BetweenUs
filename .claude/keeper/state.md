@@ -13,7 +13,7 @@ Backlog items are named by number and title.
   The start card, the Intermezzo and Spotlight wear the same frame.
 - The deck: every card has a number and a slot, the long cards are shortened, categories sit in
   pairs. The owner's ear for cards is sharp and recorded in `taste.md`.
-- The Deck sheet and its chapters work. The owner opens it to change chapters and categories;
+- The Deck: its groups run down one metal line, settings in a plate. The owner opens it to change chapters and categories;
   people handed the app pick presets, chapters and categories there without any explanation.
   Shuffle, Cards (for group size) and Three are all used; Three mostly from the menu, which is
   quicker, and it stays in The Deck too.
@@ -43,10 +43,9 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 ## Open with the owner
 
-- The Deck (#183): the owner confirmed the line (round 5: round two's line with metal on the
-  line, no dots, categories one tap away, Wildcards and Fixed Sets as items on it). Shuffle,
-  Cards and Three in a plate under it; columns broke on Random and the hints, so the plate in
-  rows is with the owner.
+- The Deck is live as the line (#183): the owner looks once on their own phone. Its look came
+  through six rounds; the owner is fed up with design rounds for now and comes back to it when
+  they have the energy. Three's hint words are the Keeper's, open to change.
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).
