@@ -38,15 +38,17 @@ motion: no drop, no ghosts, a 250ms opacity fade, swap at 150ms.
 ## The card follows the finger
 `ui.js` (the card's touch handling). While a finger drags the card sideways, `.card-area` (the card's
 unchanged wrapper, never `#card`, so the change, draw and turn animations are untouched) carries a
-`translateX`. It starts once the finger has moved more than 8px and more sideways than up or down; a
-mostly vertical drag does nothing to the card. One to one up to the point (a quarter of the card's
-width), then with growing resistance (at most 15% of the width further), so the card never leaves the
-screen. Where the swipe would do nothing (Back with no card behind) the resistance is there from the
-start (at most 10% of the width). Sideways only: no tilt, no vertical movement.
+small `translateX`. It starts once the finger has moved more than 8px and more sideways than up or
+down; a mostly vertical drag does nothing to the card. The card leans, it does not travel: the whole
+drag is resistance, approaching at most 6% of the card's width (about 21px on a phone card, in the
+family of the change's own 8/178 rise), about four fifths of that by the point (a quarter of the
+card's width). Where the swipe would do nothing (Back with no card behind) it leans half as much.
+Sideways only: no tilt, no vertical movement.
 - **Release past the point** (or a flick: under 400ms and over 50px): Next or Back runs exactly as
-  before, and in the same moment the offset eases back to zero over 200ms on `--ease-out` (Web
-  Animations on the wrapper); the card does not slide off.
-- **Release before the point:** the same 200ms return, nothing happens. A cancelled touch does the
+  before, and in the same moment the lean eases back to zero over 260ms on `--ease-move` (Web
+  Animations on the wrapper), inside the change's own 340ms; the card does not slide off and does
+  not spring.
+- **Release before the point:** the same 260ms return, nothing happens. A cancelled touch does the
   same.
 - Reduced motion: the card does not follow; the same release rules apply (the point, or a flick).
 - Spotlight is out: it has its own swipes and no card to drag.
