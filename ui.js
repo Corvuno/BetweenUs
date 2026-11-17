@@ -1247,12 +1247,21 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
     syncLeanUI();
   }
   if (leanSlider) {
-    // moving it shows at once; the deck is dealt again once it is let go
-    leanSlider.addEventListener('input', () => setLean(Number(leanSlider.value) / LEAN_STEPS));
-    leanSlider.addEventListener('change', () => {
+    /* Moving it shows at once and retires its hint. The deck is dealt again
+       once it is let go, or a moment after the last step: some phones
+       (Safari on iPhone) don't send a change event at the end of a drag. */
+    let dealAfter = 0;
+    const deal = () => {
+      clearTimeout(dealAfter);
       initDeck(); updateDeckInfo(); updateDrawMore(); renderShell();
+    };
+    leanSlider.addEventListener('input', () => {
+      setLean(Number(leanSlider.value) / LEAN_STEPS);
       hintRetire('lean');
+      clearTimeout(dealAfter);
+      dealAfter = setTimeout(deal, 350);
     });
+    leanSlider.addEventListener('change', deal);
   }
   const modeBarEl = $('modeBar');
   if (modeBarEl) modeBarEl.addEventListener('click', e => {

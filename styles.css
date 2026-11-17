@@ -1661,13 +1661,16 @@ body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .
 /* About, the You–Us lean: the chapter line turned on its side. Two rails 5px apart (--border-strong), a gold
    mark through the middle, a shorter gold mark under each step growing towards the ends, and a celadon diamond
    you slide; the stretch from the middle to the diamond fills with celadon metal, the way a chapter fills.
-   The word on the side it leans to takes the picked look. A native range input lies over the rail (invisible)
+   The word on the side it leans to takes the picked look, without moving anything. A native range input lies over the rail (invisible)
    for touch, keys and screen readers; its thumb is --lean-k wide, so every mark sits on the thumb's path.
    --p (0 … 1) is set by ui.js. */
 .lean{display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:48px;padding-inline-start:9px;}
 .lean-word{font-family:'Jost',sans-serif;font-size:var(--fs-2);font-weight:300;letter-spacing:var(--track-1);text-transform:uppercase;
   white-space:nowrap;color:color-mix(in srgb, var(--celadon) 42%, rgba(240,232,216,.5));transition:color .2s;}
 .lean-word.on{color:var(--celadon);font-weight:500;}
+/* both words keep the width of a bold YOU, so turning bold never moves the rail and its middle stays the row's middle */
+.lean-word{display:inline-grid;justify-items:center;}
+.lean-word::after{content:'You';font-weight:500;visibility:hidden;height:0;overflow:hidden;}
 .lean-rail{--lean-k:24px;--p:.5;--at:calc(var(--lean-k) / 2 + (100% - var(--lean-k)) * var(--p));
   position:relative;flex:1;min-width:0;height:44px;margin-inline:6px;}
 .lean-rail::before{content:'';position:absolute;inset-inline:0;top:50%;height:5px;transform:translateY(-50%);

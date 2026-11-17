@@ -34,7 +34,9 @@ liked somewhere else. What the owner looks for in every design:
 - **It is about the questions.** People use the app around a table and hand it to each other;
   controls are found and used without thinking, and never become a concept of their own ("way too
   convoluted… it should be about the questions"). It looks good because people use it, whatever
-  else happens to it.
+  else happens to it. A control is as elaborate as what it does: for the You–Us lean the owner loved
+  the rail, The Deck's own line on its side with a diamond to slide, and called two overlapping rings
+  "really cool, though way too complex for what it does".
 - **What they pick, they get.** When the owner names a part they like, it comes back as they saw it.
 
 ## Cards and words
