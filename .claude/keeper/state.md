@@ -43,10 +43,11 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 ## Open with the owner
 
-- The Deck (#183): the owner wants to see a new look, out of curiosity. The levels fold so the
-  categories don't overwhelm a first-timer, and the owner mostly has the descriptions on; a
-  design is shown in both moments. Round two is with them: steps, doors, one line with large
-  names. Round one (the same sheet rearranged) was "just updated".
+- The Deck (#183): the owner wants a new look, out of curiosity. Settled by the owner: the first
+  four groups go from light to deep, Between Us and After Dark are outliers, not a hierarchy;
+  category colour dots say nothing to anyone; categories are used by players, folded by default
+  and one step away; metal colours are liked. Round three is with them: the line in metal with
+  its state in words, and a scale of how deep with two switches.
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).

@@ -1,0 +1,120 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Federo&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--surface:#161310;--gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;--sand:#d2c9b8;--stone:#b5a892;--muted-l:#9c8f7e;--helper:#8c8071;--dim:rgba(201,168,76,.12);--border:rgba(201,168,76,.22);--strong:rgba(201,168,76,.38);--celadon:#A9C7B6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:Jost,sans-serif;font-weight:300;color:var(--cream);padding:20px;display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.sheet{width:390px;background:var(--surface);position:relative;padding:0 18px 78px;border-top:2px solid var(--gold);overflow:hidden}
+.head{text-align:center;padding:26px 0 14px;position:relative}
+.head .n{color:var(--gold);letter-spacing:.3em;font-size:14px;font-weight:500;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px}
+.head .n::before,.head .n::after{content:"";height:1px;width:62px;background:linear-gradient(90deg,transparent,var(--gold))}
+.head .n::after{transform:scaleX(-1)}
+.head .q{font-family:Federo,serif;color:var(--sand);font-size:15px;margin-top:6px}
+.head .x{position:absolute;right:2px;top:26px;color:var(--stone);font-size:15px}
+.lbl{font-family:Federo,serif;color:var(--gold-l);font-size:15px}
+.pick{display:inline-flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.09em;font-size:13px;padding:0 9px;height:38px;color:color-mix(in srgb,var(--c) 42%,rgba(240,232,216,.5));position:relative;white-space:nowrap}
+.pick::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--c);opacity:.5;flex:none}
+.pick.on{color:var(--c);font-weight:400}.pick.on::before{opacity:1}
+.pick.on::after{content:"";position:absolute;left:21px;right:9px;bottom:8px;height:1px;background:var(--c);opacity:.7}
+.cloud{display:flex;flex-wrap:wrap;column-gap:4px;margin-left:-9px}
+.bar{position:absolute;left:18px;right:18px;bottom:16px;height:40px;background:linear-gradient(90deg,#cdaa4e,#a7822f);color:#1a1612;display:flex;align-items:center;justify-content:center;letter-spacing:.2em;font-size:13px;font-weight:400;text-transform:uppercase}
+/* metal of a colour: dark, mid, light, mid, dark — like the app's gilt rail */
+.metal{--d:color-mix(in oklab,var(--ch) 45%,#000);--l:color-mix(in oklab,var(--ch) 55%,#fff3d6);
+  background:linear-gradient(in oklab 190deg,var(--d) 0%,var(--ch) 34%,var(--l) 50%,var(--ch) 66%,var(--d) 100%)}
+.mtext{background:linear-gradient(in oklab 100deg,color-mix(in oklab,var(--ch) 70%,#000) 0%,var(--ch) 30%,color-mix(in oklab,var(--ch) 50%,#fff3d6) 52%,var(--ch) 72%,color-mix(in oklab,var(--ch) 75%,#000) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.state{font:400 11px Jost;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-l);margin-top:7px}
+.state.in{color:var(--sand)}
+.chev{position:absolute;right:0;top:14px;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+.chev::before{content:"";width:8px;height:8px;border-right:1px solid var(--celadon);border-bottom:1px solid var(--celadon);transform:translateY(-3px) rotate(45deg)}
+.chev.open::before{transform:translateY(3px) rotate(-135deg)}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;text-align:left;margin-top:12px}
+.cat{padding:4px 0}.cat .pick{height:25px;padding-left:0}.cat .pick.on::after{left:12px;bottom:2px}
+.cat small{display:block;font-size:12px;line-height:1.3;color:var(--helper);padding-left:12px}.cat.on small{color:var(--sand)}
+.tail{margin-top:22px}.tail hr{border:0;height:1px;background:var(--dim);margin:8px 0}
+.set{display:flex;align-items:center}.set b{font:400 12px Jost;letter-spacing:.14em;color:var(--stone);text-transform:uppercase;width:74px}
+/* LINE */
+.gauge{position:relative;padding-left:34px;margin-top:16px}
+.gauge::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:5px;border-left:1px solid var(--strong);border-right:1px solid var(--strong)}
+.gauge::after{content:"";position:absolute;left:2px;bottom:0;width:17px;border-top:1px solid var(--gold)}
+.g{position:relative;padding:14px 40px 14px 0}
+.g .fill{position:absolute;left:-26px;top:0;width:5px;height:var(--f,0%)}
+.g .tk{position:absolute;left:-32px;top:0;border-top:1px solid var(--gold);width:var(--tk)}
+.g h3{font:300 21px/1.15 Jost;letter-spacing:.15em;text-transform:uppercase;color:var(--stone)}
+.g p{font-family:Federo,serif;font-size:14px;color:var(--helper);margin-top:4px}.g.on p{color:var(--sand)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.o{position:relative;padding:14px 34px 4px 0}
+.o .top{position:absolute;left:0;right:0;top:0;height:5px;border-top:1px solid var(--strong);border-bottom:1px solid var(--strong)}
+.o .top .fill{position:absolute;left:0;top:0;bottom:0;width:var(--f,0%)}
+.o h3{font:300 16px/1.2 Jost;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+.o p{font-family:Federo,serif;font-size:13px;line-height:1.35;color:var(--helper);margin-top:4px}.o.on p{color:var(--sand)}
+.o .chev{top:6px;right:-6px}
+.opened{margin-top:2px;padding:4px 0 6px}
+.opened .d{font-family:Federo,serif;font-size:14px;color:var(--sand)}
+/* SCALE */
+.scale{position:relative;margin:18px 0 0;height:122px}
+.rail{position:absolute;left:22px;right:22px;top:18px;height:5px;border-top:1px solid var(--strong);border-bottom:1px solid var(--strong)}
+.range{position:absolute;top:17px;height:7px;--ch:#c9a84c}
+.stop{position:absolute;top:0;width:86px;margin-left:-43px;text-align:center}
+.stop i{display:block;width:1px;height:41px;margin:0 auto;background:var(--strong)}
+.stop.on i,.stop.part i{background:var(--gold-l)}
+.stop b{display:block;font:400 11.5px/1.35 Jost;letter-spacing:.13em;text-transform:uppercase;color:var(--stone);margin-top:8px}
+.stop.on b{color:var(--gold-l)}.stop.part b{color:color-mix(in srgb,var(--gold-l) 65%,#9c8f7e)}
+.stop .st{font:400 10px Jost;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-l);margin-top:4px;display:block}
+.stop .cv{display:block;width:7px;height:7px;border-right:1px solid var(--celadon);border-bottom:1px solid var(--celadon);transform:rotate(45deg);margin:4px auto 0}
+.stop .cv.open{transform:translateY(4px) rotate(-135deg)}
+.ends{display:flex;justify-content:space-between;font-family:Federo,serif;font-size:12.5px;color:var(--muted-l);margin-top:2px}
+.sw{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 12px;padding:12px 0;border-top:1px solid var(--dim)}
+.sw h3{font:300 16px Jost;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+.sw p{font-family:Federo,serif;font-size:13px;color:var(--helper);margin-top:3px}.sw.on p{color:var(--sand)}
+.sw .onoff{display:flex}
+.panel{border-top:1px solid color-mix(in srgb,var(--ch) 50%,transparent);border-bottom:1px solid var(--dim);padding:12px 0 10px;margin-top:4px}
+.panel .d{font-family:Federo,serif;font-size:14px;color:var(--sand)}
+.g h3.mtext,.o h3.mtext,.sw h3.mtext{color:transparent}
+.stop b{min-height:47px}
+</style></head><body>
+<script>
+const P=[["Everything","#6f8fd8"],["Balanced","#4a95b8",1],["Strangers","#8fd14f"],["Coworkers","#4dbebe"],["Friends","#6bb36e"],["Family","#ee7a35"],["Date","#e35c82"],["Partner","#e35c5c"],["Close friends","#8875aa"],["Yourself","#669bbb"]];
+const BEN=[["Self","#6bbaf0",1,"The person under all the parts you play"],["Connect","#ea856b",1,"The way you let people in"],["Mind","#6277d9",1,"How your head actually works"],["Body","#14bbc0",1,"How you treat the only body you'll get"],["Wish","#aa6cd4",1,"Dreams kept, dreams outgrown"],["Values","#b6ba7a",1,"Your principles, tested"],["Friendship","#fe9d41",1,"The people you picked yourself"],["Family","#a67537",1,"The family you have now"],["Attract","#da5ab6",1,"Who you notice first"],["Romance","#d94b78",1,"From the first date to the last goodbye"],["Spirit","#bc8ada",1,"What you believe when no one is asking"]];
+// name, line, colour, cats [name,on]
+const D=[
+["Arrive","Get comfortable. Start talking.","#c99a3f",[["Quick",0],["Warm",0]]],
+["The Surface","What's easy to see, easy to say.","#4fae5b",[["Life",1],["Home",1],["Work",1],["Unwind",1],["Culture",1],["World",1]]],
+["Beneath the Surface","Where curiosity becomes connection.","#4a9dbc",BEN.map(b=>[b[0],b[2]])],
+["Into the Deep","When the conversation asks something of you.","#8f5fd6",[["Roots",0],["Past",0],["Grief",0],["Deep",0],["Shadow",0],["Raw",0]]]];
+const O=[["Between Us","What's true only between the people at the table.","#d2537f",[["Us: Colleagues",0],["Us: Friends",1],["Us: Love",1],["Between Us",1]]],
+["After Dark ✦","When desire enters the conversation.","#c95a66",[["Flesh",0],["Carnal",0],["Bare",0],["Kink",0],["Us: Intimate",0]]]];
+const pick=(t,c,on)=>`<span class="pick ${on?'on':''}" style="--c:${c}">${t}</span>`;
+const head=`<div class="head"><div class="n">The Deck</div><div class="q">What kind of evening?</div><div class="x">✕</div></div>`;
+const presets=`<div class="lbl">Start from</div><div class="cloud">${P.map(p=>pick(p[0],p[1],p[2])).join('')}</div>`;
+const n=c=>c[3].filter(x=>x[1]).length, t=c=>c[3].length;
+const st=c=>{const k=n(c),T=t(c);if(k===T)return['in','All in'];if(!k)return['','Not in'];const out=c[3].filter(x=>!x[1]).map(x=>x[0]);if(out.length<=2)return['in','Without '+out.join(', ')];const ins=c[3].filter(x=>x[1]).map(x=>x[0]);if(ins.length<=2)return['in','Only '+ins.join(', ')];return['in',k+' of '+T];};
+const cats=list=>`<div class="cats">${list.map(k=>`<div class="cat ${k[2]?'on':''}">${pick(k[0],k[1],k[2])}<small>${k[3]}</small></div>`).join('')}</div>`;
+const tail=`<div class="tail"><div class="cloud">${pick('Wildcards','#c9a84c',1)}${pick('Colbert','#f3c33c',0)}${pick('The 36','#e75783',0)}</div><hr>
+<div class="set"><b>Shuffle</b>${pick('Arc','#A9C7B6',1)}${pick('Random','#A9C7B6',0)}</div>
+<div class="set"><b>Cards</b>${pick('5','#A9C7B6',0)}${pick('10','#A9C7B6',1)}${pick('20','#A9C7B6',0)}</div>
+<div class="set"><b>Three</b>${pick('Off','#A9C7B6',1)}${pick('On','#A9C7B6',0)}</div></div>`;
+const bar=`<div class="bar">Draw cards</div>`;
+let h='';
+// LINE
+const TK=[12,18,24,30];
+const L=(id,open)=>`<div class="sheet" id="${id}">${head}${presets}
+<div class="gauge">${D.map((c,i)=>{const s=st(c),on=n(c)>0;return `<div class="g ${on?'on':''}" style="--ch:${c[2]};--tk:${TK[i]}px"><span class="tk"></span><span class="fill metal" style="--f:${Math.round(n(c)/t(c)*100)}%"></span>
+<h3 class="${on?'mtext':''}">${c[0]}</h3><p>${c[1]}</p><div class="state ${s[0]}">${s[1]}</div><span class="chev ${open===i?'open':''}"></span>${open===i?cats(BEN):''}</div>`}).join('')}</div>
+<div class="pair">${O.map(c=>{const s=st(c),on=n(c)>0;return `<div class="o ${on?'on':''}" style="--ch:${c[2]}"><span class="top"><span class="fill metal" style="--f:${Math.round(n(c)/t(c)*100)}%"></span></span><h3 class="${on?'mtext':''}">${c[0]}</h3><p>${c[1]}</p><div class="state ${s[0]}">${s[1]}</div><span class="chev"></span></div>`}).join('')}</div>
+${tail}${bar}</div>`;
+h+=L('l1',-1)+L('l2',2);
+// SCALE
+const X=[22,125,229,332];
+const stopCls=c=>n(c)===t(c)?'on':n(c)?'part':'';
+const S=(id,open)=>`<div class="sheet" id="${id}">${head}${presets}
+<div style="margin-top:18px" class="lbl">How deep</div>
+<div class="scale"><span class="rail"></span><span class="range metal" style="left:${X[1]}px;width:${X[2]-X[1]}px"></span>
+${D.map((c,i)=>{const s=st(c);return `<div class="stop ${stopCls(c)}" style="left:${X[i]}px"><i></i><b>${c[0].replace('Beneath the Surface','Beneath the<br>Surface').replace('Into the Deep','Into the<br>Deep').replace('The Surface','The<br>Surface')}</b><span class="cv ${open===i?'open':''}"></span></div>`}).join('')}</div>
+<div class="ends"><span>Light</span><span>Deep</span></div>
+${open>=0?`<div class="panel" style="--ch:${D[open][2]}"><div class="d">${D[open][1]} &nbsp;<span class="state in" style="display:inline">${st(D[open])[1]}</span></div>${cats(BEN)}</div>`:''}
+<div style="margin-top:18px" class="lbl">Also</div>
+${O.map(c=>{const s=st(c),on=n(c)>0;return `<div class="sw ${on?'on':''}" style="--ch:${c[2]}"><div><h3 class="${on?'mtext':''}">${c[0]}</h3><p>${c[1]}</p>${on?`<div class="state in">${s[1]}</div>`:''}</div><div class="onoff">${pick('Off','#A9C7B6',!on)}${pick('On','#A9C7B6',on)}</div></div>`}).join('')}
+${tail}${bar}</div>`;
+h+=S('s1',-1)+S('s2',2);
+document.body.innerHTML=h;
+</script></body></html>
