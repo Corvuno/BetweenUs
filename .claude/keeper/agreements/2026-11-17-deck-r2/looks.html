@@ -1,0 +1,110 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Federo&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--surface:#161310;--gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;--sand:#d2c9b8;--stone:#b5a892;--muted-l:#9c8f7e;--helper:#8c8071;--dim:rgba(201,168,76,.12);--border:rgba(201,168,76,.22);--strong:rgba(201,168,76,.38);--celadon:#A9C7B6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:Jost,sans-serif;font-weight:300;color:var(--cream);padding:20px;display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.sheet{width:390px;background:var(--surface);position:relative;padding:0 18px 78px;border-top:2px solid var(--gold);overflow:hidden}
+.head{text-align:center;padding:26px 0 14px;position:relative}
+.head .n{color:var(--gold);letter-spacing:.3em;font-size:14px;font-weight:500;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px}
+.head .n::before,.head .n::after{content:"";height:1px;width:62px;background:linear-gradient(90deg,transparent,var(--gold))}
+.head .n::after{transform:scaleX(-1)}
+.head .q{font-family:Federo,serif;color:var(--sand);font-size:15px;margin-top:6px}
+.head .x{position:absolute;right:2px;top:26px;color:var(--stone);font-size:15px}
+.pick{display:inline-flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.09em;font-size:13px;padding:0 9px;height:38px;color:color-mix(in srgb,var(--c) 42%,rgba(240,232,216,.5));position:relative;white-space:nowrap}
+.pick::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--c);opacity:.5;flex:none}
+.pick.on{color:var(--c);font-weight:400}.pick.on::before{opacity:1}
+.pick.on::after{content:"";position:absolute;left:21px;right:9px;bottom:8px;height:1px;background:var(--c);opacity:.7}
+.cloud{display:flex;flex-wrap:wrap;justify-content:center;column-gap:4px}
+.cloud.l{justify-content:flex-start;margin-left:-9px}
+.bar{position:absolute;left:18px;right:18px;bottom:16px;height:40px;background:linear-gradient(90deg,#cdaa4e,#a7822f);color:#1a1612;display:flex;align-items:center;justify-content:center;letter-spacing:.2em;font-size:13px;font-weight:400;text-transform:uppercase}
+.dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
+.dots i{width:6px;height:6px;border-radius:50%;border:1px solid color-mix(in srgb,var(--c) 60%,transparent)}
+.dots i.on{background:var(--c);border-color:var(--c)}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;text-align:left}
+.cat{padding:4px 0}.cat .pick{height:25px;padding-left:0}.cat .pick.on::after{left:12px;bottom:2px}
+.cat small{display:block;font-size:12px;line-height:1.3;color:var(--helper);padding-left:12px}.cat.on small{color:var(--sand)}
+.tail{margin-top:20px;text-align:center}.tail.l{text-align:left}
+.tail hr{border:0;height:1px;background:var(--dim);margin:8px 40px}.tail.l hr{margin:8px 0}
+.set{display:flex;justify-content:center;align-items:center;gap:2px}.tail.l .set{justify-content:flex-start}
+.set b{font:400 12px Jost;letter-spacing:.14em;color:var(--stone);text-transform:uppercase;width:78px;text-align:right;margin-right:6px}.tail.l .set b{text-align:left;width:74px}
+.set .sp{flex:none}
+/* A — STEPS */
+.zig{display:flex;flex-direction:column;align-items:center;margin-top:18px}
+.st{width:var(--w);position:relative;border:1px solid var(--strong);margin-top:-1px;padding:11px 14px 12px;text-align:center}
+.st::before{content:"";position:absolute;inset:3px;border:1px solid transparent;pointer-events:none}
+.st::after{content:"";position:absolute;top:-1px;bottom:-1px;left:-8px;right:-8px;border-left:1px solid var(--border);border-right:1px solid var(--border);pointer-events:none}
+.st.on{background:color-mix(in srgb,var(--ch) 9%,transparent)}.st.on::before{border-color:color-mix(in srgb,var(--ch) 85%,transparent)}
+.st.part{background:color-mix(in srgb,var(--ch) 5%,transparent)}.st.part::before{border-color:color-mix(in srgb,var(--ch) 45%,transparent)}
+.st h3{font:400 13.5px Jost;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+.st.on h3{color:var(--ch)}.st.part h3{color:color-mix(in srgb,var(--ch) 70%,#9c8f7e)}
+.st p{font-size:12px;color:var(--helper);margin:3px 0 7px;line-height:1.3}
+.st.open{width:354px;padding-bottom:14px}.st.open .cats{margin-top:12px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--ch) 40%,transparent)}
+.pt{display:block;margin-top:-1px}
+/* B — DOORS */
+.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.door{position:relative;height:150px}
+.door svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.door h3{position:absolute;left:8px;right:8px;top:50px;text-align:center;font:400 11px/1.4 Jost;letter-spacing:.17em;text-transform:uppercase;color:var(--stone)}
+.door.on h3{color:var(--ch)}.door.part h3{color:color-mix(in srgb,var(--ch) 70%,#9c8f7e)}
+.door .dots{position:absolute;left:18px;right:18px;bottom:17px}
+.room{grid-column:1/-1;position:relative;border:1px solid color-mix(in srgb,var(--ch) 60%,transparent);background:color-mix(in srgb,var(--ch) 7%,transparent);padding:14px 14px 12px;margin-top:2px}
+.room::before{content:"";position:absolute;top:-6px;left:var(--nx);width:10px;height:10px;margin-left:-5px;transform:rotate(45deg);background:#1a1a1a;border-left:1px solid color-mix(in srgb,var(--ch) 60%,transparent);border-top:1px solid color-mix(in srgb,var(--ch) 60%,transparent);background:color-mix(in srgb,var(--ch) 7%,var(--surface))}
+.room .d{font-family:Federo,serif;font-size:14.5px;color:var(--sand);text-align:center;margin-bottom:10px}
+/* C — LINE */
+.gauge{position:relative;padding-left:36px;margin-top:14px}
+.gauge::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:5px;border-left:1px solid var(--strong);border-right:1px solid var(--strong)}
+.g{position:relative;padding:15px 0 15px}
+.g::before{content:"";position:absolute;left:-28px;top:0;bottom:0;width:5px;background:transparent}
+.g.on::before{background:var(--ch)}.g.part::before{background:linear-gradient(var(--ch) 0 75%,transparent 75%)}
+.g .tk{position:absolute;left:-28px;top:0;height:0;border-top:1px solid var(--gold);width:var(--tk)}
+
+.g h3{font:300 21px/1.15 Jost;letter-spacing:.15em;text-transform:uppercase;color:var(--stone)}
+.g.on h3{color:var(--ch)}.g.part h3{color:color-mix(in srgb,var(--ch) 70%,#9c8f7e)}
+.g p{font-family:Federo,serif;font-size:14px;color:var(--helper);margin-top:4px}.g.on p,.g.part p{color:var(--sand)}
+.g .dots{justify-content:flex-start;margin-top:9px}
+.g .cats{margin-top:12px}
+.lbl{font-family:Federo,serif;color:var(--gold-l);font-size:15px}
+</style></head><body>
+<script>
+const P=[["Everything","#6f8fd8"],["Balanced","#4a95b8",1],["Strangers","#8fd14f"],["Coworkers","#4dbebe"],["Friends","#6bb36e"],["Family","#ee7a35"],["Date","#e35c82"],["Partner","#e35c5c"],["Close friends","#8875aa"],["Yourself","#669bbb"]];
+const CH=[
+["Arrive","Get comfortable. Start talking.","#b98a31","",[["Quick","#ecbd3a",0],["Warm","#d88015",0]]],
+["The Surface","What's easy to see, easy to say.","#3a9c47","on",[["Life","#5bbe62",1],["Home","#b7ca40",1],["Work","#32a0c5",1],["Unwind","#69d3c6",1],["Culture","#cda124",1],["World","#3b8c68",1]]],
+["Beneath the Surface","Where curiosity becomes connection.","#3a89a6","on",[["Self","#6bbaf0",1,"The person under all the parts you play"],["Connect","#ea856b",1,"The way you let people in"],["Mind","#6277d9",1,"How your head actually works"],["Body","#14bbc0",1,"How you treat the only body you'll get"],["Wish","#aa6cd4",1,"Dreams kept, dreams outgrown"],["Values","#b6ba7a",1,"Your principles, tested"],["Friendship","#fe9d41",1,"The people you picked yourself"],["Family","#a67537",1,"The family you have now"],["Attract","#da5ab6",1,"Who you notice first"],["Romance","#d94b78",1,"From the first date to the last goodbye"],["Spirit","#bc8ada",1,"What you believe when no one is asking"]]],
+["Into the Deep","When the conversation asks something of you.","#8a5bd0","",[["Roots","#9f7755",0],["Past","#999340",0],["Grief","#8c7b9a",0],["Deep","#6979c3",0],["Shadow","#837899",0],["Raw","#008b9d",0]]],
+["Between Us","What's true only between the people at the table.","#c6396d","part",[["Us: Colleagues","#9fb0d6",1],["Us: Friends","#dba383",1],["Us: Love","#d083a6",0],["Between Us","#f5b9bc",1]]],
+["After Dark ✦","When desire enters the conversation.","#c14450","",[["Flesh ✦","#c45b81",0],["Carnal ✦","#db4b52",0],["Bare ✦","#dc3b96",0],["Kink ✦","#ce4d9e",0],["Us: Intimate ✦","#cd5861",0]]]];
+const pick=(t,c,on)=>`<span class="pick ${on?'on':''}" style="--c:${c}">${t}</span>`;
+const head=`<div class="head"><div class="n">The Deck</div><div class="q">What kind of evening?</div><div class="x">✕</div></div>`;
+const presets=l=>`<div class="cloud ${l||''}">${P.map(p=>pick(p[0],p[1],p[2])).join('')}</div>`;
+const dots=c=>`<div class="dots">${c[4].map(k=>`<i class="${k[2]?'on':''}" style="--c:${k[1]}"></i>`).join('')}</div>`;
+const cats=c=>`<div class="cats">${c[4].map(k=>`<div class="cat ${k[2]?'on':''}">${pick(k[0],k[1],k[2])}<small>${k[3]||''}</small></div>`).join('')}</div>`;
+const tail=l=>`<div class="tail ${l||''}"><div class="cloud ${l||''}">${pick('Wildcards','#c9a84c',1)}${pick('Colbert','#f3c33c',0)}${pick('The 36','#e75783',0)}</div><hr>
+<div class="set"><b>Shuffle</b>${pick('Arc','#A9C7B6',1)}${pick('Random','#A9C7B6',0)}${l?'':'<i class="sp" style="width:20px"></i>'}</div>
+<div class="set"><b>Cards</b>${pick('5','#A9C7B6',0)}${pick('10','#A9C7B6',1)}${pick('20','#A9C7B6',0)}${l?'':'<i class="sp" style="width:38px"></i>'}</div>
+<div class="set"><b>Three</b>${pick('Off','#A9C7B6',1)}${pick('On','#A9C7B6',0)}${l?'':'<i class="sp" style="width:56px"></i>'}</div></div>`;
+const bar=`<div class="bar">Draw cards</div>`;
+let h='';
+// A STEPS
+const W=[354,332,310,288,266,244];
+const A=(id,open)=>`<div class="sheet" id="${id}">${head}${presets()}<div class="zig">${CH.map((c,i)=>`<div class="st ${c[3]} ${open===i?'open':''}" style="--ch:${c[2]};--w:${W[i]}px"><h3>${c[0]}</h3><p>${c[1]}</p>${open===i?cats(c):dots(c)}</div>`).join('')}
+<svg class="pt" width="262" height="34" viewBox="0 0 262 34" fill="none"><path d="M9 0 L131 28 L253 0" stroke="rgba(201,168,76,.38)"/><path d="M1 0 L131 33 L261 0" stroke="rgba(201,168,76,.22)"/></svg></div>${tail()}${bar}</div>`;
+h+=A('a1',-1)+A('a2',2);
+// B DOORS
+const doorSvg=(c)=>{const on=c[3]==='on',part=c[3]==='part';const col=on?c[2]:part?`color-mix(in srgb,${c[2]} 55%,transparent)`:'rgba(201,168,76,.2)';
+return `<svg viewBox="0 0 111 150" fill="none" preserveAspectRatio="none">
+<path d="M.5 149.5V36.5H12.5V22.5H26.5V10.5H84.5V22.5H98.5V36.5H110.5V149.5Z" stroke="rgba(201,168,76,.42)" fill="${on?`color-mix(in srgb,${c[2]} 9%,transparent)`:part?`color-mix(in srgb,${c[2]} 5%,transparent)`:'none'}"/>
+<path d="M5.5 144.5V41.5H17.5V27.5H31.5V15.5H79.5V27.5H93.5V41.5H105.5V144.5Z" stroke="${col}"/>
+<path d="M47.5 15.5V29 M55.5 15.5V36 M63.5 15.5V29" stroke="${col}"/>
+<path d="M43.5 3.5H67.5 M49.5 .5H61.5" stroke="rgba(201,168,76,.42)"/>
+${on?`<rect x="5" y="141" width="101" height="4" fill="${c[2]}"/>`:part?`<rect x="5" y="141" width="76" height="4" fill="${c[2]}"/>`:''}</svg>`;};
+const B=(id,open)=>{const row=open<0?-1:Math.floor(open/3);let cells='';CH.forEach((c,i)=>{cells+=`<div class="door ${c[3]}" style="--ch:${c[2]}">${doorSvg(c)}<h3>${c[0]}</h3>${dots(c)}</div>`;if(i%3===2&&Math.floor(i/3)===row){const o=CH[open];cells+=`<div class="room" style="--ch:${o[2]};--nx:${[16.6,50,83.4][open%3]}%"><div class="d">${o[1]}</div>${cats(o)}</div>`;}});
+return `<div class="sheet" id="${id}">${head}${presets()}<div class="doors">${cells}</div>${tail()}${bar}</div>`;};
+h+=B('b1',-1)+B('b2',2);
+// C LINE
+const TK=[12,18,24,30,24,18];
+const C=(id,open)=>`<div class="sheet" id="${id}">${head}<div class="lbl">Start from</div>${presets('l')}<div class="gauge">${CH.map((c,i)=>`<div class="g ${c[3]}" style="--ch:${c[2]};--tk:${TK[i]}px"><span class="tk"></span><h3>${c[0]}</h3><p>${c[1]}</p>${open===i?cats(c):dots(c)}</div>`).join('')}</div>${tail('l')}${bar}</div>`;
+h+=C('c1',-1)+C('c2',2);
+document.body.innerHTML=h;
+</script></body></html>
