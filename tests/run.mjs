@@ -294,13 +294,13 @@ async function run() {
     return { ctx, pg };
   };
 
-  await check('dragging the card sideways past the point: it follows the finger on its wrapper, then Next (left) or Back (right) happens and the card eases back to its place', async () => {
+  await check('dragging the card sideways past the point: it leans a little toward the finger on its wrapper, then Next (left) or Back (right) happens and the card eases back to its place', async () => {
     const { ctx, pg } = await dragApp();
     try {
       for (const [dx, step] of [[-130, 1], [130, -1]]) {
         const before = await cardParts(pg);
         const d = await drag(pg, dx, 6);
-        assert(Math.sign(d.offset) === Math.sign(dx) && Math.abs(d.offset) > 60 && Math.abs(d.offset) < d.width * .45, `the card did not follow a ${dx}px drag: ${JSON.stringify(d)}`);
+        assert(Math.sign(d.offset) === Math.sign(dx) && Math.abs(d.offset) > d.width * .04 && Math.abs(d.offset) <= d.width * .06, `the card did not lean a little for a ${dx}px drag: ${JSON.stringify(d)}`);
         assert(d.cardTransform === '', `the drag moved #card itself: ${d.cardTransform}`);
         await pg.waitForTimeout(80);
         assert(Math.abs(await areaOffset(pg)) < Math.abs(d.offset), 'the card did not start easing back at release');
@@ -313,19 +313,19 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('dragging the card and letting go before the point: it follows, springs back, and nothing happens (also Back on the first card, with resistance from the start)', async () => {
+  await check('dragging the card and letting go before the point: it leans, eases back, and nothing happens (also Back on the first card, with resistance from the start)', async () => {
     const { ctx, pg } = await dragApp();
     try {
       for (const dx of [-45, 45]) {
         const before = await cardParts(pg);
         const d = await drag(pg, dx, 0);
-        assert(Math.abs(d.offset - dx) < 4, `the card did not follow one to one before the point: ${JSON.stringify(d)}`);
+        assert(Math.sign(d.offset) === Math.sign(dx) && Math.abs(d.offset) > 4 && Math.abs(d.offset) < d.width * .06, `the card did not lean a little before the point: ${JSON.stringify(d)}`);
         await pg.waitForTimeout(450);
         assert(JSON.stringify(await cardParts(pg)) === JSON.stringify(before) && await areaOffset(pg) === 0, `an early release changed something (${dx})`);
       }
-      // far past the point the resistance keeps the card on the screen
+      // far past the point the card still only leans
       const far = await drag(pg, -300, 0, { release: false });
-      assert(Math.abs(far.offset) < far.width * .45, `the card ran away with the finger: ${JSON.stringify(far)}`);
+      assert(Math.abs(far.offset) <= far.width * .06, `the card ran away with the finger: ${JSON.stringify(far)}`);
       await pg.evaluate(() => document.getElementById('card').dispatchEvent(new TouchEvent('touchcancel', { bubbles: true })));
       await pg.waitForTimeout(400);
       assert(await areaOffset(pg) === 0, 'a cancelled touch left the card out of place');
@@ -333,7 +333,7 @@ async function run() {
       await pg.evaluate(() => { state.currentIndex = 0; flipToCard(state.visibleDeck[0]); });
       await pg.waitForTimeout(700);
       const d = await drag(pg, 160, 0);
-      assert(d.offset > 0 && d.offset < d.width * .12, `Back with nothing to go back to: the card should resist from the start: ${JSON.stringify(d)}`);
+      assert(d.offset > 0 && d.offset <= d.width * .03, `Back with nothing to go back to: the card should lean half as much: ${JSON.stringify(d)}`);
       await pg.waitForTimeout(450);
       assert((await cardParts(pg)).index === 1 && await areaOffset(pg) === 0, 'Back on the first card did something or the card stayed out of place');
     } finally { await ctx.close(); }

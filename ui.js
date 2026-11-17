@@ -141,27 +141,27 @@ function swipeAction(dx, dy, ms, width) {
   return dx < 0 ? 'next' : 'prev';
 }
 
-// Where the card sits while the finger is dragged dx sideways: one to one up to the point, then with growing
-// resistance so it never leaves the screen. When the swipe would do nothing the resistance is there from the start.
+// Where the card sits while the finger is dragged dx sideways: it gives a little, never travels. The whole drag is
+// resistance, so the card leans at most 6% of its width toward the swipe (about 21px on a phone card, in the
+// family of the change's own 8/178 rise) and is at about four fifths of that when the swipe reaches the point.
+// When the swipe would do nothing it gives half as much.
 const DRAG_START_PX = 8;
-const DRAG_OVERSHOOT_SHARE = .15;
-const DRAG_STIFF_SHARE = .1;
-const DRAG_RETURN_MS = 200;
+const DRAG_LEAN_SHARE = .06;
+const DRAG_RETURN_MS = 260;
 function dragOffset(dx, width, goes) {
-  const point = goes ? width * SWIPE_POINT_SHARE : 0;
-  const limit = width * (goes ? DRAG_OVERSHOOT_SHARE : DRAG_STIFF_SHARE);
-  const dist = Math.abs(dx), over = Math.max(0, dist - point);
-  return Math.sign(dx) * (Math.min(dist, point) + over * limit / (over + limit));
+  const limit = width * DRAG_LEAN_SHARE * (goes ? 1 : .5);
+  const dist = Math.abs(dx);
+  return Math.sign(dx) * dist * limit / (dist + limit);
 }
 
 // Card touch gestures: one handler owns all of them. The card follows the finger sideways on its wrapper
-// (.card-area, never #card, so the card's own animations are untouched); released, the offset eases back to
+// (.card-area, never #card, so the card's own animations are untouched); released, the small lean eases back to
 // zero in the same moment a swipe past the point does Next or Back, or alone when it was let go early.
 // Registered non-passive so it can call preventDefault() and suppress the synthetic click a touch leaves
 // behind after a drag. Under reduced motion the card stays still and the same release rules apply.
 const cardEl = document.getElementById('card');
 const cardArea = cardEl.parentElement;
-const dragEase = getComputedStyle(document.documentElement).getPropertyValue('--ease-out').trim();
+const dragEase = getComputedStyle(document.documentElement).getPropertyValue('--ease-move').trim();
 let cardTouch = null;   // { x, y, t, mode: 'wait' | 'drag' | 'vertical', offset }
 
 // The card's wrapper goes back to its place: eased from where the finger left it.
