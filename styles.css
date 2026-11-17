@@ -1570,8 +1570,9 @@ body.hint-ways-taught .menu-hint{display:none;}
 /* ── The Deck's groups: eight stations on one metal line (design/deck-chooser.md) ──
    One double hairline rail runs down the left of all of them and a short gold tick starts each row (12/18/24/30px for
    Arrive to Into the Deep, then back down). A group that is in fills the stretch of rail beside it, between the two
-   rail lines, with its colour as metal when every category is on (--share 1, set by ui.js); when only some are, the two
-   rail lines of its stretch take its colour instead, hollow, the full length. The metal is the gilt sweep (--ch-rail,
+   rail lines, with its colour as metal, from the top as far as the share of its categories that are on (--share, set by
+   ui.js); when only some are, the two rail lines of the whole stretch also take its colour, so the fill reads against
+   its full length. The metal is the gilt sweep (--ch-rail,
    painted by ui.js with giltRailPaint). The count and chevron at the right say there is more inside. */
 .chapters{--rail-x:8px;--rail-w:5px;--rail-inset:36px;--station-pad:15px;--fold-w:44px;--fold-room:var(--fold-w);--ct-gap:7px;--line-gap:4px;
   --name-lh:calc(1.15*var(--fs-7));display:flex;flex-direction:column;}
