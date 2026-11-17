@@ -16,7 +16,7 @@ Backlog items are named by number and title.
 - The Deck sheet and its chapters work. The owner opens it to change chapters and categories;
   people handed the app pick presets, chapters and categories there without any explanation.
   Shuffle, Cards (for group size) and Three are all used; Three mostly from the menu, which is
-  quicker, and it stays in The Deck too. The Deck is left as it is.
+  quicker, and it stays in The Deck too.
 
 ## Weak, in the owner's words
 
@@ -43,6 +43,9 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 ## Open with the owner
 
+- The Deck (#183): the owner wants to see a new design, out of curiosity. Three sketches are
+  shown (the same sheet made lighter, one centred picture of the levels, pages to leaf
+  through); waiting for what they like in them.
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).

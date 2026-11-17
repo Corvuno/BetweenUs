@@ -1,0 +1,108 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Federo&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--surface:#161310;--gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;--sand:#d2c9b8;--stone:#b5a892;--muted-l:#9c8f7e;--helper:#8c8071;--dim:rgba(201,168,76,.12);--border:rgba(201,168,76,.22);--strong:rgba(201,168,76,.38);--celadon:#A9C7B6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:Jost,sans-serif;font-weight:300;color:var(--cream);padding:20px;display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.sheet{width:390px;background:var(--surface);position:relative;padding:0 18px 74px;border-top:2px solid var(--gold);overflow:hidden}
+.sheet.fixed{height:640px}.sheet.fixed .head{padding:22px 0 12px}.sheet.fixed .head .x{top:22px}
+.head{text-align:center;padding:30px 0 16px;position:relative}
+.head .n{color:var(--gold);letter-spacing:.3em;font-size:14px;font-weight:500;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px}
+.head .n::before,.head .n::after{content:"";height:1px;width:62px;background:linear-gradient(90deg,transparent,var(--gold))}
+.head .n::after{transform:scaleX(-1)}
+.head .q{font-family:Federo,serif;color:var(--sand);font-size:15px;margin-top:6px}
+.head .x{position:absolute;right:2px;top:30px;color:var(--stone);font-size:15px}
+.lbl{font-family:Federo,serif;color:var(--gold-l);font-size:15px}
+.pick{display:inline-flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.09em;font-size:13px;padding:0 9px;height:40px;color:color-mix(in srgb,var(--c) 42%,rgba(240,232,216,.5));position:relative;white-space:nowrap}
+.pick::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--c);opacity:.5;flex:none}
+.pick.on{color:var(--c);font-weight:400}.pick.on::before{opacity:1}
+.pick.on::after{content:"";position:absolute;left:21px;right:9px;bottom:9px;height:1px;background:var(--c);opacity:.7}
+.cloud{display:flex;flex-wrap:wrap;justify-content:center;column-gap:4px}
+.bar{position:absolute;left:18px;right:18px;bottom:16px;height:40px;background:linear-gradient(90deg,#cdaa4e,#a7822f);color:#1a1612;display:flex;align-items:center;justify-content:center;letter-spacing:.2em;font-size:13px;font-weight:400;text-transform:uppercase}
+.note{position:absolute;font:500 10px/1.2 Jost;color:#ff8f6b;letter-spacing:.04em;text-transform:none}
+/* 1 lighter */
+.row{display:flex;align-items:center;min-height:60px;border-left:3px solid var(--dim);padding:8px 0 8px 14px;margin-top:6px;background:transparent}
+.row.on{border-left-color:var(--ch);background:color-mix(in srgb,var(--ch) 9%,transparent)}
+.row.part{border-left-color:color-mix(in srgb,var(--ch) 70%,rgba(201,168,76,.12));background:color-mix(in srgb,var(--ch) 6%,transparent)}
+.row .t{flex:1}.row .nm{text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:var(--stone);font-weight:400}
+.row.on .nm{color:var(--ch)}.row.part .nm{color:color-mix(in srgb,var(--ch) 70%,#9c8f7e)}
+.row .ds{font-size:13px;color:var(--helper);margin-top:3px;letter-spacing:.02em}
+.dots{display:grid;grid-template-columns:repeat(6,7px);gap:5px;padding:0 14px 0 12px;justify-content:end;width:92px}
+.dots i{width:7px;height:7px;border-radius:50%;border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+.dots i.on{background:var(--c);border-color:var(--c)}
+.bar3{padding:0}.bar3 span{flex:1;text-align:center}.bar3 .end{flex:0 0 84px;font-size:11px;letter-spacing:.12em;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(26,22,18,.16)}
+.bar3 .end.l{border-right:1px solid rgba(26,22,18,.45)}.bar3 .end.r{border-left:1px solid rgba(26,22,18,.45)}
+/* 2 descent */
+.lvl{text-align:center;position:relative;padding-top:26px}
+.lvl::before{content:"";position:absolute;left:50%;top:0;height:22px;width:1px;background:var(--ln,var(--border))}
+.lvl h3{font:400 14px Jost;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);display:flex;align-items:center;justify-content:center;gap:12px}
+.lvl h3::before,.lvl h3::after{content:"";height:3px;width:var(--w,26px);border-top:1px solid var(--sc,var(--border));border-bottom:1px solid var(--sc,var(--border))}
+.lvl.on h3{color:var(--ch)}.lvl.on,.lvl.part{--sc:var(--ch);--ln:var(--ch)}.lvl.part h3{color:color-mix(in srgb,var(--ch) 70%,#9c8f7e)}
+.lvl p{font-size:12.5px;color:var(--helper);margin:3px 0 2px}
+.lvl .cloud .pick{height:38px}
+.end2{text-align:center;padding-top:26px;position:relative}
+.end2::before{content:"";position:absolute;left:50%;top:0;height:22px;width:1px;background:var(--border)}
+.dia{width:9px;height:9px;border:1px solid var(--gold);transform:rotate(45deg);margin:0 auto 10px}
+.set{display:flex;justify-content:center;align-items:center;gap:2px}.set b{font:400 12px Jost;letter-spacing:.14em;color:var(--stone);text-transform:uppercase;width:78px;text-align:right;margin-right:6px}
+.hint{font-family:Federo,serif;font-size:12.5px;color:var(--muted-l);max-width:290px;margin:-4px auto 6px}
+/* 3 leaf */
+.seg{display:flex;gap:4px;margin:2px 0 4px}.seg i{height:3px;background:var(--dim);flex:var(--f)}
+.seg i.on{background:var(--c)}.seg i.part{background:linear-gradient(90deg,var(--c) 75%,var(--dim) 75%)}
+.seg i.cur{height:7px;margin-top:-2px}
+.segl{display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--helper);margin-bottom:8px}
+.page{text-align:center;padding-top:12px}
+.page h2{font:400 21px Jost;letter-spacing:.24em;text-transform:uppercase;color:var(--ch)}
+.page .sub{font-family:Federo,serif;color:var(--sand);font-size:14.5px;margin:8px 0 4px}
+.page .tog{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin:5px 0 6px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;text-align:left}
+.cat{padding:3px 0}.toc{display:grid;grid-template-columns:1fr auto;gap:0 14px;align-items:center;margin:14px 6px 0;border-top:1px solid var(--dim);padding-top:10px;text-align:left}.toc b{font:400 12.5px Jost;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);height:34px;display:flex;align-items:center}.toc b.on{color:var(--ch)}.toc b.part{color:color-mix(in srgb,var(--ch) 70%,#9c8f7e)}.toc .dots{padding:0;width:auto;grid-template-columns:repeat(11,7px)}.cat .pick{height:26px;padding-left:0}.cat .pick.on::after{left:12px;bottom:2px}
+.cat small{display:block;font-size:12px;line-height:1.3;color:var(--helper);padding-left:12px}.cat.on small{color:var(--sand)}
+.arr{position:absolute;top:50%;font-size:20px;color:var(--strong)}
+.sum{font-family:Federo,serif;color:var(--sand);font-size:14px;text-align:center;margin-top:16px;line-height:1.6}
+</style></head><body>
+<script>
+const P=[["Everything","#6f8fd8"],["Balanced","#4a95b8",1],["Strangers","#8fd14f"],["Coworkers","#4dbebe"],["Friends","#6bb36e"],["Family","#ee7a35"],["Date","#e35c82"],["Partner","#e35c5c"],["Close friends","#8875aa"],["Yourself","#669bbb"]];
+const CH=[
+["Arrive","Get comfortable. Start talking.","#b98a31","",[["Quick","#ecbd3a",0,"Small true things, answered before you can think"],["Warm","#d88015",0,"The fond, the funny and the faintly ridiculous"]]],
+["The Surface","What's easy to see, easy to say.","#3a9c47","on",[["Life","#5bbe62",1,"Everything that has to be done"],["Home","#b7ca40",1,"Your four walls, and everything around them"],["Work","#32a0c5",1,"The job you have, and the ones that got you here"],["Unwind","#69d3c6",1,"What you do when nothing has to be done"],["Culture","#cda124",1,"Everything you love or hate that someone else made"],["World","#3b8c68",1,"Everything out there, through your eyes"]]],
+["Beneath the Surface","Where curiosity becomes connection.","#3a89a6","on",[["Self","#6bbaf0",1,"The person under all the parts you play"],["Connect","#ea856b",1,"The way you let people in"],["Mind","#6277d9",1,"How your head actually works"],["Body","#14bbc0",1,"How you treat the only body you'll get"],["Wish","#aa6cd4",1,"Dreams kept, dreams outgrown"],["Values","#b6ba7a",1,"Your principles, tested"],["Friendship","#fe9d41",1,"The people you picked yourself"],["Family","#a67537",1,"The family you have now"],["Attract","#da5ab6",1,"Who you notice first"],["Romance","#d94b78",1,"From the first date to the last goodbye"],["Spirit","#bc8ada",1,"What you believe when no one is asking"]]],
+["Into the Deep","When the conversation asks something of you.","#723bba","",[["Roots","#9f7755",0],["Past","#999340",0],["Grief","#8c7b9a",0],["Deep","#6979c3",0],["Shadow","#837899",0],["Raw","#008b9d",0]]],
+["Between Us","What's true only between the people at the table.","#c6396d","part",[["Us: Colleagues","#9fb0d6",1],["Us: Friends","#dba383",1],["Us: Love","#d083a6",0],["Between Us","#f5b9bc",1]]],
+["After Dark ✦","When desire enters the conversation.","#c14450","",[["Flesh ✦","#c45b81",0],["Carnal ✦","#db4b52",0],["Bare ✦","#dc3b96",0],["Kink ✦","#ce4d9e",0],["Us: Intimate ✦","#cd5861",0]]]];
+const pick=(t,c,on)=>`<span class="pick ${on?'on':''}" style="--c:${c}">${t}</span>`;
+const head=`<div class="head"><div class="n">The Deck</div><div class="q">What kind of evening?</div><div class="x">✕</div></div>`;
+const presets=`<div class="cloud">${P.map(p=>pick(p[0],p[1],p[2])).join('')}</div>`;
+let h='';
+// 1 LIGHTER
+h+=`<div class="sheet" id="s1">${head}<div class="lbl">Start from</div>${presets}
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 6px;border-top:1px solid var(--dim);padding-top:18px"><span class="lbl">Chapters</span><span style="font-size:11px;letter-spacing:.14em;color:var(--stone)">NONE</span></div>
+${CH.map(c=>`<div class="row ${c[3]}" style="--ch:${c[2]}"><div class="t"><div class="nm">${c[0]}</div><div class="ds">${c[1]}</div></div><div class="dots">${c[4].map(k=>`<i class="${k[2]?'on':''}" style="--c:${k[1]}"></i>`).join('')}</div></div>`).join('')}
+<div class="row on" style="--ch:#c9a84c;min-height:46px"><div class="t"><span class="nm">Wildcards</span> <span class="ds">&nbsp; Ask your own question</span></div><div class="dots"><i class="on" style="--c:#c9a84c;grid-column:6"></i></div></div>
+<div class="row" style="min-height:46px"><div class="t"><span class="nm">Fixed Sets</span> <span class="ds">&nbsp; Start to finish</span></div><div class="dots"><i style="--c:#f3c33c;grid-column:5"></i><i style="--c:#e75783"></i></div></div>
+<div style="height:14px"></div>
+<div class="bar bar3"><span class="end l">10 cards</span><span>Draw cards</span><span class="end r">Arc</span></div></div>`;
+// 2 DESCENT
+const W=[18,30,44,58,44,30];
+h+=`<div class="sheet" id="s2">${head}${presets}
+${CH.map((c,i)=>`<div class="lvl ${c[3]}" style="--ch:${c[2]};--w:${W[i]}px"><h3>${c[0]}</h3><p>${c[1]}</p><div class="cloud">${c[4].map(k=>pick(k[0],k[1],k[2])).join('')}</div></div>`).join('')}
+<div class="end2"><div class="dia"></div>
+<div class="cloud">${pick('Wildcards','#c9a84c',1)}${pick('Colbert','#f3c33c',0)}${pick('The 36','#e75783',0)}</div>
+<div style="height:1px;background:var(--dim);margin:10px 40px 8px"></div>
+<div class="set"><b>Shuffle</b>${pick('Arc','#A9C7B6',1)}${pick('Random','#A9C7B6',0)}<i style="width:20px"></i></div>
+<div class="set"><b>Cards</b>${pick('5','#A9C7B6',0)}${pick('10','#A9C7B6',1)}${pick('20','#A9C7B6',0)}<i style="width:38px"></i></div>
+<div class="set"><b>Three</b>${pick('Off','#A9C7B6',1)}${pick('On','#A9C7B6',0)}<i style="width:56px"></i></div>
+</div><div style="height:10px"></div><div class="bar">Draw cards</div></div>`;
+// 3 LEAF
+const seg=(cur)=>`<div class="seg"><i style="--f:3;background:${cur==='who'?'var(--gold)':'var(--strong)'}" class="${cur==='who'?'cur':''}"></i>${CH.map((c,i)=>`<i class="${c[3]} ${cur===i?'cur':''}" style="--f:${c[4].length};--c:${c[2]}"></i>`).join('')}<i style="--f:3;background:${cur==='how'?'var(--gold)':'var(--strong)'}" class="${cur==='how'?'cur':''}"></i></div>`;
+const leaf=(id,cur,body)=>`<div class="sheet fixed" id="${id}">${head}${seg(cur)}${body}<div class="bar">Draw cards</div></div>`;
+h+=leaf('s3a','who',`<div class="page" style="--ch:var(--gold)"><h2>Who's here</h2><div class="sub">Start from the people at the table.</div>${presets}<div class="toc">${CH.map(c=>`<b class="${c[3]}" style="--ch:${c[2]}">${c[0]}</b><div class="dots">${c[4].map(k=>`<i class="${k[2]?'on':''}" style="--c:${k[1]}"></i>`).join('')}</div>`).join('')}</div></div>`);
+const c=CH[2];
+h+=leaf('s3b',2,`<div class="page" style="--ch:${c[2]}"><h2 style="font-size:17px">${c[0]}</h2><div class="sub">${c[1]}</div><div class="tog">All in</div><div class="cats">${c[4].map(k=>`<div class="cat on">${pick(k[0],k[1],1)}<small>${k[3]}</small></div>`).join('')}</div></div>`);
+h+=leaf('s3c','how',`<div class="page" style="--ch:var(--gold)"><h2>How to draw</h2><div class="sub">The last things before you start.</div><div style="height:16px"></div>
+<div class="set"><b>Shuffle</b>${pick('Arc','#A9C7B6',1)}${pick('Random','#A9C7B6',0)}<i style="width:20px"></i></div><div class="hint">Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.</div>
+<div class="set"><b>Cards</b>${pick('5','#A9C7B6',0)}${pick('10','#A9C7B6',1)}${pick('20','#A9C7B6',0)}<i style="width:38px"></i></div><div class="hint">how many questions before a pause</div>
+<div class="set"><b>Three</b>${pick('Off','#A9C7B6',1)}${pick('On','#A9C7B6',0)}<i style="width:56px"></i></div>
+<div style="height:1px;background:var(--dim);margin:12px 40px 6px"></div>
+<div class="cloud">${pick('Wildcards','#c9a84c',1)}${pick('Colbert','#f3c33c',0)}${pick('The 36','#e75783',0)}</div></div>`);
+document.body.innerHTML=h;
+</script></body></html>
