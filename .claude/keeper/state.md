@@ -43,9 +43,10 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 ## Open with the owner
 
-- The Deck (#183): the owner wants to see a new design, out of curiosity. Three sketches are
-  shown (the same sheet made lighter, one centred picture of the levels, pages to leaf
-  through); waiting for what they like in them.
+- The Deck (#183): the owner wants to see a new look, out of curiosity. The levels fold so the
+  categories don't overwhelm a first-timer, and the owner mostly has the descriptions on; a
+  design is shown in both moments. Round two is with them: steps, doors, one line with large
+  names. Round one (the same sheet rearranged) was "just updated".
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).
