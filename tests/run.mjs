@@ -1441,6 +1441,9 @@ async function run() {
         out.tops[lim] = Math.max(out.tops[lim] ?? 0, tops);
         h.forEach((c, k) => { if (k && c.level === h[k - 1].level) out.repeats++; });
       }
+      /* a one-card hand (the last unseen card), After Dark or not, comes back as that card */
+      out.single = [ALL_CARDS.find(c => !SPICY_LEVELS.includes(c.level)), ALL_CARDS.find(c => SPICY_LEVELS.includes(c.level))]
+        .every(c => { const h = _arcRuns([c], 5); return h.length === 1 && h[0] === c; });
       state.activeToggles = saved; intentOn = keepIntent;
       /* All: hidden in Arc, back in Wild; Arc with All picked lands on 20 */
       const allBtn = document.querySelector('#limitBtnsDrawer .limit-btn[data-limit="all"]');
@@ -1452,6 +1455,7 @@ async function run() {
     });
     assert(r.out.tops[5] === 1 && r.out.tops[10] <= 2 && r.out.tops[20] <= 4, `too many of the deepest depth in a hand: ${JSON.stringify(r.out.tops)}`);
     assert(r.out.len === 0, `${r.out.len} Arc hands came out short`);
+    assert(r.out.single, 'a one-card Arc hand did not come back as that card');
     /* Arc is the base: nothing may bend the shape, the After Dark opener swap included */
     assert(r.out.shape === 0, `${r.out.shape} of ${r.out.hands} Arc hands did not climb from the lightest, peak after the climb with no two deepest side by side, and end on medium`);
     assert(r.out.deepMiddle === 0, `${r.out.deepMiddle} Arc hands never reached the deepest selected depth`);
