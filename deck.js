@@ -420,13 +420,15 @@ function _arcSteps(n, top) {
    opens the hand while the opening depth has anything else, and is the
    second card only one hand in twenty: an After Dark opener reads as a
    different game than the one the table sat down for. When After Dark is all
-   there is, or is the lightest thing selected, it opens. */
+   there is, or is the lightest thing selected, it opens. With the ✦ glyph on,
+   After Dark takes about one place in three wherever its depths fall. */
 function _arcRuns(ordered, handSize) {
   const n = Math.min(handSize, ordered.length);
   const bands = [...new Set(ordered.map(c => levelDepth(c.level)))].sort((a, b) => a - b);
   const steps = _arcSteps(n, bands.length - 1);
   const isAD = c => SPICY_LEVELS.includes(c.level);
   const keepSecond = Math.random() < 0.05;
+  const spice = state.spiceMode && !state.safeMode;
   const rest = [...ordered];
   const used = new Map();
   const hand = [];
@@ -448,8 +450,15 @@ function _arcRuns(ordered, handSize) {
     };
     /* Arc is the base (owner, 2026-10-30): the depth holds; a repeat or a
        third in the run only when that depth has nothing else */
-    const at = atDepth(order[0]);
-    const tiers = [c => c.level !== prev && inRun(c.level) < RUN_CAP, c => c.level !== prev, () => true];
+    let at = atDepth(order[0]);
+    const fresh = c => c.level !== prev && inRun(c.level) < RUN_CAP;
+    /* the ✦ glyph (spice) asks for about one After Dark card in three, as in
+       Random; Arc can only place them at the depths After Dark has */
+    if (spice && hand.filter(isAD).length < Math.round((i + 1) / 3)) {
+      const hot = at.filter(isAD);
+      if (hot.some(fresh)) at = hot;
+    }
+    const tiers = [fresh, c => c.level !== prev, () => true];
     let card;
     for (const ok of tiers) {
       const fit = at.filter(ok);
