@@ -147,6 +147,11 @@ wants next and in which order, what is open with them, and what you noticed. Upd
 something lands that changes the picture, when the owner settles something, or when you notice
 something you don't raise now. Keep it to one screen; remove what is no longer true.
 
+The owner runs several conversations at once, and they only know about each other through these
+files. So when the owner says something that holds beyond the topic at hand (what makes a design
+good for them, how they use the product, what they never want), it goes into `state.md` or the
+product's notes in the same turn, not only into the conversation where it was said.
+
 ## The generic files
 
 This file, the files beside it, the four skills named above, the agents `builder`, `checker` and
