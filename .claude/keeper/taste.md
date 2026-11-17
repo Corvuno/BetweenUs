@@ -76,6 +76,9 @@ ornament; corner markers anywhere but corners; controls that make people think.
   card's top line); small words made more readable, as long as the elegance of thin letters and wide
   spacing stays. Turned down: a screen where everything is muted and scattered; groups of plain
   hairlines beside a control ("the standard deco flair for AI").
+- The Deck: liked the line of levels and metal colours ("easier on the eyes"). Turned down: doors
+  as levels ("too much ornament"); colour dots for categories, since no one knows which colour is
+  which category; any look that makes the six groups one hierarchy.
 - Screenshots of the card are shared (WhatsApp) with what's under it, so the controls are seen by
   people who don't hold the phone.
 
