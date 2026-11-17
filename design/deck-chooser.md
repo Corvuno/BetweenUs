@@ -69,7 +69,7 @@ text under each setting's choices, aligned with them (`--seg-head-w`), in the lo
 categories' hint (Federo `--fs-3`, `--muted-l`); phone and computer alike. Words, chosen by the
 owner: under Shuffle "Arc lets the questions go deeper step by step and come back up by the last
 card. Random: any order."; under Cards "how many questions before a pause"; under Three "Each draw
-shows three questions; you pick the one you ask." Each goes for good once its own setting is
+shows three questions; you pick the one you ask or answer." Each goes for good once its own setting is
 changed (Three wherever it is changed, The Deck, the menu, Spotlight or key 3); "Show hints again"
 brings all back. A row closes up when its hint goes.
 

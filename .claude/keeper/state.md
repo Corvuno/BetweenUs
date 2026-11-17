@@ -45,7 +45,7 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 
 - The Deck is live as the line (#183): the owner looks once on their own phone. Its look came
   through six rounds; the owner is fed up with design rounds for now and comes back to it when
-  they have the energy. Three's hint words are the Keeper's, open to change.
+  they have the energy.
 - The text set (#148) has landed: the owner looks once on their own phone at "Selected deck",
   "tap to change", "Balanced" and "Start from". On a computer some category lines in The Deck
   now take two lines (Jost is wider than Federo was).
