@@ -2391,7 +2391,7 @@ async function run() {
         };
         const shown = name => p.evaluate(n => {
           const el = document.querySelector(`.seg-hint[data-hint="${n}"]`);
-          // a retired hint folds away over a moment; it counts as gone once it is retired and on its way
+          // a retired hint folds away once hands are off; it counts as gone once it is retired and on its way
           return !!el && el.getBoundingClientRect().height > 0 && getComputedStyle(el).display !== 'none' && !document.body.classList.contains(HINTS[n].cls);
         }, name);
         await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
@@ -2401,14 +2401,20 @@ async function run() {
         assert(words.join('|') === 'shuffle: Arc lets the questions go deeper step by step and come back up by the last card. Random: any order.|cards: how many questions before a pause|three: Each draw shows three questions; you pick the one you ask or answer.|lean: Towards You: more questions about the one answering. Towards Us: more about the two of you.', `${where}: the hints read ${JSON.stringify(words)}`);
         assert(await shown('shuffle') && await shown('cards') && await shown('three') && await shown('lean'), `${where}: a fresh device does not show all four hints`);
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').scrollIntoViewIfNeeded();
+        const letGo = async () => { await p.mouse.move(1, 1); await p.waitForTimeout(700); };   // the hint waits until the pointer has left its row
         await p.locator('.shuffle-toggle-opt[data-mode="wild"]').click();
+        assert(await shown('shuffle'), `${where}: the Shuffle hint went while the pointer was still on its row`);
+        await letGo();
         assert(!(await shown('shuffle')) && await shown('cards'), `${where}: changing Shuffle should remove only its own hint`);
         await p.locator('.limit-btn[data-limit="10"]').click();
+        await letGo();
         assert(!(await shown('cards')) && await shown('three'), `${where}: changing Cards left its hint, or took Three's`);
         await p.locator('.three-opt[data-pick="on"]').click();
+        await letGo();
         assert(!(await shown('three')) && await shown('lean'), `${where}: changing Three left its hint, or took About's`);
         await p.locator('#leanSlider').focus();
         await p.keyboard.press('ArrowRight');
+        await letGo();
         assert(!(await shown('lean')), `${where}: moving About left its hint`);
         await p.reload();
         await p.waitForSelector('#card', { state: 'visible' });

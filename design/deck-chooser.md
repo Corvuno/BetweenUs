@@ -81,8 +81,9 @@ card. Random: any order."; under Cards "how many questions before a pause"; unde
 shows three questions; you pick the one you ask or answer."; under About (the Keeper's words) "Towards
 You: more questions about the one answering. Towards Us: more about the two of you." Each goes for good once its own setting is
 changed (Three wherever it is changed, The Deck, the menu, Spotlight or key 3); "Show hints again"
-brings all back. A row closes up when its hint goes: the words fade, then the row folds shut over a
-moment so the settings below slide up instead of jumping (owner: a sudden jump here is "weird and
+brings all back. A row closes up when its hint goes, once hands are off: it waits while a finger or
+button is still down and while a mouse is on that setting's row, then after a short pause the words
+fade and the row folds shut over a moment, so the settings below slide up instead of jumping (owner: a sudden jump here is "weird and
 jarring"); Show hints again opens them the same way; instant under reduced motion.
 
 ## The one picked look
