@@ -380,7 +380,6 @@ function contentDelta(dx, dy, turn) {
   const overlay = document.getElementById('partyOverlay');
   const btn = document.getElementById('partyOrientBtn');
   const realLandscape = matchMedia('(orientation: landscape)');
-  const phoneWidth = matchMedia('(max-width: 899px)');   // the app's phone layouts (styles.css uses the same limit)
   const phoneLandscape = matchMedia('(orientation: landscape) and (max-height: 500px)');   // the app's phone-landscape rule, as in styles.css
   let turn = null, wanted = null, settleTimer = 0, screenRotates = readScreenRotates();
 
@@ -427,7 +426,7 @@ function contentDelta(dx, dy, turn) {
       readingsProven = true;
       overlay.classList.add('auto-turn');   // this device sends readings: the word is not needed
     }
-    if (realLandscape.matches || !phoneWidth.matches) return;
+    if (realLandscape.matches || isPCLayout()) return;
     const next = turnFromTilt(e.beta, e.gamma, turn);
     if (next === turn) { clearTimeout(settleTimer); wanted = turn; return; }
     if (next === wanted) return;
@@ -772,8 +771,8 @@ const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + 
   function flushCloseWaiters(){ catsClosing=false; if(catArea.classList.contains('sheet-open')) return; closeWaiters.splice(0).forEach(fn=>fn()); }
   window.afterCatsClosed=function(fn){ if(catsBusy()) closeWaiters.push(fn); else fn(); };
   window.catsBusy=catsBusy;
-  /* On a wide window with a mouse The Deck is a panel docked beside the card (styles.css, "THE DECK,
-     DOCKED"): no scrim, and the main screen makes room while it is open. `dockedQuery` is in selection.js. */
+  /* On a wide window with a mouse The Deck is a panel docked beside the card (styles.css, "THE DECK AS
+     A PANEL"): no scrim, and the main screen makes room while it is open. `dockedQuery` is in selection.js. */
   const syncDock=()=>{
     const docked=dockedQuery.matches;
     document.documentElement.classList.toggle('deck-docked',docked);

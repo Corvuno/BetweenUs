@@ -198,10 +198,13 @@ document.querySelectorAll('.mode-btn').forEach(btn =>
 
 
 // ── Category lines ───────────────────────────────────────────────────────────
-// Each category button carries its line (the category's desc). In the docked panel (a computer with a
-// mouse, the same switch as styles.css "THE DECK, DOCKED") the lines are always on, in two columns. On the
+// Each category button carries its line (the category's desc). In the panel (the computer layout, html.pc,
+// set at the top of between-us.html) the lines are always on, in two columns. On the
 // sheet they are off until the player holds any category for HOLD_MS; that switches them on or off for
 // every chapter at once, and the phone remembers the choice. A hold never picks.
+// The computer layout (styles.css "WIDE SCREENS"): The Deck and the menu are panels from the left.
+const isPCLayout = () => document.documentElement.classList.contains('pc');
+// Docked: the panel makes room beside the card instead of lying over it (styles.css "THE DECK AS A PANEL").
 const dockedQuery = matchMedia('(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine)');
 const LINES_KEY = 'bu.catLines';
 const HOLD_MS = 550;                // a press-and-hold
@@ -213,14 +216,14 @@ const linesRoot = document.documentElement;
 let sheetLines = false;             // the player's choice for the sheet
 try { sheetLines = localStorage.getItem(LINES_KEY) === '1'; } catch (error) { console.warn('Could not read the category lines choice:', error); }
 const linesShown = () => linesRoot.dataset.lines === 'on';
-const paintLines = () => { linesRoot.dataset.lines = dockedQuery.matches || sheetLines ? 'on' : 'off'; };
+const paintLines = () => { linesRoot.dataset.lines = isPCLayout() || sheetLines ? 'on' : 'off'; };
 paintLines();
-dockedQuery.addEventListener('change', paintLines);
+addEventListener('layoutchange', paintLines);
 
 // "Hold a category to see what it's about": under the categories of every chapter opened, on the sheet only,
 // gone from all of them for good after the first hold (state.js HINTS).
 function showCategoryLinesHint(panel) {
-  if (dockedQuery.matches || hintIsTaught('lines') || sheetLines || panel.querySelector('.cat-hint') || !panel.dataset.chapter) return;
+  if (isPCLayout() || hintIsTaught('lines') || sheetLines || panel.querySelector('.cat-hint') || !panel.dataset.chapter) return;
   panel.append(Object.assign(document.createElement('p'), { className: 'cat-hint', textContent: "Hold a category to see what it's about" }));
 }
 
@@ -285,7 +288,7 @@ const chaptersEl = document.getElementById('chapters');
 chaptersEl.addEventListener('pointerdown', e => {
   stopSwallowing();
   const btn = /** @type {HTMLElement | null} */ (/** @type {HTMLElement} */ (e.target).closest('.chapter-panel[data-chapter] .toggle-btn'));
-  if (!btn || e.button !== 0 || dockedQuery.matches) return;
+  if (!btn || e.button !== 0 || isPCLayout()) return;
   cancelHold();
   holdButton = btn;
   holdStart = { x: e.clientX, y: e.clientY };

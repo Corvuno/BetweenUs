@@ -720,7 +720,7 @@ body.showing-hand-summary .card-question{
   font-family:'Federo','Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-3);text-transform:uppercase;color:var(--text-helper);white-space:nowrap;}
 .party-end-hint b{font-weight:400;color:var(--gold-l);margin-right:.4em;}
 .party-overlay.is-hand-end .party-end-hint{display:flex;}
-@media (min-width:900px) and (min-height:501px){.party-end-hint{font-size:var(--fs-2);margin-bottom:0;}}
+:where(.pc) .party-end-hint{font-size:var(--wide-hint-fs);margin-bottom:0;}
 @media (orientation:landscape) and (max-height:500px){.party-overlay.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}}
 .party-overlay.orient-landscape.is-hand-list .party-inner{padding-top:52px;padding-bottom:84px;}
 .party-overlay.is-hand-list .hd-list{gap:clamp(10px,1.6vh,22px);}
@@ -944,40 +944,40 @@ body.showing-hand-summary .card-question{
 }
 
 /* ── desktop ── */
-@media (min-width:900px) and (min-height:501px){
-  .party-frame{--frame-o:9px;--frame-i:14px;--frame-o-top:10px;--frame-i-top:15px;--frame-e:4px;}   /* close to the edge: the buttons in the top corner keep their air */
-  .party-frame::before,.party-frame::after,.party-frame i{border-width:1.5px;}
-  .party-top{padding:44px 88px 0;}
-  .party-top .party-twist,.party-top .party-pick{gap:10px;}
-  .pc-rule{display:flex;} .pc-rule::before{width:40px;}
-  .party-count{font-size:18px;letter-spacing:.24em;}
-  .party-bottom{padding:16px 88px 46px;}
-  .party-chrome button{font-size:var(--fs-4);} /* readable on desktop */
-  .party-exit svg{width:18px;height:18px;}
-  .party-prev-btn,.party-next-btn{font-size:18px !important;}
 
-  .party-inner{padding:0 88px;gap:34px;}
-  .party-level{font-size:16px;gap:16px;letter-spacing:.2em;}
-  .party-level::before{width:36px;}
-  .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
-  .party-inner:has(.party-number.twist) .twist-div{width:300px;margin:18px 0;}
-  .twist-div::before,.twist-div::after{width:44px;height:4px;} .twist-div::before{bottom:4px;} .twist-div::after{top:4px;}
-  .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
-  .party-number.twist::before{font-size:var(--fs-2);}
+  :where(.pc) .party-frame{--frame-o:9px;--frame-i:14px;--frame-o-top:10px;--frame-i-top:15px;--frame-e:4px;}   /* close to the edge: the buttons in the top corner keep their air */
+  :where(.pc) .party-frame::before,:where(.pc) .party-frame::after,:where(.pc) .party-frame i{border-width:1.5px;}
+  :where(.pc) .party-top{padding:44px 88px 0;}
+  :where(.pc) .party-top .party-twist,:where(.pc) .party-top .party-pick{gap:10px;}
+  :where(.pc) .pc-rule{display:flex;} :where(.pc) .pc-rule::before{width:40px;}
+  :where(.pc) .party-count{font-size:18px;letter-spacing:.24em;}
+  :where(.pc) .party-bottom{padding:16px 88px 46px;}
+  :where(.pc) .party-chrome button{font-size:var(--fs-4);} /* readable on desktop */
+  :where(.pc) .party-exit svg{width:18px;height:18px;}
+  :where(.pc) .party-prev-btn,:where(.pc) .party-next-btn{font-size:18px !important;}
+
+  :where(.pc) .party-inner{padding:0 88px;gap:34px;}
+  :where(.pc) .party-level{font-size:16px;gap:16px;letter-spacing:.2em;}
+  :where(.pc) .party-level::before{width:36px;}
+  :where(.pc) .party-question{font-size:clamp(4rem,6.2vw,6rem);line-height:1.08;max-width:none;}
+  :where(.pc) .party-inner:has(.party-number.twist) .twist-div{width:300px;margin:18px 0;}
+  :where(.pc) .twist-div::before,:where(.pc) .twist-div::after{width:44px;height:4px;} :where(.pc) .twist-div::before{bottom:4px;} :where(.pc) .twist-div::after{top:4px;}
+  :where(.pc) .party-number.twist{font-size:34px;max-width:44ch;gap:14px;}
+  :where(.pc) .party-number.twist::before{font-size:var(--fs-2);}
 
   /* the three options stacked in a centred column, one above the other */
-  .party-picker{padding:104px 88px 56px;}
-  .party-picker::before,.party-picker::after{width:40px;height:40px;}
-  .party-picker::before{top:24px;left:24px;} .party-picker::after{bottom:24px;right:24px;}
-  .party-picker .picker-options{display:flex;flex-direction:column;overflow:visible;}
-  .party-picker .pick-opt{flex:1 1 0;padding:10px 0;justify-content:center;}
-  .party-picker .pick-opt-text{width:100%;max-width:980px;margin:0 auto;gap:22px;padding-left:28px;}
-  .party-picker .pick-opt-level{font-size:var(--fs-2);letter-spacing:var(--track-3);}
-  .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
-  .party-picker .pick-div{width:300px;}
-  .party-picker .pick-div::before,.party-picker .pick-div::after{width:44px;margin-left:-22px;height:4px;}
-  .party-picker .pick-div::before{bottom:4px;} .party-picker .pick-div::after{top:4px;}
-}
+  :where(.pc) .party-picker{padding:104px 88px 56px;}
+  :where(.pc) .party-picker::before,:where(.pc) .party-picker::after{width:40px;height:40px;}
+  :where(.pc) .party-picker::before{top:24px;left:24px;} :where(.pc) .party-picker::after{bottom:24px;right:24px;}
+  :where(.pc) .party-picker .picker-options{display:flex;flex-direction:column;overflow:visible;}
+  :where(.pc) .party-picker .pick-opt{flex:1 1 0;padding:10px 0;justify-content:center;}
+  :where(.pc) .party-picker .pick-opt-text{width:100%;max-width:980px;margin:0 auto;gap:22px;padding-left:28px;}
+  :where(.pc) .party-picker .pick-opt-level{font-size:var(--fs-2);letter-spacing:var(--track-3);}
+  :where(.pc) .party-picker .pick-opt-q{font-size:clamp(2rem,2.8vw,2.4rem);line-height:1.16;}
+  :where(.pc) .party-picker .pick-div{width:300px;}
+  :where(.pc) .party-picker .pick-div::before,:where(.pc) .party-picker .pick-div::after{width:44px;margin-left:-22px;height:4px;}
+  :where(.pc) .party-picker .pick-div::before{bottom:4px;} :where(.pc) .party-picker .pick-div::after{top:4px;}
+
 
 
 
@@ -1265,64 +1265,64 @@ body.showing-hand-summary #btnSave{display:flex;}
    For anyone whose phone is orientation-locked: mirrors the CSS landscape
    layout above via a class instead of an actual media query, so the
    composition matches what a real rotation would produce. */
-@media(max-width:899px){
+
   /* the switch: a word set upright along the right edge between two short fading hairlines.
      "Sideways" in portrait, "Upright" once switched (ui.js sets data-land). Above the picker (z-index 30). */
-  .party-orient{display:block;position:fixed;right:10px;bottom:112px;width:34px;height:170px;z-index:40;transition:opacity .5s ease;}
-  .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
-  .party-orient-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:34px;height:170px;
+  :where(:root:not(.pc)) .party-orient{display:block;position:fixed;right:10px;bottom:112px;width:34px;height:170px;z-index:40;transition:opacity .5s ease;}
+  :where(:root:not(.pc)) .party-overlay.idle .party-orient{opacity:0;pointer-events:none;}
+  :where(:root:not(.pc)) .party-orient-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:34px;height:170px;
     background:none;border:0;padding:0;cursor:pointer;color:var(--celadon);font-family:'Jost',sans-serif;-webkit-tap-highlight-color:transparent;}
-  .party-orient-btn:active,.party-orient-btn:focus-visible{color:var(--gold);}
-  @media (hover:hover) and (pointer:fine){.party-orient-btn:hover{color:var(--gold);}}
-  .party-orient-btn .ln{flex:1;width:1px;display:block;}
-  .party-orient-btn .ln:first-child{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}   /* celadon lines, same 42% as the play row's rules */
-  .party-orient-btn .ln:last-child{background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}
-  .party-orient-btn .tx{font:400 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-3);text-transform:uppercase;writing-mode:vertical-rl;margin-right:-.22em;}
-  .party-orient-btn [data-s]{display:none;}
-  .party-orient[data-land="0"] [data-s="p"],.party-orient[data-land="1"] [data-s="l"]{display:block;}
-  .party-overlay:not(.orient-landscape) .party-picker{padding-right:44px;}
+  :where(:root:not(.pc)) .party-orient-btn:active,:where(:root:not(.pc)) .party-orient-btn:focus-visible{color:var(--gold);}
+  @media (hover:hover) and (pointer:fine){:where(:root:not(.pc)) .party-orient-btn:hover{color:var(--gold);}}
+  :where(:root:not(.pc)) .party-orient-btn .ln{flex:1;width:1px;display:block;}
+  :where(:root:not(.pc)) .party-orient-btn .ln:first-child{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}   /* celadon lines, same 42% as the play row's rules */
+  :where(:root:not(.pc)) .party-orient-btn .ln:last-child{background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--celadon) 42%,transparent));}
+  :where(:root:not(.pc)) .party-orient-btn .tx{font:400 var(--fs-1)/1 'Jost',sans-serif;letter-spacing:var(--track-3);text-transform:uppercase;writing-mode:vertical-rl;margin-right:-.22em;}
+  :where(:root:not(.pc)) .party-orient-btn [data-s]{display:none;}
+  :where(:root:not(.pc)) .party-orient[data-land="0"] [data-s="p"],:where(:root:not(.pc)) .party-orient[data-land="1"] [data-s="l"]{display:block;}
+  :where(:root:not(.pc)) .party-overlay:not(.orient-landscape) .party-picker{padding-right:44px;}
 
-  .party-overlay.orient-landscape .party-frame{--frame-o-top:5px;--frame-i-top:9px;}
-  .party-overlay.orient-landscape .party-top{padding:14px 48px 0;}
-  .party-overlay.orient-landscape .pc-rule{display:flex;}
-  .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-frame{--frame-o-top:5px;--frame-i-top:9px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-top{padding:14px 48px 0;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .pc-rule{display:flex;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-bottom{padding:0 48px 12px;}
 
-  .party-overlay.orient-landscape .party-inner{padding:0 48px;gap:18px;}
-  .party-overlay.orient-landscape .party-level{font-size:15px;}
-  .party-overlay.orient-landscape .party-question{font-size:46px;line-height:1.1;max-width:none;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-inner{padding:0 48px;gap:18px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-level{font-size:15px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-question{font-size:46px;line-height:1.1;max-width:none;}
 
-  .party-overlay.orient-landscape .party-inner:has(.party-number.twist){display:grid;grid-template-columns:minmax(0,1.35fr) auto minmax(0,1fr);
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-inner:has(.party-number.twist){display:grid;grid-template-columns:minmax(0,1.35fr) auto minmax(0,1fr);
     grid-template-areas:"level orn twist" "q orn twist";align-content:center;column-gap:30px;row-gap:16px;}
-  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
-  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
-  .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .twist-div{grid-area:orn;width:1px;height:auto;margin:0;padding:0;align-self:stretch;opacity:.65;
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-level{grid-area:level;justify-self:start;align-self:end;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .party-question{grid-area:q;font-size:34px;max-width:none;align-self:start;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-inner:has(.party-number.twist) .twist-div{grid-area:orn;width:1px;height:auto;margin:0;padding:0;align-self:stretch;opacity:.65;
     background:linear-gradient(180deg,transparent,rgba(201,168,76,.5) 22%,rgba(201,168,76,.5) 78%,transparent);}
-  .party-overlay.orient-landscape .twist-div::before,.party-overlay.orient-landscape .twist-div::after{top:50%;bottom:auto;left:auto;width:3px;height:32px;margin-top:-16px;}
-  .party-overlay.orient-landscape .twist-div::before{right:3px;} .party-overlay.orient-landscape .twist-div::after{left:3px;}
-  .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .twist-div::before,:where(:root:not(.pc)) .party-overlay.orient-landscape .twist-div::after{top:50%;bottom:auto;left:auto;width:3px;height:32px;margin-top:-16px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .twist-div::before{right:3px;} :where(:root:not(.pc)) .party-overlay.orient-landscape .twist-div::after{left:3px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-number.twist{grid-area:twist;align-self:center;font-size:22px;}
 
-  .party-overlay.orient-landscape .party-picker{padding:64px 48px 20px;}
-  .party-overlay.orient-landscape .party-picker::before,.party-overlay.orient-landscape .party-picker::after{width:20px;height:20px;}
-  .party-overlay.orient-landscape .party-picker::before{top:10px;left:10px;} .party-overlay.orient-landscape .party-picker::after{bottom:10px;right:10px;}
-  .party-overlay.orient-landscape .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:44px;overflow:visible;}
-  .party-overlay.orient-landscape .party-picker .pick-opt{padding:0;justify-content:center;}
-  .party-overlay.orient-landscape .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
-  .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:18px;}
-  .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:var(--fs-1);}
-  .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker{padding:64px 48px 20px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker::before,:where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker::after{width:20px;height:20px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker::before{top:10px;left:10px;} :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker::after{bottom:10px;right:10px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker .picker-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;column-gap:44px;overflow:visible;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker .pick-opt{padding:0;justify-content:center;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker .pick-div{left:-22px;top:50%;width:230px;transform:translate(-50%,-50%) rotate(-90deg);opacity:.65;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker .pick-opt-text{padding-left:18px;}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker .pick-opt-level{font-size:var(--fs-1);}
+  :where(:root:not(.pc)) .party-overlay.orient-landscape .party-picker .pick-opt-q{font-size:21px;line-height:1.2;}
 
   /* turned a quarter on a screen the browser keeps upright: the overlay takes the swapped
      screen size, so the sideways layout above fits exactly, then swings round its corner */
-  .party-overlay[data-turn]{inset:0 auto auto 0;width:100vh;height:100vw;width:100dvh;height:100dvw;transform-origin:0 0;}
-  .party-overlay[data-turn="ccw"]{transform:translateY(100vh) rotate(-90deg);transform:translateY(100dvh) rotate(-90deg);}
-  .party-overlay[data-turn="cw"]{transform:translateX(100vw) rotate(90deg);transform:translateX(100dvw) rotate(90deg);}
-  .party-overlay.auto-turn .party-orient{display:none;}   /* tilt readings turn it: no word */
-}
+  :where(:root:not(.pc)) .party-overlay[data-turn]{inset:0 auto auto 0;width:100vh;height:100vw;width:100dvh;height:100dvw;transform-origin:0 0;}
+  :where(:root:not(.pc)) .party-overlay[data-turn="ccw"]{transform:translateY(100vh) rotate(-90deg);transform:translateY(100dvh) rotate(-90deg);}
+  :where(:root:not(.pc)) .party-overlay[data-turn="cw"]{transform:translateX(100vw) rotate(90deg);transform:translateX(100dvw) rotate(90deg);}
+  :where(:root:not(.pc)) .party-overlay.auto-turn .party-orient{display:none;}   /* tilt readings turn it: no word */
+
 /* real landscape already gets the layout above from its own media query;
    the toggle only matters for a portrait-locked phone, so hide it once the
    viewport is genuinely landscape instead of leaving redundant chrome. */
-@media (max-width:899px) and (orientation:landscape) and (max-height:500px){
-  .party-orient{display:none;}
+@media (orientation:landscape) and (max-height:500px){
+  :where(:root:not(.pc)) .party-orient{display:none;}
 }
 
 /* ── THE MENU: "Shows tonight" (menu round 1, option C) ──
@@ -1419,32 +1419,8 @@ body.showing-hand-summary #btnSave{display:flex;}
   .tok{font-size:var(--fs-2);}
   .tray.open{max-height:330px;}
   .app{max-width:680px;}
+}
 
-  /* drawers become centered panels */
-  .drawer,.sub-drawer{
-    left:50%;right:auto;bottom:auto;top:50%;width:min(560px,92vw);max-height:80vh;
-    border:1px solid var(--border);border-radius:12px;
-    transform:translate(-50%,-46%);opacity:0;pointer-events:none;
-    transition:transform .4s ease-out,opacity .4s ease-out;}
-  .drawer.open,.sub-drawer.open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .56s var(--ease-out),opacity .4s ease-out;}
-  .drawer-handle{display:none;}
-  .cat-sheet-handle{display:none;}
-}
-/* The Deck as a centred window: every wide window except the docked panel (see "THE DECK, DOCKED"
-   further down, which holds the same condition). */
-@media(min-width:768px) and (not ((min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine))){
-  .cat-area{
-    /* fixed, not auto — Shape's content is much shorter than Explore's,
-       and height:auto meant the whole modal visibly grew and shrank when
-       switching tabs. Same fixed-height-with-internal-scroll approach the
-       mobile sheet already uses above (88dvh). */
-    left:50%;right:auto;bottom:auto;top:50%;width:min(640px,94vw);height:84vh;
-    border:1px solid var(--border);border-radius:12px;padding:6px 22px 0;
-    transition:transform .4s ease-out,opacity .4s ease-out;}
-  .cat-area:not(.sheet-open){transform:translate(-50%,-46%);opacity:0!important;pointer-events:none;}
-  .cat-area.sheet-open{transform:translate(-50%,-50%);opacity:1;pointer-events:all;transition:transform .56s var(--ease-out),opacity .4s ease-out;}
-  .cat-sheet-head{padding-top:16px;}
-}
 @media(min-width:768px){
   /* centre the whole composition in the viewport instead of hanging from the top */
   body{justify-content:safe center;padding-bottom:0;min-height:100dvh;}
@@ -1797,74 +1773,72 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
   .cat-hint{animation:none;}
 }
 
-/* ── THE DECK, DOCKED (a computer with a mouse, owner 2026-10-29: "the panel beside the card") ──
-   On a wide window with a mouse The Deck is a panel docked to the right edge instead of a window
-   over the card. No scrim: the card stays in view and the main screen makes room: the body's right
-   padding grows by the panel's width and the app (width: 100% of that room, --pcW) eases left with the
-   panel, over the same time and curve. 1280px is the width where the header still has its room with
-   the panel open (the card is then 604px, as at 1280x720); narrower, or touch only, keeps the phone
-   sheet / centred window exactly as before. The condition is the one the centred window is excluded by, above. */
-:root{--dock-w:clamp(560px,42vw,640px);}
-@media(min-width:1280px) and (min-height:560px) and (min-aspect-ratio:5/4) and (hover:hover) and (pointer:fine){
+/* ── THE DECK AS A PANEL (the computer layout, html.pc: see "WIDE SCREENS") ──
+   The Deck is a panel from the left edge, under Selected deck, instead of the phone's sheet. Docked
+   (html.deck-docked, a mouse on a window at least 1280px wide and 5:4: selection.js dockedQuery) there is no
+   scrim: the card stays in view and the main screen makes room, the body's left padding growing by the
+   panel's width while the app (--pcW) eases right with it, over the same time and curve. Narrower, the
+   same panel lies over the card with the scrim behind it. */
+:root{--dock-w:clamp(min(560px,100vw - 48px),42vw,640px);}   /* never wider than a narrow window */
+
   /* the panel and the main screen move together: same time, same curve, out and back */
   /* the base body transition (--im-color .6s ease) repeated, because this declaration replaces it */
-  body{--dock-ms:.5s;transition:--im-color .6s ease,padding-left var(--dock-ms) var(--ease-sheet);}
-  html.deck-docked body{--dock-ms:.64s;padding-left:var(--dock-w);}
-  .cat-scrim{display:none;}
-  .cat-area{left:0;right:auto;top:0;bottom:0;width:var(--dock-w);height:100dvh;padding:0 28px;
+  :where(.pc) body{--dock-ms:.5s;transition:--im-color .6s ease,padding-left var(--dock-ms) var(--ease-sheet);}
+  html.deck-docked:where(.pc) body{--dock-ms:.64s;padding-left:var(--dock-w);}
+  :where(.pc).deck-docked .cat-scrim{display:none;}   /* docked, the main screen makes room: no scrim */
+  :where(.pc) .cat-area{left:0;right:auto;top:0;bottom:0;width:var(--dock-w);height:100dvh;padding:0 28px;
     border:0;border-right:1px solid var(--border-strong);transform:translateX(-102%);
     transition:transform .5s var(--ease-sheet);}
-  .cat-area.sheet-open{transform:none;}
+  :where(.pc) .cat-area.sheet-open{transform:none;}
   /* the gilt edge: the app's rail line, gold */
-  .cat-area::before{inset:0 -1px 0 auto;width:3px;height:auto;
+  :where(.pc) .cat-area::before{inset:0 -1px 0 auto;width:3px;height:auto;
     background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 38%,var(--bg)) 0%,var(--gold) 34%,var(--gold-l) 50%,var(--gold) 66%,color-mix(in srgb,var(--gold) 38%,var(--bg)) 100%);}
-  .cat-sheet-handle{display:none;}
-  .cat-sheet-head{display:flex;align-items:baseline;gap:18px;padding:12px 56px 8px 0;}
-  .cat-sheet-name{display:block;padding:0;}   /* beside the title, left-aligned: no stripes */
-  .cat-sheet-name::before,.cat-sheet-name::after{display:none;}
-  .cat-sheet-head-title{text-align:left;}
-  .cat-close{top:6px;right:-12px;}
+  :where(.pc) .cat-sheet-handle{display:none;}
+  :where(.pc) .cat-sheet-head{display:flex;align-items:baseline;gap:18px;padding:12px 56px 8px 0;}
+  :where(.pc) .cat-sheet-name{display:block;padding:0;}   /* beside the title, left-aligned: no stripes */
+  :where(.pc) .cat-sheet-name::before,:where(.pc) .cat-sheet-name::after{display:none;}
+  :where(.pc) .cat-sheet-head-title{text-align:left;}
+  :where(.pc) .cat-close{top:6px;right:-12px;}
   /* presets stay at the top and Draw Cards at the foot while the chapters, then Shuffle / Cards / Three, scroll between */
-  .pane-play.on{display:flex;flex-direction:column;}
-  .preset-host{position:sticky;top:0;z-index:2;background:var(--surface);padding:4px 0 6px;margin:0;}
-  .preset-host .sect-lbl{margin:0 0 2px;}
-  .preset-host.open .preset-outer{max-height:none;padding:0;}
-  .preset-host .preset-row{justify-content:flex-start;align-items:center;}
+  :where(.pc) .pane-play.on{display:flex;flex-direction:column;}
+  :where(.pc) .preset-host{position:sticky;top:0;z-index:2;background:var(--surface);padding:4px 0 6px;margin:0;}
+  :where(.pc) .preset-host .sect-lbl{margin:0 0 2px;}
+  :where(.pc) .preset-host.open .preset-outer{max-height:none;padding:0;}
+  :where(.pc) .preset-host .preset-row{justify-content:flex-start;align-items:center;}
   /* Everything and Balanced on their own line, the "Who's here" caption on the next, then the people presets */
-  .mode-group-lbl{text-align:left;padding-block:2px 0;}
-  .cat-area .preset-host .mode-btn{--pick-h:34px;}
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){padding:0 8px;}
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::after{inset-inline:8px;}
-  .play-sect--1{flex:1 0 auto;padding-top:2px;}
-  .sect-lbl{margin-bottom:6px;}
-  .deselect-btn{padding-block:6px;}
-  .play-sect--2{border-left:0;margin:0;padding:8px 0 0;border-top:1px solid var(--dim);}
-  .seg-row{margin:8px 0 0;}   /* each setting keeps its own row, as on the phone */
-  .cat-go-bar{padding:8px 0 12px;background:none;}
+  :where(.pc) .mode-group-lbl{text-align:left;padding-block:2px 0;}
+  :where(.pc) .cat-area .preset-host .mode-btn{--pick-h:34px;}
+  :where(.pc) .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt){padding:0 8px;}
+  :where(.pc) .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::after{inset-inline:8px;}
+  :where(.pc) .play-sect--1{flex:1 0 auto;padding-top:2px;}
+  :where(.pc) .sect-lbl{margin-bottom:6px;}
+  :where(.pc) .deselect-btn{padding-block:6px;}
+  :where(.pc) .play-sect--2{border-left:0;margin:0;padding:8px 0 0;border-top:1px solid var(--dim);}
+  :where(.pc) .seg-row{margin:8px 0 0;}   /* each setting keeps its own row, as on the phone */
+  :where(.pc) .cat-go-bar{padding:8px 0 12px;background:none;}
   /* every pickable thing answers the mouse the same way: its picked colour, lightly underlined */
-  .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt):hover{color:var(--tc);}
-  .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active),.three-opt:not(.active)):hover::after{opacity:.35;}
-  .chapter:hover .ch-name,.ch-fold--row:hover .ch-name{color:var(--cream);}
-  .chapter:is(.on,.part):hover .ch-name,.ch-fold--row:is(.on,[aria-checked="true"]):hover .ch-name{color:var(--ch);}
-  @media(prefers-reduced-motion:reduce){.cat-area,.cat-area.sheet-open{transition:none;}}
+  :where(.pc) .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt):hover{color:var(--tc);}
+  :where(.pc) .cat-area :is(.mode-btn:not(.active),.toggle-btn:not(.on),.shuffle-toggle-opt:not(.active),.limit-btn:not(.active),.three-opt:not(.active)):hover::after{opacity:.35;}
+  :where(.pc) .chapter:hover .ch-name,:where(.pc) .ch-fold--row:hover .ch-name{color:var(--cream);}
+  :where(.pc) .chapter:is(.on,.part):hover .ch-name,:where(.pc) .ch-fold--row:is(.on,[aria-checked="true"]):hover .ch-name{color:var(--ch);}
+  @media(prefers-reduced-motion:reduce){:where(.pc) .cat-area,:where(.pc) .cat-area.sheet-open{transition:none;}}
 
-  /* The menu is a panel from the right (under its button) instead of the phone drawer, and The Deck one from the left
-     (under Selected deck): under the overlay, eased in on The Deck's curve, hidden (out of the keyboard's reach too)
-     until it has slid away */
-  #menuDrawer{display:none;}
-  .side-drawer{display:block;position:fixed;inset-block:0;inset-inline-end:0;z-index:160;width:var(--dock-w);
-    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border-inline-start:1px solid var(--border-strong);
-    transform:translateX(102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
-  .side-drawer.open,.sheet-side.open{transform:none;visibility:visible;transition:transform .5s var(--ease-sheet);}
-  @media(prefers-reduced-motion:reduce){.side-drawer,.side-drawer.open,.sheet-side,.sheet-side.open{transition:none;}}
-  /* Played and Favourites are the same panel: they take the menu's place and slide in the same way */
-  .sheet-side{position:fixed;inset-block:0;inset-inline:auto 0;z-index:170;width:var(--dock-w);max-height:none;
-    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border:0;border-inline-start:1px solid var(--border-strong);border-radius:0;
-    transform:translateX(102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
-  .sheet-side .drawer-title{text-align:left;padding-block-start:18px;}
-  .sheet-side .play-grid{grid-template-columns:repeat(3,1fr);}
-  .sheet-side .play-q{font-size:var(--fs-6);}
-}
+  /* The menu, like The Deck, is a panel from the left, the side both their buttons sit on, instead of the phone drawer:
+     under the overlay, eased in on The Deck's curve, hidden (out of the keyboard's reach too) until it has slid away */
+  :where(.pc) #menuDrawer{display:none;}
+  :where(.pc) .side-drawer{display:block;position:fixed;inset-block:0;inset-inline-start:0;z-index:160;width:var(--dock-w);
+    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border-inline-end:1px solid var(--border-strong);
+    transform:translateX(-102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
+  :where(.pc) .side-drawer.open,:where(.pc) :is(.sheet-side,#helpDrawer).open{transform:none;visibility:visible;transition:transform .5s var(--ease-sheet);}
+  @media(prefers-reduced-motion:reduce){:where(.pc) :is(.side-drawer,.sheet-side,#helpDrawer),:where(.pc) :is(.side-drawer,.sheet-side,#helpDrawer).open{transition:none;}}
+  /* Played, Favourites and Ways to play are the same panel: they take the menu's place and slide in the same way */
+  :where(.pc) :is(.sheet-side,#helpDrawer){position:fixed;inset-block:0;inset-inline:0 auto;z-index:170;width:var(--dock-w);max-height:none;
+    padding:0 28px 28px;overflow-y:auto;background:var(--surface);border:0;border-inline-end:1px solid var(--border-strong);border-radius:0;
+    transform:translateX(-102%);visibility:hidden;transition:transform .5s var(--ease-sheet),visibility 0s .5s;}
+  :where(.pc) .sheet-side .drawer-title{text-align:left;padding-block-start:18px;}
+  :where(.pc) .sheet-side .play-grid{grid-template-columns:repeat(3,1fr);}
+  :where(.pc) .sheet-side .play-q{font-size:var(--fs-6);}
+
 
 /* the panel is a focus target for the keyboard, not a control: no ring around it (the controls inside keep theirs) */
 .cat-area:focus-visible,.side-drawer:focus-visible,.sheet-side:focus-visible{outline:none;}
@@ -1909,136 +1883,140 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
 /* fullscreen, end of a hand: the count slot is empty — no rules around nothing */
 .party-overlay.is-hand-end .pc-rule{display:none;}
 
-/* ══ WIDE SCREENS — PC, laptop, tablet landscape (agreement 2026-10-18-pc-layout, round 12; top right 2026-11-08, #128) ══
-   Not the phone. The card is a real card as large as the window allows; the controls sit
+/* ══ WIDE SCREENS — the computer layout (agreement 2026-10-18-pc-layout, round 12; top right 2026-11-08, #128) ══
+   Under html.pc, which the script at the top of between-us.html sets: every computer at any window size, and a
+   touch screen at least 900px wide whose screen's short side is at least 600px (a tablet). A phone, and a tablet
+   held upright, get the phone layout; there is nothing in between. The card is a real card as large as the window allows; the controls sit
    outside it, aligned to its edges: logo + tagline top centre, Selected deck with Menu under it top left,
    Three / Spotlight / Twist top right (Ways to play before the first card and Save at the end of a hand
    stand in Spotlight's slot), Back left, the Next card bar centred and the ticks with the count right under the card.
    Nothing here changes what a control does.
-   --pcW is the card's width; 174px (scaled) plus 54px is everything on screen that isn't the card: the header, the margins and the bottom row. */
-@media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  :root{--k:1;--pcW:min(calc(100% - 116px), calc((100dvh - 174px * var(--k) - 54px) * 556 / 360));
-    --chrome-fs:var(--fs-1);--wide-hint-fs:var(--fs-2);--deck-fs:var(--fs-6);}   /* the words round the card, and the picked deck's name, at one step each; the next step up from 1600x900 (--k from .9) */
-  body{padding:0;min-height:100dvh;justify-content:flex-start;align-items:center;}
-  .app{max-width:none;width:var(--pcW);height:100dvh;padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
+   --pcW is the card's width; 174px (scaled) plus 74px is everything on screen that isn't the card: the header, the margins and the bottom row. */
+
+  :root:where(.pc){--k:1;--pcW:min(calc(100% - 116px), max(240px, calc((100dvh - 174px * var(--k) - 74px) * 556 / 360)));
+    --chrome-fs:var(--fs-1);--wide-hint-fs:var(--fs-4);--deck-fs:var(--fs-6);}   /* the words round the card, and the picked deck's name, at one step each; the next step up from 1600x900 (--k from .9) */
+  :where(.pc) body{padding:0;min-height:100dvh;justify-content:center;align-items:center;}
+  :where(.pc) .app{max-width:none;width:var(--pcW);height:min(100dvh, calc((100vw - 116px) * 360 / 556 + 174px * var(--k) + 74px));   /* a window taller than the card needs: the whole composition sits together in the middle */
+    padding:0 0 calc(var(--k)*28px);box-sizing:border-box;
     display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto minmax(0,1fr) auto auto;
     align-items:start;justify-items:stretch;}
-  .controls-wrap,.nav-row{display:contents;}
-  .header,.tok-line,.controls-wrap{max-width:none;}
+  :where(.pc) .controls-wrap,:where(.pc) .nav-row{display:contents;}
+  :where(.pc) .header,:where(.pc) .tok-line,:where(.pc) .controls-wrap{max-width:none;}
 
   /* logo + tagline */
-  .header{grid-column:1 / -1;grid-row:1 / 3;justify-self:center;width:auto;padding:calc(var(--k)*13px) 0 calc(var(--k)*9px);pointer-events:none;}   /* tightened above, and the room saved sits under the tagline, so it keeps clear air above the card */
-  .title{font-size:max(44px,calc(var(--k)*54px));}
-  .title-rule{width:calc(var(--k)*378px);margin:calc(var(--k)*8px) auto 0;}
-  .subtitle{margin-top:calc(var(--k)*7px);}
+  :where(.pc) .header{grid-column:1 / -1;grid-row:1 / 3;justify-self:center;width:auto;padding:calc(var(--k)*13px) 0 calc(var(--k)*9px + 20px);pointer-events:none;}   /* tightened above, and the room saved sits under the tagline, so it keeps clear air above the card */
+  :where(.pc) .title{font-size:max(44px,calc(var(--k)*54px));}
+  :where(.pc) .title-rule{width:calc(var(--k)*378px);margin:calc(var(--k)*8px) auto 0;}
+  :where(.pc) .subtitle{margin-top:calc(var(--k)*7px);}
 
   /* Selected deck, top left */
-  .tok-line{grid-column:1;grid-row:1;justify-self:start;width:auto;padding:calc(var(--k)*20px) 0 0;margin:0;justify-content:flex-start;}
-  .tok-preset{flex-direction:column;align-items:flex-start;gap:calc(var(--k)*5px);padding:0;border-bottom:0;}
-  .tok-preset .tok-lbl{font-size:var(--chrome-fs);letter-spacing:var(--track-text);text-transform:none;color:var(--sand);}
-  .tok-preset .tok-hint{color:var(--muted-l);}
-  .tok-preset .tok-val-row{gap:0;}
-  .tok-preset .tok-rule{display:none;}
-  .tok-preset .tok-val{font-size:var(--deck-fs);letter-spacing:var(--track-2);}
-  .tok-preset .tok-val::after{display:none;}
-  @media (hover:hover) and (pointer:fine){.tok-preset:hover .tok-val{filter:brightness(1.25);}}
+  :where(.pc) .tok-line{grid-column:1;grid-row:1;justify-self:start;width:auto;max-width:calc((100vw - 116px) / 2 - 140px);padding:calc(var(--k)*20px) 0 0;margin:0;justify-content:flex-start;}   /* a narrow window: the line wraps before it reaches the title */
+  :where(.pc) .tok-preset,:where(.pc) .tok-preset .tok-lbl{white-space:normal;text-align:left;}
+  :where(.pc) .tok-preset{flex-direction:column;align-items:flex-start;gap:calc(var(--k)*5px);padding:0;border-bottom:0;}
+  :where(.pc) .tok-preset .tok-lbl{font-size:var(--wide-hint-fs);letter-spacing:var(--track-text);text-transform:none;color:var(--sand);}
+  :where(.pc) .tok-preset .tok-hint{color:var(--muted-l);}
+  :where(.pc) .tok-preset .tok-val-row{gap:0;}
+  :where(.pc) .tok-preset .tok-rule{display:none;}
+  :where(.pc) .tok-preset .tok-val{font-size:var(--deck-fs);letter-spacing:var(--track-2);}
+  :where(.pc) .tok-preset .tok-val::after{display:none;}
+  @media (hover:hover) and (pointer:fine){:where(.pc) .tok-preset:hover .tok-val{filter:brightness(1.25);}}
   @media (hover:hover) and (pointer:fine){
-    #tokHint{font-size:0;}
-    #tokHint::after{content:" \00b7  click to change";font-size:var(--chrome-fs);letter-spacing:var(--track-text);}
+    :where(.pc) #tokHint{font-size:0;}
+    :where(.pc) #tokHint::after{content:" \00b7  click to change";font-size:var(--wide-hint-fs);letter-spacing:var(--track-text);}
   }
 
   /* Menu under Selected deck, top left: the icon at the outer edge */
-  #btn-menu{grid-column:1;grid-row:2;justify-self:start;align-self:start;}
+  :where(.pc) #btn-menu{grid-column:1;grid-row:2;justify-self:start;align-self:start;}
   /* Three, Spotlight, Twist top right, right-aligned: words with their icons at the card's right edge, the hint beside the
      word on hover only. Ways to play (before the first card) and Save (at the end of a hand) take Spotlight's slot.
      The pitch is the one Spotlight's own Close button keeps. */
-  #screenRow{grid-column:3;grid-row:1 / 3;justify-self:end;align-self:start;width:auto;flex-direction:column;justify-content:flex-start;align-items:flex-end;
+  :where(.pc) #screenRow{grid-column:3;grid-row:1 / 3;justify-self:end;align-self:start;width:auto;flex-direction:column;justify-content:flex-start;align-items:flex-end;
     gap:calc(var(--k)*3px);padding:calc(var(--k)*20px) 0 0;}
-  #screenRow .quiet-word,#btn-menu,#btn-prev{position:relative;align-items:center;justify-content:flex-start;
+  :where(.pc) #screenRow .quiet-word,:where(.pc) #btn-menu,:where(.pc) #btn-prev{position:relative;align-items:center;justify-content:flex-start;
     gap:calc(var(--k)*10px);min-width:0;min-height:0;margin:0;padding:calc(var(--k)*4px) 0;font-size:var(--chrome-fs);}
-  #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;width:auto;}   /* the phone centres these in their column */
-  #screenRow .quiet-word{flex-direction:row-reverse;}
-  #btn-menu,#btn-prev{flex-direction:row;}
-  #btn-prev,#btnPick,#btnTwist{display:flex;}
-  .quiet-word svg{display:block;flex:none;width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-  #screenRow #btnWays{min-height:calc(var(--k)*28px);}   /* no icon, but the same box as Spotlight and Save (icon plus padding) */
-  #screenRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin:0 calc(var(--k)*18px) 0 0;
+  :where(.pc) #screenRow :is(#btnWays,#btnParty,#btnSave){margin:0;width:auto;}   /* the phone centres these in their column */
+  :where(.pc) #screenRow .quiet-word{flex-direction:row-reverse;}
+  :where(.pc) #btn-menu,:where(.pc) #btn-prev{flex-direction:row;}
+  :where(.pc) #btn-prev,:where(.pc) #btnPick,:where(.pc) #btnTwist{display:flex;}
+  :where(.pc) .quiet-word svg{display:block;flex:none;width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
+  :where(.pc) #screenRow #btnWays{min-height:calc(var(--k)*28px);}   /* no icon, but the same box as Spotlight and Save (icon plus padding) */
+  :where(.pc) #screenRow .row-hint{position:absolute;right:100%;top:50%;transform:translateY(-50%);margin:0 calc(var(--k)*18px) 0 0;
     max-width:none;white-space:nowrap;text-align:right;font-size:var(--wide-hint-fs);line-height:1.15;
     opacity:0;transition:opacity .2s;pointer-events:none;}
   /* hover and keyboard focus always show the hint here; "taught" only retires the phone's hint at rest */
-  body #screenRow .quiet-word .row-hint{visibility:visible;}
-  @media (hover:hover) and (pointer:fine){#screenRow .quiet-word:hover .row-hint{opacity:1;}}
-  #screenRow .quiet-word:focus-visible .row-hint{opacity:1;}
-  #btnPick.on .row-lbl,#btnTwist.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* "on": the same underline Spotlight's own Three and Twist wear */
+  :where(.pc) body #screenRow .quiet-word .row-hint{visibility:visible;}
+  @media (hover:hover) and (pointer:fine){:where(.pc) #screenRow .quiet-word:hover .row-hint{opacity:1;}}
+  :where(.pc) #screenRow .quiet-word:focus-visible .row-hint{opacity:1;}
+  :where(.pc) #btnPick.on .row-lbl,:where(.pc) #btnTwist.on .row-lbl{text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px;}   /* "on": the same underline Spotlight's own Three and Twist wear */
 
   /* the card */
-  .card-wrap{grid-column:1 / -1;grid-row:3;align-self:stretch;margin:0 0 calc(var(--k)*30px);width:100%;min-height:0;container-type:size;
+  :where(.pc) .card-wrap{grid-column:1 / -1;grid-row:3;align-self:stretch;margin:0 0 calc(var(--k)*30px);width:100%;min-height:0;container-type:size;
     display:flex;align-items:center;justify-content:center;}
-  .card-area{width:min(100cqw, calc(100cqh * 556 / 360));aspect-ratio:556/360;flex:none;}
-  .card{width:100%;height:100%;aspect-ratio:auto;max-width:none;margin:0;container-type:inline-size;overflow:hidden;}
+  :where(.pc) .card-area{width:min(100cqw, calc(100cqh * 556 / 360));aspect-ratio:556/360;flex:none;}
+  :where(.pc) .card{width:100%;height:100%;aspect-ratio:auto;max-width:none;margin:0;container-type:inline-size;overflow:hidden;}
   /* the card's details on a big card (owner's option C, 2026-10-21): a heavier top line with a sharp glint at the sheen's
      peak and ends fading over a fixed run, 1.5px frame lines, a slightly bigger star */
-  .c-accent{height:clamp(5px,.48cqw,6px);
+  :where(.pc) .c-accent{height:clamp(5px,.48cqw,6px);
     -webkit-mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
     mask:linear-gradient(to right,transparent 0,#000 clamp(56px,6cqw,80px) calc(100% - clamp(56px,6cqw,80px)),transparent 100%);
     background:linear-gradient(to right,transparent 38%,var(--rail-l) 46% 54%,transparent 62%) 0 2px / 100% 1px no-repeat,
       linear-gradient(in oklab 100deg,var(--rail-d) 0%,var(--rail-m) 34%,color-mix(in oklab,var(--rail-l) 55%,var(--rail-m)) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
   /* the card face (design/card-face.md) at the card's own size: the frame, the name, the star and the room round the question, in cqw */
-  .card{--frame-o-top:2.6cqw;--frame-i-top:3.5cqw;--frame-o:2cqw;--frame-i:2.9cqw;--frame-e:.7cqw;--name-size:2.4cqw;--body-top:8cqw;--body-bottom:3cqw;}
-  .card-frame::before,.card-frame::after,.card-frame i{border-width:1.5px;}
-  .card-level{top:5.9cqw;left:14cqw;right:14cqw;gap:2.2cqw;}
-  .card.mark-wildcard .card-level{font-size:2.3cqw;}
-  .card-level::before,.card-level::after{height:1.5cqw;border-width:1.5px 0;}
-  .card-star{font-size:clamp(22px,2.2cqw,28px);top:calc(4.6cqw - 10px);right:calc(3.8cqw - 10px);padding:10px;}
-  @media (hover:hover) and (pointer:fine){.card-star:hover{color:var(--gold);}}.card-star.active{color:var(--gold);}
-  .card-ad-mark{font-size:38.4cqw;}
-  .card-body-inner{padding-inline:7cqw;}
-  .card-question{font-size:6.8cqw;line-height:1.12;}
-  .card.is-hand-list .card-body-inner{padding:calc(var(--k)*48px) 7cqw calc(var(--k)*48px);}
-  .card.is-hand-list .card-question{font-size:1rem;line-height:normal;}
-  .hd-list{--hd-fs:2.2cqw;justify-content:safe center;gap:.9em;}
+  :where(.pc) .card{--frame-o-top:2.6cqw;--frame-i-top:3.5cqw;--frame-o:2cqw;--frame-i:2.9cqw;--frame-e:.7cqw;--name-size:2.4cqw;--body-top:8cqw;--body-bottom:3cqw;}
+  :where(.pc) .card-frame::before,:where(.pc) .card-frame::after,:where(.pc) .card-frame i{border-width:1.5px;}
+  :where(.pc) .card-level{top:5.9cqw;left:14cqw;right:14cqw;gap:2.2cqw;}
+  :where(.pc) .card.mark-wildcard .card-level{font-size:2.3cqw;}
+  :where(.pc) .card-level::before,:where(.pc) .card-level::after{height:1.5cqw;border-width:1.5px 0;}
+  :where(.pc) .card-star{font-size:clamp(22px,2.2cqw,28px);top:calc(4.6cqw - 10px);right:calc(3.8cqw - 10px);padding:10px;}
+  @media (hover:hover) and (pointer:fine){:where(.pc) .card-star:hover{color:var(--gold);}}:where(.pc) .card-star.active{color:var(--gold);}
+  :where(.pc) .card-ad-mark{font-size:38.4cqw;}
+  :where(.pc) .card-body-inner{padding-inline:7cqw;}
+  :where(.pc) .card-question{font-size:6.8cqw;line-height:1.12;}
+  :where(.pc) .card.is-hand-list .card-body-inner{padding:calc(var(--k)*48px) 7cqw calc(var(--k)*48px);}
+  :where(.pc) .card.is-hand-list .card-question{font-size:1rem;line-height:normal;}
+  :where(.pc) .hd-list{--hd-fs:2.2cqw;justify-content:safe center;gap:.9em;}
 
   /* bottom row, on the card's edges: Back left, the Next card bar centred, the ticks with the count under them right */
-  #btn-prev{grid-column:1;grid-row:4 / 6;justify-self:start;align-self:center;}
-  #btn-next{grid-column:2;grid-row:4 / 6;align-self:center;}
-  .nav-lines,.prog-count-rule{display:none;}   /* the hairlines beside Next card are the phone's */
-  .progress{grid-column:3;grid-row:4;justify-self:end;width:calc(var(--k)*190px);}
-  .prog-count{grid-column:3;grid-row:5;justify-self:end;margin-top:calc(var(--k)*4px);}
-  .draw-more-btn,.deck-info{display:none;}
+  :where(.pc) #btn-prev{grid-column:1;grid-row:4 / 6;justify-self:start;align-self:center;}
+  :where(.pc) #btn-next{grid-column:2;grid-row:4 / 6;align-self:center;}
+  :where(.pc) .nav-lines,:where(.pc) .prog-count-rule{display:none;}   /* the hairlines beside Next card are the phone's */
+  :where(.pc) .progress{grid-column:3;grid-row:4;justify-self:end;width:calc(var(--k)*190px);}
+  :where(.pc) .prog-count{grid-column:3;grid-row:5;justify-self:end;margin-top:calc(var(--k)*4px);}
+  :where(.pc) .draw-more-btn,:where(.pc) .deck-info{display:none;}
   /* Three: the three options use the card's size, not the phone's */
-  .card-area{container-type:inline-size;}
-  .card-area .picker-options{font-size:4.1cqw;}
-  .card-area .pick-opt{padding:1cqw 9cqw 1cqw 7cqw;}
-  .card-area .pick-opt::after{right:4cqw;width:1.1cqw;height:1.1cqw;}
-  .card-area .pick-opt-text{gap:1.1cqw;padding-left:2.4cqw;}
-  .card-area .pick-opt-level{font-size:1.5cqw;letter-spacing:var(--track-3);}
-  .card-area .pick-opt-q{line-height:1.16;max-width:none;}
-  .card-area .picker-options::before{top:calc(var(--k)*24px);left:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
-  .card-area .picker-options::after{bottom:calc(var(--k)*24px);right:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
+  :where(.pc) .card-area{container-type:inline-size;}
+  :where(.pc) .card-area .picker-options{font-size:4.1cqw;}
+  :where(.pc) .card-area .pick-opt{padding:1cqw 9cqw 1cqw 7cqw;}
+  :where(.pc) .card-area .pick-opt::after{right:4cqw;width:1.1cqw;height:1.1cqw;}
+  :where(.pc) .card-area .pick-opt-text{gap:1.1cqw;padding-left:2.4cqw;}
+  :where(.pc) .card-area .pick-opt-level{font-size:1.5cqw;letter-spacing:var(--track-3);}
+  :where(.pc) .card-area .pick-opt-q{line-height:1.16;max-width:none;}
+  :where(.pc) .card-area .picker-options::before{top:calc(var(--k)*24px);left:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
+  :where(.pc) .card-area .picker-options::after{bottom:calc(var(--k)*24px);right:calc(var(--k)*24px);width:calc(var(--k)*40px);height:calc(var(--k)*40px);}
 
   /* Twist: a line you read from across the table, about half the question's size */
-  .twist-sentence{padding:0 7cqw calc(var(--frame-i) + 1.5cqw);}
-  .twist-sentence.twist{font-size:3.3cqw;line-height:1.3;}
-}
+  :where(.pc) .twist-sentence{padding:0 7cqw calc(var(--frame-i) + 1.5cqw);}
+  :where(.pc) .twist-sentence.twist{font-size:3.3cqw;line-height:1.3;}
 
-@media (min-width:1600px) and (min-height:900px) and (min-aspect-ratio:5/4){
-  :root{--chrome-fs:var(--fs-3);--wide-hint-fs:var(--fs-4);--deck-fs:var(--fs-7);}
+
+@media (min-width:1600px) and (min-height:900px){
+  :root:where(.pc){--chrome-fs:var(--fs-3);--wide-hint-fs:var(--fs-5);--deck-fs:var(--fs-7);}
 }
 
 /* Spotlight on wide screens: Three / Close / Twist take the same places as on the main screen's
    top-right stack (Three, Spotlight, Twist), Close in Spotlight's own slot. Close leaves the
    bottom centre, Twist leaves the top left. Phone and sideways phone are untouched. */
-@media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  .party-card{--sx:88px;}
-  .party-bottom .party-prev-btn{grid-column:1;} .party-bottom .party-next-btn{grid-column:3;}
-  .party-top .party-pick,.party-top .party-twist,.party-bottom .party-exit{
+
+  :where(.pc) .party-card{--sx:88px;}
+  :where(.pc) .party-bottom .party-prev-btn{grid-column:1;} :where(.pc) .party-bottom .party-next-btn{grid-column:3;}
+  :where(.pc) .party-top .party-pick,:where(.pc) .party-top .party-twist,:where(.pc) .party-bottom .party-exit{
     position:fixed;right:var(--sx);left:auto;height:calc(var(--k)*31px);min-width:0;padding:0 !important;z-index:6;
     flex-direction:row-reverse;justify-content:flex-start;gap:calc(var(--k)*10px);font-size:var(--chrome-fs);letter-spacing:var(--track-3);}
-  .party-top .party-pick{top:calc(var(--k)*20px);}
-  .party-bottom .party-exit{top:calc(var(--k)*51px);}
-  .party-top .party-twist{top:calc(var(--k)*82px);}
-  .party-chrome :is(.party-pick,.party-twist,.party-exit) svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
-}
+  :where(.pc) .party-top .party-pick{top:calc(var(--k)*20px);}
+  :where(.pc) .party-bottom .party-exit{top:calc(var(--k)*51px);}
+  :where(.pc) .party-top .party-twist{top:calc(var(--k)*82px);}
+  :where(.pc) .party-chrome :is(.party-pick,.party-twist,.party-exit) svg{width:calc(var(--k)*20px);height:calc(var(--k)*20px);}
+
 
 /* Chapter rows, where gilt.js uses its intense stops (1024px and up): the sheen's centre is near-white on a 3px line;
    pulled a pinch back toward the chapter colour, everything else as it was. */
@@ -2049,14 +2027,14 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
 /* Side rails on wide screens (owner, 2026-10-21): Three and Spotlight's pick-three rails were the phone's 3px beside
    text five times as big. 5px with a vertical sweep, dark ends, the sheen pulled toward the category colour, and one
    crisp 1px lit edge: metal, no glow. Same ends fade as on the phone. */
-@media (min-width:900px) and (min-height:560px) and (min-aspect-ratio:5/4){
-  .card-area .pick-opt-text,.party-picker .pick-opt-text{
+
+  :where(.pc) .card-area .pick-opt-text,:where(.pc) .party-picker .pick-opt-text{
     --pc-dark:color-mix(in oklab,var(--pc-solid) 60%,#000);
     --pc-sheen:color-mix(in oklab,var(--pc-solid) 62%,#fff);}
-  .card-area .pick-opt-text::before,.party-picker .pick-opt-text::before{width:5px;
+  :where(.pc) .card-area .pick-opt-text::before,:where(.pc) .party-picker .pick-opt-text::before{width:5px;
     background:linear-gradient(90deg,var(--pc-sheen) 0 1px,transparent 1px),
       linear-gradient(in oklab 180deg,var(--pc-dark) 0%,var(--pc-solid) 30%,var(--pc-sheen) 50%,var(--pc-solid) 70%,var(--pc-dark) 100%);}
-}
+
 
 /* The Deck on a mouse (design look-through 2026-10-21): the picks (presets, who's here, categories, dials) keep their
    44-49px touch height, so the presets alone take a third of the sheet and push the chapters, the point of the sheet,

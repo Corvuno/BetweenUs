@@ -288,11 +288,11 @@ function fillMenu() {
 
 function openMenu(trigger) {
   fillMenu();
-  openDrawer(dockedQuery.matches ? 'menuSideDrawer' : 'menuDrawer', trigger);
+  openDrawer(isPCLayout() ? 'menuSideDrawer' : 'menuDrawer', trigger);
 }
 
 // Crossing the line between the phone drawer and the side panel with a menu open: close it rather than leave a hidden drawer open under the overlay.
-dockedQuery.addEventListener('change', closeAllDrawers);
+addEventListener('layoutchange', closeAllDrawers);
 
 // ── The note: the one short line that says what just happened, and may offer to take it back ──
 // One element (#note), centred near the bottom above every sheet. A new note replaces the one showing, its Undo with it.

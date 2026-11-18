@@ -1,17 +1,20 @@
 # The Deck, docked on a computer
 
-On a wide window with a mouse (min-width 1280px, min-height 560px, aspect 5/4 or wider, hover and
-fine pointer) The Deck is a panel docked to the left edge (under Selected deck, which opens it),
-beside the card, instead of a window over it. It must not look like a phone sheet on a PC.
-1280px is the width where the header (Selected line, logo, Spotlight / Menu) still has its room
-with the panel open: the card is then 604px, the same as docked at 1280x720; narrower, the header
-would collide. Below that, or touch only, the phone sheet and the centred window are as before.
-The condition is written twice in `styles.css` (once excluding the centred window, once for the
-dock) and once in `ui.js` (`dockedQuery`); `syncDock()` applies it on open and when the window is
-resized while the panel is open.
+The computer layout (`html.pc`, set by the script at the top of `between-us.html`: every computer
+at any window size, and a touch screen at least 900px across whose screen's short side is 600px or
+more) shows The Deck as a panel from the left edge, under Selected deck, which opens it. The menu,
+Played, Favourites and Ways to play are the same kind of panel from the same side, because their
+button sits there too. The phone layout (phones, and tablets held upright) keeps the phone sheets;
+there is no centred-window layout in between.
+Docked, on a window with a mouse at least 1280px wide, 560px tall and 5:4 or wider
+(`dockedQuery` in `selection.js`, which `syncDock()` in `ui.js` applies on open and on resize),
+the panel sits beside the card and the main screen makes room. 1280px is the width where the
+header (Selected line, logo, Three / Spotlight / Twist) still has its room with the panel open: the
+card is then 604px, the same as docked at 1280x720. Narrower, the same panel lies over the card
+with the scrim behind it.
 
-- **Panel** (`.cat-area` in the dock block, "THE DECK, DOCKED"): `--dock-w`
-  (`clamp(560px,42vw,640px)`), full height, `--surface`, one `--border-strong` line on its right,
+- **Panel** (`.cat-area` in "THE DECK AS A PANEL"): `--dock-w`
+  (`clamp(min(560px,100vw - 48px),42vw,640px)`), full height, `--surface`, one `--border-strong` line on its right,
   and a 3px gold rail on that edge (the chapter rail's dark-light-dark sweep in gold, no glow). No
   scrim, no radius.
 - **Motion**: the panel slides in from the left (.64s) and out (.5s), both on `--ease-sheet`. The

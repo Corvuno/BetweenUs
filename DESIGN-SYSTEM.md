@@ -45,7 +45,8 @@ INTERMEZZO and the end message, the Wildcard mark, and every category, chapter a
 | `--fs-7` | 1.3rem (20.8px) | Help's lead line; the picked deck's name on a computer from 1600x900 |
 Where a size follows the window (the words round the card on a computer, the picked deck's name), the
 rule sets one step for the window and one step up from 1600x900 (`--chrome-fs`, `--wide-hint-fs`,
-`--deck-fs`). The picked deck's name (`.tok-val`) sits one step above its neighbours.
+`--deck-fs`). On a computer the hints, and the "Selected deck · click to change" line they share a size
+with, are `--wide-hint-fs`: the hint step (`--fs-4`), and `--fs-5` from 1600x900. The picked deck's name (`.tok-val`) sits one step above its neighbours.
 
 **Spacing**
 | Token | Value | For |

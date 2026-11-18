@@ -3563,7 +3563,7 @@ async function run() {
             cols: getComputedStyle(d.querySelector('#logList')).gridTemplateColumns.split(' ').length,
             saves: d.querySelectorAll('#sessionsList .play-save').length,
             order: (([h1, h2]) => [h1, d.querySelector('#storeSessionBtn'), d.querySelector('#sessionsList'), h2, d.querySelector('#btnExport'), d.querySelector('#logList')])(d.querySelectorAll('.menu-head')).map(e => e.getBoundingClientRect().top).every((y, i, all) => i === 0 || y >= all[i - 1]),
-            heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent), right: r.right, width: r.width,
+            heads: [...d.querySelectorAll('.menu-head')].map(e => e.textContent), left: r.left, width: r.width,
           };
         });
         assert(JSON.stringify(p.qs) === JSON.stringify([...asked].reverse()), `${name}: cards not newest first: ${JSON.stringify(p.qs)}`);
@@ -3572,18 +3572,18 @@ async function run() {
         assert(p.cols === (name === 'phone' ? 2 : 3), `${name}: ${p.cols} cards across`);
         assert(p.saves === 2, `${name}: ${p.saves} saved rows`);
         assert(p.order && p.heads.join() === 'Saved,Drawn so far', `${name}: Played is not in the order Saved, Save for later, rows, Drawn so far, tools, cards (${p.heads})`);
-        if (name === 'computer') assert(p.right === 1440 && p.width > 500, `computer: Played is not the right side panel (${p.right}, ${p.width})`);
+        if (name === 'computer') assert(p.left === 0 && p.width > 500, `computer: Played is not the left side panel (${p.left}, ${p.width})`);
         // Favourites: the starred cards, as the same small cards
         await pg.evaluate(() => closeAllDrawers());
         await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
         await pg.locator('[data-menu="favs"]:visible').click(); await pg.waitForTimeout(900);
         const f = await pg.evaluate(() => {
           const cards = [...document.querySelectorAll('#favsList .play-card')];
-          return { n: cards.length, stars: cards.every(c => c.querySelector('.play-star')), cols: getComputedStyle(document.getElementById('favsList')).gridTemplateColumns.split(' ').length, right: document.getElementById('favsDrawer').getBoundingClientRect().right };
+          return { n: cards.length, stars: cards.every(c => c.querySelector('.play-star')), cols: getComputedStyle(document.getElementById('favsList')).gridTemplateColumns.split(' ').length, left: document.getElementById('favsDrawer').getBoundingClientRect().left };
         });
         assert(f.n === 2 && f.stars, `${name}: favourites ${JSON.stringify(f)}`);
         assert(f.cols === (name === 'phone' ? 2 : 3), `${name}: favourites ${f.cols} across`);
-        if (name === 'computer') assert(f.right === 1440, 'computer: Favourites is not the right side panel');
+        if (name === 'computer') assert(f.left === 0, 'computer: Favourites is not the left side panel');
       } finally { await ctx.close(); }
     }
   });
@@ -3822,7 +3822,40 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('menu on a computer: a side panel eased in from the right with the state in the count column; the phone drawer is not shown; overlay and Escape close it', async () => {
+  await check('layout by device: a computer keeps the computer layout at any window shape, a phone and an upright tablet get the phone layout, a tablet held wide the computer one; hints at the scale\'s hint size; room under the tagline', async () => {
+    const cases = [
+      ['computer, tall window', { width: 1100, height: 1240 }, false, true],
+      ['computer, narrow window', { width: 760, height: 900 }, false, true],
+      ['computer, short window', { width: 1300, height: 520 }, false, true],
+      ['phone', { width: 412, height: 915 }, true, false],
+      ['phone on its side', { width: 915, height: 412 }, true, false],
+      ['tablet upright', { width: 800, height: 1280 }, true, false],
+      ['tablet wide', { width: 1280, height: 800 }, true, true],
+    ];
+    for (const [name, viewport, touch, pc] of cases) {
+      const { ctx, pg } = await freshApp({ viewport, screen: viewport, hasTouch: touch, isMobile: touch });
+      try {
+        const g = await pg.evaluate(() => {
+          const r = el => document.querySelector(el).getBoundingClientRect();
+          return { pc: document.documentElement.classList.contains('pc'), over: document.documentElement.scrollWidth - innerWidth,
+            hint: parseFloat(getComputedStyle(document.querySelector('#screenRow .row-hint')).fontSize), gap: r('.card').top - r('.subtitle').bottom };
+        });
+        assert(g.pc === pc, `${name}: computer layout ${g.pc}, wanted ${pc}`);
+        assert(g.over <= 0, `${name}: the page scrolls sideways by ${g.over}px`);
+        if (pc) {
+          assert(g.hint >= 15, `${name}: hints are ${g.hint}px`);
+          assert(g.gap >= 20, `${name}: only ${g.gap}px between the tagline and the card`);
+          if (!touch) {
+            await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
+            const m = await pg.evaluate(() => ({ side: Math.round(document.getElementById('menuSideDrawer').getBoundingClientRect().left), phone: getComputedStyle(document.getElementById('menuDrawer')).display }));
+            assert(m.side === 0 && m.phone === 'none', `${name}: the menu is not the panel from the left: ${JSON.stringify(m)}`);
+          }
+        }
+      } finally { await ctx.close(); }
+    }
+  });
+
+  await check('menu on a computer: a side panel eased in from the left with the state in the count column; the phone drawer is not shown; overlay and Escape close it', async () => {
     const { ctx, pg } = await freshApp({ viewport: { width: 1440, height: 900 }, hasTouch: false });
     try {
       await drawCards(pg, 2);
@@ -3831,22 +3864,22 @@ async function run() {
       // mid-slide, not a snap: the panel is partly in view a moment after the click
       await pg.waitForTimeout(120);
       const mid = await pg.evaluate(() => { const r = document.getElementById('menuSideDrawer').getBoundingClientRect(); return { left: r.left, width: r.width, ms: getComputedStyle(document.getElementById('menuSideDrawer')).transitionDuration }; });
-      assert(mid.left > 1440 - mid.width && mid.left < 1440, `the panel should be part-way in: ${JSON.stringify(mid)}`);
+      assert(mid.left > -mid.width && mid.left < 0, `the panel should be part-way in: ${JSON.stringify(mid)}`);
       assert(parseFloat(mid.ms) > 0, `no slide: transition ${mid.ms}`);
       await pg.waitForTimeout(800);
       const m = await pg.evaluate(() => {
         const side = document.getElementById('menuSideDrawer');
         const r = side.getBoundingClientRect();
         return {
-          open: side.classList.contains('open'), right: r.right, top: r.top, height: r.height, phoneShown: getComputedStyle(document.getElementById('menuDrawer')).display !== 'none',
+          open: side.classList.contains('open'), left: r.left, top: r.top, height: r.height, phoneShown: getComputedStyle(document.getElementById('menuDrawer')).display !== 'none',
           rows: [...side.querySelectorAll('.chapter')].map(c => [c.querySelector('.ch-name').textContent, c.querySelector('.ch-ct').innerText.replace(/\s+/g, ' ').trim()]),
           focus: document.activeElement === side,
         };
       });
-      assert(m.open && m.right === 1440 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
+      assert(m.open && m.left === 0 && m.top === 0 && m.height === 900 && !m.phoneShown, `side panel: ${JSON.stringify(m)}`);
       assert(m.focus, 'focus did not move into the menu');
       assert(JSON.stringify(m.rows) === JSON.stringify([['The Deck', 'BALANCED five cards'], ['Three', 'Off'], ['Twist', 'Off'], ['Start over', `2 seen ${total - 2} left`], ['Save', 'Save'], ['Played', '2 drawn so far'], ['Favourites', 'None starred yet']]), `count column: ${JSON.stringify(m.rows)}`);
-      await pg.locator('#overlay').click({ position: { x: 200, y: 400 } }); await pg.waitForTimeout(800);
+      await pg.locator('#overlay').click({ position: { x: 1200, y: 400 } }); await pg.waitForTimeout(800);
       assert(!(await pg.evaluate(() => document.getElementById('menuSideDrawer').classList.contains('open'))), 'overlay click did not close the panel');
       await pg.locator('#btn-menu').click(); await pg.waitForTimeout(800);
       await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
@@ -3871,7 +3904,8 @@ async function run() {
     await pg.waitForTimeout(900);
   };
   const figure = pg => pg.evaluate(() => {
-    const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return [b.left, b.top, b.right, b.bottom].map(Math.round).join(','); };
+    // the count is right-aligned: its left edge follows its own digits, so only its right edge, top and bottom are held
+    const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return [id === 'progCount' ? '' : b.left, b.top, b.right, b.bottom].map(v => v === '' ? '' : Math.round(+v)).join(','); };
     return ['card', 'progress', 'progCount', 'btn-next', 'btn-menu'].map(box).join(' | ');
   });
   const saved = async (pg, click) => {
@@ -3996,7 +4030,7 @@ async function run() {
     }
   });
 
-  await check('computer: Three, Spotlight, Twist stacked top right on the card\'s right edge, Selected deck with Menu under it top left on its left edge, Back left, Next card centred and ticks with count right under the card, no hairlines; Menu opens from the right and The Deck from the left', async () => {
+  await check('computer: Three, Spotlight, Twist stacked top right on the card\'s right edge, Selected deck with Menu under it top left on its left edge, Back left, Next card centred and ticks with count right under the card, no hairlines; Menu and The Deck both open from the left', async () => {
     for (const [w, h] of [[1366, 768], [1440, 900], [1920, 1080]]) {
       const { ctx, pg } = await freshApp({ viewport: { width: w, height: h }, hasTouch: false });
       try {
@@ -4021,7 +4055,7 @@ async function run() {
           assert(await pg.evaluate(() => +getComputedStyle(document.querySelector('#btnParty .row-hint')).opacity === 0), 'the hint shows at rest after hover');
         }
         await pg.locator('#btn-menu').click(); await pg.waitForTimeout(900);
-        assert(await pg.evaluate(() => Math.round(document.getElementById('menuSideDrawer').getBoundingClientRect().right) === innerWidth), `${w}: Menu is not a panel from the right`);
+        assert(await pg.evaluate(() => Math.round(document.getElementById('menuSideDrawer').getBoundingClientRect().left) === 0), `${w}: Menu is not a panel from the left`);
         await pg.keyboard.press('Escape'); await pg.waitForTimeout(800);
         await pg.locator('#tokCats').click(); await pg.waitForTimeout(1000);
         assert(await pg.evaluate(() => Math.round(document.getElementById('cat-area').getBoundingClientRect().left) === 0), `${w}: The Deck is not a panel from the left`);

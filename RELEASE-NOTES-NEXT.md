@@ -13,3 +13,4 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+- On a computer the app keeps its computer layout at any window size, tablets held wide get it too, and the menu now opens from the same side as The Deck.
