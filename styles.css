@@ -1657,38 +1657,46 @@ body.hint-ways-taught .menu-hint{display:none;}
 /* A setting's hint (a HINTS entry): one quiet line under its options, the look of the categories' hint (.cat-hint) */
 .seg-hint{flex:0 0 100%;margin:2px 0 4px;padding-inline-start:var(--seg-head-w);white-space:normal;
   font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;color:var(--muted-l);}
-body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"],body.hint-three-taught .seg-hint[data-hint="three"],body.hint-lean-taught .seg-hint[data-hint="lean"]{display:none;}
-/* About, the You–Us lean: the chapter line turned on its side. Two rails 5px apart (--border-strong), a gold
-   mark through the middle, a shorter gold mark under each step growing towards the ends, and a celadon diamond
-   you slide; the stretch from the middle to the diamond fills with celadon metal, the way a chapter fills.
-   The word on the side it leans to takes the picked look, without moving anything. A native range input lies over the rail (invisible)
-   for touch, keys and screen readers; its thumb is --lean-k wide, so every mark sits on the thumb's path.
-   --p (0 … 1) is set by ui.js. */
+/* A retired hint folds away instead of vanishing: the words fade first, then the row closes up over a moment,
+   so the settings under it slide up rather than jump (owner: a sudden jump in this box is "weird and jarring").
+   Show hints again opens them the same way. Height animates to and from auto where the browser can
+   (interpolate-size); elsewhere it closes at once after the fade. Instant under reduced motion. */
+.seg-hint{interpolate-size:allow-keywords;height:auto;overflow:hidden;
+  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s;}
+body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"],
+body.hint-three-taught .seg-hint[data-hint="three"],body.hint-lean-taught .seg-hint[data-hint="lean"]{
+  height:0;margin-block:0;opacity:0;visibility:hidden;
+  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s, visibility 0s linear .44s;}
+@media (prefers-reduced-motion:reduce){.seg-hint,body :is(.seg-hint){transition:none !important;}}
+/* About, the You–Us lean, as "the stops": YOU and US either side of nine dots in the one picked look. The middle
+   one is a small hollow diamond (no lean); the chosen dot is larger and full, with the picked look's underline;
+   the dots between the middle and the chosen one are lit, the rest dim. The word on the side it leans to takes
+   the picked look; both keep the width of a bold YOU, so nothing moves. A native range input lies over the dots
+   (invisible) for touch, keys and screen readers; its thumb is --lean-k wide, so every dot sits on the thumb's
+   path and a tap on a dot picks it. The rail it replaced is in design/shelved-looks.md. */
 .lean{display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:48px;padding-inline-start:9px;}
-.lean-word{font-family:'Jost',sans-serif;font-size:var(--fs-2);font-weight:300;letter-spacing:var(--track-1);text-transform:uppercase;
-  white-space:nowrap;color:color-mix(in srgb, var(--celadon) 42%, rgba(240,232,216,.5));transition:color .2s;}
-.lean-word.on{color:var(--celadon);font-weight:500;}
-/* both words keep the width of a bold YOU, so turning bold never moves the rail and its middle stays the row's middle */
-.lean-word{display:inline-grid;justify-items:center;}
+.lean-word{display:inline-grid;justify-items:center;font-family:'Jost',sans-serif;font-size:var(--fs-2);font-weight:300;
+  letter-spacing:var(--track-1);text-transform:uppercase;white-space:nowrap;
+  color:color-mix(in srgb, var(--celadon) 42%, rgba(240,232,216,.5));transition:color .2s;}
 .lean-word::after{content:'You';font-weight:500;visibility:hidden;height:0;overflow:hidden;}
-.lean-rail{--lean-k:24px;--p:.5;--at:calc(var(--lean-k) / 2 + (100% - var(--lean-k)) * var(--p));
-  position:relative;flex:1;min-width:0;height:44px;margin-inline:6px;}
-.lean-rail::before{content:'';position:absolute;inset-inline:0;top:50%;height:5px;transform:translateY(-50%);
-  border-block:1px solid var(--border-strong);}
-.lean-mark{position:absolute;width:1px;background:var(--gold);transform:translateX(-50%);opacity:.7;pointer-events:none;}
-.lean-mark.mid{opacity:1;}
-.lean-fill{position:absolute;top:50%;height:5px;transform:translateY(-50%);pointer-events:none;
-  left:min(50%, var(--at));width:calc(max(50%, var(--at)) - min(50%, var(--at)));
-  background:linear-gradient(90deg, color-mix(in srgb, var(--celadon) 50%, #000), color-mix(in srgb, var(--celadon) 45%, #fff) 50%, color-mix(in srgb, var(--celadon) 50%, #000));
-  transition:left .2s var(--ease-out), width .2s var(--ease-out);}
-.lean-knob{position:absolute;top:50%;left:var(--at);width:12px;height:12px;transform:translate(-50%,-50%) rotate(45deg);
-  background:var(--celadon);box-shadow:0 0 0 3px var(--surface);pointer-events:none;transition:left .2s var(--ease-out);}
-.lean-rail input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;touch-action:pan-y;
+.lean-word.on{color:var(--celadon);font-weight:500;}
+.lean-stops{--lean-k:24px;position:relative;flex:1;min-width:0;height:44px;margin-inline:2px;}
+.lean-dot{position:absolute;top:50%;width:5px;height:5px;border-radius:50%;background:var(--celadon);opacity:.35;
+  transform:translate(-50%,-50%);pointer-events:none;transition:opacity .2s, width .2s, height .2s;}
+.lean-dot.lit{opacity:.8;}
+.lean-dot.zero{width:6px;height:6px;border-radius:0;background:none;opacity:.6;}
+.lean-dot.zero::before{content:'';position:absolute;inset:0;border:1px solid var(--celadon);transform:rotate(45deg);}
+.lean-dot.on{width:8px;height:8px;opacity:1;}
+.lean-dot.zero.on::before{background:var(--celadon);}
+.lean-dot::after{content:'';position:absolute;left:50%;top:calc(50% + 1em);width:20px;height:1px;background:var(--celadon);
+  transform:translateX(-50%);opacity:0;transition:opacity .2s;}
+.lean-dot.on::after{opacity:.7;}
+.lean-stops input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;touch-action:pan-y;
   -webkit-appearance:none;appearance:none;background:none;}
-.lean-rail input::-webkit-slider-thumb{-webkit-appearance:none;width:var(--lean-k);height:44px;}
-.lean-rail input::-moz-range-thumb{width:var(--lean-k);height:44px;border:none;}
-.lean-rail:has(input:focus-visible){outline:1px solid var(--celadon);outline-offset:4px;}
-@media (prefers-reduced-motion:reduce){.lean-fill,.lean-knob,.lean-word{transition:none;}}
+.lean-stops input::-webkit-slider-thumb{-webkit-appearance:none;width:var(--lean-k);height:44px;}
+.lean-stops input::-moz-range-thumb{width:var(--lean-k);height:44px;border:none;}
+.lean-stops:has(input:focus-visible){outline:1px solid var(--celadon);outline-offset:4px;}
+@media (prefers-reduced-motion:reduce){.lean-dot,.lean-dot::after,.lean-word{transition:none;}}
 
 /* ── THE ONE PICKED LOOK ──
    Everything you can pick in The Deck: presets, categories in open chapters, Colbert and The 36,

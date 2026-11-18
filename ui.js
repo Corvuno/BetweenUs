@@ -1215,30 +1215,35 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
     dating: 0.25, latenight: 0.25, partner: 0.5,
     newpeople: -0.5, work: -0.5, solo: -1,
   };
-  /* The slider (About, in The Deck's plate): nine steps, four each side of the middle. */
+  /* The slider (About, in The Deck's plate, as the stops): nine steps, four each side of the middle. */
   const LEAN_STEPS = 4;
   const leanSlider = /** @type {HTMLInputElement|null} */ ($('leanSlider'));
-  const leanRail = /** @type {HTMLElement|null} */ (leanSlider?.closest('.lean-rail') ?? null);
-  if (leanRail) {
-    // the marks: one through the middle, one under each step, longer towards the ends
+  const leanStops = /** @type {HTMLElement|null} */ (leanSlider?.closest('.lean-stops') ?? null);
+  /** @type {HTMLElement[]} */
+  const leanDots = [];
+  if (leanStops) {
+    // nine dots on the thumb's path, the middle one a small diamond
     for (let st = -LEAN_STEPS; st <= LEAN_STEPS; st++) {
-      const m = document.createElement('i');
-      m.className = st ? 'lean-mark' : 'lean-mark mid';
-      m.setAttribute('aria-hidden', 'true');
-      m.style.left = `calc(var(--lean-k) / 2 + (100% - var(--lean-k)) * ${(st + LEAN_STEPS) / (2 * LEAN_STEPS)})`;
-      if (st) { m.style.top = 'calc(50% + 6px)'; m.style.height = `${3 + Math.abs(st) * 1.5}px`; }
-      else { m.style.top = 'calc(50% - 11px)'; m.style.height = '22px'; }
-      leanRail.insertBefore(m, leanRail.firstChild);
+      const d = document.createElement('i');
+      d.className = st ? 'lean-dot' : 'lean-dot zero';
+      d.setAttribute('aria-hidden', 'true');
+      d.style.left = `calc(var(--lean-k) / 2 + (100% - var(--lean-k)) * ${(st + LEAN_STEPS) / (2 * LEAN_STEPS)})`;
+      leanStops.insertBefore(d, leanSlider);
+      leanDots.push(d);
     }
   }
   const LEAN_WORDS = ['all about you', 'mostly about you', 'a bit more about you', 'a touch more about you', 'no lean',
     'a touch more about the two of you', 'a bit more about the two of you', 'mostly about the two of you', 'all about the two of you'];
   function syncLeanUI(){
-    if (!leanSlider || !leanRail) return;
+    if (!leanSlider || !leanStops) return;
     const st = Math.round(intentFocus * LEAN_STEPS);
     leanSlider.value = String(st);
     leanSlider.setAttribute('aria-valuetext', LEAN_WORDS[st + LEAN_STEPS]);
-    leanRail.style.setProperty('--p', String((st + LEAN_STEPS) / (2 * LEAN_STEPS)));
+    leanDots.forEach((d, i) => {
+      const at = i - LEAN_STEPS;
+      d.classList.toggle('on', at === st);
+      d.classList.toggle('lit', st > 0 ? at > 0 && at < st : st < 0 && at < 0 && at > st);
+    });
     /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll('.lean-word')).forEach(w =>
       w.classList.toggle('on', (w.dataset.end === 'us' && st > 0) || (w.dataset.end === 'you' && st < 0)));
   }

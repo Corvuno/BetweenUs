@@ -20,7 +20,7 @@
      rewrites these, so bump the date+letter by hand whenever styles.css,
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
-<link rel="stylesheet" href="styles.css?v=20261117h">
+<link rel="stylesheet" href="styles.css?v=20261118a">
 </head>
 <body class="before-first-card">
 <div class="app">
@@ -198,12 +198,10 @@
           </div>
           <div class="seg">
             <div class="seg-head"><span>About</span></div>
-            <!-- The You–Us lean: the chapter line on its side. ui.js draws the marks and moves the diamond. -->
+            <!-- The You–Us lean, as the stops: nine dots between You and Us. ui.js draws the dots and lights them. -->
             <div class="lean" id="lean">
               <span class="lean-word" data-end="you" aria-hidden="true">You</span>
-              <div class="lean-rail">
-                <i class="lean-fill" aria-hidden="true"></i>
-                <b class="lean-knob" aria-hidden="true"></b>
+              <div class="lean-stops">
                 <input type="range" id="leanSlider" min="-4" max="4" step="1" value="0" aria-label="Who the questions are about, from you to the two of you">
               </div>
               <span class="lean-word" data-end="us" aria-hidden="true">Us</span>
@@ -543,18 +541,18 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261117h"></script>
-<script src="categories.js?v=20261117h"></script>
-<script src="config.js?v=20261117h"></script>
-<script src="gilt.js?v=20261117h"></script>
-<script src="state.js?v=20261117h"></script>
-<script src="deck.js?v=20261117h"></script>
-<script src="card.js?v=20261117h"></script>
-<script src="library.js?v=20261117h"></script>
-<script src="session.js?v=20261117h"></script>
-<script src="selection.js?v=20261117h"></script>
-<script src="presentation.js?v=20261117h"></script>
-<script src="ui.js?v=20261117h"></script>
+<script src="questions.js?v=20261118a"></script>
+<script src="categories.js?v=20261118a"></script>
+<script src="config.js?v=20261118a"></script>
+<script src="gilt.js?v=20261118a"></script>
+<script src="state.js?v=20261118a"></script>
+<script src="deck.js?v=20261118a"></script>
+<script src="card.js?v=20261118a"></script>
+<script src="library.js?v=20261118a"></script>
+<script src="session.js?v=20261118a"></script>
+<script src="selection.js?v=20261118a"></script>
+<script src="presentation.js?v=20261118a"></script>
+<script src="ui.js?v=20261118a"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.

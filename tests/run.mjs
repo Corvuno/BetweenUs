@@ -2391,7 +2391,8 @@ async function run() {
         };
         const shown = name => p.evaluate(n => {
           const el = document.querySelector(`.seg-hint[data-hint="${n}"]`);
-          return !!el && el.getBoundingClientRect().height > 0 && getComputedStyle(el).display !== 'none';
+          // a retired hint folds away over a moment; it counts as gone once it is retired and on its way
+          return !!el && el.getBoundingClientRect().height > 0 && getComputedStyle(el).display !== 'none' && !document.body.classList.contains(HINTS[n].cls);
         }, name);
         await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
         await p.waitForSelector('#card', { state: 'visible' });

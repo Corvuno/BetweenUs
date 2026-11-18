@@ -44,7 +44,7 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 ## Open with the owner
 
 - The You–Us lean (#192) is live as About, the fourth row of The Deck's plate, in the look the owner
-  picked ("the rail"): presets set it (Partner, Date and Close friends towards Us; Strangers,
+  picked ("the stops"; the rail and the rings are shelved in `design/shelved-looks.md`): presets set it (Partner, Date and Close friends towards Us; Strangers,
   Coworkers and Yourself towards You), the middle plays plain random, and the depth dial is gone so
   the Arc alone decides depth. The owner looks once on their own phone.
 - The Deck is live as the line (#183): the owner looks once on their own phone. Its look came

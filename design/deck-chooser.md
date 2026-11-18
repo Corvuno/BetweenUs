@@ -64,14 +64,14 @@ choices right of it in the one picked look (48px tall on the phone), so every ro
 align. Cards keeps 5, 10, 20 and All (All shows outside Arc); Random and All fit one line on a
 360px phone. On a computer the plate is the same, with the foot scrolling with the list.
 
-**About** (`#lean`, the You–Us lean, picked by the owner from round 1 as "the rail"): the chapter line
-on its side. YOU at the left and US at the right in the pick word's look, the side it leans to in the
-picked look. Between them two `--border-strong` rails 5px apart, a 22px gold mark through the middle, a
-gold mark under each of the other eight steps, longer towards the ends, and a 12px celadon diamond with a
-`--surface` halo that slides over nine steps; the stretch from the middle to the diamond fills with
-celadon metal. An invisible range input over the rail takes touch, keys and screen readers. A preset
-moves it; nothing else does. Owner on the rings option: "really cool, though way too complex for what
-it does".
+**About** (`#lean`, the You–Us lean, "the stops", chosen by the owner from round 1): YOU at the left
+and US at the right in the pick word's look, the side it leans to in the picked look; both keep the
+width of a bold YOU so nothing moves. Between them nine dots on one line in the one picked look:
+celadon, 5px, dim; the middle one a small hollow diamond (no lean); the chosen one 8px and full
+with the picked underline; the dots between the middle and the chosen one lit. An invisible range
+input over the dots takes touch, a tap on a dot, keys and screen readers. A preset moves it; nothing
+else does. The rail it replaced and the rings are kept in `shelved-looks.md` (owner on the rail: "not
+too much of a graphic, while I like that, it's not what it's supposed to mean").
 
 **Their hints** (`.seg-hint`, `HINTS` entries `shuffle`, `cards`, `three` and `lean` in `state.js`): one
 text under each setting's choices, aligned with them (`--seg-head-w`), in the look of the
@@ -81,7 +81,9 @@ card. Random: any order."; under Cards "how many questions before a pause"; unde
 shows three questions; you pick the one you ask or answer."; under About (the Keeper's words) "Towards
 You: more questions about the one answering. Towards Us: more about the two of you." Each goes for good once its own setting is
 changed (Three wherever it is changed, The Deck, the menu, Spotlight or key 3); "Show hints again"
-brings all back. A row closes up when its hint goes.
+brings all back. A row closes up when its hint goes: the words fade, then the row folds shut over a
+moment so the settings below slide up instead of jumping (owner: a sudden jump here is "weird and
+jarring"); Show hints again opens them the same way; instant under reduced motion.
 
 ## The one picked look
 `.cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn)`: presets, categories in open
