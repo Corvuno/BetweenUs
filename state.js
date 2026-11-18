@@ -107,7 +107,7 @@ function hintsSettle() {
       hintsWaiting.delete(id);
       document.body.classList.add(HINTS[id].cls);
     });
-  }, 250);
+  }, 400);   // long enough that letting go and the hint leaving read as two moments, not one
 }
 // the control a hint belongs to: its setting's row, its button, or the place it sits in
 const hintHome = el => el.closest('.seg, button, .menu-foot-item, .chapter-panel, .tok') ?? el;

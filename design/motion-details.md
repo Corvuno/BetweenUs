@@ -81,9 +81,11 @@ Draw's gold (`--bd-a/--bd-b`) moves in .2s like the rest of the button; only the
 Every hint in the app goes the same way (owner: "uniformity"; a hint vanishing at once made what
 was under it jump, "weird and jarring"). A hint retires once its control has worked
 (`hintRetire`, `state.js`), then waits while any finger or button is down and while a mouse is
-on its control; a quarter second after hands are off, its words fade (.18s ease-out) and, where
-it takes room in a list, it folds shut (.34s `--ease-out`, starting .1s in), so what is under it
-slides up. "· tap to change" folds sideways. The hints under the words beside the card (Ways to
+on its control; 0.4s after hands are off, its words fade (.6s) and, where it takes room in a
+list, it folds shut (.7s, starting .3s in, while the words are half gone), so what is under it
+slides up; about a second in all, on `--ease-move`. It is timed to be seen leaving, not to be
+quick (owner: a .18s fade was "way too short to work"): it goes once per device and nobody waits
+on it. The three values are `--hint-fade`, `--hint-fold`, `--hint-fold-at` in `styles.css`. "· tap to change" folds sideways. The hints under the words beside the card (Ways to
 play, Spotlight, Save) only fade: they keep their room so the card never moves. Show hints again
 brings them back the same way. Folding uses `interpolate-size`; where a browser lacks it the
 fold is immediate after the fade. Reduced motion: at once. A new hint joins with one `HINTS`
