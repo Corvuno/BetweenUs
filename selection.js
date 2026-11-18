@@ -208,7 +208,6 @@ const HOLD_MS = 550;                // a press-and-hold
 const LINES_EASE_MS = 450;          // names glide, lines fade, the panel resizes: all about .45s
 const LINES_FADE_OUT_MS = 250;      // lines leave first, before the names glide back
 const LINES_FADE_IN_DELAY_MS = 180; // lines arrive once the names are nearly home
-const LINES_HINT_FADE_MS = 350;     // the hint leaves like "· tap to change" does
 const linesRoot = document.documentElement;
 
 let sheetLines = false;             // the player's choice for the sheet
@@ -221,7 +220,7 @@ dockedQuery.addEventListener('change', paintLines);
 // "Hold a category to see what it's about": under the categories of every chapter opened, on the sheet only,
 // gone from all of them for good after the first hold (state.js HINTS).
 function showCategoryLinesHint(panel) {
-  if (dockedQuery.matches || hintIsTaught('lines') || panel.querySelector('.cat-hint') || !panel.dataset.chapter) return;
+  if (dockedQuery.matches || hintIsTaught('lines') || sheetLines || panel.querySelector('.cat-hint') || !panel.dataset.chapter) return;
   panel.append(Object.assign(document.createElement('p'), { className: 'cat-hint', textContent: "Hold a category to see what it's about" }));
 }
 
@@ -245,18 +244,15 @@ let linesSwitchTimer = 0;
 function setSheetLines(on) {
   sheetLines = on;
   try { localStorage.setItem(LINES_KEY, on ? '1' : '0'); } catch (error) { console.warn('Could not save the category lines choice:', error); }
-  hintRetire('lines');
-  const hints = [...document.querySelectorAll('.cat-hint')];
+  hintRetire('lines');   // the hint stays while the finger is down, then fades and folds like every hint (styles.css)
   const panels = [...document.querySelectorAll('.chapter-panel.open[data-chapter]')];
   const glides = panels.flatMap(panel => [...panel.querySelectorAll('.toggle-btn .cat-dot, .toggle-btn .cat-name')]);
   const before = new Map(glides.map(el => [el, el.getBoundingClientRect()]));
   const heights = panels.map(panel => panel.getBoundingClientRect().height);
   const animated = !prefersReducedMotion.matches;
   if (animated) {
-    hints.forEach(hint => fadeGhost(hint, hint.parentElement, LINES_HINT_FADE_MS));
     if (!on) panels.forEach(panel => panel.querySelectorAll('.cat-line').forEach(line => fadeGhost(line, panel, LINES_FADE_OUT_MS)));
   }
-  hints.forEach(hint => hint.remove());
   paintLines();
   if (!animated) return;
   linesRoot.classList.add('switching');   // the sheet's picks ease at the same pace while it moves

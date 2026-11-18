@@ -76,3 +76,15 @@ Header, card, controls, party overlay, party chrome and the token hint use `--ea
 ## Buttons
 Draw's gold (`--bd-a/--bd-b`) moves in .2s like the rest of the button; only the end-of-hand colour
 (`.hold-mode`) eases in .6s.
+
+## Hints
+Every hint in the app goes the same way (owner: "uniformity"; a hint vanishing at once made what
+was under it jump, "weird and jarring"). A hint retires once its control has worked
+(`hintRetire`, `state.js`), then waits while any finger or button is down and while a mouse is
+on its control; a quarter second after hands are off, its words fade (.18s ease-out) and, where
+it takes room in a list, it folds shut (.34s `--ease-out`, starting .1s in), so what is under it
+slides up. "· tap to change" folds sideways. The hints under the words beside the card (Ways to
+play, Spotlight, Save) only fade: they keep their room so the card never moves. Show hints again
+brings them back the same way. Folding uses `interpolate-size`; where a browser lacks it the
+fold is immediate after the fade. Reduced motion: at once. A new hint joins with one `HINTS`
+line (its `sel`) and the shared rules in `styles.css` ("Hints go the same way everywhere").

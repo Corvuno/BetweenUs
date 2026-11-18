@@ -1162,8 +1162,7 @@ body.showing-hand-summary #btnSave{display:flex;}
 .tok-rule--r{background:linear-gradient(90deg,var(--tokc,var(--gold)),transparent);}
 .tok-preset.open .tok-rule{opacity:.9;}
 @media (hover:hover) and (pointer:fine){.tok-preset:hover .tok-rule{opacity:.9;}}
-.tok-hint{color:var(--text-helper);transition:opacity .35s var(--ease-out);}
-body.tok-taught .tok-hint{display:none;}
+.tok-hint{color:var(--text-helper);}
 .tok-preset.open{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}
 @media (hover:hover) and (pointer:fine){.tok-preset:hover{border-bottom-color:color-mix(in srgb, var(--tokc,var(--gold)) 55%, transparent);}}
 .tok-preset:active{opacity:.7;}
@@ -1360,7 +1359,6 @@ body.tok-taught .tok-hint{display:none;}
 .menu-foot-item{display:flex;flex-direction:column;align-items:center;}
 /* the once-only line under Ways to play, like the hints under Three, Spotlight and Twist */
 .menu-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;letter-spacing:0;font-size:var(--fs-4);line-height:1.15;color:var(--celadon-dim);}
-body.hint-ways-taught .menu-hint{display:none;}
 .menu-sep{width:4px;height:4px;margin-block-start:1.1rem;background:var(--celadon);transform:rotate(45deg);opacity:.4;}
 
 /* ── PLAYED and FAVOURITES: a spread of small cards (menu round 1, option C) ──
@@ -1657,17 +1655,32 @@ body.hint-ways-taught .menu-hint{display:none;}
 /* A setting's hint (a HINTS entry): one quiet line under its options, the look of the categories' hint (.cat-hint) */
 .seg-hint{flex:0 0 100%;margin:2px 0 4px;padding-inline-start:var(--seg-head-w);white-space:normal;
   font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;color:var(--muted-l);}
-/* A retired hint folds away instead of vanishing: the words fade first, then the row closes up over a moment,
-   so the settings under it slide up rather than jump (owner: a sudden jump in this box is "weird and jarring").
-   Show hints again opens them the same way. Height animates to and from auto where the browser can
-   (interpolate-size); elsewhere it closes at once after the fade. Instant under reduced motion. */
-.seg-hint{interpolate-size:allow-keywords;height:auto;overflow:hidden;
-  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s;}
+/* ── Hints go the same way everywhere (owner: "uniformity") ──
+   A hint retires per control once it has worked (HINTS in state.js). It waits while a finger or button is
+   down and while a mouse is on its control, then after a short pause it fades, and where it takes room in
+   a list it folds shut over a moment, so what is under it slides up instead of jumping (owner: a sudden
+   jump is "weird and jarring"). Show hints again brings them back the same way. Height and width animate
+   to and from auto where the browser can (interpolate-size); elsewhere the fold is immediate after the
+   fade. Instant under reduced motion.
+   - Folding: The Deck's setting hints, the hint under each chapter opened, the hint under Ways to play
+     in the menu, and "· tap to change" beside Selected deck (it folds sideways).
+   - Fading only: the hints under the words beside the card (Ways to play, Spotlight, Save) keep their
+     room, so the centred card never moves, also when Save swaps in for Spotlight at the end of a hand. */
+:is(.seg-hint,.cat-hint,.menu-hint){interpolate-size:allow-keywords;height:auto;overflow:hidden;
+  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s, padding .34s var(--ease-out) .1s;}
+.tok-hint{interpolate-size:allow-keywords;display:inline-block;width:auto;white-space:pre;overflow:hidden;vertical-align:bottom;
+  transition:opacity .18s ease-out, width .34s var(--ease-out) .1s;}
+:is(#btnWays,#btnParty,#btnSave) .row-hint{transition:opacity .18s ease-out;}
 body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"],
-body.hint-three-taught .seg-hint[data-hint="three"],body.hint-lean-taught .seg-hint[data-hint="lean"]{
-  height:0;margin-block:0;opacity:0;visibility:hidden;
-  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s, visibility 0s linear .44s;}
-@media (prefers-reduced-motion:reduce){.seg-hint,body :is(.seg-hint){transition:none !important;}}
+body.hint-three-taught .seg-hint[data-hint="three"],body.hint-lean-taught .seg-hint[data-hint="lean"],
+body.hint-lines-taught .cat-hint,body.hint-ways-taught .menu-hint{
+  height:0;margin-block:0;padding-block:0;opacity:0;visibility:hidden;
+  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s, padding .34s var(--ease-out) .1s, visibility 0s linear .44s;}
+body.tok-taught .tok-hint{width:0;opacity:0;visibility:hidden;
+  transition:opacity .18s ease-out, width .34s var(--ease-out) .1s, visibility 0s linear .44s;}
+body.hint-ways-word-taught #btnWays .row-hint,body.hint-spot-taught #btnParty .row-hint,body.hint-save-taught #btnSave .row-hint{
+  opacity:0;visibility:hidden;transition:opacity .18s ease-out, visibility 0s linear .18s;}
+@media (prefers-reduced-motion:reduce){body :is(.seg-hint,.cat-hint,.menu-hint,.tok-hint,.row-hint){transition:none !important;}}
 /* About, the You–Us lean, as "the stops": YOU and US either side of nine dots in the one picked look. The middle
    one is a small hollow diamond (no lean); the chosen dot is larger and full, with the picked look's underline;
    the dots between the middle and the chosen one are lit, the rest dim. The word on the side it leans to takes
@@ -1778,7 +1791,6 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
 .chapter-panel .cat-hint{flex:0 0 100%;margin:0;padding:8px 9px 6px;
   font-family:'Federo','Jost',sans-serif;font-size:var(--fs-3);letter-spacing:var(--track-text);line-height:1.35;color:var(--muted-l);}
 .chapter-panel .cat-hint{animation:catHintIn .45s ease both;}
-body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 @keyframes catHintIn{from{opacity:0}}
 @media (prefers-reduced-motion:reduce){
   .chapter-panel,.chapter-panel :is(.toggle-btn,.cat-dot,.cat-line),.cat-area .chapter-panel .toggle-btn.holding{transition:none;}
@@ -1887,12 +1899,6 @@ body.hint-lines-taught .cat-hint,html[data-lines="on"] .cat-hint{display:none;}
 .tr-svg path:nth-of-type(4){stroke:url(#trP);opacity:1;} /* full strength, like the preset name (the markup's .5 is overridden) */
 .tr-svg path:last-of-type{fill:var(--copper);opacity:1;}
 
-/* Hints retire per control once it has worked (see HINTS in state.js).
-   Hidden, not removed: the row keeps its height, so the centred screen doesn't
-   jump when a hint retires or when Save swaps in for Spotlight at the end of a hand. */
-body.hint-ways-word-taught #btnWays .row-hint,
-body.hint-spot-taught #btnParty .row-hint,
-body.hint-save-taught #btnSave .row-hint{visibility:hidden;}
 /* Twist landed: the word and the card's new line light up together, then settle. */
 @keyframes twistLit{from{color:var(--celadon-bright)}}
 .twist-lit{animation:twistLit .5s ease-out;}

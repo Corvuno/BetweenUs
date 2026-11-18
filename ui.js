@@ -820,15 +820,9 @@ const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + 
   }
   window.openCats=openCats; window.closeCats=closeCats;
   // "· tap to change" teaches the preset token opens something, then
-  // retires for good once it's done its job — fade first (not an instant
-  // display:none) because the sheet covers the header on mobile, so the
-  // hint disappearing is only ever actually seen on desktop.
+  // retires for good once it's done its job, the way every hint goes (state.js).
   openRow.addEventListener('click', () => {
-    if (!hintIsTaught('tok')) {
-      const h = document.getElementById('tokHint');
-      if (h) h.style.opacity = '0';
-      setTimeout(() => hintRetire('tok'), 350);
-    }
+    hintRetire('tok');
     openCats();
   });
   $('catClose').addEventListener('click', closeCats);

@@ -23,6 +23,9 @@ liked somewhere else. What the owner looks for in every design:
   Lines with no purpose but to flank something read as generic ("the standard deco flair for AI").
 - **Playfulness.** Something going on, something to discover; never clean, predictable and safe for
   its own sake. A screen where everything is "muted and all over the place" is the opposite.
+- **Uniformity.** The same kind of thing behaves the same way everywhere in the app: a fix to one
+  hint, one setting or one sheet is a fix to all of its kind ("not only for the slider, for all
+  hints... uniformity?!").
 - **Centre and symmetry** are the basis of a composition.
 - **Art Deco is the language**: its geometry, symmetry and line work, "pretty and elegant, and also
   bold and out there". Egyptian is close and mixes with it. Modern elements are welcome while the
