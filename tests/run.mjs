@@ -3841,10 +3841,11 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('layout by device: a computer keeps the computer layout at any window shape, a phone and an upright tablet get the phone layout, a tablet held wide the computer one; hints at the scale\'s hint size; room under the tagline', async () => {
+  await check('layout by device: a computer keeps the computer layout at any window shape until it no longer fits, a phone and an upright tablet get the phone layout, a tablet held wide the computer one; hints at the scale\'s hint size; room under the tagline', async () => {
     const cases = [
       ['computer, tall window', { width: 1100, height: 1240 }, false, true],
-      ['computer, narrow window', { width: 760, height: 900 }, false, true],
+      ['computer, narrow window', { width: 730, height: 900 }, false, true],
+      ['computer, too narrow for it', { width: 700, height: 900 }, false, false],
       ['computer, short window', { width: 1300, height: 520 }, false, true],
       ['phone', { width: 412, height: 915 }, true, false],
       ['phone on its side', { width: 915, height: 412 }, true, false],

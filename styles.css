@@ -1886,8 +1886,8 @@ html[data-lines="on"] .chapter-panel[data-chapter] .toggle-btn{width:100%;paddin
 .party-overlay.is-hand-end .pc-rule{display:none;}
 
 /* ══ WIDE SCREENS — the computer layout (agreement 2026-10-18-pc-layout, round 12; top right 2026-11-08, #128) ══
-   Under html.pc, which the script at the top of between-us.html sets: every computer at any window size, and a
-   touch screen at least 900px wide whose screen's short side is at least 600px (a tablet). A phone, and a tablet
+   Under html.pc, which the script at the top of between-us.html sets: a computer window at least 720px across (where
+   this layout stops fitting), and a touch screen at least 900px wide whose screen's short side is at least 600px (a tablet). A phone, and a tablet
    held upright, get the phone layout; there is nothing in between. The card is a real card as large as the window allows; the controls sit
    outside it, aligned to its edges: logo + tagline top centre, Selected deck with Menu under it top left,
    Three / Spotlight / Twist top right (Ways to play before the first card and Save at the end of a hand
