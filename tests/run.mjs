@@ -2883,6 +2883,25 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  await check('The 36 and Colbert keep Spotlight on the card screen; inside it Three and Twist are gone, and Next keeps the fixed order', async () => {
+    for (const preset of ['aronmode', 'colbertmode']) {
+      const { ctx, pg } = await freshApp({ viewport: { width: 412, height: 915 } });
+      try {
+        await pg.evaluate(p => document.querySelector(`.mode-btn[data-mode="${p}"]`).click(), preset); await pg.waitForTimeout(500);
+        await drawCards(pg, 1); await pg.waitForTimeout(1200);
+        assert(await pg.locator('#btnParty').isVisible(), `${preset}: Spotlight is not on the card screen`);
+        assert(!(await pg.locator('#btnPick').isVisible()), `${preset}: Three showed on the card screen`);
+        await pg.locator('#btnParty').click(); await pg.waitForTimeout(500);
+        assert(await pg.evaluate(() => state.partyMode && document.getElementById('partyOverlay').classList.contains('open')), `${preset}: Spotlight did not open`);
+        assert(await pg.evaluate(() => ['partyPick', 'partyBtnTwist'].every(id => getComputedStyle(document.getElementById(id)).visibility === 'hidden')), `${preset}: Three or Twist shows inside Spotlight`);
+        const before = await pg.evaluate(() => ({ i: state.currentIndex, q: translateQ(state.visibleDeck[state.currentIndex + 1]) }));
+        await pg.keyboard.press('ArrowRight'); await pg.waitForTimeout(600);
+        const after = await pg.evaluate(() => ({ i: state.currentIndex, shown: document.getElementById('party-question').textContent }));
+        assert(after.i === before.i + 1 && after.shown === before.q, `${preset}: Next in Spotlight left the fixed order: ${JSON.stringify({ before, after })}`);
+      } finally { await ctx.close(); }
+    }
+  });
+
   await check('Spotlight Three and Twist buttons (phone, sideways phone, PC): visible with a card up, show their state, Three and Twist switch the settings The Deck and the Menu show; Close, Next and the arrow keys work as before', async () => {
     const views = [['phone', { viewport: { width: 412, height: 915 } }], ['sideways phone', { viewport: { width: 915, height: 412 } }], ['PC', { viewport: { width: 1440, height: 900 }, hasTouch: false }]];
     for (const [name, opts] of views) {
