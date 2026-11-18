@@ -3830,7 +3830,7 @@ async function run() {
       const hintShown = () => pg.evaluate(() => getComputedStyle(document.querySelector('#menuDrawer .menu-hint')).visibility !== 'hidden');
       await openPhoneMenu(pg);
       assert(await hintShown() && /seven ways round the table/.test(await pg.locator('#menuDrawer .menu-hint').textContent()), 'the hint is not there at first');
-      await pg.locator('#d-help').click(); await pg.mouse.move(1, 1); await pg.waitForTimeout(800);
+      await pg.locator('#d-help').click(); await pg.mouse.move(1, 1); await pg.waitForTimeout(1600);   // the pause after letting go, then about a second of fading and folding
       assert(await pg.evaluate(() => document.getElementById('helpDrawer').classList.contains('open')), 'Ways to play did not open');
       await pg.evaluate(() => closeAllDrawers());
       await openPhoneMenu(pg);
@@ -3949,7 +3949,7 @@ async function run() {
         assert(await figure(pg) === during, `the card, ticks, count or bar moved between a card and the pause:\n${during}\n${await figure(pg)}`);
         assert(await saved(pg, () => pg.locator('#btnSave').click()), 'Save did not download the evening file');
         const hint = () => pg.evaluate(() => getComputedStyle(document.querySelector('#btnSave .row-hint')).visibility);
-        await pg.mouse.move(1, 1); await pg.waitForTimeout(700);   // a hint goes once hands are off its control
+        await pg.mouse.move(1, 1); await pg.waitForTimeout(1200);   // a hint goes once hands are off its control: the pause, then its fade
         if (name === 'phone') assert(await hint() === 'hidden', 'the hint stayed after the first tap');
         await pg.evaluate(() => { openMenu(document.getElementById('btn-menu')); }); await pg.waitForTimeout(900);
         await pg.locator('[data-menu="hints"]:visible').click(); await pg.waitForTimeout(500);
@@ -3994,7 +3994,7 @@ async function run() {
         }
         await pg.locator('#btnWays').click(); await pg.waitForTimeout(800);
         assert(await pg.evaluate(() => document.getElementById('helpDrawer').classList.contains('open') && state.currentIndex === -1), `${name}: tapping Ways to play did not open the sheet`);
-        await pg.mouse.move(1, 1); await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(700);
+        await pg.mouse.move(1, 1); await pg.evaluate(() => closeAllDrawers()); await pg.waitForTimeout(1200);
         if (!wide) assert((await hintOf()).vis === 'hidden', 'phone: the hint stayed after the first tap');
         await pg.evaluate(() => hintsReset());
         if (!wide) assert((await hintOf()).vis === 'visible', 'phone: Show hints again did not bring the hint back');

@@ -1644,20 +1644,30 @@ body.showing-hand-summary #btnSave{display:flex;}
      in the menu, and "· tap to change" beside Selected deck (it folds sideways).
    - Fading only: the hints under the words beside the card (Ways to play, Spotlight, Save) keep their
      room, so the centred card never moves, also when Save swaps in for Spotlight at the end of a hand. */
+/* Timing (owner: the first version, a .18s fade, was "way too short to work"; it was gone before the eye
+   found it). A hint goes once per device and nobody waits on it, so it is timed to be seen leaving, not to
+   be quick: the words fade over --hint-fade, and the fold starts --hint-fold-at in, while they are half
+   gone, and closes over --hint-fold. Both on --ease-move: a soft start so the eye catches it going, a soft
+   landing so what is under it settles instead of snapping. */
+:root{--hint-fade:.6s;--hint-fold:.7s;--hint-fold-at:.3s;}
 :is(.seg-hint,.cat-hint,.menu-hint){interpolate-size:allow-keywords;height:auto;overflow:hidden;
-  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s, padding .34s var(--ease-out) .1s;}
+  transition:opacity var(--hint-fade) var(--ease-move), height var(--hint-fold) var(--ease-move) var(--hint-fold-at),
+    margin var(--hint-fold) var(--ease-move) var(--hint-fold-at), padding var(--hint-fold) var(--ease-move) var(--hint-fold-at);}
 .tok-hint{interpolate-size:allow-keywords;display:inline-block;width:auto;white-space:pre;overflow:hidden;vertical-align:bottom;
-  transition:opacity .18s ease-out, width .34s var(--ease-out) .1s;}
-:is(#btnWays,#btnParty,#btnSave) .row-hint{transition:opacity .18s ease-out;}
+  transition:opacity var(--hint-fade) var(--ease-move), width var(--hint-fold) var(--ease-move) var(--hint-fold-at);}
+:is(#btnWays,#btnParty,#btnSave) .row-hint{transition:opacity var(--hint-fade) var(--ease-move);}
 body.hint-shuffle-taught .seg-hint[data-hint="shuffle"],body.hint-cards-taught .seg-hint[data-hint="cards"],
 body.hint-three-taught .seg-hint[data-hint="three"],body.hint-lean-taught .seg-hint[data-hint="lean"],
 body.hint-lines-taught .cat-hint,body.hint-ways-taught .menu-hint{
   height:0;margin-block:0;padding-block:0;opacity:0;visibility:hidden;
-  transition:opacity .18s ease-out, height .34s var(--ease-out) .1s, margin .34s var(--ease-out) .1s, padding .34s var(--ease-out) .1s, visibility 0s linear .44s;}
+  transition:opacity var(--hint-fade) var(--ease-move), height var(--hint-fold) var(--ease-move) var(--hint-fold-at),
+    margin var(--hint-fold) var(--ease-move) var(--hint-fold-at), padding var(--hint-fold) var(--ease-move) var(--hint-fold-at),
+    visibility 0s linear calc(var(--hint-fold-at) + var(--hint-fold));}
 body.tok-taught .tok-hint{width:0;opacity:0;visibility:hidden;
-  transition:opacity .18s ease-out, width .34s var(--ease-out) .1s, visibility 0s linear .44s;}
+  transition:opacity var(--hint-fade) var(--ease-move), width var(--hint-fold) var(--ease-move) var(--hint-fold-at),
+    visibility 0s linear calc(var(--hint-fold-at) + var(--hint-fold));}
 body.hint-ways-word-taught #btnWays .row-hint,body.hint-spot-taught #btnParty .row-hint,body.hint-save-taught #btnSave .row-hint{
-  opacity:0;visibility:hidden;transition:opacity .18s ease-out, visibility 0s linear .18s;}
+  opacity:0;visibility:hidden;transition:opacity var(--hint-fade) var(--ease-move), visibility 0s linear var(--hint-fade);}
 @media (prefers-reduced-motion:reduce){body :is(.seg-hint,.cat-hint,.menu-hint,.tok-hint,.row-hint){transition:none !important;}}
 /* About, the You–Us lean, as "the stops": YOU and US either side of nine dots in the one picked look. The middle
    one is a small hollow diamond (no lean); the chosen dot is larger and full, with the picked look's underline;
