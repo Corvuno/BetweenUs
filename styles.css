@@ -1552,6 +1552,8 @@ body.showing-hand-summary #btnSave{display:flex;}
    painted by ui.js with giltRailPaint). The count and chevron at the right say there is more inside. */
 .chapters{--rail-x:8px;--rail-w:5px;--rail-inset:36px;--station-pad:15px;--fold-w:44px;--fold-room:var(--fold-w);--ct-gap:7px;--line-gap:4px;
   --name-lh:calc(1.15*var(--fs-7));display:flex;flex-direction:column;}
+/* on the phone the rows sit closer, so the eight stations take less of the sheet: name and line pulled together, less air above and below */
+html:not(.pc) .chapters{--station-pad:8px;--line-gap:2px;}
 .chapter-group{--ch:var(--gold);--ch-ease:.4s ease-out;--share:0;--tick:12px;position:relative;padding-inline-start:var(--rail-inset);
   --ch-rail:linear-gradient(in oklab 190deg,var(--rail-d) 0%,var(--rail-m) 34%,var(--rail-l) 50%,var(--rail-m) 66%,var(--rail-d) 100%);}
 .chapter-group:is([data-group="surface"],[data-group="afterdark"]){--tick:18px;}
