@@ -1,7 +1,9 @@
 # The Deck, docked on a computer
 
 The computer layout (`html.pc`, set by the script at the top of `between-us.html`: a computer
-window at least 720px across, where that layout stops fitting, and a touch screen at least 900px across whose screen's short side is 600px or
+window unless it is phone-shaped (under 720px across and 1.6 times as tall as wide) or too small
+for it (under 500px across, or under 820px across and 500px tall; under 820px the logo takes a
+row of its own), and a touch screen at least 900px across whose screen's short side is 600px or
 more) shows The Deck as a panel from the left edge, under Selected deck, which opens it. The menu,
 Played, Favourites and Ways to play are the same kind of panel from the same side, because their
 button sits there too. The phone layout (phones, and tablets held upright) keeps the phone sheets;

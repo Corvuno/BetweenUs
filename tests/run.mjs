@@ -3841,11 +3841,14 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('layout by device: a computer keeps the computer layout at any window shape until it no longer fits, a phone and an upright tablet get the phone layout, a tablet held wide the computer one; hints at the scale\'s hint size; room under the tagline', async () => {
+  await check('layout by device: a computer keeps the computer layout unless the window is phone-shaped or too small for it, a phone and an upright tablet get the phone layout, a tablet held wide the computer one; hints at the scale\'s hint size; room under the tagline', async () => {
     const cases = [
       ['computer, tall window', { width: 1100, height: 1240 }, false, true],
-      ['computer, narrow window', { width: 730, height: 900 }, false, true],
-      ['computer, too narrow for it', { width: 700, height: 900 }, false, false],
+      ['computer, narrow window', { width: 640, height: 900 }, false, true],
+      ['computer, narrow and short', { width: 720, height: 500 }, false, true],
+      ['computer, phone-shaped window', { width: 580, height: 1160 }, false, false],
+      ['computer, too narrow for it', { width: 480, height: 700 }, false, false],
+      ['computer, too small a card', { width: 700, height: 480 }, false, false],
       ['computer, short window', { width: 1300, height: 520 }, false, true],
       ['phone', { width: 412, height: 915 }, true, false],
       ['phone on its side', { width: 915, height: 412 }, true, false],

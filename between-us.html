@@ -21,16 +21,16 @@
      questions.js, or any of the app modules change, or a fix can sit
      invisible in an already-open tab or a cached edge response indefinitely. -->
 <script>
-/* Which layout: html.pc for the computer layout, none for the phone's. A computer gets the computer layout as long as
-   it fits: from 720px across, the narrowest window where the logo, Selected deck, Three / Spotlight / Twist with their
-   hints, and Back / Next card / the count still keep clear of each other (measured with every word at its longest).
-   Narrower, the phone layout. A touch screen gets the computer layout only when it is a tablet held wide (at least
-   900px across, its screen's short side at least 600px). Set before the styles load so nothing flashes; kept up to date on resize and rotation, and
-   "layoutchange" tells the scripts. */
+/* Which layout: html.pc for the computer layout, none for the phone's. A computer window gets the computer layout unless
+   it is phone-shaped (under 720px across and at least 1.6 times as tall as it is wide) or too narrow for it to fit at
+   all: under 500px across, or under 820px across and under 500px tall, where its card would be too small to read
+   (under 820px its logo takes a row of its own, styles.css). A touch screen gets the computer layout
+   only when it is a tablet held wide (at least 900px across, its screen's short side at least 600px). */
 (function(){
   var root=document.documentElement, touch=matchMedia('(hover:none) and (pointer:coarse)');
   function decide(){
-    var pc=touch.matches ? innerWidth>=900 && Math.min(screen.width,screen.height)>=600 : innerWidth>=720;
+    var pc=touch.matches ? innerWidth>=900 && Math.min(screen.width,screen.height)>=600
+      : innerWidth>=500 && (innerWidth>=720 || innerHeight<innerWidth*1.6) && (innerWidth>=820 || innerHeight>=500);
     if(root.classList.contains('pc')===pc) return;
     root.classList.toggle('pc',pc);
     dispatchEvent(new Event('layoutchange'));
@@ -40,7 +40,7 @@
   touch.addEventListener('change',decide);
 })();
 </script>
-<link rel="stylesheet" href="styles.css?v=20261118e">
+<link rel="stylesheet" href="styles.css?v=20261119a">
 </head>
 <body class="before-first-card">
 <div class="app">
@@ -561,18 +561,18 @@
   </div>
 </div>
 
-<script src="questions.js?v=20261118e"></script>
-<script src="categories.js?v=20261118e"></script>
-<script src="config.js?v=20261118e"></script>
-<script src="gilt.js?v=20261118e"></script>
-<script src="state.js?v=20261118e"></script>
-<script src="deck.js?v=20261118e"></script>
-<script src="card.js?v=20261118e"></script>
-<script src="library.js?v=20261118e"></script>
-<script src="session.js?v=20261118e"></script>
-<script src="selection.js?v=20261118e"></script>
-<script src="presentation.js?v=20261118e"></script>
-<script src="ui.js?v=20261118e"></script>
+<script src="questions.js?v=20261119a"></script>
+<script src="categories.js?v=20261119a"></script>
+<script src="config.js?v=20261119a"></script>
+<script src="gilt.js?v=20261119a"></script>
+<script src="state.js?v=20261119a"></script>
+<script src="deck.js?v=20261119a"></script>
+<script src="card.js?v=20261119a"></script>
+<script src="library.js?v=20261119a"></script>
+<script src="session.js?v=20261119a"></script>
+<script src="selection.js?v=20261119a"></script>
+<script src="presentation.js?v=20261119a"></script>
+<script src="ui.js?v=20261119a"></script>
 <script>
 // Installable + offline (see sw.js). Only on http(s): the downloaded single-file
 // copies open from file:// and skip this.

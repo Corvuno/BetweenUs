@@ -13,5 +13,5 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- On a computer the app keeps its computer layout until the window is too narrow for it, tablets held wide get it too, and the menu now opens from the same side as The Deck.
+- On a computer the app keeps its computer layout unless the window is shaped like a phone, tablets held wide get it too, and the menu now opens from the same side as The Deck.
 - Smaller fixes throughout, and Spotlight now works in The 36 and Colbert too.

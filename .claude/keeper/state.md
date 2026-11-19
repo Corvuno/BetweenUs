@@ -28,7 +28,7 @@ Backlog items are named by number and title.
 - The title: "very thin and not there". The font stays.
 - The computer's card screen has its earlier layout back (Back, and Three, Spotlight, Twist top
   right); the owner finds it fine as it is. The layout follows the device, never the window's shape:
-  a computer keeps it until it no longer fits (720px across), a tablet held wide gets it, and the menu and The Deck both slide
+  a computer keeps it unless the window is phone-shaped or too small for it, a tablet held wide gets it, and the menu and The Deck both slide
   in from the left, where their buttons are (#193).
 
 ## What the owner wants next, in their order
