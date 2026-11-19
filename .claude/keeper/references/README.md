@@ -66,3 +66,43 @@ Product photos of other decks: inspiration only, never redrawn.
   line, a stepped frame, dark hatched ground.
 - `dense-geometric-star-black-white.jpg`: a black and white back packed edge to edge with geometry:
   a star of triangles around rings, every area filled with its own small pattern.
+
+Sent by the owner for the start card's streams (#195), after a board of flowing deco line work:
+"Here is what I found and liked. I think the short version is: Im more into geometric lines then
+curve. I think this is enough of a sample size to go with. (Keeping the cards I send in mind as
+well.)" Mostly stock images and product photos: for reference only, never copied into the app.
+The `owner-*` photos are the owner's own pieces.
+
+What they share, as the Keeper reads it (to be confirmed by the owner on #195): lines in bundles
+of parallels; curves only as compass arcs and nested arches, never free swirls; fans and sunrises
+that rise from a base; a tall centre, mirrored left to right; many are doors and gates.
+
+- Doors and gates: `elevator-doors-fan-inlaid-wood.jpg` (a fan of inlaid wood rising up two doors),
+  `doors-iron-grille-pair.jpg`, `gate-sunrise-bars.jpg` (bars that fan out from a half circle),
+  `door-iron-rays.jpg`, `gates-iron-sunburst.jpg`, `door-iron-scrolls-and-flower.jpg`,
+  `gate-panel-lattice-gold.jpg` (crossing lines, stepped uprights, an octagon at the foot),
+  `brandt-fireplace-screen-spirals-and-bars.jpg` (straight bars in steps, spirals in the side fields).
+- Arches and rising fans, gold on dark: `arches-rising-gold-on-burgundy.jpg` (rows of nested arches,
+  half sunbursts at the foot, pinstripe columns), `poster-tower-arches-gold-on-black.jpg`,
+  `poster-door-sunrise-gold-on-black.jpg`, `poster-arches-black-gold-grey-areas.jpg`,
+  `poster-fan-and-chevrons-gold.jpg`, `panel-arches-and-rays-gold.jpg`,
+  `panel-fans-and-arches-dense-gold.jpg`, `card-arches-and-columns-gold-teal.jpg`,
+  `fan-arches-cream-column.jpg`, `portrait-frame-crossing-lines-gold.jpg`,
+  `nested-diamonds-gold-on-black.jpg`, `sunbursts-in-diamonds-on-teal.jpg`.
+- Patterns: `pattern-arches-gold-line-on-black.jpg` (overlapping arches in one fine line),
+  `pattern-fans-fine-gold-on-navy.jpg`, `fan-scales-green-and-gold.jpg` (each scale one green),
+  `fans-and-discs-gold-navy-areas.jpg`, `waves-fine-gold-on-green.jpg` (the one free curve),
+  `cards-dense-gold-patterns.webp`.
+- Streamline buildings, bands of lines that round a corner together:
+  `streamline-house-curved-balconies-bw.jpg`, `streamline-house-stepped-bay.jpg`,
+  `streamline-house-white-curved-corners.jpg`, `streamline-house-blue-bands.jpg`,
+  `streamline-maritime-museum.jpg`, `streamline-stepped-curves-concrete.jpg` (stacked curved steps).
+- Glass and wood: `sconce-stepped-glass-1.webp`, `-2`, `-lit`, `-pair`, `-brass` (frosted glass
+  in stepped fans); `owner-sconces-stepped-glass.jpg`, `owner-sideboard-burr-walnut.jpg`,
+  `owner-cabinet-mirrored-grain.jpg` (burr veneer laid as a mirror image about the centre).
+- Dividers and frames: `dividers-sunrise-and-rings-on-navy.jpg`, `dividers-thin-on-dark-green.jpg`,
+  `dividers-and-corners-gold-on-black.jpg`, `frames-and-dividers-gold-on-slate.jpg`,
+  `dividers-black-on-white.jpg`, `dividers-diamonds-on-petrol.jpg`, `dividers-many-gold-on-black.jpg`,
+  `invitation-cards-gold-frames.jpg`, `deck-box-gold-frame-1920s.png`.
+- Mood: `underwater-city-hall-green.jpg` (a deco hall under water, all in green),
+  `staircase-railing-scrolls.jpeg`.
