@@ -11,7 +11,7 @@ No row boxes, no tint, no border per row, no dots. One double hairline rail (two
 `.chapter-group`, indented 36px from the sheet edge, and draws its own stretch of the rail, so
 a group a preset hides takes its stretch with it. A 1px `--gold` tick starts every row at the rail,
 its length by group: 12, 18, 24, 30px for Arrive to Into the Deep, then 24, 18 for Between Us and
-After Dark, 12 for Wildcards and Fixed Sets (`--tick`). Rows are 15px (`--station-pad`) above and below.
+After Dark, 12 for Wildcards and Fixed Sets (`--tick`). Rows are 15px (`--station-pad`) above and below; on the phone 8px, with the line 2px under the name (`--line-gap`, 4px elsewhere), so the closed groups take less of the sheet.
 - **Name**: Jost 300, caps, `--fs-7`, `--track-2`, line height 1.15 (`--name-lh`); wraps to a
   second line where the room is short (Beneath the Surface at 360px). **Line** under it: Federo,
   `--fs-3`, `--track-text`. Names and lines are the group's own words.
