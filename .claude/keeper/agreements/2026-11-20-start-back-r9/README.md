@@ -13,4 +13,6 @@ exports `zonesTwo` (8d) and `technoTwo` (8f); the other designs on the page come
 and 8 records (round 3 `streamlineBands` = 2a, round 4 `grainBlend` = 5a, round 7 `techno` and
 `medallion`, round 8 `cutSidesPurple`).
 
-The Keeper would ship 8d in two colours. Nothing here is chosen.
+Owner on 8d: "The lines on the side and the jewels are intercecting at some point, fix that as well, should have a clear hirachiy." Added beside it (the earlier 8d kept): `zonesClean`, where the netted ends own the sides and the medallion the top and bottom; rays that would reach the netting are dropped and the netting stops on the tick ring.
+
+The Keeper would ship 8d in two colours, clear-order version. Nothing here is chosen.

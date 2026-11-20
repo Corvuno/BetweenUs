@@ -1101,15 +1101,20 @@ function medRays(k, phone, end, keep = () => true) {
 // 8d · Split by zone. 2a's frame and its netted diamonds at both ends; 2b's medallion above and below:
 // the tick ring round the door and its rays of two lengths, which end on the border or on the lattice's
 // outermost line. Corners and ends are 2a, the centre is 2b.
-function comboZones(phone, two = false) {
+function comboZones(phone, two = false, clean = false) {
   const k = kit(phone), defs = [], fr = techFrame(k, true, two ? AMETHYST : PETROL);
-  const lat = techLattice(k, phone, fr.inside);
+  const lat = techLattice(k, phone, fr.inside, clean ? (x, y) => inDoor(x, y, 40) : () => false);
   // the lattice's reach: the outer line of the upper-left family runs from the cut corner to the door's shoulder
   const latZone = (x, y) => { const ax = Math.abs(x - CX), ay = Math.abs(y - CY), px = CX - ax, py = CY - ay; return px - py < 40 && px < G7.DW ? false : px - py < 40 + 2; };
   defs.push(`<clipPath id="z8x"><path clip-rule="evenodd" d="${lat.bandsD}"/></clipPath>`);
   let b = `<g clip-path="url(#z8x)">${area(`M0 0H${W}V${H}H0Z`, two ? AMETHYST : PETROL, two ? .3 : .22, 6)}</g>`;
   b += fr.b + lat.lines;
-  b += medRays(k, phone, (x, y) => !fr.inside(x, y) || (CX - Math.abs(x - CX)) - (CY - Math.abs(y - CY)) < 40 + 2 && Math.abs(x - CX) > G7.DW);
+  const latHit = (x, y) => (CX - Math.abs(x - CX)) - (CY - Math.abs(y - CY)) < 40 + 30 && Math.abs(x - CX) > G7.DW - 40;
+  if (clean) {
+    // a clear order: the lattice owns the ends, the medallion the top and bottom. A ray is kept only when
+    // it reaches the border without coming near the lattice, so no ray, jewel or stone touches a side line.
+    b += medRays(k, phone, (x, y) => !fr.inside(x, y), d => { const p0 = walk([CX, CY], d, (x, y) => !inDoor(x, y, 40)); const p1 = walk(p0, d, (x, y) => !fr.inside(x, y) || latHit(x, y)); return !latHit(p1[0], p1[1]); });
+  } else b += medRays(k, phone, (x, y) => !fr.inside(x, y) || (CX - Math.abs(x - CX)) - (CY - Math.abs(y - CY)) < 40 + 2 && Math.abs(x - CX) > G7.DW);
   b += medRing(k, phone, defs, 'z8');
   b += doorAndSuns(k, phone);
   return svg(b, defs.join(''));
@@ -1194,5 +1199,6 @@ function comboTechno(phone, two = false) {
 
 module.exports = {
   zonesTwo: p => comboZones(p, true),
+  zonesClean: p => comboZones(p, true, true),
   technoTwo: p => comboTechno(p, true),
 };
