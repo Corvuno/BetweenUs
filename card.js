@@ -82,6 +82,8 @@ function translateQ(card) {
 // hand's own view, which is left exactly as it was. null whenever the hand's own view is showing.
 let broughtBack = null;
 let viewBeforeBringBack = null;   // { options, step, handSide }: the Three options that were up, and the end-of-hand side, if any
+// The app opens on the start card: a hand carried over from the last visit waits under it (see coverWithStartBack).
+let startCovered = false;
 
 // The card on screen now: the brought-back one, else the hand's current card (null before the first draw
 // and at the end-of-hand screen).
@@ -229,6 +231,7 @@ function setStartBack(text) {
    that card's face swap repaints them. */
 function clearCardFace() {
   broughtBack = viewBeforeBringBack = null;   // a new hand: nothing brought back is up any more
+  startCovered = false;
   hideHandSummary();
   clearTwist();
   applyCardMark(document.getElementById('card'), null);
@@ -276,6 +279,7 @@ function showStartFace({ qEl, nextBtn, accent }) {
 
 function setCardDisplay(card) {
   broughtBack = viewBeforeBringBack = null;   // a fresh face: nothing brought back is up any more
+  startCovered = false;
   // Whatever got us here — a fresh hand, a settings change, the initial
   // boot placeholder — a real (or placeholder) card face is about to be
   // shown, so the previous hand's end-of-hand summary can't still be
@@ -387,6 +391,7 @@ let swap = null;
 let pendingFlip = null;
 
 function flipToCard(card, isFirstDraw) {
+  startCovered = false;
   retireNote();   // a card is shown: what an Undo would bring back has changed
   /* fast tap: the swap already leaving lands on the newest card. Returning before hideHandSummary()/clearTwist() is safe:
      the swap's first tap already ran them, and neither can come back during a 110ms beat */
@@ -482,6 +487,37 @@ function flipToCard(card, isFirstDraw) {
   }, timing.swap));
   timers.push(setTimeout(() => { endAnimation(); pendingFlip = null; }, timing.done));
   pendingFlip = { cancel: () => { timers.forEach(clearTimeout); endAnimation(); pendingFlip = null; } };
+}
+
+/* The app opens on the start card, also when a hand from the last visit carries on: the card it was on waits,
+   painted, under the back. The first tap (the card, Draw, the arrow key) only lifts the back, which dissolves
+   (styles.css .card-back) onto that card; nothing is drawn. Swipes and Back wait for that tap, as on any start card. */
+function coverWithStartBack() {
+  if (!hasCurrentCard() || state.pickerOpen) return;
+  setStartBack(START_LINES);
+  startCovered = true;
+  giltRailPaint(document.getElementById('c-accent'), null);   // the bare start card: the rail takes the card's colour as it shows
+  updateDrawMore();
+}
+function uncoverStartBack() {
+  if (!startCovered) return false;
+  startCovered = false;
+  if (!hasCurrentCard()) return false;   // the hand moved on underneath (only scripts do that): the tap acts as usual
+  // the back dissolves first (styles.css .card-back, .45s), then the question rises in as after any swap:
+  // the logo and the question never show smudged together
+  const text = ['card-level', 'card-question'].map(id => document.getElementById(id));
+  text.forEach(t => { if (t) { t.style.transition = 'none'; t.classList.remove('in'); } });   // out at once, while still under the back
+  text[0]?.getBoundingClientRect();   // forces a reflow, so the next change transitions again
+  text.forEach(t => t?.style.removeProperty('transition'));
+  setTimeout(() => { if (!startCovered) text.forEach(t => t?.classList.add('in')); }, 450);
+  setStartBack('');
+  const accent = document.getElementById('c-accent');
+  giltRailPaint(accent, levelColor(state.visibleDeck[state.currentIndex].level));
+  accent?.classList.remove('accent-bloom');   // the rail blooms in with the card, as on a first draw (replayed by reflow)
+  accent?.getBoundingClientRect();
+  accent?.classList.add('accent-bloom');
+  updateDrawMore();
+  return true;
 }
 
 /* A card from Played or Favourites fills the card screen again. No draw: the hand, its counters, the progress

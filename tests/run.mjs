@@ -2520,6 +2520,37 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
+  await check('the app opens on the start card: a carried-over hand waits under it, the first tap only lifts it, a preset brings it back', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    p.on('pageerror', (e) => consoleErrors.push(e.message));
+    const look = () => p.evaluate(() => ({ start: document.getElementById('card').classList.contains('is-start'), at: state.currentIndex,
+      q: document.getElementById('card-question').textContent, btn: document.getElementById('btn-next').textContent, back: document.getElementById('btn-prev').disabled }));
+    try {
+      await p.goto(`http://127.0.0.1:${port}/${TARGET}`);
+      await p.waitForSelector('#card', { state: 'visible' });
+      await p.waitForTimeout(500);
+      await p.locator('#card').click(); await p.waitForTimeout(1600);
+      await p.locator('#card').click(); await p.waitForTimeout(900);
+      const playing = await look();
+      assert(playing.at === 1 && !playing.start, `two cards did not draw: ${JSON.stringify(playing)}`);
+      await p.reload(); await p.waitForSelector('#card', { state: 'visible' }); await p.waitForTimeout(500);
+      const opened = await look();
+      assert(opened.start && opened.at === 1 && opened.q === playing.q && opened.btn === 'Draw Card' && opened.back, `the app did not open on the start card over the hand: ${JSON.stringify(opened)}`);
+      await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(300);
+      assert((await look()).at === 1 && (await look()).start, 'Back moved the hand under the start card');
+      await p.locator('#card').click(); await p.waitForTimeout(1000);
+      const lifted = await look();
+      assert(!lifted.start && lifted.at === 1 && lifted.q === playing.q && lifted.btn === 'Next Card' && !lifted.back, `the first tap did more than lift the start card: ${JSON.stringify(lifted)}`);
+      assert(await p.evaluate(() => document.getElementById('card-question').classList.contains('in')), 'the question did not come in after the start card lifted');
+      await p.locator('#card').click(); await p.waitForTimeout(600);
+      assert((await look()).at === 2, 'the next tap did not draw on');
+      await p.evaluate(() => document.querySelector('.mode-btn:not(.fixed-seq-btn):not(.active)').click()); await p.waitForTimeout(500);
+      const preset = await look();
+      assert(preset.start && preset.at === -1, `a preset did not bring the start card back: ${JSON.stringify(preset)}`);
+    } finally { await ctx.close(); }
+  });
+
   await check('a restored session shows its own subtitle: Custom "Off script.", a preset its own line', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     const p = await ctx.newPage();
@@ -2538,6 +2569,8 @@ async function run() {
       await reload();
       const after = await read();
       assert(after.token === 'Custom' && after.sub === 'Off script.', `restored Custom deck reads ${JSON.stringify(after)}`);
+      await p.locator('#card').click();   // the app opens on the start card: the first tap lifts it
+      await p.waitForTimeout(600);
       await p.evaluate(() => applyPreset('balanced'));
       await p.locator('#card').click();
       await p.waitForTimeout(600);

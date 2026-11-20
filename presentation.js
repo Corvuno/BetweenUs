@@ -769,9 +769,10 @@ function syncSpotlightSettings() {
 
 // Back has something to go back to once a card is behind it, or while a card brought back from Played or
 // Favourites is up (Back then returns to where the hand was).
-function canGoBack() { return state.currentIndex > 0 || !!broughtBack; }
-// The hand has begun: a card is drawn, Three's options for the first card are up, or a card was brought back.
-function handBegun() { return state.currentIndex >= 0 || state.pickerOpen || !!broughtBack; }
+function canGoBack() { return (state.currentIndex > 0 && !startCovered) || !!broughtBack; }
+// The hand has begun: a card is drawn (and not waiting under the opening start card), Three's options for the first
+// card are up, or a card was brought back.
+function handBegun() { return (state.currentIndex >= 0 && !startCovered) || state.pickerOpen || !!broughtBack; }
 
 // The end of a hand says what to do next on the main screen's hint and in Spotlight's quiet line:
 // same words, the verb picked out in gold there (CSS shows it at hand end only).

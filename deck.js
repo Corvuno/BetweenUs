@@ -654,6 +654,7 @@ function _nextCardBase() {
 // the double-press guard and post-advance hooks (party/session summary).
 
 function prevCard() {
+  if (startCovered) return;   // the opening start card waits for a tap forward
   if (dismissBroughtBack()) return;   // Back from a card brought back from Played or Favourites: the hand's own view
   /* Three options on screen: Back leaves them (no pick, nothing sits out) and
      is the card behind them again — the card of the step before. */
@@ -736,6 +737,7 @@ let _nextLockedUntil = 0;
 
 function nextCard() {
   if (performance.now() < _nextLockedUntil) return;
+  if (uncoverStartBack()) { _nextLockedUntil = performance.now() + NEXT_GUARD_MS.draw; return; }   // the opening start card lifts, nothing is drawn
   dismissBroughtBack();   // Draw carries on the hand where it was
   const action = decideNextCardAction();
   _nextLockedUntil = performance.now() + (action.type === 'advance' && action.wasAtEnd ? NEXT_GUARD_MS.pause : NEXT_GUARD_MS.draw);

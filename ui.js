@@ -1342,6 +1342,7 @@ applyQueryDeck();   // ?Q=214,friendship-7,... overrides the drawn default hand,
 // test link must stay exactly what it says, never quietly swapped for a
 // saved session.
 if (!state.queryDeckActive) autoResumeSession();
+coverWithStartBack();   // the app always opens on the start card; a carried-over hand waits under it
 
 
 
