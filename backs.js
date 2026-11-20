@@ -226,11 +226,18 @@
   // fields round the door, each with its own design: above and below, a sunrise from the half sun with two
   // arcs crossing its rays; left and right, nested chevrons that point at the door, every band its own tone.
   // A small diamond marks each cut where it meets the door. Every line ends on the border, a cut or the door.
+  // the cuts' geometry: the border inset t1, the upper-left shoulder shL, the cut's direction du, the chevron spacing sp,
+  // and chevP(j), the j-th chevron out from the door in the left field
+  function cutGeometry(phone) {
+    const t1 = 40, sp = phone ? 30 : 22, shL = [CX - G7.DW, G7.yS(G7.DW, G7.R0)];
+    const dv = [shL[0] - t1, shL[1] - t1], dl = Math.hypot(...dv), du = [dv[0] / dl, dv[1] / dl];
+    const chevP = j => { const vx = shL[0] - j * sp; const a = [vx, CY], L = 900; return [[a[0] - du[0] * L, a[1] - du[1] * L], a, [a[0] - du[0] * L, a[1] + du[1] * L]]; };
+    return { t1, sp, shL, du, chevP, nC: Math.ceil((shL[0] - t1) / sp) + 12 };
+  }
+
   /** @param {{ side: (t: number) => any[], tb: string, dia: string }} [pal] */
   function cutAreas(phone, pal = { side: t => [PETROL, null], tb: PETROL, dia: PETROL }, ex = {}) {
-    const k = kit(phone), t1 = 40, sp = phone ? 30 : 22, x0 = CX - G7.DW, yS0 = G7.yS(G7.DW, G7.R0);
-    const shL = [x0, yS0];                                         // upper-left shoulder
-    const dv = [shL[0] - t1, shL[1] - t1], dl = Math.hypot(...dv), du = [dv[0] / dl, dv[1] / dl];
+    const k = kit(phone), { t1, shL, du, chevP, nC } = cutGeometry(phone);
     // with 2a's frame (an extra layer) the cut starts where it meets the frame's inner line
     const fr = ex.frame ? techFrame(kit(phone), true, pal.side(0)[0]) : null;
     const cut = [fr ? walk([t1, t1], du, fr.inside) : [t1, t1], ex.ring ? walk(shL, [-du[0], -du[1]], (x, y) => !inDoor(x, y, 40)) : shL];
@@ -248,8 +255,6 @@
     defs += `<clipPath id="d7tb"><path d="${topField} ${botField}"/></clipPath><clipPath id="d7lr"><path d="${leftField} ${rightField}"/></clipPath>`;
     // chevrons in the side fields: lines parallel to the two cuts, meeting on the centre line, nested out from the door
     let chev = '', chevA = '';
-    const chevP = (j) => { const vx = shL[0] - j * sp; const a = [vx, CY], L = 900; return [[a[0] - du[0] * L, a[1] - du[1] * L], a, [a[0] - du[0] * L, a[1] + du[1] * L]]; };
-    const nC = Math.ceil((shL[0] - t1) / sp) + 12;
     for (let j = 0; j < nC; j++) {
       const P = chevP(j);
       for (const sx of [1, -1]) { const Q = P.map(p => [sx > 0 ? p[0] : W - p[0], p[1]]); chev += k.path(`M${f(Q[0][0])} ${f(Q[0][1])}L${f(Q[1][0])} ${f(Q[1][1])}L${f(Q[2][0])} ${f(Q[2][1])}`, j % 3 === 0 ? MID : FINE + .06, j % 3 === 0 ? .9 : .6, 8 - Math.min(7, j / 2)); }
@@ -547,11 +552,54 @@
     return { under, over };
   }
 
+  // 8a: fine engraved hatching across the amethyst side bands, like the shading on old printed playing cards; and tiny
+  // dots along the cuts and the outer edge of the petrol arcs, uneven in size and spacing, like an edge punched by hand.
+  function cutAreasDepth(phone) {
+    const R = seeded(phone ? 3 : 9), { t1, shL, du, chevP, nC } = cutGeometry(phone), fr = techFrame(kit(phone), true, AMETHYST);
+    let bandsD = '';
+    for (let j = 1; j < nC; j += 3) {
+      const P = [...chevP(j), ...chevP(j + 1).slice().reverse()];
+      for (const sx of [1, -1]) bandsD += `${poly(P.map(p => [sx > 0 ? p[0] : W - p[0], p[1]]))} `;
+    }
+    const leftField = `M${t1} ${t1}L${f(shL[0])} ${f(shL[1])}V${f(H - shL[1])}L${t1} ${H - t1}Z`;
+    const rightField = `M${W - t1} ${t1}L${f(W - shL[0])} ${f(shL[1])}V${f(H - shL[1])}L${W - t1} ${H - t1}Z`;
+    const step = phone ? 7 : 5, across = [du[1], -du[0]];
+    // each half runs across its own cut: the upper half across the upper cut, the lower half mirrored
+    const half = (sy, id) => {
+      let d = '';
+      for (let c = -1400; c < 1400; c += step) {
+        const p = [CX + du[0] * c, CY + du[1] * c * sy], dd = [across[0], across[1] * sy];
+        d += `M${f(p[0] - dd[0] * 1200)} ${f(p[1] - dd[1] * 1200)}L${f(p[0] + dd[0] * 1200)} ${f(p[1] + dd[1] * 1200)}`;
+      }
+      return `<g clip-path="url(#${id})"><path class="a" style="--i:7" d="${d}" ${fineStroke(phone, GOLD, .2, .4)}/></g>`;
+    };
+    const defs = `<clipPath id="e11b"><path d="${bandsD}"/></clipPath><clipPath id="e11f"><path d="${leftField} ${rightField}"/></clipPath><clipPath id="e11r"><path d="${chamferRect(fr.tin, 120)}"/></clipPath>`
+      + `<clipPath id="e11u"><rect width="${W}" height="${CY}"/></clipPath><clipPath id="e11l"><rect y="${CY}" width="${W}" height="${CY}"/></clipPath>`;
+    const under = `<g clip-path="url(#e11r)"><g clip-path="url(#e11f)"><g clip-path="url(#e11b)">${half(1, 'e11u')}${half(-1, 'e11l')}</g></g></g>`;
+    const mirror4 = p => [[p[0], p[1]], [W - p[0], p[1]], [p[0], H - p[1]], [W - p[0], H - p[1]]];
+    const dot = (p, r, op) => `<circle class="a" style="--i:4" cx="${f(p[0])}" cy="${f(p[1])}" r="${f(r)}" fill="${GOLD}" fill-opacity="${f(op)}"/>`;
+    const cut0 = walk([t1, t1], du, fr.inside), cut1 = walk(shL, [-du[0], -du[1]], (x, y) => !inDoor(x, y, 40));
+    const L = Math.hypot(cut1[0] - cut0[0], cut1[1] - cut0[1]), off = [-du[1], du[0]];
+    let over = '';
+    for (const side of [-1, 2.6]) for (let u = 48 + R() * 10; u < L - 30; u += (phone ? 13 : 10) + R() * (phone ? 14 : 10)) {
+      const p = [cut0[0] + du[0] * u + off[0] * 7 * side, cut0[1] + du[1] * u + off[1] * 7 * side], r = (phone ? 2.2 : 1.7) * (.7 + R() * .6);
+      for (const q of mirror4(p)) over += dot(q, r, .3 + R() * .35);
+    }
+    for (const cy of [G7.TOPY, H - G7.TOPY]) for (let a = 6 + R() * 3; a < 174; a += (phone ? 2.2 : 1.6) + R() * 2) {
+      const t = a * Math.PI / 180, sg = cy < CY ? -1 : 1, p = [CX + 442 * Math.cos(t), cy + sg * 442 * Math.sin(t)];
+      if (p[0] < fr.tin + 30 || p[0] > W - fr.tin - 30 || p[1] < fr.tin + 20 || p[1] > H - fr.tin - 20) continue;
+      const px = CX - Math.abs(p[0] - CX), py = CY - Math.abs(p[1] - CY);   // folded into the upper-left quarter
+      if ((px - t1) * du[1] - (py - t1) * du[0] < 14) continue;            // only in the top and bottom fields
+      over += dot(p, phone ? 1.9 : 1.5, .3 + R() * .3);
+    }
+    return { defs, under, over };
+  }
+
   const PAL8A = { side: t => [AMETHYST, t ? .14 : .32], tb: PETROL, dia: PETROL };
   const BACKS = {
     turnByTurn: p => withDepth(streamline(p, 'band'), turnByTurnDepth(p)),               // 2a
     bookmatched: p => withDepth(bookmatchedRefined(p, 'diagonal'), bookmatchedDepth(p)), // 5a
-    cutAreasBoth: p => cutAreas(p, PAL8A, { ring: true, jewels: true, frame: true }),   // 8a with its extra layer
+    cutAreasBoth: p => withDepth(cutAreas(p, PAL8A, { ring: true, jewels: true, frame: true }), cutAreasDepth(p)),   // 8a with its extra layer
     splitByZone: p => comboZones(p, true, true),                                        // 8d, clear order
     linesAndJewels: p => comboTechno(p, true),                                          // 8f
   };
