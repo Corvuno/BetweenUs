@@ -14,5 +14,5 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - On a computer the app keeps its computer layout unless the window is shaped like a phone, tablets held wide get it too, and the menu now opens from the same side as The Deck.
-- The start card now opens with one of five new card backs, a different one each time, and the Intermezzo sometimes wears one too.
+- The start card now opens with one of five new card backs, a different one each time, and the Intermezzo sometimes wears one too. Two of them gained a finer second layer that gives them depth.
 - Smaller fixes throughout, and Spotlight now works in The 36 and Colbert too.

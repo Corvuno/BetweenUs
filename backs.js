@@ -65,22 +65,28 @@
   // centre like the bands on a streamline house; a bold band rides beside the pinstripes. The colour
   // turns with the card: petrol top left and bottom right, amethyst the other two, so it reads the same
   // either way up.
-  function streamline(phone, mode = 'quarter') {
-    const k = kit(phone), g = phone ? 30 : 20, XB = 212, Y0 = 200, MIDG = 22;
+  // the streamline's lines: line i of the top (s = 1) or bottom (s = -1) bundle, as corner points and radii
+  function streamGeometry(phone) {
+    const g = phone ? 30 : 20, XB = 212, Y0 = 200, MIDG = 22;
     const n = Math.ceil(520 / g), tan = Math.tan(Math.PI / 8);
     const pts = (i, s) => {
       const y = CY - s * (MIDG + i * g), yt = CY - s * (CY - Y0 + i * g), xb = XB - i * g * tan, climb = Math.abs(y - yt);
       return [[0, y], [xb, y], [xb + climb, yt], [W - xb - climb, yt], [W - xb, y], [W, y]];
     };
-    const rad = (i, s) => { const a = Math.max(30, 230 - i * g * .9), c = 160 + i * g * .9; return [0, a, c, c, a, 0]; };
-    const line = (i, s) => rounded(pts(i, s), rad(i, s));
+    const rad = i => { const a = Math.max(30, 230 - i * g * .9), c = 160 + i * g * .9; return [0, a, c, c, a, 0]; };
+    const line = (i, s) => rounded(pts(i, s), rad(i));
+    return { XB, Y0, n, pts, rad, line };
+  }
+
+  function streamline(phone, mode = 'quarter') {
+    const k = kit(phone), { XB, Y0, n, pts, rad, line } = streamGeometry(phone);
     let defs = `<clipPath id="s2a"><rect width="${CX}" height="${CY}"/><rect x="${CX}" y="${CY}" width="${CX}" height="${CY}"/></clipPath><clipPath id="s2b"><rect x="${CX}" width="${CX}" height="${CY}"/><rect y="${CY}" width="${CX}" height="${CY}"/></clipPath>`;
     let A = '', B = '';
     for (const s of [1, -1]) for (let i = 1; i + 2 < n; i += 4) {
       const a = line(i, s);
       // the band between line i and i+2: walk a, then back along c reversed (sampled via the polyline)
       const pc = pts(i + 2, s).slice().reverse();
-      const d = `${a}L${rounded(pc, rad(i + 2, s).slice().reverse()).slice(1)}Z`;
+      const d = `${a}L${rounded(pc, rad(i + 2).slice().reverse()).slice(1)}Z`;
       const op = .07 + .2 * i / n;
       A += area(d, PETROL, op, 6); B += area(d, AMETHYST, op, 6);
     }
@@ -90,7 +96,7 @@
       b = ''; let t = 0;
       for (let i = 1; i + 2 < n; i += 4, t++) for (const s of [1, -1]) {
         const a = line(i, s), pc = pts(i + 2, s).slice().reverse();
-        const d = `${a}L${rounded(pc, rad(i + 2, s).slice().reverse()).slice(1)}Z`;
+        const d = `${a}L${rounded(pc, rad(i + 2).slice().reverse()).slice(1)}Z`;
         b += area(d, t % 2 ? AMETHYST : PETROL, .09 + .2 * i / n, 6);
       }
     } else if (mode === 'seam') {
@@ -117,24 +123,30 @@
   // and then a bolder one, rings that stay crisp and nearly square, a smooth swell round four small knots,
   // and the four quarters meeting on gold seams down and across the centre, as veneer meets at its joint.
   // Each quarter one colour, petrol and amethyst crosswise, in narrow bands.
+  // The grain: ring d (its distance out from the door) at angle q in degrees, nearly square, swelling round four knots.
+  const A0 = 500, B0 = 300;
+  const KNOTS = [[CX - 590, CY - 320], [CX + 590, CY - 320], [CX - 590, CY + 320], [CX + 590, CY + 320]];
+  function grainPoint(d, q) {
+    const a = A0 + d, bb = B0 + d * .72, nn = Math.max(4, 9 - d * .009);
+    const t = q * Math.PI / 180, c = Math.cos(t), sn = Math.sin(t);
+    let x = CX + a * Math.sign(c) * Math.pow(Math.abs(c), 2 / nn), y = CY + bb * Math.sign(sn) * Math.pow(Math.abs(sn), 2 / nn);
+    for (const [kx, ky] of KNOTS) {   // a smooth swell round each knot
+      const dx = x - kx, dy = y - ky, dist = Math.hypot(dx, dy) || 1, m = 46 * Math.exp(-(dist * dist) / (2 * 95 * 95));
+      x += dx / dist * m; y += dy / dist * m;
+    }
+    return [x, y];
+  }
+
+  // The spacing between grain rings outward from the door; a step of 26 or more carries a colour band. The computer
+  // drawing has the same rings and bands reaching just as far, with each narrow step split in two for a finer grain.
+  const PHONE_GRAIN = [16, 16, 16, 26, 16, 16, 40, 18, 18, 18, 18, 30, 20, 20, 52, 22, 22, 22, 34, 24, 24, 60, 26, 26, 40];
+  const COMPUTER_GRAIN = PHONE_GRAIN.flatMap(r => (r >= 26 ? [r] : [r * .55, r * .45]));
+
   function bookmatchedRefined(phone, mode = 'seams') {
-    const k = kit(phone);
-    const A0 = 500, B0 = 300;
-    const base = phone ? [16, 16, 16, 26, 16, 16, 40, 18, 18, 18, 18, 30, 20, 20, 52, 22, 22, 22, 34, 24, 24, 60, 26, 26, 40] :
-      [11, 11, 11, 18, 11, 11, 28, 12, 12, 12, 12, 20, 13, 13, 36, 14, 14, 14, 22, 15, 15, 42, 16, 16, 26, 17, 17, 48, 18, 18];
-    const knots = [[CX - 590, CY - 320], [CX + 590, CY - 320], [CX - 590, CY + 320], [CX + 590, CY + 320]];
+    const k = kit(phone), base = phone ? PHONE_GRAIN : COMPUTER_GRAIN, knots = KNOTS;
     const ring = d => {
-      const a = A0 + d, bb = B0 + d * .72, nn = Math.max(4, 9 - d * .009);
       let s = '';
-      for (let q = 0; q <= 360; q += 1.5) {
-        const t = q * Math.PI / 180, c = Math.cos(t), sn = Math.sin(t);
-        let x = CX + a * Math.sign(c) * Math.pow(Math.abs(c), 2 / nn), y = CY + bb * Math.sign(sn) * Math.pow(Math.abs(sn), 2 / nn);
-        for (const [kx, ky] of knots) {   // a smooth swell round each knot
-          const dx = x - kx, dy = y - ky, dist = Math.hypot(dx, dy) || 1, m = 46 * Math.exp(-(dist * dist) / (2 * 95 * 95));
-          x += dx / dist * m; y += dy / dist * m;
-        }
-        s += (q ? 'L' : 'M') + f(x) + ' ' + f(y);
-      }
+      for (let q = 0; q <= 360; q += 1.5) { const [x, y] = grainPoint(d, q); s += (q ? 'L' : 'M') + f(x) + ' ' + f(y); }
       return s + 'Z';
     };
     const ds = [0]; for (const r of base) ds.push(ds[ds.length - 1] + r);
@@ -407,10 +419,138 @@
     return svg(b, defs.join(''));
   }
 
+  // Round 10: depth for 2a and 5a, the job the Eye's lower layer does in their own language: something running the
+  // other way behind the main lines, and something much smaller placed unevenly. Placed by a seeded generator, so the
+  // drawing is the same every time. Each returns the extra pieces for withDepth: under everything, or over the lines.
+  const GLINT = '#e8c97a', KNOT_DARK = '#0e0c0a';
+
+  function seeded(seed) {
+    let t = seed;
+    return () => {
+      t = (t + 0x6D2B79F5) | 0;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  const fineStroke = (phone, col, op, sw) => `stroke="${col}" stroke-opacity="${op}" fill="none" vector-effect="non-scaling-stroke" stroke-width="${f((phone ? 1.1 : 1.5) * .7 * sw)}"`;
+
+  // the extra pieces go in under the whole drawing, and over its lines but under the door and the half suns
+  function withDepth(svgText, { defs = '', under = '', over = '' }) {
+    const s = svgText.replace('</defs>', `${defs}</defs>${under}`);
+    const cut = s.lastIndexOf('<path', s.indexOf('style="fill:var(--card-bg)"'));
+    return s.slice(0, cut) + over + s.slice(cut);
+  }
+
+  // 2a: fine upright ribs, as fluted glass, in the dark strips between the bands, fading before the door; and short
+  // glints of light along the lines, bright in the middle and fading at both ends, mirrored left and right.
+  function turnByTurnDepth(phone) {
+    const { n, pts, rad, line } = streamGeometry(phone), R = seeded(phone ? 21 : 37);
+    const strip = (a, b, s) => `${line(a, s)}L${rounded(pts(b, s).slice().reverse(), rad(b).slice().reverse()).slice(1)}Z`;
+    let stripsD = '';
+    for (const s of [1, -1]) for (let i = 3; i + 2 <= n; i += 4) stripsD += `${strip(i, i + 2, s)} `;
+    const sp = phone ? 18 : 11;
+    let flute = '', fluteBold = '';
+    for (let x = sp / 2, j = 0; x < W; x += sp, j++) {
+      if (j % 3 === 1) fluteBold += `M${f(x)} 0V${H}`; else flute += `M${f(x)} 0V${H}`;
+    }
+    const defs = `<clipPath id="t10s"><path d="${stripsD}"/></clipPath>`
+      + `<radialGradient id="t10g" gradientUnits="userSpaceOnUse" cx="${CX}" cy="${CY}" r="${W * .5}" gradientTransform="translate(${CX} ${CY}) scale(1 .7) translate(${-CX} ${-CY})"><stop offset=".42" stop-color="#000"/><stop offset=".8" stop-color="#fff"/></radialGradient>`
+      + `<mask id="t10m" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="url(#t10g)"/></mask>`;
+    const under = `<g clip-path="url(#t10s)"><g mask="url(#t10m)"><path class="a" style="--i:7" d="${flute}" ${fineStroke(phone, GOLD, .1, .45)}/><path class="a" style="--i:7" d="${fluteBold}" ${fineStroke(phone, GOLD, .17, .55)}/></g></g>`;
+    // the straight runs of a line's left half (corners stay plain), so each glint can be mirrored exactly
+    const runs = (i, sgn) => {
+      const P = pts(i, sgn), r = rad(i), cut = [0];
+      for (let q = 1; q < P.length - 1; q++) {
+        const [a0, b0, c0] = [P[q - 1], P[q], P[q + 1]];
+        const u = [a0[0] - b0[0], a0[1] - b0[1]], v = [c0[0] - b0[0], c0[1] - b0[1]], lu = Math.hypot(...u), lv = Math.hypot(...v);
+        const th = Math.acos(Math.max(-1, Math.min(1, (u[0] * v[0] + u[1] * v[1]) / (lu * lv))));
+        cut.push(r[q] > 0 && th < Math.PI - 1e-3 ? Math.min(r[q] / Math.tan(th / 2), lu * .5, lv * .5) : 0);
+      }
+      const out = [];
+      for (let q = 0; q < 3; q++) {
+        const A = P[q], Bq = q === 2 ? [CX, P[q][1]] : P[q + 1], L = Math.hypot(Bq[0] - A[0], Bq[1] - A[1]);
+        const t0 = q === 0 ? 0 : cut[q], t1 = q === 2 ? 0 : cut[q + 1];
+        if (L - t0 - t1 > 10) out.push({ A, dir: [(Bq[0] - A[0]) / L, (Bq[1] - A[1]) / L], u0: t0, u1: L - t1 });
+      }
+      return out;
+    };
+    const sgm = (A, dir, u0, u1) => `M${f(A[0] + dir[0] * u0)} ${f(A[1] + dir[1] * u0)}L${f(A[0] + dir[0] * u1)} ${f(A[1] + dir[1] * u1)}`;
+    // each glint is three strokes: a faint long one, a brighter middle and a bright core (share: of the glint's length)
+    const stroke = (op, sw, share) => ({ d: '', op, sw, share });
+    const bold = [stroke(.3, 1.1, 1), stroke(.55, 1.7, .55), stroke(.95, 2.2, .22)], fine = [stroke(.25, .7, 1), stroke(.6, 1, .4)];
+    for (let i = 3; i <= n; i += 2) {
+      const isBold = i % 4 === 3, set = isBold ? bold : fine;
+      for (const sgn of [1, -1]) for (const { A, dir, u0, u1 } of runs(i, sgn)) {
+        for (let u = u0 + 30 + R() * 160; u < u1 - 10; u += (isBold ? 170 : 260) + R() * (isBold ? 340 : 480)) {
+          const len = Math.min(isBold ? 30 + R() * 60 : 14 + R() * 26, u1 - 4 - u);
+          if (len < 10) continue;
+          const mid = u + len / 2;
+          for (const g of set) {
+            const a = mid - len * g.share / 2, e = mid + len * g.share / 2;
+            g.d += sgm(A, dir, a, e) + sgm([W - A[0], A[1]], [-dir[0], dir[1]], a, e);
+          }
+        }
+      }
+    }
+    const over = [...bold, ...fine].map(g => `<path class="a" style="--i:4" d="${g.d}" ${fineStroke(phone, GLINT, g.op, g.sw)} stroke-linecap="round"/>`).join('');
+    return { defs, under, over };
+  }
+
+  // 5a, from the owner's walnut panels: little runs of ripples across the grain, like the shimmer when light moves over
+  // the wood; small dark knots scattered through it, each with a fine ring, mirrored like the veneer; and a feather of
+  // stacked V's down the joint above and below the door.
+  function bookmatchedDepth(phone) {
+    const R = seeded(phone ? 5 : 11);
+    const inField = p => p[0] > 4 && p[0] < W - 4 && p[1] > 4 && p[1] < H - 4;
+    const mirror4 = p => [[p[0], p[1]], [W - p[0], p[1]], [p[0], H - p[1]], [W - p[0], H - p[1]]];
+    let rip = '', ripBold = '';
+    for (let r = 0, runs = phone ? 34 : 70; r < runs; r++) {
+      const d0 = 30 + R() * 620, q0 = 1 + R() * 86, cnt = 3 + Math.floor(R() * 5), L = (phone ? 16 : 11) + R() * (phone ? 22 : 16), dq = phone ? 1.6 : 1.1, strong = R() < .25;
+      for (let c = 0; c < cnt; c++) {
+        const q = q0 + c * dq, dd = d0 + (R() - .5) * 6, ll = L * (.7 + R() * .5);
+        const a = grainPoint(dd, q), b = grainPoint(dd + ll, q);
+        if (!inField(a) || !inField(b) || KNOTS.some(([kx, ky]) => Math.hypot(a[0] - kx, a[1] - ky) < 150)) continue;
+        const bs = mirror4(b);
+        for (const [m, p1] of mirror4(a).entries()) {
+          const seg = `M${f(p1[0])} ${f(p1[1])}L${f(bs[m][0])} ${f(bs[m][1])}`;
+          if (strong) ripBold += seg; else rip += seg;
+        }
+      }
+    }
+    const under = `<path class="a" style="--i:7" d="${rip}" ${fineStroke(phone, GOLD, .16, .45)}/><path class="a" style="--i:7" d="${ripBold}" ${fineStroke(phone, GOLD, .28, .55)}/>`;
+    let over = '';
+    for (let c = 0, made = 0; made < (phone ? 7 : 11) && c < 200; c++) {
+      const d = 40 + R() * 560, q = 6 + R() * 80, p = grainPoint(d, q);
+      if (!inField(p)) continue;
+      made++;
+      const t = grainPoint(d, q + .6), ang = Math.atan2(t[1] - p[1], t[0] - p[0]) * 180 / Math.PI;
+      const sz = (phone ? 6 : 4.5) * (.7 + R() * .6);
+      for (const [m, [x, y]] of mirror4(p).entries()) {
+        const a2 = m === 1 || m === 2 ? -ang : ang;
+        over += `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(a2)})">`
+          + `<ellipse class="a" style="--i:5" rx="${f(sz * 1.6)}" ry="${f(sz * .8)}" fill="${KNOT_DARK}" fill-opacity=".9" stroke="${GOLD}" stroke-opacity=".3" stroke-width="${f((phone ? 1.1 : 1.5) * .7 * .5)}" vector-effect="non-scaling-stroke"/>`
+          + `<ellipse class="a" style="--i:5" rx="${f(sz * 2.8)}" ry="${f(sz * 1.5)}" ${fineStroke(phone, GOLD, .16, .4)}/>`
+          + `<circle class="a" style="--i:5" r="${f(sz * .3)}" fill="${GOLD}" fill-opacity=".35"/></g>`;
+      }
+    }
+    let feather = '';
+    const len = CY - B0 - 16, step = phone ? 15 : 11;
+    for (let u = 10; u < len; u += step) {
+      const hw = 26 * (.25 + .75 * Math.sin(Math.PI * u / len)), h = step * 1.1;
+      for (const [y, dy] of [[u, h], [H - u, -h]]) feather += `M${f(CX - hw)} ${f(y + dy)}L${CX} ${f(y)}L${f(CX + hw)} ${f(y + dy)}`;
+    }
+    const k = kit(phone);
+    over += `<path class="a" style="--i:8" d="${feather}" ${fineStroke(phone, GOLD, .3, .55)}/>`
+      + k.path(`M${CX} 0L${CX} ${CY - B0}`, FINE, .45, 9) + k.path(`M${CX} ${H}L${CX} ${CY + B0}`, FINE, .45, 9);
+    return { under, over };
+  }
+
   const PAL8A = { side: t => [AMETHYST, t ? .14 : .32], tb: PETROL, dia: PETROL };
   const BACKS = {
-    turnByTurn: p => streamline(p, 'band'),                                            // 2a
-    bookmatched: p => bookmatchedRefined(p, 'diagonal'),                                // 5a
+    turnByTurn: p => withDepth(streamline(p, 'band'), turnByTurnDepth(p)),               // 2a
+    bookmatched: p => withDepth(bookmatchedRefined(p, 'diagonal'), bookmatchedDepth(p)), // 5a
     cutAreasBoth: p => cutAreas(p, PAL8A, { ring: true, jewels: true, frame: true }),   // 8a with its extra layer
     splitByZone: p => comboZones(p, true, true),                                        // 8d, clear order
     linesAndJewels: p => comboTechno(p, true),                                          // 8f
