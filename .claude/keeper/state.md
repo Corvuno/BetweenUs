@@ -7,7 +7,7 @@ Backlog items are named by number and title.
 
 - The line under the title and the logo: the owner calls them awesome. They are the source of
   the look, and they came from many references.
-- The card backs, the richest objects in the app: petrol streams to start, amethyst circles for the pause.
+- The card backs, the richest objects in the app: the start card shows one of five at random (turn by turn, bookmatched, cut areas, split by zone, lines and shapes with jewellery), each drawing in; the Intermezzo shows the amethyst circles (the owner calls it "the Eye"), turn by turn or bookmatched. What made the start backs work: a card back is drawn for the rectangle (border, designed corners and ends, one centrepiece), lines run on through crossings but end on something, one colour per kind of area.
 - The card face: the category named at the top with its stripes, in a double frame with the
   category's colour in the inner line. The owner chose it from pictures of the live app.
   The start card, the Intermezzo and Spotlight wear the same frame.
@@ -60,8 +60,7 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 - What makes a design good for them is on `taste.md`, "Looks": bold, elegant and readable, lines
   that lead the eye, playfulness, centre and symmetry, judged as a whole. What they said about the
   card back (lines against black, flourishes, cut-out areas) belongs to the card back.
-- New card backs (#175) are live: petrol streams on the start card, amethyst circles on the
-  Intermezzo. What got there: references as lessons, never redrawn; lines that never float, fine
+- New card backs (#175, #195) are live. What got there: references as lessons, never redrawn; lines that never float, fine
   and quiet, full edge to edge; a window whose shape the drawing makes; several really different
   options at once ("If you give me one, ill be shooting it down all day"). The app's accent colour
   in the vision is still open.
