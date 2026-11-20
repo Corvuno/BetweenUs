@@ -427,7 +427,7 @@
   // Round 10: depth for 2a and 5a, the job the Eye's lower layer does in their own language: something running the
   // other way behind the main lines, and something much smaller placed unevenly. Placed by a seeded generator, so the
   // drawing is the same every time. Each returns the extra pieces for withDepth: under everything, or over the lines.
-  const GLINT = '#e8c97a', KNOT_DARK = '#0e0c0a';
+  const GLINT = '#e8c97a';
 
   function seeded(seed) {
     let t = seed;
@@ -504,8 +504,7 @@
   }
 
   // 5a, from the owner's walnut panels: little runs of ripples across the grain, like the shimmer when light moves over
-  // the wood; small dark knots scattered through it, each with a fine ring, mirrored like the veneer; and a feather of
-  // stacked V's down the joint above and below the door.
+  // the wood, and a feather of stacked V's down the joint above and below the door.
   function bookmatchedDepth(phone) {
     const R = seeded(phone ? 5 : 11);
     const inField = p => p[0] > 4 && p[0] < W - 4 && p[1] > 4 && p[1] < H - 4;
@@ -525,21 +524,6 @@
       }
     }
     const under = `<path class="a" style="--i:7" d="${rip}" ${fineStroke(phone, GOLD, .16, .45)}/><path class="a" style="--i:7" d="${ripBold}" ${fineStroke(phone, GOLD, .28, .55)}/>`;
-    let over = '';
-    for (let c = 0, made = 0; made < (phone ? 7 : 11) && c < 200; c++) {
-      const d = 40 + R() * 560, q = 6 + R() * 80, p = grainPoint(d, q);
-      if (!inField(p)) continue;
-      made++;
-      const t = grainPoint(d, q + .6), ang = Math.atan2(t[1] - p[1], t[0] - p[0]) * 180 / Math.PI;
-      const sz = (phone ? 6 : 4.5) * (.7 + R() * .6);
-      for (const [m, [x, y]] of mirror4(p).entries()) {
-        const a2 = m === 1 || m === 2 ? -ang : ang;
-        over += `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(a2)})">`
-          + `<ellipse class="a" style="--i:5" rx="${f(sz * 1.6)}" ry="${f(sz * .8)}" fill="${KNOT_DARK}" fill-opacity=".9" stroke="${GOLD}" stroke-opacity=".3" stroke-width="${f((phone ? 1.1 : 1.5) * .7 * .5)}" vector-effect="non-scaling-stroke"/>`
-          + `<ellipse class="a" style="--i:5" rx="${f(sz * 2.8)}" ry="${f(sz * 1.5)}" ${fineStroke(phone, GOLD, .16, .4)}/>`
-          + `<circle class="a" style="--i:5" r="${f(sz * .3)}" fill="${GOLD}" fill-opacity=".35"/></g>`;
-      }
-    }
     let feather = '';
     const len = CY - B0 - 16, step = phone ? 15 : 11;
     for (let u = 10; u < len; u += step) {
@@ -547,7 +531,7 @@
       for (const [y, dy] of [[u, h], [H - u, -h]]) feather += `M${f(CX - hw)} ${f(y + dy)}L${CX} ${f(y)}L${f(CX + hw)} ${f(y + dy)}`;
     }
     const k = kit(phone);
-    over += `<path class="a" style="--i:8" d="${feather}" ${fineStroke(phone, GOLD, .3, .55)}/>`
+    const over = `<path class="a" style="--i:8" d="${feather}" ${fineStroke(phone, GOLD, .3, .55)}/>`
       + k.path(`M${CX} 0L${CX} ${CY - B0}`, FINE, .45, 9) + k.path(`M${CX} ${H}L${CX} ${CY + B0}`, FINE, .45, 9);
     return { under, over };
   }
