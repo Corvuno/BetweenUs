@@ -21,7 +21,7 @@ the card goes to Intermezzo (see `card-closes.md`). Not thin italic serif or `--
 unreadable.
 
 ## Intermezzo card back
-`.card.is-intermezzo`, fullscreen `.im-wrap`. The card's back is two great amethyst circles (`.cb-circles`, see `card-face.md`) with the pause mark, its rule and the caption in the eye-shaped window where they overlap; `.cb-edge` holds the window's two edge lines, `.cb-fill` the rest. The pause mark (fermata: two arches and a diamond)
+`.card.is-intermezzo`, fullscreen `.im-wrap`. The card's back is picked per hand end: two great amethyst circles (`.cb-circles`, the Eye), or turn by turn or bookmatched (`.cb-ornament`), see `card-face.md`; it stays the same when flipping to the list and back. With the Eye, the pause mark, its rule and the caption in the eye-shaped window where they overlap; `.cb-edge` holds the window's two edge lines, `.cb-fill` the rest. The pause mark (fermata: two arches and a diamond)
 replaces the logo; the caption INTERMEZZO sits under it: Federo, uppercase, `.32em`, `--muted-l`,
 upright (`font-style:normal`, like `.cb-caption`, not the card question's italic), size from the
 card `calc(var(--d)*.075)` and in fullscreen `clamp(.8rem,.9vw + .4rem,1.2rem)` (`.im-word`).

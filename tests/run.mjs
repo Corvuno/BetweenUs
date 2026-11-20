@@ -206,6 +206,22 @@ async function run() {
     assert(index === 0, `expected no card drawn yet (index 0, i.e. currentIndex -1), got index ${index}`);
   });
 
+  await check('card back: the start card has one drawing from the five, in both densities, and no id repeats in the page', async () => {
+    const info = await page.evaluate(() => {
+      const art = document.querySelector('#cardBack .cb-streams');
+      const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+      return {
+        pick: art.dataset.back, pool: Backs.START_POOL, ph: art.querySelectorAll('svg.cb-ph').length, dk: art.querySelectorAll('svg.cb-dk').length,
+        paths: art.querySelectorAll('path.d').length, areas: art.querySelectorAll('.a').length,
+        shown: getComputedStyle(art).display, dup: ids.filter((id, i) => ids.indexOf(id) !== i),
+      };
+    });
+    assert(info.pool.length === 5 && info.pool.includes(info.pick), `start back "${info.pick}" is not from the pool ${info.pool}`);
+    assert(info.ph === 1 && info.dk === 1, `start back drawings: ${info.ph} phone, ${info.dk} computer`);
+    assert(info.paths > 0 && info.areas > 0 && info.shown === 'block', `start back has no drawing: ${JSON.stringify(info)}`);
+    assert(info.dup.length === 0, `repeated ids: ${info.dup}`);
+  });
+
   await check('first tap on the card draws card 1 of the hand', async () => {
     await page.locator('#card').click();
     // the first draw of a hand plays the (longer) shuffle animation rather
@@ -887,6 +903,32 @@ async function run() {
     assert(await page.evaluate(() => state.currentIndex === state.visibleDeck.length), 'the turn moved the hand');
     await imTap('#card');
     assert((await imSide()) === 'list', 'could not turn to the list again');
+  });
+
+  await check('card back: the Intermezzo back is the Eye or one of its two drawings, and the turn to the list and back keeps it', async () => {
+    const read = () => page.evaluate(() => {
+      const el = document.getElementById('card');
+      const visible = sel => { const n = el.querySelector(sel); return !!n && getComputedStyle(n).display !== 'none'; };
+      const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
+      return {
+        pick: el.dataset.imBack, circles: visible('.cb-circles'), ornament: visible('.cb-ornament'), drawn: el.querySelectorAll('.cb-ornament svg').length,
+        ornamentName: el.querySelector('.cb-ornament .cb-fill')?.dataset.back, dup: ids.filter((id, i) => ids.indexOf(id) !== i),
+      };
+    });
+    const startedOnList = (await imSide()) === 'list';
+    if (startedOnList) await imTap('#card');
+    assert((await imSide()) === 'intermezzo', 'could not turn back to Intermezzo');
+    const first = await read();
+    assert(['eye', 'turnByTurn', 'bookmatched'].includes(first.pick), `Intermezzo back "${first.pick}" is not one of the three`);
+    if (first.pick === 'eye') assert(first.circles && !first.ornament, `the Eye is not the only one shown: ${JSON.stringify(first)}`);
+    else assert(!first.circles && first.ornament && first.ornamentName === first.pick && first.drawn === 2, `the drawing is not shown: ${JSON.stringify(first)}`);
+    assert(first.dup.length === 0, `repeated ids: ${first.dup}`);
+    await imTap('#card');
+    assert((await imSide()) === 'list', 'could not turn to the list');
+    await imTap('#card');
+    assert((await imSide()) === 'intermezzo', 'could not turn back again');
+    assert(JSON.stringify(await read()) === JSON.stringify(first), 'the Intermezzo back changed when flipping to the list and back');
+    if (startedOnList) await imTap('#card');   // leave the card on the side the next check expects
   });
 
   await check('hand list: a row star toggles the same favourite the card star uses; the list scrolls; scrolling does not move the hand', async () => {
