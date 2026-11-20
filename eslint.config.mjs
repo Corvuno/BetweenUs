@@ -22,6 +22,8 @@ export default [
     },
   },
   { files: ['sw.js'], languageOptions: { globals: { ...globals.serviceworker } } },
+  // The card backs' drawing code is geometry, long sums of coordinates in one pass; it is not split into smaller functions.
+  { files: ['backs.js'], rules: { 'sonarjs/cognitive-complexity': 'off' } },
   // The question text is data, not logic.
   { files: ['questions.js'], rules: { 'sonarjs/no-duplicate-string': 'off' } },
 ];

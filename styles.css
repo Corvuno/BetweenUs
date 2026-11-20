@@ -295,14 +295,26 @@ body.showing-hand-summary :is(.card.mark-full .card-frame,.party-frame.mark-full
    the dissolve starts at 150ms), or old and new smudge together */
 .card.drawing-in .card-back{transition:opacity .55s ease-in,visibility 0s linear .55s;}
 @media (prefers-reduced-motion:reduce){.card.drawing-in .card-back{transition:opacity .1s ease-in,visibility 0s linear .1s;}}
-/* The two drawings fill the frame's inner line. The start card shows the streams (petrol, amethyst stones), the Intermezzo
-   the circles (amethyst, petrol stones); each has a lighter drawing for a phone and a denser one from 400px of card height. */
+/* The drawings fill the frame's inner line. The start card shows one of five from backs.js (picked per page load), the
+   Intermezzo the amethyst circles or one of two from backs.js (.cb-ornament, picked per hand end); each has a lighter
+   drawing for a phone and a denser one from 400px of card height. */
 .cb-art{position:absolute;inset:var(--frame-i-top) var(--frame-i) var(--frame-i);display:none;}
-.card.is-start:not(.is-intermezzo) .cb-streams,.card.is-start.is-intermezzo .cb-circles{display:block;}
+.card.is-start:not(.is-intermezzo) .cb-streams,.card.is-start.is-intermezzo:not(.im-ornament) .cb-circles,.card.is-start.is-intermezzo.im-ornament .cb-ornament{display:block;}
 .cb-edge,.cb-fill{position:absolute;inset:0;display:block;}
 .cb-art svg{display:block;width:100%;height:100%;}   /* the drawing fills its field, stretched (preserveAspectRatio none) */
 .cb-art .cb-dk{display:none;}
 @container (min-height:400px){.cb-art .cb-ph{display:none;}.cb-art .cb-dk{display:block;}}
+/* Arrival of the start back: its lines (.d, ordered by --i, outer first) draw in from the frame toward the door,
+   then its areas (.a) fade in. It restarts each time the back is shown. The Intermezzo's drawings stay still: they
+   come in with the closing ring. */
+@keyframes backDraw{to{stroke-dashoffset:0;}}
+@keyframes backFade{to{opacity:1;}}
+@media (prefers-reduced-motion:no-preference){
+  .cb-streams .d{stroke-dasharray:1;stroke-dashoffset:1;animation:backDraw 1.3s calc((10 - var(--i)) * 60ms + .1s) var(--ease-out) forwards;}
+  .cb-streams .a{opacity:0;animation:backFade .8s calc(.8s + (10 - var(--i)) * 30ms) var(--ease-out) forwards;}
+  /* a start back that comes back while the deck sheet is still open waits with the logo (card.js logo-wait) */
+  .card.logo-wait .cb-streams :is(.d,.a){animation-play-state:paused;}
+}
 .cb-plate{
   --d:58cqh;
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
