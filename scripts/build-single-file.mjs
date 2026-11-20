@@ -41,7 +41,7 @@ const PROFILES = {
 
 // Load order matters (each depends on globals the previous ones declare) —
 // keep this in sync with the <script> tags in between-us.html.
-const APP_MODULES = ['categories', 'config', 'gilt', 'state', 'deck', 'backs', 'card', 'library', 'session', 'selection', 'presentation', 'ui'];
+const APP_MODULES = ['categories', 'config', 'gilt', 'state', 'deck', 'card', 'library', 'session', 'selection', 'presentation', 'ui'];
 
 // A current desktop Chrome user agent, so Google Fonts answers with woff2.
 const FONT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36';

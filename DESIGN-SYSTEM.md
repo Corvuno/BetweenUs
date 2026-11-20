@@ -86,7 +86,7 @@ The Deck's name. The count under the card is 17px in `--gold-l`, its two rules 5
 | Token | Value | For |
 |---|---|---|
 | `--copper` | #C67B28 | the logo's centre diamond only |
-| `--petrol` | #2a7a78 | colour in the start card's backs (`backs.js`); stones on the Intermezzo's Eye |
+| `--petrol` | #2a7a78 | the start card's back: its streams' shading; stones on the Intermezzo back |
 | `--amethyst` | #7a4a9e | the Intermezzo back: its circles' shading; stones on the start card's back |
 | `--preset` | `renderShell`; falls back to `--gold` | which edition: logo line pairs, preset name. Strangers #8fd14f, Family #ee7a35 (`--mc`) |
 | `--preset-a` / `--preset-b` | `renderShell`, Custom with 2+ categories | first and second picked category colour (logo pairs split left/right, gradient `#trP`) |

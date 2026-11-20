@@ -597,7 +597,6 @@ function endMessageToIntermezzo() {
     const card = document.getElementById('card');
     const question = document.getElementById('card-question');
     // mv-live: the closing is still drawing (settleClosing only acts then)
-    applyIntermezzoBack(card, true);   // a new hand end, a new pick
     card?.classList.add('mv-build', 'mv-keep', 'mv-live', 'is-start', 'is-intermezzo');   // the back comes up over the message
     question?.classList.add('mv-fade');
     document.querySelector('#party-question .end-msg')?.classList.add('out');

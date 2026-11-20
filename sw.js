@@ -27,7 +27,6 @@ const PRECACHE = [
   'gilt.js',
   'state.js',
   'deck.js',
-  'backs.js',
   'card.js',
   'library.js',
   'session.js',

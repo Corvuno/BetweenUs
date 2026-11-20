@@ -950,7 +950,6 @@ function paintHandSide() {
   if (lvlEl) { lvlEl.classList.remove('in'); lvlEl.textContent = ''; }
   if (el) {
     el.classList.toggle('im-still', handStill);
-    applyIntermezzoBack(el);   // the pick of this hand end: kept when flipping to the list and back
     if (isList) { el.classList.remove('is-start'); el.classList.add('is-intermezzo', 'is-hand-list'); }
     else        { el.classList.remove('is-hand-list'); el.classList.add('is-start', 'is-intermezzo'); }
   }

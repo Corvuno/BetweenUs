@@ -169,33 +169,6 @@ function dropIntermezzoWhenBackIsGone(el) {
   } else drop();
 }
 
-// The start card's drawing is picked once per page load, drawn the first time the start back shows.
-// Its lines and areas play their arrival whenever the back's container goes from hidden to shown.
-let startBack = null;
-function fillStartBack(el) {
-  const art = el.querySelector('.cb-streams');
-  if (!art || art.childElementCount) return;
-  startBack ??= Backs.pick(Backs.START_POOL);
-  art.dataset.back = startBack;
-  art.innerHTML = Backs.markup(startBack, 'bs');
-}
-
-// The Intermezzo's back: the Eye already in the page, or one of the two drawings from backs.js in
-// .cb-ornament. A new hand end (fresh) picks again; flipping to the hand's list and back keeps it.
-let intermezzoBack = null;
-function applyIntermezzoBack(el, fresh = false) {
-  if (!el) return;
-  if (fresh || !intermezzoBack) intermezzoBack = Backs.pick(Backs.INTERMEZZO_POOL);
-  const ornament = intermezzoBack !== 'eye';
-  const fill = el.querySelector('.cb-ornament .cb-fill');
-  if (fill && ornament && fill.dataset.back !== intermezzoBack) {
-    fill.dataset.back = intermezzoBack;
-    fill.innerHTML = Backs.markup(intermezzoBack, 'bi');
-  }
-  el.dataset.imBack = intermezzoBack;
-  el.classList.toggle('im-ornament', ornament);
-}
-
 // The start card: the card's back with the "begin" text, shown only before
 // the first draw. Pass the text to show it, or nothing to put the face back.
 function setStartBack(text) {
@@ -205,7 +178,6 @@ function setStartBack(text) {
   if (text && t) t.replaceChildren(...text.flatMap((line, i) => (i ? [document.createElement('br'), line] : [line])));
   const wasStart = el.classList.contains('is-start');
   el.classList.toggle('is-start', !!text);
-  if (text) fillStartBack(el);
   // A start back that newly appears while the deck sheet is open or still
   // sliding shut holds its logo undrawn until the sheet is fully gone.
   if (!text) el.classList.remove('logo-wait');
