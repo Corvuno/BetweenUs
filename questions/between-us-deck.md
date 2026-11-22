@@ -60,6 +60,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Us: Intimate** — "Where's the best place we've ever had sex, and why there?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
 - **Us: Intimate** — "What do you love about how we've changed in bed since the beginning?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
 - **Bare** — "What's the most unlikely place you've met someone you ended up sleeping with?" (alternative for Bare 10; owner asked to bench, long-cards round 2026-11-08)
+- **Attract** — "Name the trait in someone's character that gets you every time, even when it shouldn't." (alternative for Attract 4; owner asked to bench, audit round 1 (#184))
 
 ## WRITER BRIEFS — what each category is about
 
@@ -742,6 +743,46 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 # Change log
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
+
+## Patch v7.40 — audit round 1, part 2: nine cards reworded (#184)
+
+- **Bare 8, question 380** (rewording)
+  - Old: "What is something considered 'taboo' by society that you actually find quite appealing?"
+  - New: "Society calls it wrong, and it turns you on anyway. What is it?"
+  - Why: same point (what you like in sex that society finds hard to swallow), in plainer words. Owner's pick from three.
+- **Body 10, question 142** (rewording)
+  - Old: "What's your actual relationship with food?"
+  - New: "Tell about a time food was comfort, and a time it was a battle."
+  - Why: same subject, as something that happened instead of a theory about yourself. Owner's pick from three.
+- **Us: Friends 5, question 317** (rewording)
+  - Old: "How has this friendship changed you?"
+  - New: "What have you dared because of me that you'd never have done alone?"
+  - Why: same subject, pointed at something concrete. Owner's pick from three.
+- **Connect 7, question 115** (rewording)
+  - Old: "Do you tend to over-explain or under-explain — and what does that cost you?"
+  - New: "Too much or too little: what do people say about how you talk, and are they right?"
+  - Why: same subject (talking too much or too little), said so people recognise it. Owner's pick from three.
+- **Kink 6, question 390** (rewording)
+  - Old: "Is there a kink or fantasy you have that you've never fully acted on?"
+  - New: "Name a fantasy you've kept to yourself — and what it would take to try it."
+  - Why: so the card can't end on a yes. Owner's pick from three.
+- **Work 9, question 57** (rewording)
+  - Old: "You're genuinely talented at something you'd never turn into a profession..."
+  - New: "Name the thing you're seriously good at that you'd never let anyone pay you for."
+  - Why: same subject, new words. Owner's pick from three.
+- **Wish 3, question 147** (rewording)
+  - Old: "What have you been postponing that isn't really about time?"
+  - New: "Something you really want to do keeps sliding to next year. What's in the way, honestly?"
+  - Why: same subject (something you want to do and keep pushing back, and why). Owner's pick from three.
+- **Attract 4, question 196** (rewording)
+  - Old: "You tell yourself you have a type — do the people you end up with actually have those traits?"
+  - New: "Looks aside, what kind of person do you fall for — and does that match who you pick?"
+  - Why: about character, not looks; the claimed type against who you pick stays. Owner's pick from three.
+- **Family 4, question 184** (rewording)
+  - Old: "Where does your family still see an old version of you?"
+  - New: "The old you that your family can't quite let go of..."
+  - Why: the "Where" read oddly; same subject. Owner's pick from three.
+- Bench: one added (Attract).
 
 ## Patch v7.39 — audit round 1: Unwind 1, Spirit 3, Carnal 3, Flesh 8 (#184)
 
