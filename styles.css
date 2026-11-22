@@ -1731,9 +1731,14 @@ body.hint-ways-word-taught #btnWays .row-hint,body.hint-spot-taught #btnParty .r
 .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::after{content:'';position:absolute;
   inset-inline:9px;top:calc(50% + 1em);height:1px;background:var(--tc);opacity:0;transition:opacity .2s;}
 .cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active){color:var(--tc);font-weight:500;}
-/* a preset word is as wide as its bold self whether picked or not, so picking one never rewraps the row (ui.js) */
-.pick-word{display:inline-flex;flex-direction:column;}
-.pick-word::after{content:attr(data-w);font-weight:500;height:0;overflow:hidden;visibility:hidden;user-select:none;pointer-events:none;}
+/* Words that change never move their neighbours. A pick word (ui.js) is as wide as its bold self whether
+   picked or not; a hold word (None/All, Open all/Close all, On/Off) is as wide as its longest label (data-w),
+   centred in that room, or at the end where it sits at the right of its row. */
+:is(.pick-word,.hold-word){display:inline-flex;flex-direction:column;}
+:is(.pick-word,.hold-word)::after{content:attr(data-w);height:0;overflow:hidden;visibility:hidden;user-select:none;pointer-events:none;}
+.pick-word::after{font-weight:500;}
+.hold-word{align-items:center;}
+:is(.wc-state,.menu-act) .hold-word{align-items:flex-end;}
 .cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::before,
 .cat-area .toggle-btn.on .cat-dot{opacity:1;}
 .cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::after{opacity:.7;}

@@ -21,7 +21,7 @@
       const cat = CATEGORIES[id];
       if (cat.chapter !== ch) return;
       const desc = (typeof CATEGORY_DESCRIPTIONS !== 'undefined' && CATEGORY_DESCRIPTIONS[id]) || '';
-      html += `<button type="button" class="toggle-btn" data-level="${id}" data-chapter="${ch}" style="--c:${levelColor(id)}"><i class="cat-dot" aria-hidden="true"></i><span class="cat-name">${esc(cat.label)}</span><span class="cat-line">${esc(desc)}</span></button>`;
+      html += `<button type="button" class="toggle-btn" data-level="${id}" data-chapter="${ch}" style="--c:${levelColor(id)}"><i class="cat-dot" aria-hidden="true"></i><span class="cat-name"><span class="pick-word" data-w="${esc(cat.label)}">${esc(cat.label)}</span></span><span class="cat-line">${esc(desc)}</span></button>`;
     });
     panel.innerHTML = html;
   });
@@ -750,9 +750,10 @@ const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + 
   presetHost.className='preset-host open';
   presetHost.innerHTML='<div class="sect-lbl"><span>Start from</span></div>';
   presetHost.appendChild($('preset-outer'));
-  /* A picked preset's word turns bold, which is wider; without room kept for that, the row rewraps
-     and a preset jumps lines when another is picked. Each word keeps its bold width (styles.css, .pick-word). */
-  presetHost.querySelectorAll('.mode-btn').forEach(b=>{
+  /* A picked word turns bold, which is wider; without room kept for that, a row rewraps or its
+     neighbours slide when another is picked. Each word keeps its bold width (styles.css, .pick-word);
+     the categories get theirs in their markup above. */
+  document.querySelectorAll('.cat-area :is(.mode-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)').forEach(b=>{
     const w=b.textContent.trim(), s=document.createElement('span');
     s.className='pick-word'; s.dataset.w=w; s.textContent=w; b.replaceChildren(s);
   });
@@ -1104,7 +1105,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
     $('fixedSeqToggle').closest('.chapter-group').style.setProperty('--share', listMode ? '1' : '0');
     updateListModeNote();
     syncFoldAll();
-    $('deselectAll').textContent = state.activeToggles.size ? 'None' : 'All';
+    $('deselectAll').firstElementChild.textContent = state.activeToggles.size ? 'None' : 'All';
   }
   window.syncIntentUI = syncIntentUI;
 
@@ -1296,7 +1297,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
   function syncFoldAll(){
     const folds = shownChapterFolds();
     const allOpen = folds.length > 0 && folds.every(f => f.classList.contains('open'));
-    $('foldAll').textContent = allOpen ? 'Close all' : 'Open all';
+    $('foldAll').firstElementChild.textContent = allOpen ? 'Close all' : 'Open all';
   }
   $('foldAll').addEventListener('click', () => {
     const folds = shownChapterFolds();
@@ -1312,7 +1313,7 @@ paintStation(document.querySelector('.chapter-group--fixed'), FIXED_SETS_COLOR);
   function syncWildcardRow(){
     wildcardToggle.setAttribute('aria-checked', String(state.wildcards));
     wildcardToggle.closest('.chapter-group').style.setProperty('--share', state.wildcards ? '1' : '0');
-    $('wildcardState').textContent = state.wildcards ? 'On' : 'Off';
+    $('wildcardState').firstElementChild.textContent = state.wildcards ? 'On' : 'Off';
   }
   wildcardToggle.addEventListener('click', () => {
     setWildcardSwitch(!state.wildcards);

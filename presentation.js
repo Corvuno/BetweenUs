@@ -269,8 +269,8 @@ function menuStates() {
 
 function fillMenu() {
   const states = menuStates();
-  document.getElementById('threeAct').textContent = pickMode ? 'On' : 'Off';
-  document.getElementById('twistAct').textContent = twistOn ? 'On' : 'Off';
+  document.getElementById('threeAct').firstElementChild.textContent = pickMode ? 'On' : 'Off';
+  document.getElementById('twistAct').firstElementChild.textContent = twistOn ? 'On' : 'Off';
   // Save has something to save from the first card on; on the start screen the line isn't there
   document.querySelectorAll('#d-save, #s-save').forEach((/** @type {HTMLElement} */ line) => { line.hidden = !state.sessionLog.length; });
   const tokCats = document.getElementById('tokCats');
