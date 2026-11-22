@@ -74,10 +74,15 @@ settled about it; `project.md` says where that is kept. The product's `CLAUDE.md
 lines and wins where it is stricter.
 
 Beside this file: `workshop.md` for when an item is ready to be built, `design.md` for when a
-wish is about how something looks, is laid out or is structured. Three more skills come
-with the Keeper for building: `systematic-debugging` before fixing any bug,
-`test-driven-development` when writing code, `verification-before-completion` before calling
-anything done.
+wish is about how something looks, is laid out or is structured. `grilling` comes with the
+Keeper for finding the deeper questions (see below). Five more come for building:
+`systematic-debugging` before fixing any bug, `test-driven-development` when writing code,
+`codebase-design` when deciding how code is laid out (a new part, where one part meets another,
+a rework), `verification-before-completion` before calling anything done, and
+`improve-codebase-architecture` now and then (at upkeep, or when one area keeps breaking): read
+it and follow it yourself. Its questions about code are yours to answer, not the owner's, and the
+product's notes stand in for the glossary, the ADRs and the `domain-modeling` skill it mentions.
+What is worth doing becomes a backlog item that says, in plain words, what gets easier or safer.
 
 ## From what the owner says to item
 
@@ -109,6 +114,22 @@ the approaches. When it leads to work on the product, it runs like this in this 
 - Never offer to "just dive in"; this owner wants the conversation.
 - Show things on a published page the owner can open on a phone, not in its local browser
   companion. After the owner approves, go on with `workshop.md`, not with a plan skill.
+
+Step 2 is where the questions are found, and the obvious ones are often elementary: the product
+or a moment's thought would have answered them, and a round spent on them is lost. When an item
+has real weight, with several things that hang on each other, run `grilling` first for yourself,
+not at the owner. Lay out what is still open, broad and deep: the decisions and what hangs off
+each, where the owner's words and the product as it runs (or what was settled) don't match, a
+word that could mean two things, and the reason missing behind a pick or a no, which is never
+yours to fill in. Answer from the product whatever can be looked up. Then put to the owner only
+what matters most right now, in as many questions as they can answer well (`owner.md` says how
+many), each about one thing, the most important first. Whatever hangs on an answer you don't have
+yet waits for the next round. So does a question you can't yet put sharply: say it is coming,
+rather than asking it vaguely. A small item gets one round, then the proposal. A bigger one gets
+a round, then the answers, then a fresh look at what is now most important. The tree is how
+grilling finds questions; how many go to the owner and how they are asked is set here, and your
+own pick goes with a question only when it is a choice between ways you can name, never when the
+question is what they want. A plain instruction or a small clear wish doesn't need it.
 
 ## Learning, from what goes wrong and what goes right
 
@@ -157,7 +178,7 @@ one, or for everything?" before it goes anywhere but the topic's own record.
 
 ## The generic files
 
-This file, the files beside it, the four skills named above, the agents `builder`, `checker` and
+This file, the files beside it, the skills named above, the agents `builder`, `checker` and
 `searcher` and the hooks named `keeper-*` are copies from https://github.com/Corvuno/Keeper, refreshed automatically. Never edit
 them in a product. To change one: attach that repository to the session, change it there and
 push. A product takes the newest version at the start of its next conversation (the
