@@ -15,4 +15,4 @@ Rules:
 -->
 - The start card shows a different card back each time it comes up.
 - Smaller fixes throughout.
-- Three new cards, and one card reworded.
+- Three new cards, and ten cards reworded.
