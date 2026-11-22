@@ -171,13 +171,14 @@ function dropIntermezzoWhenBackIsGone(el) {
   } else drop();
 }
 
-// The start card's drawing is picked once per page load, drawn the first time the start back shows.
+// The start card's drawing is picked again each time the start card comes up (opening the app, a preset,
+// Start over), never the same one twice in a row, and kept while it stays up.
 // Its lines and areas play their arrival whenever the back's container goes from hidden to shown.
 let startBack = null;
-function fillStartBack(el) {
+function fillStartBack(el, fresh) {
   const art = el.querySelector('.cb-streams');
-  if (!art || art.childElementCount) return;
-  startBack ??= Backs.pick(Backs.START_POOL);
+  if (!art || (art.childElementCount && !fresh)) return;
+  if (fresh || !startBack) startBack = Backs.pick(Backs.START_POOL.filter(b => b !== startBack));
   art.dataset.back = startBack;
   art.innerHTML = Backs.markup(startBack, 'bs');
 }
@@ -206,8 +207,9 @@ function setStartBack(text) {
   const t = document.getElementById('cardBackText');
   if (text && t) t.replaceChildren(...text.flatMap((line, i) => (i ? [document.createElement('br'), line] : [line])));
   const wasStart = el.classList.contains('is-start');
+  const comesUp = !!text && (!wasStart || el.classList.contains('is-intermezzo'));   // newly shown, or taking over from Intermezzo
   el.classList.toggle('is-start', !!text);
-  if (text) fillStartBack(el);
+  if (text) fillStartBack(el, comesUp);
   // A start back that newly appears while the deck sheet is open or still
   // sliding shut holds its logo undrawn until the sheet is fully gone.
   if (!text) el.classList.remove('logo-wait');

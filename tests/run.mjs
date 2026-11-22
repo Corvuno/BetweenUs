@@ -2520,7 +2520,7 @@ async function run() {
     } finally { await ctx.close(); }
   });
 
-  await check('the app opens on the start card: a carried-over hand waits under it, the first tap only lifts it, a preset brings it back', async () => {
+  await check('the app opens on the start card: a carried-over hand waits under it, the first tap only lifts it, a preset brings it back with another drawing', async () => {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, serviceWorkers: 'block' });
     const p = await ctx.newPage();
     p.on('pageerror', (e) => consoleErrors.push(e.message));
@@ -2537,6 +2537,7 @@ async function run() {
       await p.reload(); await p.waitForSelector('#card', { state: 'visible' }); await p.waitForTimeout(500);
       const opened = await look();
       assert(opened.start && opened.at === 1 && opened.q === playing.q && opened.btn === 'Draw Card' && opened.back, `the app did not open on the start card over the hand: ${JSON.stringify(opened)}`);
+      const openedBack = await p.evaluate(() => document.querySelector('.cb-streams').dataset.back);
       await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(300);
       assert((await look()).at === 1 && (await look()).start, 'Back moved the hand under the start card');
       await p.locator('#card').click(); await p.waitForTimeout(1000);
@@ -2548,6 +2549,8 @@ async function run() {
       await p.evaluate(() => document.querySelector('.mode-btn:not(.fixed-seq-btn):not(.active)').click()); await p.waitForTimeout(500);
       const preset = await look();
       assert(preset.start && preset.at === -1, `a preset did not bring the start card back: ${JSON.stringify(preset)}`);
+      const presetBack = await p.evaluate(() => document.querySelector('.cb-streams').dataset.back);
+      assert(presetBack && presetBack !== openedBack, `the start card came back with the same drawing (${presetBack}); each time it comes up it picks another`);
     } finally { await ctx.close(); }
   });
 
