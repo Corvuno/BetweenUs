@@ -743,6 +743,25 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
 
+## Patch v7.39 — audit round 1: Unwind 1, Spirit 3, Carnal 3, Flesh 8 (#184)
+
+- **Unwind 1, question 495** (replacement; question 61 retired)
+  - Old: "What have you built, cooked, or fixed that you're still a little proud of?"
+  - New: "Tell about the holiday that went wrong and became the one you still talk about."
+  - Why: overlapped Quick 1 and Warm 9 and listed the answers for the player. Owner's pick from three.
+- **Spirit 3, question 496** (replacement; question 219 retired)
+  - Old: "If you could ask one question about what happens after we die, what would it be?"
+  - New: "Do you call yourself lucky — and what's your evidence?"
+  - Why: an "if you could" device that asked for a clever question instead of the person. Owner's pick from three.
+- **Carnal 3, question 497** (replacement; question 363 retired)
+  - Old: "Think of the best sex you've had and some you've forgotten. What separated them?"
+  - New: "How has the way you have sex changed since you started?"
+  - Why: same subject as Carnal 2, which stays (owner: "more fun"). Owner's pick from three; checked that no card asks it yet. Carnal has one non-question card fewer until the rewording round gives one back.
+- **Flesh 8, question 356** (rewording)
+  - Old: "How much affection with a partner are you comfortable showing in front of people?"
+  - New: "Affection in public — where is your line, for yourself and for the couple next to you?"
+  - Why: same subject (how much public affection you agree with); the answer was an amount. Owner's pick from three.
+
 ## Patch v7.38 — cards that ask in more ways, first three (#184)
 
 - **Quick 4, question 4** (rewording)

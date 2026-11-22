@@ -95,7 +95,7 @@ const NEWDECK_CARDS = [
   { id: 60, level: "work", question: "What do colleagues learn about you in the first week — and what only after a year?" },
 
   // ─── UNWIND ───
-  { id: 61, level: "unwind", question: "What have you built, cooked, or fixed that you're still a little proud of?" },
+  { id: 495, level: "unwind", question: "Tell about the holiday that went wrong and became the one you still talk about." },
   { id: 62, level: "unwind", question: "What's something you do now for fun that would've bored you stiff ten years ago?" },
   { id: 63, level: "unwind", question: "What reliably gets you out of your own head?" },
   { id: 64, level: "unwind", question: "The hour of the week that's entirely yours..." },
@@ -279,7 +279,7 @@ const NEWDECK_CARDS = [
   // ─── SPIRIT ───
   { id: 217, level: "spirit", question: "What were you taught to believe — and what's left of it?" },
   { id: 218, level: "spirit", question: "Which superstition do you follow even though you know better?" },
-  { id: 219, level: "spirit", question: "If you could ask one question about what happens after we die, what would it be?" },
+  { id: 496, level: "spirit", question: "Do you call yourself lucky — and what's your evidence?" },
   { id: 220, level: "spirit", question: "Is there a philosophy or teaching you've borrowed from, without signing up to all of it?" },
   { id: 221, level: "spirit", question: "When did you last feel part of something larger — and what triggered it?" },
   { id: 222, level: "spirit", question: "How near has death actually come to you?" },
@@ -438,7 +438,7 @@ const NEWDECK_CARDS = [
   { id: 353, level: "flesh", question: "Reconstruct your smoothest pickup ever." },
   { id: 354, level: "flesh", question: "A kiss you can still feel when you think of it..." },
   { id: 355, level: "flesh", question: "A hotel room, far from home: what comes out in you that stays hidden at home?" },
-  { id: 356, level: "flesh", question: "How much affection with a partner are you comfortable showing in front of people?" },
+  { id: 356, level: "flesh", question: "Affection in public — where is your line, for yourself and for the couple next to you?" },
   { id: 357, level: "flesh", question: "When did sex last feel like play — and what made it that way?" },
   { id: 358, level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
   { id: 359, level: "flesh", question: "Ever woken someone up, or been woken up, in a way that was unmistakably sexual?" },
@@ -447,7 +447,7 @@ const NEWDECK_CARDS = [
   // ─── CARNAL ───
   { id: 361, level: "carnal", question: "What pulls you out of your body during sex, when it happens?" },
   { id: 362, level: "carnal", question: "Take us through the best sex you've ever had — what made it that good?" },
-  { id: 363, level: "carnal", question: "Think of the best sex you've had and some you've forgotten. What separated them?" },
+  { id: 497, level: "carnal", question: "How has the way you have sex changed since you started?" },
   { id: 364, level: "carnal", question: "Ask anyone you've slept with, and they'd say your strength as a lover is..." },
   { id: 365, level: "carnal", question: "What did you last do in bed on pure instinct?" },
   { id: 366, level: "carnal", question: "Which moment in bed replays in your head more than any other?" },
@@ -576,7 +576,11 @@ const MAGIC_CARDS = [
 ];
 
 // Retired questions, never drawn: { id, level, question } with the number and last wording. A number is never reused.
-const RETIRED_CARDS = [];
+const RETIRED_CARDS = [
+  { id: 61, level: "unwind", question: "What have you built, cooked, or fixed that you're still a little proud of?" },
+  { id: 219, level: "spirit", question: "If you could ask one question about what happens after we die, what would it be?" },
+  { id: 363, level: "carnal", question: "Think of the best sex you've had and some you've forgotten. What separated them?" },
+];
 
 const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);
 const DECK_LEVELS = new Set(ALL_CARDS.map(c => c.level));;
