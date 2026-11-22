@@ -113,17 +113,14 @@ body{
 .mode-btn[data-mode="work"]{--mc:#4dbebe;}
 .mode-btn[data-mode="family_p"]{--mc:#ee7a35;}
 
-/* Grouping without extra chrome. Who's-here just needs breathing room
-   before it, not its own line — a bigger gap after Balanced is enough of a
-   seam. Context (Work/Late night/Solo) gets a hard line break at every
-   width, same mechanism the desktop label already uses (flex-basis:100%)
-   — collapsed to zero height so it costs nothing on mobile, and the same
-   element becomes the visible caption once there's room to spare. */
-.mode-btn--group-start{margin-left:14px;}
+/* Grouping without extra chrome. Who's-here starts on its own line at every
+   width (flex-basis:100% break), collapsed to zero height so it costs nothing
+   on mobile, and the same element becomes the visible caption once there's
+   room to spare. The line break is the seam, so Strangers takes no extra left
+   gap (it would only push its centred line off-centre and cost room). */
 .mode-group-lbl{display:none;}
 .mode-group-lbl--break{display:block;flex-basis:100%;height:0;overflow:hidden;}
 @media(min-width:768px){
-  .mode-btn--group-start{margin-left:0;}
   .mode-group-lbl{display:block;flex-basis:100%;text-align:center;
     font-family:'Jost',sans-serif;font-size:var(--fs-1);letter-spacing:var(--track-1);text-transform:uppercase;
     color:var(--text-helper);padding:6px 0 1px;}
@@ -1255,8 +1252,8 @@ body.showing-hand-summary #btnSave{display:flex;}
    read as a fast snap while closing (which travels the same real
    distance) read as the properly-paced one. */
 .preset-host .preset-outer{max-height:0;overflow:hidden;width:100%;opacity:1;
-  padding:0 24px;transition:max-height .2s var(--ease-out),padding .2s var(--ease-out);}
-.preset-host.open .preset-outer{max-height:260px;padding:6px 24px 10px;transition-duration:.26s;}
+  padding:0 12px;transition:max-height .2s var(--ease-out),padding .2s var(--ease-out);}
+.preset-host.open .preset-outer{max-height:260px;padding:6px 12px 10px;transition-duration:.26s;}
 .preset-host .preset-wrap{overflow:visible;}
 .preset-host .preset-row{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;min-width:0;}
 /* Colbert/The 36 aren't chapters, so picking one leaves "What kind of
@@ -1734,6 +1731,9 @@ body.hint-ways-word-taught #btnWays .row-hint,body.hint-spot-taught #btnParty .r
 .cat-area :is(.mode-btn,.toggle-btn,.shuffle-toggle-opt,.limit-btn,.three-opt)::after{content:'';position:absolute;
   inset-inline:9px;top:calc(50% + 1em);height:1px;background:var(--tc);opacity:0;transition:opacity .2s;}
 .cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active){color:var(--tc);font-weight:500;}
+/* a preset word is as wide as its bold self whether picked or not, so picking one never rewraps the row (ui.js) */
+.pick-word{display:inline-flex;flex-direction:column;}
+.pick-word::after{content:attr(data-w);font-weight:500;height:0;overflow:hidden;visibility:hidden;user-select:none;pointer-events:none;}
 .cat-area :is(.mode-btn.active,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::before,
 .cat-area .toggle-btn.on .cat-dot{opacity:1;}
 .cat-area :is(.mode-btn.active,.toggle-btn.on,.shuffle-toggle-opt.active,.limit-btn.active,.three-opt.active)::after{opacity:.7;}

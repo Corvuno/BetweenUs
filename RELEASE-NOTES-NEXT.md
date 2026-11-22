@@ -14,3 +14,4 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - The start card shows a different card back each time it comes up.
+- Smaller fixes throughout.

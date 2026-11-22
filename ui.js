@@ -750,6 +750,12 @@ const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + 
   presetHost.className='preset-host open';
   presetHost.innerHTML='<div class="sect-lbl"><span>Start from</span></div>';
   presetHost.appendChild($('preset-outer'));
+  /* A picked preset's word turns bold, which is wider; without room kept for that, the row rewraps
+     and a preset jumps lines when another is picked. Each word keeps its bold width (styles.css, .pick-word). */
+  presetHost.querySelectorAll('.mode-btn').forEach(b=>{
+    const w=b.textContent.trim(), s=document.createElement('span');
+    s.className='pick-word'; s.dataset.w=w; s.textContent=w; b.replaceChildren(s);
+  });
   const topbar=document.querySelector('.cat-area .cat-topbar');
   topbar.before(presetHost);            /* presets first … */
   presetHost.after(topbar);             /* … then After Dark · All · None */
