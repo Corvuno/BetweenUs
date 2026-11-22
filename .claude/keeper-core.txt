@@ -1,5 +1,5 @@
 # Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
-# Source commit: dc9ef3c
+# Source commit: a27f909
 agents/builder.md
 agents/checker.md
 agents/searcher.md
@@ -7,6 +7,11 @@ hooks/keeper-fresh.sh
 hooks/keeper-main-checks.sh
 hooks/keeper-reminder.sh
 hooks/keeper-size.sh
+skills/animate/RECIPES.md
+skills/animate/SKILL.md
+skills/animation-performance/SKILL.md
+skills/animation-vocabulary/SKILL.md
+skills/apple-design/SKILL.md
 skills/brainstorming/SKILL.md
 skills/brainstorming/builder-check-prompt.md
 skills/brainstorming/scripts/frame-template.html
@@ -15,10 +20,31 @@ skills/brainstorming/scripts/server.cjs
 skills/brainstorming/scripts/start-server.sh
 skills/brainstorming/scripts/stop-server.sh
 skills/brainstorming/visual-companion.md
+skills/break-ui/CATALOG.md
+skills/break-ui/SKILL.md
+skills/codebase-design/DEEPENING.md
+skills/codebase-design/DESIGN-IT-TWICE.md
+skills/codebase-design/SKILL.md
+skills/codebase-design/agents/openai.yaml
+skills/emil-design-eng/SKILL.md
+skills/find-animation-opportunities/SKILL.md
+skills/grilling/SKILL.md
+skills/grilling/agents/openai.yaml
+skills/improve-animations/AUDIT.md
+skills/improve-animations/PLAN-TEMPLATE.md
+skills/improve-animations/SKILL.md
+skills/improve-codebase-architecture/HTML-REPORT.md
+skills/improve-codebase-architecture/SKILL.md
+skills/improve-codebase-architecture/agents/openai.yaml
 skills/keeper/SKILL.md
 skills/keeper/design.md
 skills/keeper/owner.md
 skills/keeper/workshop.md
+skills/mobile-native/SKILL.md
+skills/prototype/PICKER.md
+skills/prototype/SKILL.md
+skills/review-animations/SKILL.md
+skills/review-animations/STANDARDS.md
 skills/systematic-debugging/SKILL.md
 skills/systematic-debugging/condition-based-waiting-example.ts
 skills/systematic-debugging/condition-based-waiting.md
