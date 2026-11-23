@@ -254,6 +254,8 @@
     const leftField = `M${t1} ${t1}L${f(shL[0])} ${f(shL[1])}V${f(H - shL[1])}L${t1} ${H - t1}Z`;
     const rightField = `M${W - t1} ${t1}L${f(W - shL[0])} ${f(shL[1])}V${f(H - shL[1])}L${W - t1} ${H - t1}Z`;
     defs += `<clipPath id="d7tb"><path d="${topField} ${botField}"/></clipPath><clipPath id="d7lr"><path d="${leftField} ${rightField}"/></clipPath>`;
+    // with the ring round the door, the fields stop on the ring's outer line, so nothing runs under it
+    defs += `<clipPath id="d7o"><path clip-rule="evenodd" d="${WHOLE_FIELD} ${ex.ring ? doorD(40) : doorD()}"/></clipPath>`;
     // chevrons in the side fields: lines parallel to the two cuts, meeting on the centre line, nested out from the door
     let chev = '', chevA = '';
     for (let j = 0; j < nC; j++) {
@@ -264,7 +266,7 @@
         for (const sx of [1, -1]) { const Q = [...P, ...P2.slice().reverse()].map(p => [sx > 0 ? p[0] : W - p[0], p[1]]); const t = (j - 1) / 3 % 2, [col, op] = pal.side(t); chevA += area(poly(Q), col, op ?? (t ? .12 : .28), 6); }
       }
     }
-    b += `<g clip-path="url(#d7lr)">${chevA}${chev}</g>`;
+    b += `<g clip-path="url(#d7o)"><g clip-path="url(#d7lr)">${chevA}${chev}</g></g>`;
     // sunrise in the top and bottom fields, with two arcs crossing it
     let sun = '';
     for (const [cy, s] of [[G7.TOPY, -1], [H - G7.TOPY, 1]]) {
@@ -286,7 +288,7 @@
         if (!even && ok(ps)) sun += `<circle class="a" style="--i:5" cx="${f(ps[0])}" cy="${f(ps[1])}" r="4" fill="${GOLD}" fill-opacity=".45"/>`;
       }
     }
-    b += `<g clip-path="url(#d7tb)">${area(bandTB, pal.tb, pal.tb === AMETHYST ? .3 : .2, 6, 'fill-rule="evenodd"')}${sun}${arcD}</g>`;
+    b += `<g clip-path="url(#d7o)"><g clip-path="url(#d7tb)">${area(bandTB, pal.tb, pal.tb === AMETHYST ? .3 : .2, 6, 'fill-rule="evenodd"')}${sun}${arcD}</g></g>`;
     // the cuts: double lines from the corners to the shoulders, a diamond where they meet the door
     for (const sx of [1, -1]) for (const sy of [1, -1]) {
       const m = p => [sx > 0 ? p[0] : W - p[0], sy > 0 ? p[1] : H - p[1]];
@@ -559,8 +561,9 @@
       return `<g clip-path="url(#${id})"><path class="a" style="--i:7" d="${d}" ${fineStroke(phone, GOLD, .2, .4)}/></g>`;
     };
     const defs = `<clipPath id="e11b"><path d="${bandsD}"/></clipPath><clipPath id="e11f"><path d="${leftField} ${rightField}"/></clipPath><clipPath id="e11r"><path d="${chamferRect(fr.tin, 120)}"/></clipPath>`
-      + `<clipPath id="e11u"><rect width="${W}" height="${CY}"/></clipPath><clipPath id="e11l"><rect y="${CY}" width="${W}" height="${CY}"/></clipPath>`;
-    const under = `<g clip-path="url(#e11r)"><g clip-path="url(#e11f)"><g clip-path="url(#e11b)">${half(1, 'e11u')}${half(-1, 'e11l')}</g></g></g>`;
+      + `<clipPath id="e11u"><rect width="${W}" height="${CY}"/></clipPath><clipPath id="e11l"><rect y="${CY}" width="${W}" height="${CY}"/></clipPath>`
+      + `<clipPath id="e11o"><path clip-rule="evenodd" d="${WHOLE_FIELD} ${doorD(40)}"/></clipPath>`;
+    const under = `<g clip-path="url(#e11o)"><g clip-path="url(#e11r)"><g clip-path="url(#e11f)"><g clip-path="url(#e11b)">${half(1, 'e11u')}${half(-1, 'e11l')}</g></g></g></g>`;
     const mirror4 = p => [[p[0], p[1]], [W - p[0], p[1]], [p[0], H - p[1]], [W - p[0], H - p[1]]];
     const dot = (p, r, op) => `<circle class="a" style="--i:4" cx="${f(p[0])}" cy="${f(p[1])}" r="${f(r)}" fill="${GOLD}" fill-opacity="${f(op)}"/>`;
     const cut0 = walk([t1, t1], du, fr.inside), cut1 = walk(shL, [-du[0], -du[1]], (x, y) => !inDoor(x, y, 40));
@@ -575,6 +578,7 @@
       if (p[0] < fr.tin + 30 || p[0] > W - fr.tin - 30 || p[1] < fr.tin + 20 || p[1] > H - fr.tin - 20) continue;
       const px = CX - Math.abs(p[0] - CX), py = CY - Math.abs(p[1] - CY);   // folded into the upper-left quarter
       if ((px - t1) * du[1] - (py - t1) * du[0] < 14) continue;            // only in the top and bottom fields
+      if (inDoor(p[0], p[1], 46)) continue;                                // and never on the ring round the door
       over += dot(p, phone ? 1.9 : 1.5, .3 + R() * .3);
     }
     return { defs, under, over };
