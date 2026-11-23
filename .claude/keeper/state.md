@@ -7,7 +7,7 @@ Backlog items are named by number and title.
 
 - The line under the title and the logo: the owner calls them awesome. They are the source of
   the look, and they came from many references.
-- The card backs, the richest objects in the app: the start card shows one of five at random (turn by turn, bookmatched, cut areas, split by zone, lines and shapes with jewellery), each drawing in; the Intermezzo shows the amethyst circles (the owner calls it "the Eye"), turn by turn or bookmatched. What made the start backs work: a card back is drawn for the rectangle (border, designed corners and ends, one centrepiece), lines run on through crossings but end on something, one colour per kind of area.
+- The card backs, the richest objects in the app: the start card shows one of seven at random, never the same twice in a row (turn by turn, bookmatched, cut areas in purple with glints, and round 13's threshold, radiant, four lamps and winged door), each drawing in; the Intermezzo shows the amethyst circles (the owner calls it "the Eye"), turn by turn or bookmatched. What made the start backs work: a card back is drawn for the rectangle (border, designed corners and ends, one centrepiece), lines run on through crossings but end on something, one colour per kind of area.
 - The card face: the category named at the top with its stripes, in a double frame with the
   category's colour in the inner line. The owner chose it from pictures of the live app.
   The start card, the Intermezzo and Spotlight wear the same frame.

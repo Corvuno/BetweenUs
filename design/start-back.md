@@ -1,6 +1,6 @@
 # Start card back (#195)
 
-The start card shows one of five backs from `backs.js` (`.cb-streams`), behind the logo and the line
+The start card shows one of seven backs from `backs.js` (`.cb-streams`): turn by turn, bookmatched, cut areas in purple with glints, and round 13's threshold, radiant, four lamps (with glints) and winged door, never the same twice in a row. The owner keeps these for now; a proper card back, also for print, comes later. They sit behind the logo and the line
 "Each question is a door, left slightly open." This record covers new backs for the start card only;
 the end card (Intermezzo) may later get a design of its own.
 
