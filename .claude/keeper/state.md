@@ -60,6 +60,7 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 - What makes a design good for them is on `taste.md`, "Looks": bold, elegant and readable, lines
   that lead the eye, playfulness, centre and symmetry, judged as a whole. What they said about the
   card back (lines against black, flourishes, cut-out areas) belongs to the card back.
+- New start card backs (#195) are parked after three rounds the owner didn't enjoy; what was learned and the open question (title card or card back) are in `design/start-back.md`.
 - New card backs (#175, #195) are live. What got there: references as lessons, never redrawn; lines that never float, fine
   and quiet, full edge to edge; a window whose shape the drawing makes; several really different
   options at once ("If you give me one, ill be shooting it down all day"). The app's accent colour
