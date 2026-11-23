@@ -13,6 +13,6 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- The start card shows a different card back each time it comes up.
+- The start card shows a different card back each time it comes up, now from a refreshed set with four new designs.
 - Smaller fixes throughout.
 - Three new cards, and ten cards reworded.

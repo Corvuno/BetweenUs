@@ -206,7 +206,7 @@ async function run() {
     assert(index === 0, `expected no card drawn yet (index 0, i.e. currentIndex -1), got index ${index}`);
   });
 
-  await check('card back: the start card has one drawing from the five, in both densities, and no id repeats in the page', async () => {
+  await check('card back: the start card has one drawing from the seven, in both densities, and no id repeats in the page', async () => {
     const info = await page.evaluate(() => {
       const art = document.querySelector('#cardBack .cb-streams');
       const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
@@ -216,7 +216,7 @@ async function run() {
         shown: getComputedStyle(art).display, dup: ids.filter((id, i) => ids.indexOf(id) !== i),
       };
     });
-    assert(info.pool.length === 5 && info.pool.includes(info.pick), `start back "${info.pick}" is not from the pool ${info.pool}`);
+    assert(info.pool.length === 7 && info.pool.includes(info.pick), `start back "${info.pick}" is not from the pool ${info.pool}`);
     assert(info.ph === 1 && info.dk === 1, `start back drawings: ${info.ph} phone, ${info.dk} computer`);
     assert(info.paths > 0 && info.areas > 0 && info.shown === 'block', `start back has no drawing: ${JSON.stringify(info)}`);
     assert(info.dup.length === 0, `repeated ids: ${info.dup}`);

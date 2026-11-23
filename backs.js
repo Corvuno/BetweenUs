@@ -1,6 +1,7 @@
-// backs.js — the start card's five backs and the Intermezzo's two extra ornaments (#195), as drawn in the round pages:
+// backs.js — the start card's seven backs and the Intermezzo's two extra ornaments (#195), as drawn in the round pages:
 // 2a turn by turn (round 3), 5a bookmatched (round 4), 8a cut areas (round 8), 8d split by zone in its
-// clear order and 8f lines and shapes with jewellery, both in two colours (round 9). Each function returns
+// clear order and 8f lines and shapes with jewellery, both in two colours (round 9); 8a in purple with glints (round 12);
+// threshold, radiant, four lamps and winged door (round 13). The start card uses 2a, 5a, 8a purple and the round 13 four. Each function returns
 // one SVG string for the 1640 x 1000 field that fills the frame's inner line; phone = the lighter drawing.
 // Class "d" marks a line that draws in (pathLength 1, ordered by --i), class "a" an area that fades in.
 // Plain script: the drawing code lives in one function scope and publishes `Backs` on window.
@@ -579,6 +580,390 @@
     return { defs, under, over };
   }
 
+  // Cut areas in purple with glints (#195), the version the owner kept from round 12: the round-12 code in its own
+  // scope. It recolours cut areas into one purple family and lays 2a's glints along the cuts, the bold chevrons and
+  // the sunrise arcs (placed from a fixed seed, so the drawing is the same every time).
+  const ROUND12 = (() => {
+    const mirror4 = p => [[p[0], p[1]], [W - p[0], p[1]], [p[0], H - p[1]], [W - p[0], H - p[1]]];
+    // a polyline drawn in all four quarters: 'M…L…' once per quarter
+    function inQuarters(pts) {
+      const parts = ['', '', '', ''];
+      for (const p of pts) mirror4(p).forEach((q, m) => { parts[m] += (parts[m] ? 'L' : 'M') + `${f(q[0])} ${f(q[1])}`; });
+      return parts.join('');
+    }
+    // the extra layer goes over the lines, under the door
+    function addOver(svgText, over) {
+      const door = `<path d="${doorD()}" style="fill:var(--card-bg)"/>`;
+      let cut = svgText.lastIndexOf(door);
+      if (cut < 0) cut = svgText.lastIndexOf('<path', svgText.lastIndexOf('style="fill:var(--card-bg)"'));
+      return svgText.slice(0, cut) + over + svgText.slice(cut);
+    }
+
+    // ---- glints, exactly 2a's: three strokes (faint long, brighter middle, bright core) bold; two strokes fine ----
+    const BOLD = [[.3, 1.1, 1], [.55, 1.7, .55], [.95, 2.2, .22]], FINE_SET = [[.25, .7, 1], [.6, 1, .4]];
+    // a polyline's stretch from length a to length e
+    function sub(P, cum, a, e) {
+      const at = u => {
+        let q = 1;
+        while (q < P.length - 1 && cum[q] < u) q++;
+        const t = (u - cum[q - 1]) / ((cum[q] - cum[q - 1]) || 1);
+        return [P[q - 1][0] + (P[q][0] - P[q - 1][0]) * t, P[q - 1][1] + (P[q][1] - P[q - 1][1]) * t];
+      };
+      const pts = [at(a)];
+      for (let q = 1; q < P.length - 1; q++) {
+        if (cum[q] > a && cum[q] < e) pts.push(P[q]);
+      }
+      pts.push(at(e));
+      return pts;
+    }
+    // polylines in the upper-left quarter, each { P, bold }; glints are placed once and mirrored to all four quarters
+    function glints(phone, lines, R, { boldGap = [170, 340], fineGap = [260, 480], boldLen = [30, 60], fineLen = [14, 26] } = {}) {
+      const sets = { bold: BOLD.map(() => ''), fine: FINE_SET.map(() => '') };
+      for (const { P, bold } of lines) {
+        if (P.length < 2) continue;
+        const cum = [0]; for (let q = 1; q < P.length; q++) cum.push(cum[q - 1] + Math.hypot(P[q][0] - P[q - 1][0], P[q][1] - P[q - 1][1]));
+        const L = cum[cum.length - 1], gap = bold ? boldGap : fineGap, ln = bold ? boldLen : fineLen, set = bold ? BOLD : FINE_SET;
+        for (let u = 20 + R() * gap[0]; u < L - 10; u += gap[0] + R() * gap[1]) {
+          const len = Math.min(ln[0] + R() * ln[1], L - 4 - u);
+          if (len < 10) continue;
+          const mid = u + len / 2;
+          set.forEach(([, , share], g) => {
+            const pts = sub(P, cum, mid - len * share / 2, mid + len * share / 2);
+            sets[bold ? 'bold' : 'fine'][g] += inQuarters(pts);
+          });
+        }
+      }
+      return [...BOLD.map((s, g) => [s, sets.bold[g]]), ...FINE_SET.map((s, g) => [s, sets.fine[g]])]
+        .filter(([, d]) => d).map(([[op, sw], d]) => `<path class="a" style="--i:4" d="${d}" ${fineStroke(phone, GLINT, op, sw)} stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+    }
+    // a straight or sampled line cut into the runs where ok(x, y) holds
+    function runsOf(P, ok, step = 4) {
+      const dense = [];
+      for (let q = 0; q < P.length - 1; q++) { const [a, b] = [P[q], P[q + 1]], n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / step)); for (let s = 0; s < n; s++) dense.push([a[0] + (b[0] - a[0]) * s / n, a[1] + (b[1] - a[1]) * s / n]); }
+      dense.push(P[P.length - 1]);
+      const out = []; let cur = [];
+      for (const p of dense) {
+        if (ok(p[0], p[1])) { cur.push(p); continue; }
+        if (cur.length > 1) out.push(cur);
+        cur = [];
+      }
+      if (cur.length > 1) out.push(cur);
+      return out;
+    }
+
+    // ---- 8a: along the cuts, the side fields' bold chevrons and the sunrise's arcs ----
+    function glint8a(phone) {
+      const { t1, shL, du, chevP, nC } = cutGeometry(phone), fr = techFrame(kit(phone), true, AMETHYST);
+      const sideOf = (x, y) => (x - t1) * du[1] - (y - t1) * du[0];   // upper-left quarter: >0 top field, <0 left field
+      const inFr = (x, y) => fr.inside(x, y) && x > fr.tin + 14 && y > fr.tin + 14;
+      const lines = [];
+      const cut0 = walk([t1, t1], du, fr.inside), cut1 = walk(shL, [-du[0], -du[1]], (x, y) => !inDoor(x, y, 40));
+      lines.push({ P: [cut0, cut1], bold: true });
+      for (let j = 0; j < nC; j += 3) {
+        const P = chevP(j);
+        for (const run of runsOf([P[1], P[0]], (x, y) => inFr(x, y) && sideOf(x, y) < -10 && y < CY - 4 && !inDoor(x, y, 44))) lines.push({ P: run, bold: j % 6 === 0 });
+      }
+      for (const r of [380, 600]) {
+        const P = []; for (let a = 90; a <= 178; a += 1) { const t = a * Math.PI / 180; P.push([CX + r * Math.cos(t), G7.TOPY - r * Math.sin(t)]); }
+        for (const run of runsOf(P, (x, y) => inFr(x, y) && sideOf(x, y) > 10 && !inDoor(x, y, 50) && x < CX - 10)) lines.push({ P: run, bold: r === 380 });
+      }
+      return glints(phone, lines, seeded(phone ? 61 : 67), { boldGap: [130, 260], fineGap: [200, 360] });
+    }
+
+    // ---- one colour family per back: the main bands (was amethyst), the second areas (was petrol), the jewels ----
+    const FAMILIES = {
+      purple:   { main: '#74449c', second: '#a57bcf', jewel: '#cdaaea' },
+    };
+    function recolour(svgText, fam) {
+      const F = FAMILIES[fam];
+      return svgText
+        .replace(new RegExp(`fill="(${PETROL}|${AMETHYST})" fill-opacity="\\.9(5?)"`, 'g'), (_, c, x) => `fill="${F.jewel}" fill-opacity=".9${x}"`)
+        .split(AMETHYST).join(F.main).split(PETROL).join(F.second);
+    }
+
+    return { cutAreasPurple: p => addOver(recolour(BACKS.cutAreasBoth(p), 'purple'), glint8a(p)) };
+  })();
+
+  // Round 13's four (#195): threshold (1), radiant (3), four lamps (4, with glints added by the others' rule) and
+  // winged door (5), drawn by their own code in their own scope, so their names never meet this file's.
+  const ROUND13 = (() => {
+    // Round 13: five new start card backs, drawn from the brief only.
+    // Each export: phone => SVG string for the 1640 x 1000 field (phone = the lighter drawing).
+    // Class "d": a line that draws in (pathLength 1, ordered by --i); class "a": an area, glint or dot that fades in.
+
+    const W = 1640, H = 1000, CX = 820, CY = 500;
+    const GOLD = '#c9a84c', GLINT = '#e8c97a';
+    const FAM = {
+      amethyst: { deep: '#4e276a', base: '#7a4a9e', light: '#a276c5' },
+      petrol: { deep: '#004d4c', base: '#2a7a78', light: '#55a19f' },
+      garnet: { deep: '#6b1d24', base: '#a03e43', light: '#c96d6e' },
+    };
+    const f = n => (+n).toFixed(1);
+    const STRUCT = .62, MID = .34, FINE = .17;
+
+    const svg = (b, defs = '') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs>${defs}</defs>${b}</svg>`;
+    const fineStroke = (phone, col, op, sw) => `stroke="${col}" stroke-opacity="${op}" fill="none" vector-effect="non-scaling-stroke" stroke-width="${f((phone ? 1.1 : 1.5) * .7 * sw)}"`;
+    const pt = p => `${f(p[0])} ${f(p[1])}`;
+    const poly = (P, close = true) => 'M' + P.map(pt).join('L') + (close ? 'Z' : '');
+    const seg = (a, b) => `M${pt(a)}L${pt(b)}`;
+    const door = d => `<path d="${d}" style="fill:var(--card-bg)"/>`;
+    // four-fold mirror of a point about the centre
+    const mx = p => [W - p[0], p[1]], my = p => [p[0], H - p[1]], mxy = p => [W - p[0], H - p[1]];
+
+    // light: an ellipse that is dark (clear) in the middle and glows towards the edges
+    const glow = (id, col, stops, { cx = CX, cy = CY, r = W * .56, sy = .66 } = {}) =>
+      `<radialGradient id="${id}" gradientUnits="userSpaceOnUse" cx="${cx}" cy="${cy}" r="${r}" gradientTransform="translate(${cx} ${cy}) scale(1 ${sy}) translate(${-cx} ${-cy})">`
+      + stops.map(([o, op]) => `<stop offset="${o}" stop-color="${col}" stop-opacity="${op}"/>`).join('') + '</radialGradient>';
+    // a mask that hides what is near the door and shows it towards the edges
+    const fadeMask = (id, a, b, opt = {}) => glow(id + 'g', '#fff', [[a, 0], [b, 1]], opt)
+      + `<mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="url(#${id}g)"/></mask>`;
+
+    // 2a's glint: a faint long stroke, a brighter middle and a bright core, all along the line's own direction
+    const GL = { bold: [[.3, 1.1, 1], [.55, 1.7, .55], [.95, 2.2, .22]] };
+    function glints(phone, list, i = 4) {
+      const ds = GL.bold.map(() => '');
+      for (const { p, dir, len } of list) {
+        GL.bold.forEach(([, , share], j) => {
+          const h = len * share / 2;
+          ds[j] += seg([p[0] - dir[0] * h, p[1] - dir[1] * h], [p[0] + dir[0] * h, p[1] + dir[1] * h]);
+        });
+      }
+      return GL.bold.map(([op, sw], j) => ds[j] ? `<path class="a" style="--i:${i}" d="${ds[j]}" ${fineStroke(phone, GLINT, op, sw)} stroke-linecap="round"/>` : '').join('');
+    }
+    const unit = (a, b) => { const L = Math.hypot(b[0] - a[0], b[1] - a[1]); return [(b[0] - a[0]) / L, (b[1] - a[1]) / L]; };
+    const lerp2 = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+    // a glint at share t of segment a..b, mirrored left and right
+    const glintLR = (a, b, t, len) => { const p = lerp2(a, b, t), d = unit(a, b); return [{ p, dir: d, len }, { p: mx(p), dir: [-d[0], d[1]], len }]; };
+    // a small stone: a diamond in a colour, outlined in gold
+    const stone = (k, c, r, col, i = 3) => `<path class="a" style="--i:${i}" d="M${f(c[0])} ${f(c[1] - r)}L${f(c[0] + r * 1.3)} ${f(c[1])}L${f(c[0])} ${f(c[1] + r)}L${f(c[0] - r * 1.3)} ${f(c[1])}Z" fill="${col}" fill-opacity=".9" ${k.st(.7, .8)}/>`;
+
+    // the frames of the four quadrants: the drawing of the top left quarter, mirrored three times
+    const QUARTERS = ['', `translate(${W} 0) scale(-1 1)`, `translate(0 ${H}) scale(1 -1)`, `translate(${W} ${H}) scale(-1 -1)`];
+    const moved = tf => (tf ? ' transform="' + tf + '"' : '');
+    const flip = (P, sx, sy) => P.map(([x, y]) => [sx * x, sy * y]);
+    const toField = P => P.map(([x, y]) => [CX + x, CY + y]);
+
+    /* ------------------------------------------------------------------------------------------------
+       1 · Threshold. Doors within doors: stepped door frames nest from the card's edge to the window,
+       closer and closer together, so the card reads as a passage going in. Four bold rails run from the
+       corners to the window's corners; between alternate frames a fine coffering runs across them.
+       Garnet glows in from the edges. Glints: on each bold frame's top and bottom run, straight above and
+       below the window's stepped corners (the door's edge throws the light outward); on each bold rail,
+       halfway between the window and the card's edge. Bottom glints are shorter: the light is above. */
+    function threshold(phone, fam = FAM.garnet) {
+      const k = kit(phone);
+      const N = phone ? 7 : 10, q = phone ? 1.42 : 1.28;
+      const L = (a, b, t) => a + (b - a) * t;
+      const fr = t => ({ hw: L(470, 940, t), hh: L(300, 640, t), s: L(24, 72, t) });
+      const corner = ({ hw, hh, s }) => [[-hw, -hh + 2 * s], [-hw + s, -hh + 2 * s], [-hw + s, -hh + s], [-hw + 2 * s, -hh + s], [-hw + 2 * s, -hh]];
+      const outline = F => {
+        const c = corner(F);
+        return toField([...c, ...flip(c, -1, 1).reverse(), ...flip(c, -1, -1), ...flip(c, 1, -1).reverse()]);
+      };
+      const ts = []; for (let m = 0; m <= N; m++) ts.push((q ** m - 1) / (q ** N - 1));
+      const isBold = m => m > 0 && m % 3 === 0;
+      let defs = glow('thG', fam.deep, [[.44, 0], [.78, .24], [1, .46]]) + fadeMask('thM', .36, .72);
+      let b = `<rect class="a" style="--i:0" width="${W}" height="${H}" fill="url(#thG)"/>`;
+      // coffering: rails at even places along each side, only in alternate bands, running across the frames
+      const nU = phone ? 7 : 11;
+      let cof = '';
+      for (let m = 1; m < N; m += 2) {
+        const A = fr(ts[m]), B = fr(ts[m + 1]);
+        for (let j = 1; j < nU; j++) {
+          const u = -1 + 2 * j / nU;
+          for (const sy of [-1, 1]) cof += seg([CX + u * (A.hw - 2 * A.s), CY + sy * A.hh], [CX + u * (B.hw - 2 * B.s), CY + sy * B.hh]);
+          if (j < nU - 2) { const v = -1 + 2 * j / (nU - 2); for (const sx of [-1, 1]) cof += seg([CX + sx * A.hw, CY + v * (A.hh - 2 * A.s)], [CX + sx * B.hw, CY + v * (B.hh - 2 * B.s)]); }
+        }
+      }
+      b += `<g mask="url(#thM)"><path class="a" style="--i:7" d="${cof}" ${fineStroke(phone, GOLD, .18, .5)}/></g>`;
+      for (let m = N; m >= 1; m--) b += k.path(poly(outline(fr(ts[m]))), isBold(m) ? MID + .06 : FINE + .03, isBold(m) ? 2.5 : .6, N - m + 1);
+      const far = fr(1.5), win = fr(0);
+      const cw = corner(win), cf = corner(far);
+      let rail;
+      for (const v of [0, 2, 4]) {
+        const a = [CX + cw[v][0], CY + cw[v][1]], z = [CX + cf[v][0], CY + cf[v][1]];
+        for (const tf of [p => p, mx, my, mxy]) b += k.path(seg(tf(a), tf(z)), v === 2 ? MID + .06 : FINE + .05, v === 2 ? 2.5 : .7, 1);
+        if (v === 2) rail = [a, z];
+      }
+      const gl = [], len = phone ? 72 : 58;
+      const [ra, rz] = rail;
+      const tOut = Math.min(ra[0] / (ra[0] - rz[0]), ra[1] / (ra[1] - rz[1]));
+      gl.push(...glintLR(ra, rz, tOut * .5, len), ...glintLR(my(ra), my(rz), tOut * .5, len * .7));
+      const xc = CX - (470 - 48);   // above the window's stepped corner
+      for (let m = 1; m <= N; m++) if (isBold(m)) {
+        const F = fr(ts[m]); if (F.hh > 480) continue;
+        const y = CY - F.hh;
+        gl.push(...glintLR([xc - 1, y], [xc + 1, y], .5, len), ...glintLR([xc - 1, H - y], [xc + 1, H - y], .5, len * .7));
+      }
+      b += glints(phone, gl);
+      b += door(poly(outline(win))) + k.path(poly(outline(win)), STRUCT, 1.1, N + 2);
+      b += k.path(poly(outline({ hw: 452, hh: 282, s: 22 })), FINE + .05, .6, N + 2);
+      for (const sx of [-1, 1]) b += stone(k, [CX + sx * 470, CY], phone ? 10 : 8, FAM.petrol.base);
+      return svg(b, defs);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+       3 · Radiant. The door as a rising sun: rays in threes, a bold one between two fine ones, burst from
+       behind an octagonal window to the frame, with a fine ray starting further out in each gap. Alternate
+       wedges hold amethyst that deepens towards the edges, like a sunburst inlay. Glints: on every third
+       bold ray, alternately halfway and two thirds of the way out; the lower half takes the rays in between. */
+    function radiant(phone, fam = FAM.amethyst) {
+      const k = kit(phone);
+      const hw = 490, hh = 300, c = 118;
+      const win = [[CX - hw + c, CY - hh], [CX + hw - c, CY - hh], [CX + hw, CY - hh + c], [CX + hw, CY + hh - c], [CX + hw - c, CY + hh], [CX - hw + c, CY + hh], [CX - hw, CY + hh - c], [CX - hw, CY - hh + c]];
+      const D = phone ? 12 : 9, del = phone ? 1.9 : 1.4, RR = 1300;
+      const rad = d => d * Math.PI / 180;
+      const at = (deg, r) => [CX + r * Math.cos(rad(deg)), CY - r * Math.sin(rad(deg))];
+      let defs = glow('raG', fam.base, [[.34, 0], [.72, .1], [1, .26]]) + glow('raE', fam.deep, [[.5, 0], [.88, .2], [1, .38]]) + fadeMask('raM', .3, .62);
+      const n = Math.round(360 / D);
+      let wd = '';
+      for (let j = 0; j < n; j += 2) wd += `M${CX} ${CY}L${pt(at(j * D + del, RR))}L${pt(at((j + 1) * D - del, RR))}Z`;
+      let b = `<rect class="a" style="--i:0" width="${W}" height="${H}" fill="url(#raE)"/><path class="a" style="--i:0" d="${wd}" fill="url(#raG)"/>`;
+      let fine = '', gap = '', bold = '';
+      for (let j = 0; j < n; j++) {
+        const a = j * D;
+        fine += seg(at(a - del, 330), at(a - del, RR)) + seg(at(a + del, 330), at(a + del, RR));
+        gap += seg(at(a + D / 2, 420), at(a + D / 2, RR));
+        bold += seg(at(a, 300), at(a, RR));
+      }
+      b += `<g mask="url(#raM)"><path class="a" style="--i:6" d="${gap}" ${fineStroke(phone, GOLD, .2, .5)}/></g>`;
+      b += k.path(fine, FINE + .04, .6, 2) + k.path(bold, MID + .06, 2.5, 1);
+      const exit = a => { const c0 = Math.abs(Math.cos(rad(a))), s0 = Math.abs(Math.sin(rad(a))); return Math.min(c0 > 1e-6 ? CX / c0 : 1e9, s0 > 1e-6 ? CY / s0 : 1e9); };
+      const doorR = a => { const c0 = Math.abs(Math.cos(rad(a))), s0 = Math.abs(Math.sin(rad(a))); return Math.min(hw / Math.max(c0, 1e-6), hh / Math.max(s0, 1e-6), (hw + hh - c) / (c0 + s0)); };
+      const gl = [], len = phone ? 64 : 52;
+      const put = (a, t, l) => {
+        const r0 = doorR(a), r1 = exit(a), p = at(a, r0 + (r1 - r0) * t), dir = [Math.cos(rad(a)), -Math.sin(rad(a))];
+        gl.push({ p, dir, len: l }, { p: mx(p), dir: [-dir[0], dir[1]], len: l });
+      };
+      let alt = 0;
+      for (let j = 1; j * D < 90; j++) if (j % 3 === 1) put(j * D, alt++ % 2 ? .66 : .5, len);
+      alt = 0;
+      for (let j = 1; j * D < 90; j++) if (j % 3 === 2) put(-j * D, alt++ % 2 ? .5 : .66, len * .8);
+      b += glints(phone, gl);
+      b += door(poly(win)) + k.path(poly(win), STRUCT, 1.1, 0);
+      const s = 18, w2 = [[CX - hw + c, CY - hh + s], [CX + hw - c, CY - hh + s], [CX + hw - s, CY - hh + c], [CX + hw - s, CY + hh - c], [CX + hw - c, CY + hh - s], [CX - hw + c, CY + hh - s], [CX - hw + s, CY + hh - c], [CX - hw + s, CY - hh + c]];
+      b += k.path(poly(w2), FINE + .05, .6, 0);
+      for (const sy of [-1, 1]) b += stone(k, [CX, CY + sy * hh], phone ? 10 : 8, FAM.petrol.base);
+      return svg(b, defs);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+       4 · Four lamps. A fan of stepped glass in each corner, lit from behind: rays leave a small quarter
+       sun and double at each of two stepped tiers, then run on until they meet the window or their mirror
+       on the centre lines, where they close into chevrons that point at the door. Fine compass arcs inside
+       the tiers run the other way. The colour is the lamps' light, glowing from the corners. No glints. */
+    function fourLamps(phone, fam = FAM.petrol) {
+      const k = kit(phone);
+      const rho = 470, x0 = 350, y0 = 200;
+      const bitten = (r, x, y) => { const p = Math.sqrt(r * r - y * y), q = Math.sqrt(r * r - x * x); return `M${f(p)} ${y}H${f(W - p)}A${r} ${r} 0 0 0 ${f(W - x)} ${f(q)}V${f(H - q)}A${r} ${r} 0 0 0 ${f(W - p)} ${f(H - y)}H${f(p)}A${r} ${r} 0 0 0 ${x} ${f(H - q)}V${f(q)}A${r} ${r} 0 0 0 ${f(p)} ${y}Z`; };
+      const winD = bitten(rho, x0, y0);
+      let defs = `<clipPath id="flQ"><rect width="${CX}" height="${CY}"/></clipPath>`;
+      defs += glow('flG', fam.deep, [[0, .7], [.3, .42], [.65, .1], [1, 0]], { cx: 0, cy: 0, r: 820, sy: .8 });
+      const r0 = 160, t1 = 290, t2 = 410;
+      const ang = a => [Math.cos(a * Math.PI / 180), Math.sin(a * Math.PI / 180)];
+      const ray = (a, ra, rb) => { const [c, s] = ang(a); return `M${f(ra * c)} ${f(ra * s)}L${f(rb * c)} ${f(rb * s)}`; };
+      const arc = r => `M${f(r)} 0A${r} ${r} 0 0 1 0 ${f(r)}`;
+      // 6 rays from the sun, 12 after the first tier, 24 after the second; every second outer ray bold
+      const D0 = 90 / 6;
+      let inner = '', mid = '', outerB = '', outerF = '', tex = '';
+      for (let a = D0 / 2; a < 90; a += D0) inner += ray(a, r0, t1);
+      for (let a = D0 / 4; a < 90; a += D0 / 2) mid += ray(a, t1, t2);
+      let j = 0;
+      for (let a = D0 / 8; a < 90; a += D0 / 4, j++) {
+        if (a < 3 || a > 87) continue;
+        if (j % 2 === 0) outerB += ray(a, t2, 1500); else outerF += ray(a, t2, 1500);
+      }
+      for (let r = t1 + (phone ? 24 : 17); r < t2 - 6; r += phone ? 24 : 17) tex += arc(r);
+      let q = `<rect class="a" style="--i:0" width="${CX}" height="${CY}" fill="url(#flG)"/>`;
+      q += `<path class="a" style="--i:7" d="${tex}" ${fineStroke(phone, GOLD, .16, .45)}/>`;
+      q += k.path(outerF, FINE + .05, .6, 3) + k.path(outerB, MID + .04, 2.2, 2);
+      q += k.path(mid, FINE + .1, .8, 2) + k.path(inner, MID, 1.2, 2);
+      q += k.path(arc(t1), MID + .06, 2.2, 1) + k.path(arc(t2), MID + .06, 2.5, 1);
+      q += `<path d="M0 0H${r0}A${r0} ${r0} 0 0 1 0 ${r0}Z" style="fill:var(--card-bg)"/>`;
+      q += k.path(arc(r0), STRUCT, 1.1, 0) + k.path(arc(r0 * .6), MID, .7, 0);
+      for (let a = 15; a < 90; a += 15) q += k.path(ray(a, r0 * .6, r0), FINE + .08, .5, 0);
+      let b = '';
+      for (const tf of QUARTERS) b += `<g clip-path="url(#flQ)"${moved(tf)}>${q}</g>`;
+      b += door(winD) + k.path(winD, STRUCT, 1.1, 0) + k.path(bitten(rho + 18, x0 + 18, y0 + 18), FINE + .05, .6, 0);
+      // Glints, by the same rule as the others: on bold lines only, along their own direction, light from above.
+      // On each lamp: where its two bold rims cross the lamp's 45-degree axis, and halfway along its bold ray nearest
+      // the card's long edge (9.375 degrees), from the outer rim to the centre line. The bottom lamps' glints are shorter.
+      const gl = [], len = phone ? 62 : 50;
+      const tl = [];
+      for (const r of [t1, t2]) { const [c, s2] = ang(45); tl.push({ p: [r * c, r * s2], dir: [-s2, c] }); }
+      { const a = D0 / 8 + D0 / 4 * 2, [c, s2] = ang(a), rEnd = CX / c, rm = (t2 + rEnd) / 2; tl.push({ p: [rm * c, rm * s2], dir: [c, s2] }); }
+      for (const { p, dir } of tl) {
+        gl.push({ p, dir, len }, { p: mx(p), dir: [-dir[0], dir[1]], len });
+        gl.push({ p: my(p), dir: [dir[0], -dir[1]], len: len * .7 }, { p: mxy(p), dir: [-dir[0], -dir[1]], len: len * .7 });
+      }
+      b += glints(phone, gl);
+      for (const sy of [-1, 1]) b += stone(k, [CX, CY + sy * 300], phone ? 10 : 8, FAM.garnet.base);
+      return svg(b, defs);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+       5 · Winged door (the outlier). The window as a sun disc and four great wings of feather tiers sweeping
+       from it to the frame, as on an Egyptian lintel drawn in deco line. Each tier's edge leaves the disc
+       square to it and bends towards the frame; fine feathers run across the tiers. Amethyst lies in
+       alternate tiers, deepening to the tips. Glints: one on each bold tier edge, at the point where that
+       edge bends most; the bold edges take turns between the upper and the lower wings. */
+    function wingedDoor(phone, fam = FAM.amethyst) {
+      const k = kit(phone);
+      const rx = 470, ry = 300, K = phone ? 9 : 13;
+      const frameAt = u => { const L1 = 470, L2 = 640, s = u * (L1 + L2); return s <= L1 ? [0, 470 - s] : [s - L1, 0]; };
+      const curve = j => {
+        const u = j / K, phi = (4 + u * 80) * Math.PI / 180;
+        const S = [CX - rx * Math.cos(phi), CY - ry * Math.sin(phi)];
+        const nrm = unit([0, 0], [-Math.cos(phi) / rx, -Math.sin(phi) / ry]);
+        const E = frameAt(.04 + u * .96), d = Math.hypot(E[0] - S[0], E[1] - S[1]);
+        return { S, C: [S[0] + nrm[0] * d * .55, S[1] + nrm[1] * d * .55], E };
+      };
+      const bez = ({ S, C, E }, t) => [(1 - t) ** 2 * S[0] + 2 * (1 - t) * t * C[0] + t * t * E[0], (1 - t) ** 2 * S[1] + 2 * (1 - t) * t * C[1] + t * t * E[1]];
+      const tan = ({ S, C, E }, t) => unit([0, 0], [2 * (1 - t) * (C[0] - S[0]) + 2 * t * (E[0] - C[0]), 2 * (1 - t) * (C[1] - S[1]) + 2 * t * (E[1] - C[1])]);
+      const bend = ({ S, C, E }) => { // where a quadratic curve bends most
+        const a = [C[0] - S[0], C[1] - S[1]], bb = [E[0] - 2 * C[0] + S[0], E[1] - 2 * C[1] + S[1]];
+        return Math.max(.15, Math.min(.85, -(a[0] * bb[0] + a[1] * bb[1]) / (bb[0] ** 2 + bb[1] ** 2)));
+      };
+      const qd = cv => `M${pt(cv.S)}Q${pt(cv.C)} ${pt(cv.E)}`;
+      const cvs = []; for (let j = 0; j <= K; j++) cvs.push(curve(j));
+      let defs = glow('wdG', fam.deep, [[.4, 0], [.78, .2], [1, .42]]);
+      let fills = '', feathers = '';
+      const NS = phone ? 9 : 14;
+      for (let j = 0; j < K; j++) {
+        const A = cvs[j], B = cvs[j + 1];
+        {
+          let d = `M${pt(A.S)}`;
+          for (let s = 1; s <= 24; s++) d += `L${pt(bez(A, s / 24))}`;
+          if (A.E[0] === 0 && B.E[0] > 0) d += 'L0 0';
+          for (let s = 24; s >= 0; s--) d += `L${pt(bez(B, s / 24))}`;
+          fills += d + 'Z';
+        }
+        if (j % 2 === 0) for (let s = 1; s < NS; s++) { const t = (s / NS) ** .85; feathers += seg(bez(A, t), bez(B, t)); }
+      }
+      const isBold = j => j % 3 === 0;
+      let q = `<path class="a" style="--i:0" d="${fills}" fill="url(#wdG)"/>`;
+      q += `<path class="a" style="--i:7" d="${feathers}" ${fineStroke(phone, GOLD, .2, .5)}/>`;
+      for (let j = 0; j <= K; j++) q += k.path(qd(cvs[j]), isBold(j) ? MID + .06 : FINE + .04, isBold(j) ? 2.5 : .6, K - j + 1);
+      let b = '';
+      for (const tf of QUARTERS) b += `<g${moved(tf)}>${q}</g>`;
+      for (const sx of [-1, 1]) b += k.path(`M${sx < 0 ? 0 : W} ${CY}H${CX + sx * rx}`, MID, 1, 3);
+      const gl = [], len = phone ? 62 : 50;
+      const bolds = []; for (let j = 0; j <= K; j++) if (isBold(j)) bolds.push(j);
+      bolds.forEach((j, idx) => {
+        const cv = cvs[j], t = bend(cv), p0 = bez(cv, t), d0 = tan(cv, t);
+        if (idx % 2 === 0) gl.push({ p: p0, dir: d0, len }, { p: mx(p0), dir: [-d0[0], d0[1]], len });
+        else { const p = my(p0), d = [d0[0], -d0[1]]; gl.push({ p, dir: d, len: len * .8 }, { p: mx(p), dir: [-d[0], d[1]], len: len * .8 }); }
+      });
+      b += glints(phone, gl);
+      const ell = (a, c) => `M${CX - a} ${CY}A${a} ${c} 0 1 0 ${CX + a} ${CY}A${a} ${c} 0 1 0 ${CX - a} ${CY}Z`;
+      b += door(ell(rx, ry)) + k.path(ell(rx, ry), STRUCT, 1.1, 0) + k.path(ell(rx - 18, ry - 18), FINE + .05, .6, 0);
+      for (const sx of [-1, 1]) b += stone(k, [CX + sx * rx, CY], phone ? 10 : 8, FAM.petrol.base);
+      return svg(b, defs);
+    }
+
+    return { threshold, radiant, fourLamps, wingedDoor };
+  })();
+
   const PAL8A = { side: t => [AMETHYST, t ? .14 : .32], tb: PETROL, dia: PETROL };
   const BACKS = {
     turnByTurn: p => withDepth(streamline(p, 'band'), turnByTurnDepth(p)),               // 2a
@@ -586,9 +971,14 @@
     cutAreasBoth: p => withDepth(cutAreas(p, PAL8A, { ring: true, jewels: true, frame: true }), cutAreasDepth(p)),   // 8a with its extra layer
     splitByZone: p => comboZones(p, true, true),                                        // 8d, clear order
     linesAndJewels: p => comboTechno(p, true),                                          // 8f
+    cutAreasPurple: p => ROUND12.cutAreasPurple(p),                                     // round 12, 8a in purple with glints
+    threshold: p => ROUND13.threshold(p),                                               // round 13, 1
+    radiant: p => ROUND13.radiant(p),                                                   // round 13, 3
+    fourLamps: p => ROUND13.fourLamps(p),                                               // round 13, 4
+    wingedDoor: p => ROUND13.wingedDoor(p),                                             // round 13, 5
   };
 
-  const START_POOL = ['turnByTurn', 'bookmatched', 'cutAreasBoth', 'splitByZone', 'linesAndJewels'];
+  const START_POOL = ['turnByTurn', 'bookmatched', 'cutAreasPurple', 'threshold', 'radiant', 'fourLamps', 'wingedDoor'];
   const INTERMEZZO_POOL = ['eye', 'turnByTurn', 'bookmatched'];   // 'eye' is the markup already in the page, not drawn here
 
   const markupCache = new Map();
