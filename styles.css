@@ -87,15 +87,15 @@ body{
 /* The bar under the name (design/title-bar.md): lines grow out of the logo's diamonds in steps, the nearer the middle
    the further they reach; solid gold bands off the diamonds' tips; every fine line stops on a dot, the middle line on
    a ring. Line weights stay fixed when the bar grows on a computer. */
-.tr-band{stroke:var(--gold);stroke-width:2.6px;stroke-linecap:round;}
+.tr-band{stroke:var(--gold);stroke-width:2px;stroke-linecap:round;}
 .tr-fine{stroke:var(--gold);stroke-width:1px;}
-.tr-deck{stroke:url(#trP);stroke-width:1.5px;}
-.tr-spine{stroke:var(--gold);stroke-width:1.5px;}
-.tr-logo{stroke:var(--gold);stroke-width:1.7px;stroke-linejoin:miter;}
+.tr-deck{stroke:url(#trP);stroke-width:1.25px;}
+.tr-spine{stroke:var(--gold);stroke-width:1.25px;}
+.tr-logo{stroke:var(--gold);stroke-width:1.4px;stroke-linejoin:miter;}
 .tr-heart{fill:var(--copper);}
 .tr-dot{fill:var(--gold);}
 .tr-dot--deck{fill:url(#trP);}
-.tr-ring{stroke:var(--gold);stroke-width:1.2px;}
+.tr-ring{stroke:var(--gold);stroke-width:1px;}
 .subtitle{font-size:var(--fs-1);font-weight:400;letter-spacing:var(--track-2);text-transform:uppercase;color:var(--stone);margin-top:10px;}
 
 /* ── PRESET ROW ── */

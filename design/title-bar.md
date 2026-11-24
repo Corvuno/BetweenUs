@@ -11,6 +11,8 @@ overlap.
   stepped-glass sconce and a streamline house (`.claude/keeper/references/`, sconce and streamline
   entries). The weight comes from bundles of lines, steps and solid ends, not from thick strokes:
   "make the lines a bit less thick. They have room like this."
+- Built, it was "a lot": the owner asked for "a tad less heavy". The bands, the logo's outline and the
+  middle and deck lines sit a step lighter than the round 2 picture; the shape is unchanged.
 - The name stays the strongest thing at the top: "Never as much. More weight is oke".
 - The inner pair keeps the colour of the picked deck.
 - The owner chose round 2, option 2, "a full ornament": lines grow out of the diamonds in steps, the
