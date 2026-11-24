@@ -10,7 +10,7 @@
 @property --rail-l{syntax:'<color>';inherits:true;initial-value:transparent;}
 @property --bd-a{syntax:'<color>';inherits:false;initial-value:#c9a84c;}
 @property --bd-b{syntax:'<color>';inherits:false;initial-value:#a07830;}
-@property --nl{syntax:'<color>';inherits:false;initial-value:#c9a84c;}   /* the hairlines beside Next card */
+@property --nl{syntax:'<color>';inherits:true;initial-value:#c9a84c;}   /* the bands beside Next card */
 :root{
   --bg:#0e0c0a;--surface:#161310;--card-bg:#1a1612;
   --gold:#c9a84c;--gold-l:#e8c97a;--cream:#f0e8d8;
@@ -512,20 +512,21 @@ body.showing-hand-summary .card-question{
 .progress,.prog-count,.draw-more-btn,.deck-info{grid-column:1 / -1;}
 .progress{grid-row:1;} .prog-count{grid-row:2;}
 .nav-row{display:contents;}
-.nav-lines{grid-row:3;justify-self:stretch;height:var(--gold-btn-h);
+.nav-lines{grid-row:3;justify-self:stretch;height:var(--gold-btn-h);position:relative;
   --nl:var(--gold);   /* the lines take the bar's colour: gold in play, the pause colour at the end of a hand */
-  --line:color-mix(in srgb,var(--nl) 70%,transparent);--line-end:color-mix(in srgb,var(--nl) 20%,transparent);
   transition:--nl .2s ease;
-  --gap:calc(6 * var(--u));   /* bar edge to the first hairline end */
-  --y-mid:calc(var(--gold-btn-h) / 2 - .5px);   /* the middle line; the others sit 6px above and below */
-  background-repeat:no-repeat;
-  background-size:calc(100% - 22 * var(--u)) 1px,calc(100% - 6 * var(--u)) 1px,calc(100% - 22 * var(--u)) 1px;}   /* outer ends 40, 24, 40 from the screen edge */
-.nav-lines--l{grid-column:1;margin-inline-end:var(--gap);
-  background-image:linear-gradient(to left,var(--line),var(--line-end)),linear-gradient(to left,var(--line),var(--line-end)),linear-gradient(to left,var(--line),var(--line-end));
-  background-position:100% calc(var(--y-mid) - 6px),100% var(--y-mid),100% calc(var(--y-mid) + 6px);}
-.nav-lines--r{grid-column:3;margin-inline-start:var(--gap);
-  background-image:linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(to right,var(--line),var(--line-end)),linear-gradient(to right,var(--line),var(--line-end));
-  background-position:0 calc(var(--y-mid) - 6px),0 var(--y-mid),0 calc(var(--y-mid) + 6px);}
+  --gap:calc(6 * var(--u));}   /* bar edge to where the bands start */
+/* The bands beside Next card (design/under-card.md): the bar under the name's streamline bands, in gold at three quarters
+   of their strength so the button stays the brightest gold. Three bands at 5.6px apart leave the button and round the
+   corner upward on one turning centre, all ending on one line; heaviest at the bottom. Drawn from the outer end, so the
+   curl keeps its shape and the straight part takes whatever room the button leaves; outer end 24px from the screen edge. */
+.nl-bands{position:absolute;top:calc(50% - 20px);height:40px;width:calc(100% - 6 * var(--u));left:calc(6 * var(--u));
+  overflow:hidden;color:var(--nl);opacity:.75;fill:none;}
+.nl-bands path{stroke:currentColor;}
+.nl-b1{stroke-width:1px;} .nl-b2{stroke-width:1.25px;} .nl-b3{stroke-width:2px;}
+.nav-lines--l{grid-column:1;margin-inline-end:var(--gap);}
+.nav-lines--r{grid-column:3;margin-inline-start:var(--gap);}
+.nav-lines--r .nl-bands{left:auto;right:calc(6 * var(--u));transform:scaleX(-1);}
 /* End of a hand: the lines follow the bar to the pause colour (--im-target, the one the bar reads) over the same .6s. */
 .controls-wrap:has(#btn-next.hold-mode) .nav-lines{--nl:var(--im-target);transition:--nl .6s ease;}
 /* One width in every state, so the bar never changes shape: wide enough for every label, with even room each side.

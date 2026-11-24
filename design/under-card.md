@@ -1,8 +1,8 @@
 # Under the card (main screen bottom)
 
 The whole bottom of the main screen is one figure that answers the title: coloured ticks, the
-count, one slim gold Next card with three gold hairlines a side (a hairline fading outward), and
-the words Spotlight and Menu under the outer ends of the lines. On the phone Back, Three and Twist are
+count, one slim gold Next card with three streamline bands a side, and the words Spotlight and
+Menu under the outer ends of the bands. On the phone Back, Three and Twist are
 not here: Back is a swipe right on the card, Three is a setting in The Deck, Twist is a line in
 the Menu (the computer shows all three, see Wide screens). So the question is the brightest thing.
 
@@ -19,13 +19,17 @@ the Menu (the computer shows all three, see Wide screens). So the question is th
   PC. The first-draw and end-of-hand states change colour only (`.hold-mode`), never size or
   spacing. Spotlight keeps its own width (`flex-shrink:0`) so the bar's width never squeezes its
   hint on a 360px phone.
-- Hairlines `.nav-lines`: three 1px lines at -6px, 0, +6px from the bar's centre, starting
-  `6 * --u` from the bar, outer ends 40, 24 and 40 from the screen edge (the middle one longest),
-  from opacity .7 at the bar to .2 at the outer end (`color-mix` of `--nl`, one gradient per line
-  so the fade follows each line's own length). `--nl` (registered `<color>`) is the lines' colour:
-  `--gold` in play; while the bar is in `.hold-mode` (end of a hand) it is `--im-target`, easing
-  over `.6s` like the bar's own fade (`.2s` back to gold on the next hand), instant under reduced
-  motion. No glow. Decoration only (`aria-hidden`); hidden on PC.
+- Bands `.nav-lines` (`.nl-bands`): the bar under the name's streamline bands (`design/title-bar.md`,
+  round 2 option 3), all gold. The owner chose them: "Do the first width and the last brightness"
+  (`agreements/next-lines-r2`, `-r3`). Three bands 5.6px apart around the bar's centre leave the bar
+  `6 * --u` from it and round the corner upward on one turning centre a side (radii 7.2, 12.8, 18.4),
+  all three ending on one line 12.8px above the middle band; weights 1, 1.25 and 2 from the top, heaviest
+  at the bottom. Outer end 24px from the screen edge. At three quarters of their strength (`opacity:.75`),
+  so the button stays the brightest gold. Drawn from the outer end: the curl keeps its size and the
+  straight part takes the room the bar leaves. `--nl` (registered `<color>`) is their colour: `--gold` in
+  play; while the bar is in `.hold-mode` (end of a hand) it is `--im-target`, easing over `.6s` like the
+  bar's own fade (`.2s` back to gold on the next hand), instant under reduced motion. No glow.
+  Decoration only (`aria-hidden`); not drawn on a computer.
 - Spotlight and Menu: `.quiet-word`, plain words (no icon, no box), Jost 400, `--fs-1`, `--track-3`,
   uppercase, `--stone`, `--gold` on hover (mouse only), press and keyboard focus (gold word
   with a thin gold underline, offset 6px, never a box). The tap area is at least 44px tall and
@@ -47,7 +51,7 @@ whole thing was good on pc. Just revert the change there"), with today's card fa
 - Bottom row on the card's edges: Back (`#btn-prev`, arrow and word) left, Next card centred, the
   ticks with the count under them right. Back does what a swipe right and the left arrow key do and
   is dimmed (`.quiet-word:disabled`) when there is no earlier card.
-- The hairlines beside Next card and the count's two rules are not drawn on a computer.
+- The bands beside Next card and the count's two rules are not drawn on a computer.
 - `--pcW` (the card's width) is `100dvh - 174px * --k - 54px`, fitted so the card and the top
   groups agree within 2px from 1024 to 2560 wide.
 - The menu's panel, Played, Favourites and Ways to play open from the right, The Deck from the

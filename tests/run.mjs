@@ -1588,7 +1588,7 @@ async function run() {
     assert(r.fillable > 200 && r.fillable < r.states - 200, `the random states are one-sided (${r.fillable} of ${r.states} fillable)`);
   });
 
-  await check('under the card (phone): Next card between hairlines, Spotlight and Menu as plain 44px words that do not touch it; no Back, Three or Twist buttons', async () => {
+  await check('under the card (phone): Next card between bands, Spotlight and Menu as plain 44px words that do not touch it; no Back, Three or Twist buttons', async () => {
     await closeCategorySheet();
     await freshHand({ three: false });
     await page.locator('#card').click();
@@ -1597,11 +1597,11 @@ async function run() {
     const r = await page.evaluate(() => {
       const box = id => { const b = document.getElementById(id).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, w: b.width, h: b.height }; };
       return { next: box('btn-next'), spot: box('btnParty'), menu: box('btn-menu'), gone: ['btn-prev', 'btnPick', 'btnTwist'].filter(id => document.getElementById(id).offsetParent !== null),
-        lines: [...document.querySelectorAll('.nav-lines')].map(e => getComputedStyle(e).backgroundImage.split('linear-gradient').length - 1), icons: [...document.querySelectorAll('#btnParty svg, #btn-menu svg')].filter(e => e.getBoundingClientRect().width).length };
+        lines: [...document.querySelectorAll('.nav-lines')].map(e => e.querySelectorAll('.nl-bands path').length), icons: [...document.querySelectorAll('#btnParty svg, #btn-menu svg')].filter(e => e.getBoundingClientRect().width).length };
     });
     assert(!r.gone.length, `a computer-only button shows on the phone: ${r.gone}`);
     assert(Math.abs(r.next.h - 34) < 0.5, `Next card is ${r.next.h}px tall, not the slim 34px`);
-    assert(r.lines.length === 2 && r.lines.every(n => n === 3), `Next card should have three hairlines a side: ${r.lines}`);
+    assert(r.lines.length === 2 && r.lines.every(n => n === 3), `Next card should have three bands a side: ${r.lines}`);
     assert(r.icons === 0, 'Spotlight or Menu has an icon');
     for (const [name, b] of [['Spotlight', r.spot], ['Menu', r.menu]]) {
       assert(b.h >= 44 && b.w >= 44, `${name}'s tap area is ${b.w} x ${b.h}`);

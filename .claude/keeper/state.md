@@ -23,7 +23,7 @@ Backlog items are named by number and title.
 - Design overall: "takes rounds and rounds, and the end result is almost always mediocre".
   Controls and the computer layout are the hardest.
 - The bottom of the phone screen: "the way it works. It's terrible"; "all muted and all over the
-  place". The hairlines beside Next card irk most: generic, with no purpose but to flank a button.
+  place".
   Every piece there must have a job. Below the controls a third of the screen is empty.
 - The title: "very thin and not there". The font stays.
 - The computer's card screen has its earlier layout back (Back, and Three, Spotlight, Twist top
