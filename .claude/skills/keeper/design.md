@@ -29,7 +29,7 @@ on guesses. So understanding comes first, and pictures late.
   pieces they become its own, while taking over its objects or its layout makes a copy.
 - **Design it yourself**, in the conversation, with one design skill loaded: a round made up
   the way `owner.md` describes, each option shown on every moment and saying what in the product it
-  descends from, with the one you believe in named. Design is whole and contextual, not a choice
+  descends from. Design is whole and contextual, not a choice
   between parts: a reaction is about that whole at that moment, and a part turned down here can
   work there. So when the owner names parts they like, the next round brings a version that makes
   those parts work together and also something really different; it is only a combination of
