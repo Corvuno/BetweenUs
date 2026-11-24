@@ -6,8 +6,9 @@ don'ts.
 
 ## Where the look comes from
 
-- The line under the title and the logo are the source: fine gold line work, layered diamonds,
-  symmetry about a centre. A new element is family of these. From a reference in
+- The line under the title and the logo are the source: gold line work in stepped bundles where
+  every line ends on something, solid bands beside fine lines, layered diamonds, symmetry about a
+  centre (`design/title-bar.md`). A new element is family of these. From a reference in
   `.claude/keeper/references/` it takes only the quality the owner names in it (how lines and
   dark balance, how areas are cut, where the eye is led) and builds that from this deck's own
   pieces, saying which reference. A reference's layout and objects are never redrawn, in whole

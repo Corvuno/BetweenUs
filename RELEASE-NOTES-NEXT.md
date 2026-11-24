@@ -14,5 +14,6 @@ Rules:
 - The size label line ("**Medium update.**") is added by the script.
 -->
 - The start card shows a different card back each time it comes up, now from a refreshed set with four new designs.
+- A bolder ornament under the name, with the two diamonds at its heart.
 - Smaller fixes throughout.
 - Three new cards, and ten cards reworded.
