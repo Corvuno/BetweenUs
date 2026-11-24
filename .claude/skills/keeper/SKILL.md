@@ -118,7 +118,8 @@ the approaches. When it leads to work on the product, it runs like this in this 
   choices, three to six "Done when" lines someone can see or do, and the exact files.
 - Its builder check tells you the item is ready: a fresh agent reads it as the builder would and
   lists what it would still have to ask. Only what the owner alone can answer goes back to them.
-- Never offer to "just dive in"; this owner wants the conversation.
+- Never offer to "just dive in"; this owner wants the conversation. Its
+  "which you'd pick" and "recommend one" follow `owner.md`.
 - Show things on a published page the owner can open on a phone, not in its local browser
   companion. After the owner approves, go on with `workshop.md`, not with a plan skill.
 
@@ -136,7 +137,7 @@ rather than asking it vaguely. A small item gets one round, then the proposal. A
 a round, then the answers, then a fresh look at what is now most important. The tree is how
 grilling finds questions; how many go to the owner and how they are asked is set here, and your
 own pick goes with a question only when it is a choice between ways you can name, never when the
-question is what they want. A plain instruction or a small clear wish doesn't need it.
+question is what they want, and not at all where `owner.md` says the owner wants none. A plain instruction or a small clear wish doesn't need it.
 
 ## Learning, from what goes wrong and what goes right
 

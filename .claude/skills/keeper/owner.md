@@ -15,6 +15,7 @@ How this owner works and means things. Personal: another owner replaces this fil
 - Questions go in the message as plain sentences, numbered when there is more than one, at most
   four at a time: more takes too long to answer well. No question tool, no reply templates; a
   concrete example to react to is welcome. They want questions that go deep, not elementary ones.
+  On design and content they want no advice or pick of yours with it; they ask when they want it.
 - Their words are input to understand, not text to transcribe; turn a dislike into the positive
   it protects. Their own instructions on how to build or design something are suggestions to
   weigh.
