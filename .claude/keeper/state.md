@@ -76,6 +76,7 @@ website (#71) are parked: the owner never turns the phone, and the address comes
 - On the phone card screen Spotlight carries a line of explanation and Menu carries none, so the
   two ends of one row are unequal.
 - The three swipe-back tests fail when run on their own (`--only=swipe`) and pass in the full run.
+- "Spotlight's place (computer)" sometimes fails in an `--only=computer` run and passes on a rerun.
 - Whether very long questions still run off the card on a phone was closed without a test.
 - Seven design connectors fail at the start of every session, and the five design-skill plugins
   named in the settings do not load in cloud sessions.
