@@ -544,6 +544,13 @@ body.showing-hand-summary .card-question{
 #screenRow :is(#btnWays,#btnParty,#btnSave) .row-lbl{white-space:nowrap;}   /* the word stays on one line, running on past the slot, never wrapping */
 .quiet-word svg{display:none;}   /* the words carry icons on a wide screen only */
 #btn-menu{grid-column:3;grid-row:4;justify-self:end;align-items:flex-end;}
+/* Phone: Spotlight (or Ways to play, or Save) and Menu each centred under the straight part of the bands beside Next card,
+   which runs from the bands' curl (6u + 18.4px in from the column's outer edge, .nl-bands) to the bar's gap. A word
+   wider than that part stays centred on it and runs out evenly on both sides; the hint is centred under its word. */
+html:not(.pc) #screenRow{justify-self:center;justify-content:center;margin-inline:calc(6 * var(--u) + 18.4px) calc(6 * var(--u));}
+html:not(.pc) #btn-menu{justify-self:center;align-items:center;margin-inline:calc(6 * var(--u)) calc(6 * var(--u) + 18.4px);}
+html:not(.pc) #screenRow :is(#btnWays,#btnParty,#btnSave){align-items:center;text-align:center;}
+html:not(.pc) #screenRow .row-hint{text-align:center;}
 #btn-prev,#btnPick,#btnTwist{display:none;}   /* Back is a swipe on the phone, Three a setting in The Deck, Twist a line in the Menu; the buttons are for a computer */
 .quiet-word:disabled{opacity:.32;pointer-events:none;}   /* as Spotlight's Back */
 :is(#btnPick,#btnWays,#btnParty,#btnSave,#btnTwist) .row-hint{margin-top:7px;max-width:112px;font:italic 400 var(--fs-4)/1.15 'Cormorant Garamond',serif;letter-spacing:0;text-transform:none;color:var(--celadon-dim);}

@@ -2,7 +2,7 @@
 
 The whole bottom of the main screen is one figure that answers the title: coloured ticks, the
 count, one slim gold Next card with three streamline bands a side, and the words Spotlight and
-Menu under the outer ends of the bands. On the phone Back, Three and Twist are
+Menu under the straight part of the bands. On the phone Back, Three and Twist are
 not here: Back is a swipe right on the card, Three is a setting in The Deck, Twist is a line in
 the Menu (the computer shows all three, see Wide screens). So the question is the brightest thing.
 
@@ -33,8 +33,9 @@ the Menu (the computer shows all three, see Wide screens). So the question is th
 - Spotlight and Menu: `.quiet-word`, plain words (no icon, no box), Jost 400, `--fs-1`, `--track-3`,
   uppercase, `--stone`, `--gold` on hover (mouse only), press and keyboard focus (gold word
   with a thin gold underline, offset 6px, never a box). The tap area is at least 44px tall and
-  wide and starts one row-gap under Next card, so it never overlaps it. Spotlight sits under the
-  left ends, Menu under the right. Spotlight's first-visit hint (`.row-hint`, `--celadon-dim`) sits
+  wide and starts one row-gap under Next card, so it never overlaps it. Spotlight (or Ways to play,
+  or Save) and Menu are each centred under the straight part of their bands; a word wider than that
+  part runs out evenly on both sides, and Spotlight's hint is centred under its word. Spotlight's first-visit hint (`.row-hint`, `--celadon-dim`) sits
   under its word and retires after the first tap; Menu has no hint. Jost and `--stone`, not
   the celadon Federo of the old play row: they are secondary and must not compete with Next card
   or the question.
