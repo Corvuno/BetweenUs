@@ -13,3 +13,4 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
+- New streamline lines beside Next card, matching the ornament under the name.
