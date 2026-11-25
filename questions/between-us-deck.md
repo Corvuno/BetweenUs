@@ -61,6 +61,10 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Us: Intimate** — "What do you love about how we've changed in bed since the beginning?" (alternative for Us: Intimate 1; owner asked to bench, 2026-11-02)
 - **Bare** — "What's the most unlikely place you've met someone you ended up sleeping with?" (alternative for Bare 10; owner asked to bench, long-cards round 2026-11-08)
 - **Attract** — "Name the trait in someone's character that gets you every time, even when it shouldn't." (alternative for Attract 4; owner asked to bench, audit round 1 (#184))
+- **Self** — "Take away the one thing people know you for. Who's left?" (alternative for Self 11; owner asked to bench, audit round 1 (#184))
+- **Culture** — "Name the most beautiful thing people ever built that you've stood in front of." (alternative for Culture 5; owner asked to bench, audit round 1 (#184))
+- **Unwind** — "Which building or square near you do you go out of your way to walk past?" (written for Culture 5; owner: a good Unwind card; owner asked to bench, audit round 1 (#184))
+- **Work** — "The dream about work that keeps coming back..." (alternative for Work 2; owner asked to bench, audit round 1 (#184))
 
 ## WRITER BRIEFS — what each category is about
 
@@ -743,6 +747,70 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 # Change log
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
+
+## Patch v7.41 — audit round 1, part 3: seven reworded, eight new (#184)
+
+- **Self 8, question 104** (rewording)
+  - Old: "What do you keep expecting the mirror to show you?"
+  - New: "Catch yourself in a shop window. What do you notice first?"
+  - Why: too cryptic; the mirror stays as the subject. Owner's pick from three.
+- **Self 11, question 107** (rewording)
+  - Old: "Losing the part of your image you need the most would..."
+  - New: "The part of your image you'd be lost without..."
+  - Why: same subject, without a question word. Owner's pick from three.
+- **Shadow 4, question 280** (rewording)
+  - Old: "People believe your presentation. What does that let you do?"
+  - New: "The thing nobody suspects you of, because of how you come across..."
+  - Why: same idea, plainer words than "presentation". Owner's pick from three.
+- **Values 9, question 165** (rewording)
+  - Old: "What are the outer limits of your compassion?"
+  - New: "Someone was suffering and you felt nothing. Who, and why?"
+  - Why: the limit of your compassion, reached through a moment. Owner's pick from three.
+- **Kink 1, question 385** (rewording)
+  - Old: "What's it feel like to be completely at someone's mercy — or to have them at yours?"
+  - New: "In control or at their mercy: which one gets you, and when did you first know?"
+  - Why: the owner's subject: sub or dom, what it does for you, and a story. Owner's pick from three.
+- **Culture 5, question 77** (rewording)
+  - Old: "What place, open to everyone, would you take someone to impress them without saying a word?"
+  - New: "The street, square or building you'd walk a stranger to, just to show it off..."
+  - Why: places people built that you'd show off, so no mountains; "without saying a word" dropped. Owner's pick from three.
+- **Bare 9, question 381** (rewording)
+  - Old: "What's a health conversation you've avoided having, right when you should have had it?"
+  - New: "The condom conversation: who usually starts it, and has it ever not happened?"
+  - Why: blunter, the way Bare talks; works with one partner too. Owner's pick from three.
+- **Work 2, question 498** (replacement; question 50 retired)
+  - Old: "What would you do for a living if money and status played no role at all?"
+  - New: "When you stop working for good, what will you gladly never do again?"
+  - Why: a stock question with a stock answer. Owner's pick from three.
+- **Body 6, question 499** (replacement; question 138 retired)
+  - Old: "Which scar still carries the best story?"
+  - New: "Tell about the boldest thing you've ever done to the way you look."
+  - Why: the owner wanted Body 6 changed; scars may come back in another Body card. Owner's pick from three.
+- **Warm 7, question 500** (replacement; question 19 retired)
+  - Old: "What's the best trouble you ever got into?"
+  - New: "A word you said wrong for years, and who finally told you..."
+  - Why: same ground as Warm 11, which stays. Owner's pick from three.
+- **Life 11, question 501** (replacement; question 35 retired)
+  - Old: "How many unread messages are you sitting on right now — and which one are you avoiding?"
+  - New: "The last thing you do before you fall asleep, every single night..."
+  - Why: Life 11 and 12 were both about putting things off; Life 12 stays. Owner's pick from three.
+- **Wish 5, question 502** (replacement; question 149 retired)
+  - Old: "Something on your someday list nobody would guess..."
+  - New: "The deadline you've set yourself, and how close you are to it..."
+  - Why: the same card as Wish 11, which stays. Owner's pick from three.
+- **Past 2, question 503** (replacement; question 242 retired)
+  - Old: "Which chance meeting sent your life in a direction you'd never have picked?"
+  - New: "Tell about a risk you took that could have gone either way."
+  - Why: Past 1, 2 and 10 were all turning points; Past 1 stays. Owner's pick from three.
+- **Grief 1, question 504** (replacement; question 253 retired)
+  - Old: "One loss you're still not finished with..."
+  - New: "The goodbye you got, or the one you didn't..."
+  - Why: the same card as Grief 10, which stays. Owner's pick from three.
+- **Family 1, question 505** (replacement; question 181 retired)
+  - Old: "At every family get-together, you become..."
+  - New: "The story your family tells at every gathering, and how true it actually is..."
+  - Why: the same ground as Family 4, which stays. Owner's pick from three.
+- Bench: four added (Self, Culture, Unwind, Work).
 
 ## Patch v7.40 — audit round 1, part 2: nine cards reworded (#184)
 
