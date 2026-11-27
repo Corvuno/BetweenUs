@@ -15,3 +15,4 @@ Rules:
 -->
 - New streamline lines beside Next card, matching the ornament under the name.
 - Eight new cards, and seven cards reworded.
+- Smaller fixes throughout.

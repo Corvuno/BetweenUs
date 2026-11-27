@@ -623,7 +623,9 @@ function showEndMessage() {
     : [`You've drawn all ${state.fullDeck.length} cards in your selection.`, `Add categories to keep going.`];
   _endMsgLines = lines.length;
   setPauseColour();   // this hand's last card colour, before the message and the button show it (presentation.js)
-  const html = `<span class="end-msg">${lines.map((l,i) => `<span style="display:block${i?';margin-top:1.4em':''}">${l}</span>`).join('')}</span>`;
+  const lineStyle = (i) => (i ? 'display:block;margin-top:1.4em' : 'display:block');
+  const lineHtml = lines.map((l, i) => '<span style="' + lineStyle(i) + '">' + l + '</span>').join('');
+  const html = `<span class="end-msg">${lineHtml}</span>`;
   renderEndMessage(html);
   // fullscreen: the same message, centred in the fullscreen card
   const pq = document.getElementById('party-question');
