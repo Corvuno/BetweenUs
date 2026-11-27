@@ -75,14 +75,17 @@ lines and wins where it is stricter.
 
 Beside this file: `workshop.md` for when an item is ready to be built, `design.md` for when a
 wish is about how something looks, is laid out or is structured. Every design job, once it is
-understood, goes to the `designer` agent, which chooses between two interface design skills,
-`frontend-design` (comes with the Keeper) and the `design-skills` plugin (when the owner's
-account has it), and always loads the product's own style skill. For the craft around them,
-eleven skills by Emil Kowalski come with the Keeper: `emil-design-eng` and
+understood, goes to the `designer` agent, which chooses between three interface design skills,
+`frontend-design` and `impeccable` (both come with the Keeper) and the `design-skills` plugin
+(when the owner's account has it), and always loads the product's own style skill. A product's
+look is kept as one rulebook, `DESIGN.md`, which `impeccable document` writes and every design
+keeps to. For the craft around them, fourteen skills by Emil Kowalski come with the Keeper: `emil-design-eng` and
 `apple-design` for polish and feel, `mobile-native` for how it feels on a phone, `break-ui` to
 try it with worst-case data, `prototype` for live versions to flip between, and `animate`,
 `animation-vocabulary`, `animation-performance`, `find-animation-opportunities`,
-`improve-animations` and `review-animations` for motion. Where one can't be called, read it and
+`improve-animations`, `review-animations` and `choreograph` for motion, `pick-ui-library` for
+choosing a ready-made part in a React product, and `learn-taste` for turning the owner's design
+corrections into rules in `DESIGN.md`, proposed to the owner before anything is written. Where one can't be called, read it and
 follow it. They serve `design.md`, never replace it: understanding still comes first, and options
 are described to the owner by what they do and how they feel. `grilling` comes with the
 Keeper for finding the deeper questions (see below). Five more come for building:

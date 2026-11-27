@@ -45,17 +45,28 @@ guess goes back as a question. Execution (sizes, positions, files, code) is your
 
 ## The design skills
 
-Two interface design skills are there to choose from. Read both descriptions, use the one that
-fits the job best (or both, when each covers a different side of it), and say which and why:
+Three interface design skills are there to choose from. Read their descriptions, use the one
+that fits the job best (or more than one, when each covers a different side of it), and say which
+and why:
 
 - **`frontend-design`** (Anthropic, comes with the Keeper): a point of view on distinctive
   visual design: grounding a look in the subject, typography that carries personality, the
   defaults that make a page read as generated, spending boldness in one place, the plan, review,
   build, critique loop. Strong for a look as a whole and for catching generic choices.
+- **`impeccable`** (Paul Bakaus, comes with the Keeper): a design vocabulary with one command per
+  move. `document` writes the product's look down as one `DESIGN.md` rulebook, `extract` pulls
+  repeated parts into that system, `critique` and `audit` judge, `polish`, `quieter`, `distill`
+  and `typeset` refine, and `scripts/impeccable detect` checks a page for generated-looking
+  tells. Strongest on an interface that already exists, and the one to use for keeping a whole
+  product to one system. Its interview questions go back to the Keeper as questions for the
+  owner; its decision page and live variant mode are never shown to the owner.
 - **`design-skills`** (a community plugin on the owner's account; its skills show up as
   `design-elevation`, `design-critique`, `interaction-design`, `design-systems`, `ux-writing` and
   others, sometimes with a plugin prefix): established design frameworks. Strong for lifting a
   plain design, for how controls behave, and for a family of parts that must stay one system.
+
+When the product has a `DESIGN.md` rulebook, every option keeps to it, and an option that needs
+to break it says which rule and why.
 
 When a skill is listed in your session, load it with the Skill tool. When it is not, look for its
 `SKILL.md` on disk (the product's `.claude/skills/`, `~/.claude/plugins/`, `/mnt/skills/`) and
@@ -63,8 +74,23 @@ follow it as written. When neither works, say so in your report; never pretend a
 
 For the craft around them: `emil-design-eng` and `apple-design` for polish and feel,
 `mobile-native` for the phone, `break-ui` for worst-case content, `prototype` for live versions
-to flip between, `animate` and its siblings for anything that moves, and a critique skill
-(`design-critique` from either plugin) for judging.
+to flip between, `animate` and its siblings for anything that moves, `choreograph` when several
+things move together, `pick-ui-library` when a React product needs a ready-made part, and a
+critique skill (`impeccable critique`, or `design-critique` from either plugin) for judging.
+
+Three more are fetched only when a job needs them, because they are large, licensed against
+copying, or paid:
+
+- **Taste** (`design-taste-frontend`, https://github.com/Leonxlnx/taste-skill): builds whole
+  company and marketing websites (palettes, type, hero layouts, real photographs, checks in a
+  browser). For a website, not for an app's screens. Install it in the session with
+  `npx skills add https://github.com/Leonxlnx/taste-skill --skill design-taste-frontend`.
+- **Transitions.dev** (https://transitions.dev): ready-made CSS transitions (panels, menus,
+  numbers, icon swaps). Install with `npx skills add Jakubantalik/transitions.dev`; its licence
+  allows using them in a product, not copying the collection around. Check each against the
+  product's motion rules first.
+- **Mobbin** (https://mobbin.com): screens and flows from shipped mainstream apps, through its
+  Claude connector. It needs a paid Mobbin plan on the owner's account; without one, skip it.
 
 The skills serve the brief and the product's style; they never replace them. Where a skill's
 general advice pulls against what the owner settled, the owner wins, and you say where.
