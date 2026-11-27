@@ -41,9 +41,6 @@
   "session.js | TS2339 | Property 'syncSpiceGlyph' does not exist on type 'Window & typeof globalThis'.": 2,
   "session.js | TS2362 | The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.": 1,
   "session.js | TS2363 | The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.": 1,
-  "session.js | no-empty | Empty block statement.": 3,
-  "session.js | no-unused-vars | 'e' is defined but never used.": 5,
-  "session.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 5,
   "state.js | TS2339 | Property 'DEFAULT_LIMIT' does not exist on type 'Window & typeof globalThis'.": 2,
   "state.js | TS2339 | Property 'DEFAULT_SHUFFLE' does not exist on type 'Window & typeof globalThis'.": 1,
   "sw.js | TS2339 | Property 'request' does not exist on type 'Event'.": 1,
@@ -74,11 +71,7 @@
   "ui.js | TS2339 | Property 'touches' does not exist on type 'Event'.": 4,
   "ui.js | TS2339 | Property 'unlockBodyScroll' does not exist on type 'Window & typeof globalThis'.": 1,
   "ui.js | TS2339 | Property 'updateGridScrollHint' does not exist on type 'Window & typeof globalThis'.": 1,
-  "ui.js | no-empty | Empty block statement.": 3,
-  "ui.js | no-unused-vars | 'e' is defined but never used.": 4,
   "ui.js | sonarjs/cognitive-complexity | Refactor this function to reduce its Cognitive Complexity from 27 to the 15 allowed.": 1,
-  "ui.js | sonarjs/no-ignored-exceptions | Handle this exception or don't catch it at all.": 4,
   "ui.js | sonarjs/no-nested-assignment | Extract the assignment of \"CHAPTERS[ch]\" from this expression.": 1,
-  "ui.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 1,
-  "ui.js | sonarjs/no-unenclosed-multiline-block | This statement will not be executed conditionally; only the first statement will be. The rest will execute unconditionally.": 2
+  "ui.js | sonarjs/no-nested-conditional | Extract this nested ternary operation into an independent statement.": 1
 }

@@ -153,7 +153,7 @@ function autoSaveSession() {
         setActiveSessionId('');   // bound slot was deleted elsewhere
       }
     }
-  } catch(e) {}
+  } catch { /* storage full or blocked: this moment just isn't saved */ }
 }
 
 // Silent, automatic — no button to notice, no "Continue?" step. Called once
@@ -162,7 +162,7 @@ function autoSaveSession() {
 function autoResumeSession() {
   getStoredSessions();   // reading the saved evenings rewrites any from before card numbers, once
   try { state.activeSessionId = localStorage.getItem('bu-active-session-id') || ''; }
-  catch(e) { state.activeSessionId = ''; }
+  catch { state.activeSessionId = ''; }
   try {
     const v = localStorage.getItem('bu-session');
     if (!v) return;
@@ -183,17 +183,17 @@ function getStoredSessions() {
     const numbered = list.map(s => { const data = numberedSession(s.data); return data === s.data ? s : { ...s, data }; });
     if (numbered.some((s, i) => s !== list[i])) saveStoredSessions(numbered);   // evenings from before card numbers are rewritten once
     return numbered;
-  } catch(e) { return []; }
+  } catch { return []; }
 }
 function saveStoredSessions(list) {
-  try { localStorage.setItem('bu-sessions', JSON.stringify(list)); } catch(e) {}
+  try { localStorage.setItem('bu-sessions', JSON.stringify(list)); } catch { /* storage full or blocked: the list stays as it was */ }
 }
 function setActiveSessionId(id) {
   state.activeSessionId = id || '';
   try {
     if (id) localStorage.setItem('bu-active-session-id', id);
     else localStorage.removeItem('bu-active-session-id');
-  } catch(e) {}
+  } catch { /* storage blocked: only this visit remembers */ }
 }
 function presetDisplayName(preset) {
   if (preset === 'colbertmode') return 'Colbert';

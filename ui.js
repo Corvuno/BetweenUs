@@ -212,7 +212,10 @@ cardEl.addEventListener('touchcancel', () => { letCardGo(cardTouch?.offset); car
 // white for about a second, once per device ever. Tune or remove here only.
 function spotlightBrightenOnce() {
   const KEY = 'bu.spotBrightened';
-  try { if (localStorage.getItem(KEY)) return; localStorage.setItem(KEY, '1'); } catch (e) { return; }
+  try {
+    if (localStorage.getItem(KEY)) return;
+    localStorage.setItem(KEY, '1');
+  } catch { return; }   // storage blocked: skip it rather than brighten on every visit
   replayClass(document.getElementById('btnParty'), 'spot-bright', 1050);
 }
 
@@ -645,8 +648,8 @@ updateTimeOfDayHeading();
 // ── Keep the screen awake during fullscreen play ──
 (function(){
   let lock = null;
-  async function acquire(){ try { if ('wakeLock' in navigator) lock = await navigator.wakeLock.request('screen'); } catch(e) {} }
-  function release(){ try { lock && lock.release(); } catch(e) {} lock = null; }
+  async function acquire(){ try { if ('wakeLock' in navigator) lock = await navigator.wakeLock.request('screen'); } catch { /* refused (tab hidden, battery saver): the screen may dim */ } }
+  function release(){ try { lock && lock.release(); } catch { /* already released */ } lock = null; }
   const ov = document.getElementById('partyOverlay');
   if (!ov) return;
   new MutationObserver(() => { ov.classList.contains('open') ? acquire() : release(); })
@@ -775,8 +778,8 @@ const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + 
      transitionend, with a timeout as a safety net. */
   let catsClosing=false; const closeWaiters=[];
   function catsBusy(){ return catArea.classList.contains('sheet-open') || catsClosing; }
-  function flushCloseWaiters(){ catsClosing=false; if(catArea.classList.contains('sheet-open')) return; closeWaiters.splice(0).forEach(fn=>fn()); }
-  window.afterCatsClosed=function(fn){ if(catsBusy()) closeWaiters.push(fn); else fn(); };
+  function flushCloseWaiters(){ catsClosing=false; if(catArea.classList.contains('sheet-open')) { return; } closeWaiters.splice(0).forEach(fn=>fn()); }
+  window.afterCatsClosed=function(fn){ if(catsBusy()) { closeWaiters.push(fn); } else { fn(); } };
   window.catsBusy=catsBusy;
   /* On a wide window with a mouse The Deck is a panel docked beside the card (styles.css, "THE DECK AS
      A PANEL"): no scrim, and the main screen makes room while it is open. `dockedQuery` is in selection.js. */
@@ -822,7 +825,7 @@ const foldMs = (px, opening) => Math.round(Math.min(FOLD_MAX_MS, FOLD_BASE_MS + 
     // preventScroll here too: btn-menu sits down in the Controls section,
     // below the Card section — without it, closing the sheet would scroll the
     // whole page down to bring btn-menu into view, pushing the header off the top.
-    const btnMenu = $('btn-menu'); if (btnMenu) try { btnMenu.focus({preventScroll: true}); } catch(e) {}
+    const btnMenu = $('btn-menu'); if (btnMenu) { try { btnMenu.focus({preventScroll: true}); } catch { /* old browser without focus options */ } }
   }
   window.openCats=openCats; window.closeCats=closeCats;
   // "· tap to change" teaches the preset token opens something, then
