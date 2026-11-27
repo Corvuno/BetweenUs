@@ -23,8 +23,8 @@ names its backlog, its areas and its checks; `build-rules.md` says how its code 
   own read of the diff, a look at the result. No agents.
 - A new or reworked feature goes to the `builder` with the full item and anything it depends
   on, then once to the `checker`. A "must fix" goes back to the builder. Builders run one after
-  another, never two on the same files. Builders and the checker run on Sonnet, read-only
-  sweeps on Haiku, unless the owner asks otherwise.
+  another, never two on the same files. Builders and the checker run on Sonnet, the designer
+  on Opus, read-only sweeps on Haiku, unless the owner asks otherwise.
 - After any build, look at the result as a whole, next to its neighbours: does it still belong,
   did anything else move, does one part now have more than its siblings? That is where noticing
   starts.

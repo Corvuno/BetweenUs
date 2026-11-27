@@ -7,6 +7,13 @@ How images get here: the owner sends them in any session; that session saves eac
 (a short descriptive file name, e.g. `facade-stepped-tiers.jpg`) and adds one line below on what the
 owner said about it. The owner may also add files directly on GitHub.
 
+## The owner's moodboards
+
+`moodboards/`: four boards the owner made for the app's one design language: `1-lines.jpg`
+(divider sets), `2-things.jpg` (fan scales, a stepped-glass sconce, a streamline house, layered
+fans), `3-card-frames.jpg` and `4-card-backs.jpg`. They show what the owner likes within Deco;
+what the owner said about each is in `.claude/skills/art-deco/owner-taste.md`.
+
 ## Index
 Sent by the owner on 2026-11-06 as "some deco art" (no comment per image). Several are stock previews
 with watermarks: for reference only, never copied into the app.

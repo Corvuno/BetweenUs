@@ -27,18 +27,24 @@ on guesses. So understanding comes first, and pictures late.
   pick becomes a reference. What a reference gives is the qualities the owner names in it (how
   lines and space balance, how areas are cut, where the eye is led); built from the product's own
   pieces they become its own, while taking over its objects or its layout makes a copy.
-- **Design it yourself**, in the conversation, with one design skill loaded: a round made up
-  the way `owner.md` describes, each option shown on every moment and saying what in the product it
-  descends from. Design is whole and contextual, not a choice
+- **The designer makes it.** Every sketch, round, variation and critique goes to the `designer`
+  agent, with a brief written from the read the owner agreed: what the part is and does at every
+  moment, what it is for, its context and today's version, the style it must fit and what the
+  owner settled in their own words, and what the job should hold. If you can't fill a line, the
+  read isn't done and it goes back to the owner as a question, not to the designer as a guess.
+  The designer loads the design skills that fit and the product's own style skill (`project.md`
+  names it), places nothing at random and judges its round against today's version; what comes
+  back is a round made up the way `owner.md` describes, each option shown on every moment and
+  saying what in the product it descends from. Design is whole and contextual, not a choice
   between parts: a reaction is about that whole at that moment, and a part turned down here can
   work there. So when the owner names parts they like, the next round brings a version that makes
   those parts work together and also something really different; it is only a combination of
   what they liked when they ask for exactly that. Options that differ only in detail are one
-  option. Before showing a round, judge it yourself against today's version and against what the
-  owner has said makes any design good for them (`project.md` says where the product keeps it),
-  and say the verdict plainly with the round. "Tidier than today" is not better.
-  When nothing in the round is better, say so instead of showing it as progress; the owner should
-  never have to ask "is this better?".
+  option. Before showing a round, read the designer's verdict and look yourself, against today's
+  version and against what the owner has said makes any design good for them, and say the
+  verdict plainly with the round. "Tidier than today" is not better. When nothing in the round is
+  better, say so instead of showing it as progress; the owner should never have to ask "is this
+  better?".
 - **After the pick**, at most one round of variations, then it is built from the chosen design.
 - **Stop in time.** The owner tends to keep going and it gets worse. Every round message opens
   with its number for this topic, and the topic's record counts them, so the count can't drift.

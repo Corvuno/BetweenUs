@@ -74,8 +74,11 @@ settled about it; `project.md` says where that is kept. The product's `CLAUDE.md
 lines and wins where it is stricter.
 
 Beside this file: `workshop.md` for when an item is ready to be built, `design.md` for when a
-wish is about how something looks, is laid out or is structured. For the craft of a design once
-it is understood, eleven skills by Emil Kowalski come with the Keeper: `emil-design-eng` and
+wish is about how something looks, is laid out or is structured. Every design job, once it is
+understood, goes to the `designer` agent, which chooses between two interface design skills,
+`frontend-design` (comes with the Keeper) and the `design-skills` plugin (when the owner's
+account has it), and always loads the product's own style skill. For the craft around them,
+eleven skills by Emil Kowalski come with the Keeper: `emil-design-eng` and
 `apple-design` for polish and feel, `mobile-native` for how it feels on a phone, `break-ui` to
 try it with worst-case data, `prototype` for live versions to flip between, and `animate`,
 `animation-vocabulary`, `animation-performance`, `find-animation-opportunities`,
@@ -186,8 +189,8 @@ one, or for everything?" before it goes anywhere but the topic's own record.
 
 ## The generic files
 
-This file, the files beside it, the skills named above, the agents `builder`, `checker` and
-`searcher` and the hooks named `keeper-*` are copies from https://github.com/Corvuno/Keeper, refreshed automatically. Never edit
+This file, the files beside it, the skills named above, the agents `builder`, `checker`,
+`searcher` and `designer` and the hooks named `keeper-*` are copies from https://github.com/Corvuno/Keeper, refreshed automatically. Never edit
 them in a product. To change one: attach that repository to the session, change it there and
 push. A product takes the newest version at the start of its next conversation (the
 `keeper-fresh` hook), and its "Keeper refresh" job lands it on the product's main branch a few

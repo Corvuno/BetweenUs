@@ -10,7 +10,9 @@ card. Notes: `cards.md`, `taste.md`; `panel.md` for the card panel.
 
 **B) Looks**: colours, lines, type, layout, card faces, animation. Notes: `look.md`, `taste.md`,
 the pictures in `.claude/keeper/references/`, `DESIGN-SYSTEM.md` for the named values and the
-file in `design/` for the screen being changed. Placement, form, size and colour are yours to
+file in `design/` for the screen being changed. Every design job goes to the `designer` agent; the
+product's style skill, which it always loads, is `art-deco` (`.claude/skills/art-deco/`: Deco in
+general in `SKILL.md`, the owner's own taste in `owner-taste.md`). Placement, form, size and colour are yours to
 decide and show; the builder builds only from the design the owner chose.
 
 **C) How the app works**: behaviour, screens, flows, settings, profiles, saving, offline. Options

@@ -1,7 +1,8 @@
 # Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
-# Source commit: 1858474
+# Source commit: 36c74eb
 agents/builder.md
 agents/checker.md
+agents/designer.md
 agents/searcher.md
 hooks/keeper-fresh.sh
 hooks/keeper-main-checks.sh
@@ -28,6 +29,8 @@ skills/codebase-design/SKILL.md
 skills/codebase-design/agents/openai.yaml
 skills/emil-design-eng/SKILL.md
 skills/find-animation-opportunities/SKILL.md
+skills/frontend-design/LICENSE.txt
+skills/frontend-design/SKILL.md
 skills/grilling/SKILL.md
 skills/grilling/agents/openai.yaml
 skills/improve-animations/AUDIT.md
