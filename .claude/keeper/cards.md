@@ -31,7 +31,9 @@ which gives feedback only.
   is common), partner, family, money, children. Roots cards use family stories, things kept,
   grandparents, words and habits from home, never a sharp childhood scene.
 - Each card sits within one depth step of its category's `band`; outside it, the card goes or
-  the band moves, and the owner decides which.
+  the band moves, and the owner decides which. A band, a chapter, a category's borders are where
+  things stood when they were set, not facts: when the cards have moved, moving the band, the
+  chapter or the cards between categories is as open as changing a card.
 - After Dark is grown-up questions about sex that start a real conversation, Bare included. Its
   categories split by how far the answer goes and the kind of answer, not by subject.
 
@@ -46,6 +48,9 @@ which gives feedback only.
 - Silence on a list of cards to change is agreement. A message with no card answers at all means
   not looked at yet.
 - A category the owner called good gets no rework proposal without a concrete break.
+- In a long round the reply reports what landed, one line each, and holds only what is new: a
+  question just raised, options just written. Open items are not repeated; the owner finds them by
+  scrolling back, and a repeat makes it unclear what was already answered.
 
 ## Categories and lines
 
