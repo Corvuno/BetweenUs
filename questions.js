@@ -55,7 +55,7 @@ const NEWDECK_CARDS = [
   // ─── LIFE ───
   { id: 25, level: "life", question: "People assume something about your life that's not true..." },
   { id: 26, level: "life", question: "What's the first thing you do after the alarm — before you're anyone for anybody?" },
-  { id: 27, level: "life", question: "Who would know it was you from just one small habit, without ever seeing your face?" },
+  { id: 27, level: "life", question: "Name the little habit that's so you, people would know you by it without seeing your face." },
   { id: 28, level: "life", question: "What do you cook when you're only cooking for yourself?" },
   { id: 29, level: "life", question: "What takes up far more of your life than anyone would guess?" },
   { id: 30, level: "life", question: "What do you happily overspend on every week — and what do you refuse to pay a cent more for?" },
@@ -72,7 +72,7 @@ const NEWDECK_CARDS = [
   { id: 39, level: "home", question: "The object in your home that has outlasted every phase you've been through..." },
   { id: 40, level: "home", question: "Where in your home do you actually live — which chair, which corner?" },
   { id: 41, level: "home", question: "When did you last discover a hidden place in your own town — and how did you find it?" },
-  { id: 42, level: "home", question: "Which move was the hardest — and what didn't make it into the boxes?" },
+  { id: 42, level: "home", question: "Packing up a whole house: what did you find that you'd forgotten you had?" },
   { id: 43, level: "home", question: "Where is the best light in your home, and when does it fall there?" },
   { id: 44, level: "home", question: "The view from your kitchen window — what could you look at every day and never tire of?" },
   { id: 45, level: "home", question: "What do you tidy away when people come over — and what do you leave out on purpose?" },
@@ -95,13 +95,13 @@ const NEWDECK_CARDS = [
   { id: 60, level: "work", question: "What do colleagues learn about you in the first week — and what only after a year?" },
 
   // ─── UNWIND ───
-  { id: 495, level: "unwind", question: "Tell about the holiday that went wrong and became the one you still talk about." },
+  { id: 495, level: "unwind", question: "The holiday that went wrong and became the one you still talk about..." },
   { id: 62, level: "unwind", question: "What's something you do now for fun that would've bored you stiff ten years ago?" },
   { id: 63, level: "unwind", question: "What reliably gets you out of your own head?" },
   { id: 64, level: "unwind", question: "The hour of the week that's entirely yours..." },
   { id: 65, level: "unwind", question: "What do you keep doing for the joy of it, knowing you'll never be any good?" },
   { id: 66, level: "unwind", question: "Where's the best place you've ever danced, and who was there?" },
-  { id: 67, level: "unwind", question: "What does travel give you that staying home never could?" },
+  { id: 67, level: "unwind", question: "The thing you go looking for when you travel, and the trip where you found it..." },
   { id: 68, level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },
   { id: 69, level: "unwind", question: "Which game would you drop everything for, even now?" },
   { id: 70, level: "unwind", question: "What did you used to do for fun that life quietly pushed out?" },
@@ -166,7 +166,7 @@ const NEWDECK_CARDS = [
 
   // ─── MIND ───
   { id: 121, level: "mind", question: "How easily does a new habit stick for you — and which one actually did?" },
-  { id: 122, level: "mind", question: "What do you consistently resist — and when does that break down?" },
+  { id: 122, level: "mind", question: "You give something up, stick to it for weeks, then binge on it. Tell about your cycle." },
   { id: 123, level: "mind", question: "Which thought loop do you know is a loop and still can't exit?" },
   { id: 124, level: "mind", question: "What's the strangest dream you still remember?" },
   { id: 125, level: "mind", question: "Silence, nothing to do — how long before you actually start enjoying it?" },
@@ -184,11 +184,11 @@ const NEWDECK_CARDS = [
   { id: 135, level: "body", question: "I move just for the joy of it when..." },
   { id: 136, level: "body", question: "What music reaches your body before it reaches your head — and what happens?" },
   { id: 137, level: "body", question: "The moment I first felt proud of how I look..." },
-  { id: 499, level: "body", question: "Tell about the boldest thing you've ever done to the way you look." },
+  { id: 499, level: "body", question: "The boldest thing you've ever done to the way you look..." },
   { id: 139, level: "body", question: "Which part of your body do you keep to yourself, and which is happily on display for everyone?" },
   { id: 140, level: "body", question: "Which version of your body do you still compare this one to?" },
   { id: 141, level: "body", question: "What's the best physical feeling you know that's not sexual?" },
-  { id: 142, level: "body", question: "Tell about a time food was comfort, and a time it was a battle." },
+  { id: 142, level: "body", question: "The time food was comfort, and the time it was a battle..." },
   { id: 143, level: "body", question: "The signal you ignored until it knocked you flat..." },
   { id: 144, level: "body", question: "When did your body last let you down?" },
 
@@ -295,7 +295,7 @@ const NEWDECK_CARDS = [
   { id: 230, level: "roots", question: "Who did you grow up alongside — and what did they teach you about yourself?" },
   { id: 231, level: "roots", question: "What did you learn about money in the house you grew up in?" },
   { id: 232, level: "roots", question: "The day you finally understood something your parent did..." },
-  { id: 233, level: "roots", question: "What did family holidays show you about your parents that home didn't?" },
+  { id: 508, level: "roots", question: "What was expected of you growing up — and are you still trying to deliver it?" },
   { id: 234, level: "roots", question: "Look at a photo of young you — what looks back?" },
   { id: 235, level: "roots", question: "Who from school still decides, a little, how you feel about yourself?" },
   { id: 236, level: "roots", question: "At home, to be safe, you had to be..." },
@@ -306,7 +306,7 @@ const NEWDECK_CARDS = [
 
   // ─── PAST ───
   { id: 241, level: "past", question: "What's the decision you almost didn't make that changed everything?" },
-  { id: 503, level: "past", question: "Tell about a risk you took that could have gone either way." },
+  { id: 503, level: "past", question: "A risk you took that could have gone either way..." },
   { id: 243, level: "past", question: "Tell about a time you surprised yourself with what you could survive." },
   { id: 244, level: "past", question: "What kept you somewhere long after you knew you should leave?" },
   { id: 245, level: "past", question: "Trace the moment money started meaning something different to you." },
@@ -316,7 +316,7 @@ const NEWDECK_CARDS = [
   { id: 249, level: "past", question: "Which bridge did you burn on purpose, and do you regret it?" },
   { id: 250, level: "past", question: "The night everything changed, though you didn't know it yet..." },
   { id: 251, level: "past", question: "Which year of your life simply vanished?" },
-  { id: 252, level: "past", question: "The move to a new place that changed who you were..." },
+  { id: 252, level: "past", question: "Which town or city turned you into a different person, and how?" },
 
   // ─── GRIEF ───
   { id: 504, level: "grief", question: "The goodbye you got, or the one you didn't..." },
@@ -440,7 +440,7 @@ const NEWDECK_CARDS = [
   { id: 355, level: "flesh", question: "A hotel room, far from home: what comes out in you that stays hidden at home?" },
   { id: 356, level: "flesh", question: "Affection in public — where is your line, for yourself and for the couple next to you?" },
   { id: 357, level: "flesh", question: "When did sex last feel like play — and what made it that way?" },
-  { id: 358, level: "flesh", question: "What's something trust unlocks in bed that nothing else can?" },
+  { id: 358, level: "flesh", question: "Something you only do in bed once you trust someone, and the first time you did..." },
   { id: 359, level: "flesh", question: "Ever woken someone up, or been woken up, in a way that was unmistakably sexual?" },
   { id: 360, level: "flesh", question: "Out of every first time you've had with someone, which one has stuck with you the most?" },
 
@@ -590,6 +590,7 @@ const RETIRED_CARDS = [
   { id: 181, level: "family", question: "At every family get-together, you become..." },
   { id: 282, level: "shadow", question: "Tell about hurting someone without meaning to." },
   { id: 152, level: "wish", question: "What's something you own or do mainly because you once thought you'd want it?" },
+  { id: 233, level: "roots", question: "What did family holidays show you about your parents that home didn't?" },
 ];
 
 const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);

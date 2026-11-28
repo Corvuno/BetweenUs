@@ -65,6 +65,7 @@ The card text itself lives only in `questions.js` — that is the single source 
 - **Culture** — "Name the most beautiful thing people ever built that you've stood in front of." (alternative for Culture 5; owner asked to bench, audit round 1 (#184))
 - **Unwind** — "Which building or square near you do you go out of your way to walk past?" (written for Culture 5; owner: a good Unwind card; owner asked to bench, audit round 1 (#184))
 - **Work** — "The dream about work that keeps coming back..." (alternative for Work 2; owner asked to bench, audit round 1 (#184))
+- **Roots** — "The fight your parents never finished, and the part of it you're still carrying..." (alternative for Roots 5; owner asked to bench, audit round 1 (#184))
 
 ## WRITER BRIEFS — what each category is about
 
@@ -749,6 +750,54 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 # Change log
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
+
+## Patch v7.43 — audit round 1, part 5: ten reworded, one new (#184)
+
+- **Home 6, question 42** (rewording)
+  - Old: "Which move was the hardest — and what didn't make it into the boxes?"
+  - New: "Packing up a whole house: what did you find that you'd forgotten you had?"
+  - Why: the same move as Past 12; the owner split them, Home gets the packing. Owner's pick from three.
+- **Past 12, question 252** (rewording)
+  - Old: "The move to a new place that changed who you were..."
+  - New: "Which town or city turned you into a different person, and how?"
+  - Why: the same move as Home 6; the owner split them, Past gets the place that changed you. Owner's pick from three.
+- **Unwind 7, question 67** (rewording)
+  - Old: "What does travel give you that staying home never could?"
+  - New: "The thing you go looking for when you travel, and the trip where you found it..."
+  - Why: why you travel, reached through a real trip, without a question word. Owner's pick from three.
+- **Flesh 10, question 358** (rewording)
+  - Old: "What's something trust unlocks in bed that nothing else can?"
+  - New: "Something you only do in bed once you trust someone, and the first time you did..."
+  - Why: the idea and the story behind it in one card; "first" is the owner's call. Owner's pick from three.
+- **Mind 2, question 122** (rewording)
+  - Old: "What do you consistently resist — and when does that break down?"
+  - New: "You give something up, stick to it for weeks, then binge on it. Tell about your cycle."
+  - Why: the owner's example: holding out, then caving in completely. Owner's pick from three.
+- **Life 3, question 27** (rewording)
+  - Old: "Who would know it was you from just one small habit, without ever seeing your face?"
+  - New: "Name the little habit that's so you, people would know you by it without seeing your face."
+  - Why: the habit is the answer, not the person who'd recognise it. Owner's pick, with the owner's addition.
+- **Unwind 1, question 495** (rewording)
+  - Old: "Tell about the holiday that went wrong and became the one you still talk about."
+  - New: "The holiday that went wrong and became the one you still talk about..."
+  - Why: "Tell about" taken out on the owner's word.
+- **Body 6, question 499** (rewording)
+  - Old: "Tell about the boldest thing you've ever done to the way you look."
+  - New: "The boldest thing you've ever done to the way you look..."
+  - Why: "Tell about" taken out on the owner's word.
+- **Body 10, question 142** (rewording)
+  - Old: "Tell about a time food was comfort, and a time it was a battle."
+  - New: "The time food was comfort, and the time it was a battle..."
+  - Why: "Tell about" taken out on the owner's word.
+- **Past 2, question 503** (rewording)
+  - Old: "Tell about a risk you took that could have gone either way."
+  - New: "A risk you took that could have gone either way..."
+  - Why: "Tell about" taken out on the owner's word.
+- **Roots 5, question 508** (replacement; question 233 retired)
+  - Old: "What did family holidays show you about your parents that home didn't?"
+  - New: "What was expected of you growing up — and are you still trying to deliver it?"
+  - Why: too light for Roots; the owner asked for heavier. Owner's pick from three.
+- Bench: one added (Roots).
 
 ## Patch v7.42 — audit round 1, part 4: ten reworded, two new (#184)
 

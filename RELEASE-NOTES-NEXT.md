@@ -13,5 +13,5 @@ Rules:
 - Do not add detail. Update or merge an existing headline instead of adding a new one.
 - The size label line ("**Medium update.**") is added by the script.
 -->
-- Two new cards, and ten cards reworded.
+- Three new cards, and twenty cards reworded.
 - Smaller fixes throughout.
