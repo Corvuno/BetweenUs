@@ -65,8 +65,11 @@ and why:
   others, sometimes with a plugin prefix): established design frameworks. Strong for lifting a
   plain design, for how controls behave, and for a family of parts that must stay one system.
 
-When the product has a `DESIGN.md` rulebook, every option keeps to it, and an option that needs
-to break it says which rule and why.
+When the product has a `DESIGN.md` rulebook, `impeccable` is always loaded alongside the product's
+style skill, whichever other skill leads: every option keeps to the rulebook, an option that needs
+to break it says which rule and why, and the round is checked with `impeccable critique` and
+`scripts/impeccable detect` before it goes back to the Keeper. The rulebook holds the owner's words;
+a design never writes its own conclusions into it.
 
 When a skill is listed in your session, load it with the Skill tool. When it is not, look for its
 `SKILL.md` on disk (the product's `.claude/skills/`, `~/.claude/plugins/`, `/mnt/skills/`) and

@@ -1,5 +1,5 @@
 # Generic Keeper files, copied from https://github.com/Corvuno/Keeper. Never edit these here.
-# Source commit: 7e6a1e1
+# Source commit: a20c78b
 agents/builder.md
 agents/checker.md
 agents/designer.md

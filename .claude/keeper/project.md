@@ -8,7 +8,9 @@ What is particular to this product. What the Keeper is and how it works is gener
 **A) The deck**: questions, categories and chapters. The owner approves the exact words of every
 card. Notes: `cards.md`, `taste.md`; `panel.md` for the card panel.
 
-**B) Looks**: colours, lines, type, layout, card faces, animation. Notes: `look.md`, `taste.md`,
+**B) Looks**: colours, lines, type, layout, card faces, animation. The rulebook every design and
+build follows is `DESIGN.md` (the owner's own words), with `PRODUCT.md` beside it for Impeccable.
+Notes: `look.md`, `taste.md`,
 the pictures in `.claude/keeper/references/`, `DESIGN-SYSTEM.md` for the named values and the
 file in `design/` for the screen being changed. Every design job goes to the `designer` agent; the
 product's style skill, which it always loads, is `art-deco` (`.claude/skills/art-deco/`: Deco in
