@@ -57,13 +57,16 @@ liked somewhere else. What the owner looks for in every design:
   card, concrete rather than abstract: no life audits, no "belonging" as a feeling.
 - **Its own words every time.** A device used again and again reads as a machine: the list of three
   with a dash and a twist, the mirror "X, and what X does to you", subject lists lifted from the
-  cards. A device is fine when it earns its place, like three with alliteration: "The fond, the
-  funny and the faintly ridiculous".
+  cards, and "Tell about…" as the stock way out of "What". A device is fine when it earns its place,
+  like three with alliteration: "The fond, the funny and the faintly ridiculous".
+- **A card invites; it doesn't order.** "Tell about…" reads as a command, and nearly every such card
+  is better with those words taken out: "The signal you ignored until it knocked you flat...".
 - **Systems over blame.** Neutral and about how things work, never about who is at fault.
 - **Play and fun are real subjects**, and a light category stays light: Attract is about attraction,
   not turn-offs or being turned down.
 - **The body is lived in, not owned.** Body cards speak to you in your body (moving, dancing, how
-  you look and feel); "your body" makes it a thing you own.
+  you look and feel). "Your body" as words is fine ("what do you keep covered"); the body as a being
+  of its own that wants, asks or lets you down is not: you want something, your body doesn't.
 - **Roots is about what the past is still doing**, not sensory childhood scenes.
 - **Two categories can be two sides of one coin**, visibly: Unwind, "What you do when nothing has to
   be done", against Life.
