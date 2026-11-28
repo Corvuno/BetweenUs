@@ -69,7 +69,7 @@ const NEWDECK_CARDS = [
   // ─── HOME ───
   { id: 37, level: "home", question: "Who is allowed in your home unannounced?" },
   { id: 38, level: "home", question: "Walk us down your street — what would we pass on the way to your door?" },
-  { id: 39, level: "home", question: "What object in your house has survived the most versions of you?" },
+  { id: 39, level: "home", question: "The object in your home that has outlasted every phase you've been through..." },
   { id: 40, level: "home", question: "Where in your home do you actually live — which chair, which corner?" },
   { id: 41, level: "home", question: "When did you last discover a hidden place in your own town — and how did you find it?" },
   { id: 42, level: "home", question: "Which move was the hardest — and what didn't make it into the boxes?" },
@@ -85,7 +85,7 @@ const NEWDECK_CARDS = [
   { id: 498, level: "work", question: "When you stop working for good, what will you gladly never do again?" },
   { id: 51, level: "work", question: "What's the piece of work you're most proud of that nobody applauded?" },
   { id: 52, level: "work", question: "The strangest job you've ever had..." },
-  { id: 53, level: "work", question: "When did you first ask for a raise — and how did it go?" },
+  { id: 53, level: "work", question: "The first time you asked for a raise, and how it went..." },
   { id: 54, level: "work", question: "Reliable or brilliant — which would you rather be seen as, and which do people actually see?" },
   { id: 55, level: "work", question: "Which colleague would you start a company with tomorrow?" },
   { id: 56, level: "work", question: "What made you choose this field — and is it still the reason you stay?" },
@@ -105,7 +105,7 @@ const NEWDECK_CARDS = [
   { id: 68, level: "unwind", question: "The most unexpected beauty a trip ever handed you..." },
   { id: 69, level: "unwind", question: "Which game would you drop everything for, even now?" },
   { id: 70, level: "unwind", question: "What did you used to do for fun that life quietly pushed out?" },
-  { id: 71, level: "unwind", question: "What's the smallest thing that makes a day better — and where do you find it?" },
+  { id: 71, level: "unwind", question: "What's the smallest thing that makes a day better?" },
   { id: 72, level: "unwind", question: "What does the first warm day of the year do to you?" },
 
   // ─── CULTURE ───
@@ -179,8 +179,8 @@ const NEWDECK_CARDS = [
   { id: 132, level: "mind", question: "The version of you that shows up at three in the morning..." },
 
   // ─── BODY ───
-  { id: 133, level: "body", question: "When did your body surprise you with what it could do?" },
-  { id: 134, level: "body", question: "When did you keep going long after your body wanted to stop?" },
+  { id: 133, level: "body", question: "The physical thing you did once and still can't believe you managed..." },
+  { id: 134, level: "body", question: "When were you running on empty, and still didn't stop?" },
   { id: 135, level: "body", question: "I move just for the joy of it when..." },
   { id: 136, level: "body", question: "What music reaches your body before it reaches your head — and what happens?" },
   { id: 137, level: "body", question: "The moment I first felt proud of how I look..." },
@@ -189,7 +189,7 @@ const NEWDECK_CARDS = [
   { id: 140, level: "body", question: "Which version of your body do you still compare this one to?" },
   { id: 141, level: "body", question: "What's the best physical feeling you know that's not sexual?" },
   { id: 142, level: "body", question: "Tell about a time food was comfort, and a time it was a battle." },
-  { id: 143, level: "body", question: "Your body asks for something you routinely deny it..." },
+  { id: 143, level: "body", question: "The signal you ignored until it knocked you flat..." },
   { id: 144, level: "body", question: "When did your body last let you down?" },
 
   // ─── WISH ───
@@ -200,7 +200,7 @@ const NEWDECK_CARDS = [
   { id: 502, level: "wish", question: "The deadline you've set yourself, and how close you are to it..." },
   { id: 150, level: "wish", question: "What are you saving up for right now?" },
   { id: 151, level: "wish", question: "If you fast-forwarded five good years, what would you want to see?" },
-  { id: 152, level: "wish", question: "What's something you own or do mainly because you once thought you'd want it?" },
+  { id: 507, level: "wish", question: "The thing you'd learn if time were no object at all..." },
   { id: 153, level: "wish", question: "What's a skill or trait you're actively working on right now that nobody's asked you to?" },
   { id: 154, level: "wish", question: "Which person you admire are you secretly trying to become a bit more like?" },
   { id: 155, level: "wish", question: "What do you want that would surprise the people who know you?" },
@@ -241,7 +241,7 @@ const NEWDECK_CARDS = [
   { id: 184, level: "family", question: "The old you that your family can't quite let go of..." },
   { id: 185, level: "family", question: "The silly argument your family keeps having, and what's underneath it..." },
   { id: 186, level: "family", question: "Which inherited trait do you watch for in the mirror, with dread?" },
-  { id: 187, level: "family", question: "Your parents are getting old. What is that doing to you?" },
+  { id: 187, level: "family", question: "The moment you first saw one of your parents as old..." },
   { id: 188, level: "family", question: "Who became family without being family?" },
   { id: 189, level: "family", question: "Who in your family knows you best — and do they know that?" },
   { id: 190, level: "family", question: "What help from your family have you turned down, and why?" },
@@ -271,7 +271,7 @@ const NEWDECK_CARDS = [
   { id: 210, level: "date", question: "What relationship rule do you question more than you admit?" },
   { id: 211, level: "date", question: "Which frightens you more: a relationship costing your freedom, or no relationship at all?" },
   { id: 212, level: "date", question: "Have you ever loved two people at the same time — and what did you do about it?" },
-  { id: 213, level: "date", question: "In a relationship, what age difference makes you hesitate, whatever anyone else thinks?" },
+  { id: 213, level: "date", question: "Which age difference would stop you, for your own reasons — not anyone else's?" },
   { id: 214, level: "date", question: "Which love story — your own or borrowed — do you retell most gladly?" },
   { id: 215, level: "date", question: "What are you like single — and do you like that version?" },
   { id: 216, level: "date", question: "The one that got away, and whether they really did..." },
@@ -311,7 +311,7 @@ const NEWDECK_CARDS = [
   { id: 244, level: "past", question: "What kept you somewhere long after you knew you should leave?" },
   { id: 245, level: "past", question: "Trace the moment money started meaning something different to you." },
   { id: 246, level: "past", question: "Which teacher saw something in you — or missed it entirely?" },
-  { id: 247, level: "past", question: "Which version of yourself was hardest to let go of?" },
+  { id: 247, level: "past", question: "A phase of your life you didn't want to end..." },
   { id: 248, level: "past", question: "Describe a failure you're only now able to talk about." },
   { id: 249, level: "past", question: "Which bridge did you burn on purpose, and do you regret it?" },
   { id: 250, level: "past", question: "The night everything changed, though you didn't know it yet..." },
@@ -352,7 +352,7 @@ const NEWDECK_CARDS = [
   { id: 279, level: "shadow", question: "Someone's failure you secretly enjoyed..." },
   { id: 280, level: "shadow", question: "The thing nobody suspects you of, because of how you come across..." },
   { id: 281, level: "shadow", question: "What feeling do you cover so well that even the people closest to you have never seen it?" },
-  { id: 282, level: "shadow", question: "Tell about hurting someone without meaning to." },
+  { id: 506, level: "shadow", question: "Who did you hurt and let believe it was an accident?" },
   { id: 283, level: "shadow", question: "Which vice has survived every attempt to quit it?" },
   { id: 284, level: "shadow", question: "Has your anger ever frightened someone?" },
   { id: 285, level: "shadow", question: "When did you win in a way you're not proud of?" },
@@ -475,7 +475,7 @@ const NEWDECK_CARDS = [
   // ─── KINK ───
   { id: 385, level: "kinks", question: "In control or at their mercy: which one gets you, and when did you first know?" },
   { id: 386, level: "kinks", question: "Watching, or being watched — which does more for you?" },
-  { id: 387, level: "kinks", question: "What's a specific time pain, given or taken, brought pleasure along with it?" },
+  { id: 387, level: "kinks", question: "The pain, given or taken, that turned into pleasure..." },
   { id: 388, level: "kinks", question: "Who outside the bedroom knows about your kinky side — and do they understand?" },
   { id: 389, level: "kinks", question: "Which kink once felt too far that's now just a Tuesday — and what still gives you pause on a Saturday night?" },
   { id: 390, level: "kinks", question: "Name a fantasy you've kept to yourself — and what it would take to try it." },
@@ -588,6 +588,8 @@ const RETIRED_CARDS = [
   { id: 242, level: "past", question: "Which chance meeting sent your life in a direction you'd never have picked?" },
   { id: 253, level: "grief", question: "One loss you're still not finished with..." },
   { id: 181, level: "family", question: "At every family get-together, you become..." },
+  { id: 282, level: "shadow", question: "Tell about hurting someone without meaning to." },
+  { id: 152, level: "wish", question: "What's something you own or do mainly because you once thought you'd want it?" },
 ];
 
 const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);
