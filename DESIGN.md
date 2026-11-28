@@ -40,6 +40,12 @@ incohesive. It should look more the same, but in another way."
 "Gold. Black and grey are in there. Dark golds, light golds, cream. The purple and the teal are
 there too, and the category and chapter colours. So there are a lot of colours."
 
+"They never show up all at once. They are reserved for the categories and the chapters; two of
+them fill two colour spots. So it's never a lot of colours on the screen. It's always two distinct
+colours that show you what you have activated, which I like because that gives it colour and it
+changes a bit while you play. It makes the game feel alive and not dull. So that should absolutely
+stay."
+
 ## Typography
 
 Fixed, not up for discussion: the title in Poiret One, the question in Bodoni Moda, and the
@@ -71,8 +77,6 @@ Deco shape could be."
 "A title with a graphic underneath it. A way to select chapter. A card. A way to select next card. A
 way to get into Menu and Spotlight. And the Menu, where the deck has space for the presets that draw
 a number of cards, the chapters that hold categories that hold cards, and the way it shuffles."
-
-"The top element can be more subtle."
 
 ## Do's and Don'ts
 
