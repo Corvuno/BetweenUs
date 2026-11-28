@@ -36,6 +36,10 @@ Backlog items are named by number and title.
 1. The title firmer, in its own font: three strengths shown, waiting for a pick (#169).
 2. The bottom of the phone screen, with a new idea (#160): drawn next, in the weight now live.
 The balance of the card screen on a computer (#161) is not wanted now.
+Deck: the audit of how cards ask (#184) has changed about 55 cards; next are heavier versions of
+Roots' five lightest cards, then a rewording round toward six question-word cards in twelve per
+category. Past to depth 5 in Beneath the Surface is agreed and held: Roots would be alone at
+depth 6, and Arc then repeats it.
 Around these: Plain words for The Deck's settings (#157), whose wording round now also covers
 "hand" (an internal word: "No one knows what a hand is"); the faint names get a lighter step,
 all but Raw, with Deep still open (#168); a row of accessibility fixes in `Next`. Live: the note

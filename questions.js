@@ -190,7 +190,7 @@ const NEWDECK_CARDS = [
   { id: 141, level: "body", question: "What's the best physical feeling you know that's not sexual?" },
   { id: 142, level: "body", question: "The time food was comfort, and the time it was a battle..." },
   { id: 143, level: "body", question: "The signal you ignored until it knocked you flat..." },
-  { id: 144, level: "body", question: "When did your body last let you down?" },
+  { id: 509, level: "body", question: "One scar you're secretly proud of..." },
 
   // ─── WISH ───
   { id: 145, level: "wish", question: "The life you almost lived — how close did it come?" },
@@ -591,6 +591,7 @@ const RETIRED_CARDS = [
   { id: 282, level: "shadow", question: "Tell about hurting someone without meaning to." },
   { id: 152, level: "wish", question: "What's something you own or do mainly because you once thought you'd want it?" },
   { id: 233, level: "roots", question: "What did family holidays show you about your parents that home didn't?" },
+  { id: 144, level: "body", question: "When did your body last let you down?" },
 ];
 
 const ALL_CARDS = NEWDECK_CARDS.concat(COLBERT_CARDS, ARON_CARDS, MAGIC_CARDS);

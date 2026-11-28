@@ -751,6 +751,13 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
 
+## Patch v7.44 — Body 12 (#184)
+
+- **Body 12, question 509** (replacement; question 144 retired)
+  - Old: "When did your body last let you down?"
+  - New: "One scar you're secretly proud of..."
+  - Why: the body as a being that lets you down; the owner wanted scars back in Body, as something you're proud of. Owner's wording, from three alternatives.
+
 ## Patch v7.43 — audit round 1, part 5: ten reworded, one new (#184)
 
 - **Home 6, question 42** (rewording)
