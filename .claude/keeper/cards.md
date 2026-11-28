@@ -22,8 +22,9 @@ which gives feedback only.
 - The three alternatives differ in substance (a different object, act, person or frame) and
   spread over two or three lines of thought. An owner's example shows tone and form, not the
   subject.
-- In every slot at least one alternative is not a question ("Tell about…", "Name…", an open
-  sentence, a command). A category never ends a round with fewer such cards than it started with.
+- In every slot at least one alternative is not a question: an open sentence, a statement with a
+  short ask, a scene, now and then "Name…" or "Quote…". "Tell about…" is the exception, not the way
+  out of "What". A category never ends a round with fewer such cards than it started with.
 - Check every candidate against the whole deck except Colbert, The 36 and Magical (grep its key
   nouns and verbs) and say so; a claim that wasn't checked is marked unverified.
 - Screen every card for what it assumes about a player's life: group size (four friends at most

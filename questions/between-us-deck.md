@@ -656,14 +656,16 @@ The subject matter is not what makes a card recognisable — every deck asks abo
     player finishes in their own voice: *"The closest thing I have to a ritual is..."*. "Us"
     ("take us there") speaks to the table and stays. The Us categories ask the person across
     from you, so their "me" is always right.
-13. **Vary how a card asks.** About four in five cards start with a question word. Mix in "Tell
-    about…", "Quote…", "Name…", "Point to…", an open "…" sentence, or a command. Every proposal
+13. **Vary how a card asks.** About four in five cards start with a question word; the aim is six
+    in twelve per category, eight at most (owner, 2026-11-22). Mix in an open "…" sentence, a
+    statement with a short ask, a scene, "Quote…", "Name…" or "Point to…". A card invites, it
+    doesn't order: "Tell about…" became the stock way out of "What", and most such cards read better
+    with the words taken out (owner, 2026-11-28). Every proposal
     slot offers at least one alternative that isn't a question, and a category never loses its
     non-question cards to a rework (owner, 2026-10-27).
     The open sentence comes first among these (owner, 2026-11-01): a card can simply start with
     "The…" or "A…" and trail off — *"The time you went gloriously too far…"* works without any
-    command. Mix those, the commands ("Tell about…", "Name…") and other devices, so no one shape
-    takes over.
+    command. Mix those and the other devices so no one shape takes over.
 14. **Write for the band.** Every category has a depth band (1–7, in `categories.js`). A new card
     sits within one step of it. Read the category's About and its band before writing, and check
     each alternative against it before proposing (owner, 2026-11-01).
@@ -747,6 +749,58 @@ sometimes exact and unadorned is the right call, same as "just the two of you").
 # Change log
 
 Entry format: each card's entry names its slot and question number (for example **Friendship 7, question 214**) and says whether it was a rewording (same question number; the card keeps its place in saved evenings and Favourites) or a replacement (new question number; the old number and its last wording go to `RETIRED_CARDS` in `questions.js`, and are never reused). Entries below this line from before question numbers name the slot only.
+
+## Patch v7.42 — audit round 1, part 4: ten reworded, two new (#184)
+
+- **Work 5, question 53** (rewording)
+  - Old: "When did you first ask for a raise — and how did it go?"
+  - New: "The first time you asked for a raise, and how it went..."
+  - Why: a clause for those who never asked was offered; the owner chose the open sentence. Owner's pick from three.
+- **Family 7, question 187** (rewording)
+  - Old: "Your parents are getting old. What is that doing to you?"
+  - New: "The moment you first saw one of your parents as old..."
+  - Why: less hurtful for someone who has lost a parent; works in the past tense. Owner's pick, with "Tell about" taken out on the owner's word.
+- **Body 1, question 133** (rewording)
+  - Old: "When did your body surprise you with what it could do?"
+  - New: "The physical thing you did once and still can't believe you managed..."
+  - Why: the body as something that acts on its own. Owner's pick from three.
+- **Body 2, question 134** (rewording)
+  - Old: "When did you keep going long after your body wanted to stop?"
+  - New: "When were you running on empty, and still didn't stop?"
+  - Why: the body as something that wants on its own. Owner's pick from three.
+- **Body 11, question 143** (rewording)
+  - Old: "Your body asks for something you routinely deny it..."
+  - New: "The signal you ignored until it knocked you flat..."
+  - Why: "your body asks": a body doesn't want, you do. Owner's pick, with "Tell about" taken out on the owner's word.
+- **Home 3, question 39** (rewording)
+  - Old: "What object in your house has survived the most versions of you?"
+  - New: "The object in your home that has outlasted every phase you've been through..."
+  - Why: "version of you" used in many cards. Owner's pick from three.
+- **Past 7, question 247** (rewording)
+  - Old: "Which version of yourself was hardest to let go of?"
+  - New: "A phase of your life you didn't want to end..."
+  - Why: "version of yourself" used in many cards. Owner's pick, with "Tell about" taken out on the owner's word ("for 99%").
+- **Unwind 11, question 71** (rewording)
+  - Old: "What's the smallest thing that makes a day better — and where do you find it?"
+  - New: "What's the smallest thing that makes a day better?"
+  - Why: the second half added nothing; the owner's own cut.
+- **Romance 9, question 213** (rewording)
+  - Old: "In a relationship, what age difference makes you hesitate, whatever anyone else thinks?"
+  - New: "Which age difference would stop you, for your own reasons — not anyone else's?"
+  - Why: the owner's point: an age gap you have a problem with yourself, not because others do. Owner's pick from three.
+- **Kink 3, question 387** (rewording)
+  - Old: "What's a specific time pain, given or taken, brought pleasure along with it?"
+  - New: "The pain, given or taken, that turned into pleasure..."
+  - Why: "What's a specific time" is not how people talk. Owner's pick, in the owner's words.
+- **Shadow 6, question 506** (replacement; question 282 retired)
+  - Old: "Tell about hurting someone without meaning to."
+  - New: "Who did you hurt and let believe it was an accident?"
+  - Why: too light for Shadow; the owner asked for heavier. Owner's pick from three.
+- **Wish 8, question 507** (replacement; question 152 retired)
+  - Old: "What's something you own or do mainly because you once thought you'd want it?"
+  - New: "The thing you'd learn if time were no object at all..."
+  - Why: sat between Wish 2 and Wish 12; a new subject. Owner's pick from three.
+- Shadow has one non-question card fewer until the rewording round gives one back.
 
 ## Patch v7.41 — audit round 1, part 3: seven reworded, eight new (#184)
 
